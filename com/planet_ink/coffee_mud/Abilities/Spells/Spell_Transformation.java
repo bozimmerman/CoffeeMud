@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Transformation extends Spell
 {
-	public String ID() { return "Spell_Transformation"; }
-	public String name(){return "Transformation";}
-	public String displayText(){return "(Transformation)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_Transformation"; }
+	@Override public String name(){return "Transformation";}
+	@Override public String displayText(){return "(Transformation)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	protected int inc=0;
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -51,12 +52,14 @@ public class Spell_Transformation extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+affected.phyStats().level()+getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/2)+getXLEVELLevel(invoker()));
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -65,6 +68,7 @@ public class Spell_Transformation extends Spell
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,3);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

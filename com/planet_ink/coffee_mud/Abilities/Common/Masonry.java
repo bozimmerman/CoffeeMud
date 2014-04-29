@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,11 +41,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Masonry extends CraftingSkill
 {
-	public String ID() { return "Masonry"; }
-	public String name(){ return "Masonry";}
+	@Override public String ID() { return "Masonry"; }
+	@Override public String name(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "ROCK|STONE";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "ROCK|STONE";}
 
 	protected static final int BUILD_WALL=0;
 	protected static final int BUILD_ROOF=1;
@@ -138,6 +138,7 @@ public class Masonry extends CraftingSkill
 		final Room theRoomToReturnTo=returnToRoom;
 		room.eachInhabitant(new EachApplicable<MOB>()
 		{
+			@Override
 			public void apply(MOB a)
 			{
 				theRoomToReturnTo.bringMobHere(a, false);
@@ -145,6 +146,7 @@ public class Masonry extends CraftingSkill
 		});
 		room.eachItem(new EachApplicable<Item>()
 		{
+			@Override
 			public void apply(Item a)
 			{
 				theRoomToReturnTo.addItem(a,Expire.Player_Drop);
@@ -225,7 +227,8 @@ public class Masonry extends CraftingSkill
 		room.destroy();
 		return R;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -299,7 +302,7 @@ public class Masonry extends CraftingSkill
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(room))) R.setImage(null);
-							
+
 							Area area=room.getArea();
 							if(area!=null) area.delProperRoom(room);
 							R.setArea(area);
@@ -445,7 +448,7 @@ public class Masonry extends CraftingSkill
 							Exit upExit=CMClass.getExit("OpenDescriptable");
 							upExit.setMiscText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
 							room.setRawExit(Directions.UP,upExit);
-							
+
 							Exit downExit=CMClass.getExit("OpenDescriptable");
 							downExit.setMiscText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
 							upRoom.rawDoors()[Directions.DOWN]=room;
@@ -621,7 +624,7 @@ public class Masonry extends CraftingSkill
 							room=CMLib.map().getRoom(room);
 							if(dir<0)
 							{
-								
+
 								if(CMLib.law().isHomeRoomUpstairs(room))
 								{
 									demolishRoom(mob,room);
@@ -653,14 +656,14 @@ public class Masonry extends CraftingSkill
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
-	
+
 	public boolean isHomePeerTitledRoom(Room R)
 	{
 		LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null) return false;
 		return title.getOwnerName().length()>0;
 	}
-	
+
 	public LandTitle ifHomePeerLandTitle(Room R)
 	{
 		if((R!=null)
@@ -670,6 +673,7 @@ public class Masonry extends CraftingSkill
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -751,7 +755,7 @@ public class Masonry extends CraftingSkill
 			}
 			return true;
 		}
-		
+
 		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
 		for(int r=0;r<data.length;r++)
 		{
@@ -770,7 +774,7 @@ public class Masonry extends CraftingSkill
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
-			
+
 			Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom))
 			{
@@ -898,7 +902,7 @@ public class Masonry extends CraftingSkill
 				return false;
 			}
 		}
-		
+
 		if(doingCode==BUILD_POOL)
 		{
 			Room nextRoom=mob.location().getRoomInDir(Directions.DOWN);
@@ -909,7 +913,7 @@ public class Masonry extends CraftingSkill
 				return false;
 			}
 		}
-		
+
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=CMParms.combine(commands,1);

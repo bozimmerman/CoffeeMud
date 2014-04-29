@@ -41,30 +41,30 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @see com.planet_ink.coffee_mud.core.CMClass#getMsg(MOB, int, String)
  *
  * Source
- * The source of any message must always be a valid reference to an instance of the 
- * MOB interface. In short, all events that occur in the system are a direct result 
- * of the activity of a MOB. This is on the theory that the universe is controlled 
- * and governed by sentience. In the extremely rare instances where a mob is not 
- * readily available to provide a message source, one should be instantiated -- 
+ * The source of any message must always be a valid reference to an instance of the
+ * MOB interface. In short, all events that occur in the system are a direct result
+ * of the activity of a MOB. This is on the theory that the universe is controlled
+ * and governed by sentience. In the extremely rare instances where a mob is not
+ * readily available to provide a message source, one should be instantiated --
  * even if it is just a blank, new StdMOB.
  *
  * Target
- * The target of a message may be null, or any valid reference to an instance of the 
- * Environmental interface, which includes Items, MOBs, Rooms, Exits, etc. The type 
- * and context of message you wish to generate will typically tell you intuitively 
- * whether the source is doing something to someone or something else, or is acting 
- * independently. This is usually another mob or an item, but you will find examples 
+ * The target of a message may be null, or any valid reference to an instance of the
+ * Environmental interface, which includes Items, MOBs, Rooms, Exits, etc. The type
+ * and context of message you wish to generate will typically tell you intuitively
+ * whether the source is doing something to someone or something else, or is acting
+ * independently. This is usually another mob or an item, but you will find examples
  * of all kinds of targets in the code.
  *
  * Tool
- * The tool of a message may be null, or any valid reference to an instance of the 
- * Environmental interface, which includes Items, Abilities, MOBs, Rooms, Exits, 
- * etc. The tool represents something which the source is utilizing to accomplish 
- * the task or generate the event. This is typically either an Ability object (like 
+ * The tool of a message may be null, or any valid reference to an instance of the
+ * Environmental interface, which includes Items, Abilities, MOBs, Rooms, Exits,
+ * etc. The tool represents something which the source is utilizing to accomplish
+ * the task or generate the event. This is typically either an Ability object (like
  * a Spell or Skill being used), or an Item object (like a weapon in an attack event).
  *
  * Source Code
- * This is an encoded integer which represents what the source MOB is actually doing. 
+ * This is an encoded integer which represents what the source MOB is actually doing.
  * Codes are separable into major and minor codes, with the major code being a bitmask
  * and the minor code being a constant integer representing the event type.  See below.
  *
@@ -72,30 +72,30 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * This is the string which the source MOB will see should the event occur successfully.
  *
  * Target Code
- * This is an encoded integer which represents what is happening to the target. 
+ * This is an encoded integer which represents what is happening to the target.
  * If there is no target, this number will typically have the value of 0 (CMMsg.NOEFFECT).
  * Codes are separable into major and minor codes, with the major code being a bitmask
  * and the minor code being a constant integer representing the event type.  See below.
  *
  * Target Message
- * This is the string which the target MOB (if it is a MOB) will see should the event 
+ * This is the string which the target MOB (if it is a MOB) will see should the event
  * occur successfully. If there is no target, this string is null.
  *
  * Others Code
- * This is an encoded integer which represents how any other objects (such as MOBs, 
- * Items, Rooms, Exits) other than the source and target, in the same room, perceive 
- * the event. If the event is completely imperceptible by anything other than the 
- * source, it may be 0 (CMMsg.NOEFFECT) Codes are separable into major and minor 
- * codes, with the major code being a bitmask and the minor code being a constant 
+ * This is an encoded integer which represents how any other objects (such as MOBs,
+ * Items, Rooms, Exits) other than the source and target, in the same room, perceive
+ * the event. If the event is completely imperceptible by anything other than the
+ * source, it may be 0 (CMMsg.NOEFFECT) Codes are separable into major and minor
+ * codes, with the major code being a bitmask and the minor code being a constant
  * integer representing the event type.  See below.
  *
  * Others Message
- * This is the string which other MOBs in the same room as the source and target 
- * MOBs will see should the event occur successfully. If the event is completely 
+ * This is the string which other MOBs in the same room as the source and target
+ * MOBs will see should the event occur successfully. If the event is completely
  * imperceptible by other MOBs, it may be null.
- * 
- * 
- * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** 
+ *
+ *
+ * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * ** * **
  * You should also familiarize yourself with the interface that handles these
  * events
  * @see com.planet_ink.coffee_mud.core.interfaces.MsgListener#okMessage(Environmental, CMMsg)
@@ -114,7 +114,7 @@ public interface CMMsg extends CMCommon
 	 * @return high order bitmask for the target code
 	 */
 	public int targetMajor();
-	
+
 	/**
 	 * Returns whether high order bitmask for the target code is set
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
@@ -124,7 +124,7 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the target code is set
 	 */
 	public boolean targetMajor(final int bitMask);
-	
+
 	/**
 	 * Returns low order action type integer for the target code
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
@@ -133,11 +133,11 @@ public interface CMMsg extends CMCommon
 	 * @return low order action type integer for the target code
 	 */
 	public int targetMinor();
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the target of the
-	 * action. 
+	 * action.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMajor(int)
@@ -148,11 +148,11 @@ public interface CMMsg extends CMCommon
 	 * @return the combination bitmask/action type integer for target of event
 	 */
 	public int targetCode();
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the target of the
-	 * action. 
+	 * action.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
@@ -163,36 +163,36 @@ public interface CMMsg extends CMCommon
 	 * @param code the new full bitmask/action type target event code
 	 */
 	public void setTargetCode(final int code);
-	
+
 	/**
 	 * Returns the string seen by the target of the event, and only by
-	 * the target of the event.  
+	 * the target of the event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setTargetMessage(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @return a string to show to the target
 	 */
 	public String targetMessage();
-	
+
 	/**
 	 * Sets the string seen by the target of the event, and only by
-	 * the target of the event.  
+	 * the target of the event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @param str the string to show to the target, or NULL
 	 */
 	public void setTargetMessage(final String str);
-	
+
 	/**
 	 * Returns whether the given code or mask is either the minor code
 	 * or a part of the major code of the targetCode
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @param codeOrMask the target action code or target major mask to check
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isTarget(final int codeOrMask);
-	
+
 	/**
 	 * Returns whether the given code or mask string matches the minor code
 	 * or a part of the major code of the targetCode.
@@ -200,7 +200,7 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @param codeOrMaskDesc the target action code string, or mask string
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isTarget(final String codeOrMaskDesc);
 
@@ -213,7 +213,7 @@ public interface CMMsg extends CMCommon
 	 * @return whether the given E is the target of this message
 	 */
 	public boolean isTarget(final Environmental E);
-	
+
 	/**
 	 * Returns whether the given Environmental object is, in fact, the target
 	 * of this message.
@@ -223,7 +223,7 @@ public interface CMMsg extends CMCommon
 	 * @return whether the given thisOne is the target of this message
 	 */
 	public boolean amITarget(final Environmental thisOne);
-	
+
 	/**
 	 * Returns high order bitmask for the source code
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
@@ -232,7 +232,7 @@ public interface CMMsg extends CMCommon
 	 * @return high order bitmask for the source code
 	 */
 	public int sourceMajor();
-	
+
 	/**
 	 * Returns whether high order bitmask for the source code is set
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
@@ -242,7 +242,7 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the source code is set
 	 */
 	public boolean sourceMajor(final int bitMask);
-	
+
 	/**
 	 * Returns low order action type integer for the target code
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
@@ -251,11 +251,11 @@ public interface CMMsg extends CMCommon
 	 * @return low order action type integer for the target code
 	 */
 	public int sourceMinor();
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the source of the
-	 * action. 
+	 * action.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMajor(int)
@@ -266,16 +266,16 @@ public interface CMMsg extends CMCommon
 	 * @return the combination bitmask/action type integer for source of event
 	 */
 	public int sourceCode();
-	
+
 	/**
 	 * Returns whether the given code or mask is either the minor code
 	 * or a part of the major code of the sourceCode
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @param codeOrMask the source action code or source major mask to check
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isSource(final int codeOrMask);
-	
+
 	/**
 	 * Returns whether the given code or mask string matches the minor code
 	 * or a part of the major code of the sourceCode.
@@ -283,10 +283,10 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @param codeOrMaskDesc the source action code string, or mask string
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isSource(final String codeOrMaskDesc);
-	
+
 	/**
 	 * Returns whether the given Environmental object is, in fact, the source
 	 * of this message.
@@ -296,7 +296,7 @@ public interface CMMsg extends CMCommon
 	 * @return whether the given E is the source of this message
 	 */
 	public boolean isSource(final Environmental E);
-	
+
 	/**
 	 * Returns whether the given Environmental object is, in fact, the source
 	 * of this message.
@@ -306,11 +306,11 @@ public interface CMMsg extends CMCommon
 	 * @return whether the given thisOne is the source of this message
 	 */
 	public boolean amISource(final MOB thisOne);
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the source of the
-	 * action. 
+	 * action.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
@@ -321,20 +321,20 @@ public interface CMMsg extends CMCommon
 	 * @param code the new full bitmask/action type source event code
 	 */
 	public void setSourceCode(final int code);
-	
+
 	/**
 	 * Returns the string seen by the source of the event, and only by
-	 * the source of the event.  
+	 * the source of the event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setSourceMessage(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @return a string to show to the source
 	 */
 	public String sourceMessage();
-	
+
 	/**
 	 * Sets the string seen by the source of the event, and only by
-	 * the source of the event.  
+	 * the source of the event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
@@ -351,7 +351,7 @@ public interface CMMsg extends CMCommon
 	 * @return high order bitmask for the others code
 	 */
 	public int othersMajor();
-	
+
 	/**
 	 * Returns whether high order bitmask for the others code is set
 	 * (Others are everyone not source, not target)
@@ -362,7 +362,7 @@ public interface CMMsg extends CMCommon
 	 * @return true if high order bitmask for the others code is set
 	 */
 	public boolean othersMajor(final int bitMask);
-	
+
 	/**
 	 * Returns low order action type integer for the others code
 	 * (Others are everyone not source, not target)
@@ -372,7 +372,7 @@ public interface CMMsg extends CMCommon
 	 * @return low order action type integer for the others code
 	 */
 	public int othersMinor();
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the others of the
@@ -386,16 +386,16 @@ public interface CMMsg extends CMCommon
 	 * @return the combination bitmask/action type integer for others of event
 	 */
 	public int othersCode();
-	
+
 	/**
 	 * Returns whether the given code or mask is either the minor code
 	 * or a part of the major code of the othersCode
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
 	 * @param codeOrMask the others action code or others major mask to check
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isOthers(final int codeOrMask);
-	
+
 	/**
 	 * Returns whether the given code or mask string matches the minor code
 	 * or a part of the major code of the othersCode.  (Others are everyone
@@ -404,10 +404,10 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
 	 * @param codeOrMaskDesc the others action code string, or mask string
-	 * @return whether there is a match 
+	 * @return whether there is a match
 	 */
 	public boolean isOthers(final String codeOrMaskDesc);
-	
+
 	/**
 	 * A combination bitmask, action type integer that describes information
 	 * about how this event affects or is perceived by the others of the
@@ -421,7 +421,7 @@ public interface CMMsg extends CMCommon
 	 * @param code the new full bitmask/action type others event code
 	 */
 	public void setOthersCode(final int code);
-	
+
 	/**
 	 * Returns the string seen by the others of the event, and only by
 	 * the others of the event.  (Others are everyone not source, not target)
@@ -430,7 +430,7 @@ public interface CMMsg extends CMCommon
 	 * @return a string to show to the others
 	 */
 	public String othersMessage();
-	
+
 	/**
 	 * Sets the string seen by the others of the event, and only by
 	 * the others of the event. (Others are everyone not source, not target)
@@ -450,7 +450,7 @@ public interface CMMsg extends CMCommon
 	 * @return whether the given E is neither the source nor target of this message
 	 */
 	public boolean isOthers(final Environmental E);
-	
+
 	/**
 	 * Returns the target of this event, an Environmental object
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setTarget(Environmental)
@@ -458,7 +458,7 @@ public interface CMMsg extends CMCommon
 	 * @return the target of this event
 	 */
 	public Environmental target();
-	
+
 	/**
 	 * Sets the target of this event, an Environmental object
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
@@ -469,22 +469,22 @@ public interface CMMsg extends CMCommon
 
 	/**
 	 * Returns the means, item, portal, or otherwise tool that helps the source
-	 * affect the event upon the target.  
+	 * affect the event upon the target.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setTool(Environmental)
 	 * @return the tool of this event
 	 */
 	public Environmental tool();
-	
+
 	/**
 	 * Sets the means, item, portal, or otherwise tool that helps the source
-	 * affect the event upon the target.  
+	 * affect the event upon the target.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
 	 * @param E the new tool of this event
 	 */
 	public void setTool(final Environmental E);
-	
+
 	/**
 	 * Returns the source of this event, a MOB object
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setSource(MOB)
@@ -492,7 +492,7 @@ public interface CMMsg extends CMCommon
 	 * @return the source of this event
 	 */
 	public MOB source();
-	
+
 	/**
 	 * Sets the source of this event, a MOB object
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -511,7 +511,7 @@ public interface CMMsg extends CMCommon
 	 * @return the integer value of this event
 	 */
 	public int value();
-	
+
 	/**
 	 * Sets an arbitrary integer value associated with this event.  Values tend to
 	 * be defined in a event-action code specific way, so that it will mean nothing
@@ -539,7 +539,7 @@ public interface CMMsg extends CMCommon
 	 * @param allMessage the source, target, and others message
 	 */
 	public void modify(final MOB source, final Environmental target, final int newAllCode, final String allMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event. Sets target and tool to NULL.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -555,7 +555,7 @@ public interface CMMsg extends CMCommon
 	 * @param allMessage the new source, target, and others message of this event
 	 */
 	public void modify(final MOB source, final int newAllCode, final String allMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event. Sets target and tool to NULL.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -573,7 +573,7 @@ public interface CMMsg extends CMCommon
 	 * @param newValue the new value for this event
 	 */
 	public void modify(final MOB source, final int newAllCode, final String allMessage, final int newValue);
-	
+
 	/**
 	 * Modifies one of more fields in this event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -591,7 +591,7 @@ public interface CMMsg extends CMCommon
 	 * @param allMessage the new source, target, and others message of this event
 	 */
 	public void modify(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String allMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -617,7 +617,7 @@ public interface CMMsg extends CMCommon
 					   final String sourceMessage,
 					   final String targetMessage,
 					   final String othersMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -647,7 +647,7 @@ public interface CMMsg extends CMCommon
 					   final String targetMessage,
 					   final int newOthersCode,
 					   final String othersMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -678,16 +678,16 @@ public interface CMMsg extends CMCommon
 	 * Returns a List of other CMMsg events which are slated to be confirmed
 	 * and executed AFTER this current message is handled.  This is implemented
 	 * by the Room object
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)  
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
 	 * @return a List of CMMsg objects
 	 */
 	public List<CMMsg> trailerMsgs();
-	
+
 	/**
 	 * Appends to the Vector of other CMMsg events which are slated to be confirmed
 	 * and executed AFTER this current message is handled.  This is implemented
 	 * by the Room object
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)  
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
 	 * @param msg the CMMsg to append to this message.
 	 */
 	public void addTrailerMsg(final CMMsg msg);
@@ -966,32 +966,32 @@ public interface CMMsg extends CMCommon
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
-	
+
 	/** Addendum to TYPE_DESCS for codes above the last index (channels only at this point) */
 	public static final Object[][] MISC_DESCS={
 		{"CHANNEL",Integer.valueOf(2000),Integer.valueOf(2047)},
 	};
-	
+
 	/** Index string descriptions of all the MINOR_MASK action code TYP_s */
 	public static final String[] TYPE_DESCS={"NOTHING",
-		"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET", 
-		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL", 
-		"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT", 
-		"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST", 
-		"EAT", "ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE", 
-		"NOFOLLOW", "WRITE", "FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL", 
-		"JUSTICE", "ACID", "ELECTRIC", "POISON", "UNDEAD", "MOUNT", "DISMOUNT", 
-		"OK_ACTION", "OK_VISUAL", "DRINK", "HANDS", "PARALYZE", "WAND_USE", "SERVE", 
-		"REBUKE", "ADVANCE", "DISEASE", "DEATH", "DEPOSIT", "WITHDRAW", "EMOTE", 
-		"QUIT", "SHUTDOWN", "VIEW", "RETIRE", "RETREAT","PANIC", "THROW", "EXTINGUISH", 
-		"TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
-		"DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
+		"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET",
+		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL",
+		"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",
+		"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST",
+		"EAT", "ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE",
+		"NOFOLLOW", "WRITE", "FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL",
+		"JUSTICE", "ACID", "ELECTRIC", "POISON", "UNDEAD", "MOUNT", "DISMOUNT",
+		"OK_ACTION", "OK_VISUAL", "DRINK", "HANDS", "PARALYZE", "WAND_USE", "SERVE",
+		"REBUKE", "ADVANCE", "DISEASE", "DEATH", "DEPOSIT", "WITHDRAW", "EMOTE",
+		"QUIT", "SHUTDOWN", "VIEW", "RETIRE", "RETREAT","PANIC", "THROW", "EXTINGUISH",
+		"TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE",
+		"DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE",
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG", 
+		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG",
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL"
 	};
-	
+
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
 	public static final String[] MASK_DESCS={
 		"TOUCH","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS",
@@ -999,7 +999,7 @@ public interface CMMsg extends CMCommon
 	};
 
 	/**
-	 * An accessor for safely converting raw message codes into friendlier 
+	 * An accessor for safely converting raw message codes into friendlier
 	 * description codes, and back again.
 	 * @author bzimmerman
 	 */
@@ -1051,7 +1051,7 @@ public interface CMMsg extends CMCommon
 			return MSGDESC_TYPES;
 		}
 	}
-	
+
 	// helpful message groupings
 	/** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting verbal magic */
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;

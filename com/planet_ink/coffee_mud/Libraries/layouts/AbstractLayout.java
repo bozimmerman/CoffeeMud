@@ -30,21 +30,23 @@ limitations under the License.
  * nodeflags: corner, gate, intersection, tee
  * NODEGATEEXIT: (for gate, offleaf, square): n s e w etc
  * noderun: (for surround, street): n,s e,w
- *  
+ *
  * @author Bo Zimmerman
  */
 public abstract class AbstractLayout implements LayoutManager
 {
 	Random r = new Random();
-	
-	public int diff(int width, int height, int num) { 
+
+	public int diff(int width, int height, int num) {
 		int x = width * height;
-		return (x<num) ? (num - x) : (x - num); 
+		return (x<num) ? (num - x) : (x - num);
 	}
-	
+
+	@Override
 	public abstract String name();
+	@Override
 	public abstract List<LayoutNode> generate(int num, int dir);
-	
+
 	public static int getDirection(LayoutNode from, LayoutNode to)
 	{
 		if(to.coord()[1]<from.coord()[1]) return Directions.NORTH;
@@ -53,7 +55,7 @@ public abstract class AbstractLayout implements LayoutManager
 		if(to.coord()[0]>from.coord()[0]) return Directions.EAST;
 		return -1;
 	}
-	
+
 	public static LayoutRuns getRunDirection(int dirCode)
 	{
 		switch(dirCode)
@@ -67,5 +69,5 @@ public abstract class AbstractLayout implements LayoutManager
 		}
 		return LayoutRuns.ns;
 	}
-	
+
 }

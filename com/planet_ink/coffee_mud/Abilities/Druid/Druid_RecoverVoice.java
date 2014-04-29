@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_RecoverVoice extends StdAbility
 {
-	public String ID() { return "Druid_RecoverVoice"; }
-	public String name(){ return "Recover Voice";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Druid_RecoverVoice"; }
+	@Override public String name(){ return "Recover Voice";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
@@ -70,6 +70,7 @@ public class Druid_RecoverVoice extends StdAbility
 		return offenders;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -83,6 +84,7 @@ public class Druid_RecoverVoice extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

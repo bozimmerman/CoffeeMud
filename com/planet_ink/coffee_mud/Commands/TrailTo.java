@@ -38,7 +38,7 @@ public class TrailTo extends StdCommand
 	public TrailTo(){}
 
 	private final String[] access={"TRAILTO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 
 	public String trailTo(Room R1, Vector commands)
@@ -145,7 +145,8 @@ public class TrailTo extends StdCommand
 			return str;
 		}
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -160,8 +161,8 @@ public class TrailTo extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TRAILTO);}
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TRAILTO);}
 
 
 }

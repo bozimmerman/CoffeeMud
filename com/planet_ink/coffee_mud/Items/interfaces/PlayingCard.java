@@ -34,14 +34,14 @@ public interface PlayingCard extends Item
 	// return the value of this card as a short string
 	// face cards are only a single letter
 	public String getStringEncodedValue();
-	
+
 	// return the english-word representation of the value
 	// passed to this method.  Since this method is static,
 	// it may be called as a utility function and does not
 	// necessarily represent THIS card object.
 	public String getCardValueLongDescription(int value);
 	// return partial english-word representation of the value
-	// passed to this method.  By partial I mean numeric for 
+	// passed to this method.  By partial I mean numeric for
 	// number cards and words otherwise. Since this method is static,
 	// it may be called as a utility function and does not
 	// necessarily represent THIS card object.

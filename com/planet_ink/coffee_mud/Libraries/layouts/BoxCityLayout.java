@@ -25,10 +25,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class BoxCityLayout extends AbstractLayout 
+public class BoxCityLayout extends AbstractLayout
 {
-	public String name() { return "BOXCITY";}
-	
+	@Override public String name() { return "BOXCITY";}
+
 	public void halfLineN(LayoutSet lSet, int startX, int endX, int height, TreeSet<Integer> xposUsed)
 	{
 		int x = startX + ((endX - startX)/2);
@@ -52,7 +52,7 @@ public class BoxCityLayout extends AbstractLayout
 		halfLineN(lSet,startX,x,height,xposUsed);
 		halfLineN(lSet,x,endX,height,xposUsed);
 	}
-	
+
 	public void halfLineE(LayoutSet lSet, int startY, int endY, int width, TreeSet<Integer> yposUsed)
 	{
 		int y = startY + ((endY - startY)/2);
@@ -76,24 +76,25 @@ public class BoxCityLayout extends AbstractLayout
 		halfLineE(lSet,startY,y,width,yposUsed);
 		halfLineE(lSet,y,endY,width,yposUsed);
 	}
-	
+
 	public boolean fillMaze(LayoutSet lSet, LayoutNode p, int dir)
 	{
 		LayoutNode n = lSet.getNextNode(p, dir);
-		if(n != null) 
+		if(n != null)
 			return false;
 		n = lSet.makeNextNode(p, dir);
 		p.crossLink(n);
 		lSet.use(n,LayoutTypes.interior);
 		return lSet.fillMaze(n);
 	}
-	
+
 	protected void drawABox(LayoutSet lSet, int width, int height)
 	{
 		lSet.drawABox(width, height);
 	}
-	
-	public List<LayoutNode> generate(int num, int dir) 
+
+	@Override
+	public List<LayoutNode> generate(int num, int dir)
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt(num));
@@ -108,7 +109,7 @@ public class BoxCityLayout extends AbstractLayout
 		yposUsed.add(Integer.valueOf(0));
 		halfLineE(lSet,0,-diameter,diameter+plusX,yposUsed);
 		yposUsed.add(Integer.valueOf(-diameter+1));
-		
+
 		int x = 0;
 		for(Integer y : yposUsed)
 		{

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Breadcrumbs extends Spell
 {
-	public String ID() { return "Spell_Breadcrumbs"; }
-	public String name(){return "Breadcrumbs";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_Breadcrumbs"; }
+	@Override public String name(){return "Breadcrumbs";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	public Vector trail=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,6 +56,7 @@ public class Spell_Breadcrumbs extends Spell
 		trail=null;
 	}
 
+	@Override
 	public String displayText()
 	{
 		StringBuffer str=new StringBuffer("(Breadcrumb Trail: ");
@@ -84,6 +86,7 @@ public class Spell_Breadcrumbs extends Spell
 		return str.toString()+")";
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -135,6 +138,7 @@ public class Spell_Breadcrumbs extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

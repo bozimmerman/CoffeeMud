@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_NaturalBalance extends Chant
 {
-	public String ID() { return "Chant_NaturalBalance"; }
-	public String name(){ return "Natural Balance";}
-	public String displayText(){return "(Communing with the Natural Balance)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_NaturalBalance"; }
+	@Override public String name(){ return "Natural Balance";}
+	@Override public String displayText(){return "(Communing with the Natural Balance)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	long lastTime=0;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -63,6 +64,7 @@ public class Chant_NaturalBalance extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -78,6 +80,7 @@ public class Chant_NaturalBalance extends Chant
 		return;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -92,6 +95,7 @@ public class Chant_NaturalBalance extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -102,9 +106,9 @@ public class Chant_NaturalBalance extends Chant
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(!mob.isInCombat())
 		{
-			if((System.currentTimeMillis()-lastTime)<60000) 
+			if((System.currentTimeMillis()-lastTime)<60000)
 				return true;
-			if(!proficiencyCheck(null,0,false)) 
+			if(!proficiencyCheck(null,0,false))
 				return true;
 			lastTime=System.currentTimeMillis();
 			Room room=mob.location();
@@ -140,6 +144,7 @@ public class Chant_NaturalBalance extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
@@ -161,7 +166,7 @@ public class Chant_NaturalBalance extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		
+
 		// now see if it worked
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)

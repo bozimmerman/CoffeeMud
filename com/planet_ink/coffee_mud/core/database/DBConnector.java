@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.List;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +45,7 @@ public class DBConnector
 	private int dbPingIntMins=0;
 	private boolean doErrorQueueing=false;
 	private boolean newErrorQueueing=false;
-	
+
 	public static final class DBPreparedBatchEntry
 	{
 		public DBPreparedBatchEntry(final String sql)
@@ -71,13 +71,13 @@ public class DBConnector
 		public final String sql;
 		public final String[][] clobs;
 	}
-	
+
 	public DBConnector (){super();}
-	
+
 	public DBConnector (String dbClass,
-						String dbService, 
-						String dbUser, 
-						String dbPass, 
+						String dbService,
+						String dbUser,
+						String dbPass,
 						int numConnections,
 						int dbPingIntMins,
 						boolean reuse,
@@ -94,7 +94,7 @@ public class DBConnector
 		this.newErrorQueueing=retryErrorQueue;
 		this.dbReuse=reuse;
 		this.dbPingIntMins=dbPingIntMins;
-		if(this.dbPingIntMins<=0) 
+		if(this.dbPingIntMins<=0)
 			this.dbPingIntMins=Integer.MAX_VALUE;
 	}
 
@@ -104,16 +104,16 @@ public class DBConnector
 		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,numConnections,dbReuse,doErrorQueueing);
 		if(dbConnections.amIOk()&&newErrorQueueing) dbConnections.retryQueuedErrors();
 	}
-	
+
 	public String service(){ return dbService;}
-	
+
 	public int getRecordCount(DBConnection D, ResultSet R)
 	{
 		int recordCount=0;
 		try
 		{
-			R.last(); 
-			recordCount=R.getRow(); 
+			R.last();
+			recordCount=R.getRow();
 			R.beforeFirst();
 		}
 		catch(Exception e)
@@ -122,9 +122,9 @@ public class DBConnector
 		}
 		return recordCount;
 	}
-	
+
 	public boolean deregisterDriver()
-	{ 
+	{
 		if(dbConnections!=null) return dbConnections.deregisterDriver();
 		return false;
 	}
@@ -132,7 +132,7 @@ public class DBConnector
 	{
 		return (dbConnections!=null)?dbConnections.isFakeDB():false;
 	}
-	
+
 	public int update(final String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
 	public int update(final String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}
 	public int updateWithClobs(String[] updateStrings, String[][][] values){ return (dbConnections!=null)?dbConnections.updateWithClobs(updateStrings,values):0;}
@@ -140,56 +140,56 @@ public class DBConnector
 	public int updateWithClobs(final DBPreparedBatchEntry entry) { return updateWithClobs(entry.sql,entry.clobs); }
 	public int updateWithClobs(final String updateString, final String... values) { return updateWithClobs(updateString, new String[][]{values}); }
 	public int updateWithClobs(final String updateString, final String[][] values) { return (dbConnections!=null)?dbConnections.updateWithClobs(updateString, values):0; }
-	
+
 	public int queryRows(String queryString){ return (dbConnections!=null)?dbConnections.queryRows(queryString):0;}
 
-	/** 
-	 * Fetch a single, not in use DBConnection object. 
+	/**
+	 * Fetch a single, not in use DBConnection object.
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
-	 * 
-	 * <br><br><b>Usage: DB=DBFetch();</b> 
+	 *
+	 * <br><br><b>Usage: DB=DBFetch();</b>
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetch(){return (dbConnections!=null)?dbConnections.DBFetch():null;}
-	
 
-	/** 
-	 * Fetch a single, not in use DBConnection object.  Must be rePrepared afterwards 
+
+	/**
+	 * Fetch a single, not in use DBConnection object.  Must be rePrepared afterwards
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
-	 * 
-	 * <br><br><b>Usage: DB=DBFetchEmpty();</b> 
+	 *
+	 * <br><br><b>Usage: DB=DBFetchEmpty();</b>
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetchEmpty(){return (dbConnections!=null)?dbConnections.DBFetchEmpty():null;}
-	
+
 	public int numConnectionsMade(){return (dbConnections!=null)?dbConnections.numConnectionsMade():0;}
 	public int numDBConnectionsInUse(){ return (dbConnections!=null)?dbConnections.numInUse():0;}
-	
-	/** 
-	 * Fetch a single, not in use DBConnection object. 
+
+	/**
+	 * Fetch a single, not in use DBConnection object.
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
-	 * 
-	 * <br><br><b>Usage: DB=DBFetchPrepared();</b> 
+	 *
+	 * <br><br><b>Usage: DB=DBFetchPrepared();</b>
 	 * @param SQL    The prepared statement SQL
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetchPrepared(String SQL){ return (dbConnections!=null)?dbConnections.DBFetchPrepared(SQL):null;}
-	/** 
+	/**
 	 * Return a DBConnection object fetched with DBFetch()
-	 * 
-	 * <br><br><b>Usage:</b> 
+	 *
+	 * <br><br><b>Usage:</b>
 	 * @param D    The Database connection to return to the pool
 	 */
 	public void DBDone(DBConnection D){ if(dbConnections!=null) dbConnections.DBDone(D);}
 
-	/** 
+	/**
 	 * When reading a database table, this routine will read in
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
@@ -206,12 +206,12 @@ public class DBConnector
 		if(s==null) return null;
 		return s.replace('\'', '`');
 	}
-	
-	/** 
+
+	/**
 	  * When reading a database table, this routine will read in
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
@@ -219,12 +219,12 @@ public class DBConnector
 	 */
 	public long getLongRes(ResultSet Results, String Field)
 	{ return DBConnections.getLongRes(Results,Field);}
-	
-	/** 
+
+	/**
 	 * When reading a database table, this routine will read in
 	 * the given One index number, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> str=getRes(R,1);
 	 * @param Results    The ResultSet object to use
 	 * @param One   	 Field number to return
@@ -232,16 +232,16 @@ public class DBConnector
 	 */
 	public String getRes(ResultSet Results, int One)
 	{ return DBConnections.getRes(Results,One);}
-	
-	/** 
+
+	/**
 	 * Destroy all database connections, effectively
 	 * shutting down this class.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> killConnections();
 	 */
 	public void killConnections(){ if(dbConnections!=null) dbConnections.killConnections();}
-	
-	/** 
+
+	/**
 	 * Return the happiness level of the connections
 	 * <br><br><b>Usage:</b> amIOk()
 	 * @return boolean    true if ok, false if not ok
@@ -269,9 +269,9 @@ public class DBConnector
 		return (dbConnections!=null) ? dbConnections.pingAllConnections(querySql, overridePingIntMillis) : 0;
 	}
 
-	/** 
+	/**
 	 * Queue up a failed write/update for later processing.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> enQueueError("UPDATE SQL","error string");
 	 * @param SQLString    UPDATE style SQL statement
 	 * @param SQLError    The error message being reported
@@ -279,31 +279,31 @@ public class DBConnector
 	 */
 	public void enQueueError(String SQLString, String SQLError, String count)
 	{ if(dbConnections!=null)dbConnections.enQueueError(SQLString, SQLError,count);}
-	
-	
-	/** 
+
+
+	/**
 	 * Queue up a failed write/update for later processing.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> RetryQueuedErrors();
 	 */
 	public void retryQueuedErrors()
 	{ if(dbConnections!=null)dbConnections.retryQueuedErrors();}
-	
-	/** list the connections 
-	 * 
+
+	/** list the connections
+	 *
 	 * <br><br><b>Usage:</b> listConnections(out);
 	 * @param out    place to send the list out to
 	 */
 	public void listConnections(PrintStream out)
 	{ if(dbConnections!=null)dbConnections.listConnections(out);}
-	
+
 	/** return a status string, or "" if everything is ok.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> errorStatus();
 	 * @return StringBuffer    complete error status
 	 */
 	public StringBuffer errorStatus()
-	{ 
+	{
 		if(dbConnections==null) return new StringBuffer("Not connected.");
 		StringBuffer status=dbConnections.errorStatus();
 		if(status.length()==0)

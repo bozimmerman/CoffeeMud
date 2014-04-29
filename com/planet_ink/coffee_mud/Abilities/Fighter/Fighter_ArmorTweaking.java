@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,18 +37,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_ArmorTweaking extends FighterSkill
 {
-	public String ID() { return "Fighter_ArmorTweaking"; }
-	public String name(){ return "Armor Tweaking";}
+	@Override public String ID() { return "Fighter_ArmorTweaking"; }
+	@Override public String name(){ return "Armor Tweaking";}
 	private static final String[] triggerStrings = {"ARMORTWEAK","TWEAK"};
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
-	public int usageType(){return USAGE_MANA;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
+	@Override public int usageType(){return USAGE_MANA;}
 	private int armorBonus = 1;
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -60,13 +61,15 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 			armorBonus=CMath.s_int(newMiscText);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof Item)
@@ -79,7 +82,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
@@ -88,7 +92,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			stats.addAmbiance("^w*^?");
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +103,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -128,7 +134,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			mob.tell(armor.name()+" is too weak of an armor to provide any more benefit from tweaking.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

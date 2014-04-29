@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_NarrowLedge extends Property
 {
-	public String ID() { return "Prop_NarrowLedge"; }
-	public String name(){ return "The Narrow Ledge";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_NarrowLedge"; }
+	@Override public String name(){ return "The Narrow Ledge";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 
 	protected int check=16;
 	protected String name="the narrow ledge";
 	protected List<MOB> mobsToKill=new Vector();
 
+	@Override
 	public String accountForYourself()
 	{ return "Very narrow";	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		mobsToKill=new Vector();
@@ -54,6 +56,7 @@ public class Prop_NarrowLedge extends Property
 		name=CMParms.getParmStr(newText,"name","the narrow ledge");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_SPELL_AFFECT)
@@ -90,6 +93,7 @@ public class Prop_NarrowLedge extends Property
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -116,6 +120,7 @@ public class Prop_NarrowLedge extends Property
 		}
 		super.executeMsg(myHost,msg);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		// always disable flying restrictions!

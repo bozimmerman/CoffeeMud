@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class TaxCollector extends StdBehavior
 {
-	public String ID(){return "TaxCollector";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "TaxCollector";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected DVector demanded=null;
 	protected DVector paid=null;
 	protected long waitTime=1000*60*2;
@@ -48,11 +48,13 @@ public class TaxCollector extends StdBehavior
 	protected String treasuryRoomID=null;
 	protected Container treasuryContainer=null;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "tax collecting";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -74,7 +76,7 @@ public class TaxCollector extends StdBehavior
 				return true;
 		return false;
 	}
-	
+
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
 		double[] owed=new double[4];
@@ -115,6 +117,7 @@ public class TaxCollector extends StdBehavior
 		return owed;
 	}
 
+	@Override
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);
@@ -231,6 +234,7 @@ public class TaxCollector extends StdBehavior
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
@@ -262,6 +266,7 @@ public class TaxCollector extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

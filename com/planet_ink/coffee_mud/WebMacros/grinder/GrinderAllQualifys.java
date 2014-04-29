@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.WebMacros.StdWebMacro;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public class GrinderAllQualifys
 			return " @break@";
 		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
-			which=parms.get("WHICH");	
+			which=parms.get("WHICH");
 		if((which==null)||(which.length()==0))
 			return " @break@";
 		Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());

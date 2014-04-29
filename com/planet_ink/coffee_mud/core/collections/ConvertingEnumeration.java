@@ -23,29 +23,31 @@ public class ConvertingEnumeration<K, L> implements Enumeration<L>
 	private final Enumeration<K> enumer;
 	Converter<K, L> converter;
 
-	public ConvertingEnumeration(Enumeration<K> eset, Converter<K, L> conv) 
+	public ConvertingEnumeration(Enumeration<K> eset, Converter<K, L> conv)
 	{
 		enumer=eset;
 		converter=conv;
 	}
-	
-	public ConvertingEnumeration(Iterator<K> eset, Converter<K, L> conv) 
+
+	public ConvertingEnumeration(Iterator<K> eset, Converter<K, L> conv)
 	{
 		enumer=new IteratorEnumeration<K>(eset);
 		converter=conv;
 	}
-	
-	public void setConverter(Converter<K, L> conv) 
+
+	public void setConverter(Converter<K, L> conv)
 	{
 		converter=conv;
 	}
-	
-	public boolean hasMoreElements() 
-	{ 
+
+	@Override
+	public boolean hasMoreElements()
+	{
 		return (converter!=null) && enumer.hasMoreElements();
 	}
-	
-	public L nextElement() 
+
+	@Override
+	public L nextElement()
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();

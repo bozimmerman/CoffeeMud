@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Friends extends Spell
 {
-	public String ID() { return "Spell_Friends"; }
-	public String name(){return "Friends";}
-	public String displayText(){return "(Friends spell)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_Friends"; }
+	@Override public String name(){return "Friends";}
+	@Override public String displayText(){return "(Friends spell)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -49,6 +50,7 @@ public class Spell_Friends extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -62,6 +64,7 @@ public class Spell_Friends extends Spell
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenCigar extends StdSmokable
 {
-	public String ID(){	return "GenCigar";}
+	@Override public String ID(){	return "GenCigar";}
 	protected String readableText = "";
 	public GenCigar()
 	{
@@ -50,35 +50,41 @@ public class GenCigar extends StdSmokable
 		recoverPhyStats();
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -86,12 +92,14 @@ public class GenCigar extends StdSmokable
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCigar)) return false;

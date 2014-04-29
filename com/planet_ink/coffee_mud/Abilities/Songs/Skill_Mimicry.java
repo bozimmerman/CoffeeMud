@@ -34,18 +34,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Mimicry extends BardSkill
 {
-	public String ID() { return "Skill_Mimicry"; }
-	public String name(){ return "Mimicry";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Skill_Mimicry"; }
+	@Override public String name(){ return "Mimicry";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	protected CMMsg lastMsg=null;
 	protected boolean disabled=false;
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -91,6 +92,7 @@ public class Skill_Mimicry extends BardSkill
 				   msg.othersCode(),oth);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -162,6 +164,7 @@ public class Skill_Mimicry extends BardSkill
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

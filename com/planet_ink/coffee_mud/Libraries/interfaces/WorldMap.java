@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.Map.Entry;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ import java.util.Map.Entry;
 public interface WorldMap extends CMLibrary
 {
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
-	
+
 	/************************************************************************/
 	/**							 AREAS										*/
 	/************************************************************************/
@@ -55,7 +55,7 @@ public interface WorldMap extends CMLibrary
 	public Area getRandomArea();
 	public void obliterateArea(Area theOne);
 	public void renamedArea(Area theA);
-	
+
 	/************************************************************************/
 	/**							 ROOMS										*/
 	/************************************************************************/
@@ -74,7 +74,7 @@ public interface WorldMap extends CMLibrary
 	public Room findConnectingRoom(Room room);
 	public int getRoomDir(Room from, Room to);
 	public int getExitDir(Room from, Exit to);
-	
+
 	/************************************************************************/
 	/**								SEARCH TOOLS 							*/
 	/************************************************************************/
@@ -96,7 +96,7 @@ public interface WorldMap extends CMLibrary
 	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public boolean isHere(CMObject E2, Area here);
 	public boolean isHere(CMObject E2, Room here);
-	
+
 	/************************************************************************/
 	/**							 ROOM-AREA-UTILITIES						*/
 	/************************************************************************/
@@ -115,7 +115,7 @@ public interface WorldMap extends CMLibrary
 	public ThreadGroup getOwnedThreadGroup(CMObject E);
 	public boolean explored(Room R);
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
-	
+
 	/************************************************************************/
 	/**						WORLD OBJECT INDEXES							*/
 	/************************************************************************/
@@ -131,7 +131,7 @@ public interface WorldMap extends CMLibrary
 	public Iterator<String> bankChains(Area AreaOrNull);
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
 	public Enumeration<Auctioneer> auctionHouses();
-	
+
 	/************************************************************************/
 	/**							 SPACE METHODS 								*/
 	/************************************************************************/
@@ -148,7 +148,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<SpaceObject> getSpaceObjects();
 	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
-	
+
 	/************************************************************************/
 	/**							 MESSAGES	 								*/
 	/************************************************************************/
@@ -158,7 +158,7 @@ public interface WorldMap extends CMLibrary
 	public MOB getFactoryMOBInAnyRoom();
 	public MOB getFactoryMOB(Room R);
 	public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
-	
+
 	/************************************************************************/
 	/**							 HELPER CLASSES								*/
 	/************************************************************************/
@@ -171,7 +171,7 @@ public interface WorldMap extends CMLibrary
 		public LocatedPair(final Room room, final PhysicalAgent obj)
 		{ this.roomW=new WeakReference<Room>(room); this.objW=new WeakReference<PhysicalAgent>(obj);}
 	}
-	
+
 	public static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
 	{
 		@Override
@@ -180,7 +180,7 @@ public interface WorldMap extends CMLibrary
 			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
 		}
 	};
-	
+
 	public static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
 	{
 		@Override
@@ -189,7 +189,7 @@ public interface WorldMap extends CMLibrary
 			return !(obj instanceof SpaceObject);
 		}
 	};
-	
+
 	public static class CrossExit
 	{
 		public int x;
@@ -203,12 +203,13 @@ public interface WorldMap extends CMLibrary
 			return EX;
 		}
 	}
-	
+
 	public class CompleteRoomIDEnumerator implements Enumeration<String>
 	{
 		Enumeration<String> roomIDEnumerator=null;
 		Enumeration<Area> areaEnumerator=null;
 		public CompleteRoomIDEnumerator(WorldMap map){areaEnumerator=map.areas();}
+		@Override
 		public boolean hasMoreElements()
 		{
 			if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
@@ -220,7 +221,7 @@ public interface WorldMap extends CMLibrary
 				}
 			return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
 		}
-		public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
+		@Override public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
 	}
 
 	public static class MapCacheEntry implements CMObject
@@ -229,11 +230,11 @@ public interface WorldMap extends CMLibrary
 		public final String ID;
 		public volatile long lastAccessed=System.currentTimeMillis();
 		public MapCacheEntry(final String ID, final List<Room> rooms) {this.ID=ID; this.rooms=rooms;}
-		public String ID() { return ID;}
-		public String name() { return ID();}
-		public CMObject copyOf() { return this;}
-		public void initializeClass() {}
-		public CMObject newInstance() { return this;}
-		public int compareTo(CMObject o) { return ID.compareTo(o.ID()); }
+		@Override public String ID() { return ID;}
+		@Override public String name() { return ID();}
+		@Override public CMObject copyOf() { return this;}
+		@Override public void initializeClass() {}
+		@Override public CMObject newInstance() { return this;}
+		@Override public int compareTo(CMObject o) { return ID.compareTo(o.ID()); }
 	}
 }

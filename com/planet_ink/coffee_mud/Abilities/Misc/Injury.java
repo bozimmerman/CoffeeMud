@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,9 +36,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Injury extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Injury"; }
-	public String name(){ return "Injury";}
-	
+	@Override public String ID() { return "Injury"; }
+	@Override public String name(){ return "Injury";}
+
 	protected CMMsg lastMsg=null;
 	protected String lastLoc=null;
 	public int lastHP=-1;
@@ -47,7 +47,7 @@ public class Injury extends StdAbility implements HealthCondition
 	//    "NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
 	public final static int[] INJURYCHANCE={
 		3,3,3,11,3,12,5,35,13,5,3,0,0,3,3,3};
-	
+
 	@Override
 	public String getHealthConditionDesc()
 	{
@@ -65,25 +65,25 @@ public class Injury extends StdAbility implements HealthCondition
 					{
 						O=(Object[])V.elementAt(i2);
 						String wounds="";
-						int dmg = ((Integer)O[1]).intValue(); 
+						int dmg = ((Integer)O[1]).intValue();
 						if (dmg<5)
-							wounds=("a bruised "); 
+							wounds=("a bruised ");
 						else if (dmg<10)
-							wounds=("a scratched "); 
+							wounds=("a scratched ");
 						else if (dmg<20)
-							wounds=("a cut "); 
+							wounds=("a cut ");
 						else if (dmg<30)
-							wounds=("a sliced "); 
+							wounds=("a sliced ");
 						else if (dmg<40)
-							wounds=("a gashed "); 
+							wounds=("a gashed ");
 						else if (dmg<60)
-							wounds=("a bloody "); 
+							wounds=("a bloody ");
 						else if ((dmg<75)||(i==Race.BODY_TORSO))
 							wounds=("a mangled ");
 						else if ((dmg<100)||(i==Race.BODY_HEAD))
-							wounds=("a dangling "); 
-						else 
-							wounds=("a shredded "); 
+							wounds=("a dangling ");
+						else
+							wounds=("a shredded ");
 						buf.append(", "+wounds+((String)O[0]).toLowerCase()+" ("+dmg+"%)");
 					}
 				}
@@ -92,22 +92,24 @@ public class Injury extends StdAbility implements HealthCondition
 		if(buf.length()==0) return "";
 		return buf.substring(1);
 	}
-	
+
+	@Override
 	public String displayText()
 	{
 		String buf=getHealthConditionDesc();
 		if(buf.length()==0) return "";
 		return "(Injuries:"+buf+")";
 	}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
-	public boolean canBeUninvoked(){return true;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public boolean canBeUninvoked(){return true;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Vector[] injuries=new Vector[Race.BODY_PARTS];
 
+	@Override
 	public void unInvoke()
 	{
 		Environmental E=affected;
@@ -115,8 +117,9 @@ public class Injury extends StdAbility implements HealthCondition
 		if((E instanceof MOB)&&(canBeUninvoked())&&(!((MOB)E).amDead()))
 			((MOB)E).tell("Your injuries are healed.");
 	}
-	
-	public String text() 
+
+	@Override
+	public String text()
 	{
 		Vector V=null;
 		Object[] O=null;
@@ -134,8 +137,9 @@ public class Injury extends StdAbility implements HealthCondition
 			}
 		return buf.toString();
 	}
-	
-	public void setMiscText(String txt) 
+
+	@Override
+	public void setMiscText(String txt)
 	{
 		if(txt.startsWith("+"))
 		{
@@ -144,7 +148,7 @@ public class Injury extends StdAbility implements HealthCondition
 				MOB mob=(MOB)affected;
 				txt=txt.substring(1);
 				int x=txt.indexOf('=');
-				if(x<0) 
+				if(x<0)
 					return;
 				String chosenName=txt.substring(0,x);
 				String amount=txt.substring(x+1);
@@ -223,7 +227,8 @@ public class Injury extends StdAbility implements HealthCondition
 				lastHP=mob.curState().getHitPoints();
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -289,7 +294,7 @@ public class Injury extends StdAbility implements HealthCondition
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public static String[][] TRANSLATE=
 	{
 		{"<T-HIM-HER>","<T-HIS-HER>"},
@@ -313,7 +318,8 @@ public class Injury extends StdAbility implements HealthCondition
 			message=message.substring(0,y)+TRANSLATE[which][1]+" "+loc+message.substring(y+TRANSLATE[which][0].length());
 		return message;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
@@ -336,7 +342,7 @@ public class Injury extends StdAbility implements HealthCondition
 				remains.add("torso");
 			if(remains.size()>0)
 			{
-				int[] chances=new int[remains.size()]; 
+				int[] chances=new int[remains.size()];
 				int total=0;
 				for(int x=0;x<remains.size();x++)
 				{
@@ -457,7 +463,8 @@ public class Injury extends StdAbility implements HealthCondition
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((givenTarget!=null)&&(auto))

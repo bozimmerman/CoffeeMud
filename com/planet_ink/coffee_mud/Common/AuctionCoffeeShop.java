@@ -45,13 +45,14 @@ limitations under the License.
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AuctionCoffeeShop implements CoffeeShop
 {
-	public String ID(){return "AuctionCoffeeShop";}
-	public String name() { return ID();}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String ID(){return "AuctionCoffeeShop";}
+	@Override public String name() { return ID();}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public static final Vector emptyV=new Vector();
 	public String auctionShop="";
 	protected WeakReference<ShopKeeper> shopKeeper=null;
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -64,54 +65,59 @@ public class AuctionCoffeeShop implements CoffeeShop
 			return new AuctionCoffeeShop();
 		}
 	}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
-	public void initializeClass(){}
-	
-	
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
+	@Override public void initializeClass(){}
+
+
+	@Override
 	public CoffeeShop build(ShopKeeper SK)
 	{
 		shopKeeper=new WeakReference(SK);
 		return this;
 	}
-	
-	public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-	public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
-	
+
+	@Override public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
+	@Override public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
+
+	@Override
 	public boolean inEnumerableInventory(Environmental thisThang)
 	{
 		return false;
 	}
 
-	public Environmental addStoreInventory(Environmental thisThang){ return addStoreInventory(thisThang,1,-1);}
-	public int enumerableStockSize(){ return 0;}
-	public int totalStockSize(){ return 0;}
-	public Iterator<Environmental> getStoreInventory(){ return emptyV.iterator();}
-	public Iterator<Environmental> getStoreInventory(String srchStr){ return emptyV.iterator();}
-	public Iterator<Environmental> getEnumerableInventory(){ return emptyV.iterator();}
-	
-	public Environmental addStoreInventory(Environmental thisThang, 
-										   int number, 
+	@Override public Environmental addStoreInventory(Environmental thisThang){ return addStoreInventory(thisThang,1,-1);}
+	@Override public int enumerableStockSize(){ return 0;}
+	@Override public int totalStockSize(){ return 0;}
+	@Override public Iterator<Environmental> getStoreInventory(){ return emptyV.iterator();}
+	@Override public Iterator<Environmental> getStoreInventory(String srchStr){ return emptyV.iterator();}
+	@Override public Iterator<Environmental> getEnumerableInventory(){ return emptyV.iterator();}
+
+	@Override
+	public Environmental addStoreInventory(Environmental thisThang,
+										   int number,
 										   int price)
 	{
 		if(shopKeeper() instanceof Auctioneer)
 			auctionShop=((Auctioneer)shopKeeper()).auctionHouse();
 		return thisThang;
 	}
-	
-	public int totalStockWeight(){return 0;}
-	
-	public int totalStockSizeIncludingDuplicates(){ return 0;}
-	public void delAllStoreInventory(Environmental thisThang){}
-	
-	public boolean doIHaveThisInStock(String name, MOB mob){return getStock(name,mob)!=null;}
 
+	@Override public int totalStockWeight(){return 0;}
+
+	@Override public int totalStockSizeIncludingDuplicates(){ return 0;}
+	@Override public void delAllStoreInventory(Environmental thisThang){}
+
+	@Override public boolean doIHaveThisInStock(String name, MOB mob){return getStock(name,mob)!=null;}
+
+	@Override
 	public int stockPrice(Environmental likeThis)
 	{
 		return -1;
 	}
-	public int numberInStock(Environmental likeThis){ return 1;}
-	public void resubmitInventory(List<Environmental> V){}
-	
+	@Override public int numberInStock(Environmental likeThis){ return 1;}
+	@Override public void resubmitInventory(List<Environmental> V){}
+
+	@Override
 	public Environmental getStock(String name, MOB mob)
 	{
 		List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
@@ -132,23 +138,26 @@ public class AuctionCoffeeShop implements CoffeeShop
 		return item;
 	}
 
+	@Override
 	public void destroyStoreInventory()
 	{
 	}
 
 
+	@Override
 	public Environmental removeStock(String name, MOB mob)
 	{
 		return null;
 	}
-	
-	public void emptyAllShelves(){}
-	
+
+	@Override public void emptyAllShelves(){}
+
+	@Override
 	public List<Environmental> removeSellableProduct(String named, MOB mob)
 	{
 		return emptyV;
 	}
-	
-	public String makeXML(){return "";}
-	public void buildShopFromXML(String text){}
+
+	@Override public String makeXML(){return "";}
+	@Override public void buildShopFromXML(String text){}
 }

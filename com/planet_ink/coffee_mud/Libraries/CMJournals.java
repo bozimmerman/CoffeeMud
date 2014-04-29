@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 */
 public class CMJournals extends StdLibrary implements JournalsLibrary
 {
-	public String ID(){return "CMJournals";}
+	@Override public String ID(){return "CMJournals";}
 	public final int QUEUE_SIZE=100;
 	protected final SHashtable<String,CommandJournal>	 commandJournals	= new SHashtable<String,CommandJournal>();
 	protected final SHashtable<String,ForumJournal>	 	 forumJournals		= new SHashtable<String,ForumJournal>();
 	protected final SHashtable<String,List<ForumJournal>>clanForums			= new SHashtable<String,List<ForumJournal>>();
-	
+
 	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
-	
+
 	@SuppressWarnings("unchecked")
 	protected Hashtable<String,JournalSummaryStats> getSummaryStats()
 	{
@@ -64,7 +64,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return journalSummaryStats;
 	}
-	
+
+	@Override
 	public JournalSummaryStats getJournalStats(ForumJournal journal)
 	{
 		if(journal == null)
@@ -87,7 +88,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return stats;
 	}
-	
+
+	@Override
 	public void clearJournalSummaryStats(ForumJournal journal)
 	{
 		if(journal == null)
@@ -98,7 +100,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			journalSummaryStats.remove(journal.NAME().toUpperCase().trim());
 		}
 	}
-	
+
+	@Override
 	public int loadCommandJournals(String list)
 	{
 		clearCommandJournals();
@@ -150,7 +153,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return commandJournals.size();
 	}
-	
+
+	@Override
 	public boolean canReadMessage(JournalEntry entry, String srchMatch, MOB readerM, boolean ignorePrivileges)
 	{
 		if(entry==null)
@@ -174,7 +178,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public int loadForumJournals(String list)
 	{
 		clearForumJournals();
@@ -186,13 +191,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return forumJournals.size();
 	}
-	
+
+	@Override
 	public List<ForumJournal> getClanForums(Clan clan)
 	{
 		if(clan == null)
 			return null;
 		return this.clanForums.get(clan.clanID());
 	}
+	@Override
 	public void registerClanForum(Clan clan, String allClanForumDefs)
 	{
 		if(clan==null)
@@ -225,7 +232,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if((journals!=null)&&(journals.size()>0))
 			this.clanForums.put(clan.clanID(), journals);
 	}
-	
+
 	public List<ForumJournal> parseForumJournals(String list)
 	{
 		List<ForumJournal> journals = new Vector<ForumJournal>(1);
@@ -290,7 +297,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return journals;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public HashSet<String> getArchonJournalNames()
 	{
@@ -310,7 +318,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return H;
 	}
-	
+
+	@Override
 	public boolean isArchonJournalName(String journal)
 	{
 		if(getArchonJournalNames().contains(journal.toUpperCase().trim()))
@@ -318,7 +327,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return false;
 	}
 
-	public String getScriptValue(MOB mob, String journal, String oldValue) 
+	@Override
+	public String getScriptValue(MOB mob, String journal, String oldValue)
 	{
 		CommandJournal CMJ=getCommandJournal(journal);
 		if(CMJ==null) return oldValue;
@@ -337,13 +347,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(response!=null) return response;
 		return oldValue;
 	}
-	
-	public int getNumCommandJournals() { return commandJournals.size();    }
-	
-	public Enumeration<CommandJournal> commandJournals(){ return commandJournals.elements();}
-	
-	public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
-	
+
+	@Override public int getNumCommandJournals() { return commandJournals.size();    }
+
+	@Override public Enumeration<CommandJournal> commandJournals(){ return commandJournals.elements();}
+
+	@Override public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
+
 	public void expirationJournalSweep()
 	{
 		setThreadStatus(serviceClient,"expiration journal sweeping");
@@ -407,8 +417,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 		}catch(NoSuchElementException nse){}
 	}
-	
-	public boolean activate() 
+
+	@Override
+	public boolean activate()
 	{
 		if(serviceClient==null)
 		{
@@ -417,8 +428,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return true;
 	}
-	
-	@Override public boolean tick(Tickable ticking, int tickID) 
+
+	@Override public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
 		try
@@ -438,23 +449,25 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return true;
 	}
-	
-	private void clearCommandJournals() 
+
+	private void clearCommandJournals()
 	{
 		commandJournals.clear();
 	}
-	
-	public int getNumForumJournals() { return forumJournals.size();    }
-	
-	public Enumeration<ForumJournal> forumJournals(){ return forumJournals.elements();}
-	
-	public ForumJournal getForumJournal(String named) 
-	{ 
+
+	@Override public int getNumForumJournals() { return forumJournals.size();    }
+
+	@Override public Enumeration<ForumJournal> forumJournals(){ return forumJournals.elements();}
+
+	@Override
+	public ForumJournal getForumJournal(String named)
+	{
 		return forumJournals.get(named.toUpperCase().trim());
 	}
-	
-	public ForumJournal getForumJournal(String named, Clan clan) 
-	{ 
+
+	@Override
+	public ForumJournal getForumJournal(String named, Clan clan)
+	{
 		if(named==null)
 			return null;
 
@@ -477,14 +490,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return null;
 	}
-	
-	private void clearForumJournals() 
+
+	private void clearForumJournals()
 	{
 		forumJournals.clear();
 		Resources.removeResource("FORUM_JOURNAL_STATS");
 	}
-	
-	public boolean shutdown() 
+
+	@Override
+	public boolean shutdown()
 	{
 		clearCommandJournals();
 		clearForumJournals();
@@ -495,11 +509,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return true;
 	}
-	
+
+	@Override
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
 	{
 		final Session sess=mob.session();
-		if((sess == null )||(sess.isStopped())) 
+		if((sess == null )||(sess.isStopped()))
 			return MsgMkrResolution.CANCELFILE;
 		final boolean canExtEdit=((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
@@ -513,7 +528,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XS)^.^Wave the file\n\r"+
 			(canExtEdit?"^XW)^.^Write over using GMCP\n\r":"")+
 			"^XQ)^.^Wuit without saving";
-		
+
 		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
 		mob.tell("^HCoffeeMud Message Maker^N");
 		boolean menuMode=!autoAdd;
@@ -619,7 +634,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					break;
 				}
 				case '?': mob.tell(help); break;
-				case 'A': mob.tell(addModeMessage); 
+				case 'A': mob.tell(addModeMessage);
 						  menuMode=false;
 						  break;
 				case 'W':
@@ -677,11 +692,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				}
 			}
-				
+
 		}
 		return MsgMkrResolution.CANCELFILE;
 	}
-	
+
+	@Override
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList)
 	{
 		boolean updateMailingLists=false;
@@ -725,13 +741,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return updateMailingLists;
 	}
-	
+
+	@Override
 	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList)
 	{
 		boolean updateMailingLists = false;
 		if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			return false;
-		
+
 		Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 		List<String> mylist=lists.get(journalName);
 		if(mylist==null) return false;

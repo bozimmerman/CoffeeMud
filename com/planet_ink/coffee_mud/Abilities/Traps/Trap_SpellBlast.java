@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SpellBlast extends StdTrap
 {
-	public String ID() { return "Trap_SpellBlast"; }
-	public String name(){ return "spell blast";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 23;}
-	public String requiresToSet(){return "a spell scroll";}
+	@Override public String ID() { return "Trap_SpellBlast"; }
+	@Override public String name(){ return "spell blast";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 23;}
+	@Override public String requiresToSet(){return "a spell scroll";}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -58,6 +58,7 @@ public class Trap_SpellBlast extends StdTrap
 		return null;
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -68,6 +69,7 @@ public class Trap_SpellBlast extends StdTrap
 		V.addElement(I);
 		return V;
 	}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -82,6 +84,7 @@ public class Trap_SpellBlast extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -94,6 +97,7 @@ public class Trap_SpellBlast extends StdTrap
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

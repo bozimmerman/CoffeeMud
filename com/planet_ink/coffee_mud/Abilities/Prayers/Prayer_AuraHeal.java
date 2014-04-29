@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraHeal extends Prayer
 {
-	public String ID() { return "Prayer_AuraHeal"; }
-	public String name(){ return "Aura of Healing";}
-	public String displayText(){ return "(Heal Aura)";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Prayer_AuraHeal"; }
+	@Override public String name(){ return "Aura of Healing";}
+	@Override public String displayText(){ return "(Heal Aura)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	private int ratingTickDown=4;
 
 	public Prayer_AuraHeal()
@@ -53,6 +53,7 @@ public class Prayer_AuraHeal extends Prayer
 		ratingTickDown = 4;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -66,6 +67,7 @@ public class Prayer_AuraHeal extends Prayer
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The healing aura around you fades.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -107,7 +109,8 @@ public class Prayer_AuraHeal extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -126,7 +129,8 @@ public class Prayer_AuraHeal extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

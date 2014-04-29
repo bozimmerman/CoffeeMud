@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class TimsItemTable extends StdWebMacro
 {
-	public String name() { return "TimsItemTable"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "TimsItemTable"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		long endTime=System.currentTimeMillis()+(1000*60*10);
@@ -157,10 +158,10 @@ public class TimsItemTable extends StdWebMacro
 					int armorBonus=0;
 					for(long wornCode : codes.all())
 					{
-						if((wornCode == Wearable.IN_INVENTORY) 
+						if((wornCode == Wearable.IN_INVENTORY)
 						|| (wornCode == Wearable.WORN_HELD)
 						|| (wornCode == Wearable.WORN_WIELD)
-						|| (wornCode == Wearable.WORN_MOUTH)) 
+						|| (wornCode == Wearable.WORN_MOUTH))
 						 	continue;
 						Armor A=CMClass.getArmor("GenArmor");
 						A.setRawProperLocationBitmap(wornCode);
@@ -201,7 +202,7 @@ public class TimsItemTable extends StdWebMacro
 			str.append("<TR><TD><FONT COLOR=RED>Unknown parms: "+CMParms.toStringList(parms)+".  Try WORLD or ITEMS.</TD></TR>");
 		return clearWebMacros(str)+"</TABLE>";
 	}
-	
+
 	public boolean doneBefore(Vector V, Item I)
 	{
 		if(I==null) return true;
@@ -243,7 +244,7 @@ public class TimsItemTable extends StdWebMacro
 		else
 			pct=(int)Math.round(CMath.div(tlvl,lvl)*100.0);
 		row.append("<TD>"+pct+"%</TD>");
-		
+
 		if(!(I instanceof Weapon))
 			row.append("<TD>"+I.basePhyStats().armor()+"</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>");
 		else
@@ -260,5 +261,5 @@ public class TimsItemTable extends StdWebMacro
 		row.append("</TR>");
 		return row.toString();
 	}
-	
+
 }

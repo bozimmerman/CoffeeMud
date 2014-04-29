@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Fireball extends Spell
 {
-	public String ID() { return "Spell_Fireball"; }
-	public String name(){return "Fireball";}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 1;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Spell_Fireball"; }
+	@Override public String name(){return "Fireball";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 1;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_FIREBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -22,13 +22,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * Something that can be affected, and has environmental stats that
 * can be affected as well.
 * @author Bo Zimmerman
 *
 */
-public interface Affectable 
+public interface Affectable
 {
 	/**
 	 * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
@@ -128,12 +128,12 @@ public interface Affectable
 	 */
 	public Ability fetchEffect(String ID);
 	/**
-	 * Returns an enumerator of abilities listed as effects on this object. 
+	 * Returns an enumerator of abilities listed as effects on this object.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return the enumerator of ability objects effecting this object
 	 */
 	public Enumeration<Ability> effects();
-	
+
 	/**
 	 * Optionally uninvokes and then certainly removes all effects
 	 * from this object.

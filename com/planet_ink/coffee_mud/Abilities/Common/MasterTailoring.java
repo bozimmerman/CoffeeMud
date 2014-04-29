@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2004 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MasterTailoring extends Tailoring
 {
-	public String ID() { return "MasterTailoring"; }
-	public String name(){ return "Master Tailoring";}
+	@Override public String ID() { return "MasterTailoring"; }
+	@Override public String name(){ return "Master Tailoring";}
 	private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	public String parametersFile(){ return "mastertailor.txt";}
+	@Override public String parametersFile(){ return "mastertailor.txt";}
 
+	@Override
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
@@ -53,11 +54,12 @@ public class MasterTailoring extends Tailoring
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);

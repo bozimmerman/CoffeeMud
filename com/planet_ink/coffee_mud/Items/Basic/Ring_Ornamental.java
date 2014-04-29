@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class Ring_Ornamental extends Ring
 {
-	public String ID(){	return "Ring_Ornamental";}
+	@Override public String ID(){	return "Ring_Ornamental";}
 	public final static int GOLD_RING 					= 0;
 	public final static int SILVER_RING					= 1;
 	public final static int COPPER_RING		  			= 2;
@@ -65,6 +65,7 @@ public class Ring_Ornamental extends Ring
 	}
 
 
+	@Override
 	public void recoverPhyStats()
 	{
 		if(lastLevel!=basePhyStats().level())

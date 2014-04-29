@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.net.URLEncoder;
 */
 public class RequestParameterEncoded extends RequestParameter
 {
-	public String name() { return "RequestParameterEncoded"; }
+	@Override public String name() { return "RequestParameterEncoded"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		
+
 		String str=super.runMacro(httpReq, parm);
 		try
 		{
 			str=URLEncoder.encode(str,"UTF-8");
-		}  
+		}
 		catch(java.io.UnsupportedEncodingException ex)
 		{
 			Log.errOut(name(),"Wrong Encoding");

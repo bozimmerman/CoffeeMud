@@ -22,7 +22,7 @@ import java.sql.*;
 import java.io.IOException;
 
 // requires nothing to load
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,9 @@ import java.io.IOException;
 */
 public class Socials extends StdLibrary implements SocialsList
 {
-	public String ID(){return "Socials";}
+	@Override public String ID(){return "Socials";}
 
+	@Override
 	public void putSocialsInHash(final Map<String,List<Social>> soc, final List<String> lines)
 	{
 		for(int v=0;v<lines.size();v++)
@@ -141,7 +142,7 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<String, List<Social>> getSocialHash()
 	{
@@ -156,17 +157,17 @@ public class Socials extends StdLibrary implements SocialsList
 		}
 		return soc;
 	}
-	public boolean isLoaded() { return Resources.getResource("PARSED_SOCIALS: "+filename)!=null; }
-	
-	private String realName(String name) 
+	@Override public boolean isLoaded() { return Resources.getResource("PARSED_SOCIALS: "+filename)!=null; }
+
+	private String realName(String name)
 	{
 		String shortName=name.toUpperCase().trim();
 		int spdex=shortName.indexOf(' ');
 		if(spdex>0) shortName=shortName.substring(0,spdex);
 		return shortName;
 	}
-	private void put(Map<String,List<Social>> H, String name, Social S) 
-	{ 
+	private void put(Map<String,List<Social>> H, String name, Social S)
+	{
 		name=realName(name);
 		List<Social> V2=H.get(name);
 		if(V2==null)
@@ -182,12 +183,14 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		V2.add(S);
 	}
-	public void put(String name, Social S) 
-	{ 
+	@Override
+	public void put(String name, Social S)
+	{
 		put(getSocialHash(),name,S);
 	}
-	public void remove(String name) 
-	{ 
+	@Override
+	public void remove(String name)
+	{
 		String realName=realName(name);
 		List<Social> V2=getSocialHash().get(realName);
 		if(V2==null) return;
@@ -203,27 +206,30 @@ public class Socials extends StdLibrary implements SocialsList
 				break;
 			}
 	}
+	@Override
 	public void addSocial(Social S)
-	{ 
+	{
 		put(S.name(),S);
 		unloadDerivedResources();
 	}
-	
-	public int numSocialSets() {return getSocialHash().size();}
 
-	public void unloadSocials() 
+	@Override public int numSocialSets() {return getSocialHash().size();}
+
+	@Override
+	public void unloadSocials()
 	{
 		Resources.removeResource("PARSED_SOCIALS: "+filename);
 		unloadDerivedResources();
 	}
-	
+
 	private void unloadDerivedResources()
 	{
 		Resources.removeResource("SOCIALS LIST");
 		Resources.removeResource("SOCIALS TABLE");
 		Resources.removeResource("WEB SOCIALS TBL");
 	}
-	
+
+	@Override
 	public boolean shutdown()
 	{
 		unloadSocials();
@@ -231,6 +237,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 
+	@Override
 	public void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -268,7 +275,8 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 			mob.session().println("(no change)");
 	}
-	
+
+	@Override
 	public void modifySocialTargetCode(MOB mob, Social me, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -301,7 +309,8 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 			mob.session().println("(no change)");
 	}
-	
+
+	@Override
 	public void modifySocialSourceCode(MOB mob, Social me, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -331,8 +340,9 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 			mob.session().println("(no change)");
 	}
-	
-	
+
+
+	@Override
 	public boolean modifySocialInterface(MOB mob, String socialString)
 		throws IOException
 	{
@@ -367,31 +377,31 @@ public class Socials extends StdLibrary implements SocialsList
 					Social S=socials.get(v);
 					int x=S.Name().indexOf(' ');
 					if(x<0)
-					{ 
-						str.append((v+1)+") No Target (NONE)\n\r"); 
+					{
+						str.append((v+1)+") No Target (NONE)\n\r");
 						continue;
 					}
 					if((rest.length()>0)
 					&&(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase(rest.toUpperCase().trim())))
 						selection=(v+1);
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<T-NAME>"))
-					{ 
-						str.append((v+1)+") MOB Targeted (MOBTARGET)\n\r"); 
+					{
+						str.append((v+1)+") MOB Targeted (MOBTARGET)\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<I-NAME>"))
-					{ 
-						str.append((v+1)+") Room Item Targeted (ITEMTARGET)\n\r"); 
+					{
+						str.append((v+1)+") Room Item Targeted (ITEMTARGET)\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<V-NAME>"))
-					{ 
-						str.append((v+1)+") Inventory Targeted (INVTARGET)\n\r"); 
+					{
+						str.append((v+1)+") Inventory Targeted (INVTARGET)\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<E-NAME>"))
-					{ 
-						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)\n\r"); 
+					{
+						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)\n\r");
 						continue;
 					}
 					str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim()+"\n\r");
@@ -441,16 +451,16 @@ public class Socials extends StdLibrary implements SocialsList
 					newOne="VNAME";
 				if(newOne.startsWith("<E-")||(newOne.startsWith("E-")))
 					newOne="ENAME";
-				if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET")) 
+				if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET"))
 					newOne=" <T-NAME>";
 				else
-				if(newOne.equalsIgnoreCase("INAME")||newOne.equalsIgnoreCase("ITEMTARGET")) 
+				if(newOne.equalsIgnoreCase("INAME")||newOne.equalsIgnoreCase("ITEMTARGET"))
 					newOne=" <I-NAME>";
 				else
-				if(newOne.equalsIgnoreCase("VNAME")||newOne.equalsIgnoreCase("INVTARGET")) 
+				if(newOne.equalsIgnoreCase("VNAME")||newOne.equalsIgnoreCase("INVTARGET"))
 					newOne=" <V-NAME>";
 				else
-				if(newOne.equalsIgnoreCase("ENAME")||newOne.equalsIgnoreCase("EQUIPTARGET")) 
+				if(newOne.equalsIgnoreCase("ENAME")||newOne.equalsIgnoreCase("EQUIPTARGET"))
 					newOne=" <E-NAME>";
 				else
 				if(newOne.equalsIgnoreCase("NONE")) newOne="";
@@ -537,7 +547,8 @@ public class Socials extends StdLibrary implements SocialsList
 		return true;
 	}
 
-	public Social fetchSocial(List<Social> set, String name, boolean exactOnly) 
+	@Override
+	public Social fetchSocial(List<Social> set, String name, boolean exactOnly)
 	{
 		for(int s=0;s<set.size();s++)
 			if(set.get(s).Name().equalsIgnoreCase(name))
@@ -549,12 +560,13 @@ public class Socials extends StdLibrary implements SocialsList
 				return set.get(s);
 		return null;
 	}
-	
+
+	@Override
 	public Social fetchSocial(String baseName, Environmental targetE, boolean exactOnly)
 	{
 		return fetchSocial(getSocialHash(),baseName,targetE,exactOnly);
 	}
-	
+
 	protected Social fetchSocial(final Map<String,List<Social>> soc, final String baseName, final Environmental targetE, final boolean exactOnly)
 	{
 		if(targetE==null) return fetchSocial(soc,baseName,exactOnly);
@@ -566,12 +578,13 @@ public class Socials extends StdLibrary implements SocialsList
 		if(I.amWearingAt(Wearable.IN_INVENTORY))  return fetchSocial(soc,baseName+" <V-NAME>",exactOnly);
 		return fetchSocial(soc,baseName+" <E-NAME>",exactOnly);
 	}
-	
+
+	@Override
 	public Social fetchSocial(String name, boolean exactOnly)
 	{
 		return fetchSocial(getSocialHash(),name,exactOnly);
 	}
-	
+
 	protected Social fetchSocial(final Map<String,List<Social>> soc, final String name, final boolean exactOnly)
 	{
 		String realName=realName(name);
@@ -590,14 +603,16 @@ public class Socials extends StdLibrary implements SocialsList
 		return null;
 	}
 
+	@Override
 	public Social fetchSocial(List<String> C, boolean exactOnly, boolean checkItemTargets)
 	{
 		return fetchSocialFromSet(getSocialHash(),C,exactOnly,checkItemTargets);
 	}
-	
+
+	@Override
 	public Social fetchSocialFromSet(final Map<String,List<Social>> soc, final List<String> C, final boolean exactOnly, final boolean checkItemTargets)
 	{
-		
+
 		if(C==null) return null;
 		if(C.size()==0) return null;
 
@@ -640,14 +655,14 @@ public class Socials extends StdLibrary implements SocialsList
 			for(String key : soc.keySet())
 			{
 				if((key.startsWith(socName))&&(key.indexOf(' ')<0))
-				{	
-					socialName=key; 
+				{
+					socialName=key;
 					break;
 				}
 				else
 				if(key.startsWith(socName))
-				{	
-					backupSocialName=key; 
+				{
+					backupSocialName=key;
 					break;
 				}
 			}
@@ -669,6 +684,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return S;
 	}
 
+	@Override
 	public List<Social> enumSocialSet(int index)
 	{
 		if((index<0)||(index>numSocialSets())) return null;
@@ -682,6 +698,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return null;
 	}
 
+	@Override
 	public Social makeDefaultSocial(String name, String type)
 	{
 		Social soc=(Social)CMClass.getCommon("DefaultSocial");
@@ -732,7 +749,8 @@ public class Socials extends StdLibrary implements SocialsList
 		}
 		return soc;
 	}
-	
+
+	@Override
 	public void save(MOB whom)
 	{
 		if(!isLoaded()) return;
@@ -840,26 +858,29 @@ public class Socials extends StdLibrary implements SocialsList
 		unloadDerivedResources();
 	}
 
+	@Override
 	public List<Social> getSocialsSet(String named)
 	{
 		named=realName(named);
 		return getSocialHash().get(named);
 	}
 
+	@Override
 	public String findSocialName(String named, boolean exactOnly)
 	{
 		return findSocialName(getSocialHash(),named,exactOnly);
 	}
-	
+
 	protected String findSocialName(final Map<String,List<Social>> soc, final String named, final boolean exactOnly)
 	{
 		if(named==null) return null;
 		final Social S = fetchSocial(soc, named,exactOnly);
-		if(S!=null) 
+		if(S!=null)
 			return realName(S.Name()).toLowerCase();
 		return null;
 	}
-	
+
+	@Override
 	public String getSocialsHelp(MOB mob, String named, boolean exact)
 	{
 		String realName=findSocialName(named,exact);
@@ -941,14 +962,15 @@ public class Socials extends StdLibrary implements SocialsList
 		othMOB.destroy();
 		return help.toString();
 	}
-	
-	
+
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public List<String> getSocialsList() 
+	public List<String> getSocialsList()
 	{
 		List<String> socialsList=(List<String>)Resources.getResource("SOCIALS LIST");
 		if(socialsList!=null) return socialsList;
-		
+
 		List<String> socialVec=new Vector<String>();
 		for(int s=0;s<CMLib.socials().numSocialSets();s++)
 		{
@@ -962,6 +984,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return socialVec;
 	}
 
+	@Override
 	public String getSocialsTable()
 	{
 		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS TABLE");

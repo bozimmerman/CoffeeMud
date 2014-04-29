@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_TrueSight extends Spell
 {
-	public String ID() { return "Spell_TrueSight"; }
-	public String name(){return "True Sight";}
-	public String displayText(){return "(True Sight)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override public String ID() { return "Spell_TrueSight"; }
+	@Override public String name(){return "True Sight";}
+	@Override public String displayText(){return "(True Sight)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -54,6 +55,7 @@ public class Spell_TrueSight extends Spell
 			mob.tell("You no longer have true sight.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -68,12 +70,14 @@ public class Spell_TrueSight extends Spell
 	}
 
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*getXLEVELLevel(invoker()))+200+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -82,6 +86,7 @@ public class Spell_TrueSight extends Spell
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_SNEAKERS);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -91,7 +96,8 @@ public class Spell_TrueSight extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

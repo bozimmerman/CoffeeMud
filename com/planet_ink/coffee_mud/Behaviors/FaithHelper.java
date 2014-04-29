@@ -34,18 +34,20 @@ import java.util.*;
 */
 public class FaithHelper extends StdBehavior
 {
-	public String ID(){return "FaithHelper";}
+	@Override public String ID(){return "FaithHelper";}
 
 	protected boolean mobKiller=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(parms.length()>0)
 			return "worshippers of "+parms+" protecting";
 		else
 			return "worshipper protecting";
 	}
 
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
@@ -56,6 +58,7 @@ public class FaithHelper extends StdBehavior
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

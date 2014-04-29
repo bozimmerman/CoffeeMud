@@ -34,7 +34,7 @@ limitations under the License.
  * This class is instantiated as an means for servlets to get input from the request.
  * It is generally a wrapper for the internal class HTTPRequest, but with more
  * guards against some idiosyncracies of that class.
- * 
+ *
  * See the interface for more comment
  * @author Bo Zimmerman
  *
@@ -44,7 +44,7 @@ public class MWServletRequest implements SimpleServletRequest
 	private final HTTPRequest 			request;
 	private final MiniWebConfig			config;
 	private final SimpleServletSession  session;
-	
+
 	/**
 	 * Construct a servlet request input object
 	 * @param session the session assigned to the request
@@ -59,7 +59,7 @@ public class MWServletRequest implements SimpleServletRequest
 			this.config=null;
 		this.session=session;
 	}
-	
+
 	@Override
 	public String getHost()
 	{
@@ -89,7 +89,7 @@ public class MWServletRequest implements SimpleServletRequest
 	{
 		return request.getUrlParametersCopy();
 	}
-	
+
 	@Override
 	public boolean isUrlParameter(String name)
 	{
@@ -101,7 +101,7 @@ public class MWServletRequest implements SimpleServletRequest
 	{
 		request.addFakeUrlParameter(name, value);
 	}
-	
+
 	@Override
 	public String getHeader(String name)
 	{
@@ -125,7 +125,7 @@ public class MWServletRequest implements SimpleServletRequest
 	{
 		return (config!=null)?config.getServletMan():null;
 	}
-	
+
 	@Override
 	public String getCookie(String name)
 	{
@@ -143,19 +143,19 @@ public class MWServletRequest implements SimpleServletRequest
 	{
 		return request.getUrlParameters();
 	}
-	
-	@Override 
+
+	@Override
 	public void removeUrlParameter(String name)
 	{
 		request.removeUrlParameter(name);
 	}
-	
+
 	@Override
 	public Set<String> getCookieNames()
 	{
 		return request.getCookieNames();
 	}
-	
+
 	/**
 	 * Returns the session object associated with this servlet request
 	 * @return the session object
@@ -172,25 +172,25 @@ public class MWServletRequest implements SimpleServletRequest
 		return request.getSpecialEncodingAcceptability(type);
 	}
 
-	
+
 	@Override
 	public int getClientPort()
 	{
 		return request.getClientPort();
 	}
-	
+
 	@Override
 	public HTTPMethod getMethod()
 	{
 		return request.getMethod();
 	}
-	
+
 	@Override
 	public String getFullHost()
 	{
 		return request.getFullHost();
 	}
-	
+
 	@Override
 	public List<long[]> getRangeAZ()
 	{

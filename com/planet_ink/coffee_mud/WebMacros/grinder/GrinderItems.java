@@ -138,13 +138,13 @@ public class GrinderItems
 				I=CMClass.getItem(newClassID);
 				if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
 			}
-			
+
 			if(I==null)
 			{
 				copyItem.destroy();
 				return "[error]";
 			}
-			
+
 			CatalogLibrary.CataData cataData=null;
 
 			for(int o=0;o<okparms.length;o++)

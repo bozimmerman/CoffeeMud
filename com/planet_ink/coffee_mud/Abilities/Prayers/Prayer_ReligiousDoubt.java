@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,19 +38,21 @@ import java.util.*;
 public class Prayer_ReligiousDoubt extends Prayer
 {
 	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
-	
-	public String ID() { return "Prayer_ReligiousDoubt"; }
-	public String name(){ return "Religious Doubt";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+
+	@Override public String ID() { return "Prayer_ReligiousDoubt"; }
+	@Override public String name(){ return "Religious Doubt";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override
 	public String displayText()
 	{
 		if(otherSide) return "";
 		return "(Religious Doubt)";
 	}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int tickUp=0;
 	protected boolean otherSide=false;
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -63,6 +65,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -70,13 +73,14 @@ public class Prayer_ReligiousDoubt extends Prayer
 		{
 			boolean oldOther=otherSide;
 			otherSide=(++tickUp)>tickDown;
-			if((oldOther!=otherSide)&&(affected instanceof MOB)) 
+			if((oldOther!=otherSide)&&(affected instanceof MOB))
 				((MOB)affected).recoverCharStats();
 		}
 		return super.tick(ticking,tickID);
 	}
-	
 
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -95,6 +99,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_IceLance extends Spell
 {
-	public String ID() { return "Spell_IceLance"; }
-	public String name(){return "Ice Lance";}
-	public int minRange(){return 1;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_WATERBASED;}
+	@Override public String ID() { return "Spell_IceLance"; }
+	@Override public String name(){return "Ice Lance";}
+	@Override public int minRange(){return 1;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_WATERBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

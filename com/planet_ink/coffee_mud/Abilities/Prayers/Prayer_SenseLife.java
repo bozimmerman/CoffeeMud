@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SenseLife extends Prayer
 {
-	public String ID() { return "Prayer_SenseLife"; }
-	public String name(){ return "Sense Life";}
-	public String displayText(){ return "(Sense Life)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_SenseLife"; }
+	@Override public String name(){ return "Sense Life";}
+	@Override public String displayText(){ return "(Sense Life)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected Room lastRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -107,6 +108,7 @@ public class Prayer_SenseLife extends Prayer
 			mob.tell("You sense a life force coming from "+dirs.substring(2)+", and "+last+".");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -123,6 +125,7 @@ public class Prayer_SenseLife extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

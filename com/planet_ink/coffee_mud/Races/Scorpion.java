@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,39 +34,41 @@ import java.util.*;
 */
 public class Scorpion extends StdRace
 {
-	public String ID(){	return "Scorpion"; }
-	public String name(){ return "Scorpion"; }
-	public int shortestMale(){return 4;}
-	public int shortestFemale(){return 4;}
-	public int heightVariance(){return 2;}
-	public int lightestWeight(){return 5;}
-	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Arachnid";}
+	@Override public String ID(){	return "Scorpion"; }
+	@Override public String name(){ return "Scorpion"; }
+	@Override public int shortestMale(){return 4;}
+	@Override public int shortestFemale(){return 4;}
+	@Override public int heightVariance(){return 2;}
+	@Override public int lightestWeight(){return 5;}
+	@Override public int weightVariance(){return 5;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Arachnid";}
 	private String[]racialAbilityNames={"Poison_Heartstopper"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={10};
 	private boolean[]racialAbilityQuals={false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,2 ,2 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,1,1,1,1,2,2};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -75,14 +77,17 @@ public class Scorpion extends StdRace
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -95,6 +100,7 @@ public class Scorpion extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -107,6 +113,7 @@ public class Scorpion extends StdRace
 		}
 		return resources;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -115,7 +122,7 @@ public class Scorpion extends StdRace
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return "baby "+name().toLowerCase();
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}

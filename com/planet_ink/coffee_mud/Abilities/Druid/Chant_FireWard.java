@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_FireWard extends Chant
 {
-	public String ID() { return "Chant_FireWard"; }
-	public String name(){ return "Fire Ward";}
-	public String displayText(){return "(Fire Ward)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public String ID() { return "Chant_FireWard"; }
+	@Override public String name(){ return "Fire Ward";}
+	@Override public String displayText(){return "(Fire Ward)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,12 +57,14 @@ public class Chant_FireWard extends Chant
 
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_FIRE,affectedStats.getStat(CharStats.STAT_SAVE_FIRE)+100);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

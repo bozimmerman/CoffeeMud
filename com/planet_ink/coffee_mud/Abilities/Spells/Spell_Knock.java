@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Knock extends Spell
 {
-	public String ID() { return "Spell_Knock"; }
-	public String name(){return "Knock";}
-	public String displayText(){return "(Knock Spell)";}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Knock"; }
+	@Override public String name(){return "Knock";}
+	@Override public String displayText(){return "(Knock Spell)";}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=givenTarget==null?mob.location():CMLib.map().roomLocation(givenTarget);

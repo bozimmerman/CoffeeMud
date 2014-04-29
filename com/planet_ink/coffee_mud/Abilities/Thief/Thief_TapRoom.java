@@ -35,16 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_TapRoom extends ThiefSkill
 {
-	public String ID() { return "Thief_TapRoom"; }
-	public String name(){ return "Tap Room";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Thief_TapRoom"; }
+	@Override public String name(){ return "Tap Room";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"TAPROOM"};
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public boolean norecurse=false;
 
 	public boolean isMyPair(List<String> myParsedTextV, Item I)
@@ -94,6 +94,7 @@ public class Thief_TapRoom extends ThiefSkill
 		return null;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked)
@@ -116,6 +117,7 @@ public class Thief_TapRoom extends ThiefSkill
 			super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -145,11 +147,13 @@ public class Thief_TapRoom extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public int maxRange()
 	{
 		return (invoker()==null)?50:adjustedLevel(invoker(),0);
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		synchronized(this)
@@ -300,6 +304,7 @@ public class Thief_TapRoom extends ThiefSkill
 		return available;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -313,6 +318,7 @@ public class Thief_TapRoom extends ThiefSkill
 		return CMParms.parseSemicolons(text(),false);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

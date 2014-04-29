@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Warcry extends FighterSkill
 {
-	public String ID() { return "Fighter_Warcry"; }
-	public String name(){ return "War Cry";}
-	public String displayText(){return "(War Cry)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String ID() { return "Fighter_Warcry"; }
+	@Override public String name(){ return "War Cry";}
+	@Override public String displayText(){return "(War Cry)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"WARCRY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SINGING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SINGING;}
 
 	protected int timesTicking=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Fighter_Warcry extends FighterSkill
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -66,6 +68,7 @@ public class Fighter_Warcry extends FighterSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -79,6 +82,7 @@ public class Fighter_Warcry extends FighterSkill
 			mob.tell("You calm down a bit.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

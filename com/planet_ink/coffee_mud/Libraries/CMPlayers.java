@@ -37,8 +37,8 @@ import java.util.*;
 */
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
-	public String ID(){return "CMPlayers";}
-	
+	@Override public String ID(){return "CMPlayers";}
+
 	protected SVector<MOB> 				playersList			= new SVector<MOB>();
 	protected SVector<PlayerAccount>	accountsList		= new SVector<PlayerAccount>();
 	protected boolean					allAccountsLoaded	= false;
@@ -46,22 +46,24 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					autoPurgeDaysLevels	= new long[1];
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
-	
+
 	protected final static int			PRIDE_TOP_SIZE		= 10;
 	protected final long[]				topPrideExpiration	= new long[TimeClock.TimePeriod.values().length];
 	@SuppressWarnings("unchecked")
 	protected final List<Pair<String,Integer>>[][] topPlayers	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	@SuppressWarnings("unchecked")
 	protected final List<Pair<String,Integer>>[][] topAccounts	 = new List[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
-	
+
 	protected final static List<Pair<String,Integer>> emptyPride = new ReadOnlyVector<Pair<String,Integer>>(1);
-	
-	
-	public int numPlayers() 
-	{ 
-		return playersList.size(); 
+
+
+	@Override
+	public int numPlayers()
+	{
+		return playersList.size();
 	}
-	
+
+	@Override
 	public synchronized void addPlayer(MOB newOne)
 	{
 		if(getPlayer(newOne.Name())!=null) return;
@@ -72,21 +74,24 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		playersList.add(newOne);
 		addAccount(acct);
 	}
-	
-	public synchronized void delPlayer(MOB oneToDel) 
-	{ 
+
+	@Override
+	public synchronized void delPlayer(MOB oneToDel)
+	{
 		if(oneToDel != null)
 		{
 			playersList.remove(oneToDel);
 			playerLocations.removeFirst(oneToDel);
 		}
 	}
-	
+
+	@Override
 	public Set<MOB> getPlayersHere(Room room)
 	{
 		return playerLocations.getSecond(room);
 	}
-	
+
+	@Override
 	public void changePlayersLocation(MOB mob, Room room)
 	{
 		if(mob != null)
@@ -98,24 +103,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 	}
 
-	
+
+	@Override
 	public MOB getLoadPlayerByEmail(String email)
 	{
 		for(Enumeration<MOB> e=players();e.hasMoreElements();)
 		{
 			MOB M=e.nextElement();
-			if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) 
+			if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email)))
 				return M;
 		}
 		for(Enumeration<ThinPlayer> e=thinPlayers("",null);e.hasMoreElements();)
 		{
 			ThinPlayer P=e.nextElement();
-			if(P.email.equalsIgnoreCase(email)) 
+			if(P.email.equalsIgnoreCase(email))
 				return getLoadPlayer(P.name);
 		}
 		return null;
 	}
-		
+
+	@Override
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
 		PlayerAccount A = getAccount(calledThis);
@@ -125,6 +132,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return CMLib.database().DBReadAccount(calledThis);
 	}
 
+	@Override
 	public synchronized void addAccount(PlayerAccount acct)
 	{
 		if(acct==null) return;
@@ -135,6 +143,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		accountsList.add(acct);
 	}
 
+	@Override
 	public PlayerAccount getLoadAccountByEmail(String email)
 	{
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
@@ -152,13 +161,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return null;
 	}
 
+	@Override
 	public PlayerAccount getAccount(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
 		for(PlayerAccount A : accountsList)
 			if(A.getAccountName().equals(calledThis))
 				return A;
-		
+
 		for (MOB M : playersList)
 			if((M.playerStats()!=null)
 			&&(M.playerStats().getAccount()!=null)
@@ -170,6 +180,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return null;
 	}
 
+	@Override
 	public MOB getPlayer(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
@@ -179,6 +190,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return null;
 	}
 
+	@Override
 	public MOB getLoadPlayer(String last)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -205,6 +217,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return M;
 	}
 
+	@Override
 	public boolean accountExists(String name)
 	{
 		if(name==null) return false;
@@ -212,6 +225,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return getLoadAccount(name)!=null;
 	}
 
+	@Override
 	public boolean playerExists(String name)
 	{
 		if(name==null) return false;
@@ -222,16 +236,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return CMLib.database().DBUserSearch(name)!=null;
 	}
 
-	public Enumeration<MOB> players() 
+	@Override
+	public Enumeration<MOB> players()
 	{
-		return playersList.elements(); 
+		return playersList.elements();
 	}
 
-	public Enumeration<PlayerAccount> accounts() 
-	{ 
-		return accountsList.elements(); 
+	@Override
+	public Enumeration<PlayerAccount> accounts()
+	{
+		return accountsList.elements();
 	}
 
+	@Override
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topPlayers[period.ordinal()][stat.ordinal()];
@@ -240,6 +257,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return top;
 	}
 
+	@Override
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topAccounts[period.ordinal()][stat.ordinal()];
@@ -257,7 +275,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				break;
 			}
 	}
-	
+
+	@Override
 	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt)
 	{
 		if((amt != 0)&&(mob!=null))
@@ -277,7 +296,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return 0;
 	}
-	
+
 	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name, final AccountStats.PrideStat stat, final AccountStats astats)
 	{
 		final long now=System.currentTimeMillis();
@@ -327,7 +346,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 	}
-	
+
+	@Override
 	public void renamePlayer(MOB mob, String oldName)
 	{
 		String newName = mob.Name();
@@ -368,7 +388,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						((PrivateProperty)I).setOwnerName(newName);
 			}
 		}
-		
+
 		for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 		{
 			Room R=r.nextElement();
@@ -406,6 +426,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 	}
 
+	@Override
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
 	{
 		if(deadMOB==null) return;
@@ -471,12 +492,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		deadMOB.destroy();
 	}
 
+	@Override
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{
 		deadAccount = getLoadAccount(deadAccount.getAccountName());
 		if(deadAccount==null) return;
 		accountsList.remove(deadAccount);
-		
+
 		StringBuffer newNoPurge=new StringBuffer("");
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		boolean somethingDone=false;
@@ -498,6 +520,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		Log.sysOut(deadAccount.getAccountName()+" has been deleted.");
 	}
 
+	@Override
 	public int savePlayers()
 	{
 		int processed=0;
@@ -555,8 +578,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return processed;
 	}
-	
-	public String getThinSortValue(ThinPlayer player, int code) 
+
+	@Override
+	public String getThinSortValue(ThinPlayer player, int code)
 	{
 		switch(code)
 		{
@@ -571,8 +595,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return player.name;
 	}
-	
-	public String getThinSortValue(PlayerAccount account, int code) 
+
+	public String getThinSortValue(PlayerAccount account, int code)
 	{
 		switch(code)
 		{
@@ -584,8 +608,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return account.getAccountName();
 	}
-	
-	public int getCharThinSortCode(String codeName, boolean loose) 
+
+	@Override
+	public int getCharThinSortCode(String codeName, boolean loose)
 	{
 		int x=CMParms.indexOf(CHAR_THIN_SORT_CODES,codeName);
 		if(x<0)x=CMParms.indexOf(CHAR_THIN_SORT_CODES2,codeName);
@@ -600,8 +625,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					x=s;
 		return x;
 	}
-	
-	public int getAccountThinSortCode(String codeName, boolean loose) 
+
+	public int getAccountThinSortCode(String codeName, boolean loose)
 	{
 		if((codeName == null)||(codeName.length()==0)) return -1;
 		int x=CMParms.indexOf(ACCOUNT_THIN_SORT_CODES,codeName);
@@ -612,7 +637,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					x=s;
 		return x;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache)
 	{
@@ -662,6 +688,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Pair<Long,int[]>[] parsePrideStats(final String[] nextPeriods, final String[] prideStats)
 	{
@@ -693,7 +720,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return finalStats.toArray(new Pair[0]);
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
 	{
@@ -858,7 +886,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				if(isProtected(protectedOnes, name))
 					continue;
-				
+
 				List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 				long foundWarningDateTime=-1;
 				StringBuffer warnStr=new StringBuffer("");
@@ -905,7 +933,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				}
 			}
 		}
-		
+
 		// accounts!
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS)>0))
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
@@ -955,7 +983,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			int hours=(int)CMath.div((double)timeLeft,1000*60*60);
 			textTimeLeft = hours + " hours";
 		}
-		
+
 		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
 
 		SMTPLibrary.SMTPClient SC=null;
@@ -993,7 +1021,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 	}
 
-	public boolean activate() 
+	@Override
+	public boolean activate()
 	{
 		if(serviceClient==null)
 		{
@@ -1002,7 +1031,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			CMLib.threads().executeRunnable(new Runnable()
 			{
 				@Override
-				public void run() 
+				public void run()
 				{
 					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(PRIDE_TOP_SIZE, (short)5);
 					for(int x=0;x<pStats.length;x++)
@@ -1018,14 +1047,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 						topPrideExpiration[period.ordinal()] = period.nextPeriod();
 				}
-				
+
 			});
 		}
 		return true;
 	}
 
-	@Override 
-	public boolean tick(Tickable ticking, int tickID) 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
@@ -1059,11 +1088,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			tickStatus=Tickable.STATUS_NOT;
 			setThreadStatus(serviceClient,"sleeping");
 		}
-		
+
 		return true;
 	}
 
-	public boolean shutdown() 
+	@Override
+	public boolean shutdown()
 	{
 		playersList.clear();
 		playerLocations.clear();
@@ -1075,6 +1105,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return true;
 	}
 
+	@Override
 	public void forceTick()
 	{
 		serviceClient.tickTicker(false);

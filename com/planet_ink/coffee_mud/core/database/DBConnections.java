@@ -214,7 +214,7 @@ public class DBConnections
 		}
 		return Result;
 	}
-	
+
 	/**
 	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
 	 * @param updateStrings    the update SQL commands
@@ -228,7 +228,7 @@ public class DBConnections
 			entries.add(new DBPreparedBatchEntry(updateStrings[i],values[i]));
 		return updateWithClobs(entries);
 	}
-	
+
 	/**
 	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
 	 * @param updateString    the update SQL commands
@@ -239,7 +239,7 @@ public class DBConnections
 	{
 		return updateWithClobs(Arrays.asList(new DBPreparedBatchEntry(updateString,values)));
 	}
-	
+
 	/**
 	 * Return the number of connections made.
 	 *
@@ -488,7 +488,7 @@ public class DBConnections
 		}
 		return false;
 	}
-	
+
 	public DBConnection DBFetchPrepared(String SQL)
 	{
 		return DBFetchAny(SQL,DBConnection.FetchType.PREPAREDSTATEMENT);

@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * Something that exists in the physical world and can be affected by the
 * world
 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
@@ -33,14 +33,14 @@ public interface Physical extends Environmental, Affectable
 	/**
 	 * Returns the displayText, but as seen by the given viewer.
 	 * Can differ from displayText() without being saved to the DB.
-	 * Display Texts are normally the way something appears in a 
+	 * Display Texts are normally the way something appears in a
 	 * room, or is the roomTitle of rooms.
 	 * @see Environmental#displayText()
 	 * @param viewerMob the mob viewing the physical thing
 	 * @return the displayText as seen by the viewer
 	 */
 	public String displayText(MOB viewerMob);
-	
+
 	/**
 	 * Returns the name, but as seen by the given viewer.
 	 * Can differ from name() without being saved to the DB.

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,8 @@ public class Take extends StdCommand
 	public Take(){}
 
 	private final String[] access={"TAKE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -83,7 +84,7 @@ public class Take extends StdCommand
 			boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 			if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-			
+
 			if((thingToGive.equalsIgnoreCase("qp"))
 			||(thingToGive.toUpperCase().endsWith(" QP"))
 			||(thingToGive.toUpperCase().endsWith(".QP")))
@@ -103,13 +104,13 @@ public class Take extends StdCommand
 				victim.setQuestPoint(victim.getQuestPoint()-numToTake);
 				return false;
 			}
-			
+
 			boolean doBugFix = true;
 			while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 			{
 				doBugFix=false;
 				Environmental giveThis=CMLib.english().bestPossibleGold(victim,null,thingToGive);
-				
+
 				if(giveThis!=null)
 				{
 					if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(victim,thingToGive))
@@ -172,9 +173,9 @@ public class Take extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

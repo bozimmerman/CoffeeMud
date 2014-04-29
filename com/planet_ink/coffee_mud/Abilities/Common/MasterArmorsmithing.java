@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2004 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
-	public String ID() { return "MasterArmorsmithing"; }
-	public String name(){ return "Master Armorsmithing";}
+	@Override public String ID() { return "MasterArmorsmithing"; }
+	@Override public String name(){ return "Master Armorsmithing";}
 	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	public String parametersFile(){ return "masterarmorsmith.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "masterarmorsmith.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.basePhyStats().level()<30)
@@ -57,7 +58,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 				{
 					final long flags=A.flags();
 					final int triggers=((TriggeredAffect) A).triggerMask();
-					if( CMath.bset( flags, Ability.FLAG_ADJUSTER ) 
+					if( CMath.bset( flags, Ability.FLAG_ADJUSTER )
 					&&  CMath.bset(triggers,TriggeredAffect.TRIGGER_WEAR_WIELD))
 						return false;
 				}
@@ -66,11 +67,12 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MovingRoom extends ActiveTicker
 {
-	public String ID(){return "MovingRoom";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
+	@Override public String ID(){return "MovingRoom";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS;}
 
 	public Vector listOfRooms=new Vector();
 	protected List<String> roomInfos=new Vector();
@@ -75,11 +75,13 @@ public class MovingRoom extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "rail mobility";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		String myParms=newParms;
@@ -88,7 +90,7 @@ public class MovingRoom extends ActiveTicker
 		messageInfo=new Vector();
 		mapInfo=new Vector();
 		stubs=new Vector();
-		
+
 		char c=';';
 		int x=myParms.indexOf(c);
 		if(x<0){ c='/'; x=myParms.indexOf(c);}
@@ -240,6 +242,7 @@ public class MovingRoom extends ActiveTicker
 				busstopRoom2.setDescription(busstopRoom2.description().substring(0,i).trim());
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Vector normalVec = (Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
@@ -287,7 +290,7 @@ public class MovingRoom extends ActiveTicker
 					((PhysicalAgent)ticking).delBehavior(this);
 				return false;
 			}
-			
+
 			String currentStopS=(String)listOfRooms.elementAt(currentStop);
 			String nextStopS=(String)listOfRooms.elementAt(nextStop);
 			if(ticking instanceof Room)
@@ -305,8 +308,8 @@ public class MovingRoom extends ActiveTicker
 					{
 						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
 						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
-						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null) 
-								&& ((currentStop==0) 
+						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null)
+								&& ((currentStop==0)
 										|| (currentStop==(listOfRooms.size()-1))))
 						||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null))
 						{
@@ -348,8 +351,8 @@ public class MovingRoom extends ActiveTicker
 						// departing, not reversed
 						currentStopRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_OUTSIDEDEPARTMSG).toString(),nextStopRoom));
 						subwayRoom.showHappens(CMMsg.MSG_OK_ACTION,fixOutputString(normalVec.elementAt(CODE0_INSIDEDEPARTMSG).toString(),nextStopRoom));
-						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null) 
-								&& ((currentStop==0) 
+						if (((subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null)
+								&& ((currentStop==0)
 										|| (currentStop==(listOfRooms.size()-1))))
 						||(subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null))
 						{

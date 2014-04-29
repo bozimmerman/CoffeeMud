@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Trapper extends Thief
 {
-	public String ID(){return "Trapper";}
-	public String name(){return "Trapper";}
+	@Override public String ID(){return "Trapper";}
+	@Override public String name(){return "Trapper";}
 
 	public Trapper()
 	{
@@ -41,6 +41,7 @@ public class Trapper extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -134,13 +135,15 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-	public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
-	public String getOtherLimitsDesc(){return "Sneak and Hide attempts will fail outside of the wild.";}
+	@Override public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
+	@Override public String getOtherLimitsDesc(){return "Sneak and Hide attempts will fail outside of the wild.";}
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -153,7 +156,7 @@ public class Trapper extends Thief
 		&&(myChar.isMine(msg.tool())))
 		{
 			// animal trade must be here because execute of trade kills the mob object
-			// also, an add trailer is done, which only hits if this msg is not cancelled, 
+			// also, an add trailer is done, which only hits if this msg is not cancelled,
 			// so ALL GOOD
 			if((msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
 			&&(msg.value()<0)
@@ -205,13 +208,13 @@ public class Trapper extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 }

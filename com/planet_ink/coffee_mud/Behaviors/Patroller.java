@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,9 +40,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Patroller extends ActiveTicker
 {
-	public String ID(){return "Patroller";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS;}
-	public long flags(){return Behavior.FLAG_MOBILITY;}
+	@Override public String ID(){return "Patroller";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS;}
+	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
 
 	protected int step=0;
 	protected int diameter=20;
@@ -54,9 +54,10 @@ public class Patroller extends ActiveTicker
 	protected WeakReference<Room> startRoom=new WeakReference<Room>(null);
 
 	protected volatile int rideCheckCt = 0;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "regular patrolling";
 	}
 
@@ -68,6 +69,7 @@ public class Patroller extends ActiveTicker
 		diameter=20;
 		tickReset();
 	}
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -83,7 +85,7 @@ public class Patroller extends ActiveTicker
 	{
 		if(cachedSteps != null)
 			return cachedSteps;
-		
+
 		Vector<String> V=new Vector<String>();
 		String path=getParms().trim();
 		int x=path.indexOf(';');
@@ -103,7 +105,7 @@ public class Patroller extends ActiveTicker
 		if(V.size()>1)
 			for(int i=V.size()-1;i>=0;i--)
 			{
-				s=(String)V.elementAt(i);
+				s=V.elementAt(i);
 				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT")) break;
 				int dir=Directions.getGoodDirectionCode(s);
 				if(dir>=0)
@@ -117,6 +119,7 @@ public class Patroller extends ActiveTicker
 		return cachedSteps;
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((rideOnly)
@@ -135,13 +138,14 @@ public class Patroller extends ActiveTicker
 		}
 		return super.okMessage(host,msg);
 	}
-	
-	public int getTickStatus(){	return tickStatus;}
+
+	@Override public int getTickStatus(){	return tickStatus;}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((startRoom.get()==null)&&(ticking instanceof Physical))
 			startRoom=new WeakReference<Room>(CMLib.map().roomLocation((Physical)ticking));
 		if(canAct(ticking,tickID))
@@ -153,10 +157,10 @@ public class Patroller extends ActiveTicker
 				for(int i=0;i<((Rideable)ticking).numRiders();i++)
 					riders.addElement(((Rideable)ticking).fetchRider(i));
 			}
-			
+
 			tickStatus=Tickable.STATUS_START;
 			Room thisRoom=null;
-			if(ticking instanceof MOB) 
+			if(ticking instanceof MOB)
 				thisRoom=((MOB)ticking).location();
 			else
 			if((ticking instanceof Item)
@@ -166,7 +170,7 @@ public class Patroller extends ActiveTicker
 			if(thisRoom instanceof GridLocale)
 			{
 				Room R=((GridLocale)thisRoom).getRandomGridChild();
-				if(R!=null) 
+				if(R!=null)
 				{
 					if(ticking instanceof Item)
 						R.moveItemTo((Item)ticking);
@@ -180,12 +184,12 @@ public class Patroller extends ActiveTicker
 				}
 				thisRoom=R;
 			}
-			if(thisRoom==null) 
+			if(thisRoom==null)
 			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
-			
+
 			tickStatus=Tickable.STATUS_MISC+0;
 			if(!rideOk)
 			{
@@ -197,7 +201,7 @@ public class Patroller extends ActiveTicker
 				}
 			}
 			tickStatus=Tickable.STATUS_MISC+1;
-			
+
 			Room thatRoom=null;
 			List<String> steps=getSteps();
 			if(steps.size()==0)
@@ -233,7 +237,7 @@ public class Patroller extends ActiveTicker
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}
-						
+
 				tickStatus=Tickable.STATUS_MISC+4;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -284,7 +288,7 @@ public class Patroller extends ActiveTicker
 						||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_AIR))
 						||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
 					boolean waterOk=((ticking instanceof Physical)&&CMLib.flags().isWaterWorthy((Physical)ticking));
-					
+
 					tickStatus=Tickable.STATUS_MISC+6;
 					if(R instanceof GridLocale)
 					{
@@ -311,7 +315,7 @@ public class Patroller extends ActiveTicker
 					if(correction!=null)
 					{
 						direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
-						if(direction<0) 
+						if(direction<0)
 							correction=null;
 						else
 							thatRoom=thisRoom.getRoomInDir(direction);
@@ -364,7 +368,7 @@ public class Patroller extends ActiveTicker
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
-			
+
 			tickStatus=Tickable.STATUS_MISC+14;
 			Set<MOB> mobsHere=CMLib.players().getPlayersHere(thisRoom);
 			if(mobsHere.size()>0)
@@ -380,7 +384,7 @@ public class Patroller extends ActiveTicker
 					}
 				}
 			}
-			
+
 			tickStatus=Tickable.STATUS_MISC+15;
 			if(ticking instanceof Item)
 			{
@@ -399,12 +403,12 @@ public class Patroller extends ActiveTicker
 							MOB mob=(MOB)R;
 							mob.setRiding((Rideable)ticking);
 							// overboard check
-							if(mob.isMonster() 
+							if(mob.isMonster()
 							&& mob.isSavable()
 							&& (mob.location() != thisRoom)
 							&& CMLib.flags().isInTheGame(mob,true))
 								thisRoom.bringMobHere(mob,false);
-							
+
 							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							try
@@ -417,31 +421,31 @@ public class Patroller extends ActiveTicker
 								}
 								else
 								if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
-								{    
+								{
 									tickStatus=Tickable.STATUS_NOT;
 									return true;
 								}
 								else
 								if(!enterMsg.target().okMessage(mob,enterMsg))
-								{    
+								{
 									tickStatus=Tickable.STATUS_NOT;
 									return true;
 								}
 								else
 								if(!mob.okMessage(mob,enterMsg))
-								{    
+								{
 									tickStatus=Tickable.STATUS_NOT;
 									return true;
 								}
 							}
-							finally 
+							finally
 							{
 								rideCheckCt--;
 							}
 						}
 					}
 				}
-				
+
 				tickStatus=Tickable.STATUS_MISC+17;
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 				tickStatus=Tickable.STATUS_MISC+18;
@@ -522,7 +526,7 @@ public class Patroller extends ActiveTicker
 					}
 				}
 				if(!E.isOpen())
-				{    
+				{
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}

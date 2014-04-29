@@ -34,10 +34,11 @@ import java.util.*;
 
 public class Paladin_PoisonImmunity extends PaladinSkill
 {
-	public String ID() { return "Paladin_PoisonImmunity"; }
-	public String name(){ return "Poison Immunity";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public String ID() { return "Paladin_PoisonImmunity"; }
+	@Override public String name(){ return "Poison Immunity";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -52,6 +53,7 @@ public class Paladin_PoisonImmunity extends PaladinSkill
 			return false;
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

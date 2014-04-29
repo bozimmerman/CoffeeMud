@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Purist extends Cleric
 {
-	public String ID(){return "Purist";}
-	public String name(){return "Purist";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
+	@Override public String ID(){return "Purist";}
+	@Override public String name(){return "Purist";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 0;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 0;}
 
 	public Purist()
 	{
@@ -51,6 +51,7 @@ public class Purist extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -145,8 +146,9 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_AuraIntolerance",false);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -158,17 +160,18 @@ public class Purist extends Cleric
 	private final String[] raceRequiredList=new String[]{
 		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
-	public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
+	@Override public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -198,7 +201,7 @@ public class Purist extends Cleric
 				return false;
 			}
 		}
-		
+
 		if((msg.amITarget(myChar))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
@@ -228,6 +231,7 @@ public class Purist extends Cleric
 		return true;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -238,5 +242,5 @@ public class Purist extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2004 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,23 +33,24 @@ import java.util.*;
 */
 public class Wemic extends StdRace
 {
-	public String ID(){	return "Wemic"; }
-	public String name(){ return "Wemic"; }
-	public int shortestMale(){return 60;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 350;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Wearable.WORN_WAIST|Wearable.WORN_LEGS|Wearable.WORN_FEET;}
-	public String racialCategory(){return "Feline";}
+	@Override public String ID(){	return "Wemic"; }
+	@Override public String name(){ return "Wemic"; }
+	@Override public int shortestMale(){return 60;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 350;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return Wearable.WORN_WAIST|Wearable.WORN_LEGS|Wearable.WORN_FEET;}
+	@Override public String racialCategory(){return "Feline";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -57,6 +58,7 @@ public class Wemic extends StdRace
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-2);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -70,6 +72,7 @@ public class Wemic extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -106,6 +109,7 @@ public class Wemic extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,39 +35,41 @@ import java.util.*;
 */
 public class Bird extends StdRace
 {
-	public String ID(){	return "Bird"; }
-	public String name(){ return "Bird"; }
-	public int shortestMale(){return 3;}
-	public int shortestFemale(){return 3;}
-	public int heightVariance(){return 2;}
-	public int lightestWeight(){return 2;}
-	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Avian";}
+	@Override public String ID(){	return "Bird"; }
+	@Override public String name(){ return "Bird"; }
+	@Override public int shortestMale(){return 3;}
+	@Override public int shortestFemale(){return 3;}
+	@Override public int heightVariance(){return 2;}
+	@Override public int lightestWeight(){return 2;}
+	@Override public int weightVariance(){return 5;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,0 ,1 ,2 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,5,5,6,7,8};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(!CMLib.flags().isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -75,14 +77,17 @@ public class Bird extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,12);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "flies in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "flies";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -96,6 +101,7 @@ public class Bird extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -105,11 +111,12 @@ public class Bird extends StdRace
 				return name().toLowerCase()+" chick";
 			case Race.AGE_CHILD:
 				return "young "+name().toLowerCase();
-			default : 
+			default :
 				return super.makeMobName(gender, age);
 		}
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -146,6 +153,7 @@ public class Bird extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

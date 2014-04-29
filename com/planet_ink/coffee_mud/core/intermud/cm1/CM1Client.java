@@ -22,7 +22,7 @@ import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,26 +37,26 @@ import java.nio.channels.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CM1Client 
+public class CM1Client
 {
 	private String 			host;
 	private int 			port;
 	private Socket 			sock=null;
 	private BufferedReader	br=null;
 	private BufferedWriter 	bw=null;
-	
+
 	public CM1Client(String host, int port)
 	{
 		this.host=host;
 		this.port=port;
 	}
-	
+
 	public final static int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return 0;}
 	}
-	
+
 	public synchronized List<String> transactMessages(String command)
 	{
 		LinkedList<String> list=new LinkedList<String>();
@@ -104,18 +104,18 @@ public class CM1Client
 		}
 		catch(Exception e)
 		{
-			
+
 		}
 		return list;
 	}
-	
+
 	public synchronized String transact(String command)
 	{
 		List<String> list=transactMessages(command);
 		if(list.size()==0) return "";
 		return list.get(0);
 	}
-	
+
 	public synchronized boolean connect()
 	{
 		try

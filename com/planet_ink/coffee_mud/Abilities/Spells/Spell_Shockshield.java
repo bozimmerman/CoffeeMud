@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Shockshield extends Spell
 {
-	public String ID() { return "Spell_Shockshield"; }
-	public String name(){return "Shockshield";}
-	public String displayText(){return "(Shockshield)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_AIRBASED;}
+	@Override public String ID() { return "Spell_Shockshield"; }
+	@Override public String name(){return "Shockshield";}
+	@Override public String displayText(){return "(Shockshield)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_AIRBASED;}
 	final static String msgStr="The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!";
 	protected long oncePerTickTime=0;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Spell_Shockshield extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> electric shield fizzles out.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -97,6 +99,7 @@ public class Spell_Shockshield extends Spell
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -105,6 +108,7 @@ public class Spell_Shockshield extends Spell
 		affectableStats.setArmor(affectableStats.armor()-(getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

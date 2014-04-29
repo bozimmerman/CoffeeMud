@@ -35,22 +35,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Stoneskin extends Spell
 {
-	public String ID() { return "Spell_Stoneskin"; }
-	public String name(){return "Stoneskin";}
-	public String displayText(){return "(Stoneskin)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_Stoneskin"; }
+	@Override public String name(){return "Stoneskin";}
+	@Override public String displayText(){return "(Stoneskin)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	int HitsRemaining=0;
 	int oldHP=-1;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -65,6 +67,7 @@ public class Spell_Stoneskin extends Spell
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -88,6 +91,7 @@ public class Spell_Stoneskin extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

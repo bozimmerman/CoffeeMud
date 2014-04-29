@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SummonArmy extends Spell
 {
-	public String ID() { return "Spell_SummonArmy"; }
-	public String name(){return "Summon Army";}
-	public String displayText(){return "(Monster Summoning)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_SummonArmy"; }
+	@Override public String name(){return "Summon Army";}
+	@Override public String displayText(){return "(Monster Summoning)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean hasFought=false;
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -55,6 +56,7 @@ public class Spell_SummonArmy extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -67,7 +69,8 @@ public class Spell_SummonArmy extends Spell
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)
@@ -85,6 +88,7 @@ public class Spell_SummonArmy extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

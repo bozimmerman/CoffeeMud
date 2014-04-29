@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 */
 public class Play_Accompaniment extends Play
 {
-	public String ID() { return "Play_Accompaniment"; }
-	public String name(){ return "Accompaniment";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String ID() { return "Play_Accompaniment"; }
+	@Override public String name(){ return "Accompaniment";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 
+	@Override
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
@@ -49,6 +50,7 @@ public class Play_Accompaniment extends Play
 			stats.setLevel(stats.level()+lvl);
 		}
 	}
+	@Override
 	public void affectCharStats(MOB E, CharStats stats)
 	{
 		super.affectCharStats(E,stats);
@@ -59,7 +61,8 @@ public class Play_Accompaniment extends Play
 			stats.setClassLevel(stats.getCurrentClass(),stats.getCurrentClassLevel()+lvl);
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -69,5 +72,5 @@ public class Play_Accompaniment extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 }

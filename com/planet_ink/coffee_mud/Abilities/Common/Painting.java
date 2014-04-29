@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,15 +38,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Painting extends CommonSkill
 {
-	public String ID() { return "Painting"; }
-	public String name(){ return "Painting";}
+	@Override public String ID() { return "Painting"; }
+	@Override public String name(){ return "Painting";}
 	private static final String[] triggerStrings = {"PAINT","PAINTING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	protected Item building=null;
 	protected boolean messedUp=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -57,6 +58,7 @@ public class Painting extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -77,6 +79,7 @@ public class Painting extends CommonSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
@@ -112,7 +115,7 @@ public class Painting extends CommonSkill
 			else
 				break;
 		}
-		
+
 		String str=CMParms.combine(commands,0);
 		building=null;
 		messedUp=false;
@@ -285,14 +288,14 @@ public class Painting extends CommonSkill
 				return true;
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 		{
 			building.destroy();
 			building=null;
 			return false;
 		}
-		
+
 		String startStr="<S-NAME> start(s) painting "+building.name()+".";
 		displayText="You are painting "+building.name();
 		verb="painting "+building.name();

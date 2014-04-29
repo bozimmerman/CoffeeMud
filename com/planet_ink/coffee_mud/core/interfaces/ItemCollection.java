@@ -37,20 +37,20 @@ public interface ItemCollection extends CMObject
 	 * @param item the item to add
 	 */
 	public void addItem(Item item);
-	
+
 	/**
 	 * Removes the item from this possessor.
 	 * @param item the item to remove
 	 */
 	public void delItem(Item item);
-	
+
 	/**
 	 * Returns the total number of items at this possessor, regardless
 	 * of container status.
 	 * @return the total number of items
 	 */
 	public int numItems();
-	
+
 	/**
 	 * Returns the item at the given index, regardless of container status,
 	 * visibility, or other modifiers.
@@ -58,7 +58,7 @@ public interface ItemCollection extends CMObject
 	 * @return the item at that index, or null if its not found
 	 */
 	public Item getItem(int i);
-	
+
 	/**
 	 * Returns a random item in this collection, or null
 	 * @return a random item in this collection, or null
@@ -70,7 +70,7 @@ public interface ItemCollection extends CMObject
 	 * @return enumeration of all the items at this possessor.
 	 */
 	public Enumeration<Item> items();
-	
+
 	/**
 	 * Returns the item in the given container that matches the
 	 * given itemID, whether by full name, description, class ID,
@@ -81,8 +81,8 @@ public interface ItemCollection extends CMObject
 	 * @return the item found, or null
 	 */
 	public Item findItem(Item goodLocation, String itemID);
-	
-	
+
+
 	/**
 	 * Returns the item in this possessor that matches the
 	 * given itemID, whether by full name, description, class ID,
@@ -92,28 +92,28 @@ public interface ItemCollection extends CMObject
 	 * @return the item found, or null
 	 */
 	public Item findItem(String itemID);
-	
+
 	/**
 	 * Returns all items in the given container that matches the
 	 * given itemID, whether by full name, description, class ID,
 	 * or partial name (if no fuller names are found).
-	 * 
+	 *
 	 * @param goodLocation the container to look in, or null for none
 	 * @param itemID the name or partial name of the item to fetch
 	 * @return the item found, or null
 	 */
 	public List<Item> findItems(Item goodLocation, String itemID);
-	
+
 	/**
 	 * Returns all items in this possessor that matches the
 	 * given itemID, whether by full name, description, class ID,
 	 * or partial name (if no fuller names are found).
-	 * 
+	 *
 	 * @param itemID the name or partial name of the item to fetch
 	 * @return the item found, or null
 	 */
 	public List<Item> findItems(String itemID);
-	
+
 	/**
 	 * Returns whether the given item is in this possessors list.
 	 * @param item the item to check

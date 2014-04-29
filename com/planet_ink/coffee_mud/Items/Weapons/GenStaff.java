@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenStaff extends GenWeapon implements Wand
 {
-	public String ID(){    return "GenStaff";}
+	@Override public String ID(){    return "GenStaff";}
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public GenStaff()
@@ -64,17 +64,19 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	protected int maxUses=Integer.MAX_VALUE;
-	public int maxUses(){return maxUses;}
-	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
-	
-	public boolean isGeneric(){return true;}
+	@Override public int maxUses(){return maxUses;}
+	@Override public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
 
+	@Override public boolean isGeneric(){return true;}
+
+	@Override
 	public int value()
 	{
 		if(usesRemaining()<=0)
 			return 0;
 		return super.value();
 	}
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		readableText="";
@@ -82,9 +84,10 @@ public class GenStaff extends GenWeapon implements Wand
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
 	}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
 
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
@@ -94,26 +97,31 @@ public class GenStaff extends GenWeapon implements Wand
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
+	@Override
 	public Ability getSpell()
 	{
 		return CMClass.getAbility(readableText());
 	}
 
+	@Override
 	public String magicWord()
 	{
 		return secretWord;
 	}
-	
+
+	@Override
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
+	@Override
 	public boolean checkWave(MOB mob, String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

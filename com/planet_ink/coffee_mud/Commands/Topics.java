@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Topics extends ATopics
 	public Topics(){}
 
 	private final String[] access={"TOPICS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,9 +53,9 @@ public class Topics extends ATopics
 		doTopics(mob,helpFile,"HELP", "PLAYER TOPICS");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
-	public boolean securityCheck(MOB mob){return true;}
+	@Override public boolean canBeOrdered(){return true;}
+
+
+	@Override public boolean securityCheck(MOB mob){return true;}
 }

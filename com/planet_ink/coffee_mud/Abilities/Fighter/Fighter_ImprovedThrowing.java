@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,17 @@ import java.util.*;
 
 public class Fighter_ImprovedThrowing extends FighterSkill
 {
-	public String ID() { return "Fighter_ImprovedThrowing"; }
-	public String name(){ return "Improved Throwing";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Fighter_ImprovedThrowing"; }
+	@Override public String name(){ return "Improved Throwing";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -60,6 +61,7 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 	}
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

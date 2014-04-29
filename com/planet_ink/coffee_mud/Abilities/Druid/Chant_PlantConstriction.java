@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantConstriction extends Chant
 {
-	public String ID() { return "Chant_PlantConstriction"; }
-	public String name(){return "Plant Constriction";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public String displayText(){return "(Plant Constriction)";}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public boolean bubbleAffect(){return true;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_PlantConstriction"; }
+	@Override public String name(){return "Plant Constriction";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public String displayText(){return "(Plant Constriction)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean bubbleAffect(){return true;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public void unInvoke()
 	{
 		Item I=null;
@@ -67,6 +68,7 @@ public class Chant_PlantConstriction extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Item I=null;
@@ -84,6 +86,7 @@ public class Chant_PlantConstriction extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -101,6 +104,7 @@ public class Chant_PlantConstriction extends Chant
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
@@ -109,6 +113,7 @@ public class Chant_PlantConstriction extends Chant
 			affectableStats.setSpeed(affectableStats.speed()/2.0);
 	}
 
+	@Override
 	public void affectCharState(MOB aff, CharState affectableState)
 	{
 		if((affected instanceof Item)
@@ -116,7 +121,8 @@ public class Chant_PlantConstriction extends Chant
 		&&((Item)affected).amWearingAt(Wearable.WORN_LEGS))
 			affectableState.setMovement(affectableState.getMovement()/2);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -138,6 +144,7 @@ public class Chant_PlantConstriction extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

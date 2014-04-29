@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class MobileGoodGuardian extends Mobile
 {
-	public String ID(){return "MobileGoodGuardian";}
+	@Override public String ID(){return "MobileGoodGuardian";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "wandering protectiveness against aggression, evilness, or thieflyness";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC+0;

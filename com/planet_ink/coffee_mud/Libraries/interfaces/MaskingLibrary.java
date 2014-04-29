@@ -58,7 +58,7 @@ public interface MaskingLibrary extends CMLibrary
 		public CompiledZapperMaskEntry(final int type, final Object[] parms)
 		{	maskType=type;this.parms=parms;}
 	}
-	
+
 	public static class CompiledZapperMask
 	{
 		public final boolean[] flags;
@@ -71,7 +71,7 @@ public interface MaskingLibrary extends CMLibrary
 		public static final CompiledZapperMask EMPTY()
 		{	return new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0],true); }
 	}
-	
+
 	public static class SavedClass
 	{
 		public final CharClass C;
@@ -100,7 +100,7 @@ public interface MaskingLibrary extends CMLibrary
 			minusBaseClassStart="-"+baseClassStart;
 		}
 	}
-	
+
 	public static class SavedRace
 	{
 		public final Race R;
@@ -129,7 +129,7 @@ public interface MaskingLibrary extends CMLibrary
 			minusCatNameStart="-"+catNameStart;
 		}
 	}
-	
+
 	public final String DEFAULT_MASK_HELP =
 		"+SYSOP (allow archons to bypass the rules)  <BR>"
 		+"-SYSOP (always <WORD> archons)  <BR>"

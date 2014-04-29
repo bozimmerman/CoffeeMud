@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_FireHealing extends Prayer
 {
-	public String ID() { return "Prayer_FireHealing"; }
-	public String name(){ return "Fire Healing";}
-	public String displayText(){ return "(Fire Healing)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Prayer_FireHealing"; }
+	@Override public String name(){ return "Fire Healing";}
+	@Override public String displayText(){ return "(Fire Healing)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Prayer_FireHealing extends Prayer
 			mob.tell("The aura of fire healing around you fades.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -79,6 +81,7 @@ public class Prayer_FireHealing extends Prayer
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DivineBeauty extends Spell
 {
-	public String ID() { return "Spell_DivineBeauty"; }
-	public String name(){return "Divine Beauty";}
-	public String displayText(){return "(Divine Beauty)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public String ID() { return "Spell_DivineBeauty"; }
+	@Override public String name(){return "Divine Beauty";}
+	@Override public String displayText(){return "(Divine Beauty)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -52,6 +53,7 @@ public class Spell_DivineBeauty extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -64,6 +66,7 @@ public class Spell_DivineBeauty extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -78,6 +81,7 @@ public class Spell_DivineBeauty extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

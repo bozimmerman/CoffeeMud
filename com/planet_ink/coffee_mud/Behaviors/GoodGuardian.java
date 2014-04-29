@@ -34,12 +34,13 @@ import java.util.*;
 */
 public class GoodGuardian extends StdBehavior
 {
-	public String ID(){return "GoodGuardian";}
+	@Override public String ID(){return "GoodGuardian";}
 
 	protected long deepBreath=System.currentTimeMillis();
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "protective against aggression, evilness, or thieflyness";
 	}
 
@@ -113,6 +114,7 @@ public class GoodGuardian extends StdBehavior
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

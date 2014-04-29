@@ -36,9 +36,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdTitle extends StdItem implements LandTitle
 {
-	public String ID(){    return "StdTitle";}
-	public String displayText() {return "an official looking document sits here";}
-	public int baseGoldValue() {return getPrice();}
+	@Override public String ID(){    return "StdTitle";}
+	@Override public String displayText() {return "an official looking document sits here";}
+	@Override public int baseGoldValue() {return getPrice();}
+	@Override
 	public int value()
 	{
 		if(name().indexOf("(Copy)")>=0)
@@ -60,13 +61,15 @@ public class StdTitle extends StdItem implements LandTitle
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean allowsExpansionConstruction()
-	{ 
+	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)    return false;
 		return A.allowsExpansionConstruction();
 	}
 
+	@Override
 	public int getPrice()
 	{
 		LandTitle A=fetchALandTitle();
@@ -74,6 +77,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.getPrice()+A.backTaxes();
 	}
 
+	@Override
 	public void setPrice(int price)
 	{
 		LandTitle A=fetchALandTitle();
@@ -82,6 +86,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.updateTitle();
 	}
 
+	@Override
 	public void setBackTaxes(int amount)
 	{
 		LandTitle A=fetchALandTitle();
@@ -89,12 +94,14 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setBackTaxes(amount);
 		A.updateTitle();
 	}
+	@Override
 	public int backTaxes()
 	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)    return 0;
 		return A.backTaxes();
 	}
+	@Override
 	public boolean rentalProperty()
 	{
 		LandTitle A=fetchALandTitle();
@@ -102,12 +109,14 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.rentalProperty();
 	}
 
+	@Override
 	public String getUniqueLotID()
-	{ 
+	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)    return "";
 		return A.getUniqueLotID();
 	}
+	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
 		LandTitle A=fetchALandTitle();
@@ -116,6 +125,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.updateTitle();
 	}
 
+	@Override
 	public CMObject getOwnerObject()
 	{
 		LandTitle A=fetchALandTitle();
@@ -126,13 +136,15 @@ public class StdTitle extends StdItem implements LandTitle
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	
+
+	@Override
 	public String getOwnerName()
 	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)    return "";
 		return A.getOwnerName();
 	}
+	@Override
 	public void setOwnerName(String owner)
 	{
 		LandTitle A=fetchALandTitle();
@@ -149,6 +161,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return null;
 	}
 
+	@Override
 	public String landPropertyID()
 	{
 		return text();
@@ -167,12 +180,14 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 	}
 
+	@Override
 	public void setLandPropertyID(String landID)
 	{
 		setMiscText(landID);
 		updateTitleName();
 	}
 
+	@Override
 	public void updateLot(List optPlayerList)
 	{
 		List<Room> V=getAllTitledRooms();
@@ -184,12 +199,14 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 	}
 
+	@Override
 	public void updateTitle()
 	{
 		LandTitle T=fetchALandTitle();
 		if(T!=null) T.updateTitle();
 	}
 
+	@Override
 	public List<Room> getConnectedPropertyRooms()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
@@ -206,7 +223,8 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 		return new Vector();
 	}
-	
+
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
@@ -224,6 +242,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return new Vector();
 	}
 
+	@Override
 	public String getTitleID()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
@@ -241,8 +260,9 @@ public class StdTitle extends StdItem implements LandTitle
 		return "";
 	}
 
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_WRITE)
@@ -326,6 +346,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this))
@@ -453,7 +474,7 @@ public class StdTitle extends StdItem implements LandTitle
 					if(clanPair!=null)
 						newOwnerName=clanPair.first.clanID();
 				}
-				
+
 				A.setOwnerName(newOwnerName);
 				if(A.getOwnerName().length()>0)
 				{

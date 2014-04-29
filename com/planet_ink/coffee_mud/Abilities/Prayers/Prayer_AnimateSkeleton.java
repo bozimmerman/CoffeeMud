@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_AnimateSkeleton extends Prayer
 {
-	public String ID() { return "Prayer_AnimateSkeleton"; }
-	public String name(){ return "Animate Skeleton";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_AnimateSkeleton"; }
+	@Override public String name(){ return "Animate Skeleton";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 
 	public void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
@@ -114,6 +114,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		R.recoverRoomStats();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

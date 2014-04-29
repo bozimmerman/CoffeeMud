@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdPill extends StdFood implements Pill
 {
-	public String ID(){	return "StdPill";}
+	@Override public String ID(){	return "StdPill";}
 	protected Ability theSpell;
 
 	public StdPill()
@@ -56,11 +56,13 @@ public class StdPill extends StdFood implements Pill
 
 
 
+	@Override
 	public String secretIdentity()
 	{
 		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
 	}
 
+	@Override
 	public void eatIfAble(MOB mob)
 	{
 		List<Ability> spells=getSpells();
@@ -82,10 +84,11 @@ public class StdPill extends StdFood implements Pill
 		}
 	}
 
+	@Override
 	public String getSpellList()
 	{ return miscText;}
-	public void setSpellList(String list){miscText=list;}
-	
+	@Override public void setSpellList(String list){miscText=list;}
+
 	public static Vector getSpells(SpellHolder me)
 	{
 		Vector theSpells=new Vector();
@@ -112,9 +115,10 @@ public class StdPill extends StdFood implements Pill
 		me.recoverPhyStats();
 		return theSpells;
 	}
-	
-	public List<Ability> getSpells(){ return getSpells(this);}
 
+	@Override public List<Ability> getSpells(){ return getSpells(this);}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

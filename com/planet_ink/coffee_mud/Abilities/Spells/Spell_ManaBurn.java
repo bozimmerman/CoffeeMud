@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,27 +35,30 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ManaBurn extends Spell
 {
-	public String ID() { return "Spell_ManaBurn"; }
-	public String name(){return "Mana Burn";}
-	public String displayText(){return "(Mana Burn)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_ManaBurn"; }
+	@Override public String name(){return "Mana Burn";}
+	@Override public String displayText(){return "(Mana Burn)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	int curMana=0;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		adjustMana();
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		adjustMana();
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		adjustMana();
@@ -77,6 +80,7 @@ public class Spell_ManaBurn extends Spell
 
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -89,6 +93,7 @@ public class Spell_ManaBurn extends Spell
 		mob.tell("You feel less drained.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -101,7 +106,8 @@ public class Spell_ManaBurn extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

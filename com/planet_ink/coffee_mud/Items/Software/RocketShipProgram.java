@@ -21,7 +21,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,14 @@ import java.util.*;
 */
 public class RocketShipProgram extends GenShipProgram
 {
-	public String ID(){	return "RocketShipProgram";}
-	
+	@Override public String ID(){	return "RocketShipProgram";}
+
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
-	
+
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
-	
+
 	protected volatile List<ShipEngine> engines=null;
-	
+
 	public RocketShipProgram()
 	{
 		super();
@@ -58,11 +58,11 @@ public class RocketShipProgram extends GenShipProgram
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
-	
+
 	@Override public String getParentMenu() { return ""; }
-	
+
 	@Override public String getInternalName() { return "SHIP";}
-	
+
 	protected String buildActivationMenu(List<ShipEngine> engines)
 	{
 		StringBuilder str=new StringBuilder();
@@ -98,7 +98,7 @@ public class RocketShipProgram extends GenShipProgram
 						orbitingPlanet=orb; // since they are sorted, this would be the nearest.
 					break;
 				}
-			
+
 			str.append("^H").append(CMStrings.padRight("Speed",10));
 			str.append("^N").append(CMStrings.padRight(Long.toString(ship.speed()),20));
 			str.append("^H").append(CMStrings.padRight("Direction",10));
@@ -125,7 +125,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("\n\r");
 		}
 		str.append("^N\n\r");
-		
+
 		if((engines==null)||(engines.size()==0))
 			str.append(noActivationMenu);
 		else
@@ -151,7 +151,8 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		return str.toString();
 	}
-	
+
+	@Override
 	public String getCurrentScreenDisplay()
 	{
 		return this.getActivationMenu();
@@ -170,22 +171,22 @@ public class RocketShipProgram extends GenShipProgram
 				for(Electronics E : electronics)
 					if(E instanceof ShipComponent.ShipEngine)
 						engines.add((ShipComponent.ShipEngine)E);
-				
+
 			}
 		}
 		return engines;
 	}
-	
-	@Override public boolean isActivationString(String word) 
-	{ 
-		return isCommandString(word,false); 
+
+	@Override public boolean isActivationString(String word)
+	{
+		return isCommandString(word,false);
 	}
-	
-	@Override public boolean isDeActivationString(String word) 
-	{ 
-		return isCommandString(word,false); 
+
+	@Override public boolean isDeActivationString(String word)
+	{
+		return isCommandString(word,false);
 	}
-	
+
 	protected ShipEngine findEngineByName(String name)
 	{
 		List<ShipEngine> engines=getEngines();
@@ -206,7 +207,7 @@ public class RocketShipProgram extends GenShipProgram
 			E=(ShipEngine)CMLib.english().fetchEnvironmental(engines, name, false);
 		return E;
 	}
-	
+
 	@Override public boolean isCommandString(String word, boolean isActive)
 	{
 		Vector<String> parsed=CMParms.parse(word);
@@ -227,22 +228,22 @@ public class RocketShipProgram extends GenShipProgram
 	{
 		return true;
 	}
-	
+
 	@Override public boolean checkDeactivate(MOB mob, String message)
 	{
 		return true;
 	}
-	
+
 	@Override public boolean checkTyping(MOB mob, String message)
 	{
 		return true;
 	}
-	
+
 	@Override public boolean checkPowerCurrent(int value)
 	{
 		return true;
 	}
-	
+
 	@Override public void onTyping(MOB mob, String message)
 	{
 		synchronized(this)
@@ -326,12 +327,14 @@ public class RocketShipProgram extends GenShipProgram
 				E.executeMsg(mob, msg);
 		}
 	}
-	
+
+	@Override
 	public void onActivate(MOB mob, String message)
 	{
 		onTyping(mob,message);
 	}
-	
+
+	@Override
 	public void onDeactivate(MOB mob, String message)
 	{
 		Vector<String> parsed=CMParms.parse(message);
@@ -365,7 +368,7 @@ public class RocketShipProgram extends GenShipProgram
 			E.executeMsg(mob, msg);
 		return;
 	}
-	
+
 	@Override public void onPowerCurrent(int value)
 	{
 		if(System.currentTimeMillis()>nextPowerCycleTmr)
@@ -374,7 +377,8 @@ public class RocketShipProgram extends GenShipProgram
 			nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))

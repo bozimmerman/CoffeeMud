@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,8 @@ public class StdTickClient implements TickClient
 		clientObject=newClientObject;
 		tickID=newTickID;
 	}
-	
+
+	@Override
 	public String getName()
 	{
 		if(clientObject!=null)
@@ -48,28 +49,33 @@ public class StdTickClient implements TickClient
 		return "?";
 	}
 
-	
-	public final Tickable getClientObject() 
+
+	@Override
+	public final Tickable getClientObject()
 	{
 		return clientObject;
 	}
-	
+
+	@Override
 	public final int getTickID()
 	{
 		return tickID;
 	}
 
-	public int getTotalTickDown() 
-	{ 
-		return reTickDown; 
+	@Override
+	public int getTotalTickDown()
+	{
+		return reTickDown;
 	}
-	
-	public int getCurrentTickDown() 
-	{ 
-		return tickDown; 
+
+	@Override
+	public int getCurrentTickDown()
+	{
+		return tickDown;
 	}
-	
-	public String getStatus() 
+
+	@Override
+	public String getStatus()
 	{
 		if(!isAwake())
 			return "Sleeping";
@@ -79,27 +85,31 @@ public class StdTickClient implements TickClient
 		if(T==null)
 			return "Awake";
 		return "Awake ("+T.getTickStatus()+")";
-		
+
 	}
-	
-	public void setStatus(String status) 
-	{ 
-		this.status = status; 
+
+	@Override
+	public void setStatus(String status)
+	{
+		this.status = status;
 	}
-	
+
+	@Override
 	public boolean equals(Object obj)
 	{
 		if(obj instanceof StdTickClient)
 			return compareTo((StdTickClient)obj)==0;
 		return false;
 	}
-	
+
+	@Override
 	public int hashCode()
 	{
 		return clientObject == null ?  0 : clientObject.hashCode();
 	}
-	
-	public int compareTo(TickClient arg0) 
+
+	@Override
+	public int compareTo(TickClient arg0)
 	{
 		if(clientObject != arg0.getClientObject())
 			return (clientObject.hashCode() > arg0.getClientObject().hashCode())?1:-1;
@@ -107,7 +117,8 @@ public class StdTickClient implements TickClient
 		if(tickID<arg0.getTickID()) return -1;
 		return 0;
 	}
-	
+
+	@Override
 	public boolean tickTicker(boolean forceTickDown)
 	{
 		try
@@ -140,18 +151,18 @@ public class StdTickClient implements TickClient
 		}
 		return false;
 	}
-	
-	public long getLastStartTime() { return lastStart; }
-	
-	public long getLastStopTime() { return lastStop; }
-	
-	public long getMilliTotal() { return milliTotal; }
-	
-	public long getTickTotal() { return tickTotal; }
-	
-	public boolean isAwake() { return lastStop < lastStart; }
-	
-	public boolean isSuspended() { return suspended; }
-	
-	public void setSuspended(boolean trueFalse) { suspended = trueFalse; }
+
+	@Override public long getLastStartTime() { return lastStart; }
+
+	@Override public long getLastStopTime() { return lastStop; }
+
+	@Override public long getMilliTotal() { return milliTotal; }
+
+	@Override public long getTickTotal() { return tickTotal; }
+
+	@Override public boolean isAwake() { return lastStop < lastStart; }
+
+	@Override public boolean isSuspended() { return suspended; }
+
+	@Override public void setSuspended(boolean trueFalse) { suspended = trueFalse; }
 }

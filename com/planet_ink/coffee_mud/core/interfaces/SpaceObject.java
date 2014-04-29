@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 */
 	public void setRadius(long radius);
 	/**
-	 * The direction of travel of this object in radians. 
+	 * The direction of travel of this object in radians.
 	 * @return 2 dimensional array for the direction of movement
 	 */
 	public double[] direction();
@@ -97,7 +97,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * @param O the source of  this object
 	 */
 	public void setKnownSource(SpaceObject O);
-	
+
 	/**
 	 * Returns the mass of this object, derived from its
 	 * radius and type, or perhaps from other things. Either way, its derived.
@@ -139,7 +139,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 
 	/** multiplier by radius to get planets mass -- only off by 15 zeroes or so 9333072865794100410 is the actual number*/
 	public static final long MULTIPLIER_PLANET_MASS=933L;
-	
+
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;
 	/** accelleration at which you pass out, in decameters/s */
@@ -157,23 +157,23 @@ public interface SpaceObject extends Environmental, BoundedObject
 
 	// thrust=mass * accelleration
 	// accelleration = thrust/mass
-	
+
 	// engine efficiency=specific impulse
 	// add max velocity to engines (specific impulse) -- so current velocity affects how much accelleration you'll get!
-	
+
 	// graviton drives -- you need lots of gravity for this to work
-	
+
 	// inertia drive -- modify the mass in the t=ma equation.  a=f(m/i)
-	
+
 	// outer mold line coefficient
 	/** drag coefficient of a streamlined body */
 	public static final double ATMOSPHERIC_DRAG_STREAMLINE=0.05;
 	/** drag coefficient of a brick body */
 	public static final double ATMOSPHERIC_DRAG_BRICK=0.30;
-	
+
 	//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
 	//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
-	
+
 	/** velocity constant for the speed of light, numbers are in dm/s */
 	public static final long VELOCITY_LIGHT=29979245;
 	/** velocity constant for the speed of sublight */

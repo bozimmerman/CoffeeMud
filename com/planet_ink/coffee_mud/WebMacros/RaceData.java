@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RaceData extends StdWebMacro
 {
-	public String name() { return "RaceData"; }
+	@Override public String name() { return "RaceData"; }
 
 	// valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
@@ -578,6 +578,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -776,7 +777,7 @@ public class RaceData extends StdWebMacro
 					for(int r : RawMaterial.CODES.ALL_SBN())
 					{
 						str.append("<OPTION VALUE="+r);
-						if(CMParms.indexOf(breathes, r)>=0) 
+						if(CMParms.indexOf(breathes, r)>=0)
 							str.append(" SELECTED");
 						str.append(">"+RawMaterial.CODES.NAME(r));
 					}
@@ -982,7 +983,7 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("LANGS"))
 					if(R.getLanguagesDesc().length()>0)
 						str.append(R.getLanguagesDesc()+", ");
-				
+
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)

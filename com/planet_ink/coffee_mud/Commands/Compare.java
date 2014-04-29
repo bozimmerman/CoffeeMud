@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Compare extends StdCommand
 	public Compare(){}
 
 	private final String[] access={"COMPARE","COMP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -51,26 +52,26 @@ public class Compare extends StdCommand
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
 			List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
-			if(V.size()>0) 
+			if(V.size()>0)
 			{
-				for(int i=0;i<V.size();i++) 
+				for(int i=0;i<V.size();i++)
 				{
 					Environmental shopkeeper=V.get(i);
 					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 					Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
-					if((itemToDo==null)||(!(itemToDo instanceof Item))) 
+					if((itemToDo==null)||(!(itemToDo instanceof Item)))
 					{
 						continue; // next shopkeeper
 					}
 					compareThis=(Item)itemToDo;
 				}
-				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob))) 
+				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
 					mob.tell("You don't have a "+( (String) commands.elementAt(0))+".");
 					return false;
 				}
 			}
-			else 
+			else
 			{
 				mob.tell("You don't have a "+ ( (String) commands.elementAt(0)) +".");
 				return false;
@@ -164,9 +165,9 @@ public class Compare extends StdCommand
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

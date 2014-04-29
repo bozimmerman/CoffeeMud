@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Clairevoyance extends Spell
 {
-	public String ID() { return "Spell_Clairevoyance"; }
-	public String name(){return "Clairevoyance";}
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Spell_Clairevoyance"; }
+	@Override public String name(){return "Clairevoyance";}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public static final DVector scries=new DVector(2);
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,6 +57,7 @@ public class Spell_Clairevoyance extends Spell
 
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -74,6 +76,7 @@ public class Spell_Clairevoyance extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -117,7 +120,7 @@ public class Spell_Clairevoyance extends Spell
 				List<MOB> targets=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob, mobName, 10);
 				if(targets.size()==0)
 					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
-				if(targets.size()>0) 
+				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}catch(NoSuchElementException nse){}
 		}
@@ -130,13 +133,13 @@ public class Spell_Clairevoyance extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-		
+
 		if(mob==target)
 		{
 			mob.tell("You can't cast this on yourself!");
 			return false;
 		}
-		
+
 		Ability A=target.fetchEffect(ID());
 		if((A!=null)&&(A.invoker()==mob))
 		{

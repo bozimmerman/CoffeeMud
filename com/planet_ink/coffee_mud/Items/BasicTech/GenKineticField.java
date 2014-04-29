@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenKineticField extends GenPersonalShield
 {
-	public String ID(){	return "GenKineticField";}
+	@Override public String ID(){	return "GenKineticField";}
 
 	public GenKineticField()
 	{
@@ -43,24 +43,24 @@ public class GenKineticField extends GenPersonalShield
 		setDisplayText("a kinetic field generator sits here.");
 		setDescription("The kinetic field generator is worn about the body and activated to use. It neutralizes melee and physical projectile damage. ");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
-	{ 
+	protected String fieldOnStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"An powerful energy field surrounds <O-NAME>.":
-			"An powerful energy field surrounds <T-NAME>."; 
+			"An powerful energy field surrounds <T-NAME>.";
 	}
-	
+
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
+	protected String fieldDeadStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"The powerful energy field around <O-NAME> flickers and dies out.":
-			"The powerful energy field around <T-NAME> flickers and dies out."; 
+			"The powerful energy field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_NOT_HEAR);
@@ -82,14 +82,14 @@ public class GenKineticField extends GenPersonalShield
 		}
 		return false;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(!activated())
 			return false;
-		if((!(msg.tool() instanceof Technical)) 
-		&& (msg.tool() instanceof Weapon) 
+		if((!(msg.tool() instanceof Technical))
+		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor))
 		{
 			return true;

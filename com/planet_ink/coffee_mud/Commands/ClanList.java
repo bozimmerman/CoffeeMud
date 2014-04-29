@@ -38,7 +38,8 @@ public class ClanList extends StdCommand
 	public ClanList(){}
 
 	private final String[] access={"CLANLIST","CLANS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -58,13 +59,13 @@ public class ClanList extends StdCommand
 			Clan thisClan=(Clan)e.nextElement();
 			if(!thisClan.isPubliclyListedFor(mob))
 				continue;
-			
+
 			StringBuffer trophySet = new StringBuffer("");
 			if(trophySystemActive)
 				for(Trophy t : Trophy.values())
 					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
 						trophySet.append(t.codeString.charAt(0));
-			
+
 			msg.append(" ");
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
 			msg.append(CMStrings.padRight(thisClan.getGovernmentName(),10)+"  ");
@@ -96,7 +97,7 @@ public class ClanList extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 
 
 }

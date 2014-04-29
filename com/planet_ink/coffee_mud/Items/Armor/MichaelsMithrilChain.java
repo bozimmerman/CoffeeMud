@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class MichaelsMithrilChain extends StdArmor
 {
-	public String ID(){	return "MichaelsMithrilChain";}
+	@Override public String ID(){	return "MichaelsMithrilChain";}
 	public MichaelsMithrilChain()
 	{
 		super();
@@ -52,6 +52,7 @@ public class MichaelsMithrilChain extends StdArmor
 		material=RawMaterial.RESOURCE_MITHRIL;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))

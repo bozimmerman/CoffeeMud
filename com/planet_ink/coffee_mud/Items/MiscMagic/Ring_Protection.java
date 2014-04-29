@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 {
-	public String ID(){	return "Ring_Protection";}
+	@Override public String ID(){	return "Ring_Protection";}
 
 	public Ring_Protection()
 	{
@@ -45,6 +45,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		lastLevel = -1;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -52,6 +53,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 			affectableStats.setArmor(affectableStats.armor()-phyStats().armor()-phyStats().ability());
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
@@ -201,6 +203,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

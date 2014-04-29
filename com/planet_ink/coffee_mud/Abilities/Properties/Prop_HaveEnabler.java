@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_HaveEnabler extends Prop_SpellAdder
 {
-	public String ID() { return "Prop_HaveEnabler"; }
-	public String name(){ return "Granting skills when owned";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_HaveEnabler"; }
+	@Override public String name(){ return "Granting skills when owned";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected Item myItem=null;
 	protected Vector lastMOBeffected=new Vector();
 	protected boolean processing2=false;
-	
-	public long flags(){return Ability.FLAG_ENABLER;}
 
-	public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
-	
+	@Override public long flags(){return Ability.FLAG_ENABLER;}
+
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
+
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Grants "," to the owner.");}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -100,10 +102,10 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 				A.autoInvocation(newMOB);
 				if(!clearedYet)
 				{
-					lastMOBeffected.clear();	
+					lastMOBeffected.clear();
 					clearedYet=true;
 				}
-				if((A2==null)&&(!lastMOBeffected.contains(A.ID()))) 
+				if((A2==null)&&(!lastMOBeffected.contains(A.ID())))
 					lastMOBeffected.addElement(A.ID());
 			}
 		}
@@ -111,6 +113,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		return true;
 	}
 
+	@Override
 	public void removeMyAffectsFrom(Physical P)
 	{
 		if(!(P instanceof MOB))
@@ -136,7 +139,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			lastMOBeffected.clear();
 		}
 	}
-	
+
 	public void removeMyAffectsFromLastMob()
 	{
 		if(!(lastMOB instanceof MOB))
@@ -145,9 +148,11 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		lastMOB=null;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{}
-	
+
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
@@ -160,7 +165,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
 			&&(((MOB)lastMOB).location()!=null))
 				removeMyAffectsFromLastMob();
-			
+
 			if((lastMOB==null)
 			&&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Command extends Spell
 {
-	public String ID() { return "Spell_Command"; }
-	public String name(){return "Command";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Command"; }
+	@Override public String name(){return "Command";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=new Vector();
@@ -62,7 +63,7 @@ public class Spell_Command extends Spell
 				return false;
 			}
 		}
-		
+
 		if((!target.mayIFight(mob))||(!target.isMonster()))
 		{
 			mob.tell("You can't command "+target.name(mob)+".");

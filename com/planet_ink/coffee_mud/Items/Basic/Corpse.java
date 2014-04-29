@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class Corpse extends GenContainer implements DeadBody
 {
-	public String ID(){	return "Corpse";}
+	@Override public String ID(){	return "Corpse";}
 	protected CharStats charStats=null;
 	protected String mobName="";
 	protected String mobDescription="";
@@ -48,7 +48,7 @@ public class Corpse extends GenContainer implements DeadBody
 	protected long timeOfDeath=System.currentTimeMillis();
 	protected boolean mobPKFlag=false;
 	protected MOB savedMOB=null;
-	
+
 	public Corpse()
 	{
 		super();
@@ -63,6 +63,7 @@ public class Corpse extends GenContainer implements DeadBody
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MEAT;
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -70,18 +71,21 @@ public class Corpse extends GenContainer implements DeadBody
 			super.setMiscText(newText);
 	}
 
+	@Override
 	public CharStats charStats()
 	{
 		if(charStats==null)
 			charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		return charStats;
 	}
+	@Override
 	public void setCharStats(CharStats newStats)
 	{
 		charStats=newStats;
 		if(charStats!=null) charStats=(CharStats)charStats.copyOf();
 	}
-	
+
+	@Override
 	public void setSecretIdentity(String newIdentity)
 	{
 		if(newIdentity.indexOf('/')>0)
@@ -98,7 +102,8 @@ public class Corpse extends GenContainer implements DeadBody
 		else
 			super.setSecretIdentity(newIdentity);
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		super.destroy();
@@ -107,29 +112,30 @@ public class Corpse extends GenContainer implements DeadBody
 		savedMOB=null;
 	}
 
-	public String mobName(){ return mobName;}
-	public void setMobName(String newName){mobName=newName;}
-	public String mobDescription(){return mobDescription;}
-	public void setMobDescription(String newDescription){mobDescription=newDescription;}
-	public boolean mobPKFlag(){return mobPKFlag;}
-	public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
-	public String killerName(){return killerName;}
-	public void setKillerName(String newName){killerName=newName;}
-	public boolean killerPlayer(){return killerPlayer;}
-	public void setKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
-	public boolean playerCorpse(){return playerCorpse;}
-	public void setPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
-	public String lastMessage(){return lastMessage;}
-	public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
-	public Environmental killingTool(){return killingTool;}
-	public void setKillingTool(Environmental tool){killingTool=tool;}
-	public boolean destroyAfterLooting(){return destroyAfterLooting;}
-	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
-	public long timeOfDeath(){return timeOfDeath;}
-	public void setTimeOfDeath(long time){timeOfDeath=time;}
-	public void setSavedMOB(MOB mob){savedMOB=mob;}
-	public MOB savedMOB(){return savedMOB;}
+	@Override public String mobName(){ return mobName;}
+	@Override public void setMobName(String newName){mobName=newName;}
+	@Override public String mobDescription(){return mobDescription;}
+	@Override public void setMobDescription(String newDescription){mobDescription=newDescription;}
+	@Override public boolean mobPKFlag(){return mobPKFlag;}
+	@Override public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
+	@Override public String killerName(){return killerName;}
+	@Override public void setKillerName(String newName){killerName=newName;}
+	@Override public boolean killerPlayer(){return killerPlayer;}
+	@Override public void setKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
+	@Override public boolean playerCorpse(){return playerCorpse;}
+	@Override public void setPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
+	@Override public String lastMessage(){return lastMessage;}
+	@Override public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
+	@Override public Environmental killingTool(){return killingTool;}
+	@Override public void setKillingTool(Environmental tool){killingTool=tool;}
+	@Override public boolean destroyAfterLooting(){return destroyAfterLooting;}
+	@Override public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
+	@Override public long timeOfDeath(){return timeOfDeath;}
+	@Override public void setTimeOfDeath(long time){timeOfDeath=time;}
+	@Override public void setSavedMOB(MOB mob){savedMOB=mob;}
+	@Override public MOB savedMOB(){return savedMOB;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_SIT)
@@ -148,9 +154,10 @@ public class Corpse extends GenContainer implements DeadBody
 		&&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
 			msg.source().tell(name()+" has definitely started to decay.");
 		super.executeMsg(myHost, msg);
-		
+
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.tool()==this))
@@ -163,10 +170,10 @@ public class Corpse extends GenContainer implements DeadBody
 			&&(msg.source().phyStats().height()<0)
 			&&(msg.source().phyStats().weight()<=0))
 				return true;
-			
+
 			if(!super.okMessage(myHost,msg))
 				return false;
-			
+
 			if(((msg.targetMinor()==CMMsg.TYP_GET)
 				||((msg.tool() instanceof Ability)
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
@@ -177,7 +184,7 @@ public class Corpse extends GenContainer implements DeadBody
 			{
 				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
 					return true;
-				
+
 				MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
 				if((msg.source().isMonster())
 				&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))

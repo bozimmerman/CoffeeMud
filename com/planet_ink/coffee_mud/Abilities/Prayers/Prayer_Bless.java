@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Bless extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Bless"; }
-	public String name(){ return "Bless";}
-	public String displayText(){ return "(Blessed)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_Bless"; }
+	@Override public String name(){ return "Bless";}
+	@Override public String displayText(){ return "(Blessed)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +61,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 
 
 
+	@Override
 	public void unInvoke()
 	{
 
@@ -134,9 +136,10 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				A.unInvoke();
 		}
 	}
-	
+
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof MOB)
 				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
 					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
@@ -154,6 +157,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		return CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

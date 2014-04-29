@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,23 @@ import java.util.*;
 public class Prop_PracticeDummy extends Property
 {
 	boolean disabled=false;
-	public String ID() { return "Prop_PracticeDummy"; }
-	public String name(){ return "Practice Dummy";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_PracticeDummy"; }
+	@Override public String name(){ return "Practice Dummy";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected boolean unkillable=true;
 
+	@Override
 	public String accountForYourself()
 	{ return "Undefeatable";	}
-	
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		unkillable=newMiscText.toUpperCase().indexOf("KILL")<0;
 	}
 
+	@Override
 	public void affectCharState(MOB mob, CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
@@ -56,6 +59,7 @@ public class Prop_PracticeDummy extends Property
 			affectableMaxState.setHitPoints(99999);
 	}
 
+	@Override
 	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
 		super.affectPhyStats(E,affectableStats);
@@ -64,9 +68,10 @@ public class Prop_PracticeDummy extends Property
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) 
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))

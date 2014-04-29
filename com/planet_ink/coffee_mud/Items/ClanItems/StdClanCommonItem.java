@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanCommonItem extends StdClanItem
 {
-	public String ID(){	return "StdClanCommonItem";}
+	@Override public String ID(){	return "StdClanCommonItem";}
 	protected int workDown=0;
 	private static final Hashtable needChart=new Hashtable();
 	protected boolean glows=false;
-	
+
 	public StdClanCommonItem()
 	{
 		super();
@@ -65,7 +65,7 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return false;
 	}
-	
+
 	public Vector resourceHere(Room R, int material)
 	{
 		Vector here=new Vector();
@@ -82,7 +82,7 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return here;
 	}
-	
+
 	public Vector resourceHere(MOB M, int material)
 	{
 		Vector here=new Vector();
@@ -99,7 +99,7 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return here;
 	}
-	
+
 	public List resourceHere(Room R, List materials)
 	{
 		List allMat=new Vector();
@@ -126,7 +126,7 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return allMat;
 	}
-	
+
 	public List enCode(MOB M, String req)
 	{
 		req=req.toUpperCase();
@@ -162,6 +162,7 @@ public class StdClanCommonItem extends StdClanItem
 		return V;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
@@ -174,14 +175,15 @@ public class StdClanCommonItem extends StdClanItem
 		&&(((MOB)affected).getStartRoom().getArea()==((MOB)affected).location().getArea()))
 			stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
-	
-	
+
+
+	@Override
 	public void setReadableText(String newText)
 	{
 		super.setReadableText(newText);
 		glows=(newText.equalsIgnoreCase("Mining"));
 	}
-	
+
 	public boolean trackTo(MOB M, MOB M2)
 	{
 		Ability A=CMClass.getAbility("Skill_Track");
@@ -206,7 +208,8 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -342,7 +345,7 @@ public class StdClanCommonItem extends StdClanItem
 							}
 						}
 					}
-					
+
 					if((M.location()!=null)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
 					&&(!CMLib.flags().canBeSeenBy(M.location(),M)))
@@ -356,7 +359,7 @@ public class StdClanCommonItem extends StdClanItem
 						case 6: CMLib.commands().postSay(M,null,"Someone turn on the lights to I can work!"); break;
 						case 7: CMLib.commands().postSay(M,null,"I could use some light, if you expect me to work."); break;
 						}
-					
+
 					if((M.numItems()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
 					{
 						Item I=null;

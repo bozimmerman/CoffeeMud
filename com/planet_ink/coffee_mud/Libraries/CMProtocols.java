@@ -44,8 +44,8 @@ import java.util.Map.Entry;
 */
 public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
-	public String ID(){return "CMProtocols";}
-	
+	@Override public String ID(){return "CMProtocols";}
+
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
 	// info, and the info provided.
@@ -58,6 +58,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
+	@Override
 	public String[] mxpImagePath(String fileName)
 	{
 		if((fileName==null)||(fileName.trim().length()==0))
@@ -84,6 +85,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return new String[]{mxpImagePath+"/"+preFilename,fileName};
 	}
 
+	@Override
 	public String mxpImage(final Environmental E, final String parms)
 	{
 		if((CMProps.getVar(Str.MXPIMAGEPATH).length()==0)
@@ -96,6 +98,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return "^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N";
 	}
 
+	@Override
 	public String mxpImage(final Environmental E, final String parms, final String pre, final String post)
 	{
 		if((CMProps.getVar(Str.MXPIMAGEPATH).length()==0)
@@ -118,12 +121,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return getHashedMXPImage(H,key);
 
 	}
-	
+
+	@Override
 	public String msp(final String soundName, final int priority)
-	{ 
+	{
 		return msp(soundName,50,CMLib.dice().roll(1,50,priority));
 	}
-	
+
 	public String getHashedMXPImage(final Map<String, String> H, final String key)
 	{
 		if(H==null) return "";
@@ -134,7 +138,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return s;
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@Override @SuppressWarnings({"unchecked","rawtypes"})
 	public String getDefaultMXPImage(final Object O)
 	{
 		if((CMProps.getVar(Str.MXPIMAGEPATH).length()==0)
@@ -263,7 +267,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.CODES.NAME(((RawMaterial)O).material()));
 			if(image==null)
 				image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.Material.findByMask(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) 
+			if(image==null)
 				image=getHashedMXPImage(H,"RESOURCE_*");
 		}
 		else
@@ -501,7 +505,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 			return o;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Map<String,Object> buildMsdpMap(char[] data, int dataSize)
 	{
@@ -573,15 +577,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return (Map<String,Object>)msdpStringify(stack.firstElement());
 	}
-	
+
 	protected enum MSDPListable {
 		COMMANDS,LISTS,CONFIGURABLE_VARIABLES,REPORTABLE_VARIABLES,REPORTED_VARIABLES,SENDABLE_VARIABLES
 	}
-	
+
 	protected enum MSDPCommand {
 		LIST,SEND,REPORT,RESET,UNREPORT
 	}
-	
+
 	protected enum MSDPVariable {
 		ACCOUNT_NAME,CHARACTER_NAME,SERVER_ID,SERVER_TIME,SPECIFICATION,
 		AFFECTS,ALIGNMENT,EXPERIENCE,EXPERIENCE_MAX,EXPERIENCE_TNL,EXPERIENCE_TNL_MAX,
@@ -589,10 +593,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		OPPONENT_LEVEL,OPPONENT_HEALTH,OPPONENT_HEALTH_MAX,OPPONENT_NAME,OPPONENT_STRENGTH,
 		WORLD_TIME,ROOM,LOCATION,ROOM_NAME,ROOM_VNUM,ROOM_AREA,ROOM_TERRAIN,ROOM_EXITS
 	}
-	
+
 	protected enum MSDPConfigurableVar {
 	}
-	
+
 	protected Object getMsdpComparable(final Session session, final MSDPVariable var)
 	{
 		final MOB M=session.mob();
@@ -688,10 +692,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			break;
 		case LOCATION:
 		case ROOM:
-		case ROOM_NAME: 
-		case ROOM_VNUM: 
-		case ROOM_AREA: 
-		case ROOM_TERRAIN: 
+		case ROOM_NAME:
+		case ROOM_VNUM:
+		case ROOM_AREA:
+		case ROOM_TERRAIN:
 		case ROOM_EXITS:
 			if((M!=null)&&(M.location()!=null))
 				return M.location();
@@ -707,7 +711,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return "";
 	}
-	
+
 	protected byte[] processMsdpSend(final Session session, final String var) throws UnsupportedEncodingException, IOException
 	{
 		final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, var.toUpperCase().trim());
@@ -726,7 +730,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		switch(type)
 		{
 		case ACCOUNT_NAME:
-			if((M!=null)&&(M.playerStats()!=null)) 
+			if((M!=null)&&(M.playerStats()!=null))
 			{
 				if(M.playerStats().getAccount()!=null)
 					buf.write(M.playerStats().getAccount().getAccountName().getBytes(Session.MSDP_CHARSET));
@@ -886,19 +890,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Session.MSDP_TABLE_CLOSE);
 			}
 			break;
-		case ROOM_NAME: 
+		case ROOM_NAME:
 			if((M!=null)&&(M.location()!=null))
 				buf.write(M.location().displayText().getBytes(Session.MSDP_CHARSET));
 			break;
-		case ROOM_VNUM: 
+		case ROOM_VNUM:
 			if((M!=null)&&(M.location()!=null))
 				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(M.location()).hashCode()).getBytes(Session.MSDP_CHARSET));
 			break;
-		case ROOM_AREA: 
+		case ROOM_AREA:
 			if((M!=null)&&(M.location()!=null))
 				buf.write(M.location().getArea().Name().getBytes(Session.MSDP_CHARSET));
 			break;
-		case ROOM_TERRAIN: 
+		case ROOM_TERRAIN:
 			if((M!=null)&&(M.location()!=null))
 			{
 				final Room R=M.location();
@@ -965,7 +969,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		buf.write(Session.MSDP_ARRAY_CLOSE);
 		return buf.toByteArray();
 	}
-	
+
 	protected byte[] processMsdpList(final Session session, final String var, final Map<Object,Object> reportables) throws UnsupportedEncodingException, IOException
 	{
 		ByteArrayOutputStream buf=new ByteArrayOutputStream();
@@ -974,7 +978,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return buf.toByteArray();
 		switch(type)
 		{
-		case COMMANDS: buf.write(msdpListToMsdpArray(MSDPCommand.values())); break; 
+		case COMMANDS: buf.write(msdpListToMsdpArray(MSDPCommand.values())); break;
 		case LISTS: buf.write(msdpListToMsdpArray(MSDPListable.values())); break;
 		case CONFIGURABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPConfigurableVar.values())); break;
 		case REPORTABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
@@ -991,7 +995,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return buf.toByteArray();
 	}
-	
+
 	protected void resetMsdpConfigurable(final Session session, final String var)
 	{
 		final MSDPConfigurableVar type=(MSDPConfigurableVar)CMath.s_valueOf(MSDPConfigurableVar.class, var.toUpperCase().trim());
@@ -999,7 +1003,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return;
 		//TODO:
 	}
-	
+
+	@Override
 	public byte[] pingMsdp(final Session session, final Map<Object,Object> reportables)
 	{
 		try
@@ -1038,7 +1043,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return null;
 		}
 	}
-	
+
+	@Override
 	@SuppressWarnings("rawtypes")
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
@@ -1144,20 +1150,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return null;
 		}
 	}
-	
+
+	@Override
 	public byte[] buildGmcpResponse(final String json)
 	{
 		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-		try 
+		try
 		{
 			bout.write(Session.TELNETBYTES_GMCP_HEAD);
 			bout.write(json.getBytes(Session.MSDP_CHARSET));
 			bout.write(Session.TELNETBYTES_END_SB);
-		} 
+		}
 		catch (IOException e) {}
 		return bout.toByteArray();
 	}
-	
+
 	public enum gmcpCommand
 	{
 		core_hello,
@@ -1178,11 +1185,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		comm_channel,
 		ire_composer_setbuffer
 	}
-	
+
 	protected String processGmcpStr(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
 	{
 		MiniJSON jsonParser=new MiniJSON();
-		try 
+		try
 		{
 			final MOB mob=session.mob();
 			final String allDoc=new String(data).trim();
@@ -1528,13 +1535,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				return null;
 			}
 		}
-		catch (MJSONException e) 
+		catch (MJSONException e)
 		{
 			Log.errOut("Error parsing GMCP JSON: "+e.getMessage());
 			return null;
 		}
 	}
 
+	@Override
 	public byte[] processGmcp(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
 	{
 		final String doc=processGmcpStr(session, data, dataSize, supportables);
@@ -1546,7 +1554,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return null;
 	}
-	
+
 	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command)
 	{
 		final char[] cmd=command.toCharArray();
@@ -1565,7 +1573,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
 	{
 		try

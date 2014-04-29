@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_HealingHands extends StdAbility
 {
-	public String ID() { return "Paladin_HealingHands"; }
-	public String name(){ return "Healing Hands";}
+	@Override public String ID() { return "Paladin_HealingHands"; }
+	@Override public String name(){ return "Healing Hands";}
 	private static final String[] triggerStrings = {"HANDS"};
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
-	protected long minCastWaitTime(){return CMProps.getTickMillis();}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}
+	@Override protected long minCastWaitTime(){return CMProps.getTickMillis();}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))

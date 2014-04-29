@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_WindShape extends Chant
 {
-	public String ID() { return "Chant_WindShape"; }
-	public String name(){ return "Wind Shape";}
-	public String displayText(){ return "(Wind Shape)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public String ID() { return "Chant_WindShape"; }
+	@Override public String name(){ return "Wind Shape";}
+	@Override public String displayText(){ return "(Wind Shape)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Chant_WindShape extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer shaped like the wind.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -78,6 +80,7 @@ public class Chant_WindShape extends Chant
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

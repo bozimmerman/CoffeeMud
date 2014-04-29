@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,13 @@ import java.util.*;
 */
 public class Play_Organs extends Play_Instrument
 {
-	public String ID() { return "Play_Organs"; }
-	public String name(){ return "Organs";}
-	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_ORGANS;}
-	public String mimicSpell(){return "Prayer_ProtectHealth";}
-	protected int canAffectCode(){return 0;}
+	@Override public String ID() { return "Play_Organs"; }
+	@Override public String name(){ return "Organs";}
+	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_ORGANS;}
+	@Override public String mimicSpell(){return "Prayer_ProtectHealth";}
+	@Override protected int canAffectCode(){return 0;}
 	private static Ability theSpell=null;
+	@Override
 	protected Ability getSpell()
 	{
 		if(theSpell!=null) return theSpell;

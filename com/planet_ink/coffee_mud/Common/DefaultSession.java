@@ -61,7 +61,7 @@ public class DefaultSession implements Session
 	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
 
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
-	
+
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
 	protected String		 groupName			 = null;
@@ -127,16 +127,16 @@ public class DefaultSession implements Session
 	protected boolean   	 debugOutput		 = false;
 	protected boolean   	 debugInput			 = false;
 	protected StringBuffer   debugInputBuf		 = new StringBuffer("");
-	
+
 	protected volatile InputCallback inputCallback  = null;
 
-	public String ID(){return "DefaultSession";}
-	public String name() { return ID();}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
-	public void initializeClass(){}
-	public boolean isFake() { return false;}
-	public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String ID(){return "DefaultSession";}
+	@Override public String name() { return ID();}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
+	@Override public void initializeClass(){}
+	@Override public boolean isFake() { return false;}
+	@Override public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public char threadGroupChar = '\0';
 
 	public DefaultSession()
@@ -144,6 +144,7 @@ public class DefaultSession implements Session
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	}
 
+	@Override
 	public void setStatus(SessionStatus newStatus)
 	{
 		synchronized(status)
@@ -155,7 +156,8 @@ public class DefaultSession implements Session
 			}
 		}
 	}
-	
+
+	@Override
 	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{
 		this.groupName=groupName;
@@ -190,7 +192,7 @@ public class DefaultSession implements Session
 			rawin=new BufferedInputStream(sock[0].getInputStream());
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
 			rawout.flush();
-			
+
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
@@ -236,7 +238,7 @@ public class DefaultSession implements Session
 							killFlag=true;
 							return false;
 						}
-						switch(status) 
+						switch(status)
 						{
 						case HANDSHAKE_OPEN:
 						{
@@ -368,17 +370,20 @@ public class DefaultSession implements Session
 		try{Thread.sleep(50);}catch(Exception e){}
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 	}
-	
+
+	@Override
 	public String getGroupName()
 	{
 		return groupName;
 	}
-	
+
+	@Override
 	public void setGroupName(String group)
 	{
 		groupName=group;
 	}
-	
+
+	@Override
 	public void setFakeInput(String input)
 	{
 		if(fakeInput!=null)
@@ -428,12 +433,16 @@ public class DefaultSession implements Session
 		return telnetSupportSet.contains(Integer.valueOf(telnetCode));
 	}
 
+	@Override
 	public void setServerTelnetMode(int telnetCode, boolean onOff)
 	{ serverTelnetCodes[telnetCode]=onOff; }
+	@Override
 	public boolean getServerTelnetMode(int telnetCode)
 	{ return serverTelnetCodes[telnetCode]; }
+	@Override
 	public void setClientTelnetMode(int telnetCode, boolean onOff)
 	{ clientTelnetCodes[telnetCode]=onOff; }
+	@Override
 	public boolean getClientTelnetMode(int telnetCode)
 	{ return clientTelnetCodes[telnetCode]; }
 	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
@@ -444,7 +453,8 @@ public class DefaultSession implements Session
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
-	
+
+	@Override
 	public boolean isAllowedMxp(final String tagString)
 	{
 		if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
@@ -452,7 +462,8 @@ public class DefaultSession implements Session
 		// someday this may get more complicated -- someday
 		return true;
 	}
-	
+
+	@Override
 	public void sendGMCPEvent(final String eventName, final String json)
 	{
 		if((!getClientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
@@ -476,8 +487,9 @@ public class DefaultSession implements Session
 			killFlag=true;
 		}
 	}
-	
+
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
+	@Override
 	public void changeTelnetMode(int telnetCode, boolean onOff)
 	{
 		try
@@ -508,6 +520,7 @@ public class DefaultSession implements Session
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
+	@Override
 	public void negotiateTelnetMode(int telnetCode)
 	{
 		try
@@ -529,6 +542,7 @@ public class DefaultSession implements Session
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
 
+	@Override
 	public void initTelnetMode(int mobbitmap)
 	{
 		setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
@@ -543,42 +557,47 @@ public class DefaultSession implements Session
 		try{if(changedSomething) blockingIn(500);}catch(Exception e){}
 	}
 
-	public ColorState getCurrentColor() { return currentColor; }
+	@Override public ColorState getCurrentColor() { return currentColor; }
+	@Override
 	public void setCurrentColor(final ColorState newColor)
 	{
 		if(newColor!=null)
 			currentColor=newColor;
 	}
-	public ColorState getLastColor() { return lastColor; }
+	@Override public ColorState getLastColor() { return lastColor; }
+	@Override
 	public void setLastColor(final ColorState newColor)
 	{
 		if(newColor!=null)
 			lastColor=newColor;
 	}
-	
-	public long getTotalMillis(){ return milliTotal;}
-	public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
-	public long getTotalTicks(){ return tickTotal;}
-	public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
 
-	public long getInputLoopTime(){ return lastLoopTop;}
-	public void setInputLoopTime(){ lastLoopTop=System.currentTimeMillis();}
-	public long getLastPKFight(){return lastPKFight;}
-	public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
-	public long getLastNPCFight(){return lastNPCFight;}
-	public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
-	public List<String> getLastMsgs(){return new XVector(prevMsgs);}
+	@Override public long getTotalMillis(){ return milliTotal;}
+	@Override public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
+	@Override public long getTotalTicks(){ return tickTotal;}
+	@Override public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
 
-	public String getTerminalType(){ return terminalType;}
-	public MOB mob(){return mob;}
+	@Override public long getInputLoopTime(){ return lastLoopTop;}
+	@Override public void setInputLoopTime(){ lastLoopTop=System.currentTimeMillis();}
+	@Override public long getLastPKFight(){return lastPKFight;}
+	@Override public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
+	@Override public long getLastNPCFight(){return lastNPCFight;}
+	@Override public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
+	@Override public List<String> getLastMsgs(){return new XVector(prevMsgs);}
+
+	@Override public String getTerminalType(){ return terminalType;}
+	@Override public MOB mob(){return mob;}
+	@Override
 	public void setMob(MOB newmob)
-	{ 
+	{
 		mob=newmob;
 	}
+	@Override
 	public void setAccount(PlayerAccount account)
 	{
 		acct=account;
 	}
+	@Override
 	public int getWrap()
 	{
 		if(terminalWidth>5) return terminalWidth;
@@ -595,15 +614,17 @@ public class DefaultSession implements Session
 		}
 		return -1;
 	}
+	@Override
 	public boolean isStopped()
 	{
 		return killFlag;
 	}
 	public void setKillFlag(boolean truefalse)
-	{ 
+	{
 		killFlag=truefalse;
 	}
-	public List<String> getPreviousCMD(){return previousCmd;}
+	@Override public List<String> getPreviousCMD(){return previousCmd;}
+	@Override
 	public void setBeingSnoopedBy(Session session, boolean onOff)
 	{
 		if(onOff)
@@ -617,12 +638,14 @@ public class DefaultSession implements Session
 				snoops.remove(session);
 		}
 	}
-	
+
+	@Override
 	public boolean isBeingSnoopedBy(Session S)
 	{
 		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));
 	}
+	@Override
 	public synchronized int snoopSuspension(int change)
 	{
 		snoopSuspensionStack+=change;
@@ -647,7 +670,8 @@ public class DefaultSession implements Session
 			previousCmd.add(((String)cmds.get(i)));
 	}
 
-	public boolean isAfk(){return afkFlag;}
+	@Override public boolean isAfk(){return afkFlag;}
+	@Override
 	public void setAfkFlag(boolean truefalse)
 	{
 		if(afkFlag==truefalse) return;
@@ -660,6 +684,7 @@ public class DefaultSession implements Session
 			println("\n\rYou are no longer AFK.");
 		}
 	}
+	@Override
 	public String getAfkMessage()
 	{
 		if(mob==null) return "";
@@ -667,7 +692,7 @@ public class DefaultSession implements Session
 			return mob.name()+" is AFK at the moment.";
 		return afkMessage;
 	}
-	public void setAFKMessage(String str){afkMessage=str;}
+	@Override public void setAFKMessage(String str){afkMessage=str;}
 
 	protected void errorOut(Exception t)
 	{
@@ -677,13 +702,14 @@ public class DefaultSession implements Session
 	}
 
 	protected long getWriteStartTime(){return writeStartTime;}
+	@Override
 	public boolean isLockedUpWriting()
 	{
 		long time=writeStartTime;
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
-	
+
 	public final void rawBytesOut(final OutputStream out, final byte[] bytes) throws IOException
 	{
 		try
@@ -703,11 +729,12 @@ public class DefaultSession implements Session
 		}
 	}
 
+	@Override
 	public void rawCharsOut(char[] chars)
 	{
 		rawCharsOut(out,chars);
 	}
-	
+
 	public void rawCharsOut(final PrintWriter out, char[] chars)
 	{
 		if((out==null)||(chars==null)||(chars.length==0))
@@ -752,15 +779,15 @@ public class DefaultSession implements Session
 		}
 		catch(Exception ioe){ setKillFlag(true);}
 	}
-	
+
 	public void rawCharsOut(String c)
 	{
-		if(c!=null) 
+		if(c!=null)
 			rawCharsOut(c.toCharArray());
 	}
 	public void rawCharsOut(char c)
 	{
-		char[] cs={c}; 
+		char[] cs={c};
 		rawCharsOut(cs);
 	}
 	public void snoopSupportPrint(final String msg, final boolean noCache)
@@ -786,16 +813,18 @@ public class DefaultSession implements Session
 					((Session)snoops.get(s)).onlyPrint(preFix+msgColored,noCache);
 			}
 		}catch(IndexOutOfBoundsException x){}
-		
+
 	}
-	
+
+	@Override
 	public void onlyPrint(String msg)
 	{
 		onlyPrint(msg,false);
 	}
+	@Override
 	public void onlyPrint(String msg, boolean noCache)
 	{
-		if((out==null)||(msg==null)) 
+		if((out==null)||(msg==null))
 			return;
 		try
 		{
@@ -843,7 +872,7 @@ public class DefaultSession implements Session
 							rawCharsOut("<pause - enter>".toCharArray());
 							try
 							{
-								String s=blockingIn(-1); 
+								String s=blockingIn(-1);
 								if(s!=null)
 								{
 									s=s.toLowerCase();
@@ -883,10 +912,12 @@ public class DefaultSession implements Session
 		catch(java.lang.NullPointerException e){}
 	}
 
+	@Override
 	public void rawOut(String msg)
 	{
 		rawCharsOut(msg);
 	}
+	@Override
 	public void rawPrint(String msg)
 	{
 		if(msg==null)
@@ -895,11 +926,13 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	@Override
 	public void print(String msg)
 	{
 		onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),false);
 	}
-	
+
+	@Override
 	public void promptPrint(String msg)
 	{
 		print(msg);
@@ -907,33 +940,39 @@ public class DefaultSession implements Session
 			try { rawBytesOut(rawout, TELNETGABYTES); } catch(Exception e){}
 	}
 
+	@Override
 	public void rawPrintln(String msg)
 	{
 		if(msg!=null)
 			rawPrint(msg+"\n\r");
 	}
 
+	@Override
 	public void stdPrint(String msg)
 	{
-		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)); 
+		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false));
 	}
 
+	@Override
 	public void print(Physical src, Environmental trg, Environmental tol, String msg)
 	{
 		onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),false);
 	}
 
+	@Override
 	public void stdPrint(Physical src, Environmental trg, Environmental tol, String msg)
 	{
-		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false)); 
+		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false));
 	}
 
+	@Override
 	public void println(String msg)
 	{
 		if(msg!=null)
 			print(msg+"\n\r");
 	}
 
+	@Override
 	public void wraplessPrintln(String msg)
 	{
 		if(msg!=null)
@@ -941,6 +980,7 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	@Override
 	public void wraplessPrint(String msg)
 	{
 		if(msg!=null)
@@ -948,10 +988,12 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	@Override
 	public void colorOnlyPrintln(String msg)
 	{
 		colorOnlyPrint(msg,false);
 	}
+	@Override
 	public void colorOnlyPrintln(String msg, boolean noCache)
 	{
 		if(msg!=null)
@@ -959,10 +1001,12 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	@Override
 	public void colorOnlyPrint(String msg)
 	{
 		colorOnlyPrint(msg,false);
 	}
+	@Override
 	public void colorOnlyPrint(String msg, boolean noCache)
 	{
 		if(msg!=null)
@@ -970,29 +1014,34 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	@Override
 	public void stdPrintln(String msg)
 	{
 		if(msg!=null)
 			rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
 	}
 
+	@Override
 	public void println(Physical src, Environmental trg, Environmental tol, String msg)
 	{
 		if(msg!=null)
 			onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",false);
 	}
 
+	@Override
 	public void stdPrintln(Physical src,Environmental trg, Environmental tol, String msg)
 	{
 		if(msg!=null)
 			rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
 	}
 
+	@Override
 	public void setPromptFlag(boolean truefalse)
 	{
 		needPrompt=truefalse;
 	}
 
+	@Override
 	public String prompt(String Message, String Default, long maxTime)
 		throws IOException
 	{
@@ -1002,6 +1051,7 @@ public class DefaultSession implements Session
 		return Msg;
 	}
 
+	@Override
 	public String prompt(String Message, String Default)
 		throws IOException
 	{
@@ -1011,6 +1061,7 @@ public class DefaultSession implements Session
 		return Msg;
 	}
 
+	@Override
 	public void prompt(InputCallback callBack)
 	{
 		if(callBack!=null)
@@ -1020,7 +1071,8 @@ public class DefaultSession implements Session
 		this.inputCallback=callBack;
 	}
 
-	public String prompt(String Message, long maxTime) 
+	@Override
+	public String prompt(String Message, long maxTime)
 			throws IOException
 	{
 		promptPrint(Message);
@@ -1031,6 +1083,7 @@ public class DefaultSession implements Session
 		return input;
 	}
 
+	@Override
 	public String prompt(String Message)
 		throws IOException
 	{
@@ -1042,6 +1095,7 @@ public class DefaultSession implements Session
 		return input;
 	}
 
+	@Override
 	public String[] getColorCodes()
 	{
 		if(clookup==null)
@@ -1106,7 +1160,7 @@ public class DefaultSession implements Session
 					if(terminalType.equalsIgnoreCase("ANSI"))
 						changeTelnetMode(rawout,TELNET_ECHO,true);
 					else
-					if(terminalType.startsWith("WINTIN.NET")) 
+					if(terminalType.startsWith("WINTIN.NET"))
 					{
 						rawOut("\n\r\n\r**** Your MUD Client is Broken! Please use another!!****\n\r\n\r");
 						rawout.flush();
@@ -1326,7 +1380,7 @@ public class DefaultSession implements Session
 				{
 					prompt(new TickingCallback(250)
 					{
-						@Override public boolean tick(int counter) 
+						@Override public boolean tick(int counter)
 						{
 							try
 							{
@@ -1363,7 +1417,7 @@ public class DefaultSession implements Session
 							}
 							return false;
 						}
-						
+
 					});
 				}
 			}
@@ -1427,7 +1481,7 @@ public class DefaultSession implements Session
 
 	public int readByte() throws IOException
 	{
-		if(bNextByteIs255) 
+		if(bNextByteIs255)
 			return (byte)255;
 		bNextByteIs255 = false;
 		if(fakeInput!=null)
@@ -1446,7 +1500,7 @@ public class DefaultSession implements Session
 
 	public int readChar() throws IOException
 	{
-		if(bNextByteIs255) 
+		if(bNextByteIs255)
 			return 255;
 		bNextByteIs255 = false;
 		if(fakeInput!=null)
@@ -1471,7 +1525,7 @@ public class DefaultSession implements Session
 			try
 			{
 				return in.read();
-			} 
+			}
 			catch(java.io.InterruptedIOException e)
 			{
 				b = readByte();
@@ -1482,10 +1536,11 @@ public class DefaultSession implements Session
 			throw new java.io.InterruptedIOException();
 		return in.read();
 	}
-	
+
+	@Override
 	public char hotkey(long maxWait)
 	{
-		if((in==null)||(out==null)) 
+		if((in==null)||(out==null))
 			return '\0';
 		input=new StringBuffer("");
 		long start=System.currentTimeMillis();
@@ -1601,6 +1656,7 @@ public class DefaultSession implements Session
 		return 1;
 	}
 
+	@Override
 	public String blockingIn(long maxTime)
 		throws IOException
 	{
@@ -1637,7 +1693,7 @@ public class DefaultSession implements Session
 			StringBuilder inStr=new StringBuilder(input);
 			this.input.setLength(0);
 			String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
-			if(str==null) 
+			if(str==null)
 				return null;
 			snoopSupportPrint(str+"\n\r",true);
 			return str;
@@ -1654,11 +1710,12 @@ public class DefaultSession implements Session
 		return blockingIn(-1);
 	}
 
+	@Override
 	public String readlineContinue()
 		throws IOException, SocketException
 	{
 
-		if((in==null)||(out==null)) 
+		if((in==null)||(out==null))
 			return "";
 		int code=-1;
 		while(!killFlag)
@@ -1683,12 +1740,13 @@ public class DefaultSession implements Session
 		StringBuilder inStr=new StringBuilder(input);
 		input.setLength(0);
 		String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
-		if(str==null) 
+		if(str==null)
 			return null;
 		snoopSupportPrint(str+"\n\r",true);
 		return str;
 	}
 
+	@Override
 	public boolean confirm(final String Message, String Default, long maxTime)
 	throws IOException
 	{
@@ -1698,6 +1756,7 @@ public class DefaultSession implements Session
 			return true;
 		return false;
 	}
+	@Override
 	public boolean confirm(final String Message, String Default)
 	throws IOException
 	{
@@ -1708,18 +1767,21 @@ public class DefaultSession implements Session
 		return false;
 	}
 
+	@Override
 	public String choose(final String Message, final String Choices, String Default)
 	throws IOException
-	{ 
+	{
 		return choose(Message,Choices,Default,-1,null);
 	}
 
+	@Override
 	public String choose(final String Message, final String Choices, final String Default, long maxTime)
 	throws IOException
 	{
 		return choose(Message,Choices,Default,maxTime,null);
 	}
-	
+
+	@Override
 	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
 	throws IOException
 	{
@@ -1746,7 +1808,8 @@ public class DefaultSession implements Session
 		return YN;
 	}
 
-	
+
+	@Override
 	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
 		setKillFlag(true);
@@ -1755,7 +1818,7 @@ public class DefaultSession implements Session
 		{
 			removeMOBFromGame(false);
 		}
-		if(dropSession) 
+		if(dropSession)
 		{
 			preLogout(mob);
 			logoutFinal();
@@ -1848,6 +1911,7 @@ public class DefaultSession implements Session
 		}
 	}
 
+	@Override
 	public String getAddress()
 	{
 		try
@@ -1862,10 +1926,10 @@ public class DefaultSession implements Session
 
 	private void preLogout(MOB M)
 	{
-		if(M==null) 
+		if(M==null)
 			return;
 		boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-		
+
 		while((getLastPKFight()>0)
 		&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
 		&&(mob!=null))
@@ -1884,7 +1948,7 @@ public class DefaultSession implements Session
 				CMLib.commands().postChannel(channels.get(i),M.clans(),name+" has logged out",true);
 		}
 		CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
-			
+
 		// the player quit message!
 		CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
 		if(M.playerStats()!=null)
@@ -1893,7 +1957,7 @@ public class DefaultSession implements Session
 		if(inTheGame)
 			CMLib.database().DBUpdateFollowers(M);
 	}
-	
+
 	private void removeMOBFromGame(boolean killSession)
 	{
 		MOB M=mob;
@@ -1913,14 +1977,17 @@ public class DefaultSession implements Session
 			}
 		}
 	}
+	@Override
 	public SessionStatus getStatus()
 	{
 		return status;
 	}
+	@Override
 	public boolean isWaitingForInput()
 	{
 		return (inputCallback!=null);
 	}
+	@Override
 	public void logout(boolean removeMOB)
 	{
 		if((mob==null)||(mob.playerStats()==null))
@@ -1935,11 +2002,13 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public boolean isRunning() 
+	@Override
+	public boolean isRunning()
 	{
 		return runThread!=null;
 	}
-	
+
+	@Override
 	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
 	{
 		switch(status)
@@ -1965,8 +2034,9 @@ public class DefaultSession implements Session
 			return false;
 		return otherLogin.equalsIgnoreCase(myLogin);
 	}
-	
-	
+
+
+	@Override
 	public void run()
 	{
 		synchronized(this)
@@ -1978,7 +2048,7 @@ public class DefaultSession implements Session
 			}
 			runThread=Thread.currentThread();
 		}
-		
+
 		activeMillis=System.currentTimeMillis();
 		if((activeMillis>=nextMsdpPing)&&(connectionComplete))
 		{
@@ -2002,10 +2072,10 @@ public class DefaultSession implements Session
 				}
 			}
 		}
-		
+
 		try
 		{
-			if(killFlag) 
+			if(killFlag)
 				setStatus(SessionStatus.LOGOUT);
 			final InputCallback callBack=this.inputCallback;
 			if(callBack!=null)
@@ -2020,6 +2090,7 @@ public class DefaultSession implements Session
 						{
 							CMLib.threads().executeRunnable(groupName,new Runnable()
 							{
+								@Override
 								public void run()
 								{
 									try
@@ -2042,7 +2113,7 @@ public class DefaultSession implements Session
 				}
 				catch(Exception e)
 				{
-					
+
 				}
 				if(!callBack.waitForInput())
 					inputCallback=null;
@@ -2101,7 +2172,7 @@ public class DefaultSession implements Session
 			activeMillis=0;
 		}
 	}
-	
+
 	public void loginSystem()
 	{
 		try
@@ -2169,7 +2240,7 @@ public class DefaultSession implements Session
 								CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 						}
 					}
-					
+
 					needPrompt=true;
 					if((!killFlag)&&(mob!=null))
 					{
@@ -2260,14 +2331,14 @@ public class DefaultSession implements Session
 				{
 				}
 			}
-			
+
 			setStatus(SessionStatus.LOGOUT4);
 			setKillFlag(true);
 			waiting=false;
 			needPrompt=false;
 			acct=null;
 			snoops.clear();
-			
+
 			closeSocks(finalMsg);
 			setStatus(SessionStatus.LOGOUT5);
 		}
@@ -2277,7 +2348,7 @@ public class DefaultSession implements Session
 			setStatus(SessionStatus.LOGOUTFINAL);
 		}
 	}
-	
+
 	public void mainLoop()
 	{
 		try
@@ -2334,7 +2405,7 @@ public class DefaultSession implements Session
 						CMDS=(List)ALL_CMDS.elementAt(v);
 						setPreviousCmd(CMDS);
 						milliTotal+=(lastStop-lastStart);
-	
+
 						lastStart=System.currentTimeMillis();
 						if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
 						List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
@@ -2361,7 +2432,7 @@ public class DefaultSession implements Session
 			}
 			while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()))
 				{}
-	
+
 			if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
 			&&(mob()!=null))
 			{
@@ -2384,7 +2455,7 @@ public class DefaultSession implements Session
 						println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
 					}
 				}
-	
+
 				if(!isAfk())
 				{
 					if(getIdleMillis()>=600000)
@@ -2453,23 +2524,24 @@ public class DefaultSession implements Session
 			setStatus(SessionStatus.LOGOUT1);
 		}
 	}
-	
-	public long activeTimeMillis() 
+
+	@Override
+	public long activeTimeMillis()
 	{
 		if(activeMillis==0) return 0;
 		return System.currentTimeMillis()-activeMillis;
 	}
-	
+
 	public static class LoginLogoutThread implements CMRunnable, Tickable
 	{
-		public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
-		public boolean tick(Tickable ticking, int tickID){return false;}
-		public String ID(){return name();}
-		public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new LoginLogoutThread();}}
-		public void initializeClass(){}
-		public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-		public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-		public int getTickStatus(){return 0;}
+		@Override public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
+		@Override public boolean tick(Tickable ticking, int tickID){return false;}
+		@Override public String ID(){return name();}
+		@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new LoginLogoutThread();}}
+		@Override public void initializeClass(){}
+		@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+		@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+		@Override public int getTickStatus(){return 0;}
 		private MOB theMOB=null;
 		private int msgCode=-1;
 		private HashSet skipRooms=new HashSet();
@@ -2512,6 +2584,7 @@ public class DefaultSession implements Session
 			}
 		}
 
+		@Override
 		public void run()
 		{
 			activeMillis=System.currentTimeMillis();
@@ -2532,26 +2605,29 @@ public class DefaultSession implements Session
 				theMOB=null;
 			}
 		}
+		@Override
 		public long activeTimeMillis()
 		{
 			return (activeMillis>0)?System.currentTimeMillis()-activeMillis:0;
 		}
 	}
 
+	@Override
 	public void setIdleTimers()
 	{
 		lastKeystroke=System.currentTimeMillis();
 		lastWriteTime=System.currentTimeMillis();
 	}
-	
+
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME}
-	public int getSaveStatIndex() { return SESS_STAT_CODES.values().length;}
-	public String[] getStatCodes() { return CMParms.toStringArray(SESS_STAT_CODES.values());}
-	public boolean isStat(String code) { return getStatIndex(code)!=null;}
+	@Override public int getSaveStatIndex() { return SESS_STAT_CODES.values().length;}
+	@Override public String[] getStatCodes() { return CMParms.toStringArray(SESS_STAT_CODES.values());}
+	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
 	private SESS_STAT_CODES getStatIndex(String code) { return (SESS_STAT_CODES)CMath.s_valueOf(SESS_STAT_CODES.values(),code); }
-	public String getStat(String code) 
+	@Override
+	public String getStat(String code)
 	{
 		final SESS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return "";}
@@ -2574,7 +2650,8 @@ public class DefaultSession implements Session
 		}
 		return null;
 	}
-	public void setStat(String code, String val) 
+	@Override
+	public void setStat(String code, String val)
 	{
 		final SESS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return;}
@@ -2596,7 +2673,7 @@ public class DefaultSession implements Session
 		default: Log.errOut("Session","setStat:Unhandled:"+stat.toString()); break;
 		}
 	}
-	
+
 	private static class SesInputStream extends InputStream
 	{
 		private int[] bytes;
@@ -2606,6 +2683,7 @@ public class DefaultSession implements Session
 		{
 			bytes=new int[maxBytesPerChar+1];
 		}
+		@Override
 		public int read() throws IOException
 		{
 			if(start==end)

@@ -22,7 +22,7 @@ import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,11 +43,12 @@ public class JConsole extends StdCommand
 	public JConsole(){}
 
 	private final String[] access={"JCONSOLE"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public static final Set<String> methH=new SHashSet<String>(ScriptingEngine.methods);
 	public static final Set<String> funcH=new SHashSet<String>(ScriptingEngine.funcs);
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -55,7 +56,7 @@ public class JConsole extends StdCommand
 		if(commands.size()>1) rest=CMParms.combine(commands,1);
 		final Session session=mob.session();
 		if(session==null) return false;
-	
+
 		JScriptEvent scope=(JScriptEvent)Resources.getResource("JCONSOLE_"+mob.Name());
 		Context cx=Context.enter();
 		try
@@ -144,10 +145,10 @@ public class JConsole extends StdCommand
 		}
 		return false;
 	}
-	
+
 	protected static class JScriptEvent extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptEvent";}
+		@Override public String getClassName(){ return "JScriptEvent";}
 		static final long serialVersionUID=4223;
 		final MOB mob;
 		final ScriptingEngine c;
@@ -165,7 +166,7 @@ public class JConsole extends StdCommand
 		{
 			if (super.has(name, start))
 				return super.get(name, start);
-			if (methH.contains(name) || funcH.contains(name) 
+			if (methH.contains(name) || funcH.contains(name)
 			|| (name.endsWith("$")&&(funcH.contains(name.substring(0,name.length()-1)))))
 			{
 				return new Function()
@@ -233,16 +234,16 @@ public class JConsole extends StdCommand
 			}
 			return super.get(name, start);
 		}
-		
+
 		public JScriptEvent(MOB mob)
 		{
 			c=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 			this.mob=mob;
 		}
 	}
-	
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
+
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
 }

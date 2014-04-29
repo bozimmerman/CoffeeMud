@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,14 +40,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "ClanCrafting"; }
-	public String name(){ return "Clan Crafting";}
+	@Override public String ID() { return "ClanCrafting"; }
+	@Override public String name(){ return "Clan Crafting";}
 	private static final String[] triggerStrings = {"CLANCRAFT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
 	protected int expRequired = 0;
 	protected Clan myClan=null;
-	public String parametersFormat(){ return 
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\t"
 		+"CLAN_ITEM_CODENUMBER\tITEM_LEVEL\tBUILD_TIME_TICKS\tCLAN_EXPERIENCE_COST_AMOUNT\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCLAN_AREA_FLAG||CODED_WEAR_LOCATION||READABLE_TEXT\t"
@@ -70,11 +71,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_REQUIREDSKILL=14;
 
 	public Hashtable parametersFields(){ return new Hashtable();}
-	public String parametersFile(){ return "clancraft.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "clancraft.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -105,6 +107,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -126,16 +129,18 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -318,7 +323,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		
+
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		String itemName=null;
@@ -345,7 +350,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				commonTell(mob,"This area is not controlled by your clan -- you can't build that here.");
 				return false;
 			}
-			
+
 			itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
 			buildingI.setReadableText(A2.name());
 		}
@@ -427,7 +432,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			{
 				clanC.setExp(clanC.getExp()-expRequired);
 				clanC.update();
-				
+
 				CC.expRequired=expRequired;
 				CC.myClan=clanC;
 			}

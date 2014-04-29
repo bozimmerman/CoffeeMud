@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,11 @@ import java.util.*;
 */
 public class StdArmor extends StdContainer implements Armor
 {
-	public String ID(){	return "StdArmor";}
+	@Override public String ID(){	return "StdArmor";}
 	int sheath=0;
 	short layer=0;
 	short layerAttributes=0;
-	
+
 	public StdArmor()
 	{
 		super();
@@ -57,17 +57,19 @@ public class StdArmor extends StdContainer implements Armor
 		recoverPhyStats();
 	}
 
+	@Override
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-	public short getClothingLayer(){return layer;}
-	public void setClothingLayer(short newLayer){layer=newLayer;}
-	public short getLayerAttributes(){return layerAttributes;}
-	public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+	@Override public short getClothingLayer(){return layer;}
+	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
+	@Override public short getLayerAttributes(){return layerAttributes;}
+	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
 
+	@Override
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
@@ -75,7 +77,7 @@ public class StdArmor extends StdContainer implements Armor
 			return false;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
-	
+
 	protected String armorHealth()
 	{
 		if(usesRemaining()>=100)
@@ -156,6 +158,7 @@ public class StdArmor extends StdContainer implements Armor
 	public final static long strangeDeviations=Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_MOUTH|Wearable.WORN_EYES|Wearable.WORN_EARS|Wearable.WORN_NECK;
 	public final static long deviation20=Wearable.WORN_TORSO|Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_ARMS|Wearable.WORN_HANDS|Wearable.WORN_FEET;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -201,6 +204,7 @@ public class StdArmor extends StdContainer implements Armor
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -559,6 +563,7 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
@@ -568,10 +573,11 @@ public class StdArmor extends StdContainer implements Armor
 			basePhyStats().setHeight(((MOB)owner()).phyStats().height());
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		
+
 		if((!amWearingAt(Wearable.IN_INVENTORY))
 		&&((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(fitsOn(Wearable.WORN_FLOATING_NEARBY)))
 		&&((!amWearingAt(Wearable.WORN_HELD))||(this instanceof Shield)))
@@ -591,6 +597,7 @@ public class StdArmor extends StdContainer implements Armor
 			}
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -629,18 +636,21 @@ public class StdArmor extends StdContainer implements Armor
 			break;
 		}
 	}
+	@Override
 	public int value()
 	{
 		if(usesRemaining()<1000)
 			return (int)Math.round(CMath.mul(super.value(),CMath.div(usesRemaining(),100)));
 		return super.value();
 	}
+	@Override
 	public boolean subjectToWearAndTear()
 	{
 		if((usesRemaining()<=1000)&&(usesRemaining()>=0))
 			return true;
 		return false;
 	}
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();

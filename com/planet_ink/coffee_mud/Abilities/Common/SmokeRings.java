@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,11 @@ import java.util.*;
 
 public class SmokeRings extends CommonSkill
 {
-	public String ID() { return "SmokeRings"; }
-	public String name(){ return "Smoke Rings";}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String ID() { return "SmokeRings"; }
+	@Override public String name(){ return "Smoke Rings";}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	public SmokeRings()
 	{
@@ -47,6 +47,7 @@ public class SmokeRings extends CommonSkill
 		canBeUninvoked=false;
 	}
 
+	@Override
 	public void executeMsg(Environmental affected, CMMsg msg)
 	{
 		if(((affected instanceof MOB)
@@ -98,6 +99,7 @@ public class SmokeRings extends CommonSkill
 		}
 		super.executeMsg(affected,msg);
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		return true;

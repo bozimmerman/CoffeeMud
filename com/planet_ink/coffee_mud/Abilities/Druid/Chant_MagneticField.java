@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_MagneticField extends Chant
 {
-	public String ID() { return "Chant_MagneticField"; }
-	public String name(){return "Magnetic Field";}
-	public String displayText(){return "(Magnetic Field chant)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_PARALYZING;}
+	@Override public String ID() { return "Chant_MagneticField"; }
+	@Override public String name(){return "Magnetic Field";}
+	@Override public String displayText(){return "(Magnetic Field chant)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_PARALYZING;}
 
 	public boolean wearingHeldMetal(Environmental affected)
 	{
@@ -64,6 +64,7 @@ public class Chant_MagneticField extends Chant
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -103,6 +104,7 @@ public class Chant_MagneticField extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -118,6 +120,7 @@ public class Chant_MagneticField extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

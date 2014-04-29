@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Song_Lightness extends Song
 {
-	public String ID() { return "Song_Lightness"; }
-	public String name(){ return "Lightness";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Lightness"; }
+	@Override public String name(){ return "Lightness";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Song_Lightness extends Song
 		return weight;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -78,6 +80,7 @@ public class Song_Lightness extends Song
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -89,7 +92,8 @@ public class Song_Lightness extends Song
 		if(canBeUninvoked())
 			mob.tell("Your normal weight returns.");
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)

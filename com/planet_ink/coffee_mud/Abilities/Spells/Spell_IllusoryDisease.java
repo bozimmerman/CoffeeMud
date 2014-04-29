@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 {
-	public String ID() { return "Spell_IllusoryDisease"; }
-	public String name(){return "Illusory Disease";}
-	public String displayText(){return "(Diseased)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int difficultyLevel(){return 9;}
-	public int spreadBitmap() { return 0; }
+	@Override public String ID() { return "Spell_IllusoryDisease"; }
+	@Override public String name(){return "Illusory Disease";}
+	@Override public String displayText(){return "(Diseased)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int difficultyLevel(){return 9;}
+	@Override public int spreadBitmap() { return 0; }
 	protected int diseaseTick=5;
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -56,9 +57,10 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	{
 		return ""; // not really a condition
 	}
-	
-	public int abilityCode(){return 0;}
 
+	@Override public int abilityCode(){return 0;}
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -94,6 +96,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -108,6 +111,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

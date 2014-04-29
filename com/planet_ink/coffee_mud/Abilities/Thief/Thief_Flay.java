@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Flay extends ThiefSkill
 {
-	public String ID() { return "Thief_Flay"; }
-	public String name(){ return "Flay";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
+	@Override public String ID() { return "Thief_Flay"; }
+	@Override public String name(){ return "Flay";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 	private static final String[] triggerStrings = {"FLAY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int overrideMana(){return 100;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int overrideMana(){return 100;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -63,6 +64,7 @@ public class Thief_Flay extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -82,6 +84,7 @@ public class Thief_Flay extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
@@ -113,7 +116,7 @@ public class Thief_Flay extends ThiefSkill
 				return false;
 			}
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if(!auto)
@@ -147,7 +150,7 @@ public class Thief_Flay extends ThiefSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
 		boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
-		
+
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))

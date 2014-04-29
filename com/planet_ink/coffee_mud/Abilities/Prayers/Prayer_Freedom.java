@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Freedom extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Freedom"; }
-	public String name(){ return "Freedom";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_Freedom"; }
+	@Override public String name(){ return "Freedom";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
@@ -52,7 +53,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 		caster.destroy();
 		return canMend;
 	}
-	
+
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		MOB newMOB=CMClass.getFactoryMOB();
@@ -86,6 +87,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 		return offenders;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +100,8 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

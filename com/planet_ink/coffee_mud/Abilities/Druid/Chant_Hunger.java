@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Hunger extends Chant
 {
-	public String ID() { return "Chant_Hunger"; }
-	public String name(){ return "Feel Hunger";}
-	public String displayText(){return "(Feel Hunger)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Chant_Hunger"; }
+	@Override public String name(){ return "Feel Hunger";}
+	@Override public String displayText(){return "(Feel Hunger)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

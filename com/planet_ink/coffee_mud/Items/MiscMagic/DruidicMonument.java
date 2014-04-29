@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DruidicMonument extends StdItem implements MiscMagic
 {
-	public String ID(){	return "DruidicMonument";}
+	@Override public String ID(){	return "DruidicMonument";}
 	public DruidicMonument()
 	{
 		super();

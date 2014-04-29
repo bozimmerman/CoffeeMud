@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Fletching"; }
-	public String name(){ return "Fletching";}
+	@Override public String ID() { return "Fletching"; }
+	@Override public String name(){ return "Fletching";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMAXIMUM_RANGE\t"
 		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
@@ -62,9 +63,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int RCP_EXTRAREQ=10;
 	protected static final int RCP_SPELL=11;
 
-	public String parametersFile(){ return "fletching.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "fletching.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -108,6 +110,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -118,6 +121,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -135,7 +139,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return false;
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -149,16 +154,18 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -286,13 +293,13 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"fletch list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if((amount>woodRequired)&&(woodRequired>0)) woodRequired=amount;
 			String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			int[] pm={RawMaterial.MATERIAL_WOODEN};

@@ -41,7 +41,7 @@ public class Say extends StdCommand
 							 "`",
 							 "SA",
 							 "SAYTO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	protected static final String[] impossibleTargets={
 		"HERE",
@@ -81,7 +81,8 @@ public class Say extends StdCommand
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -118,8 +119,8 @@ public class Say extends StdCommand
 					yellRooms.add(R2);
 			}
 		}
-		
-		
+
+
 		String whom="";
 		String theWordSuffix="";
 		Environmental target=null;
@@ -192,7 +193,7 @@ public class Say extends StdCommand
 				}
 			}
 		}
-		
+
 		Language[] langSwap=null;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOLANGUAGE))
 		{
@@ -212,7 +213,7 @@ public class Say extends StdCommand
 					}
 				}
 			}
-		
+
 			// if you are addressing someone speaking a language that you
 			// can speak, then speak it.
 			if((langTarget!=null)&&(!mob.isMonster()))
@@ -230,7 +231,7 @@ public class Say extends StdCommand
 				}
 			}
 		}
-		
+
 		String combinedCommands;
 		if(commands.size()==2)
 			combinedCommands=(String)commands.get(1);
@@ -259,9 +260,9 @@ public class Say extends StdCommand
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
-	
+
 		gmcpSaySend("say", mob, target, msg);
-		
+
 		if(langSwap!=null)
 		{
 			if(langSwap[1]!=null)
@@ -309,9 +310,9 @@ public class Say extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

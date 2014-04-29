@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_Crossbreed extends Chant
 {
-	public String ID() { return "Chant_Crossbreed"; }
-	public String name(){ return "Crossbreed";}
-	public String displayText(){return "(Crossbreed)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Chant_Crossbreed"; }
+	@Override public String name(){ return "Crossbreed";}
+	@Override public String displayText(){return "(Crossbreed)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,6 +56,7 @@ public class Chant_Crossbreed extends Chant
 			mob.tell("Your strange cross-fertility subsides.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -105,6 +107,7 @@ public class Chant_Crossbreed extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

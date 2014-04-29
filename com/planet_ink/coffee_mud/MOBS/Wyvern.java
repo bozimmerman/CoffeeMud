@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Wyvern extends StdMOB
 {
-	public String ID(){return "Wyvern";}
+	@Override public String ID(){return "Wyvern";}
 	protected int stingDown=5;
 
 	public Wyvern()
@@ -75,6 +75,7 @@ public class Wyvern extends StdMOB
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
@@ -89,6 +90,7 @@ public class Wyvern extends StdMOB
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();

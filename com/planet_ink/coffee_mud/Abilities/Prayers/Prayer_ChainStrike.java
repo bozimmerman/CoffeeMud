@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_ChainStrike extends Prayer
 {
-	public String ID() { return "Prayer_ChainStrike"; }
-	public String name(){return "Chain Strike";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_AIRBASED;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Prayer_ChainStrike"; }
+	@Override public String name(){return "Chain Strike";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_AIRBASED;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -85,7 +86,7 @@ public class Prayer_ChainStrike extends Prayer
 								return true;
 							continue;
 						}
-	
+
 						// it worked, so build a copy of this ability,
 						// and add it to the affects list of the
 						// affected MOB.  Then tell everyone else
@@ -99,7 +100,7 @@ public class Prayer_ChainStrike extends Prayer
 							mob.location().send(mob,msg);
 							mob.location().send(mob,msg2);
 							invoker=mob;
-	
+
 							int dmg=damage;
 							if((msg.value()>0)||(msg2.value()>0))
 								dmg = (int)Math.round(CMath.div(dmg,2.0));

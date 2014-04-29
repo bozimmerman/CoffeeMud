@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,31 +36,34 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Fighter_PointBlank extends FighterSkill
 {
-	public String ID() { return "Fighter_PointBlank"; }
-	public String name(){ return "Point Blank Shot";}
-	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public String ID() { return "Fighter_PointBlank"; }
+	@Override public String name(){ return "Point Blank Shot";}
+	@Override public String displayText(){ return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int checkDown=4;
 
 	protected List<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
+	@Override
 	protected void cloneFix(Ability E)
 	{
 		super.cloneFix(E);
 		qualifiedWeapons=new XVector<Weapon>(((Fighter_PointBlank)E).qualifiedWeapons);
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		qualifiedWeapons=new Vector();
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -106,6 +109,7 @@ public class Fighter_PointBlank extends FighterSkill
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -113,6 +117,7 @@ public class Fighter_PointBlank extends FighterSkill
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNOMINRANGE);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

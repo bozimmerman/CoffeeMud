@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,15 @@ import java.util.*;
 */
 public class StdClanFlag extends StdItem implements ClanItem
 {
-	public String ID(){    return "StdClanFlag";}
+	@Override public String ID(){    return "StdClanFlag";}
 	private Environmental riteOwner=null;
-	public Environmental rightfulOwner(){return riteOwner;}
-	public void setRightfulOwner(Environmental E){riteOwner=E;}
+	@Override public Environmental rightfulOwner(){return riteOwner;}
+	@Override public void setRightfulOwner(Environmental E){riteOwner=E;}
 	protected String myClan="";
 	protected int ciType=0;
 	private long lastClanCheck=0;
-	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}
+	@Override public int ciType(){return ciType;}
+	@Override public void setCIType(int type){ ciType=type;}
 	public StdClanFlag()
 	{
 		super();
@@ -60,9 +60,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 		recoverPhyStats();
 	}
 
-	public String clanID(){return myClan;}
-	public void setClanID(String ID){myClan=ID;}
-	
+	@Override public String clanID(){return myClan;}
+	@Override public void setClanID(String ID){myClan=ID;}
+
+	@Override
 	public void setOwner(ItemPossessor E)
 	{
 		if((E==null)&&(super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
@@ -70,6 +71,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		super.setOwner(E);
 	}
 
+	@Override
 	public void destroy()
 	{
 		if((super.owner!=null)&&(!amDestroyed())&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
@@ -77,8 +79,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 		super.destroy();
 	}
 
-	public long expirationDate(){return 0;}
-	
+	@Override public long expirationDate(){return 0;}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
@@ -134,6 +137,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			}
 		}
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((clanID().length()>0)&&(msg.amITarget(this)))
@@ -202,7 +206,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					   &&(!T.getOwnerName().equals(msg.source().Name()))))
 					{
 						boolean ok=false;
-						if(A!=null) 
+						if(A!=null)
 						{
 							B=CMLib.law().getLegalBehavior(R);
 							if(B!=null) ok=B.controlPoints()>0;
@@ -274,6 +278,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))

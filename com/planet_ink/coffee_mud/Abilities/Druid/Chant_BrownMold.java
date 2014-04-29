@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_BrownMold extends Chant
 {
-	public String ID() { return "Chant_BrownMold"; }
-	public String name(){ return "Brown Mold";}
-	public String displayText(){return "(Brown Mold)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_BrownMold"; }
+	@Override public String name(){ return "Brown Mold";}
+	@Override public String displayText(){return "(Brown Mold)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -65,6 +66,7 @@ public class Chant_BrownMold extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -80,6 +82,7 @@ public class Chant_BrownMold extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -93,6 +96,7 @@ public class Chant_BrownMold extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -105,7 +109,8 @@ public class Chant_BrownMold extends Chant
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -115,8 +120,9 @@ public class Chant_BrownMold extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
 
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_JailKey extends StdSkill
 {
-	public String ID() { return "Skill_JailKey"; }
-	public String name(){ return "Jail Key";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_JailKey"; }
+	@Override public String name(){ return "Jail Key";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"JAILKEY","JKEY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whatTounlock=CMParms.combine(commands,0);
@@ -63,18 +64,18 @@ public class Skill_JailKey extends StdSkill
 			if(unlockThis!=null)
 			{
 				LegalBehavior B=null;
-				
+
 				Area legalA=CMLib.law().getLegalObject(mob.location());
 				if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
-				if(B==null) 
+				if(B==null)
 					unlockThis=null;
 				else
 				if(!B.isJailRoom(legalA,new XVector(mob.location())))
 					unlockThis=null;
 			}
 		}
-		
-		if(unlockThis==null) 
+
+		if(unlockThis==null)
 		{
 			if(dirCode<0)
 				mob.tell("You should specify a direction.");

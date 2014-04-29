@@ -36,8 +36,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenCoins extends GenItem implements Coins
 {
-	public String ID(){	return "GenCoins";}
-	public int value(){	return phyStats().ability();}
+	@Override public String ID(){	return "GenCoins";}
+	@Override public int value(){	return phyStats().ability();}
 	protected String currency="";
 	protected double denomination=1.0;
 
@@ -52,16 +52,18 @@ public class GenCoins extends GenItem implements Coins
 		setDescription("");
 	}
 
+	@Override
 	public String Name()
 	{
 		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
+	@Override
 	public String displayText()
 	{
 		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 
-	protected boolean abilityImbuesMagic(){return false;}
+	@Override protected boolean abilityImbuesMagic(){return false;}
 	public void setDynamicMaterial()
 	{
 		if((CMLib.english().containsString(name(),"note"))
@@ -80,7 +82,8 @@ public class GenCoins extends GenItem implements Coins
 		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
-	public long getNumberOfCoins(){return phyStats().ability();}
+	@Override public long getNumberOfCoins(){return phyStats().ability();}
+	@Override
 	public void setNumberOfCoins(long number)
 	{
 		if(number<Integer.MAX_VALUE)
@@ -89,7 +92,8 @@ public class GenCoins extends GenItem implements Coins
 			basePhyStats().setAbility(Integer.MAX_VALUE);
 		recoverPhyStats();
 	}
-	public double getDenomination(){return denomination;}
+	@Override public double getDenomination(){return denomination;}
+	@Override
 	public void setDenomination(double valuePerCoin)
 	{
 		if(valuePerCoin==0.0)
@@ -97,11 +101,12 @@ public class GenCoins extends GenItem implements Coins
 		denomination=valuePerCoin;
 		setDynamicMaterial();
 	}
-	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
-	public String getCurrency(){return currency;}
-	public void setCurrency(String named){currency=named; setDynamicMaterial();}
+	@Override public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
+	@Override public String getCurrency(){return currency;}
+	@Override public void setCurrency(String named){currency=named; setDynamicMaterial();}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
+	@Override
 	public void recoverPhyStats()
 	{
 		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
@@ -116,6 +121,7 @@ public class GenCoins extends GenItem implements Coins
 		}
 	}
 
+	@Override
 	public boolean putCoinsBack()
 	{
 		if(amDestroyed())
@@ -168,6 +174,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	private final static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -181,6 +188,7 @@ public class GenCoins extends GenItem implements Coins
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -196,6 +204,7 @@ public class GenCoins extends GenItem implements Coins
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -203,6 +212,7 @@ public class GenCoins extends GenItem implements Coins
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -216,6 +226,7 @@ public class GenCoins extends GenItem implements Coins
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCoins)) return false;

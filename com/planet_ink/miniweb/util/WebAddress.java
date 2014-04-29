@@ -31,7 +31,7 @@ public class WebAddress
 	private int					port;
 	private InetSocketAddress	address;
 	private String				context;
-	
+
 	public WebAddress(String host, int port, String context) throws UnknownHostException
 	{
 		this.host=host;
@@ -55,31 +55,31 @@ public class WebAddress
 	{
 		return context;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the host
 	 */
 	public String getHost()
 	{
 		return host;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the port
 	 */
 	public int getPort()
 	{
 		return port;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the host + port
 	 */
-	public String getAddressStr() 
-	{ 
+	public String getAddressStr()
+	{
 		return getHost()+":"+getPort();
 	}
 }

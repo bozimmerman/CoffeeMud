@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,10 +32,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * DiseaseAffect is an ability interface to denote those properties, 
+ * DiseaseAffect is an ability interface to denote those properties,
  * affects, or Disease objects that act as curable physical diseases.
  */
-public interface DiseaseAffect extends HealthCondition 
+public interface DiseaseAffect extends HealthCondition
 {
 	/** denotes a diseases spread by sex with someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_STD=1;
@@ -54,12 +54,12 @@ public interface DiseaseAffect extends HealthCondition
 	public final static String[] SPREAD_DESCS = {
 		"sexual contact", "direct contact", "proximity", "ingestion", "blood contact"
 	};
-	
+
 	/**
 	 * This method returns the level from 0-9 of how difficult it
 	 * is to cure this disease through mundane or magical means.
 	 * 9 is considered more difficult.
-	 * 
+	 *
 	 * @return the curing difficulty level 0-9
 	 */
 	public int difficultyLevel();

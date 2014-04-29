@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DispelGood extends Prayer
 {
-	public String ID() { return "Prayer_DispelGood"; }
-	public String name(){ return "Dispel Good";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_DispelGood"; }
+	@Override public String name(){ return "Dispel Good";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -54,7 +55,8 @@ public class Prayer_DispelGood extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 */
 public class Prop_ModFaction extends Property
 {
-	public String ID() { return "Prop_ModFaction"; }
-	public String name(){ return "Modifying Faction Gained";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ModFaction"; }
+	@Override public String name(){ return "Modifying Faction Gained";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
 	protected String factionID = "";
 	protected boolean reactions=false;
@@ -46,6 +46,7 @@ public class Prop_ModFaction extends Property
 	protected LinkedList<CMath.CompiledOperation> operation = null;
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
+	@Override
 	public String accountForYourself()
 	{
 		final Faction F=(factionID.length()>0)?CMLib.factions().getFaction(factionID):null;
@@ -54,7 +55,7 @@ public class Prop_ModFaction extends Property
 			(factionID.length()==0)?"any faction":
 				reactions?"certain factions":
 				((F==null)?"some faction":F.name());
-		return "Modifies "+gainOrLoss+"faction with "+factionName+": "+operationFormula;	
+		return "Modifies "+gainOrLoss+"faction with "+factionName+": "+operationFormula;
 	}
 
 	public int translateAmount(int amount, String val)
@@ -71,7 +72,8 @@ public class Prop_ModFaction extends Property
 			return "@x1 * (" + val.substring(0,val.length()-1) + " / 100)";
 		return Integer.toString(CMath.s_int(val));
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -104,7 +106,7 @@ public class Prop_ModFaction extends Property
 			factionID="";
 			reactions=true;
 		}
-		
+
 		operationFormula="Amount "+s;
 		if(s.startsWith("="))
 			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
@@ -130,7 +132,8 @@ public class Prop_ModFaction extends Property
 			operation = CMath.compileMathExpression(translateNumber(s.trim()));
 		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_FACTIONCHANGE)

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 
-/* 
+/*
    Mostly Copyright 2000-2014 Bo Zimmerman
 
    Functions for diff (C) 2006 Google
@@ -32,12 +32,12 @@ public class CMStrings
 {
 	private CMStrings(){super();}
 	public final static String[] emptyStringArray=new String[0];
-	
+
 	private static CMStrings inst=new CMStrings();
 	public final static CMStrings instance(){return inst;}
-	
+
 	public final static String SPACES=repeat(" ",150);
-	
+
 	public final static String repeat(final String str1, final int times)
 	{
 		if(times<=0) return "";
@@ -46,8 +46,8 @@ public class CMStrings
 			str.append(str1);
 		return str.toString();
 	}
-	
-	public final static boolean isUpperCase(final String str) 
+
+	public final static boolean isUpperCase(final String str)
 	{
 		if(str==null) return false;
 		for(int c=0;c<str.length();c++)
@@ -55,8 +55,8 @@ public class CMStrings
 				return false;
 		return true;
 	}
-	
-	public final static boolean isLowerCase(final String str) 
+
+	public final static boolean isLowerCase(final String str)
 	{
 		if(str==null) return false;
 		for(int c=0;c<str.length();c++)
@@ -64,33 +64,33 @@ public class CMStrings
 				return false;
 		return true;
 	}
-	
+
 	public final static String s_uppercase(final String str)
 	{
 		if(str==null) return "";
 		return str.toUpperCase();
 	}
-	
+
 	public final static String s_lowercase(final String str)
 	{
 		if(str==null) return "";
 		return str.toLowerCase();
 	}
-	
+
 	public final static String endWithAPeriod(final String str)
 	{
 		if((str==null)||(str.length()==0)) return str;
 		int x=str.length()-1;
 		while((x>=0)
 		&&((Character.isWhitespace(str.charAt(x))) // possible #~ color concerns, but normally catches ^? at the end.
-			||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0))))) 
+			||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0)))))
 				x--;
 		if(x<0) return str;
-		if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?')) 
+		if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?'))
 			return str.trim()+" ";
 		return str.substring(0,x+1)+". "+str.substring(x+1).trim();
 	}
-	
+
 	public final static String bytesToStr(final Object b)
 	{
 		if(b instanceof String)
@@ -105,8 +105,8 @@ public class CMStrings
 	}
 
 	public final static String bytesToStr(final byte[] b)
-	{ 
-		if(b==null) 
+	{
+		if(b==null)
 			return "";
 		try
 		{
@@ -117,11 +117,11 @@ public class CMStrings
 			return new String(b);
 		}
 	}
-	
+
 	public final static byte[] strToBytes(final String str)
-	{ 
+	{
 		try
-		{ 
+		{
 			return str.getBytes(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 		}
 		catch(Exception e)
@@ -129,12 +129,12 @@ public class CMStrings
 			return str.getBytes();
 		}
 	}
-	
+
 	public final static boolean isVowel(final char c)
-	{ 
+	{
 		return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
 	}
-	
+
 	public final static int indexOfEndOfWord(String s, int startWith)
 	{
 		if((s==null)||(startWith>=s.length())||(startWith<0))
@@ -149,9 +149,9 @@ public class CMStrings
 		}
 		return s.length();
 	}
-	
+
 	public final static int indexOfLastVowel(final String s)
-	{ 
+	{
 		if(s==null) return -1;
 		for(int i=s.length()-1;i>=0;i--)
 		{
@@ -160,7 +160,7 @@ public class CMStrings
 		}
 		return -1;
 	}
-	
+
 	public final static String scrunchWord(String s, final int len)
 	{
 		if(s.length()<=len) return s;
@@ -181,7 +181,7 @@ public class CMStrings
 			return s.substring(0,len);
 		return s;
 	}
-	
+
 	public final static int finalDigits(String s)
 	{
 		if((s==null)||(s.length()==0)) return -1;
@@ -228,7 +228,7 @@ public class CMStrings
 		});
 		return list.toArray(new Map.Entry[0]);
 	}
-	
+
 	public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
 	{
 		if((thisStr==null)
@@ -274,7 +274,7 @@ public class CMStrings
 			}
 		return new String(newChars);
 	}
-	
+
 	public final static String deleteAllofAny(final String str, final char[] theseChars)
 	{
 		if((str==null)
@@ -305,7 +305,7 @@ public class CMStrings
 					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
 		return str;
 	}
-	
+
 	public final static String replaceAlls(String str, final String pairs[][])
 	{
 		if((str==null)
@@ -332,7 +332,7 @@ public class CMStrings
 		}
 		return newStr.toString();
 	}
-	
+
 	public final static String replaceWord(String str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)
@@ -350,13 +350,13 @@ public class CMStrings
 				&&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
 				{
 					String oldWord=str.substring(i,i+thisStr.length());
-					if(oldWord.toUpperCase().equals(oldWord)) 
+					if(oldWord.toUpperCase().equals(oldWord))
 						str=str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
 					else
 					if(oldWord.toLowerCase().equals(oldWord))
 						str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
 					else
-					if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+					if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0))))
 						str=str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
 					else
 						str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
@@ -364,7 +364,7 @@ public class CMStrings
 		}
 		return str;
 	}
-	
+
 	public final static String replaceFirstWord(String str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)
@@ -382,13 +382,13 @@ public class CMStrings
 				&&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
 				{
 					String oldWord=str.substring(i,i+thisStr.length());
-					if(oldWord.toUpperCase().equals(oldWord)) 
+					if(oldWord.toUpperCase().equals(oldWord))
 						return str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
 					else
 					if(oldWord.toLowerCase().equals(oldWord))
 						return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
 					else
-					if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
+					if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0))))
 						return str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
 					else
 						return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
@@ -396,7 +396,7 @@ public class CMStrings
 		}
 		return str;
 	}
-	
+
 	public final static String replaceFirst(String str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)
@@ -414,7 +414,7 @@ public class CMStrings
 				}
 		return str;
 	}
-	
+
 	public final static String capitalizeAndLower(final String name)
 	{
 		if((name==null)||(name.length()==0)) return "";
@@ -468,7 +468,7 @@ public class CMStrings
 				c[i]=Character.toLowerCase(c[i]);
 		return new String(c).trim();
 	}
-	
+
 	public final static String capitalizeAllFirstLettersAndLower(final String name)
 	{
 		if((name==null)||(name.length()==0)) return "";
@@ -529,10 +529,10 @@ public class CMStrings
 		}
 		return new String(c).trim();
 	}
-	
+
 	public final static String capitalizeFirstLetter(final String name)
 	{
-		if((name==null)||(name.length()==0)) 
+		if((name==null)||(name.length()==0))
 			return "";
 		char[] c=name.toCharArray();
 		int i=0;
@@ -578,7 +578,7 @@ public class CMStrings
 			c[i]=Character.toUpperCase(c[i]);
 		return new String(c).trim();
 	}
-	
+
 	public final static String lastWordIn(final String thisStr)
 	{
 		int x=thisStr.lastIndexOf(' ');
@@ -586,7 +586,7 @@ public class CMStrings
 			return thisStr.substring(x+1);
 		return thisStr;
 	}
-	
+
 	public final static String getSayFromMessage(final String msg)
 	{
 		if(msg==null) return null;
@@ -614,7 +614,7 @@ public class CMStrings
 				return true;
 		return false;
 	}
-	
+
 	public final static boolean compareStringArrays(final String[] A1, final String[] A2)
 	{
 		if(((A1==null)||(A1.length==0))
@@ -632,7 +632,7 @@ public class CMStrings
 		}
 		return true;
 	}
-	
+
 	public final static boolean contains(final String[] strs, final String str)
 	{
 		if((str==null)||(strs==null)) return false;
@@ -641,7 +641,7 @@ public class CMStrings
 				return true;
 		return false;
 	}
-	
+
 	public final static boolean contains(final char[] anycs, final char c)
 	{
 		for(char c1 : anycs)
@@ -649,7 +649,7 @@ public class CMStrings
 				return true;
 		return false;
 	}
-	
+
 	public final static boolean containsAny(final String str, final char[] anycs)
 	{
 		if((str==null)||(anycs==null)) return false;
@@ -658,7 +658,7 @@ public class CMStrings
 				return true;
 		return false;
 	}
-	
+
 	/**
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
@@ -669,7 +669,7 @@ public class CMStrings
 	public final static void replaceVariables(final StringBuffer str, final String values[])
 	{
 		final int numValues=(values==null)?0:values.length;
-		if((numValues==0)&&(str.indexOf("@")<0)) 
+		if((numValues==0)&&(str.indexOf("@")<0))
 			return;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
 		for(int i=0;i<str.length()-(1+valueLen);i++)
@@ -686,7 +686,7 @@ public class CMStrings
 				i--;
 			}
 	}
-	
+
 	/**
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
@@ -697,13 +697,13 @@ public class CMStrings
 	 */
 	public final static String replaceVariables(final String str, final String values[])
 	{
-		if(((values==null)||(values.length==0))&&(str.indexOf('@')<0)) 
+		if(((values==null)||(values.length==0))&&(str.indexOf('@')<0))
 			return str;
 		final StringBuffer buf = new StringBuffer(str);
 		replaceVariables(buf,values);
 		return buf.toString();
 	}
-	
+
 	/**
 	 * Strips colors, of both the ansi, and cm code variety
 	 * @param s the string to strip
@@ -760,7 +760,7 @@ public class CMStrings
 								if(i>=(str.length()-1))
 								{
 									i=tagStart;
-									str.delete(i,i+2); 
+									str.delete(i,i+2);
 									i--;
 									break;
 								}
@@ -785,7 +785,7 @@ public class CMStrings
 								if(i>=(str.length()-1))
 								{
 									i=tagStart;
-									str.delete(i,i+2); 
+									str.delete(i,i+2);
 									i--;
 									break;
 								}
@@ -801,7 +801,7 @@ public class CMStrings
 					}
 					default:
 					{
-						str.delete(i,i+2); 
+						str.delete(i,i+2);
 						i--;
 					}
 					break;
@@ -809,7 +809,7 @@ public class CMStrings
 				}
 				else
 				{
-					str.delete(i,i+2); 
+					str.delete(i,i+2);
 					i--;
 				}
 				break;
@@ -817,7 +817,7 @@ public class CMStrings
 		}
 		return str.toString();
 	}
-	
+
 	/**
 	 * Returns the length of the string as if it has neither
 	 * ansi nor cm color codes.
@@ -826,9 +826,9 @@ public class CMStrings
 	 */
 	public final static int lengthMinusColors(final String thisStr)
 	{
-		if(thisStr==null) 
+		if(thisStr==null)
 			return 0;
-		if(thisStr.indexOf('^')<0) 
+		if(thisStr.indexOf('^')<0)
 			return thisStr.length();
 		int size=0;
 		for(int i=0;i<thisStr.length();i++)
@@ -894,10 +894,10 @@ public class CMStrings
 		}
 		return size;
 	}
-	
+
 	public static void convertHtmlToText(final StringBuilder finalData)
 	{
-		final class TagStacker 
+		final class TagStacker
 		{
 			private Stack<Object[]> tagStack=new Stack<Object[]>();
 			public void push(String tag, int index)
@@ -925,7 +925,7 @@ public class CMStrings
 		}
 		TagStacker stack=new TagStacker();
 		final String[] badBlockTags=new String[]{"STYLE","SCRIPT","HEAD"};
-		final String[][] xlateTags=new String[][]{ 
+		final String[][] xlateTags=new String[][]{
 				{"P","\n\r"}, {"BR","\n\r"}, {"DIV","\n\r"}, {"HR","\r\n-----------------------------------------------------------------------------\n\r"}
 		};
 		int start=-1;
@@ -1017,7 +1017,7 @@ public class CMStrings
 				}
 				default:
 					if(Character.isLetter(c))
-						state=1; 
+						state=1;
 					else
 						start=-1;
 					break;
@@ -1124,7 +1124,7 @@ public class CMStrings
 			}
 		}
 	}
-	
+
 	public static void stripHeadHtmlTags(final StringBuilder finalData)
 	{
 		int start=-1;
@@ -1227,7 +1227,7 @@ public class CMStrings
 			H.put(obj[i],Integer.valueOf(i));
 		return H;
 	}
-	
+
 	public final static String padCenter(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1348,7 +1348,7 @@ public class CMStrings
 			return removeColors(thisStr);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
-	
+
 	public final static String sameCase(final String str, final char c)
 	{
 		if(Character.isUpperCase(c))
@@ -1394,12 +1394,12 @@ public class CMStrings
 		private StringExpToken() { }
 	}
 
-	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) 
+	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index)
 	{
 		if(index[0]>=tokens.size()) return null;
 		return tokens.get(index[0]++);
 	}
-	
+
 	private static final int	STRING_EXP_TOKEN_EVALUATOR    = 1;
 	private static final int	STRING_EXP_TOKEN_OPENPAREN    = 2;
 	private static final int	STRING_EXP_TOKEN_CLOSEPAREN    = 3;
@@ -1544,7 +1544,7 @@ public class CMStrings
 		index[0] = i[0];
 		return token;
 	}
-	
+
 	private static StringExpToken matchCombinedValue(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = index.clone();
@@ -1581,7 +1581,7 @@ public class CMStrings
 		index[0] = i[0];
 		if((leftValue.type==STRING_EXP_TOKEN_STRCONST)||(rightValue.type==STRING_EXP_TOKEN_STRCONST))
 		{
-			if(!token.value.equals("+")) 
+			if(!token.value.equals("+"))
 				throw new Exception("Can't combine a string using '"+token.value+"'");
 			index[0] = i[0];
 			StringExpToken result=new StringExpToken();
@@ -1598,28 +1598,28 @@ public class CMStrings
 			return result;
 		}
 		else
-		if(token.value.equals("-")) 
+		if(token.value.equals("-"))
 		{
 			index[0] = i[0];
 			result.numValue=leftValue.numValue - rightValue.numValue;
 			return result;
 		}
 		else
-		if(token.value.equals("*")) 
+		if(token.value.equals("*"))
 		{
 			index[0] = i[0];
 			result.numValue=leftValue.numValue * rightValue.numValue;
 			return result;
 		}
 		else
-		if(token.value.equals("/")) 
+		if(token.value.equals("/"))
 		{
 			index[0] = i[0];
 			result.numValue=leftValue.numValue / rightValue.numValue;
 			return result;
 		}
 		else
-		if(token.value.equals("?")) 
+		if(token.value.equals("?"))
 		{
 			index[0] = i[0];
 			result.numValue=Math.round((Math.random() * (rightValue.numValue-leftValue.numValue)) + leftValue.numValue);
@@ -1628,7 +1628,7 @@ public class CMStrings
 		else
 			throw new Exception("Unknown math combiner "+token.value);
 	}
-	
+
 	private static Boolean matchValueEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = index.clone();
@@ -1812,7 +1812,7 @@ public class CMStrings
 
 	public final static String determineEOLN(final CharSequence str)
 	{
-		if(str!=null) 
+		if(str!=null)
 		for(int i=0;i<str.length();i++)
 			if(str.charAt(i)=='\n')
 			{
@@ -1829,7 +1829,7 @@ public class CMStrings
 			}
 		return ""+((char)0x0a);
 	}
-	
+
 	/*
 	 * Functions for diff, match and patch.
 	 * Computes the difference between two texts to create a patch.
@@ -3155,6 +3155,7 @@ public class CMStrings
 		 * Display a human-readable version of this Diff.
 		 * @return text version.
 		 */
+		@Override
 		public String toString()
 		{
 			String prettyText = this.text.replace('\n', '\u00b6');

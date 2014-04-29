@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,17 +38,17 @@ import java.util.*;
  */
 public interface AutoTitlesLibrary extends CMLibrary
 {
-	
+
 	/**
 	 * Returns an enumerator of the auto-title strings themselves.
 	 * The strings will substitute a * character for the players
-	 * name when building the final title. 
+	 * name when building the final title.
 	 * @return an enumerator of the auto-title strings themselves
 	 */
 	public Enumeration<String> autoTitles();
-	
+
 	/**
-	 * Returns the string mask attributed to a particular 
+	 * Returns the string mask attributed to a particular
 	 * title string.  The mask is as described by the masking
 	 * library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -56,7 +56,7 @@ public interface AutoTitlesLibrary extends CMLibrary
 	 * @return the zapper mask to determine who should get this title
 	 */
 	public String getAutoTitleMask(String title);
-	
+
 	/**
 	 * Returns whether the given string matches one of the defined
 	 * player titles.
@@ -64,17 +64,17 @@ public interface AutoTitlesLibrary extends CMLibrary
 	 * @return true if a title of that string exists, false otherwise
 	 */
 	public boolean isExistingAutoTitle(String title);
-	
+
 	/**
-	 * Scans an admin-given auto-title definition string to see 
-	 * if it is properly formatted for adding to the list of 
+	 * Scans an admin-given auto-title definition string to see
+	 * if it is properly formatted for adding to the list of
 	 * auto-titles.
 	 * @param row the admin-entered command string
 	 * @param addIfPossible true to add it to the list, false to scan-only
 	 * @return true if the title meets the criterium, false if it is rejected
 	 */
 	public String evaluateAutoTitle(String row, boolean addIfPossible);
-	
+
 	/**
 	 * Scans all existing titles to see if any should be added to the
 	 * given mob.  If any match, the title is added to the mobs list
@@ -83,13 +83,13 @@ public interface AutoTitlesLibrary extends CMLibrary
 	 * @return true if any titles were added, false otherwise
 	 */
 	public boolean evaluateAutoTitles(MOB mob);
-	
+
 	/**
-	 * Forces this library to re-load its list of titles from 
+	 * Forces this library to re-load its list of titles from
 	 * the resource file titles.txt.
 	 */
 	public void reloadAutoTitles();
-	
+
 	/**
 	 * Scans all users in the database to ensure that the given
 	 * title still belongs with them.  If it doesn't, the title

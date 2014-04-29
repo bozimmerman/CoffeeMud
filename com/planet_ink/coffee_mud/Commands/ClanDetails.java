@@ -38,7 +38,8 @@ public class ClanDetails extends StdCommand
 	public ClanDetails(){}
 
 	private final String[] access={"CLANDETAILS","CLANPVPKILLS","CLANKILLS","CLAN"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -79,6 +80,7 @@ public class ClanDetails extends StdCommand
 					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
+						@Override
 						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
 						{
 							return o2.second.compareTo(o1.second);
@@ -117,6 +119,7 @@ public class ClanDetails extends StdCommand
 					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
+						@Override
 						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
 						{
 							return o2.second.compareTo(o1.second);
@@ -156,8 +159,8 @@ public class ClanDetails extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

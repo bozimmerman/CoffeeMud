@@ -24,16 +24,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class GridCityLayout extends AbstractLayout 
+public class GridCityLayout extends AbstractLayout
 {
-	public String name() { return "GRIDCITY";}
-	
-	public List<LayoutNode> generate(int num, int dir) 
+	@Override public String name() { return "GRIDCITY";}
+
+	@Override
+	public List<LayoutNode> generate(int num, int dir)
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt(num));
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
-		
+
 		LayoutSet lSet = new LayoutSet(set,num);
 		lSet.drawABox(diameter+plusX,diameter);
 		int middle=(diameter+plusX)/2;

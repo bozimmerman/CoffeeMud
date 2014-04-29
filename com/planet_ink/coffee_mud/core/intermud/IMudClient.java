@@ -26,7 +26,7 @@ import java.net.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,25 +44,27 @@ import java.net.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class IMudClient implements I3Interface
 {
-	public String ID(){return "IMudClient";}
-	public String name() { return ID();}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new IMudClient();}}
-	public void initializeClass(){}
-	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public boolean activate(){ return true;}
-	public boolean shutdown(){ return true;}
-	public void propertiesLoaded(){}
-	public TickClient getServiceClient() { return null;}
-	
+	@Override public String ID(){return "IMudClient";}
+	@Override public String name() { return ID();}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new IMudClient();}}
+	@Override public void initializeClass(){}
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public boolean activate(){ return true;}
+	@Override public boolean shutdown(){ return true;}
+	@Override public void propertiesLoaded(){}
+	@Override public TickClient getServiceClient() { return null;}
+
 	public IMC2Driver imc2=null;
+	@Override
 	public void registerIMC2(Object O)
-	{ 
+	{
 		if(O instanceof IMC2Driver)
 			imc2=(IMC2Driver)O;
 	}
-	
+
+	@Override
 	public void i3who(MOB mob, String mudName)
 	{
 		if(mob==null) return;
@@ -100,17 +102,20 @@ public class IMudClient implements I3Interface
 		}
 	}
 
+	@Override
 	public boolean i3online()
 	{
 		return Intermud.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
 	}
-	
+
+	@Override
 	public boolean imc2online()
 	{
 		if((imc2==null)||(CMSecurity.isDisabled(DisFlag.IMC2)))
 			return false;
 		return imc2.imc_active==IMC2Driver.IA_UP;
 	}
+	@Override
 	public void imc2mudInfo(MOB mob, String parms)
 	{
 		if((mob==null)||(!imc2online())) return;
@@ -122,6 +127,7 @@ public class IMudClient implements I3Interface
 		imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(parms).name,"info",mob.phyStats().level(),0);
 	}
 
+	@Override
 	public void i3chanwho(MOB mob, String channel, String mudName)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -156,6 +162,7 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 
+	@Override
 	public void i3channelAdd(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -164,7 +171,7 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify an existing channel to add it to the i3 network.");
 			return;
 		}
-		
+
 		ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
@@ -174,6 +181,7 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 
+	@Override
 	public void i3channelListen(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -199,6 +207,7 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 
+	@Override
 	public void i3channelSilence(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -222,6 +231,7 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 
+	@Override
 	public void i3channelRemove(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -239,6 +249,7 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 
+	@Override
 	public void i3tell(MOB mob, String tellName, String mudName, String message)
 	{
 		if(mob==null) return;
@@ -273,7 +284,7 @@ public class IMudClient implements I3Interface
 			tk.target_mud=mudName;
 			tk.target_name=tellName;
 			tk.message=message;
-			if(mob.playerStats()!=null) 
+			if(mob.playerStats()!=null)
 				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			try
 			{
@@ -285,7 +296,7 @@ public class IMudClient implements I3Interface
 		{
 			tellName=CMStrings.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
 			mob.tell("^CYou tell "+tellName+" '"+message+"'^?");
-			if(mob.playerStats()!=null) 
+			if(mob.playerStats()!=null)
 				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			imc2.imc_send_tell(mob.name(),tellName,message,0,CMLib.flags().isInvisible(mob)?1:0);
 		}
@@ -295,7 +306,7 @@ public class IMudClient implements I3Interface
 			return;
 		}
 	}
-	
+
 	public void destroymob(MOB mob)
 	{
 		if(mob==null) return;
@@ -304,6 +315,7 @@ public class IMudClient implements I3Interface
 		if(R!=null) R.destroy();
 	}
 
+	@Override
 	public void i3channel(MOB mob, String channelName, String message)
 	{
 		if(mob==null) return;
@@ -438,7 +450,7 @@ public class IMudClient implements I3Interface
 							return;
 						}
 					}
-					
+
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
 						message=CMLib.coffeeFilter().fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,CMStrings.removeColors(msg.othersMessage()),false);
 					else
@@ -460,11 +472,12 @@ public class IMudClient implements I3Interface
 		}
 	}
 
+	@Override
 	public void i3locate(MOB mob, String mobName)
 	{
 		if(mob==null) return;
 		if((!i3online())&&(!imc2online())) return;
-		
+
 		if((mobName==null)||(mobName.length()==0))
 		{
 			mob.tell("You must specify a name.");
@@ -485,6 +498,7 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
+	@Override
 	public void i3pingRouter(MOB mob)
 	{
 		if(mob==null) return;
@@ -498,12 +512,13 @@ public class IMudClient implements I3Interface
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
 	}
-	
+
+	@Override
 	public void i3finger(MOB mob, String mobName, String mudName)
 	{
 		if(mob==null) return;
 		if((!i3online())&&(!imc2online())) return;
-		
+
 		if((mobName==null)||(mobName.length()==0))
 		{
 			mob.tell("You must specify a name.");
@@ -539,7 +554,7 @@ public class IMudClient implements I3Interface
 		buf.append(CMStrings.padRight("Status",10)+": "+mudToShow.status+"\n\r");
 		return buf.toString();
 	}
-	
+
 	public List<I3Mud> mudFinder(String parms)
 	{
 		MudList list=Intermud.getAllMudsList();
@@ -593,7 +608,8 @@ public class IMudClient implements I3Interface
 		}
 		return muds;
 	}
-	
+
+	@Override
 	public void i3mudInfo(MOB mob, String parms)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -617,7 +633,8 @@ public class IMudClient implements I3Interface
 		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
-	
+
+	@Override
 	public void giveIMC2MudList(MOB mob)
 	{
 		if((mob==null)||(!imc2online())) return;
@@ -648,7 +665,8 @@ public class IMudClient implements I3Interface
 		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
-	
+
+	@Override
 	public void giveI3MudList(MOB mob)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -685,6 +703,7 @@ public class IMudClient implements I3Interface
 		mob.session().wraplessPrintln(buf.toString());
 	}
 
+	@Override
 	public void giveI3ChannelsList(MOB mob)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -704,6 +723,7 @@ public class IMudClient implements I3Interface
 		mob.session().wraplessPrintln(buf.toString());
 	}
 
+	@Override
 	public void giveIMC2ChannelsList(MOB mob)
 	{
 		if((mob==null)||(!imc2online())) return;
@@ -736,6 +756,7 @@ public class IMudClient implements I3Interface
 		mob.session().wraplessPrintln(buf.toString());
 	}
 
+	@Override
 	public boolean isIMC2channel(String channelName)
 	{
 		if(!imc2online()) return false;
@@ -745,6 +766,7 @@ public class IMudClient implements I3Interface
 		return true;
 	}
 
+	@Override
 	public boolean isI3channel(String channelName)
 	{
 		if(!i3online()) return false;

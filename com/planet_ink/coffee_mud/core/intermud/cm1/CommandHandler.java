@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,14 +43,14 @@ public class CommandHandler implements Runnable
 {
 	private String cmd;
 	private String rest;
-	private RequestHandler req; 
+	private RequestHandler req;
 	private static final Map<String,Class<? extends CM1Command>> commandList=new Hashtable<String,Class<? extends CM1Command>>();
-	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException 
-	{ 
+	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException
+	{
 		CM1Command c1 = CM1Command.newInstance(c,null,"");
 		commandList.put(c1.getCommandWord(),c);
 	}
-	
+
 	static
 	{
 		String className=CommandHandler.class.getName();
@@ -60,12 +60,12 @@ public class CommandHandler implements Runnable
 			packageName=packageName.substring(0,x)+".commands.";
 		if (!className.startsWith("/"))
 			className = "/" + className;
-		
+
 		className = className.replace('.', '/');
 		className = className + ".class";
 
 		URL classUrl = CommandHandler.class.getClass().getResource(className);
-		if (classUrl != null) 
+		if (classUrl != null)
 		{
 		   String temp = classUrl.getFile();
 		   if (temp.startsWith("file:"))
@@ -95,7 +95,7 @@ public class CommandHandler implements Runnable
 		   }
 		}
 	}
-	
+
 	public CommandHandler(RequestHandler req, String command)
 	{
 		this.req=req;
@@ -110,10 +110,11 @@ public class CommandHandler implements Runnable
 			cmd=command.substring(0,x).trim();
 			rest=command.substring(x+1).trim();
 		}
-		
+
 	}
 
-	public void run() 
+	@Override
+	public void run()
 	{
 		if(cmd.length()>0)
 		{
@@ -158,6 +159,6 @@ public class CommandHandler implements Runnable
 			}
 		}
 	}
-	
-	
+
+
 }

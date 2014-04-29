@@ -37,7 +37,8 @@ public class FactionList extends StdCommand
 	public FactionList(){}
 
 	private final String[] access={"FACTIONS","FAC"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -45,7 +46,7 @@ public class FactionList extends StdCommand
 		boolean none=true;
 		XVector<String> list=new XVector<String>(mob.fetchFactions());
 		list.sort();
-		for(Enumeration<String> e=list.elements();e.hasMoreElements();) 
+		for(Enumeration<String> e=list.elements();e.hasMoreElements();)
 		{
 			String name=e.nextElement();
 			Faction F=CMLib.factions().getFaction(name);
@@ -63,7 +64,7 @@ public class FactionList extends StdCommand
 		return false;
 	}
 
-	public String formatFactionLine(String name,int faction) 
+	public String formatFactionLine(String name,int faction)
 	{
 		StringBuffer line=new StringBuffer();
 		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
@@ -78,19 +79,19 @@ public class FactionList extends StdCommand
 		return line.toString();
 	}
 
-	public String calcRangeBar(String factionID, int faction) 
+	public String calcRangeBar(String factionID, int faction)
 	{
 		StringBuffer bar=new StringBuffer();
 		Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
-		for(int i=0;i<fill.intValue();i++) 
+		for(int i=0;i<fill.intValue();i++)
 		{
 			bar.append("*");
 		}
 		return bar.toString();
 	}
 
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

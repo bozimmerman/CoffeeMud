@@ -37,8 +37,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Pregnancy extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Pregnancy"; }
-	public String name(){ return "Pregnancy";}
+	@Override public String ID() { return "Pregnancy"; }
+	@Override public String name(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
 	protected long daysRemaining=-1;
 
@@ -64,7 +64,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		}
 		return "";
 	}
-	
+
+	@Override
 	public String displayText()
 	{
 		String text=getHealthConditionDesc();
@@ -72,19 +73,20 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			return "(is "+text+")";
 		return "";
 	}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"IMPREGNATE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public boolean canBeUninvoked(){return false;}
-	public boolean isAutoInvoked(){return false;}
-	public boolean isSavable(){ return true; }
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public boolean isAutoInvoked(){return false;}
+	@Override public boolean isSavable(){ return true; }
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	protected int ticksInLabor=0;
 
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
@@ -182,6 +184,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -388,6 +391,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

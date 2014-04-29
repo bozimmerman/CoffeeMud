@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public interface Container extends Item
 	public long containTypes();
 	public void setContainTypes(long containTypes);
 	public void emptyPlease(boolean flatten);
-	
+
 	/**
 	 * For containers with lids and locks, this returns the unique string
 	 * representing the key code required to unlock/lock the lid.
@@ -52,7 +52,7 @@ public interface Container extends Item
 	 * @return the key code
 	 */
 	public String keyName();
-	
+
 	/**
 	 * For containers with lids and locks, this sets the unique string
 	 * representing the key code required to unlock/lock the lid.
@@ -60,7 +60,7 @@ public interface Container extends Item
 	 * @param keyName the new key code
 	 */
 	public void setKeyName(String keyName);
-	
+
 	public static final int CONTAIN_ANYTHING=0;
 	public static final int CONTAIN_LIQUID=1;
 	public static final int CONTAIN_COINS=2;

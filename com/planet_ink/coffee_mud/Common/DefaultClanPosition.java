@@ -33,9 +33,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class DefaultClanPosition implements ClanPosition
 {
-	public String ID(){return "DefaultClanPosition";}
-	public String name() { return ID();}
-	
+	@Override public String ID(){return "DefaultClanPosition";}
+	@Override public String name() { return ID();}
+
 	/** the named ID of the position */
 	protected String 	ID;
 	/** the named ID of the position */
@@ -54,11 +54,12 @@ public class DefaultClanPosition implements ClanPosition
 	protected boolean 	isPublic;
 	/** a chart of whether this position can perform the indexed function in this government */
 	protected Clan.Authority[] functionChart;
-	
+
 	/** return a new instance of the object*/
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -70,87 +71,106 @@ public class DefaultClanPosition implements ClanPosition
 			return new DefaultClanPosition();
 		}
 	}
-	
+
+	@Override
 	public String getID()
 	{
 		return ID;
 	}
+	@Override
 	public void setID(String iD)
 	{
 		ID = iD;
 	}
+	@Override
 	public int getRoleID()
 	{
 		return roleID;
 	}
+	@Override
 	public void setRoleID(int roleID)
 	{
 		this.roleID = roleID;
 	}
+	@Override
 	public int getRank()
 	{
 		return rank;
 	}
+	@Override
 	public void setRank(int rank)
 	{
 		this.rank = rank;
 	}
+	@Override
 	public String getName()
 	{
 		return name;
 	}
+	@Override
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+	@Override
 	public String getPluralName()
 	{
 		return pluralName;
 	}
+	@Override
 	public void setPluralName(String pluralName)
 	{
 		this.pluralName = pluralName;
 	}
+	@Override
 	public int getMax()
 	{
 		return max;
 	}
+	@Override
 	public void setMax(int max)
 	{
 		this.max = max;
 	}
+	@Override
 	public String getInnerMaskStr()
 	{
 		return innerMaskStr;
 	}
+	@Override
 	public void setInnerMaskStr(String innerMaskStr)
 	{
 		this.innerMaskStr = innerMaskStr;
 	}
+	@Override
 	public boolean isPublic()
 	{
 		return isPublic;
 	}
+	@Override
 	public void setPublic(boolean isPublic)
 	{
 		this.isPublic = isPublic;
 	}
+	@Override
 	public Clan.Authority[] getFunctionChart()
 	{
 		return functionChart;
 	}
+	@Override
 	public void setFunctionChart(Clan.Authority[] functionChart)
 	{
 		this.functionChart = functionChart;
 	}
-	
+
 	private static enum POS_STAT_CODES {
 		ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
 	}
-	public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
-	public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
+	@Override public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
+	@Override public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
 	private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
-	public String getStat(String code) 
+	@Override
+	public String getStat(String code)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return "";}
@@ -177,8 +197,9 @@ public class DefaultClanPosition implements ClanPosition
 		}
 		return "";
 	}
-	public boolean isStat(String code) { return getStatIndex(code)!=null;}
-	public void setStat(String code, String val) 
+	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
+	@Override
+	public void setStat(String code, String val)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null){ return;}
@@ -206,5 +227,5 @@ public class DefaultClanPosition implements ClanPosition
 		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
 		}
 	}
-	public String toString() { return ID;}
+	@Override public String toString() { return ID;}
 }

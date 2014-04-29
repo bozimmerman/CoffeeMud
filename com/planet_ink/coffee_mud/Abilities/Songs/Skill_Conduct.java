@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Conduct extends BardSkill
 {
-	public String ID() { return "Skill_Conduct"; }
-	public String name(){ return "Conduct Symphony";}
-	public String displayText(){ return "("+name()+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Skill_Conduct"; }
+	@Override public String name(){ return "Conduct Symphony";}
+	@Override public String displayText(){ return "("+name()+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"CONDUCT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
@@ -77,7 +78,7 @@ public class Skill_Conduct extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				
+
 				Set<MOB> h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(!h.contains(mob)) h.add(mob);

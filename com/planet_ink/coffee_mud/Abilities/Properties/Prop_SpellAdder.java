@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,9 +37,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_SpellAdder extends Property implements AbilityContainer, TriggeredAffect
 {
-	public String ID() { return "Prop_SpellAdder"; }
-	public String name(){ return "Casting spells on oneself";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_SpellAdder"; }
+	@Override public String name(){ return "Casting spells on oneself";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	protected Physical lastMOB=null;
 	protected MOB invokerMOB=null;
 	protected boolean processing=false;
@@ -50,14 +50,16 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected List<Ability> spellV=null;
 	protected MaskingLibrary.CompiledZapperMask compiledMask=null;
 	protected List<Ability> unrevocableSpells = null;
-	
-	public long flags(){return Ability.FLAG_CASTER;}
 
+	@Override public long flags(){return Ability.FLAG_CASTER;}
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ALWAYS;
 	}
 
+	@Override
 	protected void finalize()
 	{
 		spellV=null;
@@ -67,7 +69,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if((invokerMOB!=null)&&(invokerMOB.Name().equals("invoker")))
 			invokerMOB.destroy();
 	}
-	
+
 	public String getMaskString(String newText)
 	{
 		int maskindex=newText.toUpperCase().indexOf("MASK=");
@@ -75,7 +77,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return newText.substring(maskindex+5).trim();
 		return "";
 	}
-	
+
 	public String getParmString(String newText)
 	{
 		int maskindex=newText.toUpperCase().indexOf("MASK=");
@@ -83,7 +85,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return newText.substring(0,maskindex).trim();
 		return newText;
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -96,7 +99,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if(maskString.length()>0)
 			compiledMask=CMLib.masking().getPreCompiledMask(maskString);
 	}
-	
+
 	public List<Ability> getMySpellsV()
 	{
 		if(spellV!=null) return spellV;
@@ -176,7 +179,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return true;
 		return false;
 	}
-	
+
 	public Map<String, String> makeMySpellsH(List<Ability> V)
 	{
 		Hashtable<String, String> spellH=new Hashtable<String, String>();
@@ -194,7 +197,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return (MOB)((Item)target).owner();
 		return null;
 	}
-	
+
 	public MOB getInvokerMOB(Environmental source, Environmental target)
 	{
 		MOB mob=getBestInvokerMOB(affected);
@@ -247,7 +250,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		return VTOO;
 	}
-	
+
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
 	{
 		List<Ability> V=getMySpellsV();
@@ -294,6 +297,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String s=CMParms.combine(commands,0);
@@ -308,17 +312,19 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," on the first one who enters.");}
-	
+
 	public void removeMyAffectsFromLastMOB()
 	{
 		removeMyAffectsFrom(lastMOB);
 		lastMOB=null;
 	}
-	
-	public void setAffectedOne(Physical P) 
+
+	@Override
+	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
 		if(P == null)
@@ -327,11 +333,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			finalize();
 		}
 	}
-	
+
 	public void removeMyAffectsFrom(Physical P)
 	{
 		if(P==null)return;
-		
+
 		int x=0;
 		Vector eff=new Vector();
 		Ability thisAffect=null;
@@ -370,6 +376,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Room)||(affected instanceof Area))
@@ -383,6 +390,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
@@ -399,7 +407,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			processing=false;
 		}
 	}
-	
+
 	public String spellAccountingsWithMask(String pre, String post)
 	{
 		List<Ability> spellList=getMySpellsV();
@@ -423,12 +431,14 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return id;
 	}
 
-	public void addAbility(Ability to){}
-	public void delAbility(Ability to){}
+	@Override public void addAbility(Ability to){}
+	@Override public void delAbility(Ability to){}
+	@Override
 	public int numAbilities()
 	{
 		return getMySpellsV().size();
 	}
+	@Override
 	public Ability fetchAbility(int index)
 	{
 		List<Ability> spellsV=getMySpellsV();
@@ -444,6 +454,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return null;
 		}
 	}
+	@Override
 	public Ability fetchAbility(String ID)
 	{
 		for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
@@ -455,18 +466,20 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		return null;
 	}
+	@Override
 	public Ability fetchRandomAbility()
 	{
 		List<Ability> spellsV=getMySpellsV();
 		if(spellsV.size()==0) return null;
 		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
 	}
+	@Override
 	public Enumeration<Ability> abilities()
 	{
 		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
 	}
-	public void delAllAbilities(){ setMiscText("");}
-	public int numAllAbilities() { return numAbilities();}
-	public Enumeration<Ability> allAbilities(){ return abilities();}
+	@Override public void delAllAbilities(){ setMiscText("");}
+	@Override public int numAllAbilities() { return numAbilities();}
+	@Override public Enumeration<Ability> allAbilities(){ return abilities();}
 
 }

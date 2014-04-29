@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CreateIdol extends Prayer
 {
-	public String ID() { return "Prayer_CreateIdol"; }
-	public String name(){ return "Create Idol";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public boolean bubbleAffect(){return true;}
+	@Override public String ID() { return "Prayer_CreateIdol"; }
+	@Override public String name(){ return "Create Idol";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean bubbleAffect(){return true;}
 
+	@Override
 	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
 		super.affectPhyStats(aff,affectableStats);
@@ -55,6 +56,7 @@ public class Prayer_CreateIdol extends Prayer
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB aff, CharStats affectableStats)
 	{
 		super.affectCharStats(aff,affectableStats);
@@ -66,6 +68,7 @@ public class Prayer_CreateIdol extends Prayer
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB aff, CharState affectableState)
 	{
 		super.affectCharState(aff,affectableState);
@@ -78,6 +81,7 @@ public class Prayer_CreateIdol extends Prayer
 	}
 
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -92,6 +96,7 @@ public class Prayer_CreateIdol extends Prayer
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))

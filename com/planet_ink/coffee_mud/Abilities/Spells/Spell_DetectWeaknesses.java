@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DetectWeaknesses extends Spell
 {
-	public String ID() { return "Spell_DetectWeaknesses"; }
-	public String name(){return "Detect Weaknesses";}
+	@Override public String ID() { return "Spell_DetectWeaknesses"; }
+	@Override public String name(){return "Detect Weaknesses";}
+	@Override
 	public String displayText()
 	{
 		return "(Know weaknesses of "+text()+")";
 	}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	protected MOB spottedM=null;
 	protected boolean activated=true;
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(target instanceof MOB)
@@ -57,11 +59,12 @@ public class Spell_DetectWeaknesses extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		
+
 		if((affected instanceof MOB)&&(activated))
 		{
 			if(invoker==null) invoker=(MOB)affected;
@@ -72,6 +75,7 @@ public class Spell_DetectWeaknesses extends Spell
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -116,6 +120,7 @@ public class Spell_DetectWeaknesses extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -128,6 +133,7 @@ public class Spell_DetectWeaknesses extends Spell
 				mob.tell(mob,null,null,"<S-YOUPOSS> knowledge of "+text()+" fades.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -144,7 +150,7 @@ public class Spell_DetectWeaknesses extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

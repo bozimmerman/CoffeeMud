@@ -42,7 +42,7 @@ public class ChannelWhoReply extends Packet {
 		super();
 		type = Packet.CHAN_WHO_REP;
 	}
-	
+
 	public ChannelWhoReply(Vector v) throws InvalidPacketException {
 		super(v);
 		try
@@ -61,6 +61,7 @@ public class ChannelWhoReply extends Packet {
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( channel==null || who == null  )
 		{
@@ -70,6 +71,7 @@ public class ChannelWhoReply extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		String str = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +

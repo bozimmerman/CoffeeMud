@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,24 +37,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class WingFlying extends StdAbility implements HealthCondition
 {
-	public String ID() { return "WingFlying"; }
-	public String name(){ return "Winged Flight";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "WingFlying"; }
+	@Override public String name(){ return "Winged Flight";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"FLAP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Weak Paralysis";
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -67,13 +68,15 @@ public class WingFlying extends StdAbility implements HealthCondition
 			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_FLYING));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getBodyPart(Race.BODY_WING)<=0))
 			unInvoke();
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

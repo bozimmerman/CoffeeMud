@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_UndergroundConnections extends ThiefSkill
 {
-	public String ID() { return "Thief_UndergroundConnections"; }
-	public String name(){ return "Underground Connections";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Thief_UndergroundConnections"; }
+	@Override public String name(){ return "Underground Connections";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"UNDERGROUNDCONNECTIONS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	protected List<Integer> pathOut=null;
 	protected int hygieneLoss=0;
 	protected String theNoun=null;
@@ -54,6 +54,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	protected Vector storage=null;
 	protected String lastDesc=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((pathOut!=null)&&(tickID==Tickable.TICKID_MOB))
@@ -95,7 +96,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -107,7 +109,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(pathOut!=null)
@@ -134,7 +137,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public void bringMOBSHere(Room newRoom, Vector group, String enterStr, String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
@@ -180,7 +183,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		return false;
 	}
-	
+
 	public Room makeNewRoom(Area area, String display, String description)
 	{
 		Room R=CMClass.getLocale("MagicShelter");
@@ -198,7 +201,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		return R;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -211,7 +215,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		Room thisRoom=target.location();
 		if(thisRoom==null) return false;
-		
+
 		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 		{
 			mob.tell("You must be out on a street to contact your underground connections.");
@@ -269,7 +273,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 		List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

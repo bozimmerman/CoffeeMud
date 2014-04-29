@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_FloodRoom extends StdTrap
 {
-	public String ID() { return "Trap_FloodRoom"; }
-	public String name(){ return "flood room";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 29;}
-	public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
-	public int baseRejuvTime(int level){ return 16;}
+	@Override public String ID() { return "Trap_FloodRoom"; }
+	@Override public String name(){ return "flood room";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 29;}
+	@Override public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
+	@Override public int baseRejuvTime(int level){ return 16;}
 
 	protected int numWaterskins(MOB mob)
 	{
@@ -56,6 +56,7 @@ public class Trap_FloodRoom extends StdTrap
 		return num;
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -65,7 +66,7 @@ public class Trap_FloodRoom extends StdTrap
 			V.addElement(CMClass.getBasicItem("Waterskin"));
 		return V;
 	}
-	
+
 	protected void killWaterskins(MOB mob)
 	{
 		if(mob==null) return;
@@ -91,6 +92,7 @@ public class Trap_FloodRoom extends StdTrap
 	}
 
 
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -105,6 +107,7 @@ public class Trap_FloodRoom extends StdTrap
 	}
 
 
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -136,6 +139,7 @@ public class Trap_FloodRoom extends StdTrap
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -153,6 +157,7 @@ public class Trap_FloodRoom extends StdTrap
 			disabled=false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((sprung)
@@ -178,6 +183,7 @@ public class Trap_FloodRoom extends StdTrap
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
@@ -214,6 +220,7 @@ public class Trap_FloodRoom extends StdTrap
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void disable()
 	{
 		super.disable();
@@ -224,6 +231,7 @@ public class Trap_FloodRoom extends StdTrap
 		}
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dance_Stop extends Dance
 {
-	public String ID() { return "Dance_Stop"; }
-	public String name(){ return "Stop";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Dance_Stop"; }
+	@Override public String name(){ return "Stop";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Dance_Stop()
 	{
 		super();
 		setProficiency(100);
 	}
-	public void setProficiency(int newProficiency){	super.setProficiency(100);}
+	@Override public void setProficiency(int newProficiency){	super.setProficiency(100);}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean foundOne=false;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_EelShock extends Chant
 {
-	public String ID() { return "Chant_EelShock"; }
-	public String name(){return "Eel Shock";}
-	public String displayText(){return "(Stunned)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange() {return 3;}
-	public int minRange() {return 0;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public long flags(){return Ability.FLAG_AIRBASED;}
-	
+	@Override public String ID() { return "Chant_EelShock"; }
+	@Override public String name(){return "Eel Shock";}
+	@Override public String displayText(){return "(Stunned)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange() {return 3;}
+	@Override public int minRange() {return 0;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Chant_EelShock extends Chant
 				mob.tell("<S-YOUPOSS> are no longer stunned.");
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -66,6 +68,7 @@ public class Chant_EelShock extends Chant
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -85,7 +88,7 @@ public class Chant_EelShock extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	private boolean roomWet(Room location)
 	{
 		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
@@ -102,6 +105,7 @@ public class Chant_EelShock extends Chant
 		return false;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -118,7 +122,8 @@ public class Chant_EelShock extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Falling extends StdAbility
 {
-	public String ID() { return "Falling"; }
-	public String name(){ return "Falling";}
-	public String displayText(){ return "(Falling)";}
-	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Falling"; }
+	@Override public String name(){ return "Falling";}
+	@Override public String displayText(){ return "(Falling)";}
+	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	boolean temporarilyDisable=false;
 	public Room room=null;
 	boolean hitTheCeiling=false;
@@ -120,6 +120,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -219,6 +220,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -245,6 +247,7 @@ public class Falling extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -265,12 +268,14 @@ public class Falling extends StdAbility
 			}
 		}
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affectableStats.disposition()&PhyStats.IS_FLYING)==0)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		if(P instanceof Room)
@@ -278,6 +283,7 @@ public class Falling extends StdAbility
 		else
 			super.setAffectedOne(P);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;

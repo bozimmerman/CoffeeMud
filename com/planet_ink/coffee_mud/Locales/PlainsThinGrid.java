@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,22 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class PlainsThinGrid extends StdThinGrid
 {
-	public String ID(){return "PlainsThinGrid";}
+	@Override public String ID(){return "PlainsThinGrid";}
 	public PlainsThinGrid()
 	{
 		super();
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new PlainsGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "Plains";}
-	public List<Integer> resourceChoices(){return Plains.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Plains";}
+	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

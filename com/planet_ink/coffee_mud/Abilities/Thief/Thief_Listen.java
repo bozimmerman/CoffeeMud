@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Listen extends ThiefSkill
 {
-	public String ID() { return "Thief_Listen"; }
-	public String name(){ return "Listen";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public String ID() { return "Thief_Listen"; }
+	@Override public String name(){ return "Listen";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	private static final String[] triggerStrings = {"LISTEN"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	protected Room sourceRoom=null;
 	protected Room room=null;
@@ -56,7 +56,7 @@ public class Thief_Listen extends ThiefSkill
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;
 	}
-	
+
 	protected Item getInvisibleItem()
 	{
 		Item mrInvisible=CMClass.getItem("StdItem");
@@ -65,7 +65,7 @@ public class Thief_Listen extends ThiefSkill
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;
 	}
-	
+
 	protected Environmental[] makeTalkers(MOB s, Environmental p, Environmental t)
 	{
 		Environmental[] Ms=new Environmental[]{s,p,t};
@@ -99,14 +99,15 @@ public class Thief_Listen extends ThiefSkill
 		}
 		return Ms;
 	}
-	
+
 	public void cleanTalkers(Environmental[] Ps)
 	{
 		for(Environmental P : Ps)
 			if(P!=null)
 				P.destroy();
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -157,6 +158,7 @@ public class Thief_Listen extends ThiefSkill
 			unInvoke();
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=invoker();
@@ -164,7 +166,8 @@ public class Thief_Listen extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You stop listening.");
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whom=CMParms.combine(commands,0);

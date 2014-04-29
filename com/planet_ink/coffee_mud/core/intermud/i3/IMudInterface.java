@@ -25,7 +25,7 @@ import java.util.*;
 import java.io.Serializable;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ public class IMudInterface implements ImudServices, Serializable
 			new CMChannel[]{new CMChannel("I3CHAT","diku_chat",""),
 							new CMChannel("I3GOSSIP","diku_immortals",""),
 							new CMChannel("GREET","diku_code","")});
-	
+
 	private static volatile long lastPacketReceivedTime = System.currentTimeMillis();
 
 	String[][] i3ansi_conversion=
@@ -139,7 +139,7 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		this.channels=channels;
 	}
-	
+
 	protected MOB findSessMob(String mobName)
 	{
 		return CMLib.sessions().findPlayerOnline(mobName, true);
@@ -149,11 +149,11 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		if(universalR==null)
 		{
-			universalR=CMClass.getLocale("StdRoom");		
+			universalR=CMClass.getLocale("StdRoom");
 		}
 		return universalR;
 	}
-	
+
 	public String fixColors(String str)
 	{
 		StringBuffer buf=new StringBuffer(str);
@@ -207,16 +207,18 @@ public class IMudInterface implements ImudServices, Serializable
 		return str.trim();
 	}
 
+	@Override
 	public long getLastPacketReceivedTime()
 	{
 		return lastPacketReceivedTime;
 	}
-	
+
+	@Override
 	public void resetLastPacketReceivedTime()
 	{
 		lastPacketReceivedTime=System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously
@@ -229,6 +231,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 * the stack during your main thread of execution.
 	 * @param packet the incoming packet
 	 */
+	@Override
 	public void receive(Packet packet)
 	{
 		switch(packet.type)
@@ -607,6 +610,7 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return an enumeration of channels this mud subscribes to
 	 */
+	@Override
 	public java.util.Enumeration getChannels()
 	{
 		Vector V=new Vector();
@@ -621,7 +625,8 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return the local channel name for the specified new local channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
 	 */
-	public boolean addChannel(CMChannel chan) 
+	@Override
+	public boolean addChannel(CMChannel chan)
 	{
 		if((getLocalChannel(chan.i3name).length()==0)
 		&&(getRemoteChannel(chan.name).length()==0))
@@ -631,13 +636,14 @@ public class IMudInterface implements ImudServices, Serializable
 		}
 		return false;
 	}
-	
+
 
 	/**
 	 * Remote a channel
 	 * @param remoteChannelName the remote name
 	 * @return true if remove succeeds
 	 */
+	@Override
 	public boolean delChannel(String remoteChannelName)
 	{
 		for(int i=0;i<channels.size();i++)
@@ -648,7 +654,7 @@ public class IMudInterface implements ImudServices, Serializable
 			}
 		return false;
 	}
-	
+
 	/**
 	 * Given a I3 channel name, this method should provide
 	 * the local name for that channel.
@@ -660,6 +666,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return the local channel name for a remote channel
 	 * @see #getRemoteChannel
 	 */
+	@Override
 	public String getLocalChannel(String str)
 	{
 		for(CMChannel chan : channels)
@@ -690,6 +697,7 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the name of this mud
 	 */
+	@Override
 	public String getMudName()
 	{
 		return name;
@@ -698,6 +706,7 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the software name and version
 	 */
+	@Override
 	public String getMudVersion()
 	{
 		return version;
@@ -706,6 +715,7 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the software name and version
 	 */
+	@Override
 	public String getMudState()
 	{
 		return i3state;
@@ -714,6 +724,7 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the player port for this mud
 	 */
+	@Override
 	public int getMudPort()
 	{
 		return port;
@@ -730,6 +741,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @param str the remote name of the desired channel
 	 * @return the remote mask of the specified local channel
 	 */
+	@Override
 	public String getRemoteMask(String str)
 	{
 		for(CMChannel chan : channels)
@@ -748,6 +760,7 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @param str the local name of the desired channel
 	 * @return the remote name of the specified local channel
 	 */
+	@Override
 	public String getRemoteChannel(String str)
 	{
 		for(CMChannel chan : channels)

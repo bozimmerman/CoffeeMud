@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_IronGrip extends Spell
 {
-	public String ID() { return "Spell_IronGrip"; }
-	public String name(){return "Iron Grip";}
-	public String displayText(){return "(Iron Grip)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_IronGrip"; }
+	@Override public String name(){return "Iron Grip";}
+	@Override public String displayText(){return "(Iron Grip)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -58,6 +59,7 @@ public class Spell_IronGrip extends Spell
 
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -113,6 +115,7 @@ public class Spell_IronGrip extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

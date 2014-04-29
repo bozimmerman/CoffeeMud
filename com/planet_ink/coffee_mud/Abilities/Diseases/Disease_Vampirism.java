@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Vampirism extends Disease
 {
-	public String ID() { return "Disease_Vampirism"; }
-	public String name(){ return "Vampirism";}
-	public String displayText(){ return "(Vampirism)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Vampirism"; }
+	@Override public String name(){ return "Vampirism";}
+	@Override public String displayText(){ return "(Vampirism)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected String DISEASE_DONE(){return "Your vampirism lifts.";}
-	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	public int difficultyLevel(){return 9;}
+	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected String DISEASE_DONE(){return "Your vampirism lifts.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override public int difficultyLevel(){return 9;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -61,6 +62,7 @@ public class Disease_Vampirism extends Disease
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -77,6 +79,7 @@ public class Disease_Vampirism extends Disease
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

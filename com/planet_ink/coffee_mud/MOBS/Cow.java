@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Cow extends StdMOB implements Drink
 {
-	public String ID(){return "Cow";}
+	@Override public String ID(){return "Cow";}
 	public Cow()
 	{
 		super();
@@ -60,15 +60,17 @@ public class Cow extends StdMOB implements Drink
 		recoverPhyStats();
 		recoverCharStats();
 	}
-	public long decayTime(){return 0;}
-	public void setDecayTime(long time){}
+	@Override public long decayTime(){return 0;}
+	@Override public void setDecayTime(long time){}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 			return true;
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -109,15 +111,15 @@ public class Cow extends StdMOB implements Drink
 					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
 		}
 	}
-	public int thirstQuenched(){return 100;}
-	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return RawMaterial.RESOURCE_MILK;}
-	public boolean disappearsAfterDrinking(){return false;}
-	public void setLiquidType(int newLiquidType){}
-	public void setThirstQuenched(int amount){}
-	public void setLiquidHeld(int amount){}
-	public void setLiquidRemaining(int amount){}
-	public boolean containsDrink(){return true;}
-	public int amountTakenToFillMe(Drink theSource){return 0;}
+	@Override public int thirstQuenched(){return 100;}
+	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_MILK;}
+	@Override public boolean disappearsAfterDrinking(){return false;}
+	@Override public void setLiquidType(int newLiquidType){}
+	@Override public void setThirstQuenched(int amount){}
+	@Override public void setLiquidHeld(int amount){}
+	@Override public void setLiquidRemaining(int amount){}
+	@Override public boolean containsDrink(){return true;}
+	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
 }

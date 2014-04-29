@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class RebuildReferenceDocs extends StdWebMacro
 {
-	public String name() { return "RebuildReferenceDocs"; }
+	@Override public String name() { return "RebuildReferenceDocs"; }
 
-	public boolean isAWebPath(){return true;}
-	public boolean isAdminMacro() { return true;}
-	
+	@Override public boolean isAWebPath(){return true;}
+	@Override public boolean isAdminMacro() { return true;}
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);

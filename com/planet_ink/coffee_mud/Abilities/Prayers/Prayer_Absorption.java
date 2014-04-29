@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Absorption extends Prayer
 {
-	public String ID() { return "Prayer_Absorption"; }
-	public String name(){ return "Absorption";}
-	public String displayText(){ return "(Absorption)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Absorption"; }
+	@Override public String name(){ return "Absorption";}
+	@Override public String displayText(){ return "(Absorption)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	protected Ability absorbed=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -63,6 +64,7 @@ public class Prayer_Absorption extends Prayer
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -74,7 +76,8 @@ public class Prayer_Absorption extends Prayer
 			unInvoke();
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

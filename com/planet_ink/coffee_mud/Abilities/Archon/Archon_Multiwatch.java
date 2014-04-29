@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Archon_Multiwatch extends ArchonSkill
 {
-	public String ID() { return "Archon_Multiwatch"; }
-	public String name(){ return "Multiwatch";}
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Archon_Multiwatch"; }
+	@Override public String name(){ return "Multiwatch";}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MULTIWATCH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	public static Hashtable<MOB,int[]> DATA=new Hashtable<MOB,int[]>();
 	public static Hashtable<String,List<MOB>> IPS=new Hashtable<String,List<MOB>>();
@@ -81,6 +81,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	}
 
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -133,6 +134,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -176,6 +178,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMParms.combine(commands,0).equalsIgnoreCase("auto"))

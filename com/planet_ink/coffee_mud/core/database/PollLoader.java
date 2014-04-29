@@ -75,7 +75,7 @@ public class PollLoader
 		return null;
 	}
 
-	
+
 	public List<DatabaseEngine.PollData> DBReadList()
 	{
 		DBConnection D=null;
@@ -105,11 +105,11 @@ public class PollLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public void DBUpdate(String OldName,
 								String name,
-								String player, 
-								String subject, 
+								String player,
+								String subject,
 								String description,
 								String optionXML,
 								int flag,
@@ -121,7 +121,7 @@ public class PollLoader
 				"UPDATE CMPOLL SET"
 				+" CMRESL=?"
 				+" WHERE CMNAME='"+OldName+"'", results+" ");
-		
+
 		DB.updateWithClobs(
 			"UPDATE CMPOLL SET"
 			+"  CMNAME='"+name+"'"
@@ -135,7 +135,7 @@ public class PollLoader
 			+"  WHERE CMNAME='"+OldName+"'", new String[][]{{description+" ", optionXML+" "}});
 
 	}
-	
+
 	public void DBUpdate(String name,  String results)
 	{
 		DB.updateWithClobs(
@@ -143,7 +143,7 @@ public class PollLoader
 		+" CMRESL=?"
 		+" WHERE CMNAME='"+name+"'", results+" ");
 	}
-	
+
 	public void DBDelete(String name)
 	{
 		DB.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
@@ -151,10 +151,10 @@ public class PollLoader
 		if(DB.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
 			Log.errOut("Failed to delete data from poll "+name+".");
 	}
-	
-	public void DBCreate(String name, 
-								String player, 
-								String subject, 
+
+	public void DBCreate(String name,
+								String player,
+								String subject,
 								String description,
 								String optionXML,
 								int flag,

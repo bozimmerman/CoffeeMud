@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SensePoison extends Chant
 {
-	public String ID() { return "Chant_SensePoison"; }
-	public String name(){ return "Sense Poison";}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public String ID() { return "Chant_SensePoison"; }
+	@Override public String name(){ return "Sense Poison";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -66,6 +66,7 @@ public class Chant_SensePoison extends Chant
 		return offenders;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

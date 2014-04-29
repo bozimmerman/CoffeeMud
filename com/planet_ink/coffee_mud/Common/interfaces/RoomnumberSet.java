@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,46 +34,46 @@ import java.util.*;
  * A class for holding CoffeeMud-style room IDs of the
  * form AreaName#[NUMBER], for instance, Midgaard#3001
  * This class is totally awesome because it stores them
- * in an efficient way (holding room ids 5-10 not as 
+ * in an efficient way (holding room ids 5-10 not as
  * 5,6,7,8,9,10, but as 5,10), but sorts them for quick
  * reads.
- * 
+ *
  * Stores the internal numbers using CMIntegerGrouper
  * @see com.planet_ink.coffee_mud.Common.interfaces.CMIntegerGrouper
  */
 public interface RoomnumberSet extends CMCommon
 {
 	/**
-	 * Returns the number of room ids stored for the 
+	 * Returns the number of room ids stored for the
 	 * given Area name.
 	 * @param areaName the Area to count the rooms of
 	 * @return the number of room ids in the area
 	 */
 	public int roomCount(String areaName);
-	
+
 	/**
 	 * Returns the total number of room ids stored here
 	 * @return the total number of room ids stored here
 	 */
 	public int roomCountAllAreas();
-	
+
 	/**
 	 * Returns whether any rooms at all are defined.
 	 * @return true if none are defined, false otherwise
 	 */
 	public boolean isEmpty();
-	
+
 	/**
 	 * Returns whether the given room id is stored here
 	 * @param str the room id to look for
 	 * @return true if the given room id is stored here
 	 */
 	public boolean contains(String str);
-	
+
 	/**
 	 * Converts the contents of this object into an xml
 	 * document.
-	 * @return the contents of this object as an xml 
+	 * @return the contents of this object as an xml
 	 */
 	public String xml();
 

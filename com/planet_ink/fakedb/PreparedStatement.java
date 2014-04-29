@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Stack;
 
-/* 
+/*
 Copyright 2009-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,9 +42,9 @@ limitations under the License.
 public class PreparedStatement extends Statement implements java.sql.PreparedStatement
 {
 	private Backend.ImplAbstractStatement stmt = null;
-	
-	
-	PreparedStatement(Connection c) 
+
+
+	PreparedStatement(Connection c)
 	{
 		super(c);
 	}
@@ -53,41 +53,41 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	{
 	  lastSQL=sql;
 	  String originalSql=sql;
-	  try 
+	  try
 	  {
 		 String[] token=new String[1];
 		 sql=split(sql,token);
-		 if (token[0].equalsIgnoreCase("insert")) 
+		 if (token[0].equalsIgnoreCase("insert"))
 		 {
 			stmt = parseInsert(sql, token);
-		 } 
-		 else 
-		 if (token[0].equalsIgnoreCase("update")) 
+		 }
+		 else
+		 if (token[0].equalsIgnoreCase("update"))
 		 {
 			stmt = parseUpdate(sql, token);
-		 } 
-		 else 
-		 if (token[0].equalsIgnoreCase("delete")) 
+		 }
+		 else
+		 if (token[0].equalsIgnoreCase("delete"))
 		 {
 			stmt = parseDelete(sql, token);
-		 } 
-		 else 
-		 if (token[0].equalsIgnoreCase("select")) 
+		 }
+		 else
+		 if (token[0].equalsIgnoreCase("select"))
 		 {
 			stmt = parseSelect(sql, token);
-		 } 
-		 else 
+		 }
+		 else
 			 throw new java.sql.SQLException("unimplemented command: "+token[0]);
-	  } 
-	  catch (java.sql.SQLException e) 
+	  }
+	  catch (java.sql.SQLException e)
 	  {
 		 e.printStackTrace();
 		 log("unsupported SQL in preparedStatement: "+originalSql);
 		 throw e;
 	  }
 	}
-	
-	
+
+
 	@Override
 	public void addBatch() throws SQLException {
 		log("unsupported method: addBatch");
@@ -449,9 +449,9 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		}
 		return false;
 	}
-	
+
 	@Override
-	public void setObject(int parameterIndex, Object x) throws SQLException 
+	public void setObject(int parameterIndex, Object x) throws SQLException
 	{
 		int atIndex=1;
 		for(int v=0; v<stmt.unPreparedValuesFlags().length;v++)
@@ -555,7 +555,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	public void setUnicodeStream(int parameterIndex, InputStream x, int length)
 			throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

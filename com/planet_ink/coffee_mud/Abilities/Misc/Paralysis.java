@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paralysis extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Paralysis"; }
-	public String name(){ return "Paralysis";}
-	public String displayText(){ return "(Paralyzed)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Paralysis"; }
+	@Override public String name(){ return "Paralysis";}
+	@Override public String displayText(){ return "(Paralyzed)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"PARALYZE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Paralysis";
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -63,6 +64,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -76,6 +78,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 			mob.tell("The paralysis eases out of your muscles.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -88,7 +91,8 @@ public class Paralysis extends StdAbility implements HealthCondition
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

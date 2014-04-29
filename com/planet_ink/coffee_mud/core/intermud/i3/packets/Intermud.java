@@ -293,12 +293,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 						}
 						else
 						{
-							long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime(); 
+							long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime();
 							if(ellapsedTime>(60  * 60 * 1000)) // one hour
 							{
 								Log.errOut("I3SaveTick","No I3 response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
 								CMLib.threads().executeRunnable(new Runnable()
 								{
+									@Override
 									public void run()
 									{
 										try
@@ -512,6 +513,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			 // Hashtable services = (Hashtable)v.elementAt(11);
 			 // Hashtable other_info = (Hashtable)v.elementAt(12);
 
+	@Override
 	public void restore() throws PersistenceException {
 		if( modified != Persistent.UNMODIFIED )
 		{
@@ -538,8 +540,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 		long total=Runtime.getRuntime().totalMemory()/1024;
 		Log.errOut("Intermud", "Memory usage: "+(total-free)+"kb");
 	}
-	
-	public void run() 
+
+	@Override
+	public void run()
 	{
 		try
 		{
@@ -552,7 +555,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			connected = false;
 		}
 		lastPingSentTime = System.currentTimeMillis();
-		
+
 		while( connected && (!shutdown))
 		{
 			Vector data;
@@ -566,7 +569,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 					return;
 				}
 			}
-			
+
 			if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
 			{
 				continue;
@@ -582,6 +585,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false)+". Connected="+Intermud.isConnected());
 					CMLib.threads().executeRunnable(new Runnable()
 					{
+						@Override
 						public void run()
 						{
 							try
@@ -596,10 +600,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 					});
 				}
 			}
-			
+
 			String str;
 
-			try 
+			try
 			{
 				int len=0;
 				while(!shutdown)
@@ -608,10 +612,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 					{ // please don't compress this again
 						len = input.readInt();
 						break;
-					} 
+					}
 					catch(java.io.IOException e)
 					{
-						if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) 
+						if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0))
 							throw e;
 						CMLib.s_sleep(1000);
 						continue;
@@ -641,7 +645,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 					}
 					catch(java.io.IOException e)
 					{
-						if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) 
+						if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0))
 							throw e;
 						CMLib.s_sleep(1000);
 						if((System.currentTimeMillis()-startTime)>(10 * 60 * 1000))
@@ -913,6 +917,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 	}
 
+	@Override
 	public void save() throws PersistenceException {
 		if( modified == Persistent.UNMODIFIED )
 		{

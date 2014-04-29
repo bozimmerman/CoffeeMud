@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,9 @@ public class Package extends StdCommand
 	public Package(){}
 
 	private final String[] access={"PACKAGE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,7 +55,7 @@ public class Package extends StdCommand
 			whatName=(String)commands.lastElement();
 		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGet<0) return false;
-		
+
 		String whatToGet=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
@@ -81,7 +82,7 @@ public class Package extends StdCommand
 			mob.tell("You don't see '"+whatName+"' here.");
 			return false;
 		}
-		
+
 		for(int i=0;i<V.size();i++)
 		{
 			Item I=V.get(i);
@@ -126,9 +127,9 @@ public class Package extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

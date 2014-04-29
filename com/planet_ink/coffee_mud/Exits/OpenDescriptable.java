@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import java.util.*;
 */
 public class OpenDescriptable extends StdExit
 {
-	public String ID(){	return "OpenDescriptable";}
-	public String Name(){ return "the ground";}
-	public String displayText(){ return miscText;}
-	public String description(){ return miscText;}
+	@Override public String ID(){	return "OpenDescriptable";}
+	@Override public String Name(){ return "the ground";}
+	@Override public String displayText(){ return miscText;}
+	@Override public String description(){ return miscText;}
 }

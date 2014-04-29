@@ -37,21 +37,24 @@ import java.util.*;
 
 public class Factions extends StdLibrary implements FactionManager
 {
-	public String ID(){return "Factions";}
+	@Override public String ID(){return "Factions";}
 	public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
 	public SHashtable<String,FRange> hashedFactionRanges=new SHashtable<String,FRange>();
-	
+
+	@Override
 	public Enumeration<Faction> factions()
 	{
 		return factionSet.elements();
 	}
-	public int numFactions(){return factionSet.size();}
+	@Override public int numFactions(){return factionSet.size();}
+	@Override
 	public void clearFactions()
 	{
 		factionSet.clear();
 		hashedFactionRanges.clear();
 	}
-	
+
+	@Override
 	public Faction getFactionByNumber(int index)
 	{
 		final Enumeration<Faction> fe=factions();
@@ -60,7 +63,8 @@ public class Factions extends StdLibrary implements FactionManager
 			F=fe.nextElement();
 		return F;
 	}
-	
+
+	@Override
 	public void reloadFactions(String factionList)
 	{
 		List<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
@@ -68,18 +72,20 @@ public class Factions extends StdLibrary implements FactionManager
 		for(int i=0;i<preLoadFactions.size();i++)
 			getFaction(preLoadFactions.get(i));
 	}
-	
-	public java.util.Map<String,FRange> rangeCodeNames(){ return hashedFactionRanges; }
-	
-	public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
 
-	public FRange getFactionRangeByCodeName(String rangeCodeName) 
+	public java.util.Map<String,FRange> rangeCodeNames(){ return hashedFactionRanges; }
+
+	@Override public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
+
+	@Override
+	public FRange getFactionRangeByCodeName(String rangeCodeName)
 	{
 		if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
 			return hashedFactionRanges.get(rangeCodeName.toUpperCase());
 		return null;
 	}
 
+	@Override
 	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode)
 	{
 		Faction.FRange FR=rangeCode;
@@ -89,6 +95,7 @@ public class Factions extends StdLibrary implements FactionManager
 		if(FR2==null) return false;
 		return FR2.codeName().equalsIgnoreCase(FR.codeName());
 	}
+	@Override
 	public String rangeDescription(Faction.FRange FR, String andOr)
 	{
 		if(FR==null) return "";
@@ -109,7 +116,7 @@ public class Factions extends StdLibrary implements FactionManager
 		buf.append(andOr+relevantFactions.lastElement().name());
 		return buf.toString();
 	}
-		
+
 	private Faction buildFactionFromXML(StringBuffer buf, String factionID)
 	{
 		Faction F=(Faction)CMClass.getCommon("DefaultFaction");
@@ -131,11 +138,13 @@ public class Factions extends StdLibrary implements FactionManager
 		return F;
 	}
 
+	@Override
 	public void addFaction(Faction F)
 	{
 		factionSet.put(F.factionID().toUpperCase().trim(),F);
 	}
 
+	@Override
 	public String makeFactionFilename(String factionID)
 	{
 		String filename;
@@ -157,8 +166,9 @@ public class Factions extends StdLibrary implements FactionManager
 			filename=filename+".ini";
 		return filename;
 	}
-	
-	public Faction getFaction(String factionID) 
+
+	@Override
+	public Faction getFaction(String factionID)
 	{
 		if(factionID==null) return null;
 		Faction F=factionSet.get(factionID.toUpperCase());
@@ -184,13 +194,14 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return null;
 	}
-	
+
+	@Override
 	public Faction getFactionByRangeCodeName(String rangeCodeName)
 	{
 		if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
 		{
 			Faction.FRange FR=hashedFactionRanges.get(rangeCodeName.toUpperCase());
-			if(FR!=null) 
+			if(FR!=null)
 			{
 				Faction F=FR.getFaction();
 				if(!F.amDestroyed())
@@ -202,14 +213,15 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return null;
 	}
-	
-	public Faction getFactionByName(String factionNamed) 
+
+	@Override
+	public Faction getFactionByName(String factionNamed)
 	{
 		Faction F;
-		for(Enumeration<String> e=factionSet.keys();e.hasMoreElements();) 
+		for(Enumeration<String> e=factionSet.keys();e.hasMoreElements();)
 		{
 			F=factionSet.get(e.nextElement());
-			if(F.name().equalsIgnoreCase(factionNamed)) 
+			if(F.name().equalsIgnoreCase(factionNamed))
 			{
 				if(!F.amDestroyed())
 					return F;
@@ -220,13 +232,14 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return null;
 	}
-	
-	public boolean removeFaction(String factionID) 
+
+	@Override
+	public boolean removeFaction(String factionID)
 	{
 		Faction F;
-		if(factionID==null) 
+		if(factionID==null)
 		{
-			for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
+			for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 			{
 				F=e.nextElement();
 				if(F!=null)
@@ -241,15 +254,16 @@ public class Factions extends StdLibrary implements FactionManager
 		factionSet.remove(F.factionID().toUpperCase());
 		return true;
 	}
-	
-	public String listFactions() 
+
+	@Override
+	public String listFactions()
 	{
 		StringBuffer msg=new StringBuffer();
 		msg.append("\n\r^.^N");
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
 		msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
-		for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
+		for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 		{
 			Faction f=e.nextElement();
 			msg.append("| ");
@@ -262,36 +276,40 @@ public class Factions extends StdLibrary implements FactionManager
 		msg.append("\n\r");
 		return msg.toString();
 	}
-	
-	public String name(){return "Factions";}
-	public int getTickStatus(){ return Tickable.STATUS_NOT;}
-	public String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
-	public int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
-	public int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }
-	public int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
-	public int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
-	public Faction.FRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
-	public Enumeration<Faction.FRange> getRanges(String factionID) { 
-		Faction f=getFaction(factionID); 
-		if(f!=null) return f.ranges(); 
-		return null; 
+
+	@Override public String name(){return "Factions";}
+	@Override public int getTickStatus(){ return Tickable.STATUS_NOT;}
+	@Override public String getName(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
+	@Override public int getMinimum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
+	@Override public int getMaximum(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }
+	@Override public int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
+	@Override public int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
+	@Override public Faction.FRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
+	@Override
+	public Enumeration<Faction.FRange> getRanges(String factionID) {
+		Faction f=getFaction(factionID);
+		if(f!=null) return f.ranges();
+		return null;
 	}
-	public double getRangePercent(String factionID, int faction) 
-	{ 
-		Faction F=getFaction(factionID); 
+	@Override
+	public double getRangePercent(String factionID, int faction)
+	{
+		Faction F=getFaction(factionID);
 		if(F==null) return 0.0;
 		return CMath.div((int)Math.round(CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 10000.0),100.0);
 	}
-	public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
-	public int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
-	
-	public String AlignID() { return "alignment.ini"; }
+	@Override public int getTotal(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
+	@Override public int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
+
+	@Override public String AlignID() { return "alignment.ini"; }
+	@Override
 	public void setAlignment(MOB mob, Faction.Align newAlignment)
 	{
-		if(getFaction(AlignID())!=null) 
+		if(getFaction(AlignID())!=null)
 			mob.addFaction(AlignID(),getAlignMedianFacValue(newAlignment));
 	}
-	
+
+	@Override
 	public void setAlignmentOldRange(MOB mob, int oldRange)
 	{
 		if(getFaction(AlignID())!=null)
@@ -299,15 +317,16 @@ public class Factions extends StdLibrary implements FactionManager
 			if(oldRange>=650)
 				setAlignment(mob,Faction.Align.GOOD);
 			else
-			if(oldRange>=350) 
+			if(oldRange>=350)
 				setAlignment(mob,Faction.Align.NEUTRAL);
 			else
-			if(oldRange>=0) 
+			if(oldRange>=0)
 				setAlignment(mob,Faction.Align.EVIL);
 			else{ /* a -1 value is the new norm */}
 		}
 	}
-	
+
+	@Override
 	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet)
 	{
 		if((mob==null))
@@ -323,7 +342,8 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean postFactionChange(MOB mob,Environmental tool, String factionID, int amount)
 	{
 		if((mob==null))
@@ -367,7 +387,7 @@ public class Factions extends StdLibrary implements FactionManager
 		factionSet.put(factionID,F);
 		return F;
 	}
-	
+
 	public Faction[] getSpecialFactions(MOB mob, Room R)
 	{
 		if((mob==null)||(R==null))
@@ -434,8 +454,9 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return null;
 	}
-	
-	
+
+
+	@Override
 	public void updatePlayerFactions(MOB mob, Room R)
 	{
 		if((mob==null)||(R==null))
@@ -488,10 +509,11 @@ public class Factions extends StdLibrary implements FactionManager
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!CMLib.sessions().all().hasNext()) 
+		if(!CMLib.sessions().all().hasNext())
 			return true;
 		try
 		{
@@ -543,24 +565,25 @@ public class Factions extends StdLibrary implements FactionManager
 		}catch(Exception e){ Log.errOut("Factions",e);}
 		return true;
 	}
-	
-	public int getAlignPurity(int faction, Faction.Align eq) 
+
+	@Override
+	public int getAlignPurity(int faction, Faction.Align eq)
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
 		int pct=getPercent(AlignID(),faction);
 		Enumeration<FRange> e = getRanges(AlignID());
 		if(e!=null)
-		for(;e.hasMoreElements();) 
+		for(;e.hasMoreElements();)
 		{
 			Faction.FRange R=e.nextElement();
-			if(R.alignEquiv()==eq) 
+			if(R.alignEquiv()==eq)
 			{
 				if(R.low()<bottom) bottom=R.low();
 				if(R.high()>top) top=R.high();
 			}
 		}
-		switch(eq) 
+		switch(eq)
 		{
 			case GOOD:
 				return Math.abs(pct - getPercent(AlignID(),top));
@@ -572,15 +595,16 @@ public class Factions extends StdLibrary implements FactionManager
 				return 0;
 		}
 	}
-	
+
 	// Please don't mock the name, I couldn't think of a better one.  Sadly.
-	public int getAlignMedianFacValue(Faction.Align eq) 
+	@Override
+	public int getAlignMedianFacValue(Faction.Align eq)
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
 		Enumeration<FRange> e = getRanges(AlignID());
 		if(e==null) return 0;
-		for(;e.hasMoreElements();) 
+		for(;e.hasMoreElements();)
 		{
 			Faction.FRange R=e.nextElement();
 			if(R.alignEquiv()==eq)
@@ -589,7 +613,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if(R.high()>top) top=R.high();
 			}
 		}
-		switch(eq) 
+		switch(eq)
 		{
 			case GOOD:
 				return top;
@@ -601,6 +625,7 @@ public class Factions extends StdLibrary implements FactionManager
 				return 0;
 		}
 	}
+	@Override
 	public int isFactionTag(String tag)
 	{
 		for(int i=0;i<Faction.TAG_NAMES.length;i++)
@@ -611,6 +636,7 @@ public class Factions extends StdLibrary implements FactionManager
 				return i;
 		return -1;
 	}
+	@Override
 	public Faction.Align getAlignEnum(String str)
 	{
 		Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class, str.toUpperCase().trim());
@@ -618,7 +644,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return A;
 		return  Faction.Align.INDIFF;
 	}
-	
+
 	private String getWordAffOrBehav(String ID)
 	{
 		if(CMClass.getBehavior(ID)!=null)
@@ -629,8 +655,9 @@ public class Factions extends StdLibrary implements FactionManager
 			return "command";
 		return null;
 	}
-	
-	
+
+
+	@Override
 	public void modifyFaction(MOB mob, Faction me) throws IOException
 	{
 		if(mob.isMonster())
@@ -949,7 +976,7 @@ public class Factions extends StdLibrary implements FactionManager
 						+" Mask\n\r");
 				int numChanges=0;
 				StringBuffer choices=new StringBuffer("");
-				Hashtable<Character,Faction.FactionChangeEvent> choicesHashed=new Hashtable<Character,Faction.FactionChangeEvent>(); 
+				Hashtable<Character,Faction.FactionChangeEvent> choicesHashed=new Hashtable<Character,Faction.FactionChangeEvent>();
 				for(Enumeration<String> e=me.changeEventKeys();e.hasMoreElements();)
 				{
 					Faction.FactionChangeEvent[] CEs=me.getChangeEvents(e.nextElement());
@@ -1282,7 +1309,7 @@ public class Factions extends StdLibrary implements FactionManager
 						if(!mask.equals(oldData[1]))
 							newData[1]=mask;
 					}
-					
+
 					cont=true;
 					while((cont)&&(!mob.session().isStopped()))
 					{
@@ -1360,7 +1387,7 @@ public class Factions extends StdLibrary implements FactionManager
 						item=null;
 					}
 				}
-				
+
 				String type="";
 				String[] oldData=new String[]{"","","",""};
 				if(item != null)
@@ -1368,16 +1395,16 @@ public class Factions extends StdLibrary implements FactionManager
 					type=getWordAffOrBehav(item.reactionObjectID());
 					oldData=new String[]{item.rangeCodeName(),item.presentMOBMask(),item.reactionObjectID(),item.parameters()};
 				}
-				
+
 				String[] newData=new String[4];
-				
+
 				boolean cont=true;
-				
+
 				cont=true;
 				while((cont)&&(!mob.session().isStopped()))
 				{
 					cont=false;
-					
+
 					String rangeCode=mob.session().prompt("Enter a new range code or ? ("+oldData[0]+")\n\r: ",oldData[0]).toUpperCase().trim();
 					if(rangeCode.equalsIgnoreCase("?"))
 					{
@@ -1404,12 +1431,12 @@ public class Factions extends StdLibrary implements FactionManager
 							mob.tell("'"+rangeCode+"' is not a valid range code.  Use ?");
 					}
 				}
-				
+
 				cont = true;
 				while((cont)&&(!mob.session().isStopped()))
 				{
 					cont=false;
-					
+
 					String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ",oldData[1]);
 					if(mask.equalsIgnoreCase("?"))
 					{
@@ -1420,7 +1447,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if(!mask.equals(oldData[1]))
 						newData[1]=mask;
 				}
-				
+
 				cont=true;
 				while((cont)&&(!mob.session().isStopped()))
 				{
@@ -1447,7 +1474,7 @@ public class Factions extends StdLibrary implements FactionManager
 							newData[2]=ID;
 					}
 				}
-				
+
 				cont=true;
 				while((cont)&&(!mob.session().isStopped()))
 				{
@@ -1462,7 +1489,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if(!parms.equals(oldData[3]))
 						newData[3]=parms;
 				}
-				
+
 				for(int n=0;n<oldData.length;n++)
 					if(newData[n]==null)
 						newData[n]=oldData[n];
@@ -1480,7 +1507,7 @@ public class Factions extends StdLibrary implements FactionManager
 				me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,"Use 'Light' Reactions"));
 			else
 				me.setLightReactions(false);
-			
+
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -1490,7 +1517,7 @@ public class Factions extends StdLibrary implements FactionManager
 				ok=true;
 			}
 		}
-		
+
 		String errMsg=resaveFaction(me);
 		if(errMsg.length()>0)
 			mob.tell(errMsg);
@@ -1566,7 +1593,8 @@ public class Factions extends StdLibrary implements FactionManager
 			buf.append(F.getINIDef(Faction.TAG_NAMES[lastCommented],CR)+CR);
 		return buf;
 	}
-	
+
+	@Override
 	public String resaveFaction(Faction F)
 	{
 		if((F.factionID().length()>0)
@@ -1583,12 +1611,13 @@ public class Factions extends StdLibrary implements FactionManager
 			return "Can not save a blank faction";
 		return "";
 	}
+	@Override
 	public int getAbilityFlagType(String strflag)
 	{
-		for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+		for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 			if(Ability.ACODE_DESCS[i].equalsIgnoreCase(strflag))
 				return 1;
-		for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+		for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 			if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(strflag))
 				return 2;
 		if(strflag.startsWith("!")) strflag=strflag.substring(1);

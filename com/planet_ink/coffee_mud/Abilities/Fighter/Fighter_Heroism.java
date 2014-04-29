@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 
 public class Fighter_Heroism extends FighterSkill
 {
-	public String ID() { return "Fighter_Heroism"; }
-	public String name(){ return "Heroism";}
-	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public String ID() { return "Fighter_Heroism"; }
+	@Override public String name(){ return "Heroism";}
+	@Override public String displayText(){ return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	private boolean activated=false;
 
 	public void setActivated(boolean activate)
@@ -54,7 +54,8 @@ public class Fighter_Heroism extends FighterSkill
 		if(affected instanceof MOB)
 			((MOB)affected).recoverCharStats();
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -76,6 +77,7 @@ public class Fighter_Heroism extends FighterSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

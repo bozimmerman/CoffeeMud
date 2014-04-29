@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Musette extends Dance
 {
-	public String ID() { return "Dance_Musette"; }
-	public String name(){ return "Musette";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Musette"; }
+	@Override public String name(){ return "Musette";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

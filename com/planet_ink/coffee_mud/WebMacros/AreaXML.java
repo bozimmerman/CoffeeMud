@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,19 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class AreaXML extends StdWebMacro
 {
-	public String name() { return "AreaXML"; }
+	@Override public String name() { return "AreaXML"; }
 
-	public boolean isAWebPath(){return true;}
-	public boolean preferBinary(){return true;}
-	
+	@Override public boolean isAWebPath(){return true;}
+	@Override public boolean preferBinary(){return true;}
+
+	@Override
 	public void setServletResponse(SimpleServletResponse response, final String filename)
 	{
 		response.setHeader("Content-Disposition", "attachment; filename="+filename);
 		response.setHeader("Content-Type", "application/cmare");
 	}
-	
+
+	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
@@ -62,7 +64,7 @@ public class AreaXML extends StdWebMacro
 			fileName=fileName+".cmare";
 		return fileName;
 	}
-	
+
 	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
 		String AREA=httpReq.getUrlParameter("AREA");
@@ -74,7 +76,8 @@ public class AreaXML extends StdWebMacro
 			return A;
 		return null;
 	}
-	
+
+	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
@@ -92,11 +95,12 @@ public class AreaXML extends StdWebMacro
 		{
 			return null;
 		}
-		if(!(resultO instanceof String)) 
+		if(!(resultO instanceof String))
 			return null;
 		return ((String)resultO).getBytes();
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";

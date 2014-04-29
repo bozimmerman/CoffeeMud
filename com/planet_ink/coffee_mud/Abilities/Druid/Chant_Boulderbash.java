@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Boulderbash extends Chant
 {
-	public String ID() { return "Chant_Boulderbash"; }
-	public String name(){ return "Boulderbash";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Boulderbash"; }
+	@Override public String name(){ return "Boulderbash";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -61,7 +62,8 @@ public class Chant_Boulderbash extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)

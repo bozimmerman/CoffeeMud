@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Atonement extends Prayer
 {
-	public String ID() { return "Prayer_Atonement"; }
-	public String name(){ return "Atonement";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_Atonement"; }
+	@Override public String name(){ return "Atonement";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

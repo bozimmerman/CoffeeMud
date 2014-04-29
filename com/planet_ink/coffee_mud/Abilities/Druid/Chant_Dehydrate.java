@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_Dehydrate extends Chant
 {
-	public String ID() { return "Chant_Dehydrate"; }
-	public String name(){return "Dehydrate";}
-	public String displayText(){return "(Dehydrate)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_Dehydrate"; }
+	@Override public String name(){return "Dehydrate";}
+	@Override public String displayText(){return "(Dehydrate)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

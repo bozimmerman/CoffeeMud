@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dance_Manipuri extends Dance
 {
-	public String ID() { return "Dance_Manipuri"; }
-	public String name(){ return "Manipuri";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Manipuri"; }
+	@Override public String name(){ return "Manipuri";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
 	protected Room lastRoom=null;
 	protected int count=3;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -61,6 +62,7 @@ public class Dance_Manipuri extends Dance
 			count--;
 		return true;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=(MOB)affected;
@@ -87,6 +89,7 @@ public class Dance_Manipuri extends Dance
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -96,7 +99,8 @@ public class Dance_Manipuri extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		count=3;

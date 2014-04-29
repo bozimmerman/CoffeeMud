@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SummonElemental extends Prayer
 {
-	public String ID() { return "Prayer_SummonElemental"; }
-	public String name(){return "Elemental Aid";}
-	public String displayText(){return "(Elemental Aid)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_SummonElemental"; }
+	@Override public String name(){return "Elemental Aid";}
+	@Override public String displayText(){return "(Elemental Aid)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -59,6 +60,7 @@ public class Prayer_SummonElemental extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -72,6 +74,7 @@ public class Prayer_SummonElemental extends Prayer
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -83,6 +86,7 @@ public class Prayer_SummonElemental extends Prayer
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -93,6 +97,7 @@ public class Prayer_SummonElemental extends Prayer
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))

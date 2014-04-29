@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,16 @@ import java.util.*;
 */
 public class DefaultTimeClock implements TimeClock
 {
-	public String ID(){return "DefaultTimeClock";}
-	public String name(){return "Time Object";}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
-	public void initializeClass(){}
-	
+	@Override public String ID(){return "DefaultTimeClock";}
+	@Override public String name(){return "Time Object";}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
+	@Override public void initializeClass(){}
+
 	protected int tickStatus=Tickable.STATUS_NOT;
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 	protected boolean loaded=false;
 	protected String loadName=null;
-	public void setLoadName(String name){loadName=name;}
+	@Override public void setLoadName(String name){loadName=name;}
 	protected int year=1;
 	protected int month=1;
 	protected int day=1;
@@ -60,28 +60,30 @@ public class DefaultTimeClock implements TimeClock
 	protected int[] dawnToDusk={0,1,4,6};
 	protected String[] weekNames={};
 	protected String[] yearNames={"year #"};
-	
-	public int getHoursInDay(){return hoursInDay;}
-	public void setHoursInDay(int h){hoursInDay=h;}
-	public int getDaysInMonth(){return daysInMonth;}
-	public void setDaysInMonth(int d){daysInMonth=d;}
-	public int getMonthsInYear(){return monthsInYear.length;}
-	public String[] getMonthNames(){return monthsInYear;}
-	public void setMonthsInYear(String[] months){monthsInYear=months;}
-	public int[] getDawnToDusk(){return dawnToDusk;}
-	public String[] getYearNames(){return yearNames;}
-	public void setYearNames(String[] years){yearNames=years;}
+
+	@Override public int getHoursInDay(){return hoursInDay;}
+	@Override public void setHoursInDay(int h){hoursInDay=h;}
+	@Override public int getDaysInMonth(){return daysInMonth;}
+	@Override public void setDaysInMonth(int d){daysInMonth=d;}
+	@Override public int getMonthsInYear(){return monthsInYear.length;}
+	@Override public String[] getMonthNames(){return monthsInYear;}
+	@Override public void setMonthsInYear(String[] months){monthsInYear=months;}
+	@Override public int[] getDawnToDusk(){return dawnToDusk;}
+	@Override public String[] getYearNames(){return yearNames;}
+	@Override public void setYearNames(String[] years){yearNames=years;}
+	@Override
 	public void setDawnToDusk(int dawn, int day, int dusk, int night)
-	{ 
+	{
 		dawnToDusk[TimeOfDay.DAWN.ordinal()]=dawn;
 		dawnToDusk[TimeOfDay.DAY.ordinal()]=day;
 		dawnToDusk[TimeOfDay.DUSK.ordinal()]=dusk;
 		dawnToDusk[TimeOfDay.NIGHT.ordinal()]=night;
 	}
-	public String[] getWeekNames(){return weekNames;}
-	public int getDaysInWeek(){return weekNames.length;}
-	public void setDaysInWeek(String[] days){weekNames=days;}
-	
+	@Override public String[] getWeekNames(){return weekNames;}
+	@Override public int getDaysInWeek(){return weekNames.length;}
+	@Override public void setDaysInWeek(String[] days){weekNames=days;}
+
+	@Override
 	public String getShortestTimeDescription()
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -91,6 +93,7 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(" HR:"+getHourOfDay());
 		return timeDesc.toString();
 	}
+	@Override
 	public String getShortTimeDescription()
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -108,7 +111,8 @@ public class DefaultTimeClock implements TimeClock
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
 		return timeDesc.toString();
 	}
-	
+
+	@Override
 	public void initializeINIClock(CMProps page)
 	{
 		if(CMath.s_int(page.getStr("HOURSINDAY"))>0)
@@ -137,7 +141,8 @@ public class DefaultTimeClock implements TimeClock
 		CMProps.setIntVar(CMProps.Int.TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
 		CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
 	}
-	
+
+	@Override
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -183,16 +188,19 @@ public class DefaultTimeClock implements TimeClock
 		return timeDesc.toString();
 	}
 
+	@Override
 	public int getYear()
 	{
 		return year;
 	}
-	
+
+	@Override
 	public void setYear(int y)
 	{
 		year=y;
 	}
 
+	@Override
 	public Season getSeasonCode()
 	{
 		int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
@@ -201,25 +209,29 @@ public class DefaultTimeClock implements TimeClock
 		if(month<(div*3)) return TimeClock.Season.SUMMER;
 		return TimeClock.Season.FALL;
 	}
-	
+
+	@Override
 	public int getMonth()
 	{
 		return month;
 	}
-	
+
+	@Override
 	public void setMonth(int m)
 	{
 		month=m;
 	}
-	
+
+	@Override
 	public MoonPhase getMoonPhase()
 	{
 		return TimeClock.MoonPhase.values()[(int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)))];
 	}
 
-	public int getDayOfMonth(){return day;}
-	public void setDayOfMonth(int d){day=d;}
-	public int getHourOfDay(){return time;}
+	@Override public int getDayOfMonth(){return day;}
+	@Override public void setDayOfMonth(int d){day=d;}
+	@Override public int getHourOfDay(){return time;}
+	@Override
 	public TimeOfDay getTODCode()
 	{
 		if((time>=getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()])&&(getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]>=0))
@@ -235,13 +247,15 @@ public class DefaultTimeClock implements TimeClock
 			return TimeClock.TimeOfDay.NIGHT;
 		return TimeClock.TimeOfDay.DAY;
 	}
+	@Override
 	public boolean setHourOfDay(int t)
 	{
 		TimeOfDay oldCode=getTODCode();
 		time=t;
 		return getTODCode()!=oldCode;
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -254,6 +268,7 @@ public class DefaultTimeClock implements TimeClock
 			return new DefaultTimeClock();
 		}
 	}
+	@Override
 	public TimeClock deriveClock(long millis)
 	{
 		try
@@ -265,11 +280,12 @@ public class DefaultTimeClock implements TimeClock
 		}
 		catch(CloneNotSupportedException e)
 		{
-			
+
 		}
 		return CMLib.time().globalClock();
 	}
 
+	@Override
 	public String deriveEllapsedTimeString(long millis)
 	{
 		int hours=(int)(millis/CMProps.getMillisPerMudHour());
@@ -311,18 +327,19 @@ public class DefaultTimeClock implements TimeClock
 		if(buf.length()==0) return "any second now";
 		return buf.toString();
 	}
-	
+
+	@Override
 	public long deriveMillisAfter(TimeClock C)
 	{
 		long numMudHours=0;
 		if(C.getYear()>getYear()) return -1;
-		else 
+		else
 		if(C.getYear()==getYear())
 			if(C.getMonth()>getMonth()) return -1;
-			else 
+			else
 			if(C.getMonth()==getMonth())
 				if(C.getDayOfMonth()>getDayOfMonth()) return -1;
-				else 
+				else
 				if(C.getDayOfMonth()==getDayOfMonth())
 					if(C.getHourOfDay()>getHourOfDay()) return -1;
 		numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
@@ -331,7 +348,8 @@ public class DefaultTimeClock implements TimeClock
 		numMudHours+=(getHourOfDay()-C.getHourOfDay());
 		return numMudHours*CMProps.getMillisPerMudHour();
 	}
-	
+
+	@Override
 	public void handleTimeChange()
 	{
 		try
@@ -376,6 +394,7 @@ public class DefaultTimeClock implements TimeClock
 		}catch(java.util.NoSuchElementException x){}
 	}
 
+	@Override
 	public void tickTock(int howManyHours)
 	{
 		TimeOfDay todCode=getTODCode();
@@ -416,6 +435,7 @@ public class DefaultTimeClock implements TimeClock
 		}
 		if(getTODCode()!=todCode) handleTimeChange();
 	}
+	@Override
 	public void save()
 	{
 		if((loaded)&&(loadName!=null))
@@ -435,6 +455,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	public long lastTicked=0;
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_NOT;
@@ -494,5 +515,5 @@ public class DefaultTimeClock implements TimeClock
 		}
 		return true;
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

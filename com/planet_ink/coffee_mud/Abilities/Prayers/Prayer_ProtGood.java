@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_ProtGood extends Prayer
 {
-	public String ID() { return "Prayer_ProtGood"; }
-	public String name(){ return "Protection Good";}
-	public String displayText(){ return "(Protection from Good)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prayer_ProtGood"; }
+	@Override public String name(){ return "Protection Good";}
+	@Override public String displayText(){ return "(Protection from Good)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -61,6 +62,7 @@ public class Prayer_ProtGood extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -86,6 +88,7 @@ public class Prayer_ProtGood extends Prayer
 	}
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -101,6 +104,7 @@ public class Prayer_ProtGood extends Prayer
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -114,6 +118,7 @@ public class Prayer_ProtGood extends Prayer
 			mob.tell("Your protection from goodness fades.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -124,7 +129,8 @@ public class Prayer_ProtGood extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;

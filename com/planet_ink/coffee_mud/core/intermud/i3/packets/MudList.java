@@ -40,10 +40,10 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class MudList implements Serializable 
+public class MudList implements Serializable
 {
 	public static final long serialVersionUID=0;
-	
+
 	private int id;
 	private Map<String,I3Mud> list;
 	private int modified;
@@ -74,7 +74,7 @@ public class MudList implements Serializable
 
 	public void addMud(I3Mud mud)
 	{
-		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 )) 
+		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 ))
 		{
 			return;
 		}

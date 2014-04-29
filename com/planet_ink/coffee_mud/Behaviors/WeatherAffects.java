@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class WeatherAffects extends PuddleMaker
 {
-	public String ID(){return "WeatherAffects";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override public String ID(){return "WeatherAffects";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 	protected int puddlepct=0;
 	protected int windsheer=0;
 	protected int rustDown=0;
@@ -54,7 +54,7 @@ public class WeatherAffects extends PuddleMaker
 	protected int dustDown=0;
 	protected int diseaseDown=0;
 	protected int droughtFireChance=0;
-	
+
 	private static final long[] ALL_COVERED_SPOTS={Wearable.WORN_FEET,Wearable.WORN_TORSO,Wearable.WORN_LEGS};
 	private static long ALL_COVERED_CODE=0;
 	private static final long[] ALL_FROST_SPOTS={Wearable.WORN_FEET,Wearable.WORN_HANDS,Wearable.WORN_HEAD};
@@ -66,14 +66,16 @@ public class WeatherAffects extends PuddleMaker
 		for(int l=0;l<ALL_FROST_SPOTS.length;l++)
 			ALL_FROST_CODE=ALL_FROST_CODE|ALL_FROST_SPOTS[l];
 	}
-	
-	public int pct(){return puddlepct;} // for puddles only
-	
+
+	@Override public int pct(){return puddlepct;} // for puddles only
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "weather effect causing";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		parms=newParms;
@@ -94,7 +96,7 @@ public class WeatherAffects extends PuddleMaker
 		resetHailTicks();
 		resetDustTicks();
 	}
-	
+
 	private void resetBotherTicks(){botherDown=CMParms.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
 	private void resetDiseaseTicks(){diseaseDown=CMParms.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN);}
 	private void resetRustTicks(){rustDown=CMParms.getParmInt(parms,"rustticks",30);}
@@ -104,13 +106,13 @@ public class WeatherAffects extends PuddleMaker
 	private void resetTornadoTicks(){tornadoDown=CMParms.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*10);}
 	private void resetHailTicks(){hailDown=CMParms.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/2);}
 	private void resetDustTicks(){dustDown=CMParms.getParmInt(parms,"dustticks",50);}
-	
+
 	public Area area(Environmental host)
 	{
 		Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
 		return A;
 	}
-	
+
 	public int weather(Environmental host, Room room)
 	{
 		if(room==null) return 0;
@@ -118,11 +120,12 @@ public class WeatherAffects extends PuddleMaker
 		if(A!=null) return A.getClimateObj().weatherType(room);
 		return 0;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
-		
+
 		Room R=msg.source().location();
 		if((host instanceof Area)
 		&&(R!=null)&&(R.getArea()!=host))
@@ -130,7 +133,7 @@ public class WeatherAffects extends PuddleMaker
 		int weather=weather(host,R);
 		// first handle the effect of storms on ranged
 		// weapons
-		
+
 		if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.source().rangeToTarget()!=0)
 		&&(msg.tool() instanceof Item)
@@ -206,7 +209,8 @@ public class WeatherAffects extends PuddleMaker
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		int realLastWeather=super.lastWeather;
@@ -217,7 +221,7 @@ public class WeatherAffects extends PuddleMaker
 		Climate C=A.getClimateObj();
 		if(C==null) return false;
 		lastWeather=realLastWeather;
-		
+
 		// handle freeze overs
 		if((coldWeather(lastWeather))
 		&&(coldWeather(C.weatherType(null)))
@@ -336,14 +340,14 @@ public class WeatherAffects extends PuddleMaker
 				MOB M=S.mob();
 				Room R=M.location();
 
-				
-				if((R.getClimateType()&Places.CLIMASK_COLD)>0) 
+
+				if((R.getClimateType()&Places.CLIMASK_COLD)>0)
 				{
 					if(coldChance>0) coldChance+=10;
 					if(coldChance>0) fluChance+=5; // yes, cold is related this way to flu
 					if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.5));
 				}
-				if((R.getClimateType()&Places.CLIMASK_HOT)>0) 
+				if((R.getClimateType()&Places.CLIMASK_HOT)>0)
 				{
 					if(heatExhaustionChance>0) heatExhaustionChance+=10;
 				}
@@ -439,7 +443,7 @@ public class WeatherAffects extends PuddleMaker
 						{
 							if((R.domainType()&Room.INDOORS)>0)
 							{
-								if((R.getArea()!=null) 
+								if((R.getArea()!=null)
 								&& CMath.div(R.getArea().getAreaIStats()[Area.Stats.INDOOR_ROOMS.ordinal()],R.getArea().properSize())<0.90)
 									S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard outside.^?"+CMLib.protocol().msp("thunder.wav",40));
 							}
@@ -521,8 +525,8 @@ public class WeatherAffects extends PuddleMaker
 					{
 						Ability A2=CMClass.getAbility("Chant_SummonLightning");
 						if(A2!=null)
-						{ 
-							A2.setMiscText("RENDER MUNDANE"); 
+						{
+							A2.setMiscText("RENDER MUNDANE");
 							A2.invoke(M,M,true,M.phyStats().level());
 						}
 						Room R2=null;
@@ -584,7 +588,7 @@ public class WeatherAffects extends PuddleMaker
 						Ability A2=CMClass.getAbility("Chant_SummonTornado");
 						if(A2!=null)
 						{
-							A2.setMiscText("RENDER MUNDANE"); 
+							A2.setMiscText("RENDER MUNDANE");
 							MOB mob=CMLib.map().getFactoryMOB(R);
 							A2.invoke(mob,null,true,0);
 							mob.destroy();
@@ -670,7 +674,7 @@ public class WeatherAffects extends PuddleMaker
 					if((A2!=null)
 					&&(C.weatherType(R)==Climate.WEATHER_HAIL))
 					{
-						A2.setMiscText("RENDER MUNDANE"); 
+						A2.setMiscText("RENDER MUNDANE");
 						A2.invoke(M,M,true,M.phyStats().level());
 					}
 				}
@@ -705,7 +709,7 @@ public class WeatherAffects extends PuddleMaker
 					A2.invoke(mob,I,true,0);
 					mob.destroy();
 				}
-				break;    
+				break;
 				}
 			}
 		}
@@ -739,7 +743,7 @@ public class WeatherAffects extends PuddleMaker
 					Ability A2=CMClass.getAbility("Chant_WindGust");
 					if(A2!=null)
 					{
-						A2.setMiscText("RENDER MUNDANE"); 
+						A2.setMiscText("RENDER MUNDANE");
 						A2.invoke(M,M,true,M.phyStats().level());
 					}
 					M.destroy();
@@ -789,7 +793,7 @@ public class WeatherAffects extends PuddleMaker
 				default:
 					break;
 				}
-				if((R.getClimateType()&Places.CLIMASK_WET)>0) 
+				if((R.getClimateType()&Places.CLIMASK_WET)>0)
 					rustChance+=2;
 				if(CMLib.dice().rollPercentage()<rustChance)
 				{

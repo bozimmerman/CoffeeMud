@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqClasses extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqClasses"; }
-	public String name(){ return "Class Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqClasses"; }
+	@Override public String name(){ return "Class Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	private boolean noFollow=false;
 	private boolean noSneak=false;
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
-	public int triggerMask() 
-	{ 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		noFollow=false;
@@ -87,6 +89,7 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

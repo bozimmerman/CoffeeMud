@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class Follower extends ActiveTicker
 {
-	public String ID(){return "Follower";}
-	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Follower";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	protected boolean realFollow=false;
 	protected boolean inventory=false;
 	protected int lastNumPeople=-1;
@@ -52,6 +52,7 @@ public class Follower extends ActiveTicker
 		direction=-1;
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		minTicks=0;
@@ -63,11 +64,13 @@ public class Follower extends ActiveTicker
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "natural friendly following";
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -125,6 +128,7 @@ public class Follower extends ActiveTicker
 		return null;
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -139,6 +143,7 @@ public class Follower extends ActiveTicker
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

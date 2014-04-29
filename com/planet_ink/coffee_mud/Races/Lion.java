@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 import java.util.Vector;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,17 @@ import java.util.Vector;
 */
 public class Lion extends GreatCat
 {
-	public String ID(){	return "Lion"; }
-	public String name(){ return "Lion"; }
-	public String racialCategory(){return "Feline";}
-	
+	@Override public String ID(){	return "Lion"; }
+	@Override public String name(){ return "Lion"; }
+	@Override public String racialCategory(){return "Feline";}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
-	
-	
+	@Override public int[] bodyMask(){return parts;}
+
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

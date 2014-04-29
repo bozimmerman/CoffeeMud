@@ -20,7 +20,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 */
 public class PlayerClass extends StdCharClass
 {
-	public String ID(){return "PlayerClass";}
-	public String name(){return "PlayerClass";}
-	public String baseClass(){return ID();}
-	public boolean showThinQualifyList(){return true;}
+	@Override public String ID(){return "PlayerClass";}
+	@Override public String name(){return "PlayerClass";}
+	@Override public String baseClass(){return ID();}
+	@Override public boolean showThinQualifyList(){return true;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
-	
+
 	public PlayerClass()
 	{
 		super();
@@ -52,9 +52,10 @@ public class PlayerClass extends StdCharClass
 			maxStatAdj[i]=7;
 	}
 
-	public int availabilityCode(){return 0;}
+	@Override public int availabilityCode(){return 0;}
 
-	public String getStatQualDesc(){return "";}
+	@Override public String getStatQualDesc(){return "";}
+	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
@@ -72,7 +73,7 @@ public class PlayerClass extends StdCharClass
 		case Ability.ACODE_SKILL:
 		case Ability.ACODE_THIEF_SKILL:
 		case Ability.ACODE_TRAP:
-		case Ability.ACODE_LANGUAGE: 
+		case Ability.ACODE_LANGUAGE:
 		case Ability.ACODE_PROPERTY:
 		case Ability.ACODE_TECH:
 			return true;
@@ -84,7 +85,7 @@ public class PlayerClass extends StdCharClass
 		}
 		return true;
 	}
-	
+
 	private List<String> makeRequirements(LinkedList<List<String>> prevSets, Ability A)
 	{
 		for(Iterator<List<String>> i=prevSets.descendingIterator();i.hasNext();)
@@ -119,7 +120,8 @@ public class PlayerClass extends StdCharClass
 		}
 		return new Vector<String>();
 	}
-	
+
+	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!loaded())
@@ -148,7 +150,7 @@ public class PlayerClass extends StdCharClass
 				if(C.baseClass().equals("Commoner") && (!names.contains(C.ID())))
 					charClassesOrder.add(C);
 			}
-			
+
 			for(CharClass C : charClassesOrder)
 			{
 				LinkedList<List<String>> prevSets=new LinkedList<List<String>>();
@@ -183,7 +185,8 @@ public class PlayerClass extends StdCharClass
 		}
 		super.startCharacter(mob, false, verifyOnly);
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

@@ -19,7 +19,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenCaged extends GenItem implements CagedAnimal
 {
-	public String ID(){	return "GenCaged";}
+	@Override public String ID(){	return "GenCaged";}
 	public GenCaged()
 	{
 		super();
@@ -50,8 +50,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		recoverPhyStats();
 	}
 	protected byte[]	readableText=null;
-	public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
-	public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
+	@Override public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override
 	public boolean cageMe(MOB M)
 	{
 		if(M==null) return false;
@@ -72,14 +73,16 @@ public class GenCaged extends GenItem implements CagedAnimal
 		recoverPhyStats();
 		return true;
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
 			Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
 		super.destroy();
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)
@@ -95,6 +98,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		super.executeMsg(myHost,msg);
 	}
+	@Override
 	public MOB unCageMe()
 	{
 		MOB M=null;
@@ -134,7 +138,8 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		return M;
 	}
-	public String cageText(){ return CMLib.xml().restoreAngleBrackets(readableText());}
+	@Override public String cageText(){ return CMLib.xml().restoreAngleBrackets(readableText());}
+	@Override
 	public void setCageText(String text)
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));

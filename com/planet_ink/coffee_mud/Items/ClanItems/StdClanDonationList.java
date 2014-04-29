@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class StdClanDonationList extends StdClanItem
 {
 
 	private Item lastItem=null;
-	
+
 	public StdClanDonationList()
 	{
 		super();
@@ -55,7 +55,8 @@ public class StdClanDonationList extends StdClanItem
 		baseGoldValue=1;
 		material=RawMaterial.RESOURCE_PAPER;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((((ClanItem)this).clanID().length()>0)
@@ -76,7 +77,8 @@ public class StdClanDonationList extends StdClanItem
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(((ClanItem)this).clanID().length()>0)
@@ -112,7 +114,7 @@ public class StdClanDonationList extends StdClanItem
 									O[1]=set.xml;
 									sorted.insertElementAt(O,i);
 								}
-							if(!did) 
+							if(!did)
 							{
 								Object[] O=new Object[2];
 								O[0]=Long.valueOf(val);

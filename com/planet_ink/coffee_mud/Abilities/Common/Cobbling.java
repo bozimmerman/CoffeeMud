@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2004 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Cobbling"; }
-	public String name(){ return "Cobbling";}
+	@Override public String ID() { return "Cobbling"; }
+	@Override public String name(){ return "Cobbling";}
 	private static final String[] triggerStrings = {"COBBLE","COBBLING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN|METAL";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN|METAL";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
 
@@ -60,6 +61,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -73,9 +75,10 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "cobbler.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "cobbler.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -128,12 +131,13 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(!(I instanceof Armor))
 			return false;
@@ -142,7 +146,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return true;
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -156,16 +161,18 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -324,13 +331,13 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"cobble list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_CLOTH,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_LEATHER};

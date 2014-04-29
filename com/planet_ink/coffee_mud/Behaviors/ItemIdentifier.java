@@ -34,12 +34,13 @@ import java.util.*;
 */
 public class ItemIdentifier extends StdBehavior
 {
-	public String ID(){return "ItemIdentifier";}
-	
+	@Override public String ID(){return "ItemIdentifier";}
+
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "item identifying for a price";
 	}
 
@@ -54,6 +55,7 @@ public class ItemIdentifier extends StdBehavior
 			return 500+(item.phyStats().level()*20);
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -71,7 +73,8 @@ public class ItemIdentifier extends StdBehavior
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -100,6 +103,7 @@ public class ItemIdentifier extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

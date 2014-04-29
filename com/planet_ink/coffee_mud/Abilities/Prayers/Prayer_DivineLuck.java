@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DivineLuck extends Prayer
 {
-	public String ID() { return "Prayer_DivineLuck"; }
-	public String name(){ return "Divine Luck";}
-	public String displayText(){ return "(Divine Luck)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Prayer_DivineLuck"; }
+	@Override public String name(){ return "Divine Luck";}
+	@Override public String displayText(){ return "(Divine Luck)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -54,6 +55,7 @@ public class Prayer_DivineLuck extends Prayer
 					+1+((affectedMOB.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/5));
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -74,6 +76,7 @@ public class Prayer_DivineLuck extends Prayer
 
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -87,6 +90,7 @@ public class Prayer_DivineLuck extends Prayer
 			mob.tell("Your divine luck is over.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;

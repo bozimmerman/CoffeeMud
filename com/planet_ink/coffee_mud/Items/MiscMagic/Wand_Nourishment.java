@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Wand_Nourishment extends StdWand
 {
-	public String ID(){	return "Wand_Nourishment";}
+	@Override public String ID(){	return "Wand_Nourishment";}
 	public Wand_Nourishment()
 	{
 		super();
@@ -49,17 +49,20 @@ public class Wand_Nourishment extends StdWand
 	}
 
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="SHAZAM";
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="SHAZAM";
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

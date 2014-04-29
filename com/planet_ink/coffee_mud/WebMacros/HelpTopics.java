@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class HelpTopics extends StdWebMacro
 {
-	public String name() { return "HelpTopics"; }
+	@Override public String name() { return "HelpTopics"; }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

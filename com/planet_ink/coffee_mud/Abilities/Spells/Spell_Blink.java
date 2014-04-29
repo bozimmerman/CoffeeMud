@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Blink extends Spell
 {
-	public String ID() { return "Spell_Blink"; }
-	public String name(){return "Blink";}
-	public String displayText(){return "(Blink spell)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_Blink"; }
+	@Override public String name(){return "Blink";}
+	@Override public String displayText(){return "(Blink spell)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,6 +56,7 @@ public class Spell_Blink extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) blinking.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected!=null)&&(affected instanceof MOB))
@@ -116,6 +118,7 @@ public class Spell_Blink extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

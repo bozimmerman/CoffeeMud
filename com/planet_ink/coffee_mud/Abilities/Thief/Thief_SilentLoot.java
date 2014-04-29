@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_SilentLoot extends ThiefSkill
 {
-	public String ID() { return "Thief_SilentLoot"; }
-	public String displayText() {return "(Silent AutoLoot)";}
-	public String name(){ return "Silent AutoLoot";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Thief_SilentLoot"; }
+	@Override public String displayText() {return "(Silent AutoLoot)";}
+	@Override public String name(){ return "Silent AutoLoot";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTLOOT"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -82,6 +83,7 @@ public class Thief_SilentLoot extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))

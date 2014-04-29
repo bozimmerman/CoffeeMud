@@ -20,9 +20,9 @@ limitations under the License.
 public class EnumerationIterator<K> implements Iterator<K>
 {
 	private final Enumeration<K> e;
-	
+
 	@SuppressWarnings("unchecked")
-	public EnumerationIterator(Enumeration<K> e) 
+	public EnumerationIterator(Enumeration<K> e)
 	{
 		if(e==null)
 			this.e=EmptyEnumeration.INSTANCE;
@@ -30,13 +30,15 @@ public class EnumerationIterator<K> implements Iterator<K>
 			this.e=e;
 		hasNext();
 	}
-	
-	public boolean hasNext() 
-	{ 
+
+	@Override
+	public boolean hasNext()
+	{
 		return e.hasMoreElements();
 	}
-	
-	public K next() 
+
+	@Override
+	public K next()
 	{
 		return e.nextElement();
 	}
@@ -46,6 +48,6 @@ public class EnumerationIterator<K> implements Iterator<K>
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
-	
-	
+
+
 }

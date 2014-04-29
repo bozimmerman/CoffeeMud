@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
-	public String ID() { return "Fighter_Tumble"; }
-	public String name(){ return "Tumble";}
-	public String displayText(){ return "(Tumbling)";}
+	@Override public String ID() { return "Fighter_Tumble"; }
+	@Override public String name(){ return "Tumble";}
+	@Override public String displayText(){ return "(Tumbling)";}
 	private static final String[] triggerStrings = {"TUMBLE"};
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +61,7 @@ public class Fighter_Tumble extends FighterSkill
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -90,6 +92,7 @@ public class Fighter_Tumble extends FighterSkill
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -103,7 +106,8 @@ public class Fighter_Tumble extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

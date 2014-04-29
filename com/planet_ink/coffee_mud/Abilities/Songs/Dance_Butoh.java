@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Butoh extends Dance
 {
-	public String ID() { return "Dance_Butoh"; }
-	public String name(){ return "Butoh";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Butoh"; }
+	@Override public String name(){ return "Butoh";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -52,6 +53,7 @@ public class Dance_Butoh extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

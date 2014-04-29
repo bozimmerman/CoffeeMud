@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Vampirism extends Prayer
 {
-	public String ID() { return "Prayer_Vampirism"; }
-	public String name(){ return "Inflict Vampirism";}
-	public String displayText(){ return "(Vampirism)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Vampirism"; }
+	@Override public String name(){ return "Inflict Vampirism";}
+	@Override public String displayText(){ return "(Vampirism)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -58,6 +59,7 @@ public class Prayer_Vampirism extends Prayer
 				mob.tell("Your vampirism fades.");
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -72,6 +74,7 @@ public class Prayer_Vampirism extends Prayer
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -88,6 +91,7 @@ public class Prayer_Vampirism extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -95,6 +99,7 @@ public class Prayer_Vampirism extends Prayer
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -133,6 +138,7 @@ public class Prayer_Vampirism extends Prayer
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -199,6 +205,7 @@ public class Prayer_Vampirism extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

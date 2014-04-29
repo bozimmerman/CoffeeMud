@@ -35,12 +35,13 @@ limitations under the License.
 */
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
-	public String ID(){return "DefaultRoomnumberSet";}
-	public String name() { return ID();}
+	@Override public String ID(){return "DefaultRoomnumberSet";}
+	@Override public String name() { return ID();}
 	public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
-	public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
+	@Override public void initializeClass(){}
+	@Override
 	public CMObject copyOf()
 	{
 		DefaultRoomnumberSet R=new DefaultRoomnumberSet();
@@ -53,6 +54,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		}
 		return R;
 	}
+	@Override
 	public synchronized void add(RoomnumberSet set)
 	{
 		CMIntegerGrouper his=null;
@@ -73,12 +75,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				mine.add(his);
 		}
 	}
-	
+
+	@Override
 	public synchronized void remove(String str)
 	{
 		String areaName=str.toUpperCase().trim();
 		if(areaName.length()==0) return;
-		
+
 		String theRest=null;
 		long roomNum=-1;
 		int x=areaName.indexOf('#');
@@ -117,7 +120,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		if(CI.roomCount()==0)
 			root.remove(areaName.toUpperCase());
 	}
-	
+
+	@Override
 	public int roomCountAllAreas()
 	{
 		int total=0;
@@ -128,7 +132,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				total+=CMI.roomCount();
 		return total;
 	}
-	
+
+	@Override
 	public boolean isEmpty()
 	{
 		if(!root.isEmpty())
@@ -137,7 +142,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 					return false;
 		return true;
 	}
-	
+
+	@Override
 	public int roomCount(String areaName)
 	{
 		int x=areaName.indexOf('#');
@@ -150,7 +156,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			return CMI.roomCount();
 		return 0;
 	}
-	
+
+	@Override
 	public String random()
 	{
 		int total=roomCountAllAreas();
@@ -181,7 +188,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long selection=CMI.random();
 		return convertRoomID(roomID,selection);
 	}
-	
+
 	public int[] convertRoomID(long coded)
 	{
 		if(coded==-1) return null;
@@ -218,19 +225,21 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long firstID=(((coded&mask)>>30)&(CMIntegerGrouper.NEXT_BITSL-CMIntegerGrouper.GRID_FLAGL));
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
 	}
-	
-	public Iterator<String> getAreaNames(){ return root.keySet().iterator();}
-	
+
+	@Override public Iterator<String> getAreaNames(){ return root.keySet().iterator();}
+
 	private boolean isGrouper(String areaName)
 	{
 		return root.containsKey(areaName.toUpperCase());
 	}
-	
+
+	@Override
 	public CMIntegerGrouper getGrouper(String areaName)
 	{
 		return root.get(areaName.toUpperCase());
 	}
-	
+
+	@Override
 	public boolean contains(String str)
 	{
 		if(str==null) return false;
@@ -258,14 +267,15 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CMath.isInteger(theRest))
 				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
 		}
-		
+
 		CMIntegerGrouper myGrouper=getGrouper(str);
 		if((origX<0)&&(myGrouper==null)&&(isGrouper(str)))
 			return true;
 		if(myGrouper==null) return false;
 		return myGrouper.contains(roomNum);
 	}
-	
+
+	@Override
 	public String xml()
 	{
 		StringBuffer str=new StringBuffer("<AREAS>");
@@ -279,6 +289,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return str.toString()+"</AREAS>";
 	}
 
+	@Override
 	public void parseXML(String xml)
 	{
 		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
@@ -302,12 +313,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				}
 			}
 	}
-	
+
+	@Override
 	public synchronized void add(String str)
 	{
 		String areaName=str.toUpperCase().trim();
 		if(areaName.length()==0) return;
-		
+
 		String theRest=null;
 		long roomNum=-1;
 		int x=areaName.indexOf('#');
@@ -341,9 +353,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		if((CI!=null)&&(roomNum>=0))
 			CI.add(roomNum);
 	}
-	
-	public Enumeration<String> getRoomIDs(){return new RoomnumberSetEnumeration();}
-	
+
+	@Override public Enumeration<String> getRoomIDs(){return new RoomnumberSetEnumeration();}
+
 	private class RoomnumberSetEnumeration implements Enumeration<String>
 	{
 		Iterator<String> areaNames=null;
@@ -352,11 +364,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		String nextID=null;
 		int n=0;
 		public RoomnumberSetEnumeration(){ areaNames=getAreaNames();}
+		@Override
 		public boolean hasMoreElements()
 		{
 			if(nextID==null) getNextID();
 			return nextID!=null;
 		}
+		@Override
 		public String nextElement()
 		{
 			if(nextID==null) getNextID();

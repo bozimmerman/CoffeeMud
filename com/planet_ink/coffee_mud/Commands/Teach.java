@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,9 +40,10 @@ public class Teach extends StdCommand
 	public Teach(){}
 
 	private final String[] access={"TEACH"};
-	public String[] getAccessWords(){return access;}
-	
-	
+	@Override public String[] getAccessWords(){return access;}
+
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -84,7 +85,7 @@ public class Teach extends StdCommand
 				for(String ID : codes)
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
-					if((def != null) && (!V.contains(def))) 
+					if((def != null) && (!V.contains(def)))
 						V.add(def);
 				}
 			}
@@ -112,9 +113,9 @@ public class Teach extends StdCommand
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

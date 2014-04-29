@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,22 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Prayer_DarkSenses extends Prayer
 {
-	public String ID() { return "Prayer_DarkSenses"; }
-	public String name(){return "Dark Senses";}
-	public String displayText(){return "(Dark Senses)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Prayer_DarkSenses"; }
+	@Override public String name(){return "Dark Senses";}
+	@Override public String displayText(){return "(Dark Senses)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -59,7 +61,8 @@ public class Prayer_DarkSenses extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -72,6 +75,7 @@ public class Prayer_DarkSenses extends Prayer
 			mob.tell("You lose your dark senses.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

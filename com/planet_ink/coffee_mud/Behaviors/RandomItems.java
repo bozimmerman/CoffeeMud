@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RandomItems extends ActiveTicker
 {
-	public String ID(){return "RandomItems";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override public String ID(){return "RandomItems";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 
 	protected Vector maintained=new Vector();
 	protected int minItems=1;
@@ -46,11 +46,13 @@ public class RandomItems extends ActiveTicker
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random item generating";
 	}
-	
+
+	@Override
 	public List<String> externalFiles()
 	{
 		Vector xmlfiles=new Vector();
@@ -72,6 +74,7 @@ public class RandomItems extends ActiveTicker
 	}
 
 
+	@Override
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
@@ -279,6 +282,7 @@ public class RandomItems extends ActiveTicker
 		return items;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

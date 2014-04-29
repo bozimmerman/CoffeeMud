@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import java.util.*;
 */
 public class AllQualifyData extends StdWebMacro
 {
-	public String name() { return "AllQualifyData"; }
-	public boolean isAdminMacro()   {return true;}
+	@Override public String name() { return "AllQualifyData"; }
+	@Override public boolean isAdminMacro()   {return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -49,7 +50,7 @@ public class AllQualifyData extends StdWebMacro
 		Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
 		Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
 		if(map==null) return "";
-		
+
 		AbilityMapper.AbilityMapping mapped=map.get(last);
 		if(mapped==null)
 		{
@@ -62,44 +63,44 @@ public class AllQualifyData extends StdWebMacro
 		if(parms.containsKey("NAME"))
 		{
 			Ability A=CMClass.getAbility(last);
-			if(A!=null) 
+			if(A!=null)
 				str.append(A.name()).append(", ");
 		}
-		
+
 		if(parms.containsKey("LEVEL"))
 		{
 			String lvl=httpReq.getUrlParameter("LEVEL");
-			if(lvl==null) 
+			if(lvl==null)
 				lvl=Integer.toString(mapped.qualLevel);
 			else
 				lvl=Integer.toString(CMath.s_int(lvl));
 			str.append(lvl).append(", ");
 		}
-		
+
 		if(parms.containsKey("PROF"))
 		{
 			String prof=httpReq.getUrlParameter("PROF");
-			if(prof==null) 
+			if(prof==null)
 				prof=Integer.toString(mapped.defaultProficiency);
 			else
 				prof=Integer.toString(CMath.s_int(prof));
 			str.append(prof).append(", ");
 		}
-		
+
 		if(parms.containsKey("MASK"))
 		{
 			String s=httpReq.getUrlParameter("MASK");
 			if(s==null) s=mapped.extraMask;
 			str.append(s).append(", ");
 		}
-		
+
 		if(parms.containsKey("AUTOGAIN"))
 		{
 			String s=httpReq.getUrlParameter("AUTOGAIN");
 			if(s==null) s=mapped.autoGain?"on":"";
 			str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
 		}
-		
+
 		if(parms.containsKey("REQUIRES"))
 		{
 			if(!httpReq.isUrlParameter("REQABLE1"))
@@ -205,9 +206,9 @@ public class AllQualifyData extends StdWebMacro
 				}
 				str.append(", ");
 			}
-			
+
 		}
-		
+
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
 			strstr=strstr.substring(0,strstr.length()-2);

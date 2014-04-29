@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import java.util.*;
 */
 public class Prop_WearAdjuster extends Prop_HaveAdjuster
 {
-	public String ID() { return "Prop_WearAdjuster"; }
-	public String name(){ return "Adjustments to stats when worn";}
+	@Override public String ID() { return "Prop_WearAdjuster"; }
+	@Override public String name(){ return "Adjustments to stats when worn";}
 
+	@Override
 	public String accountForYourself()
 	{
 		return super.fixAccoutingsWithMask("Affects on the wearer: "+parameters[0],parameters[1]);
 	}
-	
+
 	public boolean checked=false;
 	public boolean disabled=false;
 	public boolean layered=false;
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
@@ -80,12 +82,14 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 		checked=true;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
@@ -105,7 +109,8 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 		else
 			super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public boolean canApply(MOB mob)
 	{
 		if(!super.canApply(mob))

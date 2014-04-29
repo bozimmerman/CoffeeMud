@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.*;
 public class GenStealthShield extends GenTickerShield
 {
 
-	public String ID(){	return "GenStealthShield";}
-	
+	@Override public String ID(){	return "GenStealthShield";}
+
 	public GenStealthShield()
 	{
 		super();
@@ -45,35 +45,37 @@ public class GenStealthShield extends GenTickerShield
 		setDisplayText("a personal stealth generator sits here.");
 		setDescription("");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
+	protected String fieldOnStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"A stealth field surrounds <O-NAME>.":
-			"A stealth field surrounds <T-NAME>."; 
+			"A stealth field surrounds <T-NAME>.";
 	}
-	
+
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"The stealth field around <O-NAME> flickers and dies out as <O-HE-SHE> fade(s) back into view.":
-			"The stealth field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view."; 
+			"The stealth field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view.";
 	}
-	
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(activated() && (affected==owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)) && (powerRemaining() > 0))
+		if(activated() && (affected==owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)) && (powerRemaining() > 0))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		super.affectPhyStats(affected, affectableStats);
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
+		if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_LOOK)&&(msg.source()!=owner()))
 			{
@@ -87,5 +89,5 @@ public class GenStealthShield extends GenTickerShield
 		}
 		return true;
 	}
-	
+
 }

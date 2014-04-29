@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Gate extends Spell
 {
-	public String ID() { return "Spell_Gate"; }
-	public String name(){return "Gate";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	protected int overrideMana(){return Ability.COST_PCT+50;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Gate"; }
+	@Override public String name(){return "Gate";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
@@ -50,7 +50,8 @@ public class Spell_Gate extends Spell
 		||(!CMLib.flags().canAccess(mob,room))
 		||(CMLib.law().getLandTitle(room)!=null);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -113,7 +114,7 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
-		
+
 		int adjustment=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(target.isMonster()) adjustment=adjustment*3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

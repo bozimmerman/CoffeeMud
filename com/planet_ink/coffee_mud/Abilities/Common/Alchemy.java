@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,16 +39,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Alchemy"; }
-	public String name(){ return "Alchemy";}
+	@Override public String ID() { return "Alchemy"; }
+	@Override public String name(){ return "Alchemy";}
 	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "MISC";}
-	public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "MISC";}
+	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
 	String oldName="";
 	protected Ability theSpell=null;
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -82,22 +83,25 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
-	
-	public String parametersFile(){ return "alchemy.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public String parametersFile(){ return "alchemy.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override public boolean supportsDeconstruction() { return false; }
+
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -118,6 +122,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -171,7 +176,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		}
 	}
 
-	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
 
 	protected Item buildItem(Ability theSpell, int level)
 	{
@@ -186,7 +191,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		buildingI.text();
 		return buildingI;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);

@@ -37,18 +37,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Apothecary extends Cooking
 {
-	public String ID() { return "Apothecary"; }
-	public String name(){ return "Apothecary";}
+	@Override public String ID() { return "Apothecary"; }
+	@Override public String name(){ return "Apothecary";}
 	private static final String[] triggerStrings = {"APOTHECARY","MIX"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "MISC";}
-	public String cookWordShort(){return "mix";}
-	public String cookWord(){return "mixing";}
-	public boolean honorHerbs(){return false;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "MISC";}
+	@Override public String cookWordShort(){return "mix";}
+	@Override public String cookWord(){return "mixing";}
+	@Override public boolean honorHerbs(){return false;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 
-	public String parametersFile(){ return "poisons.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "poisons.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public Apothecary()
 	{
@@ -58,8 +58,9 @@ public class Apothecary extends Cooking
 		defaultDrinkSound = "hotspring.wav";
 	}
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -94,6 +95,7 @@ public class Apothecary extends Cooking
 			return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(buildingI==null))

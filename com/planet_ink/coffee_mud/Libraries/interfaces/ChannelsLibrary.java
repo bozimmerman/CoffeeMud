@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import java.util.*;
 public interface ChannelsLibrary extends CMLibrary
 {
 	public final int QUEUE_SIZE=100;
-	
+
 	public int getNumChannels();
 	public CMChannel getChannel(int i);
 	public List<ChannelMsg> getChannelQue(int i);
@@ -54,7 +54,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public int loadChannels(String list, String ilist, String imc2list);
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
-	
+
 
 	/**
 	 * Basic Channel definition
@@ -77,14 +77,14 @@ public interface ChannelsLibrary extends CMLibrary
 
 	public static class ChannelMsg
 	{
-		public final CMMsg msg; 
+		public final CMMsg msg;
 		public long ts;
 		public ChannelMsg(CMMsg msg){this.msg=msg; ts=System.currentTimeMillis();}
 	}
-	
+
 	public static enum ChannelFlag {
 		DEFAULT,SAMEAREA,CLANONLY,READONLY,
-		EXECUTIONS,LOGINS,LOGOFFS,BIRTHS,MARRIAGES, 
+		EXECUTIONS,LOGINS,LOGOFFS,BIRTHS,MARRIAGES,
 		DIVORCES,CHRISTENINGS,LEVELS,DETAILEDLEVELS,DEATHS,DETAILEDDEATHS,
 		CONQUESTS,CONCEPTIONS,NEWPLAYERS,LOSTLEVELS,PLAYERPURGES,CLANINFO,
 		WARRANTS, PLAYERREADONLY, CLANALLYONLY, ACCOUNTOOC

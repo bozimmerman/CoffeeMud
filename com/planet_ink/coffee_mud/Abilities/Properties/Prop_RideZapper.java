@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,25 @@ import java.util.*;
 */
 public class Prop_RideZapper extends Prop_HaveZapper
 {
-	public String ID() { return "Prop_RideZapper"; }
-	public String name(){ return "Restrictions to riding";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	
-	protected String defaultMessage() { return "<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!";}
+	@Override public String ID() { return "Prop_RideZapper"; }
+	@Override public String name(){ return "Restrictions to riding";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 
+	@Override protected String defaultMessage() { return "<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!";}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Mounting restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_MOUNT;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return true;

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the amount of experiene required to be the given level
 	 */
 	public int getLevelExperience(int level);
-	
+
 	/**
 	 * Returns how much experience a player must gain at this level to
 	 * advance to the next.
@@ -45,19 +45,19 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the amount of experience
 	 */
 	public int getLevelExperienceJustThisLevel(int level);
-	
+
 	public void handleExperienceChange(CMMsg msg);
-	
+
 	public int adjustedExperience(MOB mob, MOB victim, int amount);
-	
+
 	public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
-	
+
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster);
-	
+
 	public void level(MOB mob);
-	
+
 	public void unLevel(MOB mob);
-	
+
 	/**
 	 * This method fills in combat and rejuvination related stats for the given
 	 * mob of their current base class at the given level.  This method should create a mob
@@ -67,7 +67,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the filled in mob
 	 */
 	public MOB fillOutMOB(MOB mob, int level);
-	
+
 	/**
 	 * This method fills in combat and rejuvination related stats for the given
 	 * mob of the given class at the given level.  This method should create a mob
@@ -77,7 +77,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the filled in mob
 	 */
 	public MOB fillOutMOB(CharClass C, int level);
-	
+
 	/**
 	 * Returns the amount of hp the given player would have being
 	 * their current base class.
@@ -127,7 +127,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return the amount of damage per hit an npc of this class should have
 	 */
 	public int getLevelMOBDamage(MOB mob);
-	
+
 	/**
 	 * Called whenever a player actually gains any experience.  It actually does
 	 * the experience gain for the player as well as determining how much, if any

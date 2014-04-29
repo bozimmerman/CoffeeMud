@@ -20,7 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlySortedMap<K,V> implements SortedMap<K,V> 
+public class ReadOnlySortedMap<K,V> implements SortedMap<K,V>
 {
 	private final SortedMap<K,V> map;
 	public ReadOnlySortedMap(SortedMap<K,V> s)

@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Weaving"; }
-	public String name(){ return "Weaving";}
+	@Override public String ID() { return "Weaving"; }
+	@Override public String name(){ return "Weaving";}
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
@@ -74,6 +75,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -84,9 +86,10 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "weaving.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "weaving.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -148,13 +151,15 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		super.unInvoke();
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public double getItemWeightMultiplier(boolean bundling)
 	{
 		return bundling ? 1.0 : 0.5;
 	}
-	
+
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -170,7 +175,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		&&(I.material()!=RawMaterial.RESOURCE_SEAWEED)
 		&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof Rideable)
 		{
@@ -208,7 +213,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -222,16 +228,18 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -398,13 +406,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				commonTell(mob,"You don't know how to weave a '"+recipeName+"'.  Try \"weave list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.RESOURCE_COTTON,
 					  RawMaterial.RESOURCE_SILK,

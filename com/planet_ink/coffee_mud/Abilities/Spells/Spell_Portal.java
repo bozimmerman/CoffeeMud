@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Portal extends Spell
 {
-	public String ID() { return "Spell_Portal"; }
-	public String name(){return "Portal";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	protected int overrideMana(){return Ability.COST_ALL-90;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Portal"; }
+	@Override public String name(){return "Portal";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override protected int overrideMana(){return Ability.COST_ALL-90;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room newRoom=null;
 	Room oldRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -66,6 +67,7 @@ public class Spell_Portal extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		newRoom=null;

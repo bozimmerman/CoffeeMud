@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class Trap_EnterGas extends Trap_Enter
 {
-	public String ID() { return "Trap_EnterGas"; }
-	public String name(){ return "Entry Gas Trap";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapType(){return TRAP_GAS;}
+	@Override public String ID() { return "Trap_EnterGas"; }
+	@Override public String name(){ return "Entry Gas Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapType(){return TRAP_GAS;}
 }

@@ -31,15 +31,15 @@ public interface DBIdentifiable {
 	 */
 	public String databaseID();
 	/**
-	 * Set the unique contextual database ID for this object. 
+	 * Set the unique contextual database ID for this object.
 	 * @param ID the unique contextual database ID for this object.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.DBIdentifiable#canSaveDatabaseID()
 	 * @see com.planet_ink.coffee_mud.core.interfaces.DBIdentifiable#databaseID()
 	 */
 	public void setDatabaseID(String ID);
-	
+
 	/**
-	 * Returns true if this object can safely store and retrieve 
+	 * Returns true if this object can safely store and retrieve
 	 * a database ID, and false if the TYPE of object can, but
 	 * this particular instance can not.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.DBIdentifiable#databaseID()

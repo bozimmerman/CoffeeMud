@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Wainwrighting extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Wainwrighting"; }
-	public String name(){ return "Wainwrighting";}
+	@Override public String ID() { return "Wainwrighting"; }
+	@Override public String name(){ return "Wainwrighting";}
 	private static final String[] triggerStrings = {"WAINWRIGHTING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY\tRIDE_CAPACITY\tCONTAINER_TYPE\t"
 		+"CODED_SPELL_LIST";}
@@ -63,6 +64,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 
 	protected Item key=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -73,17 +75,18 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "wainwright.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "wainwright.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(isANativeItem(I.Name()))
 			return true;
@@ -112,6 +115,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -153,16 +157,18 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -253,13 +259,13 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to build a '"+recipeName+"'.  Try \"list\" as your parameter for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		if(amount>woodRequired) woodRequired=amount;
 		int[] pm={RawMaterial.MATERIAL_WOODEN};
 		String misctype=foundRecipe.get(RCP_MISCTYPE);

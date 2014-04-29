@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Wizard extends Mage
 {
-	public String ID(){return "Wizard";}
-	public String name(){return "Wizard";}
-	public String baseClass(){return "Mage";}
-	protected boolean grantSomeSpells(){return false;}
+	@Override public String ID(){return "Wizard";}
+	@Override public String name(){return "Wizard";}
+	@Override public String baseClass(){return "Mage";}
+	@Override protected boolean grantSomeSpells(){return false;}
 
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -76,17 +77,20 @@ public class Wizard extends Mage
 		}
 	}
 
-	public int availabilityCode(){return 0;}
+	@Override public int availabilityCode(){return 0;}
 	//public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return "Can memorize any spell for casting without expending a training point.";
 	}
+	@Override
 	public String getOtherLimitsDesc()
 	{
 		return "Unable to learn spells permanently; can only memorize them.";
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -113,6 +117,7 @@ public class Wizard extends Mage
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB mob, CharState state)
 	{
 		super.affectCharState(mob,state);
@@ -145,6 +150,7 @@ public class Wizard extends Mage
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB))

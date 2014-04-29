@@ -37,7 +37,8 @@ public class Boot extends StdCommand
 	public Boot(){}
 
 	private final String[] access={"BOOT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -80,9 +81,9 @@ public class Boot extends StdCommand
 			mob.tell("You can't find anyone by that name or ip address.");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT);}
+
+
 }

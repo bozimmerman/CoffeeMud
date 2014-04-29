@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class StdTub extends StdRideable implements Drink
 {
-	public String ID(){	return "StdTub";}
+	@Override public String ID(){	return "StdTub";}
 	protected int amountOfThirstQuenched=250;
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
@@ -59,23 +59,24 @@ public class StdTub extends StdRideable implements Drink
 		recoverPhyStats();
 	}
 
-	public long decayTime(){return decayTime;}
-	public void setDecayTime(long time){decayTime=time;}
-	public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
-	public int thirstQuenched(){return amountOfThirstQuenched;}
-	public int liquidHeld(){return amountOfLiquidHeld;}
-	public int liquidRemaining(){return amountOfLiquidRemaining;}
+	@Override public long decayTime(){return decayTime;}
+	@Override public void setDecayTime(long time){decayTime=time;}
+	@Override public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
+	@Override public int thirstQuenched(){return amountOfThirstQuenched;}
+	@Override public int liquidHeld(){return amountOfLiquidHeld;}
+	@Override public int liquidRemaining(){return amountOfLiquidRemaining;}
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;
 	}
-	public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
+	@Override public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
 
-	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
-	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
-	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+	@Override public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
+	@Override public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
+	@Override public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
 
 	protected int getExtraLiquidResourceType()
 	{
@@ -86,7 +87,8 @@ public class StdTub extends StdRideable implements Drink
 				return V.get(v).material();
 		return -1;
 	}
-	
+
+	@Override
 	public boolean containsDrink()
 	{
 		if((!CMLib.flags().isGettable(this))
@@ -100,6 +102,7 @@ public class StdTub extends StdRideable implements Drink
 		return true;
 	}
 
+	@Override
 	public String stateString(Rider R)
 	{
 		switch(rideBasis)
@@ -118,11 +121,13 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "riding in";
 	}
+	@Override
 	public String putString(Rider R)
 	{
 		return "in";
 	}
 
+	@Override
 	public String mountString(int commandType, Rider R)
 	{
 		switch(rideBasis)
@@ -142,6 +147,7 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "board(s)";
 	}
+	@Override
 	public String dismountString(Rider R)
 	{
 		switch(rideBasis)
@@ -160,6 +166,7 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "disembark(s) from";
 	}
+	@Override
 	public String stateStringSubject(Rider R)
 	{
 		switch(rideBasis)
@@ -179,6 +186,7 @@ public class StdTub extends StdRideable implements Drink
 		return "";
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -242,6 +250,7 @@ public class StdTub extends StdRideable implements Drink
 		return true;
 	}
 
+	@Override
 	public int amountTakenToFillMe(Drink theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
@@ -252,6 +261,7 @@ public class StdTub extends StdRideable implements Drink
 		return amountToTake;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source().riding()==this)

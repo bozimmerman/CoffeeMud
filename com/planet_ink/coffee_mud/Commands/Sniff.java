@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Sniff extends StdCommand
 	public Sniff(){}
 
 	private final String[] access={"SNIFF","SMELL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -48,17 +49,17 @@ public class Sniff extends StdCommand
 			quiet=true;
 		}
 		String textMsg="<S-NAME> sniff(s)";
-		if(mob.location()==null) 
+		if(mob.location()==null)
 			return false;
-		
+
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
-			
+
 			String ID=CMParms.combine(commands,1);
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
-			
+
 			if(thisThang==null)
 				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if(thisThang!=null)
@@ -91,9 +92,9 @@ public class Sniff extends StdCommand
 		}
 		return false;
 	}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
-	public boolean canBeOrdered(){return true;}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

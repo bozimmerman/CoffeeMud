@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SenseLife extends Chant
 {
-	public String ID() { return "Chant_SenseLife"; }
-	public String name(){ return "Life Echoes";}
-	public String displayText(){return "(Life Echoes)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_SenseLife"; }
+	@Override public String name(){ return "Life Echoes";}
+	@Override public String displayText(){return "(Life Echoes)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected Room lastRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -104,6 +105,7 @@ public class Chant_SenseLife extends Chant
 			mob.tell("You feel a life force coming from "+dirs.substring(2)+", and "+last+".");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -120,6 +122,7 @@ public class Chant_SenseLife extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

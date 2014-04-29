@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class Dice extends StdLibrary implements DiceLibrary
 {
-	public String ID(){return "Dice";}
+	@Override public String ID(){return "Dice";}
 	private Random randomizer = null;
 	protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
 
+	@Override
 	public synchronized Random getRandomizer()
 	{
 		if(randomizer == null)
@@ -50,19 +51,22 @@ public class Dice extends StdLibrary implements DiceLibrary
 		baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_NPCHITPOINTS));
 		randomizer = new Random(System.currentTimeMillis());
 	}
-	
+
+	@Override
 	public boolean activate()
 	{
 		baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_NPCHITPOINTS));
 		return super.activate();
 	}
-	
-	public void propertiesLoaded() { activate(); }
-	
+
+	@Override public void propertiesLoaded() { activate(); }
+
+	@Override
 	public boolean normalizeAndRollLess(int score)
 	{
 		return (rollPercentage()<normalizeBy5(score));
 	}
+	@Override
 	public int normalizeBy5(int score)
 	{
 		if(score>95)
@@ -73,6 +77,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return score;
 	}
 
+	@Override
 	public int rollHP(int level, int code)
 	{
 		if(code<0) code=0;
@@ -82,7 +87,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 
 		// old old style
 		//	return 10 +(int)Math.round(CMath.mul(level*level,0.85)) +(roll(level,code,0)*mul);
-		
+
 		// new style
 		int r=code>>23;
 		int d=(code-(r<<23))>>15;
@@ -90,6 +95,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return roll(r,d,p);
 	}
 
+	@Override
 	public Object doublePick(Object[][] set)
 	{
 		if(set.length==0) return null;
@@ -97,7 +103,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 		if(sset.length==0) return null;
 		return sset[randomizer.nextInt(sset.length)];
 	}
-	
+
+	@Override
 	public Object pick(Object[] set, Object not)
 	{
 		if(set.length==1)
@@ -117,11 +124,13 @@ public class Dice extends StdLibrary implements DiceLibrary
 		newList.remove( not );
 		return pick(newList.toArray(new Object[0]));
 	}
-	public Object pick(Object[] set) 
+	@Override
+	public Object pick(Object[] set)
 	{
 		if(set.length==0) return null;
 		return set[randomizer.nextInt(set.length)];
 	}
+	@Override
 	public int pick(int[] set, int not)
 	{
 		if(CMParms.indexOf( set, not ) >=0)
@@ -136,9 +145,10 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return pick(set);
 	}
 
+	@Override
 	public int rollNormalDistribution(int number, int die, int modifier)
 	{
-		if(number<=0) 
+		if(number<=0)
 			return modifier;
 		int total=0;
 		double subtotal;
@@ -151,10 +161,11 @@ public class Dice extends StdLibrary implements DiceLibrary
 		}
 		return total + modifier;
 	}
-	
+
+	@Override
 	public int rollLow(int number, int die, int modifier)
 	{
-		if(number<=0) 
+		if(number<=0)
 			return modifier;
 		int total=0;
 		for(int i=0;i<number;i++)
@@ -167,19 +178,22 @@ public class Dice extends StdLibrary implements DiceLibrary
 		}
 		return total + modifier;
 	}
-	
+
+	@Override
 	public int pick(int[] set)
 	{
 		if(set.length==0) return -1;
 		return set[randomizer.nextInt(set.length)];
 	}
-	
-	public Object pick(List<? extends Object> set) 
+
+	@Override
+	public Object pick(List<? extends Object> set)
 	{
 		if(set.size()==0) return null;
 		return set.get(randomizer.nextInt(set.size()));
 	}
-	
+
+	@Override
 	public int getHPCode(String str)
 	{
 		int i=str.indexOf('d');
@@ -209,11 +223,12 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return getHPCode(roll,dice,plus);
 	}
 
+	@Override
 	public int getHPCode(int roll, int dice, int plus)
 	{
 		if(roll<=0) roll=1;
 		if(dice<=0) dice=0;
-		
+
 		if(roll>255)
 		{
 			int diff=roll-255;
@@ -236,6 +251,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return 	(plus+(dice<<15)+(roll<<(23)))*mul;
 	}
 
+	@Override
 	public int[] getHPBreakup(int level, int code)
 	{
 		int mul=1;
@@ -264,10 +280,11 @@ public class Dice extends StdLibrary implements DiceLibrary
 		}
 		return stuff;
 	}
-	
+
+	@Override
 	public int roll(int number, int die, int modifier)
 	{
-		if(die<=0) 
+		if(die<=0)
 			return modifier;
 		int total=0;
 		for(int i=0;i<number;i++)
@@ -275,6 +292,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return total + modifier;
 	}
 
+	@Override
 	public int rollPercentage()
 	{
 		return (Math.abs(randomizer.nextInt() % 100)) + 1;

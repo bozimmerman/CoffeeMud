@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,10 +37,10 @@ public class Read extends StdCommand
 	public Read(){}
 
 	private final String[] access={"READ"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Boolean.class}};
-	
+
 	public boolean read(MOB mob, Environmental thisThang, String theRest, boolean quiet)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
@@ -70,6 +70,7 @@ public class Read extends StdCommand
 		return false;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -88,7 +89,7 @@ public class Read extends StdCommand
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(), Look.noCoinFilter);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(), StdCommand.noCoinFilter);
 		if(thisThang==null)
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_ANY);
 		String theRest=null;
@@ -102,10 +103,11 @@ public class Read extends StdCommand
 		read(mob,thisThang, theRest, false);
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))

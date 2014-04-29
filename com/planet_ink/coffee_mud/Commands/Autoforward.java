@@ -39,8 +39,9 @@ public class Autoforward extends StdCommand
 	public Autoforward(){}
 
 	private final String[] access={"AUTOFORWARD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -61,9 +62,9 @@ public class Autoforward extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

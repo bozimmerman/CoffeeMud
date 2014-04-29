@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core.exceptions;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,11 @@ import java.util.*;
    limitations under the License.
 */
 
-public class CMException extends CoffeeMudException 
+public class CMException extends CoffeeMudException
 {
 	static final long serialVersionUID=0;
-	
-	public CMException(String s) 
+
+	public CMException(String s)
 	{
 		super(s);
 	}

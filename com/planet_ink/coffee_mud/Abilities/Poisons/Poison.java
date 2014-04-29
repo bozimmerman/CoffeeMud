@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Poison extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Poison"; }
-	public String name(){ return "Poison";}
-	public String displayText(){ return "(Poisoned)";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Poison"; }
+	@Override public String name(){ return "Poison";}
+	@Override public String displayText(){ return "(Poisoned)";}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"POISONSTING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_POISON;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_POISON;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 3;}
 	protected String POISON_DONE(){return "The poison runs its course.";}
@@ -70,7 +70,7 @@ public class Poison extends StdAbility implements HealthCondition
 		else
 			return "Suffering from "+name()+" poisoning.";
 	}
-	
+
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB poisoner=invoker;
@@ -101,6 +101,7 @@ public class Poison extends StdAbility implements HealthCondition
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -127,6 +128,7 @@ public class Poison extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if((affected==null)||(!ID().equals("Poison"))) return;
@@ -138,6 +140,7 @@ public class Poison extends StdAbility implements HealthCondition
 			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affected!=null)
@@ -156,6 +159,7 @@ public class Poison extends StdAbility implements HealthCondition
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return;
@@ -214,6 +218,7 @@ public class Poison extends StdAbility implements HealthCondition
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

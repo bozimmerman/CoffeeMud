@@ -21,9 +21,9 @@ limitations under the License.
 public class EmptyIterator<K> implements Iterator<K>
 {
 	private EmptyIterator(){}
-	public boolean hasNext(){ return false;}
-	public K next(){ throw new NoSuchElementException(); }
-	public void remove() { throw new NoSuchElementException();}
+	@Override public boolean hasNext(){ return false;}
+	@Override public K next(){ throw new NoSuchElementException(); }
+	@Override public void remove() { throw new NoSuchElementException();}
 	public static final Iterator INSTANCE=new EmptyIterator();
 	public static final Iterator<String> STRINSTANCE=new EmptyIterator<String>();
 }

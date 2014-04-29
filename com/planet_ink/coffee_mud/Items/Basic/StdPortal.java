@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdPortal extends StdContainer implements Rideable, Exit
 {
-	public String ID(){    return "StdPortal";}
+	@Override public String ID(){    return "StdPortal";}
 	public StdPortal()
 	{
 		super();
@@ -49,29 +49,30 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 
 
 	// common item/mob stuff
-	public boolean isMobileRideBasis(){return false;}
-	public int rideBasis(){return Rideable.RIDEABLE_ENTERIN;}
-	public void setRideBasis(int basis){}
-	public int riderCapacity(){ return 1;}
-	public void setRiderCapacity(int newCapacity){}
-	public int numRiders(){return 0;}
-	public Iterator<Rider> riders(){return EmptyIterator.INSTANCE;}
-	public Rider fetchRider(int which){return null;}
-	public void addRider(Rider mob){}
-	public void delRider(Rider mob){}
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
+	@Override public boolean isMobileRideBasis(){return false;}
+	@Override public int rideBasis(){return Rideable.RIDEABLE_ENTERIN;}
+	@Override public void setRideBasis(int basis){}
+	@Override public int riderCapacity(){ return 1;}
+	@Override public void setRiderCapacity(int newCapacity){}
+	@Override public int numRiders(){return 0;}
+	@Override public Iterator<Rider> riders(){return EmptyIterator.INSTANCE;}
+	@Override public Rider fetchRider(int which){return null;}
+	@Override public void addRider(Rider mob){}
+	@Override public void delRider(Rider mob){}
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
 
-	public Set<MOB> getRideBuddies(Set<MOB> list){return list;}
+	@Override public Set<MOB> getRideBuddies(Set<MOB> list){return list;}
 
-	public boolean mobileRideBasis(){return false;}
-	public String stateString(Rider R){    return "in";}
-	public String putString(Rider R){ return "in";}
-	public String mountString(int commandType, Rider R){ return "enter(s)";}
-	public String dismountString(Rider R){    return "emerge(s) from";}
-	public String stateStringSubject(Rider R){return "occupied by";    }
-	public short exitUsage(short change){ return 0;}
-	public String displayText(){return displayText;}
-	public boolean amRiding(Rider mob){ return false;}
+	@Override public boolean mobileRideBasis(){return false;}
+	@Override public String stateString(Rider R){    return "in";}
+	@Override public String putString(Rider R){ return "in";}
+	@Override public String mountString(int commandType, Rider R){ return "enter(s)";}
+	@Override public String dismountString(Rider R){	return "emerge(s) from";}
+	@Override public String stateStringSubject(Rider R){return "occupied by";    }
+	@Override public short exitUsage(short change){ return 0;}
+	@Override public String displayText(){return displayText;}
+	@Override public boolean amRiding(Rider mob){ return false;}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -127,7 +128,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		}
 		return true;
 	}
-	
+
 	protected Room getDestinationRoom()
 	{
 		Room R=null;
@@ -136,9 +137,10 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			R=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
-	
-	public Room lastRoomUsedFrom() { return getDestinationRoom(); }
 
+	@Override public Room lastRoomUsedFrom() { return getDestinationRoom(); }
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -184,10 +186,11 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			break;
 		}
 	}
-	
-	public boolean hasADoor(){return super.hasALid();}
-	public boolean defaultsLocked(){return super.hasALock();}
-	public boolean defaultsClosed(){return super.hasALid();}
+
+	@Override public boolean hasADoor(){return super.hasALid();}
+	@Override public boolean defaultsLocked(){return super.hasALock();}
+	@Override public boolean defaultsClosed(){return super.hasALid();}
+	@Override
 	public void setDoorsNLocks(boolean hasADoor,
 							   boolean isOpen,
 							   boolean defaultsClosed,
@@ -195,12 +198,13 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 							   boolean isLocked,
 							   boolean defaultsLocked)
 	{ super.setLidsNLocks(hasADoor,isOpen,hasALock,isLocked);}
-	 
-	public boolean isReadable(){return false;}
-	public void setReadable(boolean isTrue){}
+
+	@Override public boolean isReadable(){return false;}
+	@Override public void setReadable(boolean isTrue){}
 
 	private static final StringBuilder empty=new StringBuilder("");
-	
+
+	@Override
 	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
 		List<String> V=CMParms.parseSemicolons(readableText(),true);
@@ -229,14 +233,15 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				Say.append(closedText()+CMLib.flags().colorCodes(this,mob));
 		return Say;
 	}
-	
+
 	protected String doorName="";
-	public String doorName(){return doorName;}
+	@Override public String doorName(){return doorName;}
 	protected String closedText="";
-	public String closedText(){return closedText;}
-	
-	public String closeWord(){return "close";}
-	public String openWord(){return "open";}
+	@Override public String closedText(){return closedText;}
+
+	@Override public String closeWord(){return "close";}
+	@Override public String openWord(){return "open";}
+	@Override
 	public void setExitParams(String newDoorName,
 							  String newCloseWord,
 							  String newOpenWord,
@@ -246,9 +251,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		closedText=newClosedText;
 	}
 
-	
-	public int openDelayTicks(){return 0;}
-	public void setOpenDelayTicks(int numTicks){}
-	public String temporaryDoorLink(){return "";}
-	public void setTemporaryDoorLink(String link){}
+
+	@Override public int openDelayTicks(){return 0;}
+	@Override public void setOpenDelayTicks(int numTicks){}
+	@Override public String temporaryDoorLink(){return "";}
+	@Override public void setTemporaryDoorLink(String link){}
 }

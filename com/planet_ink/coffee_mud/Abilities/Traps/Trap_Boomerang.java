@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,14 @@ import java.util.*;
 */
 public class Trap_Boomerang extends StdTrap
 {
-	public String ID() { return "Trap_Boomerang"; }
-	public String name(){ return "boomerang";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 24;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_Boomerang"; }
+	@Override public String name(){ return "boomerang";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 24;}
+	@Override public String requiresToSet(){return "";}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		boolean wasSprung = sprung;
@@ -51,6 +52,7 @@ public class Trap_Boomerang extends StdTrap
 			msg.setOthersCode(CMMsg.NO_EFFECT);
 		}
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

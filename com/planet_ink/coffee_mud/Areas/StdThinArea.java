@@ -36,9 +36,10 @@ import java.util.*;
 */
 public class StdThinArea extends StdArea
 {
-	public String ID(){	return "StdThinArea";}
-	public long flags(){return Area.FLAG_THIN;}
+	@Override public String ID(){	return "StdThinArea";}
+	@Override public long flags(){return Area.FLAG_THIN;}
 
+	@Override
 	public void addProperRoom(Room R)
 	{
 		if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
@@ -52,16 +53,16 @@ public class StdThinArea extends StdArea
 			return null;
 		return R;
 	}
-	
-	@Override public int getPercentRoomsCached() 
-	{ 
+
+	@Override public int getPercentRoomsCached()
+	{
 		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
 		if(totalRooms==0.0)
 			return 100;
 		final double currentRooms=getCachedRoomnumbers().roomCountAllAreas();
 		return (int)Math.round((currentRooms/totalRooms)*100.0);
 	}
-	
+
 	@Override public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -76,7 +77,8 @@ public class StdThinArea extends StdArea
 			return emptyStats;
 		return super.getAreaIStats();
 	}
-	
+
+	@Override
 	public Room getRoom(String roomID)
 	{
 		if(!isRoom(roomID)) return null;
@@ -98,15 +100,17 @@ public class StdThinArea extends StdArea
 		}
 		return R;
 	}
-	public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
+	@Override public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
 	public boolean isRoom(String roomID){ return getProperRoomnumbers().contains(roomID); }
+	@Override
 	public boolean isRoom(Room R)
 	{
 		if(R==null) return false;
 		if(R.roomID().length()==0) return super.isRoom(R);
 		return isRoom(R.roomID());
 	}
-	public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
+	@Override public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
+	@Override
 	public Enumeration<Room> getMetroMap()
 	{
 		int minimum=getProperRoomnumbers().roomCountAllAreas()/10;

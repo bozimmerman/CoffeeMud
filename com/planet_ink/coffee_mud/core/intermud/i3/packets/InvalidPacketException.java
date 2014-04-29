@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * limitations under the License.
  *
  */
-public class InvalidPacketException extends I3Exception 
+public class InvalidPacketException extends I3Exception
 {
 	public static final long serialVersionUID=0;
 	public InvalidPacketException()

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Trap extends StdAbility implements Trap
 {
-	public String ID() { return "Trap_Trap"; }
-	public String name(){ return "a Trap!";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Trap_Trap"; }
+	@Override public String name(){ return "a Trap!";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 
 	protected static MOB benefactor=CMClass.getMOB("StdMOB");
 	protected boolean sprung=false;
@@ -54,19 +54,20 @@ public class Trap_Trap extends StdAbility implements Trap
 			benefactor=CMClass.getMOB("StdMOB");
 	}
 
-	public void activateBomb(){}
-	public boolean isABomb(){return false;}
-	public boolean sprung(){return sprung;}
-	public boolean disabled(){return sprung;}
-	public void disable(){ sprung=true;}
-	public void setReset(int Reset){reset=Reset;}
-	public int getReset(){return reset;}
+	@Override public void activateBomb(){}
+	@Override public boolean isABomb(){return false;}
+	@Override public boolean sprung(){return sprung;}
+	@Override public boolean disabled(){return sprung;}
+	@Override public void disable(){ sprung=true;}
+	@Override public void setReset(int Reset){reset=Reset;}
+	@Override public int getReset(){return reset;}
 
 	// as these are not standard traps, we return this!
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public String requiresToSet(){return "";}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -263,17 +264,20 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 	}
 
+	@Override
 	public MOB invoker()
 	{
 		if(invoker==null) return benefactor;
 		return super.invoker();
 	}
 
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_TRAP;
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		sprung=true;
@@ -309,6 +313,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			unInvoke();
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((trapType()==Trap.TRAP_PIT_BLADE)
@@ -338,6 +343,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

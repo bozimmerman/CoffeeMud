@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Archon_Injure extends ArchonSkill
 {
-	public String ID() { return "Archon_Injure"; }
-	public String name(){ return "Injure";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Archon_Injure"; }
+	@Override public String name(){ return "Injure";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"INJURE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String part=null;
@@ -93,7 +94,7 @@ public class Archon_Injure extends ArchonSkill
 				mob.tell(target,null,null,"<S-NAME> has no part called '"+part.toLowerCase()+"'.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

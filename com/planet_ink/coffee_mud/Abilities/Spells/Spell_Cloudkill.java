@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Cloudkill extends Spell
 {
-	public String ID() { return "Spell_Cloudkill"; }
-	public String name(){return "Cloudkill";}
-	public String displayText(){return "(Cloudkill)";}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 1;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_Cloudkill"; }
+	@Override public String name(){return "Cloudkill";}
+	@Override public String displayText(){return "(Cloudkill)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 1;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Spell_Cloudkill extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -77,6 +79,7 @@ public class Spell_Cloudkill extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -115,16 +118,16 @@ public class Spell_Cloudkill extends Spell
 					if(target.fetchEffect(ID())==null)
 					{
 						invoker=mob;
-	
+
 						int damage = target.curState().getHitPoints();
-	
+
 						int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 						if(midLevel<target.phyStats().level())
 							damage=(int)Math.round(CMath.mul(damage,0.10));
-	
+
 						if((msg.value()>0)||(msg2.value()>0))
 							damage = (int)Math.round(CMath.div(damage,2.0));
-	
+
 						if(damage<=0) damage=1;
 						if(target.location()==mob.location())
 						{

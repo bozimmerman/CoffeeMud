@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DetectHidden extends Spell
 {
-	public String ID() { return "Spell_DetectHidden"; }
-	public String name(){return "Detect Hidden";}
-	public String displayText(){return "(Detecting Hidden)";}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_DetectHidden"; }
+	@Override public String name(){return "Detect Hidden";}
+	@Override public String displayText(){return "(Detecting Hidden)";}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -56,18 +57,21 @@ public class Spell_DetectHidden extends Spell
 			mob.tell("Your vision is no longer as keen.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -89,6 +93,7 @@ public class Spell_DetectHidden extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

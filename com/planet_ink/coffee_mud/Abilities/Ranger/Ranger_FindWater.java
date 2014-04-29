@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,19 +38,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_FindWater extends StdAbility
 {
-	public String ID() { return "Ranger_FindWater"; }
-	public String name(){ return "Find Water";}
-	public String displayText(){ return "(finding water)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Ranger_FindWater"; }
+	@Override public String name(){ return "Find Water";}
+	@Override public String displayText(){ return "(finding water)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"FINDWATER"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -58,6 +59,7 @@ public class Ranger_FindWater extends StdAbility
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -112,6 +114,7 @@ public class Ranger_FindWater extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -166,6 +169,7 @@ public class Ranger_FindWater extends StdAbility
 		return msg.toString();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
@@ -247,6 +251,7 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);

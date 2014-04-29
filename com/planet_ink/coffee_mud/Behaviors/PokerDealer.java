@@ -19,31 +19,31 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
 	Copyright (c) 2005-2014 Bo Zimmerman
 	All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 	following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
-	disclaimer. 
+	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+	disclaimer.
 
-	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following 
-	disclaimer in the documentation and/or other materials provided with the distribution. 
+	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+	disclaimer in the documentation and/or other materials provided with the distribution.
 
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PokerDealer extends StdBehavior
 {
-	public String ID(){return "PokerDealer";}
+	@Override public String ID(){return "PokerDealer";}
 
 	// the poker dealer operates as a state machine
 	// each state tells this behavior what to expect, and
@@ -57,18 +57,18 @@ public class PokerDealer extends StdBehavior
 	private static final int STATE_FIRST_DRAW=5;
 	private static final int STATE_NEXT_DRAW=6;
 	private static final int STATE_DONE_DRAWING=7;
-	
+
 	// this mask is added to the gameState when the state
-	// changes, and the dealer needs to notify the 
+	// changes, and the dealer needs to notify the
 	// player or players of the change in state.
 	private static final int STATEMASK_NEED_ANOUNCEMENT=256;
-	
+
 	// for draw or stud games, this lets us know our
 	// progress in the game.  The deal is round 0, after
 	// a draw or the next card is round 1, and so forth.
 	private int roundOfPlay=0;
-	
-	
+
+
 	// the following constants are used to determine
 	// how long the dealer will wait before starting
 	// a game once antis are dropped, or how long
@@ -78,25 +78,25 @@ public class PokerDealer extends StdBehavior
 	private static final int TIME_SECONDSTOFIRSTBET=10;
 	private static final int TIME_SECONDSTOBET=30;
 	private static final int TIME_SECONDSTODRAW=30;
-	
+
 	// the count down to begin a game starts when the first
 	// player puts down an anti.  This holds the time, in
 	// miliseconds, when the event expires.  Players also
 	// have a time limit on betting and drawing.  This
 	// number is used for that purpose as well.
 	private long timer=0;
-	
+
 	// the current state of our game, whether we are
 	// doing any of the events described by the constants
 	// above
 	private int gameState=STATE_WAITING_FOR_ANTIS|STATEMASK_NEED_ANOUNCEMENT;
-	
+
 	// whose turn it is to play, or bet, or whatever
 	// -- depends on gameState also.
 	// NULL means noone has been determined.
 	// otherwise, its the mob object whose turn it is.
 	private MOB whoseTurn=null;
-	
+
 	// our deck, which will handle hands and other
 	// conveniences.
 	private DeckOfCards myDeck=null;
@@ -105,7 +105,7 @@ public class PokerDealer extends StdBehavior
 		if(myDeck==null) myDeck=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
 		return myDeck;
 	}
-	
+
 	// equates for the gameRules variable below
 	public static final int GAME_STRAIGHTPOKER=0;
 	public static final int GAME_5CARDSTUD=1;
@@ -118,14 +118,16 @@ public class PokerDealer extends StdBehavior
 		"Draw Poker",
 	};
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "poker dealing";
 	}
-	
+
 	// this method allows permanent parameters
 	// to be set on the behavior.  It will handle
 	// external specification of the game
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -139,24 +141,24 @@ public class PokerDealer extends StdBehavior
 		anti=CMParms.getParmDouble(newParms,"ANTI",1.0);
 		minPlayers=CMParms.getParmInt(newParms,"MINPLAYERS",2);
 	}
-	
+
 	// the game that is being played.  Depending on behavior parameters,
-	// this variable may change between games, or remain static. The 
+	// this variable may change between games, or remain static. The
 	// default value is 0 (straight poker).
 	private int gameRules=0;
-	
+
 	// the amount of currency required to "anti-up" and join the game.
 	private double anti=1.0;
-	
+
 	// the minumum number of players to start a game.  Set to 1 to allow
 	// the dealer to play.
 	private int minPlayers=2;
-	
+
 	// this hashtable will be keyed by the players, and will hold the
 	// amount of money the player has antied, or put down in bet, for
 	// the current hand.
 	private DVector pot=new DVector(2);
-	
+
 	// the actions a player may take, and the
 	// words they should say outloud to declare
 	// their intentions.
@@ -174,7 +176,7 @@ public class PokerDealer extends StdBehavior
 		{"RAIS",Integer.valueOf(PLAYER_BET_ACT_RAISE)},
 		{"RASE",Integer.valueOf(PLAYER_BET_ACT_RAISE)}
 	};
-	
+
 
 	// this is the list of possible hands
 	// 5ofakind is not REALLY possible, since
@@ -192,8 +194,8 @@ public class PokerDealer extends StdBehavior
 	private static final int HAND_1PAIR=2<<20;
 	private static final int HAND_HIGHCARD=1<<20;
 	private static final int HAND_MASK=15<<20;
-	
-	
+
+
 	// this method just returns the amount of
 	// anti as a displayable string.
 	private String antiAmount(Environmental host)
@@ -212,11 +214,11 @@ public class PokerDealer extends StdBehavior
 			return CMClass.getMsg((MOB)host,target,null,code,message);
 		return CMClass.getMsg(CMLib.map().deity(),target,null,code,message);
 	}
-	
-	
+
+
 	// this method will communicate something to a
 	// player or players.  If the host of this
-	// behavior is a room or item, it will emote.  If 
+	// behavior is a room or item, it will emote.  If
 	// the host of this behavior is a mob, it will speak.
 	private void communicate(Environmental host, MOB target, String message, CMMsg msg)
 	{
@@ -250,11 +252,11 @@ public class PokerDealer extends StdBehavior
 		}
 		return amountToCall;
 	}
-	
+
 	// checks whether the pot is currently in balance.
 	private boolean isThePotRight()
 	{
-		if(pot.size()<2) return true; 
+		if(pot.size()<2) return true;
 		double amountToCall=-1;
 		for(int p=0;p<pot.size();p++)
 		{
@@ -265,7 +267,7 @@ public class PokerDealer extends StdBehavior
 		}
 		return true;
 	}
-	
+
 	// returns 0 if the player called a bet
 	// return 1 if the player raised the bet
 	// returns -1 if the player is below the bet
@@ -291,18 +293,19 @@ public class PokerDealer extends StdBehavior
 			return 0;
 		return 1;
 	}
-	
+
 	// general system event previewer.
 	// when events in the same room as this behavior occur,
-	// the messages are sent here before they happen.  the 
-	// "host" will be the object that is hosting this behavior.  
+	// the messages are sent here before they happen.  the
+	// "host" will be the object that is hosting this behavior.
 	// The "msg" will be the details of the event which has occurred.
 	// This method will return true if its ok to proceed, and false otherwise.
+	@Override
 	public boolean  okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
 			return false;
-		
+
 		// if someone tries to pick money up off the ground here
 		// they need to be stopped COLD.
 		if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
@@ -314,7 +317,7 @@ public class PokerDealer extends StdBehavior
 			msg.source().tell("No touching the pot!");
 			return false;
 		}
-		
+
 		// if someone drops some money on the ground, it
 		// may be a bet, or an anti, or an invalid action
 		// we should check for that first.
@@ -327,7 +330,7 @@ public class PokerDealer extends StdBehavior
 			String currency=CMLib.beanCounter().getCurrency(host);
 			MOB playerDroppingMoney=msg.source();
 			Coins theMoneyDropped=(Coins)msg.target();
-			
+
 			// if they put down foreign currency, tell them its
 			// wrong, then abort their attempt to drop it into
 			// the pot.
@@ -336,7 +339,7 @@ public class PokerDealer extends StdBehavior
 				playerDroppingMoney.tell("That is not the proper currency.  This table is only dealing in "+CMLib.beanCounter().getDenominationName(currency)+".");
 				return false;
 			}
-			
+
 			// game hasn't started yet, so only antis allowed
 			// in this case.
 			if((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS)
@@ -351,7 +354,7 @@ public class PokerDealer extends StdBehavior
 						msg.source().tell("Thats not enough.  The anti is "+antiAmount(host)+".");
 						return false;
 					}
-					
+
 					// if they give too much, queue up a change making message.
 					if(theMoneyDropped.getTotalValue()>anti)
 					{
@@ -409,7 +412,7 @@ public class PokerDealer extends StdBehavior
 					double amountInPot=(inPot==null)?0.0:inPot.doubleValue();
 					double amountNeededToCall=amountToCall-amountInPot;
 					String instructions="  You may now raise by dropping more money, or end your betting round by saying 'call'.";
-					
+
 					// if they havn't given enough to call, allow it, but let them know.
 					if(theMoneyDropped.getTotalValue()<amountNeededToCall)
 						msg.source().tell("That won't be enough.  You'll still need to drop "+CMLib.beanCounter().abbreviatedPrice(currency,amountNeededToCall-theMoneyDropped.getTotalValue())+" more to call.");
@@ -454,7 +457,7 @@ public class PokerDealer extends StdBehavior
 								return false;
 							}
 						}
-					
+
 					// if they are raising, we just change the drop message
 					// to our fancy gamblers prose.
 					String newMessage="<S-NAME> raise(s) <T-NAMESELF>.";
@@ -467,8 +470,8 @@ public class PokerDealer extends StdBehavior
 	}
 
 
-	// this method will handle the betting and drawing rounds 
-	// by changing whose turn it is and, if necessary, 
+	// this method will handle the betting and drawing rounds
+	// by changing whose turn it is and, if necessary,
 	// changing the game state.
 	private void nextPlayerNextState(Environmental host)
 	{
@@ -488,7 +491,7 @@ public class PokerDealer extends StdBehavior
 				break;
 			}
 		whoseTurn=nextPlayer;
-		
+
 		// if we still have more players to consider...
 		switch(gameState)
 		{
@@ -522,13 +525,14 @@ public class PokerDealer extends StdBehavior
 			break;
 		}
 	}
-	
-	
+
+
 	// general system event handler.
 	// when events in the same room as this behavior occur,
 	// the messages are sent here.  the "host" will be the
 	// object that is hosting this behavior.  The "msg" will
 	// be the details of the event which has occurred.
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		// if someone enters the same room where this
@@ -540,7 +544,7 @@ public class PokerDealer extends StdBehavior
 		&&(msg.target()==CMLib.map().roomLocation(host))
 		&&((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS))
 			communicate(host,msg.source(),"Greetings "+msg.source().name()+"! The game we are playing here is "+GAME_DESCS[gameRules]+".  The anti is "+antiAmount(host)+".  Just drop the proper money here to play.",msg);
-		
+
 		// if someone drops some money on the ground, we
 		// know that its a legal act.  we just need to
 		// process it.
@@ -552,14 +556,14 @@ public class PokerDealer extends StdBehavior
 			double value=((Coins)msg.target()).getTotalValue();
 			MOB playerDroppingMoney=msg.source();
 			Double inPot=pot.contains(playerDroppingMoney)?(Double)pot.elementAt(pot.indexOf(playerDroppingMoney),2):null;
-			
+
 			// if they havn't antied yet
 			if(inPot!=null)
 				pot.setElementAt(pot.indexOf(msg.source()),2,Double.valueOf(value+inPot.doubleValue()));
 			else
 				pot.addElement(playerDroppingMoney,Double.valueOf(value));
 		}
-		
+
 		// if an archon/sysop speaks, they might be requesting
 		// an internal test, or a change of game type.
 		// We should check for that.
@@ -581,7 +585,7 @@ public class PokerDealer extends StdBehavior
 					   gameRules=i;
 					   return;
 				   }
-				
+
 				// now check for internal test request
 				// this will generate lots of hands, and output
 				// their analysis to the log
@@ -622,7 +626,7 @@ public class PokerDealer extends StdBehavior
 				}
 			}
 		}
-		
+
 		// if a player speaks, they might be doing as the dealer
 		// commands -- saying pass, call, fold, or raise
 		// when a player speaks, we listen very carefully
@@ -652,7 +656,7 @@ public class PokerDealer extends StdBehavior
 						double amountInPot=(inPot==null)?0.0:inPot.doubleValue();
 						double amountNeededToCall=amountToCall-amountInPot;
 						String currency=CMLib.beanCounter().getCurrency(host);
-						
+
 						// now we check their words against the pot
 						// and whatever they say, we move on
 						switch(((Integer)PLAYER_BET_ACTIONS[i][1]).intValue())
@@ -714,7 +718,7 @@ public class PokerDealer extends StdBehavior
 					}
 			}
 		}
-		
+
 		// if a player speaks, they might be doing as the dealer
 		// commands -- saying pass, stand, or which cards to draw.
 		// when a player speaks, we listen very carefully
@@ -751,7 +755,7 @@ public class PokerDealer extends StdBehavior
 						||(CMath.s_int((String)parsed.elementAt(i))<=0)
 						||(CMath.s_int((String)parsed.elementAt(i))>hand.numberOfCards()))
 						{ numbersOK=false; break;}
-					
+
 					// if it checks out, we remove the specified cards,
 					// and deal new ones.
 					if((numbersOK)&&(hand!=null))
@@ -788,7 +792,7 @@ public class PokerDealer extends StdBehavior
 		}
 	}
 
-	
+
 	// The heart of poker.
 	// it determines the best hand held.
 	// it returns a numeric score for the hand
@@ -798,7 +802,7 @@ public class PokerDealer extends StdBehavior
 	{
 		List<Item> cards=hand.getContents();
 		if(cards.size()==0) return -1;
-		
+
 		// first check for flushes
 		int flushSuit=-1;
 		for(int s=0;s<PlayingCard.suits.length;s++)
@@ -817,7 +821,7 @@ public class PokerDealer extends StdBehavior
 				break;
 			}
 		}
-		
+
 		// then for straights with ace high
 		int highStraightCard=-1;
 		if(cards.size()>=5)
@@ -853,7 +857,7 @@ public class PokerDealer extends StdBehavior
 				cards=hand.getContents();
 			}
 		}
-		
+
 		// now build a list of matches (pairs, etc)
 		// put them in a set keyed by the face value of the
 		// card
@@ -870,7 +874,7 @@ public class PokerDealer extends StdBehavior
 					matches.addElement(value,Integer.valueOf(2));
 			}
 		}
-		
+
 		// then sort our matches so the MOST matches are highest
 		DVector sortedMatches=new DVector(2);
 		while(matches.size()>0)
@@ -888,7 +892,7 @@ public class PokerDealer extends StdBehavior
 		if((matches.size()>0)
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()==5))
 			return HAND_5OFAKIND+((Integer)matches.elementAt(matches.size()-1,1)).intValue();
-		
+
 		// check for straight flush
 		if((highStraightCard==14)
 		&&(flushSuit>0)
@@ -908,7 +912,7 @@ public class PokerDealer extends StdBehavior
 		&&(hand.containsCard(flushSuit|highStraightCard-3))
 		&&(hand.containsCard(flushSuit|highStraightCard-4)))
 			return HAND_STRAIGHTFLUSH+(highStraightCard|flushSuit);
-		
+
 		// check for 4 of a kind
 		if((matches.size()>0)
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()==4))
@@ -918,7 +922,7 @@ public class PokerDealer extends StdBehavior
 					return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15)+((PlayingCard)cards.get(c)).getBitEncodedValue();
 			return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15);
 		}
-		
+
 		// check for a full house
 		if((matches.size()>1)
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()>2)
@@ -940,11 +944,11 @@ public class PokerDealer extends StdBehavior
 			}
 			return HAND_FLUSH+(flushSuit<<13)+addValue;
 		}
-		
+
 		// check for a straight
 		if(highStraightCard>=0)
 			return HAND_STRAIGHT+highStraightCard;
-		
+
 		// check for 3 of a kind
 		if((matches.size()>0)
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()==3))
@@ -960,7 +964,7 @@ public class PokerDealer extends StdBehavior
 				}
 			return HAND_3OFAKIND+(value<<15)+addValue;
 		}
-		
+
 		// check for 2 pair
 		if((matches.size()>1)
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()>1)
@@ -995,7 +999,7 @@ public class PokerDealer extends StdBehavior
 				}
 			return HAND_1PAIR+(value<<15)+addValue;
 		}
-		
+
 		// no good hands, so build a high-card score
 		int addValue=0;
 		int addTimes=0;
@@ -1006,13 +1010,13 @@ public class PokerDealer extends StdBehavior
 		}
 		return HAND_HIGHCARD+addValue;
 	}
-	
-	
+
+
 	// this method calls the determineHand
-	// method repeatedly for all players, 
+	// method repeatedly for all players,
 	// determining the score for their hands.
-	// It then passes back a 2 dimensional 
-	// Vector with the player mob object and 
+	// It then passes back a 2 dimensional
+	// Vector with the player mob object and
 	// the score.  It is sorted by score.
 	// since stud starts betting with high SHOWN cards,
 	// we need a way to specify that only the face up
@@ -1025,7 +1029,7 @@ public class PokerDealer extends StdBehavior
 			MOB mob=(MOB)pot.elementAt(p,1);
 			HandOfCards hand=theDeck().getPlayerHand(mob);
 			if(hand==null) continue;
-			
+
 			// if only the face cards count, we will pull them out,
 			// put them in their own hand, generate a score for them
 			// and use their score
@@ -1048,7 +1052,7 @@ public class PokerDealer extends StdBehavior
 			if(score<0) continue;
 			unsortedScores.addElement(mob,Integer.valueOf(score));
 		}
-		
+
 		// now we have the scores, so sort them
 		DVector sortedScores=new DVector(2);
 		while(unsortedScores.size()>0)
@@ -1063,8 +1067,8 @@ public class PokerDealer extends StdBehavior
 		return sortedScores;
 	}
 
-	
-	// rips the score integer apart to 
+
+	// rips the score integer apart to
 	// determine all the goodness about
 	// the given hand.
 	private String describeHand(int score)
@@ -1213,7 +1217,7 @@ public class PokerDealer extends StdBehavior
 		gameState=STATE_WAITING_FOR_ANTIS|STATEMASK_NEED_ANOUNCEMENT;
 		roundOfPlay=0;
 	}
-	
+
 	// announces the winner of the game, if any
 	// it forces the winner to get all the pot winnings.
 	// it also announces what everyone had in their hands.
@@ -1227,7 +1231,7 @@ public class PokerDealer extends StdBehavior
 			for(int d=scores.size()-1;d>=0;d--)
 				if(scores.elementAt(d,1)!=winner)
 					communicate(host,null,((MOB)scores.elementAt(d,1)).name()+" had "+describeHand(((Integer)scores.elementAt(d,2)).intValue())+".",null);
-			
+
 			// if the winner is here, give them all the gold on
 			// the ground
 			if((CMLib.map().roomLocation(host)==winner.location())
@@ -1264,8 +1268,8 @@ public class PokerDealer extends StdBehavior
 
 	// deal cards to the given player
 	// this method deals the number
-	// of face down and/or face-up cards 
-	// specified.  It will give an appropriate 
+	// of face down and/or face-up cards
+	// specified.  It will give an appropriate
 	// Message to the room.
 	private void dealToPlayer(Environmental host,
 							  MOB player,
@@ -1305,7 +1309,7 @@ public class PokerDealer extends StdBehavior
 					actuallyDealtUp+=hand.numberOfCards()-handSize;
 				}
 			}
-			
+
 			// now, depending on what was done, give an appropriate
 			// dealing message to the room so everyone knows what
 			// happened.
@@ -1345,7 +1349,7 @@ public class PokerDealer extends StdBehavior
 		if(hand!=null)
 			hand.sortByValueAceHigh();
 	}
-	
+
 	// deal cards to all players
 	// this method deals the number
 	// of cards specified.  It will
@@ -1361,8 +1365,8 @@ public class PokerDealer extends StdBehavior
 			dealToPlayer(host,player,numberOfCards,numberFaceUp);
 		}
 	}
-	
-	
+
+
 	// this method is called by the service engine
 	// every 3-4 seconds.  It is used to initiate
 	// timing events, and to initiate non-reactionary
@@ -1371,14 +1375,15 @@ public class PokerDealer extends StdBehavior
 	// "ticking" variable refers to the object hosting
 	// this behavior, and tickID is seldom important
 	// but refers to the reason for the timed event.
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		Environmental host=(Environmental)ticking;
 		Room R=CMLib.map().roomLocation(host);
-		
+
 		// first see if we lost any players
 		// due to leaving the room or the game.
 		for(int p=pot.size()-1;p>=0;p--)
@@ -1391,7 +1396,7 @@ public class PokerDealer extends StdBehavior
 				pot.removeElement(mob);
 			}
 		}
-		
+
 		// now, if we are in a waiting state,
 		// but the number of players has dropped below
 		// minimum, we end the game
@@ -1420,8 +1425,8 @@ public class PokerDealer extends StdBehavior
 			break;
 		}
 		}
-		
-		// next lets check for announcements 
+
+		// next lets check for announcements
 		// that are flagged to occur.  This often
 		// causes a timer to be set giving the player
 		// a short time to respond.
@@ -1469,7 +1474,7 @@ public class PokerDealer extends StdBehavior
 				// what round of play it is.  Sometimes
 				// the game is over after betting, sometimes
 				// more cards are dealt, and sometimes cards
-				// are discarded and drawn.  
+				// are discarded and drawn.
 				timer=0;
 				whoseTurn=null;
 				switch(gameRules)
@@ -1607,18 +1612,18 @@ public class PokerDealer extends StdBehavior
 				else
 				{
 					communicate(host,null,"OK! Antis are all in! Lets play some "+GAME_DESCS[gameRules]+"!",null);
-					
+
 					// lets shuffle a few times first.
 					theDeck().shuffleDeck();
 					theDeck().shuffleDeck();
-					
+
 					// now we create all the hands
 					for(int p=0;p<pot.size();p++)
 					{
 						MOB mob=(MOB)pot.elementAt(p,1);
 						theDeck().addPlayerHand(mob,null);
 					}
-					
+
 					// and then we deal.
 					switch(gameRules)
 					{

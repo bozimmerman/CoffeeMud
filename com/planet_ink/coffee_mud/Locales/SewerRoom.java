@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class SewerRoom extends StdRoom
 {
-	public String ID(){return "SewerRoom";}
+	@Override public String ID(){return "SewerRoom";}
 	public SewerRoom()
 	{
 		super();
@@ -45,5 +45,5 @@ public class SewerRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 }

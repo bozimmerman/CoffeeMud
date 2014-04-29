@@ -35,30 +35,32 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Bind extends ThiefSkill
 {
-	public String ID() { return "Thief_Bind"; }
-	public String name(){ return "Bind";}
-	public String displayText(){ return "(Bound by "+ropeName+")";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	@Override public String ID() { return "Thief_Bind"; }
+	@Override public String name(){ return "Bind";}
+	@Override public String displayText(){ return "(Bound by "+ropeName+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	private static final String[] triggerStrings = {"BIND"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected int maxRange=0;
-	public int maxRange(){return maxRange;}
-	public int minRange(){return 0;}
-	public long flags(){return Ability.FLAG_BINDING;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public boolean bubbleAffect(){return affected instanceof Room;}
+	@Override public int maxRange(){return maxRange;}
+	@Override public int minRange(){return 0;}
+	@Override public long flags(){return Ability.FLAG_BINDING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public boolean bubbleAffect(){return affected instanceof Room;}
 
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// when this spell is on a MOBs Affected list,
@@ -96,6 +98,7 @@ public class Thief_Bind extends ThiefSkill
 	}
 
 
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		if(!(P instanceof Item))
@@ -104,6 +107,7 @@ public class Thief_Bind extends ThiefSkill
 			ropeName=P.name();
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -122,7 +126,8 @@ public class Thief_Bind extends ThiefSkill
 			CMLib.commands().postStand(mob,true);
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -137,6 +142,7 @@ public class Thief_Bind extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,23 @@ public interface Electronics extends Item, Technical
 {
 	public long powerCapacity();
 	public void setPowerCapacity(long capacity);
-	
+
 	public long powerRemaining();
 	public void setPowerRemaining(long remaining);
 
 	public int powerNeeds();
-	
+
 	public boolean activated();
 	public void activate(boolean truefalse);
-	
+
 	public String getManufacturerName();
 	public void setManufacturerName(String name);
 	public Manufacturer getFinalManufacturer();
-	
+
 	public interface PowerSource extends Electronics
 	{
 	}
-	
+
 	public interface FuelConsumer extends Electronics
 	{
 		public int[] getConsumedFuelTypes();
@@ -63,16 +63,16 @@ public interface Electronics extends Item, Technical
 		public boolean consumeFuel(int amount);
 		public int getTotalFuelCapacity();
 	}
-	
+
 	public interface PowerGenerator extends PowerSource, FuelConsumer
 	{
 		public int getGeneratedAmountPerTick();
 		public void setGenerationAmountPerTick(int amt);
 	}
-	
+
 	public interface ElecPanel extends Electronics, Container
 	{
-		public static final TechType[] PANELTYPES={ 
+		public static final TechType[] PANELTYPES={
 			TechType.ANY,TechType.SHIP_WEAPON,TechType.SHIP_SHIELD,TechType.SHIP_ENGINE,TechType.SHIP_SENSOR,
 			TechType.SHIP_POWER,TechType.SHIP_COMPUTER,TechType.SHIP_SOFTWARE,
 			TechType.SHIP_ENVIRO_CONTROL,TechType.SHIP_GENERATOR,TechType.SHIP_DAMPENER,
@@ -81,7 +81,7 @@ public interface Electronics extends Item, Technical
 		public TechType panelType();
 		public void setPanelType(TechType type);
 	}
-	
+
 	public interface Computer extends Electronics.ElecPanel
 	{
 		public List<Software> getSoftware();
@@ -91,5 +91,5 @@ public interface Electronics extends Item, Technical
 		public void setActiveMenu(String internalName);
 		public String getActiveMenu();
 	}
-	
+
 }

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,10 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_MarkDisguise extends Skill_Disguise
 {
-	public String ID() { return "Skill_MarkDisguise"; }
-	public String name(){ return "Mark Disguise";}
+	@Override public String ID() { return "Skill_MarkDisguise"; }
+	@Override public String name(){ return "Mark Disguise";}
 	private static final String[] triggerStrings = {"MARKDISGUISE"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public MOB mark=null;
 
 	public MOB getMark(MOB mob)
@@ -57,6 +57,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		return -1;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");

@@ -37,9 +37,10 @@ import java.util.concurrent.*;
 */
 public class CoffeeTime extends StdLibrary implements TimeManager
 {
-	public String ID(){return "CoffeeTime";}
+	@Override public String ID(){return "CoffeeTime";}
 	protected TimeClock globalClock=null;
-	
+
+	@Override
 	public String month2MM(String monthName)
 	{
 		for(int m=0;m<MONTHS.length;m++)
@@ -51,6 +52,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return "01";
 	}
 
+	@Override
 	public String getMonthName(int number, boolean giveShort)
 	{
 		if(number<=0)
@@ -65,6 +67,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return SHORTMONTHS[number-1];
 	}
 
+	@Override
 	public long string2Millis(String dateTimeStr)
 	{
 		Calendar C=string2Date(dateTimeStr);
@@ -72,6 +75,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return 0;
 	}
 
+	@Override
 	public Calendar string2Date(String dateTimeStr)
 	{
 		Calendar D=Calendar.getInstance();
@@ -159,6 +163,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return D;
 	}
 
+	@Override
 	public boolean isValidDateString(String dateTimeStr)
 	{
 		if(dateTimeStr==null)
@@ -198,7 +203,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		}
 		return true;
 	}
-	
+
 	private void confirmDateAMPM(String TheDate, Calendar D)
 	{
 		try
@@ -227,6 +232,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{ }
 	}
 
+	@Override
 	public String convertHour(String hours24)
 	{
 		int IntHour =  CMath.s_int(hours24);
@@ -242,6 +248,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return hours24;
 	}
 
+	@Override
 	public String getAMPM(String TheHour)
 	{
 		String Stamp;
@@ -254,6 +261,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return Stamp;
 	}
 
+	@Override
 	public String getTheIntZoneID(int theRawOffset)
 	{
 		if (theRawOffset == 0)  		// GMT 0
@@ -317,6 +325,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 	}
 
+	@Override
 	public String getTheTimeZone(String theID)
 	{
 		if (theID.equalsIgnoreCase("CET"))
@@ -335,18 +344,21 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return theID;
 	}
 
+	@Override
 	public String date2MonthString(long time, boolean shortName)
 	{
 		Calendar C=makeCalendar(time);
 		return getMonthName(C.get(Calendar.MONTH)+1,shortName);
 	}
 
+	@Override
 	public String date2MonthDateString(long time, boolean shortName)
 	{
 		Calendar C=makeCalendar(time);
 		return getMonthName(C.get(Calendar.MONTH)+1,shortName) + " " + C.get(Calendar.DAY_OF_MONTH);
 	}
 
+	@Override
 	public String date2DayOfMonthString(long time)
 	{
 		Calendar C=makeCalendar(time);
@@ -356,6 +368,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return Day;
 	}
 
+	@Override
 	public String twoDigits(long num)
 	{
 	   String s=Long.toString(num);
@@ -363,6 +376,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	   return s;
 	}
 
+	@Override
 	public String date2YYYYString(long time)
 	{
 		Calendar C=makeCalendar(time);
@@ -372,12 +386,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return Year;
 	}
 
+	@Override
 	public String date2HRString(long time)
 	{
 		return date2HRString(makeCalendar(time));
 	}
 
 
+	@Override
 	public String date2MINString(long time)
 	{
 		return date2MINString(makeCalendar(time));
@@ -415,7 +431,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			StrMin = "0" + StrMin;
 		return StrMin;
 	}
-	
+
+	@Override
 	public String date2ZoneString(long time)
 	{
 		Calendar C=makeCalendar(time);
@@ -427,6 +444,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return  theID;
 	}
 
+	@Override
 	public String date2AMPMString(long time)
 	{
 		return date2AMPMString(makeCalendar(time));
@@ -440,12 +458,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return "AM";
 	}
 
+	@Override
 	public String date2APTimeString(long time)
 	{
 		Calendar C=makeCalendar(time);
 		return date2HRString(C)+":"+date2MINString(C)+" "+date2AMPMString(C);
 	}
-	
+
+	@Override
 	public String date2BriefString(long time)
 	{
 		Calendar C=makeCalendar(time);
@@ -458,13 +478,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		str.append(date2HRString(C)).append(":").append(date2MINString(C)).append(date2AMPMString(C).toLowerCase());
 		return str.toString();
 	}
-	
+
 	private Calendar makeCalendar(long time)
 	{
 		Calendar C=Calendar.getInstance();
 		C.setTimeInMillis(time);
 		return C;
 	}
+	@Override
 	public String date2String(Calendar C)
 	{
 		String MINUTE=Integer.toString(C.get(Calendar.MINUTE)).trim();
@@ -488,13 +509,15 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		}
 		return (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
 	}
-	
+
+	@Override
 	public String date2String(long time)
 	{
 		Calendar C=makeCalendar(time);
 		return date2String(C);
 	}
 
+	@Override
 	public String date2EllapsedTime(long time, TimeUnit minUnit, boolean shortest)
 	{
 		StringBuilder str=new StringBuilder("");
@@ -553,7 +576,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		if(str.length()>0) str.append(shortest?" ":", ");
 		return str.append(time+(shortest?"ms":" milliseconds")).toString().trim();
 	}
-	
+
+	@Override
 	public String date2SmartEllapsedTime(long time, boolean shortest)
 	{
 		if(time > TimeManager.MILI_DAY*2)
@@ -566,7 +590,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return date2EllapsedTime(time,TimeUnit.SECONDS,shortest);
 		return date2EllapsedTime(time,null,shortest);
 	}
-	
+
+	@Override
 	public String date2SecondsString(long time)
 	{
 		Calendar C=makeCalendar(time);
@@ -575,6 +600,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return (StrDate.substring(0,StrDate.length()-3)+":"+C.get(Calendar.SECOND)+" "+StrDate.substring(StrDate.length()-2));
 	}
 
+	@Override
 	public String date2DateString(long time)
 	{
 		String T=date2String(time);
@@ -582,6 +608,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return T.trim();
 	}
 
+	@Override
 	public String date2Date2String(long time)
 	{
 		String T=date2DateString(time);
@@ -590,6 +617,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return T.trim();
 	}
 
+	@Override
 	public String smtpDateFormat(long time)
 	{
 		Calendar senddate=makeCalendar(time);
@@ -635,7 +663,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 		return formatted;
 	}
-	
+
+	@Override
 	public TimeClock globalClock()
 	{
 		if(globalClock==null)
@@ -645,8 +674,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		}
 		return globalClock;
 	}
-	
-	private double getTickExpressionMultiPlier(String lastWord) 
+
+	private double getTickExpressionMultiPlier(String lastWord)
 	{
 		lastWord=lastWord.toUpperCase().trim();
 		if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
@@ -693,7 +722,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return 0.0;
 	}
 
-	public boolean isTickExpression(String val) 
+	@Override
+	public boolean isTickExpression(String val)
 	{
 		val=val.trim();
 		if(CMath.isMathExpression(val)) return true;
@@ -704,8 +734,9 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return CMath.isMathExpression(val.substring(0,x).trim());
 	}
 
-	
-	public int parseTickExpression(String val) 
+
+	@Override
+	public int parseTickExpression(String val)
 	{
 		val=val.trim();
 		if(CMath.isMathExpression(val))
@@ -716,7 +747,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		if(multiPlier==0.0) return CMath.s_parseIntExpression(val);
 		return (int)Math.round(CMath.mul(multiPlier,CMath.s_parseIntExpression(val.substring(0,x).trim())));
 	}
-	
+
+	@Override
 	public TimeClock localClock(Physical P)
 	{
 		if(P instanceof Area)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,17 @@ import java.util.*;
 */
 public class Dance_RagsSharqi extends Dance
 {
-	public String ID() { return "Dance_RagsSharqi"; }
-	public String name(){ return "Rags Sharqi";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_RagsSharqi"; }
+	@Override public String name(){ return "Rags Sharqi";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		affectedState.setHitPoints(affectedState.getHitPoints()+((adjustedLevel(invoker(),0)+10)*5));
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);

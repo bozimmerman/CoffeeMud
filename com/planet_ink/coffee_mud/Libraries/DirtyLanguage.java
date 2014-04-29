@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
 */
 public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 {
-	public String ID(){return "DirtyLanguage";}
-	
+	@Override public String ID(){return "DirtyLanguage";}
+
 	protected String language="en";
 	protected String country="TX";
 	protected Locale currentLocale=null;
@@ -50,7 +50,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected static final int CMD_REPLACEALL=6;
 	protected Hashtable<Object,Integer> HASHED_CMDS=CMStrings.makeNumericHash(
 			new String[]{"REPLACE","REPLACEWHOLE","IGNORE","IGNOREWHOLE","AUTOIGNORE","DEFINE","REPLACEALL"});
-	
+
+	@Override
 	public void setLocale(String lang, String state)
 	{
 		if((lang!=null)&&(state!=null)&&(lang.length()>0)&&(state.length()>0))
@@ -70,7 +71,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			str=CMStrings.replaceAll(str,(String)global.elementAt(v,1),(String)global.elementAt(v,2));
 		return str;
 	}
-	
+
 	protected String filterString(String str)
 	{
 		StringBuffer buf=new StringBuffer(str);
@@ -103,7 +104,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 		return buf.toString();
 	}
-	
+
 	protected String unFilterString(String str)
 	{
 		StringBuffer buf=new StringBuffer(str);
@@ -132,7 +133,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 		return buf.toString();
 	}
-	
+
 	protected Hashtable<String,DVector> loadFileSections(String filename)
 	{
 		Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
@@ -321,12 +322,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		return "TRANSLATION_"+language.toUpperCase()+"_"+country.toUpperCase();
 	}
-	
+
 	protected final String getLanguageParserKey()
 	{
 		return "PARSER_"+language.toUpperCase()+"_"+country.toUpperCase();
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public DVector getLanguageParser(String parser)
 	{
@@ -341,7 +343,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		}
 		return parserSections.get(parser);
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public DVector getLanguageTranslator(String parser)
 	{
@@ -356,8 +359,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		}
 		return translationSections.get(parser);
 	}
-	
-	
+
+
+	@Override
 	public void clear()
 	{
 		final String translatorKey=getLanguageTranslatorKey();
@@ -365,7 +369,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		Resources.removeResource(translatorKey);
 		Resources.removeResource(parserKey);
 	}
-	
+
 	public boolean insertExpansion(List<String> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
 	{
 		List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
@@ -384,7 +388,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		}
 		return nothingDone;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<List<String>> preCommandParser(List<String> CMDS)
 	{
@@ -505,7 +510,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			FINAL_CMDS.add(CMParms.parseTabs(MORE_CMDS.get(m),false));
 		return FINAL_CMDS;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
 	{
@@ -605,7 +610,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			return str;
 		return str.length()>=oldStr.length()?null:str;
 	}
-	
+
 	public void addAutoIgnoredString(String str, DVector fileData, DVector fileIndexes, String sectionName)
 	{
 		if((fileData==null)||(str==null)||(fileData.size()<1)) return;
@@ -630,37 +635,44 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if((F.exists())&&(F.canWrite()))
 			F.saveText(buf);
 	}
-	
+
+	@Override
 	public String preItemParser(String item)
 	{
 		return basicParser(item,"ITEM-PRE-PROCESSOR",true,true);
 	}
+	@Override
 	public String failedItemParser(String item)
 	{
 		return basicParser(item,"ITEM-FAIL-PROCESSOR",true,true);
 	}
+	@Override
 	public String filterTranslation(String item)
 	{
 		return basicParser(item,"FILTER-TRANSLATION",false,false);
 	}
+	@Override
 	public String sessionTranslation(String item)
 	{
 		return basicParser(item,"SESSION-TRANSLATION",false,false);
 	}
+	@Override
 	public String finalTranslation(String item)
 	{
 		return basicParser(item,"FINAL-TRANSLATION",false,false);
 	}
-	
+
+	@Override
 	public String fullSessionTranslation(final String str, final String ... xs)
 	{
 		final String sessionStr=sessionTranslation(str);
-		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs); 
+		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
-	
+
+	@Override
 	public String _(final String str, final String ... xs)
 	{
 		final String sessionStr=sessionTranslation(str);
-		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs); 
+		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 }

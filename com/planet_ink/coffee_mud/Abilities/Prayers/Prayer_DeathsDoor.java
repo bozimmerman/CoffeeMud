@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DeathsDoor extends Prayer
 {
-	public String ID() { return "Prayer_DeathsDoor"; }
-	public String name(){ return "Deaths Door";}
-	public String displayText(){ return "(Deaths Door)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prayer_DeathsDoor"; }
+	@Override public String name(){ return "Deaths Door";}
+	@Override public String displayText(){ return "(Deaths Door)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -75,6 +76,7 @@ public class Prayer_DeathsDoor extends Prayer
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -88,6 +90,7 @@ public class Prayer_DeathsDoor extends Prayer
 			mob.tell("Your deaths door protection fades.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

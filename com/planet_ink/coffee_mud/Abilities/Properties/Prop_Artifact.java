@@ -38,9 +38,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_Artifact extends Property
 {
-	public String ID() { return "Prop_Artifact"; }
-	public String name(){ return "Artifact";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_Artifact"; }
+	@Override public String name(){ return "Artifact";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected static final Hashtable registeredArtifacts=new Hashtable();
 	private String itemID=null;
 	private boolean autodrop=true;
@@ -66,7 +66,8 @@ public class Prop_Artifact extends Property
 		}
 		return itemID;
 	}
-	
+
+	@Override
 	public String text()
 	{
 		if((miscText==null)||(miscText.length()==0))
@@ -74,6 +75,7 @@ public class Prop_Artifact extends Property
 		return miscText;
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -103,7 +105,7 @@ public class Prop_Artifact extends Property
 	}
 
 	/**
-	 * the purpose of this is to determine if the 
+	 * the purpose of this is to determine if the
 	 * source of the call to this method includes the
 	 * Destroy command.  If so, we have a winner.
 	 */
@@ -121,13 +123,15 @@ public class Prop_Artifact extends Property
 			}catch(Exception e){}
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		deleteFromDB();
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof Item)) return false;
@@ -195,6 +199,7 @@ public class Prop_Artifact extends Property
 		return super.okMessage(myHost, msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -261,6 +266,7 @@ public class Prop_Artifact extends Property
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((waitToReload>0)&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK))
@@ -399,6 +405,7 @@ public class Prop_Artifact extends Property
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

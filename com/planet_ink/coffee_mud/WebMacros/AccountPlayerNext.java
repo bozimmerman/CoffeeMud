@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AccountPlayerNext extends StdWebMacro
 {
-	public String name() { return "AccountPlayerNext"; }
+	@Override public String name() { return "AccountPlayerNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -44,7 +45,7 @@ public class AccountPlayerNext extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("PLAYER");
 			return "";
 		}
@@ -52,7 +53,7 @@ public class AccountPlayerNext extends StdWebMacro
 		if(accountName==null) return " @break@";
 		PlayerAccount account=CMLib.players().getLoadAccount(accountName);
 		if(account==null) return "";
-		
+
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null) sort="";

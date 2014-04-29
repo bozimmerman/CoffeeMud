@@ -25,9 +25,9 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	private final List<Enumeration<K>> enums=new Vector<Enumeration<K>>(3);
 	private volatile int dex=0;
 	private volatile Enumeration<K> enumer=null;
-	
+
 	@SuppressWarnings("unchecked")
-	public MultiEnumeration(Enumeration<K>[] esets) 
+	public MultiEnumeration(Enumeration<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
 			enums.add(EmptyEnumeration.INSTANCE);
@@ -36,20 +36,20 @@ public class MultiEnumeration<K> implements Enumeration<K>
 			if(E!=null) enums.add(E);
 		setup();
 	}
-	
-	public MultiEnumeration(Enumeration<K> eset) 
+
+	public MultiEnumeration(Enumeration<K> eset)
 	{
 		enums.add(eset);
 		setup();
 	}
-	
+
 	public void addEnumeration(Enumeration<K> set)
 	{
 		if(set != null)
 			enums.add(set);
 		setup();
 	}
-	
+
 	private void setup()
 	{
 		if((enumer==null)&&(dex<enums.size()))
@@ -57,16 +57,18 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		while((enumer!=null)&&(!enumer.hasMoreElements())&&(++dex<enums.size()))
 			enumer=enums.get(dex);
 	}
-	
-	public boolean hasMoreElements() 
-	{ 
+
+	@Override
+	public boolean hasMoreElements()
+	{
 		if(enumer.hasMoreElements()) return true;
 		while((!enumer.hasMoreElements())&&(++dex<enums.size()))
 			enumer=enums.get(dex);
 		return enumer.hasMoreElements();
 	}
-	
-	public K nextElement() 
+
+	@Override
+	public K nextElement()
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();

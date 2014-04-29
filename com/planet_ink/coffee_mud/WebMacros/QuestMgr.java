@@ -34,9 +34,10 @@ import java.util.*;
 */
 public class QuestMgr extends StdWebMacro
 {
-	public String name() { return "QuestMgr"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "QuestMgr"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

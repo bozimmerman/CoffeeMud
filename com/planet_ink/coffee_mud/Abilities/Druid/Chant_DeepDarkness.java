@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_DeepDarkness extends Chant
 {
-	public String ID() { return "Chant_DeepDarkness"; }
-	public String name(){return "Deep Darkness";}
-	public String displayText(){return "(Deep Darkness spell)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public String ID() { return "Chant_DeepDarkness"; }
+	@Override public String name(){return "Deep Darkness";}
+	@Override public String displayText(){return "(Deep Darkness spell)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -62,6 +63,7 @@ public class Chant_DeepDarkness extends Chant
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_SPELL_AFFECT)
@@ -77,6 +79,7 @@ public class Chant_DeepDarkness extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -88,6 +91,7 @@ public class Chant_DeepDarkness extends Chant
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

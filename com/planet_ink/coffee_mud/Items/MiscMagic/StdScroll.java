@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
-	public String ID(){	return "StdScroll";}
+	@Override public String ID(){	return "StdScroll";}
 	protected String readableScrollBy=null;
 
 	public StdScroll()
@@ -56,16 +56,19 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 
 
 
+	@Override
 	public String getSpellList()
 	{ return miscText;}
-	public void setSpellList(String list){miscText=list;}
+	@Override public void setSpellList(String list){miscText=list;}
 
+	@Override
 	public int value()
 	{
 		if(usesRemaining()<=0)
 			return 0;
 		return super.value();
 	}
+	@Override
 	public boolean useTheScroll(Ability A, MOB mob)
 	{
 		int manaRequired=5;
@@ -88,6 +91,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return true;
 	}
 
+	@Override
 	public String secretIdentity()
 	{
 		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells(this));
@@ -116,7 +120,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		add.append(id);
 		return add.toString();
 	}
-	
+
+	@Override
 	public void readIfAble(MOB mob, Scroll me, String spellName)
 	{
 		if(mob.isMine(me))
@@ -225,9 +230,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		me.recoverPhyStats();
 		return theSpells;
 	}
-	
-	public List<Ability> getSpells(){ return getSpells(this);}
 
+	@Override public List<Ability> getSpells(){ return getSpells(this);}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -247,14 +253,16 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 		super.executeMsg(myHost,msg);
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText=newText;
 		setSpellList(newText);
 	}
-	public boolean isReadableScrollBy(String name){return (readableScrollBy!=null) && (readableScrollBy.equalsIgnoreCase(name));}
-	public void setReadableScrollBy(String name){readableScrollBy=name;}
+	@Override public boolean isReadableScrollBy(String name){return (readableScrollBy!=null) && (readableScrollBy.equalsIgnoreCase(name));}
+	@Override public void setReadableScrollBy(String name){readableScrollBy=name;}
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -266,6 +274,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -276,13 +285,15 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		case 3: setMiscText(val); break;
 		}
 	}
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdScroll)) return false;

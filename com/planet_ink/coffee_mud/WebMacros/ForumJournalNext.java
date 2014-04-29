@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ForumJournalNext extends StdWebMacro
 {
-	public String name() { return "ForumJournalNext"; }
+	@Override public String name() { return "ForumJournalNext"; }
 
 	public static MOB guestM = null;
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("JOURNAL");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("JOURNAL");
 			httpReq.getRequestObjects().remove("JOURNALLIST");
 			return "";
@@ -63,7 +64,7 @@ public class ForumJournalNext extends StdWebMacro
 			}
 			M=guestM;
 		}
-		
+
 		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		List<String> journals;
 		if((setClan!=null)&&(CMLib.journals().getClanForums(setClan)!=null))
@@ -106,7 +107,7 @@ public class ForumJournalNext extends StdWebMacro
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
 		&&parms.containsKey("ALLFORUMJOURNALS"))
 			allForumJournals=true;
-		
+
 		for(int j=0;j<journals.size();j++)
 		{
 			String B=journals.get(j);

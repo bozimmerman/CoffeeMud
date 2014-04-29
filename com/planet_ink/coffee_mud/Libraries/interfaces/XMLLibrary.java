@@ -4,7 +4,7 @@ import java.util.Map;
 import com.planet_ink.coffee_mud.core.collections.XHashtable;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,12 +22,12 @@ import com.planet_ink.coffee_mud.core.collections.XVector;
 public interface XMLLibrary extends CMLibrary
 {
 	public final static String HEX_DIGITS="0123456789ABCDEF";
-	
+
 	public static final String FILE_XML_BOUNDARY="<?xml version=\"1.0\"?>";
-	
+
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data
@@ -36,7 +36,7 @@ public interface XMLLibrary extends CMLibrary
 	public String convertXMLtoTag(String TName, String Data);
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data
@@ -45,7 +45,7 @@ public interface XMLLibrary extends CMLibrary
 	public String convertXMLtoTag(String TName, int Data);
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data
@@ -54,7 +54,7 @@ public interface XMLLibrary extends CMLibrary
 	public String convertXMLtoTag(String TName, short Data);
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data
@@ -63,7 +63,7 @@ public interface XMLLibrary extends CMLibrary
 	public String convertXMLtoTag(String TName, boolean Data);
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data
@@ -72,7 +72,7 @@ public interface XMLLibrary extends CMLibrary
 	public String convertXMLtoTag(String TName, long Data);
 	/**
 	 * Return the contents of an XML tag, given the tag to search for
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String XML=returnXMLBlock(Response,"PDIModelErrors");
 	 * @param Blob String to searh
 	 * @param Tag Tag name to search for
@@ -113,69 +113,69 @@ public interface XMLLibrary extends CMLibrary
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return boolean Information from XML block
 	 */
 	public boolean getBoolFromPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return short Information from XML block
 	 */
 	public short getShortFromPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return int Information from XML block
 	 */
 	public int getIntFromPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Return where the value is within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> boolean ThisColHead=isTagInPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return boolean Information from XML block
 	 */
 	public boolean isTagInPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return long Information from XML block
 	 */
 	public long getLongFromPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
 	 * @return double Information from XML block
 	 */
 	public double getDoubleFromPieces(List<XMLpiece> V, String tag);
-	
+
 	/**
 	 * Returns the value of the tag, if it exists in the given
 	 * tag collection
@@ -188,7 +188,7 @@ public interface XMLLibrary extends CMLibrary
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
@@ -196,11 +196,11 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the tags value, or defValue
 	 */
 	public boolean getBoolFromPieces(List<XMLpiece> V, String tag, boolean defValue);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
@@ -208,11 +208,11 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the tags value, or defValue
 	 */
 	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
@@ -220,11 +220,11 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the tags value, or defValue
 	 */
 	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
@@ -232,11 +232,11 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the tags value, or defValue
 	 */
 	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
@@ -251,7 +251,7 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the parsed xml
 	 */
 	public List<XMLpiece> parseAllXML(String buf);
-	
+
 	/**
 	 * Parses all xml inside the given stringbuffer and returns
 	 * the root tags as a container collection.
@@ -259,7 +259,7 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the parsed xml
 	 */
 	public List<XMLpiece> parseAllXML(StringBuffer buf);
-	
+
 	/**
 	 * Parses a list of single-level xml tags, together in string.
 	 * This method assumes that the given string is a series of
@@ -271,40 +271,40 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the list of strings with the values of those tags
 	 */
 	public List<String> parseXMLList(String numberedList);
-	
+
 	/**
 	 * Converts the given list of strings into a set of top-level
-	 * xml tags called simply <X>  
+	 * xml tags called simply <X>
 	 * @param V the list of strings
 	 * @return the top level xml tags
 	 */
 	public String getXMLList(List<String> V);
-	
+
 	/**
 	 * Return the data value within the first XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow);
 	 * @param Blob String to searh
 	 * @return String Information from first XML block
 	 */
 	public String returnXMLValue(String Blob);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
 	 * @return String Information from XML block
 	 */
 	public String returnXMLValue(String Blob, String Tag);
-	
+
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
@@ -315,26 +315,26 @@ public interface XMLLibrary extends CMLibrary
 	/**
 	 * Return a parameter value within an XML tag
 	 * <TAG Parameter="VALUE">
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ThisColHead=getParmValue(parmSet,"TD");
 	 * @param parmSet set of parms to search
 	 * @param Tag Tag to search for
 	 * @return String Parameter value
 	 */
 	public String getParmValue(Map<String, String> parmSet, String Tag);
-	
+
 	/**
 	 * parse a tag value for safety
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String val=parseOutAngleBrackets(ThisValue);
 	 * @param s String to parse
 	 * @return String parsed value
 	 */
 	public String parseOutAngleBrackets(String s);
-	
+
 	/**
 	 * parse a tag value for safety
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String val=parseOutAngleBracketsAndQuotes(ThisValue);
 	 * @param s String to parse
 	 * @return String parsed value
@@ -342,15 +342,15 @@ public interface XMLLibrary extends CMLibrary
 	public String parseOutAngleBracketsAndQuotes(String s);
 	/**
 	 * restore a tag value parsed for safety
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String val=restoreAngleBrackets(ThisValue);
 	 * @param s String to parse
 	 * @return String unparsed value
 	 */
 	public String restoreAngleBrackets(String s);
-	
+
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -365,7 +365,7 @@ public interface XMLLibrary extends CMLibrary
 		public int innerStart=-1;
 		public int innerEnd=-1;
 		public int outerEnd=-1;
-		
+
 		public XMLpiece copyOf()
 		{
 			try
@@ -380,7 +380,7 @@ public interface XMLLibrary extends CMLibrary
 				return this;
 			}
 		}
-		
+
 		public void addContent(XMLpiece x)
 		{
 			if (x == null) return;
@@ -388,7 +388,8 @@ public interface XMLLibrary extends CMLibrary
 			x.parent=this;
 			contents.add(x);
 		}
-		
+
+		@Override
 		public String toString()
 		{
 			final StringBuilder str=new StringBuilder("");

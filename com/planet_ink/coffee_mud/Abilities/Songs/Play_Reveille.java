@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Play_Reveille extends Play
 {
-	public String ID() { return "Play_Reveille"; }
-	public String name(){ return "Reveille";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected boolean skipStandardSongTick(){return true;}
-	protected boolean skipStandardSongInvoke(){return true;}
+	@Override public String ID() { return "Play_Reveille"; }
+	@Override public String name(){ return "Reveille";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected boolean skipStandardSongTick(){return true;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -52,7 +53,8 @@ public class Play_Reveille extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -83,26 +85,26 @@ public class Play_Reveille extends Play
 					invoker=mob;
 					HashSet<MOB> h=new HashSet<MOB>();
 					for(int i=0;i<R.numInhabitants();i++)
-					{ 
-						MOB M=R.fetchInhabitant(i); 
+					{
+						MOB M=R.fetchInhabitant(i);
 						h.add(M);
 					}
-					
+
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R3=R.getRoomInDir(d);
 						if((R3!=null)&&(!commonRoomSet.contains(R3)))
 							for(int i=0;i<R3.numInhabitants();i++)
-							{ 
-								MOB M=R3.fetchInhabitant(i); 
+							{
+								MOB M=R3.fetchInhabitant(i);
 								h.add(M);
 							}
 					}
-	
+
 					for(MOB follower : h)
 					{
 						Room R2=follower.location();
-	
+
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;

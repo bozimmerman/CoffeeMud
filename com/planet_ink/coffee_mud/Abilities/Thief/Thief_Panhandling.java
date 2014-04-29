@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Panhandling extends ThiefSkill
 {
-	public String ID() { return "Thief_Panhandling"; }
-	public String name(){ return "Panhandling";}
-	public String displayText(){return "(Panhandling)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Panhandling"; }
+	@Override public String name(){ return "Panhandling";}
+	@Override public String displayText(){return "(Panhandling)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PANHANDLE","PANHANDLING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
 
+	@Override
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);
@@ -69,6 +70,7 @@ public class Thief_Panhandling extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -150,6 +152,7 @@ public class Thief_Panhandling extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -163,6 +166,7 @@ public class Thief_Panhandling extends ThiefSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -184,7 +188,7 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell("You must be on a city street to panhandle.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

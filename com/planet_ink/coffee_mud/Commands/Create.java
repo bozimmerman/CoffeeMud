@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class Create extends StdCommand
 	public Create(){}
 
 	private final String[] access={"CREATE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void exits(MOB mob, Vector commands)
 		throws IOException
@@ -124,7 +124,7 @@ public class Create extends StdCommand
 	public void polls(MOB mob, Vector commands)
 	{
 	}
-	
+
 	public void items(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -179,7 +179,7 @@ public class Create extends StdCommand
 			newItem=getNewCatalogItem(itemID);
 			doGenerica=newItem==null;
 		}
-		
+
 		if(newItem==null)
 		{
 			mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
@@ -234,7 +234,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		
+
 		Manufacturer manuCheck=CMLib.tech().getManufacturer(manufacturerID);
 		if(((manuCheck!=null)&&(manuCheck!=CMLib.tech().getDefaultManufacturer()))
 		||manufacturerID.equalsIgnoreCase("RANDOM"))
@@ -259,7 +259,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-	
+
 		String mobID=CMParms.combine(commands,2);
 		MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
@@ -340,7 +340,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
-	
+
 	public void accounts(MOB mob, Vector commands)
 	{
 		if(commands.size()<4)
@@ -380,7 +380,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A new soul descends from the heavens and dissipates.\n\r");
 		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.getAccountName()+".");
 	}
-	
+
 	public MOB getNewCatalogMob(String mobID)
 	{
 		MOB newMOB=CMLib.catalog().getCatalogMob(mobID);
@@ -392,7 +392,7 @@ public class Create extends StdCommand
 		}
 		return newMOB;
 	}
-	
+
 	public Item getNewCatalogItem(String itemID)
 	{
 		Item newItem=CMLib.catalog().getCatalogItem(itemID);
@@ -424,14 +424,14 @@ public class Create extends StdCommand
 			newMOB=getNewCatalogMob(mobID);
 			doGenerica=newMOB==null;
 		}
-		
+
 		if(newMOB==null)
 		{
 			mob.tell("There's no such thing as a '"+mobID+"'.\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		
+
 		if(newMOB.Name().length()==0)
 			newMOB.setName("A Standard MOB");
 		newMOB.setStartRoom(mob.location());
@@ -535,7 +535,7 @@ public class Create extends StdCommand
 		A.setName(areaName);
 		CMLib.map().addArea(A);
 		CMLib.database().DBCreateArea(A);
-		
+
 		Room R=CMClass.getLocale("StdRoom");
 		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setArea(A);
@@ -587,7 +587,7 @@ public class Create extends StdCommand
 		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
 	}
-	
+
 	public void expertises(MOB mob, Vector commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
@@ -601,7 +601,7 @@ public class Create extends StdCommand
 				if(V.get(v).startsWith("#"))
 					inst.append(V.get(v).substring(1)+"\n\r");
 				else
-				if(V.get(v).length()>0) 
+				if(V.get(v).length()>0)
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -636,7 +636,7 @@ public class Create extends StdCommand
 		CMLib.expertises().recompileExpertises();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just increased!");
 	}
-	
+
 	public void titles(MOB mob, Vector commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
@@ -650,7 +650,7 @@ public class Create extends StdCommand
 				if(V.get(v).startsWith("#"))
 					inst.append(V.get(v).substring(1)+"\n\r");
 				else
-				if(V.get(v).length()>0) 
+				if(V.get(v).length()>0)
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -677,7 +677,7 @@ public class Create extends StdCommand
 		CMLib.titles().reloadAutoTitles();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of the players just increased!");
 	}
-	
+
 	public void abilities(MOB mob, Vector commands)
 	throws IOException
 	{
@@ -783,7 +783,7 @@ public class Create extends StdCommand
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
-		}    
+		}
 		String classD=CMParms.combine(commands,3);
 		Ability A=CMClass.getAbility(classD);
 		if(A==null)
@@ -862,7 +862,7 @@ public class Create extends StdCommand
 	{
 		if(mob.isMonster())
 			return;
-		
+
 		if(commands.size()<3)
 		{
 			mob.tell("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r");
@@ -884,7 +884,8 @@ public class Create extends StdCommand
 		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -999,7 +1000,7 @@ public class Create extends StdCommand
 		else
 		if(commandType.equals("DISABLEFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			if(CMSecurity.isDisabledSearch(named.toUpperCase()))
@@ -1014,7 +1015,7 @@ public class Create extends StdCommand
 		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
@@ -1028,7 +1029,7 @@ public class Create extends StdCommand
 			else
 			{
 				mob.tell("'"+named+"' is now debugging");
-				
+
 				CMSecurity.setDebugVar(flag, false);
 			}
 			return true;
@@ -1366,9 +1367,9 @@ public class Create extends StdCommand
 		}
 		return true;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
+
+
 }

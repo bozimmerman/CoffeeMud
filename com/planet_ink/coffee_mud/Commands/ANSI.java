@@ -37,7 +37,8 @@ public class ANSI extends StdCommand
 	public ANSI(){}
 
 	private final String[] access={"ANSI","COLOR","COLOUR"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -61,8 +62,8 @@ public class ANSI extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

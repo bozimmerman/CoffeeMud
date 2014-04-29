@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RandomMonsters extends ActiveTicker
 {
-	public String ID(){return "RandomMonsters";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override public String ID(){return "RandomMonsters";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected Vector maintained=new Vector();
 	protected int tickStatus=0;
@@ -46,11 +46,13 @@ public class RandomMonsters extends ActiveTicker
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random monster generating";
 	}
-	
+
+	@Override
 	public List<String> externalFiles()
 	{
 		Vector xmlfiles=new Vector();
@@ -72,6 +74,7 @@ public class RandomMonsters extends ActiveTicker
 	}
 
 
+	@Override
 	public void setParms(String newParms)
 	{
 		maintained=new Vector();
@@ -266,8 +269,9 @@ public class RandomMonsters extends ActiveTicker
 		return true;
 	}
 
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;

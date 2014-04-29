@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DemonicConsumption extends Prayer
 {
-	public String ID() { return "Prayer_DemonicConsumption"; }
-	public String name(){return "Demonic Consumption";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_DemonicConsumption"; }
+	@Override public String name(){return "Demonic Consumption";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

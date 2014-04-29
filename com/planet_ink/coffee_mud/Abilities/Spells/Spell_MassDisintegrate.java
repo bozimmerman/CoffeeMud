@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_MassDisintegrate extends Spell
 {
-	public String ID() { return "Spell_MassDisintegrate"; }
-	public String name(){return "Mass Disintegrate";}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public int overrideMana(){return 200;}
+	@Override public String ID() { return "Spell_MassDisintegrate"; }
+	@Override public String name(){return "Mass Disintegrate";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public int overrideMana(){return 200;}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -71,16 +72,16 @@ public class Spell_MassDisintegrate extends Spell
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
-		
+
 		int levelDiff=avgLevel-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
-		
+
 		boolean success=false;
 		success=proficiencyCheck(mob,-(levelDiff*25),auto);
 
 		if(success)
 		{
-			if(avgLevel <= 0) 
+			if(avgLevel <= 0)
 				avgLevel = 1;
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
 			for(Iterator f=h.iterator();f.hasNext();)

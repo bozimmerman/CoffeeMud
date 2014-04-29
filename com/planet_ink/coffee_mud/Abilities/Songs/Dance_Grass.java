@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Dance_Grass extends Dance
 {
-	public String ID() { return "Dance_Grass"; }
-	public String name(){ return "Grass";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Dance_Grass"; }
+	@Override public String name(){ return "Grass";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public static Ability kick=null;
-	protected String danceOf(){return name()+" Dance";}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

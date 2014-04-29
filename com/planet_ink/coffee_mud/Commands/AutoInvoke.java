@@ -39,8 +39,9 @@ public class AutoInvoke extends StdCommand
 	public AutoInvoke(){}
 
 	private final String[] access={"AUTOINVOKE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -96,7 +97,7 @@ public class AutoInvoke extends StdCommand
 			{
 				@Override public void showPrompt() { session.promptPrint("Enter one to toggle or RETURN: ");}
 				@Override public void timedOut() { }
-				@Override public void callBack() 
+				@Override public void callBack()
 				{
 					String s=this.input;
 					Ability foundA=null;
@@ -145,7 +146,7 @@ public class AutoInvoke extends StdCommand
 		return false;
 	}
 
-	
-	public boolean canBeOrdered(){return true;}
-	
+
+	@Override public boolean canBeOrdered(){return true;}
+
 }

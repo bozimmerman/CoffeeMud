@@ -18,7 +18,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,12 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_ControlPlant extends Chant
 {
-	public String ID() { return "Chant_ControlPlant"; }
-	public String name(){ return "Control Plant";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_ControlPlant"; }
+	@Override public String name(){ return "Control Plant";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 
 	public static Ability isPlant(Item I)
 	{
@@ -60,6 +60,7 @@ public class Chant_ControlPlant extends Chant
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

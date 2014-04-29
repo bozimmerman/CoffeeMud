@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,9 @@ import java.util.*;
 */
 public class WebServerName extends StdWebMacro
 {
-	public String name()	{return "WebServerName";}
+	@Override public String name()	{return "WebServerName";}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(Thread.currentThread() instanceof MWThread)

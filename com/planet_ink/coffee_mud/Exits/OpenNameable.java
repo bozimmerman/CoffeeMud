@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,8 +31,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class OpenNameable extends StdOpenDoorway
 {
-	public String ID(){ return "OpenNameable";}
-	public String Name(){ return miscText;}
-	public String displayText(){ return miscText;}
-	public String description(){ return miscText;}
+	@Override public String ID(){ return "OpenNameable";}
+	@Override public String Name(){ return miscText;}
+	@Override public String displayText(){ return miscText;}
+	@Override public String description(){ return miscText;}
 }

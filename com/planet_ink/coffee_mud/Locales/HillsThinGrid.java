@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class HillsThinGrid extends StdThinGrid
 {
-	public String ID(){return "HillsThinGrid";}
+	@Override public String ID(){return "HillsThinGrid";}
 	public HillsThinGrid()
 	{
 		super();
@@ -44,14 +44,15 @@ public class HillsThinGrid extends StdThinGrid
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new HillsGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "Hills";}
-	public List<Integer> resourceChoices(){return Hills.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Hills";}
+	@Override public List<Integer> resourceChoices(){return Hills.roomResources;}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenDeflectionShield extends GenPersonalShield
 {
-	public String ID(){	return "GenDeflectionShield";}
+	@Override public String ID(){	return "GenDeflectionShield";}
 
 	public GenDeflectionShield()
 	{
@@ -43,24 +43,24 @@ public class GenDeflectionShield extends GenPersonalShield
 		setDisplayText("a deflection shield generator sits here.");
 		setDescription("The deflection shield generator is worn about the body and activated to use. It deflects all manner of weapon types. ");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
+	protected String fieldOnStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"A deflectant field of energy surrounds <O-NAME>.":
-			"A deflectant field of energy surrounds <T-NAME>."; 
+			"A deflectant field of energy surrounds <T-NAME>.";
 	}
-	
+
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"The deflection field around <O-NAME> flickers and dies out.":
-			"The deflection field around <T-NAME> flickers and dies out."; 
+			"The deflection field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(mob.location()!=null)
@@ -81,8 +81,8 @@ public class GenDeflectionShield extends GenPersonalShield
 		}
 		return false;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		return activated() ?( (Math.random() >= successFactor) ) : false ;

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ public interface GenericEditor extends CMLibrary
 	public void modifyPlayer(MOB mob, MOB me) throws IOException;
 	public void modifyGovernment(MOB mob, ClanGovernment me) throws IOException;
 	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me) throws IOException;
-	
+
 	public Room changeRoomType(Room R, Room newRoom);
 	public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;
 	public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag) throws IOException;
@@ -63,7 +63,7 @@ public interface GenericEditor extends CMLibrary
 	public void genMiscSet(MOB mob, Environmental E) throws IOException;
 	public void genName(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 	public void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
-	
+
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices) throws IOException;
 	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices) throws IOException;
 	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices) throws IOException;
@@ -92,15 +92,15 @@ public interface GenericEditor extends CMLibrary
 						String help,
 						CMEval eval,
 						Object[] choices) throws IOException;
-	public String prompt(MOB mob, 
-						String oldVal, 
-						int showNumber, 
-						int showFlag, 
-						String FieldDisp, 
-						boolean emptyOK, 
-						boolean rawPrint, 
+	public String prompt(MOB mob,
+						String oldVal,
+						int showNumber,
+						int showFlag,
+						String FieldDisp,
+						boolean emptyOK,
+						boolean rawPrint,
 						int maxChars,
-						String help, 
+						String help,
 						CMEval eval,
 						Object[] choices) throws IOException;
 	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
@@ -111,11 +111,12 @@ public interface GenericEditor extends CMLibrary
 	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
-	
+
 	public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
 	public static class CMEvalStrChoice implements CMEval
-	{ 
+	{
 		public static CMEvalStrChoice INSTANCE = new CMEvalStrChoice();
+		@Override
 		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
 		{
 			if(choices.length==0) return "";
@@ -126,5 +127,5 @@ public interface GenericEditor extends CMLibrary
 			throw new CMException("That was not one of your choices.");
 		}
 	}
-	
+
 }

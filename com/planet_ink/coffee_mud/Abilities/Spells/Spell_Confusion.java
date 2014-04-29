@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Confusion extends Spell
 {
-	public String ID() { return "Spell_Confusion"; }
-	public String name(){return "Confusion";}
-	public String displayText(){return "(Confusion spell)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Confusion"; }
+	@Override public String name(){return "Confusion";}
+	@Override public String displayText(){return "(Confusion spell)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	boolean notAgain=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -67,6 +68,7 @@ public class Spell_Confusion extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -80,6 +82,7 @@ public class Spell_Confusion extends Spell
 		CMLib.commands().postStand(mob,true);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -89,7 +92,8 @@ public class Spell_Confusion extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

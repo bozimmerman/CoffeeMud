@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_ClearMoon extends Chant
 {
-	public String ID() { return "Chant_ClearMoon"; }
-	public String name(){ return "Clear Moon";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	@Override public String ID() { return "Chant_ClearMoon"; }
+	@Override public String name(){ return "Clear Moon";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
 	public void clearMoons(Physical P)
 	{
@@ -56,6 +56,7 @@ public class Chant_ClearMoon extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

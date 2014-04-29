@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Cartwheel extends FighterSkill
 {
-	public String ID() { return "Fighter_Cartwheel"; }
-	public String name(){ return "Cartwheel";}
+	@Override public String ID() { return "Fighter_Cartwheel"; }
+	@Override public String name(){ return "Cartwheel";}
 	private static final String[] triggerStrings = {"CARTWHEEL"};
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB victim=mob.getVictim();

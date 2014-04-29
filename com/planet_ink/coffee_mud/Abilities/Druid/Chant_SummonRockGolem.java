@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonRockGolem extends Chant
 {
-	public String ID() { return "Chant_SummonRockGolem"; }
-	public String name(){ return "Summon Rock Golem";}
-	public String displayText(){return "(Summon Rock Golem)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Chant_SummonRockGolem"; }
+	@Override public String name(){ return "Summon Rock Golem";}
+	@Override public String displayText(){return "(Summon Rock Golem)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -67,6 +68,7 @@ public class Chant_SummonRockGolem extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,6 +82,7 @@ public class Chant_SummonRockGolem extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -95,6 +98,7 @@ public class Chant_SummonRockGolem extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
@@ -102,7 +106,7 @@ public class Chant_SummonRockGolem extends Chant
 			mob.tell("You can only control one golem.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

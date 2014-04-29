@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GenReadable extends GenItem
 {
-	public String ID(){	return "GenReadable";}
+	@Override public String ID(){	return "GenReadable";}
 	public GenReadable()
 	{
 		super();
@@ -49,6 +49,6 @@ public class GenReadable extends GenItem
 	}
 
 
-	public boolean isGeneric(){return true;}
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	@Override public boolean isGeneric(){return true;}
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

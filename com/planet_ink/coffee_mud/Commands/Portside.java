@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Portside extends Go
 	public Portside(){}
 
 	private final String[] access={"PORTSIDE","PORT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -63,11 +64,12 @@ public class Portside extends Go
 			CMLib.tracking().walk(mob, direction, false,false,false);
 		return false;
 	}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
 	public boolean securityCheck(MOB mob)
 	{
-		return (mob==null) || (mob.isMonster()) || (mob.location()==null) 
+		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
 			|| (mob.location() instanceof SpaceShip) || (mob.location().getArea() instanceof SpaceShip);
 	}
 }

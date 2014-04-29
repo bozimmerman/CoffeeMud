@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_BloodHearth extends Prayer
 {
-	public String ID() { return "Prayer_BloodHearth"; }
-	public String name(){return "Blood Hearth";}
-	public String displayText(){return "(Blood Hearth)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public String ID() { return "Prayer_BloodHearth"; }
+	@Override public String name(){return "Blood Hearth";}
+	@Override public String displayText(){return "(Blood Hearth)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -73,6 +74,7 @@ public class Prayer_BloodHearth extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target instanceof Room))
@@ -82,7 +84,8 @@ public class Prayer_BloodHearth extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();

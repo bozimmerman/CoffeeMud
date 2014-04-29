@@ -34,13 +34,14 @@ import java.util.*;
 */
 public class Prop_Invisibility extends Property
 {
-	public String ID() { return "Prop_Invisibility"; }
-	public String name(){ return "Persistant Invisibility";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_Invisibility"; }
+	@Override public String name(){ return "Persistant Invisibility";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	protected int ticksSinceLoss=100;
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -56,6 +57,7 @@ public class Prop_Invisibility extends Property
 		return;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticksSinceLoss<9999)
@@ -63,6 +65,7 @@ public class Prop_Invisibility extends Property
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

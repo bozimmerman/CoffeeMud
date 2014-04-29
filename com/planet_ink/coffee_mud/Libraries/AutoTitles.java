@@ -35,9 +35,10 @@ import java.util.*;
 */
 public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
-	public String ID(){return "AutoTitles";}
+	@Override public String ID(){return "AutoTitles";}
 	private TriadSVector<String,String,MaskingLibrary.CompiledZapperMask> autoTitles=null;
 
+	@Override
 	public String evaluateAutoTitle(String row, boolean addIfPossible)
 	{
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
@@ -61,6 +62,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		}
 		return null;
 	}
+	@Override
 	public boolean isExistingAutoTitle(String title)
 	{
 		if(autoTitles==null) reloadAutoTitles();
@@ -71,12 +73,14 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return false;
 	}
 
+	@Override
 	public Enumeration<String> autoTitles()
 	{
 		if(autoTitles==null) reloadAutoTitles();
 		return autoTitles.firstElements();
 	}
 
+	@Override
 	public String getAutoTitleMask(String title)
 	{
 		if(autoTitles==null) reloadAutoTitles();
@@ -86,6 +90,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return "";
 	}
 
+	@Override
 	public boolean evaluateAutoTitles(MOB mob)
 	{
 		if(mob==null) return false;
@@ -117,7 +122,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 						}catch(java.lang.IndexOutOfBoundsException ioe){}
 					}
 				}
-				
+
 				if(CMLib.masking().maskCheck(mask,mob,true))
 				{
 					if(pdex<0)
@@ -140,6 +145,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return somethingDone;
 	}
 
+	@Override
 	public void dispossesTitle(String title)
 	{
 		List<String> list=CMLib.database().getUserList();
@@ -176,6 +182,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		}
 	}
 
+	@Override
 	public void reloadAutoTitles()
 	{
 		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZapperMask>();
@@ -199,5 +206,5 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			}
 		}
 	}
-	
+
 }

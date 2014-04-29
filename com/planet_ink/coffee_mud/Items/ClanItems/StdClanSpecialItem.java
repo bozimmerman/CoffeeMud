@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class StdClanSpecialItem extends StdClanItem
 {
-	public String ID(){	return "StdClanSpecialItem";}
+	@Override public String ID(){	return "StdClanSpecialItem";}
 	private Behavior B=null;
 	private String flag="";
 
@@ -51,7 +51,8 @@ public class StdClanSpecialItem extends StdClanItem
 		material=RawMaterial.RESOURCE_PINE;
 		recoverPhyStats();
 	}
-	
+
+	@Override
 	public void setReadableText(String text)
 	{
 		if((text.equalsIgnoreCase("GOOD"))
@@ -61,6 +62,7 @@ public class StdClanSpecialItem extends StdClanItem
 			super.setReadableText(text);
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -74,6 +76,7 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(B!=null))
 			B.executeMsg(owner(),msg);
 	}
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -85,6 +88,7 @@ public class StdClanSpecialItem extends StdClanItem
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

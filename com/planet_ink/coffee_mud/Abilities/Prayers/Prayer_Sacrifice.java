@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Sacrifice extends Prayer
 {
-	public String ID() { return "Prayer_Sacrifice"; }
-	public String name(){ return "Sacrifice";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_Sacrifice"; }
+	@Override public String name(){ return "Sacrifice";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
 	public static Item getBody(Room R)
 	{
@@ -58,6 +58,7 @@ public class Prayer_Sacrifice extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=null;

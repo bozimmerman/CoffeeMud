@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SeekersPrayer extends Prayer
 {
-	public String ID() { return "Prayer_SeekersPrayer"; }
-	public String name(){ return "Seekers Prayer";}
-	public String displayText(){ return "";}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public String ID() { return "Prayer_SeekersPrayer"; }
+	@Override public String name(){ return "Seekers Prayer";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))
@@ -52,13 +53,13 @@ public class Prayer_SeekersPrayer extends Prayer
 			mob.tell("Not while you're fighting!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -77,9 +78,9 @@ public class Prayer_SeekersPrayer extends Prayer
 				{
 					final Quest Q = q.nextElement();
 					final MOB M=Q.getQuestMob(1);
-					if( Q.name().equalsIgnoreCase("holidays") 
-					|| !Q.running() 
-					|| (M==null) 
+					if( Q.name().equalsIgnoreCase("holidays")
+					|| !Q.running()
+					|| (M==null)
 					|| (!CMLib.flags().isInTheGame(M,true))
 					|| (!CMLib.flags().canAccess(mob, M.location())) )
 					{

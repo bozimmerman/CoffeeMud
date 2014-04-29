@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2006-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 */
 public class ExpertiseID extends StdWebMacro
 {
-	public String name() { return "ExpertiseID"; }
+	@Override public String name() { return "ExpertiseID"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String last=httpReq.getUrlParameter("EXPERTISE");

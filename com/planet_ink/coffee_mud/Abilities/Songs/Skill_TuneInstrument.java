@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_TuneInstrument extends BardSkill
 {
-	public String ID() { return "Skill_TuneInstrument"; }
-	public String name(){ return "Tune Instrument";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_TuneInstrument"; }
+	@Override public String name(){ return "Tune Instrument";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TUNEINSTRUMENT","TUNE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setAbility(affectableStats.ability()+2+getXLEVELLevel(invoker));
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=Play.getInstrument(mob,-1,true);

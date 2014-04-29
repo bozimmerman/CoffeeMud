@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Reincarnation extends Chant
 {
-	public String ID() { return "Chant_Reincarnation"; }
-	public String name(){ return "Reincarnation";}
-	public String displayText(){return "(Reincarnation Geas)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	protected int overrideMana(){return 200;}
+	@Override public String ID() { return "Chant_Reincarnation"; }
+	@Override public String name(){ return "Reincarnation";}
+	@Override public String displayText(){return "(Reincarnation Geas)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int overrideMana(){return 200;}
 
 	Race newRace=null;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +61,7 @@ public class Chant_Reincarnation extends Chant
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -67,13 +69,15 @@ public class Chant_Reincarnation extends Chant
 			affectableStats.setMyRace(newRace);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		super.unInvoke();
 		if((!this.canBeUninvoked)&&(affected!=null)&&(affected.fetchEffect(ID())==this))
 			this.unInvoked=false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -121,6 +125,7 @@ public class Chant_Reincarnation extends Chant
 		return golem;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -149,6 +154,7 @@ public class Chant_Reincarnation extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget,false,true);
@@ -174,14 +180,14 @@ public class Chant_Reincarnation extends Chant
 			mob.tell(target.name(mob)+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
 			success=false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		if(success)
 		{
 			int modifier=0;
-			if((target!=mob)&&(!groupMembers.contains(target))) 
+			if((target!=mob)&&(!groupMembers.contains(target)))
 				modifier=CMMsg.MASK_MALICIOUS;
 			CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))

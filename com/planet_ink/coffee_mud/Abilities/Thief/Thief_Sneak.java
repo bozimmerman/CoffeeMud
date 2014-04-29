@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Sneak extends ThiefSkill
 {
-	public String ID() { return "Thief_Sneak"; }
-	public String name(){ return "Sneak";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String ID() { return "Thief_Sneak"; }
+	@Override public String name(){ return "Sneak";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"SNEAK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);

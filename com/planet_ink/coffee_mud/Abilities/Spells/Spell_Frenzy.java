@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Frenzy extends Spell
 {
-	public String ID() { return "Spell_Frenzy"; }
-	public String name(){return "Frenzy";}
-	public String displayText(){return "(Frenzy spell)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Frenzy"; }
+	@Override public String name(){return "Frenzy";}
+	@Override public String displayText(){return "(Frenzy spell)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public int hpAdjustment=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -56,6 +57,7 @@ public class Spell_Frenzy extends Spell
 		affectableStats.setArmor(affected.basePhyStats().armor()+30+(3*xlvl));
 	}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
@@ -63,6 +65,7 @@ public class Spell_Frenzy extends Spell
 			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -70,6 +73,7 @@ public class Spell_Frenzy extends Spell
 			hpAdjustment=CMath.s_int(newText);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -88,6 +92,7 @@ public class Spell_Frenzy extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

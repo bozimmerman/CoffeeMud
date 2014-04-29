@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Thorns extends Chant
 {
-	public String ID() { return "Chant_Thorns"; }
-	public String name(){return "Thorns";}
-	public String displayText(){return "(Thorns)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Thorns"; }
+	@Override public String name(){return "Thorns";}
+	@Override public String displayText(){return "(Thorns)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	final static String msgStr="The thorns around <S-NAME> <DAMAGE> <T-NAME>!";
 	protected long oncePerTickTime=0;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Chant_Thorns extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> thorns disappear.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -97,6 +99,7 @@ public class Chant_Thorns extends Chant
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -105,6 +108,7 @@ public class Chant_Thorns extends Chant
 		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

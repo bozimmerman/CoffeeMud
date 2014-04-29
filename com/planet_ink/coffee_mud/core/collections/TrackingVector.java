@@ -18,12 +18,12 @@ limitations under the License.
 */
 /**
  * A tracking vector keeps track of which other tracking vectors that items of the
- * same type have been added to so that, if desired, items can be removed from 
+ * same type have been added to so that, if desired, items can be removed from
  * all vectors at once.  The constructor requires a map to keep track of the
  * objects.
- * 
+ *
  * This class is required for RTree
- * 
+ *
  * @author Bo Zimmerman
  *
  * @param <T>
@@ -35,12 +35,12 @@ public class TrackingVector<T> extends Vector<T>
 	private final Map<T,List<WeakReference<TrackingVector<T>>>> tracker;
 	private final WeakReference<TrackingVector<T>> myRef=new WeakReference<TrackingVector<T>>(this);
 	private final WeakReference<TrackBack<T>> trackBackRef;
-	
+
 	public interface TrackBack<T>
 	{
 		public void removed(T o);
 	}
-	
+
 	public TrackingVector(Map<T,List<WeakReference<TrackingVector<T>>>> tracker)
 	{
 		super();
@@ -87,7 +87,7 @@ public class TrackingVector<T> extends Vector<T>
 			}
 		}
 	}
-	
+
 	protected void removeTrackedEntry(Object e)
 	{
 		synchronized(tracker)
@@ -99,7 +99,7 @@ public class TrackingVector<T> extends Vector<T>
 			}
 		}
 	}
-	
+
 	public void removeAllTrackedEntries(T e)
 	{
 		synchronized(tracker)
@@ -114,7 +114,7 @@ public class TrackingVector<T> extends Vector<T>
 			}
 		}
 	}
-	
+
 	@Override public synchronized boolean add(T e)
 	{
 		if(super.add(e))
@@ -124,13 +124,13 @@ public class TrackingVector<T> extends Vector<T>
 		}
 		return false;
 	}
-	
+
 	@Override public synchronized void addElement(T e)
 	{
 		super.addElement(e);
 		addTrackedEntry(e);
 	}
-	
+
 	@Override
 	public void add(int arg0, T arg1)
 	{
@@ -161,8 +161,8 @@ public class TrackingVector<T> extends Vector<T>
 			removeTrackedEntry(e);
 		super.clear();
 	}
-	
-	
+
+
 	@Override
 	public boolean remove(Object arg0)
 	{

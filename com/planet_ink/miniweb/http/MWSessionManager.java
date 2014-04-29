@@ -29,7 +29,7 @@ limitations under the License.
 /**
  * This class manages servlet session objects
  * for servlets as well.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -37,17 +37,17 @@ public class MWSessionManager implements ServletSessionManager
 {
 	private final Map<String,SimpleServletSession>	sessions;		// map of ids to sessions
 	private final MiniWebConfig						config;
-	
+
 	/**
 	 * Construct a session manager
 	 * @param config the web server config
 	 */
 	public MWSessionManager(MiniWebConfig config)
 	{
-		sessions = new Hashtable<String, SimpleServletSession>();  
+		sessions = new Hashtable<String, SimpleServletSession>();
 		this.config=config;
 	}
-	
+
 	/**
 	 * Internal method to find an existing session based on the request data.
 	 * @param sessionID the id of the session
@@ -75,7 +75,7 @@ public class MWSessionManager implements ServletSessionManager
 			return session;
 		}
 	}
-	
+
 	/**
 	 * A maintence method forcing the manager to examine all sessions
 	 * for any that have timed out and remove them, if so.

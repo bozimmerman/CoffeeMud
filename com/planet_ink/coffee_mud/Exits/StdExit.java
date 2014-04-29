@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdExit implements Exit
 {
-	public String ID(){    return "StdExit";}
+	@Override public String ID(){    return "StdExit";}
 
 	protected PhyStats  phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -45,13 +45,13 @@ public class StdExit implements Exit
 	protected String	rawImageName=null;
 	protected boolean   amDestroyed=false;
 	protected short 	usage=0;
-	
+
 	protected String					lastRoomID="";
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
 	protected Exit 						me=this;
-	
+
 	public StdExit()
 	{
 		super();
@@ -61,22 +61,23 @@ public class StdExit implements Exit
 	}
 
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.EXIT);}//removed for mem & perf
-	public void initializeClass(){}
-	public String Name(){ return "a walkway";}
-	public boolean hasADoor(){return false;}
-	public boolean hasALock(){return false;}
-	public boolean defaultsLocked(){return false;}
-	public boolean defaultsClosed(){return false;}
-	public String displayText(){ return "";}
-	public String description(){ return "";}
-	public String description(MOB viewerMob) { return description(); }
-	public String doorName(){return "door";}
-	public String closedText(){return "a closed door";}
-	public String closeWord(){return "close";}
-	public String openWord(){return "open";}
-	public String displayText(MOB viewerMob) { return displayText(); }
-	public String name(MOB viewerMob) { return name(); }
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public void initializeClass(){}
+	@Override public String Name(){ return "a walkway";}
+	@Override public boolean hasADoor(){return false;}
+	@Override public boolean hasALock(){return false;}
+	@Override public boolean defaultsLocked(){return false;}
+	@Override public boolean defaultsClosed(){return false;}
+	@Override public String displayText(){ return "";}
+	@Override public String description(){ return "";}
+	@Override public String description(MOB viewerMob) { return description(); }
+	@Override public String doorName(){return "door";}
+	@Override public String closedText(){return "a closed door";}
+	@Override public String closeWord(){return "close";}
+	@Override public String openWord(){return "open";}
+	@Override public String displayText(MOB viewerMob) { return displayText(); }
+	@Override public String name(MOB viewerMob) { return name(); }
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override
 	public short exitUsage(short change)
 	{
 		if(change<0)
@@ -92,34 +93,40 @@ public class StdExit implements Exit
 		return usage;
 	}
 
-	public void setName(String newName){}
+	@Override public void setName(String newName){}
+	@Override
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
+	@Override
 	public PhyStats phyStats()
 	{
 		return phyStats;
 	}
+	@Override
 	public PhyStats basePhyStats()
 	{
 		return basePhyStats;
 	}
 	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
 	{
-		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
 	};
+	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
 		eachEffect(recoverPhyStatsEffectApplicable);
 	}
+	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
+	@Override
 	public void destroy()
 	{
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
@@ -132,10 +139,11 @@ public class StdExit implements Exit
 		miscText=null;
 		amDestroyed=true;
 	}
-	public boolean amDestroyed(){return amDestroyed;}
-	public boolean isSavable(){return !amDestroyed && CMLib.flags().isSavable(this);}
-	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
-	
+	@Override public boolean amDestroyed(){return amDestroyed;}
+	@Override public boolean isSavable(){return !amDestroyed && CMLib.flags().isSavable(this);}
+	@Override public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+
+	@Override
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -147,12 +155,14 @@ public class StdExit implements Exit
 		}
 		return cachedImageName;
 	}
+	@Override
 	public String rawImage()
 	{
-		if(rawImageName==null) 
+		if(rawImageName==null)
 			return "";
 		return rawImageName;
 	}
+	@Override
 	public void setImage(String newImage)
 	{
 		if((newImage==null)||(newImage.trim().length()==0))
@@ -162,7 +172,8 @@ public class StdExit implements Exit
 		if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
 			cachedImageName=null;
 	}
-	
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -175,7 +186,7 @@ public class StdExit implements Exit
 		}
 		return new StdExit();
 	}
-	public boolean isGeneric(){return false;}
+	@Override public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit X)
 	{
 		me=this;
@@ -197,6 +208,7 @@ public class StdExit implements Exit
 			if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
 		}
 	}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -212,16 +224,16 @@ public class StdExit implements Exit
 			return this.newInstance();
 		}
 	}
-	public void setMiscText(String newMiscText){miscText=newMiscText;}
-	public String text(){return miscText;}
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public long expirationDate(){return 0;}
-	public void setExpirationDate(long time){}
+	@Override public void setMiscText(String newMiscText){miscText=newMiscText;}
+	@Override public String text(){return miscText;}
+	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override public long expirationDate(){return 0;}
+	@Override public void setExpirationDate(long time){}
 
-	public void setDisplayText(String newDisplayText){}
-	public void setDescription(String newDescription){}
-	public int maxRange(){return Integer.MAX_VALUE;}
-	public int minRange(){return Integer.MIN_VALUE;}
+	@Override public void setDisplayText(String newDisplayText){}
+	@Override public void setDescription(String newDescription){}
+	@Override public int maxRange(){return Integer.MAX_VALUE;}
+	@Override public int minRange(){return Integer.MIN_VALUE;}
 
 	protected Rideable findALadder(MOB mob, Room room)
 	{
@@ -264,7 +276,7 @@ public class StdExit implements Exit
 		else
 			return closeWord()+"ed";
 	}
-	
+
 	protected final String openWordPastTense()
 	{
 		if(openWord().length()==0)
@@ -275,7 +287,8 @@ public class StdExit implements Exit
 		else
 			return openWord()+"ed";
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MsgListener N=null;
@@ -355,7 +368,7 @@ public class StdExit implements Exit
 			return true;
 		case CMMsg.TYP_CLOSE:
 		{
-			if(closeWord().length()==0) 
+			if(closeWord().length()==0)
 				setExitParams(doorName(),openWord(),"close",closedText());
 			if(isOpen)
 			{
@@ -475,6 +488,7 @@ public class StdExit implements Exit
 		return true;
 	}
 
+	@Override
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
 		StringBuilder Say=new StringBuilder("");
@@ -506,17 +520,21 @@ public class StdExit implements Exit
 		return Say;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		eachBehavior(new EachApplicable<Behavior>(){ @Override
+		public final void apply(final Behavior B)
 		{
 			B.executeMsg(me, msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+		public final void apply(final ScriptingEngine S)
 		{
 			S.executeMsg(me, msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			A.executeMsg(me,msg);
 		}});
@@ -565,14 +583,15 @@ public class StdExit implements Exit
 			break;
 		}
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(amDestroyed()) return false;
-		
+
 		if(usage<=0){ destroy(); return false;}
-		
+
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
 			if(defaultsClosed())
@@ -587,11 +606,13 @@ public class StdExit implements Exit
 		else
 		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			eachBehavior(new EachApplicable<Behavior>(){ @Override
+			public final void apply(final Behavior B)
 			{
 				B.tick(ticking, tickID);
 			} });
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+			public final void apply(final ScriptingEngine S)
 			{
 				S.tick(ticking, tickID);
 			} });
@@ -599,7 +620,8 @@ public class StdExit implements Exit
 		}
 		else
 		{
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			eachEffect(new EachApplicable<Ability>(){ @Override
+			public final void apply(final Ability A)
 			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
@@ -607,8 +629,9 @@ public class StdExit implements Exit
 			return true;
 		}
 	}
-	public boolean isOpen(){return isOpen;}
-	public boolean isLocked(){return isLocked;}
+	@Override public boolean isOpen(){return isOpen;}
+	@Override public boolean isLocked(){return isLocked;}
+	@Override
 	public void setDoorsNLocks(boolean newHasADoor,
 								  boolean newIsOpen,
 								  boolean newDefaultsClosed,
@@ -620,22 +643,26 @@ public class StdExit implements Exit
 		isLocked=newIsLocked;
 	}
 
-	public String readableText(){ return (isReadable()?miscText:"");}
-	public boolean isReadable(){ return false;}
-	public void setReadable(boolean isTrue){}
-	public void setReadableText(String text) { miscText=temporaryDoorLink()+text; }
-	public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText){}
-	public String keyName()    { return (hasALock()?miscText:""); }
-	public void setKeyName(String newKeyName){miscText=temporaryDoorLink()+newKeyName;}
-	public Room lastRoomUsedFrom() { return CMLib.map().getRoom(lastRoomID); }
+	@Override public String readableText(){ return (isReadable()?miscText:"");}
+	@Override public boolean isReadable(){ return false;}
+	@Override public void setReadable(boolean isTrue){}
+	@Override public void setReadableText(String text) { miscText=temporaryDoorLink()+text; }
+	@Override public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText){}
+	@Override public String keyName()    { return (hasALock()?miscText:""); }
+	@Override public void setKeyName(String newKeyName){miscText=temporaryDoorLink()+newKeyName;}
+	@Override public Room lastRoomUsedFrom() { return CMLib.map().getRoom(lastRoomID); }
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}//exits will never be asked this, so this method should always do NOTHING
 
+	@Override
 	public String temporaryDoorLink()
 	{
 		if(miscText.startsWith("{#"))
@@ -646,6 +673,7 @@ public class StdExit implements Exit
 		}
 		return "";
 	}
+	@Override
 	public void setTemporaryDoorLink(String link)
 	{
 		if(link.startsWith("{{#"))
@@ -658,13 +686,14 @@ public class StdExit implements Exit
 		if(miscText.startsWith("{#"))
 		{
 			int x=miscText.indexOf("#}");
-			if(x>=0) 
+			if(x>=0)
 				miscText=miscText.substring(x+2);
 		}
 		if(link.length()>0)
 			miscText="{#"+link+"#}"+miscText;
 	}
 
+	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -675,6 +704,7 @@ public class StdExit implements Exit
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
@@ -683,12 +713,14 @@ public class StdExit implements Exit
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
@@ -703,6 +735,7 @@ public class StdExit implements Exit
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
+	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
 		SVector<Ability> affects=this.affects;
@@ -718,14 +751,17 @@ public class StdExit implements Exit
 		}
 		affects.clear();
 	}
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
-	
+
+	@Override
 	public int numEffects()
 	{
 		if(affects==null) return 0;
 		return affects.size();
 	}
+	@Override
 	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
@@ -736,6 +772,7 @@ public class StdExit implements Exit
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	@Override
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
@@ -750,6 +787,7 @@ public class StdExit implements Exit
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
+	@Override
 	public void addBehavior(Behavior to)
 	{
 		if(behaviors==null)
@@ -764,6 +802,7 @@ public class StdExit implements Exit
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
+	@Override
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
@@ -771,6 +810,7 @@ public class StdExit implements Exit
 		if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
 			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
+	@Override
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -779,13 +819,16 @@ public class StdExit implements Exit
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
+	@Override
 	public int numBehaviors()
 	{
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
+	@Override
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null)
@@ -797,6 +840,7 @@ public class StdExit implements Exit
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	@Override
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null)
@@ -806,6 +850,7 @@ public class StdExit implements Exit
 				return B;
 		return null;
 	}
+	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -820,8 +865,9 @@ public class StdExit implements Exit
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
 	/** Manipulation of the scripts list */
+	@Override
 	public void addScript(ScriptingEngine S)
 	{
 		if(scripts==null) scripts=new SVector<ScriptingEngine>(1);
@@ -840,6 +886,7 @@ public class StdExit implements Exit
 			scripts.addElement(S);
 		}
 	}
+	@Override
 	public void delScript(ScriptingEngine S)
 	{
 		if(scripts!=null)
@@ -853,6 +900,7 @@ public class StdExit implements Exit
 			}
 		}
 	}
+	@Override
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -861,10 +909,12 @@ public class StdExit implements Exit
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
-	public int numScripts(){return (scripts==null)?0:scripts.size();}
+	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -879,21 +929,22 @@ public class StdExit implements Exit
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
-	public int openDelayTicks()    { return 45;}
-	public void setOpenDelayTicks(int numTicks){}
 
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int openDelayTicks()    { return 45;}
+	@Override public void setOpenDelayTicks(int numTicks){}
+
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -903,6 +954,7 @@ public class StdExit implements Exit
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -911,6 +963,7 @@ public class StdExit implements Exit
 		case 1: setMiscText(val); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdExit)) return false;

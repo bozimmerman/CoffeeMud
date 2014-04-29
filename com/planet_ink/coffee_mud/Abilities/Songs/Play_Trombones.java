@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,12 @@ import java.util.*;
 */
 public class Play_Trombones extends Play_Instrument
 {
-	public String ID() { return "Play_Trombones"; }
-	public String name(){ return "Trombones";}
-	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_TROMBONES;}
-	public String mimicSpell(){return "Spell_Frenzy";}
+	@Override public String ID() { return "Play_Trombones"; }
+	@Override public String name(){ return "Trombones";}
+	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_TROMBONES;}
+	@Override public String mimicSpell(){return "Spell_Frenzy";}
 	private static Ability theSpell=null;
+	@Override
 	protected Ability getSpell()
 	{
 		if(theSpell!=null) return theSpell;

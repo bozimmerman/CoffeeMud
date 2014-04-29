@@ -38,32 +38,32 @@ import java.util.*;
 */
 public class StdAutoGenInstance extends StdArea implements AutoGenArea
 {
-	public String ID(){    return "StdAutoGenInstance";}
-	
+	@Override public String ID(){    return "StdAutoGenInstance";}
+
 	private long flags=Area.FLAG_INSTANCE_PARENT;
-	public long flags(){return flags;}
-	
+	@Override public long flags(){return flags;}
+
 	protected SVector<AreaInstanceChild> instanceChildren = new SVector<AreaInstanceChild>();
 	protected volatile int instanceCounter=0;
 	protected long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	protected WeakReference<Area> parentArea = null;
 	protected String filePath = "randareas/example.xml";
 	protected Map<String, String> varMap = new Hashtable<String, String>(1);
-	
+
 	protected String getStrippedRoomID(String roomID)
 	{
 		int x=roomID.indexOf('#');
 		if(x<0) return null;
 		return roomID.substring(x);
 	}
-	
+
 	protected String convertToMyArea(String roomID)
 	{
 		String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null) return null;
 		return Name()+strippedID;
 	}
-	
+
 	protected Area getParentArea()
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
@@ -79,12 +79,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		parentArea=new WeakReference<Area>(parentA);
 		return parentA;
 	}
-	
-	@Override public int getPercentRoomsCached() 
-	{ 
-		return (getParentArea()==null)?0:100; 
+
+	@Override public int getPercentRoomsCached()
+	{
+		return (getParentArea()==null)?0:100;
 	}
-	
+
 	@Override public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -92,7 +92,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
-		if(statData!=null) 
+		if(statData!=null)
 			return statData;
 		synchronized(("STATS_"+areaName).intern())
 		{
@@ -128,7 +128,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 		return statData;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -140,7 +141,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 			synchronized(instanceChildren)
 			{
-				for(int i=instanceChildren.size()-1;i>=0;i--) 
+				for(int i=instanceChildren.size()-1;i>=0;i--)
 				{
 					Area childA=instanceChildren.elementAt(i).A;
 					if(childA.getAreaState() != Area.State.ACTIVE)
@@ -185,7 +186,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -219,7 +221,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					StdAutoGenInstance parentA=(StdAutoGenInstance)A;
 					synchronized(parentA.instanceChildren)
 					{
-						for(int i=parentA.instanceChildren.size()-1;i>=0;i--) 
+						for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
 						{
 							List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
 							if(parentA.instanceChildren.elementAt(i).A==this)
@@ -256,8 +258,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			}
 		}
 	}
-	
-	@SuppressWarnings({"unchecked","rawtypes"})
+
+	@Override @SuppressWarnings({"unchecked","rawtypes"})
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -286,12 +288,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			synchronized(instanceChildren)
 			{
 				int myDex=-1;
-				for(int i=0;i<instanceChildren.size();i++) 
+				for(int i=0;i<instanceChildren.size();i++)
 				{
 					List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 					for(Iterator<WeakReference<MOB>> vi = V.iterator();vi.hasNext();)
 					if(msg.source() == vi.next().get())
-					{  
+					{
 						myDex=i; break;
 					}
 				}
@@ -326,7 +328,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				Area redirectA = null;
 				int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
-				if((direction<0)&&(msg.tool() instanceof Exit)) 
+				if((direction<0)&&(msg.tool() instanceof Exit))
 					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.target());
 				if(direction < 0)
 				{
@@ -372,7 +374,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 					if(idChoices.size()>0)
 						idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
-						
+
 					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("area")))
 					{
@@ -391,7 +393,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						levels.add(D);
 						totalLevels+=D.doubleValue();
 					}
-					final Double[] sortedLevels=levels.toArray(new Double[0]); 
+					final Double[] sortedLevels=levels.toArray(new Double[0]);
 					final double lowestLevel=sortedLevels[0].doubleValue();
 					final double medianLevel=sortedLevels[(int)Math.round(Math.floor(sortedLevels.length/2))].doubleValue();
 					final double averageLevel=Math.round(10.0*totalLevels/(sortedLevels.length))/10.0;
@@ -422,11 +424,11 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						if(themes.size()>0)
 							definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
 					}
-					try 
+					try
 					{
 						CMLib.percolator().checkRequirements(piece, definedIDs);
-					} 
-					catch(CMException cme) 
+					}
+					catch(CMException cme)
 					{
 						msg.source().tell("Required ids for "+idName+" were missing: "+cme.getMessage());
 						return false;
@@ -455,13 +457,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					newA.setAreaState(Area.State.ACTIVE); // starts ticking
 					final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
 					newMobList.add(new WeakReference<MOB>(msg.source()));
-					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList); 
+					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList);
 					instanceChildren.add(child);
-					
+
 					getAreaIStats(); // if this is the first child ever, this will force stat making
-					
+
 					Room R=redirectA.getRoom(redirectA.Name()+"#0");
-					if(R!=null) 
+					if(R!=null)
 					{
 						Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
 						if(E==null) E = CMClass.getExit("Open");
@@ -480,7 +482,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				if(redirectA instanceof StdAutoGenInstance)
 				{
 					Room R=redirectA.getRoom(redirectA.Name()+"#0");
-					if(R!=null) 
+					if(R!=null)
 					{
 						msg.setTarget(R);
 					}
@@ -489,8 +491,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 		return true;
 	}
-	
+
 	private final static String[] MYCODES={"GENERATIONFILEPATH","OTHERVARS"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
@@ -504,7 +507,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 		return "";
 	}
-	
+
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
@@ -517,6 +521,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		default: break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -524,6 +529,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -537,6 +543,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdAutoGenInstance)) return false;
@@ -547,9 +554,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return true;
 	}
 
-	public String getGeneratorXmlPath() { return filePath;}
-	public Map<String, String> getAutoGenVariables() { return varMap;}
-	public void setGeneratorXmlPath(String path) { filePath=path;}
-	public void setAutoGenVariables(Map<String, String> vars) { varMap = vars;}
-	public void setAutoGenVariables(String vars) { setAutoGenVariables(CMParms.parseEQParms(vars)); }
+	@Override public String getGeneratorXmlPath() { return filePath;}
+	@Override public Map<String, String> getAutoGenVariables() { return varMap;}
+	@Override public void setGeneratorXmlPath(String path) { filePath=path;}
+	@Override public void setAutoGenVariables(Map<String, String> vars) { varMap = vars;}
+	@Override public void setAutoGenVariables(String vars) { setAutoGenVariables(CMParms.parseEQParms(vars)); }
 }

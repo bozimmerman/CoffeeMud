@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 public class Fighter_Roll extends FighterSkill
 {
 	int regain=-1;
-	public String ID() { return "Fighter_Roll"; }
-	public String name(){ return "Roll With Blows";}
-	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
+	@Override public String ID() { return "Fighter_Roll"; }
+	@Override public String name(){ return "Roll With Blows";}
+	@Override public String displayText(){ return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean doneThisRound=false;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		regain=-1;
@@ -74,6 +75,7 @@ public class Fighter_Roll extends FighterSkill
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -81,6 +83,7 @@ public class Fighter_Roll extends FighterSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

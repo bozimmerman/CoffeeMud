@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,9 +57,9 @@ public class RequestHandler implements CMRunnable
 	private static final byte[][]DEFAULT_MARK_BLOCKS = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
 	private static final char[]  DEFAULT_CRLF = {'\n','\r'};
 	private long				 startTime = 0;
-	
-	public long activeTimeMillis() { return (startTime>0)?System.currentTimeMillis()-startTime:0;}
-	
+
+	@Override public long activeTimeMillis() { return (startTime>0)?System.currentTimeMillis()-startTime:0;}
+
 	public RequestHandler(SocketChannel chan, int maxIdleMillis) throws IOException
 	{
 		super();
@@ -68,8 +68,8 @@ public class RequestHandler implements CMRunnable
 			MAX_IDLE_MILLIS = ((long)maxIdleMillis) * 60 * 1000;
 		this.chan=chan;
 	}
-	
-	public void sendMsg(String msg) throws IOException 
+
+	public void sendMsg(String msg) throws IOException
 	{
 		if((msg.startsWith("[OK")||msg.startsWith("[FAIL")||msg.startsWith("[MESSAGE")))
 			msg = CMStrings.replaceAllofAny(msg,DEFAULT_CRLF,' ');
@@ -77,13 +77,13 @@ public class RequestHandler implements CMRunnable
 		ByteBuffer buf = ByteBuffer.wrap(bytes);
 		while(chan.isConnected() && chan.isOpen() && (chan.write(buf)>0))try{Thread.sleep(1);}catch(Exception e){}
 	}
-	
+
 	public void close()
 	{
 		closeMe=true;
 		try {chan.close();}catch(Exception e){}
 	}
-	
+
 	public void shutdown()
 	{
 		long time = System.currentTimeMillis();
@@ -100,7 +100,7 @@ public class RequestHandler implements CMRunnable
 	public void addDependent(String s, Object O){ dependents.put(s,O); }
 	public void delDependent(String s){ dependents.remove(s); }
 	public boolean isRunning() { return isRunning;}
-	
+
 	public boolean needsClosing()
 	{
 		if(closeMe)
@@ -111,7 +111,8 @@ public class RequestHandler implements CMRunnable
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public void run()
 	{
 		isRunning=true;
@@ -130,7 +131,7 @@ public class RequestHandler implements CMRunnable
 					buffer.position(buffer.limit());
 					buffer.limit(buffer.capacity());
 				}
-				while (chan.isConnected() && (chan.isOpen()) && (chan.read (buffer) > 0)) 
+				while (chan.isConnected() && (chan.isOpen()) && (chan.read (buffer) > 0))
 				{
 					buffer.flip();
 					int containIndex=-1;
@@ -160,7 +161,7 @@ public class RequestHandler implements CMRunnable
 							else
 								buffer = ByteBuffer.allocate(BUFFER_SIZE);
 							buffer.flip();
-							
+
 							int fullSize = 0;
 							for(ByteBuffer buf : workingBuffers)
 								fullSize += buf.limit();
@@ -211,7 +212,7 @@ public class RequestHandler implements CMRunnable
 			}
 		}
 	}
-	
+
 	public void setEndOfLine(String... msgs)
 	{
 		synchronized(this)
@@ -223,7 +224,7 @@ public class RequestHandler implements CMRunnable
 			markBlocks=newBlocks;
 		}
 	}
-	
+
 	public void execute(String line)
 	{
 		new CommandHandler(this,line).run();

@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 */
 
 /**
- * One of the oldest classes in CoffeeMud -- ye olde logger.  
+ * One of the oldest classes in CoffeeMud -- ye olde logger.
  * Features include date formatting, the standard set of log channels,
  * plus optional numeric levels within those in case some kinds of info
  * are more important than others.  Also manages multiple log files if
@@ -39,11 +39,11 @@ public class Log extends java.util.logging.Logger
 {
 	/** final date format for headers */
 	public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
-	
+
 	/** SPACES for headers */
 	private static final String SPACES="                                                                                                ";
 	private static final String SPACES15=SPACES.substring(0,15);
-	
+
 	private PrintWriter 		fileOutWriter[]	= null; /**	always to "log" */
 	private int					numberOfFWLogs	= 1;
 	private final PrintWriter 	systemOutWriter	= new PrintWriter(System.out,true); /** always to systemout */
@@ -54,25 +54,25 @@ public class Log extends java.util.logging.Logger
 	private final Map<Type,Conf>CONFS			= new Hashtable<Type,Conf>();
 	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
 	private static final Type[] TYPE_LEVEL_MAP  = new Type[1001];
-	
+
 	public static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
-	
+
 	private static class Conf
 	{
 		public final Target target;
 		public int maxLevel, maxLogs, maxLines, maxBytes;
 		public final PrintWriter[][] writers = new PrintWriter[10][];
-		public Conf(Target target, int maxLevel, int maxLogs, int maxLines, int maxBytes) 
+		public Conf(Target target, int maxLevel, int maxLogs, int maxLines, int maxBytes)
 		{ this.target=target; this.maxLevel=maxLevel; this.maxLogs=maxLogs; this.maxLines=maxLines; this.maxBytes=maxBytes;}
 	}
-	
+
 	public static enum Type { error, help, debug, info, warning, kills, combat, access;
 		final String sixChars;
 		private Type() { sixChars=(this.toString()+SPACES).substring(0,5)+" "; }
 		public final String getSixChars() { return sixChars; }
 	}
-	
-	static 
+
+	static
 	{
 		for(int i=0;i<TYPE_LEVEL_MAP.length;i++)
 			if(i<=Level.FINEST.intValue()) TYPE_LEVEL_MAP[i]=Type.debug;
@@ -83,7 +83,7 @@ public class Log extends java.util.logging.Logger
 			else if(i<=Level.WARNING.intValue()) TYPE_LEVEL_MAP[i]=Type.warning;
 			else if(i<=Level.SEVERE.intValue()) TYPE_LEVEL_MAP[i]=Type.error;
 	}
-	
+
 	public Log()
 	{
 		super("log",null);
@@ -96,7 +96,7 @@ public class Log extends java.util.logging.Logger
 	public static final Log instance()
 	{
 		Log log=l();
-		if(log==null) 
+		if(log==null)
 			log=new Log();
 		return log;
 	}
@@ -106,7 +106,7 @@ public class Log extends java.util.logging.Logger
 		logs[threadCode]=new Log();
 		return l();
 	}
-	public static final void shareWith(final char threadCode) 
+	public static final void shareWith(final char threadCode)
 	{
 		final char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(logs[threadCode]!=null)
@@ -154,7 +154,7 @@ public class Log extends java.util.logging.Logger
 	{
 		return getTarget(type) != Target.OFF;
 	}
-	
+
 	public final String getLogFilename(final Type type)
 	{
 		switch(getTarget(type))
@@ -168,7 +168,7 @@ public class Log extends java.util.logging.Logger
 			return null;
 		}
 	}
-	
+
 	private final PrintWriter rollLog(final PrintWriter writer) throws IOException
 	{
 		if(writer==this.fileOutWriter[0])
@@ -198,7 +198,7 @@ public class Log extends java.util.logging.Logger
 		}
 		return writer;
 	}
-	
+
 	private final PrintWriter writeBytes(final Type type, final Conf config, final PrintWriter writer, final String str)
 	{
 		try
@@ -221,7 +221,7 @@ public class Log extends java.util.logging.Logger
 		}
 		return writer;
 	}
-	
+
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
@@ -254,7 +254,7 @@ public class Log extends java.util.logging.Logger
 			break;
 		case OWNFILE:
 			{
-				try 
+				try
 				{
 					FileOutputStream fileStream=this.openLogFile(logName+"_"+type.toString().toLowerCase(), false, config.maxLogs);
 					final PrintWriter[] writer=new PrintWriter[]{new PrintWriter(fileStream,true)};
@@ -262,8 +262,8 @@ public class Log extends java.util.logging.Logger
 						writers[i]=writer;
 					if(!WRITTEN.containsKey(writer))
 						WRITTEN.put(writer[0], new long[]{0,0});
-				} 
-				catch (IOException e) 
+				}
+				catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -353,7 +353,7 @@ public class Log extends java.util.logging.Logger
 		else
 			return new Conf(t,maxLevel,this.numberOfFWLogs,0,0);
 	}
-	
+
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
@@ -415,7 +415,7 @@ public class Log extends java.util.logging.Logger
 	{
 		if(logName.toLowerCase().endsWith(".log")||logName.toLowerCase().endsWith(".txt"))
 			logName=logName.substring(0,logName.length()-4);
-		
+
 		// initializes the logging objects
 		if((numberOfLogs>1) && (!append))
 		{
@@ -445,7 +445,7 @@ public class Log extends java.util.logging.Logger
 			System.setErr(new PrintStream(fileStream));
 		return fileStream;
 	}
-	
+
 
 	/**
 	* Start all of the log files in the info temp directory
@@ -458,7 +458,7 @@ public class Log extends java.util.logging.Logger
 	{
 		File F=new File(logFilePath);
 		File parentFile=F.getParentFile();
-		if(parentFile!=null) 
+		if(parentFile!=null)
 			this.logPath=parentFile;
 		this.logName=F.getName();
 		this.LOGNAME=logName.toUpperCase().trim();
@@ -480,7 +480,7 @@ public class Log extends java.util.logging.Logger
 		public String nextLine();
 		public void close();
 	}
-	
+
 	/**
 	 * Returns number of lines in the log file, if any.
 	 * @return a number >=0
@@ -503,7 +503,7 @@ public class Log extends java.util.logging.Logger
 		}
 		return num;
 	}
-	
+
 	/**
 	 * Returns an internally managed log reader class to make
 	 * reading lines from the log slightly easier
@@ -514,6 +514,7 @@ public class Log extends java.util.logging.Logger
 		return new LogReader()
 		{
 			BufferedReader reader = null;
+			@Override
 			public String nextLine()
 			{
 				if(reader==null)
@@ -539,6 +540,7 @@ public class Log extends java.util.logging.Logger
 				if(line==null) close();
 				return line;
 			}
+			@Override
 			public void close()
 			{
 				{
@@ -555,7 +557,7 @@ public class Log extends java.util.logging.Logger
 			}
 		};
 	}
-	
+
 	/**
 	 * Returns the contents of the log file as a StringBuffer, if it exists
 	 * @return the contents of the log file, or an empty stringbuffer
@@ -571,7 +573,7 @@ public class Log extends java.util.logging.Logger
 			buf.append(line+"\n\r");
 		return buf;
 	}
-	
+
 	/**
 	* Start all of the log files
 	*
@@ -582,8 +584,8 @@ public class Log extends java.util.logging.Logger
 	{
 		return logPath.getAbsolutePath();
 	}
-	
-	
+
+
 	/**
 	* Will be used to create a standardized log header for file logs
  	*
@@ -713,7 +715,7 @@ public class Log extends java.util.logging.Logger
 			}
 		}
 	}
-	
+
 	/**
 	* Handles raw info logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
@@ -816,7 +818,7 @@ public class Log extends java.util.logging.Logger
 	public static final boolean killsChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.kills,l.getConfig(Type.kills),priority)!=null;}
 	public static final boolean combatChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.combat,l.getConfig(Type.combat),priority)!=null;}
 	public static final boolean accessChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.access,l.getConfig(Type.access),priority)!=null;}
-	
+
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
 		"broken pipe",
@@ -836,13 +838,13 @@ public class Log extends java.util.logging.Logger
 	{
 		if(os==null) return "";
 		if(os.length==0) return "";
-		
+
 		StringBuilder str=new StringBuilder((os[0]==null)?"null":os[0].toString());
 		for(int i=1;i<os.length;i++)
 			str.append(",").append(os[i]==null?"null":os[i].toString());
 		return str.toString();
 	}
-	
+
 	private String toModuleName(String sourceClass)
 	{
 		if((sourceClass!=null)&&(sourceClass.length()>0)&&(sourceClass.indexOf('.')>=0))
@@ -850,7 +852,7 @@ public class Log extends java.util.logging.Logger
 		else
 			return Thread.currentThread().getName();
 	}
-	
+
 	private static final Type getTypeFromLevel(final Level level)
 	{
 		try
@@ -865,9 +867,8 @@ public class Log extends java.util.logging.Logger
 				return Type.error;
 		}
 	}
-	
-	@Override
-	public synchronized void addHandler(Handler handler){}
+
+	@Override public synchronized void addHandler(Handler handler){}
 	//Log a CONFIG message.
 	@Override
 	public void	config(final String msg)
@@ -876,61 +877,59 @@ public class Log extends java.util.logging.Logger
 	}
 	//Log a method entry.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod) 
+	public void	entering(final String sourceClass, final String sourceMethod)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
 	//Log a method entry, with one parameter.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod, final Object param1) 
+	public void	entering(final String sourceClass, final String sourceMethod, final Object param1)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+param1, Integer.MIN_VALUE);
 	}
 	//Log a method entry, with an array of parameters.
 	@Override
-	public void	entering(final String sourceClass, final String sourceMethod, final Object[] params) 
+	public void	entering(final String sourceClass, final String sourceMethod, final Object[] params)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
 	}
 	//Log a method return.
 	@Override
-	public void	exiting(final String sourceClass, final String sourceMethod) 
+	public void	exiting(final String sourceClass, final String sourceMethod)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
 	//Log a method return, with result object.
 	@Override
-	public void	exiting(final String sourceClass, final String sourceMethod, final Object result) 
+	public void	exiting(final String sourceClass, final String sourceMethod, final Object result)
 	{
 		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+result, Integer.MIN_VALUE);
 	}
 	//Log a FINE message.
 	@Override
-	public void	fine(final String msg) 
+	public void	fine(final String msg)
 	{
 		l().standardOut(Type.access, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Log a FINER message.
 	@Override
-	public void	finer(final String msg) 
+	public void	finer(final String msg)
 	{
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Log a FINEST message.
 	@Override
-	public void	finest(final String msg) 
+	public void	finest(final String msg)
 	{
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Get the current filter for this Logger.
-	@Override
-	public Filter	getFilter(){ return null;}
+	@Override public Filter	getFilter(){ return null;}
 	//Get the Handlers associated with this logger.
-	@Override
-	public synchronized Handler[]	getHandlers() { return new Handler[0];}
+	@Override public synchronized Handler[]	getHandlers() { return new Handler[0];}
 	//Get the log Level that has been specified for this Logger.
 	@Override
-	public Level	getLevel() 
+	public Level	getLevel()
 	{
 		final Log log=l();
 		if(log.isWriterOn(Type.access)) return Level.FINEST;
@@ -943,144 +942,135 @@ public class Log extends java.util.logging.Logger
 	}
 	//Get the name for this logger.
 	@Override
-	public String	getName() 
+	public String	getName()
 	{
 		return logName;
 	}
 	//Return the parent for this Logger.
-	@Override
-	public Logger	getParent(){ return null; }
+	@Override public Logger	getParent(){ return null; }
 	//Retrieve the localization resource bundle for this logger for the current default locale.
-	@Override
-	public ResourceBundle	getResourceBundle() { return null; }
+	@Override public ResourceBundle	getResourceBundle() { return null; }
 	//Retrieve the localization resource bundle name for this logger.
-	@Override
-	public String	getResourceBundleName(){ return ""; }
+	@Override public String	getResourceBundleName(){ return ""; }
 	//Discover whether or not this logger is sending its output to its parent logger.
-	@Override
-	public synchronized boolean	getUseParentHandlers(){ return false; }
+	@Override public synchronized boolean	getUseParentHandlers(){ return false; }
 	//Log an INFO message.
 	@Override
-	public void	info(final String msg) 
+	public void	info(final String msg)
 	{
 		standardOut(Type.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Check if a message of the given level would actually be logged by this logger.
 	@Override
-	public boolean	isLoggable(final Level level) 
+	public boolean	isLoggable(final Level level)
 	{
 		return this.isWriterOn(getTypeFromLevel(level));
 	}
 	//Log a message, with no arguments.
 	@Override
-	public void	log(final Level level, final String msg) 
+	public void	log(final Level level, final String msg)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Log a message, with one object parameter.
 	@Override
-	public void	log(final Level level, final String msg, final Object param1) 
+	public void	log(final Level level, final String msg, final Object param1)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg+": "+((param1==null)?"null":param1.toString()),Integer.MIN_VALUE);
 	}
 	//Log a message, with an array of object arguments.
 	@Override
-	public void	log(final Level level, final String msg, final Object[] params) 
+	public void	log(final Level level, final String msg, final Object[] params)
 	{
 		standardOut(getTypeFromLevel(level),Thread.currentThread().getName(),msg+": "+(toStringList(params)),Integer.MIN_VALUE);
 	}
 	//Log a message, with associated Throwable information.
 	@Override
-	public void	log(final Level level, final String msg, final Throwable thrown) 
+	public void	log(final Level level, final String msg, final Throwable thrown)
 	{
 		if(thrown==null) log(level,msg);
 		else standardExOut(getTypeFromLevel(level),toModuleName(msg),Integer.MIN_VALUE,thrown);
 	}
 	//Log a LogRecord.
 	@Override
-	public void	log(final LogRecord record) 
+	public void	log(final LogRecord record)
 	{
 		log(record.getLevel(), record.getMessage(), record.getThrown());
 	}
 	//Log a message, specifying source class and method, with no arguments.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg) 
+	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with a single object parameter to the log message.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object param1) 
+	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object param1)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg+": "+((param1==null)?"null":param1.toString()),Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with an array of object arguments.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object[] params) 
+	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Object[] params)
 	{
 		standardOut(getTypeFromLevel(level),toModuleName(sourceClass),sourceMethod+": "+msg+": "+(toStringList(params)),Integer.MIN_VALUE);
 	}
 	//Log a message, specifying source class and method, with associated Throwable information.
 	@Override
-	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Throwable thrown) 
+	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Throwable thrown)
 	{
 		if(thrown==null) log(level,msg);
 		else standardExOut(getTypeFromLevel(level),toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
 	}
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg) 
+	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
 	@Override
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object param1) 
+	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object param1)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, param1);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
 	@Override
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object[] params) 
+	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object[] params)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, params);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
 	@Override
-	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown) 
+	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);
 	}
 	//Remove a log Handler.
-	@Override
-	public synchronized void	removeHandler(Handler handler){}
+	@Override public synchronized void	removeHandler(Handler handler){}
 	//Set a filter to control output on this Logger.
-	@Override
-	public void	setFilter(Filter newFilter){}
+	@Override public void	setFilter(Filter newFilter){}
 	//Set the log level specifying which message levels will be logged by this logger.
-	@Override
-	public void	setLevel(Level newLevel){}
+	@Override public void	setLevel(Level newLevel){}
 	//Set the parent for this Logger.
-	@Override
-	public void	setParent(Logger parent){}
+	@Override public void	setParent(Logger parent){}
 	//Specify whether or not this logger should send its output to it's parent Logger.
-	@Override
-	public synchronized void	setUseParentHandlers(boolean useParentHandlers){} 
+	@Override public synchronized void	setUseParentHandlers(boolean useParentHandlers){}
 	//Log a SEVERE message.
 	@Override
-	public void	severe(final String msg) 
+	public void	severe(final String msg)
 	{
 		standardOut(Type.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 	//Log throwing an exception.
 	@Override
-	public void	throwing(final String sourceClass, final String sourceMethod, final Throwable thrown) 
+	public void	throwing(final String sourceClass, final String sourceMethod, final Throwable thrown)
 	{
 		standardExOut(Type.error, toModuleName(sourceClass), Integer.MIN_VALUE, thrown);
 	}
 	//Log a WARNING message.
 	@Override
-	public void	warning(final String msg) 
+	public void	warning(final String msg)
 	{
 		standardOut(Type.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}

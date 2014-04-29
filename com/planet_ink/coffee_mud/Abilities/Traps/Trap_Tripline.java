@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Tripline extends StdTrap
 {
-	public String ID() { return "Trap_Tripline"; }
-	public String name(){ return "tripline";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 1;}
-	public String requiresToSet(){return "a pound of cloth";}
+	@Override public String ID() { return "Trap_Tripline"; }
+	@Override public String name(){ return "tripline";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 1;}
+	@Override public String requiresToSet(){return "a pound of cloth";}
 
-	public int baseRejuvTime(int level){return 2;}
+	@Override public int baseRejuvTime(int level){return 2;}
 
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -55,12 +56,14 @@ public class Trap_Tripline extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -75,6 +78,7 @@ public class Trap_Tripline extends StdTrap
 		return true;
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())

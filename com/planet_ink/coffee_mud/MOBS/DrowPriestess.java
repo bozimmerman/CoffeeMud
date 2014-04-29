@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class DrowPriestess extends DrowElf
 {
-	public String ID(){return "DrowPriestess";}
+	@Override public String ID(){return "DrowPriestess";}
 	protected int spellDown=3;
 	protected int magicResistance = 50;
 
@@ -171,6 +171,7 @@ public class DrowPriestess extends DrowElf
 
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		boolean retval = super.okMessage(myHost,msg);
@@ -188,6 +189,7 @@ public class DrowPriestess extends DrowElf
 		return retval;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
@@ -232,6 +234,7 @@ public class DrowPriestess extends DrowElf
 
 	}
 
+	@Override
 	protected boolean castDarkness()
 	{
 		if(this.location()==null)

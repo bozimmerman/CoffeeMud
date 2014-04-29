@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Song_Serenity extends Song
 {
-	public String ID() { return "Song_Serenity"; }
-	public String name(){ return "Serenity";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override public String ID() { return "Song_Serenity"; }
+	@Override public String name(){ return "Serenity";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);

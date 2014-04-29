@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdClanPamphlet extends StdClanItem
 {
-	public String ID(){	return "StdClanPamphlet";}
+	@Override public String ID(){	return "StdClanPamphlet";}
 	protected int tradeTime=-1;
 
 	public StdClanPamphlet()
@@ -52,6 +52,7 @@ public class StdClanPamphlet extends StdClanItem
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -104,7 +105,7 @@ public class StdClanPamphlet extends StdClanItem
 								CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 								if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 									mob.location().send(mob,newMsg);
-								if(!M.isMine(I)) 
+								if(!M.isMine(I))
 									((Item)I).destroy();
 								else
 								if(mob.isMine(I))

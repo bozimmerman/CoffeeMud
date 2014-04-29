@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 
 public class Fighter_CalledShot extends Fighter_CalledStrike
 {
-	public String ID() { return "Fighter_CalledShot"; }
-	public String name(){ return "Called Shot";}
+	@Override public String ID() { return "Fighter_CalledShot"; }
+	@Override public String name(){ return "Called Shot";}
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected boolean prereqs(MOB mob, boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))

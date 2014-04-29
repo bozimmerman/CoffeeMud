@@ -37,23 +37,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CurseMetal extends Prayer
 {
-	public String ID() { return "Prayer_CurseMetal"; }
-	public String name(){return "Curse Metal";}
-	public String displayText(){return "(Cursed)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
+	@Override public String ID() { return "Prayer_CurseMetal"; }
+	@Override public String name(){return "Curse Metal";}
+	@Override public String displayText(){return "(Cursed)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
 
 	protected Vector affectedItems=new Vector();
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		affectedItems=new Vector();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -69,6 +71,7 @@ public class Prayer_CurseMetal extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -110,6 +113,7 @@ public class Prayer_CurseMetal extends Prayer
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -139,6 +143,7 @@ public class Prayer_CurseMetal extends Prayer
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

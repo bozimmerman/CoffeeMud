@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenCloak extends GenArmor
 {
-	public String ID(){	return "GenCloak";}
+	@Override public String ID(){	return "GenCloak";}
 	public GenCloak()
 	{
 		super();
@@ -51,6 +51,7 @@ public class GenCloak extends GenArmor
 		readableText="a hooded figure";
 	}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		if(!amWearingAt(Wearable.IN_INVENTORY))

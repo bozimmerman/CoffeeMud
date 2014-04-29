@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CurseItem extends Prayer
 {
-	public String ID() { return "Prayer_CurseItem"; }
-	public String name(){ return "Curse Item";}
-	public String displayText(){ return "(Cursed)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_CurseItem"; }
+	@Override public String name(){ return "Curse Item";}
+	@Override public String displayText(){ return "(Cursed)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Prayer_CurseItem extends Prayer
 			affectableStats.setAbility(affectableStats.ability()-1);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 
@@ -77,6 +79,7 @@ public class Prayer_CurseItem extends Prayer
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -118,6 +121,7 @@ public class Prayer_CurseItem extends Prayer
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -132,7 +136,8 @@ public class Prayer_CurseItem extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);

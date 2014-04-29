@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FutureDeath extends Spell
 {
-	public String ID() { return "Spell_FutureDeath"; }
-	public String name(){return "Future Death";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_FutureDeath"; }
+	@Override public String name(){return "Future Death";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

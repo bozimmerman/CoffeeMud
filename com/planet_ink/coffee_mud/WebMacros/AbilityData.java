@@ -18,7 +18,7 @@ import com.planet_ink.miniweb.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 */
 public class AbilityData extends StdWebMacro
 {
-	public String name() { return "AbilityData"; }
+	@Override public String name() { return "AbilityData"; }
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		MOB mob=Authenticate.getAuthenticatedMob(httpReq);
-		
+
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -55,7 +56,7 @@ public class AbilityData extends StdWebMacro
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
-		
+
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
 		Ability A=null;
@@ -127,7 +128,7 @@ public class AbilityData extends StdWebMacro
 					if(old==null) old=A.getStat("HELP");
 					str.append(old+", ");
 				}
-				
+
 				if(A instanceof Language)
 				{
 					if(parms.containsKey("WORDLISTS"))
@@ -149,13 +150,13 @@ public class AbilityData extends StdWebMacro
 								httpReq.addFakeUrlParameter("WORDLIST"+(i+1), CMParms.toStringList(wordLists.get(i)));
 							httpReq.removeUrlParameter("WORDLIST"+(wordLists.size()+1));
 						}
-						
+
 						for(int i=wordLists.size()-1;i>=0;i--)
 							if(wordLists.get(i).length==0)
 								wordLists.remove(i);
 							else
 								break;
-						
+
 						if(parms.containsKey("RESET"))
 						{
 							httpReq.removeUrlParameter("WORDLISTNUM");
@@ -187,7 +188,7 @@ public class AbilityData extends StdWebMacro
 							return " @break@";
 						}
 					}
-					
+
 					if(parms.containsKey("HASHWORDS"))
 					{
 						Map<String,String> hashWords=((Language)A).translationHash(A.ID());
@@ -207,7 +208,7 @@ public class AbilityData extends StdWebMacro
 						else
 						{
 							int x=1;
-							for(String key : hashWords.keySet()) 
+							for(String key : hashWords.keySet())
 							{
 								httpReq.addFakeUrlParameter("HASHWORD"+x, key);
 								httpReq.addFakeUrlParameter("HASHWORDDEF"+x, hashWords.get(key));
@@ -216,7 +217,7 @@ public class AbilityData extends StdWebMacro
 							httpReq.removeUrlParameter("HASHWORD"+x);
 							httpReq.removeUrlParameter("HASHWORDDEF"+x);
 						}
-						
+
 						if(parms.containsKey("RESET"))
 						{
 							httpReq.removeUrlParameter("HASHWORDNUM");
@@ -232,7 +233,7 @@ public class AbilityData extends StdWebMacro
 							String lastNum = httpReq.getUrlParameter("HASHWORDNUM");
 							String nextName = "HASHWORD1";
 							String nextDefName = "HASHWORDDEF1";
-							for(int i=1;i<=hashWords.keySet().size();i++) 
+							for(int i=1;i<=hashWords.keySet().size();i++)
 							{
 								String thisName="HASHWORD"+Integer.toString(i);
 								String thisDefName="HASHWORDDEF"+Integer.toString(i);
@@ -258,7 +259,7 @@ public class AbilityData extends StdWebMacro
 						}
 					}
 				}
-				
+
 				// here starts CLASSIFICATION
 				if(parms.containsKey("CLASSIFICATION_ACODE"))
 				{
@@ -291,7 +292,7 @@ public class AbilityData extends StdWebMacro
 					str.append(", ");
 				}
 				// here ends CLASSIFICATION
-				
+
 				if(parms.containsKey("TRIGSTR"))
 				{
 					String old=httpReq.getUrlParameter("TRIGSTR");
@@ -336,7 +337,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("AUTOINVOKE"))
 				{
 					String old=httpReq.getUrlParameter("AUTOINVOKE");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("AUTOINVOKE");
 					else
 						old=""+old.equalsIgnoreCase("on");
@@ -346,7 +347,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("TICKAFFECTS"))
 				{
 					String old=httpReq.getUrlParameter("TICKAFFECTS");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("TICKAFFECTS");
 					else
 						old=""+old.equalsIgnoreCase("on");
@@ -362,8 +363,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseCommas(A.getStat("FLAGS"),true);
 					for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\""+(list.contains(Ability.FLAG_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
@@ -401,8 +402,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("USAGEMASK"+id));
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseCommas(A.getStat("USAGEMASK"),true);
 					for(int i=0;i<Ability.USAGE_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+Ability.USAGE_DESCS[i]+"\""+(list.contains(Ability.USAGE_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.USAGE_DESCS[i]));
@@ -417,8 +418,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("CANAFFECTMASK"+id));
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseCommas(A.getStat("CANAFFECTMASK"),true);
 					for(int i=0;i<Ability.CAN_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
@@ -433,8 +434,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("CANTARGETMASK"+id));
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseCommas(A.getStat("CANTARGETMASK"),true);
 					for(int i=0;i<Ability.CAN_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
@@ -525,7 +526,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANMEND"))
 				{
 					String old=httpReq.getUrlParameter("CANMEND");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("CANMEND");
 					else
 						old=old.equalsIgnoreCase("on")?"true":"false";
@@ -534,7 +535,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANREFIT"))
 				{
 					String old=httpReq.getUrlParameter("CANREFIT");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("CANREFIT");
 					else
 						old=old.equalsIgnoreCase("on")?"true":"false";
@@ -543,7 +544,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANBUNDLE"))
 				{
 					String old=httpReq.getUrlParameter("CANBUNDLE");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("CANBUNDLE");
 					else
 						old=old.equalsIgnoreCase("on")?"true":"false";
@@ -552,13 +553,13 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANSIT"))
 				{
 					String old=httpReq.getUrlParameter("CANSIT");
-					if(old==null) 
+					if(old==null)
 						old=A.getStat("CANSIT");
 					else
 						old=old.equalsIgnoreCase("on")?"true":"false";
 					str.append(old.equalsIgnoreCase("true")?"checked":"");
 				}
-				
+
 				if(parms.containsKey("MATLIST"))
 				{
 					List<String> list=new Vector<String>();
@@ -568,8 +569,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("MATLIST"+id).toUpperCase().trim());
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseCommas(A.getStat("MATLIST"),true);
 					for(RawMaterial.Material m : RawMaterial.Material.values())
 						str.append("<OPTION VALUE=\""+m.name()+"\""+(list.contains(m.name())?" SELECTED":"")+">"+m.noun());
@@ -577,7 +578,7 @@ public class AbilityData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+RawMaterial.CODES.NAMES()[i]+"\""+(list.contains(RawMaterial.CODES.NAMES()[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAMES()[i]));
 					str.append(", ");
 				}
-				
+
 				if(parms.containsKey("POSTCASTAFFECT"))
 				{
 					List<String> list=new Vector<String>();
@@ -587,8 +588,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("POSTCASTAFFECT"+id).toUpperCase());
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
@@ -610,8 +611,8 @@ public class AbilityData extends StdWebMacro
 						int num=0;
 						for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
 							list.add(httpReq.getUrlParameter("POSTCASTABILITY"+id).toUpperCase());
-					} 
-					else 
+					}
+					else
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
@@ -635,13 +636,13 @@ public class AbilityData extends StdWebMacro
 					if(old==null) old=A.getStat("POSTCASTDAMAGE");
 					str.append(old+", ");
 				}
-				
-				
-				
+
+
+
 				/*********************************************************************************/
 				/*********************************************************************************/
 				// here begins the old display data parms
-				
+
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText(A.ID(),null,false);
@@ -775,7 +776,7 @@ public class AbilityData extends StdWebMacro
 						domain=domain>>5;
 						thang.append(": "+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain]).replace('_',' '));
 					}
-					
+
 					if(thang.length()>0)
 					{
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));

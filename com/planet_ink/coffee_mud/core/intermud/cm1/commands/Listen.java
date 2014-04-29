@@ -24,7 +24,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,20 +41,20 @@ import java.util.concurrent.atomic.*;
 */
 public class Listen extends CM1Command
 {
-	public String getCommandWord(){ return "LISTEN";}
+	@Override public String getCommandWord(){ return "LISTEN";}
 	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM,TARGET,SOURCE,TOOL,TARGETCODE,SOURCECODE,OTHERSCODE,AREA,TARGETMASK,SOURCEMASK,OTHERSMASK}
 	protected static SLinkedList<Listener> listeners=new SLinkedList<Listener>();
-	
-	public Listen(RequestHandler req, String parameters) 
+
+	public Listen(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
-	
+
 	protected void sendMsg(Listener listener, String msg) throws IOException
 	{
 		req.sendMsg("[MESSAGE "+listener.channelName+": "+msg+"]");
 	}
-	
+
 	protected static class ListenCriterium
 	{
 		public final STATTYPE statType;
@@ -67,24 +67,24 @@ public class Listen extends CM1Command
 			this.obj=obj;
 			switch(statType)
 			{
-			case CHANNEL: 
+			case CHANNEL:
 				this.parm=(parm==null)?"":parm.toUpperCase().trim();
 				parmInt=CMLib.channels().getChannelIndex(this.parm);
 				break;
-			case SOURCECODE: 
-			case TARGETCODE: 
-			case OTHERSCODE: 
+			case SOURCECODE:
+			case TARGETCODE:
+			case OTHERSCODE:
 				this.parm=(parm==null)?"":parm.toUpperCase().trim();
 				parmInt= CMParms.indexOf(CMMsg.TYPE_DESCS,this.parm);
 				break;
-			case SOURCEMASK: 
-			case TARGETMASK: 
+			case SOURCEMASK:
+			case TARGETMASK:
 			case OTHERSMASK:
 				this.parm=(parm==null)?"":parm.toUpperCase().trim();
 				if(CMParms.indexOf(CMMsg.MASK_DESCS,this.parm)>=0)
 				{
 					Integer I=CMMsg.Desc.getMSGTYPE_DESCS().get(this.parm);
-					if(I!=null) 
+					if(I!=null)
 						parmInt=I.intValue();
 					else
 						parmInt=-1;
@@ -99,13 +99,13 @@ public class Listen extends CM1Command
 			}
 		}
 	}
-	
+
 	protected class Listener implements MsgMonitor
 	{
 		public final String channelName;
 		private final ListenCriterium crits[];
 		public final List<String> msgs=new LinkedList<String>();
-		
+
 		public Listener(String channelName, ListenCriterium[] crits)
 		{
 			this.channelName=channelName.toUpperCase().trim();
@@ -116,8 +116,8 @@ public class Listen extends CM1Command
 		{
 			switch(crit.statType)
 			{
-			case CHANNEL: 
-				return (msg.othersMajor(CMMsg.MASK_CHANNEL)) 
+			case CHANNEL:
+				return (msg.othersMajor(CMMsg.MASK_CHANNEL))
 					&& (crit.parmInt==(msg.othersMinor()-CMMsg.TYP_CHANNEL));
 			case LOGINS: return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
 			case MOB: return msg.source()==crit.obj;
@@ -138,7 +138,7 @@ public class Listen extends CM1Command
 			}
 			return false;
 		}
-		
+
 		public boolean doesMonitor(final Room room, final CMMsg msg)
 		{
 			for(ListenCriterium crit : crits)
@@ -146,22 +146,22 @@ public class Listen extends CM1Command
 					return false;
 			return true;
 		}
-		
+
 		private String minorDesc(int code)
 		{
 			String desc = CMMsg.Desc.getMSGDESC_TYPES().get(Integer.valueOf(code));
 			if(desc==null) desc = "?";
 			return desc;
-			
+
 		}
-		
+
 		public String messageToString(final CMMsg msg)
 		{
 			switch(crits[0].statType)
 			{
-			case CHANNEL: 
+			case CHANNEL:
 				return CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false);
-			case LOGINS: 
+			case LOGINS:
 				if(msg.othersMinor()==CMMsg.TYP_LOGIN)
 					return "LOGIN "+msg.source().Name();
 				else
@@ -187,8 +187,9 @@ public class Listen extends CM1Command
 			}
 			}
 		}
-		
-		public void monitorMsg(Room room, CMMsg msg) 
+
+		@Override
+		public void monitorMsg(Room room, CMMsg msg)
 		{
 			try
 			{
@@ -203,12 +204,12 @@ public class Listen extends CM1Command
 			}
 		}
 	}
-	
+
 	public boolean securityCheck(MOB user, ListenCriterium crit)
 	{
 		switch(crit.statType)
 		{
-		case CHANNEL: 
+		case CHANNEL:
 		{
 			if(crit.parmInt<0)
 				return false;
@@ -220,12 +221,12 @@ public class Listen extends CM1Command
 				return CMSecurity.isAllowedAnywhere(user, CMSecurity.SecFlag.STAT);
 			return true;
 		}
-		case SOURCECODE: 
-		case TARGETCODE: 
-		case OTHERSCODE: 
-		case SOURCEMASK: 
-		case TARGETMASK: 
-		case OTHERSMASK: 
+		case SOURCECODE:
+		case TARGETCODE:
+		case OTHERSCODE:
+		case SOURCEMASK:
+		case TARGETMASK:
+		case OTHERSMASK:
 			if(crit.parmInt<0)
 				return false;
 			return true;
@@ -242,23 +243,23 @@ public class Listen extends CM1Command
 			return true;
 		}
 	}
-	
+
 	public boolean parameterCheck(MOB user, ListenCriterium crit)
 	{
 		switch(crit.statType)
 		{
-		case CHANNEL: 
+		case CHANNEL:
 		{
 			if(crit.parmInt<0)
 				return false;
 			return true;
 		}
-		case SOURCECODE: 
-		case TARGETCODE: 
-		case OTHERSCODE: 
-		case SOURCEMASK: 
-		case TARGETMASK: 
-		case OTHERSMASK: 
+		case SOURCECODE:
+		case TARGETCODE:
+		case OTHERSCODE:
+		case SOURCEMASK:
+		case TARGETMASK:
+		case OTHERSMASK:
 			if(crit.parmInt<0)
 				return false;
 			return true;
@@ -275,14 +276,14 @@ public class Listen extends CM1Command
 			return true;
 		}
 	}
-	
+
 	public List<ListenCriterium> getCriterium(String rest) throws IOException
 	{
 		List<ListenCriterium> list=new Vector<ListenCriterium>();
 		while(rest.length()>0)
 		{
 			String codeStr;
-			int x=rest.indexOf(' ');			
+			int x=rest.indexOf(' ');
 			if(x>0)
 			{
 				codeStr=rest.substring(0,x).toUpperCase().trim();
@@ -309,7 +310,7 @@ public class Listen extends CM1Command
 				return null;
 			}
 			String parm=null;
-			x=rest.indexOf(' ');			
+			x=rest.indexOf(' ');
 			if(x>0)
 			{
 				parm=rest.substring(0,x).trim();
@@ -355,7 +356,8 @@ public class Listen extends CM1Command
 		}
 		return list;
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try
@@ -399,13 +401,15 @@ public class Listen extends CM1Command
 			req.close();
 		}
 	}
-	
+
 	// depends on what you want to listen to
+	@Override
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
 		return (user != null);
 	}
-	
+
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toStringList(STATTYPE.values());

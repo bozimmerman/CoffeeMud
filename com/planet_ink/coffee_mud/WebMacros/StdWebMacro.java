@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,37 +48,41 @@ import java.util.*;
 */
 public class StdWebMacro implements WebMacro
 {
-	public String ID()		{return name();}
-	public String name()	{return "UNKNOWN";}
+	@Override public String ID()		{return name();}
+	@Override public String name()	{return "UNKNOWN";}
 
-	public boolean isAWebPath(){return false;}
-	public boolean preferBinary(){return false;}
-	public boolean isAdminMacro()	{return false;}
-	public CMObject newInstance(){return this;}
-	public void initializeClass(){}
-	public CMObject copyOf(){return this;}
-	
+	@Override public boolean isAWebPath(){return false;}
+	@Override public boolean preferBinary(){return false;}
+	@Override public boolean isAdminMacro()	{return false;}
+	@Override public CMObject newInstance(){return this;}
+	@Override public void initializeClass(){}
+	@Override public CMObject copyOf(){return this;}
+
+	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return runMacro(httpReq,parm).getBytes();
 	}
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}
-	
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		return filename;
 	}
-	
+
+	@Override
 	public void setServletResponse(SimpleServletResponse response, final String filename)
 	{
 		response.setHeader("Content-Type", MIMEType.getMIMEType(filename).getType());
 	}
-	
+
 	protected StringBuffer colorwebifyOnly(StringBuffer s)
 	{
 		if(s==null) return null;
@@ -120,7 +124,7 @@ public class StdWebMacro implements WebMacro
 		}
 		return s;
 	}
-	
+
 	protected StringBuffer webify(StringBuffer s)
 	{
 		if(s==null) return null;
@@ -167,10 +171,10 @@ public class StdWebMacro implements WebMacro
 		s=colorwebifyOnly(s);
 		return s;
 	}
-	
+
 	protected String clearWebMacros(String s) { return CMLib.webMacroFilter().clearWebMacros(s); }
 	protected String clearWebMacros(StringBuffer s) { return CMLib.webMacroFilter().clearWebMacros(s); }
-	
+
 	protected StringBuilder helpHelp(StringBuilder s){return helpHelp(s,70);}
 	protected StringBuilder helpHelp(StringBuilder s, int limit)
 	{
@@ -182,7 +186,7 @@ public class StdWebMacro implements WebMacro
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
 			x=s.toString().indexOf("\r\n");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\r\n");}
-			
+
 			int count=0;
 			x=0;
 			int lastSpace=0;
@@ -269,7 +273,7 @@ public class StdWebMacro implements WebMacro
 		}
 		return new StringBuilder("");
 	}
-	
+
 	protected PairSVector<String,String> parseOrderedParms(String parm, boolean preserveCase)
 	{
 		PairSVector<String,String> requestParms=new PairSVector<String,String>();
@@ -333,7 +337,7 @@ public class StdWebMacro implements WebMacro
 		}
 		return requestParms;
 	}
-	
+
 	protected String htmlIncomingFilter(String buf){return htmlIncomingFilter(new StringBuffer(buf)).toString();}
 	protected StringBuffer htmlIncomingFilter(StringBuffer buf)
 	{
@@ -423,7 +427,7 @@ public class StdWebMacro implements WebMacro
 		}
 		return buf;
 	}
-	
+
 	protected byte[] getHTTPFileData(final HTTPRequest httpReq, final String file) throws HTTPException
 	{
 		if(Thread.currentThread() instanceof MWThread)
@@ -455,13 +459,13 @@ public class StdWebMacro implements WebMacro
 				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 			};
-			
+
 			DataBuffers data=config.getFileGetter().getFileData(newReq);
 			return data.flushToBuffer().array();
 		}
 		return new byte[0];
 	}
-	
+
 	protected File grabFile(final HTTPRequest httpReq, String filename)
 	{
 		if(Thread.currentThread() instanceof MWThread)
@@ -496,12 +500,12 @@ public class StdWebMacro implements WebMacro
 				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 			};
-			
+
 			return config.getFileGetter().assembleFileRequest(newReq);
 		}
 		return null;
 	}
-	
+
 	protected java.util.Map<String,String> parseParms(String parm)
 	{
 		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
@@ -510,7 +514,7 @@ public class StdWebMacro implements WebMacro
 			requestParms.put(P.first,P.second);
 		return requestParms;
 	}
-	
+
 	protected java.util.Map<String,String> parseParms(String parm, boolean preserveCase)
 	{
 		final Hashtable<String,String> requestParms=new Hashtable<String,String>();

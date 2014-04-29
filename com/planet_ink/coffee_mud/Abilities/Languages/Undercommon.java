@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Lee Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 // just a mix of all the underworld languages
 public class Undercommon extends StdLanguage
 {
-	public String ID() { return "Undercommon"; }
-	public String name(){ return "Undercommon";}
+	@Override public String ID() { return "Undercommon"; }
+	@Override public String name(){ return "Undercommon";}
 	public static List<String[]> wordLists=null;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()
 	{
 		super();
 	}
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
@@ -63,21 +64,24 @@ public class Undercommon extends StdLanguage
 		}
 		return wordLists;
 	}
-	public boolean translatesLanguage(String language) 
-	{ 
-		return ID().equalsIgnoreCase(language) 
+	@Override
+	public boolean translatesLanguage(String language)
+	{
+		return ID().equalsIgnoreCase(language)
 				|| "Dwarven".equalsIgnoreCase(language)
 				|| "Goblinese".equalsIgnoreCase(language)
 				|| "Drowish".equalsIgnoreCase(language)
 				|| "Gnomish".equalsIgnoreCase(language);
 	}
-	public int getProficiency(String language) { 
+	@Override
+	public int getProficiency(String language) {
 		if(ID().equalsIgnoreCase(language))
 			return proficiency();
 		if(translatesLanguage(language))
 			return proficiency() / 5;
 		return 0;
 	}
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
 		return drowish.translationHash(drowish.ID());

@@ -37,11 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Position extends Prayer
 {
-	public String ID() { return "Prayer_Position"; }
-	public String name(){ return "Position";}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public String ID() { return "Prayer_Position"; }
+	@Override public String name(){ return "Position";}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public Room lastPosition=null;
 
 	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)
@@ -130,6 +130,7 @@ public class Prayer_Position extends Prayer
 		return theTrail.toString();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(lastPosition==null) lastPosition=mob.getStartRoom();

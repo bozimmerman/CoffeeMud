@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Polka extends Dance
 {
-	public String ID() { return "Dance_Polka"; }
-	public String name(){ return "Polka";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
+	@Override public String ID() { return "Dance_Polka"; }
+	@Override public String name(){ return "Polka";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -51,6 +52,7 @@ public class Dance_Polka extends Dance
 	}
 
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -67,6 +69,7 @@ public class Dance_Polka extends Dance
 			mob.location().send(mob,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -89,6 +92,7 @@ public class Dance_Polka extends Dance
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

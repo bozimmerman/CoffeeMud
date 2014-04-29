@@ -35,17 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_Hidden extends Property
 {
-	public String ID() { return "Prop_Hidden"; }
-	public String name(){ return "Persistant Hiddenness";}
+	@Override public String ID() { return "Prop_Hidden"; }
+	@Override public String name(){ return "Persistant Hiddenness";}
+	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS
 										 |Ability.CAN_ITEMS
 										 |Ability.CAN_EXITS
 										 |Ability.CAN_AREAS;}
 	protected int ticksSinceLoss=100;
 	protected boolean unLocatable=false;
-	
-	public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -73,6 +75,7 @@ public class Prop_Hidden extends Property
 		return;
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -82,13 +85,15 @@ public class Prop_Hidden extends Property
 			unLocatable=parms.contains("UNLOCATABLE");
 		}
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,100+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticksSinceLoss<999999)
@@ -96,6 +101,7 @@ public class Prop_Hidden extends Property
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

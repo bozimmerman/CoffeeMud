@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class DrowElf extends StdMOB
 {
-	public String ID(){return "DrowElf";}
+	@Override public String ID(){return "DrowElf";}
 	public static final int MALE	= 0;
 	public static final int FEMALE	= 1;
 
@@ -90,6 +90,7 @@ public class DrowElf extends StdMOB
 		recoverCharStats();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))

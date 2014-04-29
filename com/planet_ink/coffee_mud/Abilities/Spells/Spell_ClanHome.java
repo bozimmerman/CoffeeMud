@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ClanHome extends Spell
 {
-	public String ID() { return "Spell_ClanHome"; }
-	public String name(){return "Clan Home";}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String ID() { return "Spell_ClanHome"; }
+	@Override public String name(){return "Clan Home";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.clans().iterator().hasNext())

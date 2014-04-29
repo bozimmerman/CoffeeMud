@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,10 +33,10 @@ import java.util.*;
 */
 public class FlyingExit extends StdExit
 {
-	public String ID(){	return "FlyingExit";}
-	public String Name(){ return "the open air";}
-	public String displayText(){ return "";}
-	public String description(){ return "Looks like you'll have to fly up there.";}
+	@Override public String ID(){	return "FlyingExit";}
+	@Override public String Name(){ return "the open air";}
+	@Override public String displayText(){ return "";}
+	@Override public String description(){ return "Looks like you'll have to fly up there.";}
 	public FlyingExit()
 	{
 		super();

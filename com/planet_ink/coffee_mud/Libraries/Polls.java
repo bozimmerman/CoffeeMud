@@ -21,7 +21,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,23 +39,24 @@ limitations under the License.
 
 public class Polls extends StdLibrary implements PollManager
 {
-	public String ID(){return "Polls";}
+	@Override public String ID(){return "Polls";}
 	public SVector<Poll> pollCache=null;
-	
+
+	@Override
 	public boolean shutdown()
 	{
 		pollCache=null;
 		return true;
 	}
-	
-	public void addPoll(Poll P){if(getCache()!=null) getCache().add(P);}
-	public void removePoll(Poll P){if(getCache()!=null) getCache().remove(P);}
-	
+
+	@Override public void addPoll(Poll P){if(getCache()!=null) getCache().add(P);}
+	@Override public void removePoll(Poll P){if(getCache()!=null) getCache().remove(P);}
+
 	public synchronized List<Poll> getCache()
 	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.POLLCACHE)) 
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.POLLCACHE))
 			return null;
-		if(pollCache==null) 
+		if(pollCache==null)
 		{
 			pollCache=new SVector<Poll>();
 			List<DatabaseEngine.PollData> list=CMLib.database().DBReadPollList();
@@ -69,6 +70,7 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return pollCache;
 	}
+	@Override
 	public Poll getPoll(String named)
 	{
 		List<Poll> V=getCache();
@@ -85,7 +87,8 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return null;
 	}
-	
+
+	@Override
 	public Poll getPoll(int x)
 	{
 		Iterator<Poll> p=getPollList();
@@ -98,7 +101,8 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return P;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
 	{
@@ -123,7 +127,8 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return list;
 	}
-	
+
+	@Override
 	public Iterator<Poll> getPollList()
 	{
 		List<Poll> L=getCache();
@@ -142,10 +147,11 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return list.iterator();
 	}
-	
+
+	@Override
 	public void processVote(Poll P, MOB mob)
 	{
-		if(!P.mayIVote(mob)) 
+		if(!P.mayIVote(mob))
 			return;
 		try
 		{
@@ -153,7 +159,7 @@ public class Polls extends StdLibrary implements PollManager
 				return;
 			StringBuffer present=new StringBuffer("");
 			present.append("^O"+P.getDescription()+"^N\n\r\n\r");
-			if(P.getOptions().size()==0) 
+			if(P.getOptions().size()==0)
 			{
 				mob.tell(present.toString()+"Oops! No options defined!");
 				return;
@@ -166,12 +172,12 @@ public class Polls extends StdLibrary implements PollManager
 			}
 			if(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
 				present.append("^H  : ^NPress ENTER to abstain from voting.^?\n\r");
-			
+
 			mob.tell(present.toString());
 			int choice=-1;
 			while((choice<0)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
-				
+
 				String s=mob.session().prompt("Please make your selection (1-"+P.getOptions().size()+"): ");
 				if((s.length()==0)&&(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)))
 					break;
@@ -195,7 +201,8 @@ public class Polls extends StdLibrary implements PollManager
 				Log.errOut("Polls",x);
 		}
 	}
-	
+
+	@Override
 	public void modifyVote(Poll P, MOB mob) throws java.io.IOException
 	{
 		if((mob.isMonster())||(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.POLLS)))
@@ -231,13 +238,13 @@ public class Polls extends StdLibrary implements PollManager
 					CMath.setb(P.getFlags(),Poll.FLAG_NOTATLOGIN):CMath.unsetb(P.getFlags(),Poll.FLAG_NOTATLOGIN));
 			String expirationDate="NA";
 			if(P.getExpiration()>0) expirationDate=CMLib.time().date2String(P.getExpiration());
-			
+
 			expirationDate=CMLib.genEd().prompt(mob,expirationDate,++showNumber,showFlag,"Exp. Date (MM/DD/YYYY HH:MM AP)",true);
 			if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
 				P.setExpiration(0);
 			else
 			{ try{P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));}catch(Exception e){}}
-					
+
 			Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
 			for(int i=0;i<P.getOptions().size();i++)
 			{
@@ -247,14 +254,14 @@ public class Polls extends StdLibrary implements PollManager
 			}
 			for(int i=0;i<del.size();i++)
 				P.getOptions().remove(del.elementAt(i));
-			
+
 			Poll.PollOption PO=null;
 			while(!mob.session().isStopped())
 			{
 				PO=new Poll.PollOption(
 						CMLib.genEd().prompt(mob,"",++showNumber,showFlag,"New Vote Option",true)
 				);
-				if(PO.text.length()==0) 
+				if(PO.text.length()==0)
 					break;
 				P.getOptions().add(PO);
 			}
@@ -269,7 +276,8 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		updatePoll(oldName,P);
 	}
-	
+
+	@Override
 	public void processResults(Poll P, MOB mob)
 	{
 		if(!P.mayISeeResults(mob))
@@ -278,7 +286,7 @@ public class Polls extends StdLibrary implements PollManager
 			return;
 		StringBuffer present=new StringBuffer("");
 		present.append("^O"+P.getSubject()+"^N\n\r\n\r");
-		if(P.getOptions().size()==0) 
+		if(P.getOptions().size()==0)
 		{
 			mob.tell(present.toString()+"Oops! No options defined!");
 			return;
@@ -319,7 +327,8 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		mob.tell(present.toString());
 	}
-	
+
+	@Override
 	public void createPoll(Poll P)
 	{
 		addPoll(P);
@@ -333,10 +342,12 @@ public class Polls extends StdLibrary implements PollManager
 									  P.getResultsXML(),
 									  P.getExpiration());
 	}
+	@Override
 	public void updatePollResults(Poll P)
 	{
 		CMLib.database().DBUpdatePollResults(P.getName(),P.getResultsXML());
 	}
+	@Override
 	public void updatePoll(String oldName, Poll P)
 	{
 		CMLib.database().DBUpdatePoll(oldName,
@@ -350,13 +361,15 @@ public class Polls extends StdLibrary implements PollManager
 									  P.getResultsXML(),
 									  P.getExpiration());
 	}
+	@Override
 	public void deletePoll(Poll P)
 	{
 		removePoll(P);
 		CMLib.database().DBDeletePoll(P.getName());
 	}
-	
-	public boolean loadPollIfNecessary(Poll P) 
+
+	@Override
+	public boolean loadPollIfNecessary(Poll P)
 	{
 		if(P.loaded()) return true;
 		DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
@@ -405,7 +418,8 @@ public class Polls extends StdLibrary implements PollManager
 		return true;
 	}
 
-	
+
+	@Override
 	public Poll loadPollByName(String name)
 	{
 		Poll P=(Poll)CMClass.getCommon("DefaultPoll");
@@ -413,5 +427,5 @@ public class Polls extends StdLibrary implements PollManager
 		P.setName(name);
 		return loadPollIfNecessary(P)?P:null;
 	}
-	
+
 }

@@ -35,8 +35,9 @@ import java.util.*;
 */
 public class NumPlayers extends StdWebMacro
 {
-	public String name()	{return "NumPlayers";}
+	@Override public String name()	{return "NumPlayers";}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

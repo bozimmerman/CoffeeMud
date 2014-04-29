@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,29 +33,30 @@ import java.util.*;
 */
 public class Tumbleweed extends StdRace
 {
-	public String ID(){	return "Tumbleweed"; }
-	public String name(){ return "Tumbleweed"; }
-	public int shortestMale(){return 14;}
-	public int shortestFemale(){return 10;}
-	public int heightVariance(){return 5;}
-	public int lightestWeight(){return 2;}
-	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Vegetation";}
-	public boolean uncharmable(){return true;}
-	public boolean fertile(){return false;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "Tumbleweed"; }
+	@Override public String name(){ return "Tumbleweed"; }
+	@Override public int shortestMale(){return 14;}
+	@Override public int shortestFemale(){return 10;}
+	@Override public int heightVariance(){return 5;}
+	@Override public int lightestWeight(){return 2;}
+	@Override public int weightVariance(){return 5;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Vegetation";}
+	@Override public boolean uncharmable(){return true;}
+	@Override public boolean fertile(){return false;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
@@ -82,12 +83,14 @@ public class Tumbleweed extends StdRace
 			}
 		}
 	}
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 		affectableState.setMovement(affectableState.getMovement()*2);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
@@ -98,14 +101,17 @@ public class Tumbleweed extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "rolls in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "rolls";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -120,11 +126,13 @@ public class Tumbleweed extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return super.makeMobName('N', Race.AGE_MATURE);
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -161,6 +169,7 @@ public class Tumbleweed extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

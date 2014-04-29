@@ -37,11 +37,12 @@ import java.util.*;
 */
 public class DefaultLawSet implements Law
 {
-	public String ID(){return "DefaultLawSet";}
-	public String name() { return ID();}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String ID(){return "DefaultLawSet";}
+	@Override public String name() { return ID();}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -91,6 +92,7 @@ public class DefaultLawSet implements Law
 	private String[] jailMessages=new String[4];
 	private Integer[] jailTimes=new Integer[4];
 
+	@Override
 	public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws)
 	{
 		legalDetails=details;
@@ -99,38 +101,39 @@ public class DefaultLawSet implements Law
 		resetLaw(laws);
 	}
 
-	public List<List<String>> otherCrimes() { return otherCrimes;}
-	public List<String[]> otherBits() { return otherBits;}
-	public List<List<String>> bannedSubstances() { return bannedSubstances;}
-	public List<String[]> bannedBits() { return bannedBits;}
-	public Map<String,String[]> abilityCrimes(){ return abilityCrimes;}
-	public Map<String,String[]> basicCrimes(){ return basicCrimes;}
-	public Map<String, Object> taxLaws(){return taxLaws;}
+	@Override public List<List<String>> otherCrimes() { return otherCrimes;}
+	@Override public List<String[]> otherBits() { return otherBits;}
+	@Override public List<List<String>> bannedSubstances() { return bannedSubstances;}
+	@Override public List<String[]> bannedBits() { return bannedBits;}
+	@Override public Map<String,String[]> abilityCrimes(){ return abilityCrimes;}
+	@Override public Map<String,String[]> basicCrimes(){ return basicCrimes;}
+	@Override public Map<String, Object> taxLaws(){return taxLaws;}
 
-	public boolean hasModifiableNames(){return namesModifiable;}
-	public boolean hasModifiableLaws(){return lawsModifiable;}
+	@Override public boolean hasModifiableNames(){return namesModifiable;}
+	@Override public boolean hasModifiableLaws(){return lawsModifiable;}
 
-	public List<String> chitChat(){ return chitChat;}
-	public List<String> chitChat2(){ return chitChat2;}
-	public List<String> chitChat3(){ return chitChat3;}
-	public List<String> jailRooms(){ return jailRooms;}
-	public List<String> releaseRooms(){ return releaseRooms;}
-	public List<String> officerNames(){ return officerNames;}
-	public List<String> judgeNames(){ return judgeNames;}
-	public String[] messages(){ return messages;}
+	@Override public List<String> chitChat(){ return chitChat;}
+	@Override public List<String> chitChat2(){ return chitChat2;}
+	@Override public List<String> chitChat3(){ return chitChat3;}
+	@Override public List<String> jailRooms(){ return jailRooms;}
+	@Override public List<String> releaseRooms(){ return releaseRooms;}
+	@Override public List<String> officerNames(){ return officerNames;}
+	@Override public List<String> judgeNames(){ return judgeNames;}
+	@Override public String[] messages(){ return messages;}
 
-	public List<LegalWarrant> oldWarrants(){ return oldWarrants;}
-	public List<LegalWarrant> warrants(){ return warrants;}
+	@Override public List<LegalWarrant> oldWarrants(){ return oldWarrants;}
+	@Override public List<LegalWarrant> warrants(){ return warrants;}
 
-	public boolean arrestMobs(){ return arrestMobs;}
+	@Override public boolean arrestMobs(){ return arrestMobs;}
 
-	public String[] paroleMessages(){ return paroleMessages;}
-	public Integer[] paroleTimes(){ return paroleTimes;}
+	@Override public String[] paroleMessages(){ return paroleMessages;}
+	@Override public Integer[] paroleTimes(){ return paroleTimes;}
 
-	public String[] jailMessages(){ return jailMessages;}
-	public Integer[] jailTimes(){ return jailTimes;}
+	@Override public String[] jailMessages(){ return jailMessages;}
+	@Override public Integer[] jailTimes(){ return jailTimes;}
 
 
+	@Override
 	public void changeStates(LegalWarrant W, int state)
 	{
 		if((W==null)||(W.criminal()==null)) return;
@@ -143,6 +146,7 @@ public class DefaultLawSet implements Law
 			}
 	}
 
+	@Override
 	public TreasurySet getTreasuryNSafe(Area A)
 	{
 		Room treasuryR=null;
@@ -188,6 +192,7 @@ public class DefaultLawSet implements Law
 		return new Law.TreasurySet(treasuryR,container);
 	}
 
+	@Override
 	public void propertyTaxTick(Area A, boolean debugging)
 	{
 		if(lastMonthChecked!=A.getTimeObj().getMonth())
@@ -359,12 +364,14 @@ public class DefaultLawSet implements Law
 		}
 	}
 
+	@Override
 	public String getMessage(int which)
 	{
 		if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
 		   return messages[which];
 		return "";
 	}
+	@Override
 	public String paroleMessages(int which)
 	{
 		if((which>=0)
@@ -373,6 +380,7 @@ public class DefaultLawSet implements Law
 		   return paroleMessages[which];
 		return "";
 	}
+	@Override
 	public int paroleTimes(int which)
 	{
 		if((which>=0)
@@ -381,6 +389,7 @@ public class DefaultLawSet implements Law
 		   return paroleTimes[which].intValue();
 		return 0;
 	}
+	@Override
 	public String jailMessages(int which)
 	{
 		if((which>=0)
@@ -389,6 +398,7 @@ public class DefaultLawSet implements Law
 		   return jailMessages[which];
 		return "";
 	}
+	@Override
 	public int jailTimes(int which)
 	{
 		if((which>=0)
@@ -398,17 +408,20 @@ public class DefaultLawSet implements Law
 		return 0;
 	}
 
+	@Override
 	public String getInternalStr(String msg)
 	{
 		if((theLaws!=null)&&(theLaws.get(msg)!=null))
 			return (String)theLaws.get(msg);
 		return "";
 	}
+	@Override
 	public boolean isInternalStr(String msg)
 	{
 		if((theLaws!=null)&&(theLaws.get(msg)!=null)) return true;
 		return false;
 	}
+	@Override
 	public void setInternalStr(String tag, String value)
 	{
 		if(theLaws!=null)
@@ -418,8 +431,9 @@ public class DefaultLawSet implements Law
 			theLaws.put(tag,value);
 		}
 	}
-	public boolean lawIsActivated(){ return activated;}
+	@Override public boolean lawIsActivated(){ return activated;}
 
+	@Override
 	public void resetLaw()
 	{
 		if(theLaws!=null)
@@ -546,6 +560,7 @@ public class DefaultLawSet implements Law
 		}
 	}
 
+	@Override
 	public String rawLawString()
 	{
 		if(theLaws!=null)
@@ -595,6 +610,7 @@ public class DefaultLawSet implements Law
 		return W;
 	}
 
+	@Override
 	public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob)
 	{
 		String[] copKillerInfo=basicCrimes().get("MURDER");
@@ -613,6 +629,7 @@ public class DefaultLawSet implements Law
 		return null;
 	}
 
+	@Override
 	public LegalWarrant getLawResister(Area A, LegalBehavior behav, MOB mob)
 	{
 		String[] lawResistInfo=basicCrimes().get("RESISTINGARREST");
@@ -631,6 +648,7 @@ public class DefaultLawSet implements Law
 	}
 
 
+	@Override
 	public LegalWarrant getWarrant(MOB mob, int which)
 	{
 		int one=0;
@@ -647,6 +665,7 @@ public class DefaultLawSet implements Law
 		return null;
 	}
 
+	@Override
 	public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull)
 	{
 		LegalWarrant W=null;

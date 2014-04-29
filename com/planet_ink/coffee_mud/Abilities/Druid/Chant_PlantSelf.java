@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_PlantSelf extends Chant
 {
-	public String ID() { return "Chant_PlantSelf"; }
-	public String name(){ return "Plant Self";}
-	public String displayText(){return "(Planted)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_PlantSelf"; }
+	@Override public String name(){ return "Plant Self";}
+	@Override public String displayText(){return "(Planted)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	long lastTime=0;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -63,6 +64,7 @@ public class Chant_PlantSelf extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,6 +82,7 @@ public class Chant_PlantSelf extends Chant
 		return;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -95,9 +98,9 @@ public class Chant_PlantSelf extends Chant
 				unInvoke();
 				return false;
 			}
-			if((System.currentTimeMillis()-lastTime)<60000) 
+			if((System.currentTimeMillis()-lastTime)<60000)
 				return true;
-			if(!proficiencyCheck(null,0,false)) 
+			if(!proficiencyCheck(null,0,false))
 				return true;
 			lastTime=System.currentTimeMillis();
 			Room room=mob.location();
@@ -133,6 +136,7 @@ public class Chant_PlantSelf extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
@@ -162,7 +166,7 @@ public class Chant_PlantSelf extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		
+
 		// now see if it worked
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)

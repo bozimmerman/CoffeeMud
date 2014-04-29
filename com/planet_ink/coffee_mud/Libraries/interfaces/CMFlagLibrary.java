@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public final static int flag_arrives=0;
 	public final static int flag_leaves=1;
 	public final static int flag_is=2;
-	
+
 	public boolean canSee(MOB M);
 	public boolean canBeLocated(Physical P);
 	public boolean canSeeHidden(MOB M);

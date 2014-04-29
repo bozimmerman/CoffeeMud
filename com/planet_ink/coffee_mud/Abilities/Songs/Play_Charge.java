@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Play_Charge extends Play
 {
-	public String ID() { return "Play_Charge"; }
-	public String name(){ return "Charge!";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected boolean persistantSong(){return false;}
+	@Override public String ID() { return "Play_Charge"; }
+	@Override public String name(){ return "Charge!";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected boolean persistantSong(){return false;}
 	Vector chcommands=null;
 
+	@Override
 	protected void inpersistantAffect(MOB mob)
 	{
 		Ability A=CMClass.getAbility("Fighter_Charge");
@@ -53,6 +54,7 @@ public class Play_Charge extends Play
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -62,7 +64,8 @@ public class Play_Charge extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))

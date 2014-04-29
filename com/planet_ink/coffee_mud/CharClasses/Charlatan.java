@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,18 +37,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Charlatan extends StdCharClass
 {
-	public String ID(){return "Charlatan";}
-	public String name(){return "Charlatan";}
-	public String baseClass(){return "Bard";}
-	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	public int getLevelsPerBonusDamage(){ return 10;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	@Override public String ID(){return "Charlatan";}
+	@Override public String name(){return "Charlatan";}
+	@Override public String baseClass(){return "Bard";}
+	@Override public int getBonusPracLevel(){return 1;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
+	@Override public int getLevelsPerBonusDamage(){ return 10;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected volatile WeakReference<Ability> invokable=new WeakReference(null);
 
 	public Charlatan()
@@ -57,6 +57,7 @@ public class Charlatan extends StdCharClass
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -142,24 +143,25 @@ public class Charlatan extends StdCharClass
 		// 30 -- cheaper skills
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","HalfElf"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
-	
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);}
-	
-	public String getOtherLimitsDesc(){return "";}
-	public String getOtherBonusDesc(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";}
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);}
+
+	@Override public String getOtherLimitsDesc(){return "";}
+	@Override public String getOtherBonusDesc(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";}
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -171,6 +173,7 @@ public class Charlatan extends StdCharClass
 		return outfitChoices;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
@@ -188,7 +191,8 @@ public class Charlatan extends StdCharClass
 		super.executeMsg(host,msg);
 		Bard.visitationBonusMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -229,6 +233,7 @@ public class Charlatan extends StdCharClass
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -239,7 +244,7 @@ public class Charlatan extends StdCharClass
 			int classLevel=mob.baseCharStats().getClassLevel(this);
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
-			
+
 			int maxSkills=classLevel/2;
 
 			// now only give one, for current level, respecting alignment!
@@ -276,7 +281,7 @@ public class Charlatan extends StdCharClass
 				||((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel>=25)))
 					choices.remove(a);
 			}
-			if(choices.size()==0) 
+			if(choices.size()==0)
 				return;
 			Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
@@ -298,6 +303,7 @@ public class Charlatan extends StdCharClass
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

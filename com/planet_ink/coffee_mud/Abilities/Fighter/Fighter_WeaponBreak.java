@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_WeaponBreak extends FighterSkill
 {
-	public String ID() { return "Fighter_WeaponBreak"; }
-	public String name(){ return "Weapon Break";}
+	@Override public String ID() { return "Fighter_WeaponBreak"; }
+	@Override public String name(){ return "Weapon Break";}
 	private static final String[] triggerStrings = {"BREAK"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -66,7 +67,8 @@ public class Fighter_WeaponBreak extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB victim=mob.getVictim();

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Unbreakable extends Chant
 {
-	public String ID() { return "Chant_Unbreakable"; }
-	public String name(){ return "Unbreakable";}
-	public String displayText(){return "(Unbreakable)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Chant_Unbreakable"; }
+	@Override public String name(){ return "Unbreakable";}
+	@Override public String displayText(){return "(Unbreakable)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	protected int maintainCondition=100;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -53,6 +54,7 @@ public class Chant_Unbreakable extends Chant
 			((Item)affected).setUsesRemaining(maintainCondition);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -63,6 +65,7 @@ public class Chant_Unbreakable extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -80,6 +83,7 @@ public class Chant_Unbreakable extends Chant
 
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -94,6 +98,7 @@ public class Chant_Unbreakable extends Chant
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

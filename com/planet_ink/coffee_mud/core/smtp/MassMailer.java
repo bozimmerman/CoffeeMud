@@ -21,7 +21,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import java.io.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class MassMailer implements Runnable
 	private final CMProps 		  page;
 	private final String		  domain;
 	private final HashSet<String> oldEmailComplaints;
-	
+
 	private static class MassMailerEntry
 	{
 		public final JournalsLibrary.JournalEntry mail;
@@ -57,16 +57,16 @@ public class MassMailer implements Runnable
 			this.usePrivateRules=usePrivateRules;
 		}
 	}
-	
+
 	public MassMailer(CMProps page, String domain, HashSet<String> oldEmailComplaints)
 	{
 		this.page=page;
 		this.domain=domain;
 		this.oldEmailComplaints=oldEmailComplaints;
 	}
-	
+
 	public String domainName() { return domain;}
-	
+
 	public int getFailureDays()
 	{
 		String s=page.getStr("FAILUREDAYS");
@@ -75,7 +75,7 @@ public class MassMailer implements Runnable
 		if(x==0) return (365*20);
 		return x;
 	}
-	
+
 	public int getEmailDays()
 	{
 		String s=page.getStr("EMAILDAYS");
@@ -84,7 +84,7 @@ public class MassMailer implements Runnable
 		if(x==0) return (365*20);
 		return x;
 	}
-	
+
 	public boolean deleteEmailIfOld(String journalName, String key, long date, int days)
 	{
 		Calendar IQE=Calendar.getInstance();
@@ -98,12 +98,12 @@ public class MassMailer implements Runnable
 		}
 		return false;
 	}
-	
+
 	public void addMail(JournalsLibrary.JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
 	{
 		entries.add(new MassMailerEntry(mail,journalName,overrideReplyTo,usePrivateRules));
 	}
-	
+
 	protected boolean rightTimeToSendEmail(long email)
 	{
 		long curr=System.currentTimeMillis();
@@ -123,7 +123,7 @@ public class MassMailer implements Runnable
 
 
 	@Override
-	public void run() 
+	public void run()
 	{
 		for(MassMailerEntry entry : entries)
 		{
@@ -131,18 +131,18 @@ public class MassMailer implements Runnable
 			final String journalName=entry.journalName;
 			final String overrideReplyTo=entry.overrideReplyTo;
 			final boolean usePrivateRules=entry.usePrivateRules;
-			
+
 			String key=mail.key;
 			String from=mail.from;
 			String to=mail.to;
 			long date=mail.update;
 			String subj=mail.subj;
 			String msg=mail.msg.trim();
-	
+
 			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
-	
+
 			if(!rightTimeToSendEmail(date)) continue;
-	
+
 			// check for valid recipient
 			final String toEmail;
 			final String toName;
@@ -180,13 +180,13 @@ public class MassMailer implements Runnable
 				CMLib.database().DBDeleteJournal(journalName,key);
 				continue;
 			}
-	
+
 			// check email age
 			if((usePrivateRules)
 			&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
 			&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 				continue;
-			
+
 			SMTPLibrary.SMTPClient SC=null;
 			try
 			{
@@ -218,7 +218,7 @@ public class MassMailer implements Runnable
 					deleteEmailIfOld(journalName, key, date,getFailureDays());
 				continue;
 			}
-	
+
 			String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
 			try
 			{
@@ -241,5 +241,5 @@ public class MassMailer implements Runnable
 			}
 		}
 	}
-	
+
 }

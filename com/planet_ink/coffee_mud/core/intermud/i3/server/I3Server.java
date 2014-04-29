@@ -55,9 +55,9 @@ public class I3Server {
 	 * is made once the server is running.
 	 * @param mud the name of the mud being started
 	 */
-	static public void start(String mud, 
+	static public void start(String mud,
 							 int port,
-							 ImudServices imud) 
+							 ImudServices imud)
 	{
 		try
 		{
@@ -118,7 +118,7 @@ public class I3Server {
 		started=false;
 		}catch(Exception e){}
 	}
-	
+
 	static public void removeObject(ServerObject ob)
 	{
 		if( !ob.getDestructed() )

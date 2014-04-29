@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,20 @@ import java.util.*;
 
 public class Fighter_Cleave extends FighterSkill
 {
-	public String ID() { return "Fighter_Cleave"; }
-	public String name(){ return "Cleave";}
-	public String displayText(){ return "";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Fighter_Cleave"; }
+	@Override public String name(){ return "Cleave";}
+	@Override public String displayText(){ return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 
 	protected MOB thisTarget=null;
 	protected MOB nextTarget=null;
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -78,6 +79,7 @@ public class Fighter_Cleave extends FighterSkill
 		nextTarget=null;
 		return true;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,30 +35,33 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SenseHidden extends Prayer
 {
-	public String ID() { return "Prayer_SenseHidden"; }
-	public String name(){ return "Sense Hidden";}
-	public String displayText(){ return "(Sense Hidden)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_SenseHidden"; }
+	@Override public String name(){ return "Sense Hidden";}
+	@Override public String displayText(){ return "(Sense Hidden)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*super.getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
-	
-	
+
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -73,6 +76,7 @@ public class Prayer_SenseHidden extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes are no longer opaque.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -94,6 +98,7 @@ public class Prayer_SenseHidden extends Prayer
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;

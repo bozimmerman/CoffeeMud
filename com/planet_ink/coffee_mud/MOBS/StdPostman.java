@@ -38,7 +38,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdPostman extends StdShopKeeper implements PostOffice
 {
-	public String ID(){return "StdPostman";}
+	@Override public String ID(){return "StdPostman";}
 
 	protected double minimumPostage=1.0;
 	protected double postagePerPound=1.0;
@@ -73,18 +73,19 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		recoverCharStats();
 	}
 
-	public double minimumPostage(){return minimumPostage;}
-	public void setMinimumPostage(double d){minimumPostage=d;}
-	public double postagePerPound(){return postagePerPound;}
-	public void setPostagePerPound(double d){postagePerPound=d;}
-	public double holdFeePerPound(){return holdFeePerPound;}
-	public void setHoldFeePerPound(double d){holdFeePerPound=d;}
-	public double feeForNewBox(){return feeForNewBox;}
-	public void setFeeForNewBox(double d){feeForNewBox=d;}
-	public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
-	public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
+	@Override public double minimumPostage(){return minimumPostage;}
+	@Override public void setMinimumPostage(double d){minimumPostage=d;}
+	@Override public double postagePerPound(){return postagePerPound;}
+	@Override public void setPostagePerPound(double d){postagePerPound=d;}
+	@Override public double holdFeePerPound(){return holdFeePerPound;}
+	@Override public void setHoldFeePerPound(double d){holdFeePerPound=d;}
+	@Override public double feeForNewBox(){return feeForNewBox;}
+	@Override public void setFeeForNewBox(double d){feeForNewBox=d;}
+	@Override public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
+	@Override public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
 
-	public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override
 	public void setWhatIsSoldMask(long newSellCode)
 	{
 		super.setWhatIsSoldMask(newSellCode);
@@ -94,10 +95,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			whatIsSoldMask=ShopKeeper.DEAL_CLANPOSTMAN;
 	}
 
-	public String postalChain(){return text();}
-	public void setPostalChain(String name){setMiscText(name);}
-	public String postalBranch(){return CMLib.map().getExtendedRoomID(getStartRoom());}
+	@Override public String postalChain(){return text();}
+	@Override public void setPostalChain(String name){setMiscText(name);}
+	@Override public String postalBranch(){return CMLib.map().getExtendedRoomID(getStartRoom());}
 
+	@Override
 	public String getSenderName(MOB mob, Clan.Function func, boolean checked)
 	{
 		if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
@@ -122,7 +124,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return mob.Name();
 	}
-	
+
+	@Override
 	public void addToBox(String mob, Item thisThang, String from, String to, long holdTime, double COD)
 	{
 		String name=thisThang.ID();
@@ -138,6 +141,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				+CMLib.coffeeMaker().getPropertiesStr(thisThang,true));
 	}
 
+	@Override
 	public boolean delFromBox(String boxName, Item thisThang)
 	{
 		List<PlayerData> V=getBoxRowPDData(boxName);
@@ -160,10 +164,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return found;
 	}
+	@Override
 	public void emptyBox(String boxName)
 	{
 		CMLib.database().DBDeleteData(boxName,postalChain());
 	}
+	@Override
 	public Map<String, String> getOurOpenBoxes(String boxName)
 	{
 		Hashtable<String,String> branches=new Hashtable<String,String>();
@@ -182,6 +188,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return branches;
 	}
+	@Override
 	public void createBoxHere(String boxName, String forward)
 	{
 		if(!getOurOpenBoxes(boxName).containsKey(postalBranch()))
@@ -192,6 +199,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					"50");
 		}
 	}
+	@Override
 	public void deleteBoxHere(String boxName)
 	{
 		List<PlayerData> V=getBoxRowPDData(boxName);
@@ -225,7 +233,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	{
 		return CMLib.database().DBReadData(mob,postalChain());
 	}
-	
+
+	@Override
 	public Item findBoxContents(String boxName, String likeThis)
 	{
 		List<PlayerData> V=getBoxRowPDData(boxName);
@@ -262,6 +271,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return null;
 	}
 
+	@Override
 	public MailPiece parsePostalItemData(String data)
 	{
 		MailPiece piece = new MailPiece();
@@ -357,6 +367,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return null;
 	}
 
+	@Override
 	public String findProperBranch(String toWhom)
 	{
 		if(CMLib.players().getLoadPlayer(toWhom)!=null)
@@ -417,6 +428,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return postalWaitTime;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -517,6 +529,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		location().send(this,msg2);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
@@ -541,7 +554,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							{
 								@Override public void showPrompt() { S.promptPrint("Address this to whom? ");}
 								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
-								@Override public void callBack() 
+								@Override public void callBack()
 								{
 									if((this.input!=null)&&(this.input.length()>0)
 									&&((CMLib.players().getLoadPlayer(this.input)!=null)||(CMLib.clans().findClan(this.input)!=null)))
@@ -555,11 +568,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 										final double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));
 										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"P","CP\n",0)
 										{
-											@Override public void showPrompt() { 
+											@Override public void showPrompt() {
 												S.promptPrint("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");
 											}
 											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
-											@Override public void callBack() 
+											@Override public void callBack()
 											{
 												String choice=this.input.trim().toUpperCase();
 												if(choice.startsWith("C"))
@@ -568,7 +581,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 													{
 														@Override public void showPrompt() { S.promptPrint("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))+"): ");}
 														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
-														@Override public void callBack() 
+														@Override public void callBack()
 														{
 															String CODstr=this.input;
 															if((CODstr.length()==0)||(!CMath.isNumber(CODstr))||(CMath.s_double(CODstr)<=0.0))
@@ -602,7 +615,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												}
 											}
 										});
-										
+
 									}
 									else
 									{
@@ -843,6 +856,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

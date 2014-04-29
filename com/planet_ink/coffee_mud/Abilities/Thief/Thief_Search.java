@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,25 +36,27 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Search extends ThiefSkill
 {
-	public String ID() { return "Thief_Search"; }
-	public String name(){ return "Search";}
-	public String displayText(){return "(Searching)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public String ID() { return "Thief_Search"; }
+	@Override public String name(){ return "Search";}
+	@Override public String displayText(){return "(Searching)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	private static final String[] triggerStrings = {"SEARCH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Room lastRoom=null;
 	private int bonusThisRoom=0;
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -77,19 +79,21 @@ public class Thief_Search extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
 		{
 			if(mob.fetchEffect(this.ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
-			
+
 			Room R=mob.location();
 			if(R!=null)
 				for(int r=0;r<R.numInhabitants();r++)
@@ -102,6 +106,7 @@ public class Thief_Search extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

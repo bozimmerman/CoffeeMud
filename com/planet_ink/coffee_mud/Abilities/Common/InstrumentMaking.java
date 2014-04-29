@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "InstrumentMaking"; }
-	public String name(){ return "Instrument Making";}
+	@Override public String ID() { return "InstrumentMaking"; }
+	@Override public String name(){ return "Instrument Making";}
 	private static final String[] triggerStrings = {"INSTRUMENTMAKING","INSTRUMENTMAKE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";}
 
@@ -59,6 +60,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_RACES=8;
 	protected static final int RCP_TYPE=9;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -69,17 +71,18 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "instruments.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "instruments.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(isANativeItem(I.Name()))
 			return true;
@@ -87,7 +90,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -120,16 +124,18 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -226,13 +232,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"instrumentmake list\" for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		if(amount>woodRequired) woodRequired=amount;
 		String materialRequired=foundRecipe.get(RCP_MATERIAL);
 		String misctype=foundRecipe.get(RCP_MISCTYPE);

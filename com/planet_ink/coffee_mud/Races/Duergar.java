@@ -7,19 +7,21 @@ import com.planet_ink.coffee_mud.core.interfaces.Physical;
 
 public class Duergar extends Dwarf
 {
-	public String ID(){	return "Duergar"; }
-	public String name(){ return "Duergar"; }
+	@Override public String ID(){	return "Duergar"; }
+	@Override public String name(){ return "Duergar"; }
 	private String[]culturalAbilityNames={"Dwarven","Mining","Undercommon","Spell_Invisibility","Spell_Grow"};
 	private int[]culturalAbilityProficiencies={100,50,25,25,25};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		int senses=affectableStats.sensesMask();
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(senses|PhyStats.CAN_SEE_DARK);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

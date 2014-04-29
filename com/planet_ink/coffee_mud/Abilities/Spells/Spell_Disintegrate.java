@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Disintegrate extends Spell
 {
-	public String ID() { return "Spell_Disintegrate"; }
-	public String name(){return "Disintegrate";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-	public int overrideMana(){return 100;}
+	@Override public String ID() { return "Spell_Disintegrate"; }
+	@Override public String name(){return "Disintegrate";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
+	@Override public int overrideMana(){return 100;}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

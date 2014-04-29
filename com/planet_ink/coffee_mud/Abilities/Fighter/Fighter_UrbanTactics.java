@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,14 @@ import java.util.*;
 
 public class Fighter_UrbanTactics extends Fighter_FieldTactics
 {
-	public String ID() { return "Fighter_UrbanTactics"; }
-	public String name(){ return "Urban Tactics";}
-	private static final Integer[] landClasses = 
+	@Override public String ID() { return "Fighter_UrbanTactics"; }
+	@Override public String name(){ return "Urban Tactics";}
+	private static final Integer[] landClasses =
 	{
 		Integer.valueOf(Room.DOMAIN_OUTDOORS_CITY),
 		Integer.valueOf(Room.DOMAIN_INDOORS_METAL),
 		Integer.valueOf(Room.DOMAIN_INDOORS_STONE),
 		Integer.valueOf(Room.DOMAIN_INDOORS_WOOD)
 	};
-	public Integer[] landClasses(){return landClasses;}
+	@Override public Integer[] landClasses(){return landClasses;}
 }

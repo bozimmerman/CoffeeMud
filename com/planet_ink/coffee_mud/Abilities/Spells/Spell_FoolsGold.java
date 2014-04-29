@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FoolsGold extends Spell
 {
-	public String ID() { return "Spell_FoolsGold"; }
-	public String name(){return "Fools Gold";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Spell_FoolsGold"; }
+	@Override public String name(){return "Fools Gold";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	boolean destroyOnNextTick=false;
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!destroyOnNextTick) return super.tick(ticking,tickID);
@@ -50,6 +51,7 @@ public class Spell_FoolsGold extends Spell
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -62,6 +64,7 @@ public class Spell_FoolsGold extends Spell
 				destroyOnNextTick=true;
 		}
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)||(CMath.s_int(CMParms.combine(commands,0))==0))

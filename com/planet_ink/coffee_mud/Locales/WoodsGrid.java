@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class WoodsGrid extends StdGrid
 {
-	public String ID(){return "WoodsGrid";}
+	@Override public String ID(){return "WoodsGrid";}
 	public WoodsGrid()
 	{
 		super();
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
 
-	public String getGridChildLocaleID(){return "Woods";}
-	public List<Integer> resourceChoices(){return Woods.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Woods";}
+	@Override public List<Integer> resourceChoices(){return Woods.roomResources;}
 }

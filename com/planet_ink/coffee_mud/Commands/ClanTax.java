@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,8 @@ public class ClanTax extends StdCommand
 	public ClanTax(){}
 
 	private final String[] access={"CLANTAX"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,11 +53,11 @@ public class ClanTax extends StdCommand
 		}
 		else
 			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
-		
+
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
-			
+
 		if(chkC==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
@@ -88,7 +89,7 @@ public class ClanTax extends StdCommand
 				{
 					@Override public void showPrompt() { S.promptPrint("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ");}
 					@Override public void timedOut() { }
-					@Override public void callBack() 
+					@Override public void callBack()
 					{
 						possiblySetClanTaxRate(mob,C,skipChecks,this.input);
 					}
@@ -102,10 +103,10 @@ public class ClanTax extends StdCommand
 
 	public void possiblySetClanTaxRate(MOB mob, Clan C, boolean skipChecks, String t)
 	{
-		if(t.length()==0) 
+		if(t.length()==0)
 			return;
 		int intt=CMath.s_int(t);
-		if((intt<0)||(intt>25)) 
+		if((intt<0)||(intt>25))
 		{
 			if(mob.session()!=null)
 				mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
@@ -116,7 +117,7 @@ public class ClanTax extends StdCommand
 		commands.addElement(t);
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));
 	}
-	
+
 	public void setClanTaxRate(MOB mob, Clan C, boolean skipChecks, Vector commands, double newRate)
 	{
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,true))
@@ -126,8 +127,8 @@ public class ClanTax extends StdCommand
 			CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.getGovernmentName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
 		}
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

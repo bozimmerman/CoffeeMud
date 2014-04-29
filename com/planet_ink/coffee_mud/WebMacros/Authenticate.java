@@ -19,7 +19,7 @@ import java.util.*;
 import java.lang.reflect.Method;
 import java.net.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,11 @@ import java.net.*;
 */
 public class Authenticate extends StdWebMacro
 {
-	public String name() { return "Authenticate"; }
-	public boolean isAdminMacro()    {return false;}
+	@Override public String name() { return "Authenticate"; }
+	@Override public boolean isAdminMacro()    {return false;}
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -67,14 +68,14 @@ public class Authenticate extends StdWebMacro
 			return "true";
 		return "false";
 	}
-	
+
 	protected static byte[] FILTER=null;
 	public static byte[] getFilter()
 	{
 		if(FILTER==null)
 		{
 			// this is coffeemud's unsophisticated xor(mac address) encryption system.
-			byte[] filterc = new String("wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad").getBytes(); 
+			byte[] filterc = new String("wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad").getBytes();
 			FILTER=new byte[256];
 			try
 			{
@@ -107,14 +108,14 @@ public class Authenticate extends StdWebMacro
 		}
 		return FILTER;
 	}
-	
+
 	protected static byte[] EnDeCrypt(byte[] bytes)
 	{
 		byte[] FILTER=getFilter();
-		for ( int i = 0, j = 0; i < bytes.length; i++, j++ ) 
+		for ( int i = 0, j = 0; i < bytes.length; i++, j++ )
 		{
 		   if ( j >= FILTER.length ) j = 0;
-		   bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff); 
+		   bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff);
 		}
 		return bytes;
 	}
@@ -138,7 +139,7 @@ public class Authenticate extends StdWebMacro
 			return "";
 		}
 	}
-	
+
 	protected static String Decrypt(String DECRYPTME)
 	{
 		try
@@ -228,7 +229,7 @@ public class Authenticate extends StdWebMacro
 			httpReq.getRequestObjects().put("AUTHENTICATED_USER",new Object());
 		return mob;
 	}
-	
+
 	public static String getLogin(HTTPRequest httpReq)
 	{
 		String login=httpReq.getUrlParameter("LOGIN");
@@ -267,7 +268,7 @@ public class Authenticate extends StdWebMacro
 		String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null) return "";
 		int x = auth.indexOf('-');
-		if(x>=0) 
+		if(x>=0)
 			login=Decrypt(auth.substring(0,x));
 		return login;
 	}
@@ -280,7 +281,7 @@ public class Authenticate extends StdWebMacro
 		String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null) return "";
 		int x = auth.indexOf('-');
-		if(x>=0) 
+		if(x>=0)
 			password=Decrypt(auth.substring(x+1));
 		return password;
 	}

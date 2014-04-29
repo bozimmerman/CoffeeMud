@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,13 +38,13 @@ public class Skills extends StdCommand
 	public Skills(){}
 
 	private final String[] access={"SKILLS","SK"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
 	{
 		return parsedOutIndividualSkill(mob,qual,new XVector(Integer.valueOf(acode)));
 	}
-	
+
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)
 	{
 		if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
@@ -80,7 +80,7 @@ public class Skills extends StdCommand
 		}
 		return false;
 	}
-	
+
 	protected int parseOutLevel(Vector commands)
 	{
 		if((commands.size()>1)
@@ -130,8 +130,8 @@ public class Skills extends StdCommand
 		if(qual.length()>0)
 			domainName[0]+=" ";
 	}
-	
-	
+
+
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
 	{
 		Vector V=new Vector();
@@ -144,7 +144,7 @@ public class Skills extends StdCommand
 		V.addElement(Integer.valueOf(ofType));
 		return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
 	}
-	
+
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
 	{
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
@@ -201,7 +201,8 @@ public class Skills extends StdCommand
 			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
 		return msg;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -232,8 +233,8 @@ public class Skills extends StdCommand
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

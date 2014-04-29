@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdWand extends StdItem implements Wand
 {
-	public String ID(){    return "StdWand";}
+	@Override public String ID(){    return "StdWand";}
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public StdWand()
@@ -55,9 +55,9 @@ public class StdWand extends StdItem implements Wand
 		recoverPhyStats();
 	}
 
-	public int maxUses(){return Integer.MAX_VALUE;}
-	public void setMaxUses(int newMaxUses){}
-	
+	@Override public int maxUses(){return Integer.MAX_VALUE;}
+	@Override public void setMaxUses(int newMaxUses){}
+
 	public static boolean useTheWand(Ability A, MOB mob, int level)
 	{
 		int manaRequired=5;
@@ -81,14 +81,15 @@ public class StdWand extends StdItem implements Wand
 		mob.curState().adjMana(-manaRequired,mob.maxState());
 		return true;
 	}
-	
+
+	@Override
 	public int value()
 	{
 		if(usesRemaining()<=0)
 			return 0;
 		return super.value();
 	}
-	
+
 	public static String getWandWord(String from)
 	{
 		int hash=from.hashCode();
@@ -96,6 +97,7 @@ public class StdWand extends StdItem implements Wand
 		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		miscText="";
@@ -103,18 +105,21 @@ public class StdWand extends StdItem implements Wand
 			miscText=theSpell.ID();
 		secretWord=StdWand.getWandWord(miscText);
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		secretWord=StdWand.getWandWord(newText);
 	}
 
+	@Override
 	public Ability getSpell()
 	{
 		return CMClass.getAbility(text());
 	}
 
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
@@ -124,11 +129,13 @@ public class StdWand extends StdItem implements Wand
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
+	@Override
 	public boolean checkWave(MOB mob, String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}
-	
+
+	@Override
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		StdWand.waveIfAble(mob, afftarget, message, this);
@@ -138,7 +145,7 @@ public class StdWand extends StdItem implements Wand
 	{
 		return (mob.isMine(me)) && (message!=null) && (!me.amWearingAt(Wearable.IN_INVENTORY)) && (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
 	}
-	
+
 	public static void waveIfAble(MOB mob, Physical afftarget, String message, Wand me)
 	{
 		if((mob.isMine(me)) &&(message!=null) &&(!me.amWearingAt(Wearable.IN_INVENTORY)))
@@ -189,7 +196,8 @@ public class StdWand extends StdItem implements Wand
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -221,10 +229,11 @@ public class StdWand extends StdItem implements Wand
 		super.executeMsg(myHost,msg);
 	}
 
-	public String magicWord(){return secretWord;}
+	@Override public String magicWord(){return secretWord;}
 
 
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -236,6 +245,7 @@ public class StdWand extends StdItem implements Wand
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -246,13 +256,15 @@ public class StdWand extends StdItem implements Wand
 		case 3: setMiscText(val); break;
 		}
 	}
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdWand)) return false;

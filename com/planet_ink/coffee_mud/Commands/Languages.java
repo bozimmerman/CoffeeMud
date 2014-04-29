@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Languages extends Skills
 	public Languages(){}
 
 	private final String[] access={"LANGUAGES","LANGS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -49,8 +50,8 @@ public class Languages extends Skills
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

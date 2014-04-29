@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,24 +35,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Imitation extends BardSkill
 {
-	public String ID() { return "Skill_Imitation"; }
-	public String name(){ return "Imitate";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Skill_Imitation"; }
+	@Override public String name(){ return "Imitate";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"IMITATE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	public STreeMap<String,String> immitations=new STreeMap<String,String>();
 	public String[] lastOnes=new String[2];
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -85,6 +86,7 @@ public class Skill_Imitation extends BardSkill
 
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;

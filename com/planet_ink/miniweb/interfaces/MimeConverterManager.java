@@ -22,9 +22,9 @@ limitations under the License.
 */
 
 /**
- * Interface for an http response converter manager, based on the mime type 
+ * Interface for an http response converter manager, based on the mime type
  * of the file returned.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -37,7 +37,7 @@ public interface MimeConverterManager
 	 * @param converterClass the class of the converter
 	 */
 	public void registerConverter(MIMEType mime, Class<? extends HTTPOutputConverter> converterClass);
-	
+
 	/**
 	 * For anyone externally interested, will return the list of converter classes
 	 * that are registered

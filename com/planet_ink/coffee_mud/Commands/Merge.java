@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class Merge extends StdCommand
 	public Merge(){}
 
 	private final String[] access={"MERGE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static String getStat(Environmental E, String stat)
 	{
@@ -168,7 +168,7 @@ public class Merge extends StdCommand
 		}
 		return didAnything;
 	}
-	
+
 	public void sortEnumeratedList(Enumeration e, List<String> allKnownFields, StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
@@ -184,6 +184,7 @@ public class Merge extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -203,7 +204,7 @@ public class Merge extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
 			commands.removeElementAt(0);
-		
+
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{
@@ -522,7 +523,7 @@ public class Merge extends StdCommand
 		}
 		return false;
 	}
-	
+
 	private static final SHashtable<String,CMClass.CMObjectType> OBJECT_TYPES=new SHashtable<String,CMClass.CMObjectType>(new Object[][]{
 			{"MOBS",CMClass.CMObjectType.MOB},
 			{"ROOMS",CMClass.CMObjectType.LOCALE},
@@ -530,10 +531,10 @@ public class Merge extends StdCommand
 			{"WEAPON",CMClass.CMObjectType.WEAPON},
 			{"ARMOR",CMClass.CMObjectType.ARMOR},
 	});
-	
+
 	private boolean amMergingType(CMClass.CMObjectType doType, Environmental E)
 	{
-		if(doType==null) 
+		if(doType==null)
 			return true;
 		switch(doType)
 		{
@@ -545,7 +546,7 @@ public class Merge extends StdCommand
 		default: return false;
 		}
 	}
-	
+
 	private boolean amMerging(CMClass.CMObjectType doType, MaskingLibrary.CompiledZapperMask mask, Environmental E)
 	{
 		if(amMergingType(doType,E))
@@ -555,7 +556,7 @@ public class Merge extends StdCommand
 		}
 		return false;
 	}
-	
+
 	public boolean dbMerge(MOB mob, String name, Modifiable dbM, Modifiable M, Set<String> ignores) throws java.io.IOException, CMException
 	{
 		if((M instanceof Physical) && (dbM instanceof Physical))
@@ -572,7 +573,7 @@ public class Merge extends StdCommand
 			PM.image();
 			dbPM.image();
 		}
-		
+
 		String[] statCodes = dbM.getStatCodes();
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -586,7 +587,7 @@ public class Merge extends StdCommand
 			for(int i=0;i<statCodes.length;i++)
 			{
 				String statCode = M.getStatCodes()[i];
-				if(ignores.contains(statCode)||((M instanceof MOB)&&statCode.equalsIgnoreCase("INVENTORY"))) 
+				if(ignores.contains(statCode)||((M instanceof MOB)&&statCode.equalsIgnoreCase("INVENTORY")))
 					continue;
 				String promptStr = CMStrings.capitalizeAndLower(M.getStatCodes()[i]);
 				String dbVal = dbM.getStat(statCode);
@@ -620,7 +621,7 @@ public class Merge extends StdCommand
 		}
 		return didSomething;
 	}
-	
+
 	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands) throws java.io.IOException
 	{
 		CMClass.CMObjectType doType = OBJECT_TYPES.get(firstWord.toUpperCase());
@@ -629,7 +630,7 @@ public class Merge extends StdCommand
 			commands.remove(0);
 		else
 			doType=CMClass.CMObjectType.LOCALE;
-		
+
 		String theRest = CMParms.combineWithQuotes(commands, 0);
 		DBConnector dbConnector=null;
 		String dbClass=CMParms.getParmStr(theRest,"DBCLASS","");
@@ -663,11 +664,11 @@ public class Merge extends StdCommand
 			mob.tell("This command requires DBPASS= to be set.");
 			return false;
 		}
-		
+
 		dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,false,false);
 		dbConnector.reconnect();
 		DBInterface dbInterface = new DBInterface(dbConnector,null);
-		
+
 		DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
 		mob.tell("Loading database rooms...");
@@ -699,6 +700,7 @@ public class Merge extends StdCommand
 		mob.tell("Data loaded, starting scan.");
 		Comparator<MOB> convM=new Comparator<MOB>()
 		{
+			@Override
 			public int compare(MOB arg0, MOB arg1)
 			{
 				int x=arg0.ID().compareTo(arg1.ID());
@@ -707,6 +709,7 @@ public class Merge extends StdCommand
 		};
 		Comparator<Item> convI=new Comparator<Item>()
 		{
+			@Override
 			public int compare(Item arg0, Item arg1)
 			{
 				int x=arg0.ID().compareTo(arg1.ID());
@@ -729,7 +732,7 @@ public class Merge extends StdCommand
 			{
 				Area.State oldFlags=R.getArea().getAreaState();
 				R.getArea().setAreaState(Area.State.FROZEN);
-				
+
 				boolean updateMobs=false;
 				boolean updateItems=false;
 				boolean updateRoom=false;
@@ -874,7 +877,7 @@ public class Merge extends StdCommand
 						}
 					}
 				}
-				
+
 				STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
 				for(Enumeration<Item> e=dbR.items();e.hasMoreElements();)
 					itemSetL.add(e.nextElement());
@@ -961,9 +964,9 @@ public class Merge extends StdCommand
 		dbInterface.shutdown();
 		return true;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.MERGE);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.MERGE);}
+
+
 }

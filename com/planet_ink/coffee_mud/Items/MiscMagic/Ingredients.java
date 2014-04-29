@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Ingredients extends BagOfEndlessness
 {
-	public String ID(){	return "Ingredients";}
+	@Override public String ID(){	return "Ingredients";}
 	boolean alreadyFilled=false;
 	public Ingredients()
 	{
@@ -77,6 +77,7 @@ public class Ingredients extends BagOfEndlessness
 		return I;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))

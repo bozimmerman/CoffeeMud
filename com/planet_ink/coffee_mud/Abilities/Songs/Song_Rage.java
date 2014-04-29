@@ -35,9 +35,10 @@ import java.util.*;
 */
 public class Song_Rage extends Song
 {
-	public String ID() { return "Song_Rage"; }
-	public String name(){ return "Rage";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Song_Rage"; }
+	@Override public String name(){ return "Rage";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -49,6 +50,7 @@ public class Song_Rage extends Song
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

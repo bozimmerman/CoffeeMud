@@ -38,36 +38,40 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMAble extends StdLibrary implements AbilityMapper
 {
-	public String ID(){return "CMAble";}
-	
-	protected Map<String, Map<String, AbilityMapping>> 
+	@Override public String ID(){return "CMAble";}
+
+	protected Map<String, Map<String, AbilityMapping>>
 										completeAbleMap 			= new SHashtable<String, Map<String, AbilityMapping>>();
 	protected Map<String, Integer>		lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
 	protected Map<String, Integer>		maxProficiencyMap   		= new SHashtable<String, Integer>();
 	protected Map<String, Object>		allows  					= new SHashtable<String, Object>();
 	protected Map<Integer, Set<Integer>>completeDomainMap   		= new SHashtable<Integer,Set<Integer>>();
-	protected Map<String, Map<String, AbilityMapping>> 
+	protected Map<String, Map<String, AbilityMapping>>
 										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
 	protected List<AbilityMapping>		eachClassSet				= null;
-	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>(); 
+	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>();
 
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),""); }
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),extraMasks); }
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
 									  boolean autoGain,
 									  List<String> skillPreReqs)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,""); }
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -75,6 +79,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  List<String> skillPreReqs,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,extraMasks); }
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -90,6 +95,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),extraMasks); }
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -104,11 +110,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); }
 
+	@Override
 	public int numMappedAbilities()
 	{
 		return reverseAbilityMap.size();
 	}
-	
+
+	@Override
 	public void delCharAbilityMapping(String ID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -120,6 +128,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Map<String,AbilityMapping> revT=reverseAbilityMap.get(abilityID);
 		if(revT!=null) revT.remove(ID);
 	}
+	@Override
 	public void delCharMappings(String ID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -131,19 +140,21 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
+	@Override
 	public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll)
 	{
 		if(!completeAbleMap.containsKey(ID))
 			completeAbleMap.put(ID,new SHashtable<String, AbilityMapping>());
 		final Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		final Map<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
-		if((!addAll)||(allAbleMap==null)) 
+		if((!addAll)||(allAbleMap==null))
 			return new IteratorEnumeration<AbilityMapping>(ableMap.values().iterator());
 		final Iterator[] iters=new Iterator[]{
 				ableMap.values().iterator(),
 				new FilteredIterator(allAbleMap.values().iterator(),
 					new Filterer<Object>()
 					{
+						@Override
 						public boolean passesFilter(Object obj)
 						{
 							if((obj instanceof AbilityMapping)
@@ -156,7 +167,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		};
 		return new IteratorEnumeration(new MultiIterator(iters));
 	}
-	
+
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -165,7 +177,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean autoGain,
 									  boolean secret)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),"");}
-	
+
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -175,8 +187,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean secret,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),extraMasks);}
-	
-	
+
+
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -208,6 +221,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
+	@Override
 	public void addDynaAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -215,7 +229,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret)
-	{ 
+	{
 		delCharAbilityMapping(ID,abilityID);
 		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return;
 		Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
@@ -240,7 +254,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMask)
 	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
 
-	
+
+	@Override
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask)
 	{
 		if(preReqSkillsList==null) return;
@@ -292,6 +307,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
+	@Override
 	public boolean isDomainIncludedInAnyAbility(int domain, int acode)
 	{
 		STreeSet<Integer> V=(STreeSet<Integer>)completeDomainMap.get(Integer.valueOf(domain));
@@ -311,6 +327,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return V.contains(Integer.valueOf(acode));
 	}
 
+	@Override
 	public List<QualifyingID> getClassAllowsList(String classID)
 	{
 		List<AbilityMapping> ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),false,false);
@@ -339,6 +356,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return DV;
 	}
 
+	@Override
 	public Iterator<String> getAbilityAllowsList(String ableID)
 	{
 		String abilityID=null;
@@ -367,10 +385,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			for(int r=0;r<remove.size();r++)
 				allows.remove(remove.elementAt(r));
 		}
-		SVector<String> set = (SVector<String>)allows.get(ableID); 
+		SVector<String> set = (SVector<String>)allows.get(ableID);
 		return (set==null)?new SVector<String>(1).iterator():set.iterator();
 	}
 
+	@Override
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
@@ -396,6 +415,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		addClassAbility(abilityID,ableMap,able);
 	}
 
+	@Override
 	public AbilityMapping makeAbilityMapping(String ID,
 											 int qualLevel,
 											 String abilityID,
@@ -440,6 +460,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return able;
 	}
 
+	@Override
 	public int getCalculatedMedianLowestQualifyingLevel()
 	{
 		Integer[] allLevelsArray = lowestQualifyingLevelMap.values().toArray(new Integer[0]);
@@ -448,7 +469,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(allLevelsArray.length==1) return allLevelsArray[0].intValue();
 		return allLevelsArray[(int)Math.round( CMath.div( allLevelsArray.length,2.0 ) )].intValue();
 	}
-	
+
 	public void addClassAbility(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)
 	{
 		if(CMSecurity.isAbilityDisabled(able.abilityID.toUpperCase())) return;
@@ -456,7 +477,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 		int qualLevel = able.qualLevel;
 		int maxProficiency = able.maxProficiency;
-		
+
 		// set lowest level map
 		Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
 		if(qualLevel > 0)
@@ -465,13 +486,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			||(qualLevel<lowLevel.intValue()))
 				lowestQualifyingLevelMap.put(abilityID,Integer.valueOf(qualLevel));
 		}
-		
+
 		// and max proficiency maps
 		Integer maxProf=maxProficiencyMap.get(abilityID);
 		if((maxProf==null)
 		||(maxProficiency>maxProf.intValue()))
 			maxProficiencyMap.put(abilityID,Integer.valueOf(maxProficiency));
-		
+
 		// and the reverse lookup map
 		Map<String, AbilityMapping> revT = reverseAbilityMap.get(abilityID);
 		if(revT==null)
@@ -479,9 +500,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			revT = new TreeMap<String, AbilityMapping>();
 			reverseAbilityMap.put(abilityID,revT);
 		}
-		if(!revT.containsKey(able.ID)) 
+		if(!revT.containsKey(able.ID))
 			revT.put(able.ID, able);
-		
+
 		// archons get everything
 		int arc_level=getQualifyingLevel("Archon",true,abilityID);
 		if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
@@ -489,7 +510,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		&&(!able.ID.equalsIgnoreCase("All")))
 			addCharAbilityMapping("Archon",qualLevel,abilityID,true);
 	}
-	
+
 
 	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, Map<String,Map<String,AbilityMapping>> allQualMap, String ID)
 	{
@@ -527,7 +548,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			addClassAbility(able.abilityID, ableMap, able);
 		}
 	}
-	
+
+	@Override
 	public boolean qualifiesByAnyCharClass(String abilityID)
 	{
 		if(completeAbleMap.containsKey("All"))
@@ -549,6 +571,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public int lowestQualifyingLevel(String abilityID)
 	{
 		Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
@@ -556,6 +579,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return lowLevel.intValue();
 	}
 
+	@Override
 	public boolean classOnly(String classID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(classID))
@@ -575,6 +599,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return true;
 	}
 
+	@Override
 	public boolean classOnly(MOB mob, String classID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(classID))
@@ -597,6 +622,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 
+	@Override
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly)
 	{
 		for(String key : completeAbleMap.keySet())
@@ -614,6 +640,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public List<String> getLevelListings(String ID, boolean checkAll, int level)
 	{
 		List<String> V=new Vector<String>();
@@ -644,6 +671,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return V;
 	}
 
+	@Override
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
 		List<AbilityMapping> DV=new Vector<AbilityMapping>();
@@ -685,6 +713,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return DV;
 	}
 
+	@Override
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -789,15 +818,17 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
+	@Override
 	public DVector getCommonPreRequisites(MOB mob, Ability A)
 	{
 		DVector preReqs=getRawPreRequisites(mob,A);
-		if((preReqs==null)||(preReqs.size()==0)) 
+		if((preReqs==null)||(preReqs.size()==0))
 			return getCommonPreRequisites(A);
 		fillPreRequisites(A,preReqs);
 		return preReqs;
 	}
 
+	@Override
 	public DVector getCommonPreRequisites(Ability A)
 	{
 		DVector preReqs=getRawPreRequisites("All", false, A.ID());
@@ -809,11 +840,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					if((preReqs!=null)&&(preReqs.size()>0)) break;
 				}
 		if((preReqs==null)||(preReqs.size()==0)) return new DVector(2);
-		final DVector requisites=preReqs.copyOf(); 
+		final DVector requisites=preReqs.copyOf();
 		fillPreRequisites(A,requisites);
 		return requisites;
 	}
 
+	@Override
 	public String getCommonExtraMask(Ability A)
 	{
 		String mask=null;
@@ -837,6 +869,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return mask;
 	}
 
+	@Override
 	public DVector getUnmetPreRequisites(MOB studentM, Ability A)
 	{
 		DVector V=getRawPreRequisites(studentM,A);
@@ -897,6 +930,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
+	@Override
 	public String formatPreRequisites(DVector preReqs)
 	{
 		StringBuffer names=new StringBuffer("");
@@ -999,6 +1033,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return (reqs==null)?new DVector(2):reqs.copyOf();
 	}
 
+	@Override
 	public String getExtraMask(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1016,6 +1051,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
+	@Override
 	public String getApplicableMask(MOB studentM, Ability A)
 	{
 		if((studentM==null)||(A==null)) return "";
@@ -1028,11 +1064,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			mask=getExtraMask(ID,true,AID);
 			if(mask!=null) return mask;
 		}
-		
+
 		mask=getExtraMask(studentM.charStats().getCurrentClass().ID(),true,A.ID());
 		return mask==null?"":mask;
 	}
 
+	@Override
 	public int qualifyingLevel(MOB studentM, Ability A)
 	{
 		if(studentM==null) return -1;
@@ -1076,6 +1113,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return theLevel;
 	}
 
+	@Override
 	public int qualifyingClassLevel(MOB studentM, Ability A)
 	{
 		if(studentM==null) return -1;
@@ -1113,6 +1151,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return studentM.charStats().getClassLevel(theClass);
 	}
 
+	@Override
 	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A)
 	{
 		if(studentM==null) return null;
@@ -1147,6 +1186,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return theClass;
 	}
 
+	@Override
 	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A)
 	{
 		if(studentM==null) return false;
@@ -1167,6 +1207,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public boolean qualifiesOnlyByRace(MOB studentM, Ability A)
 	{
 		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
@@ -1174,7 +1215,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public boolean qualifiesOnlyByClan(MOB studentM, Ability A)
 	{
 		for(Pair<Clan,Integer> c : studentM.clans())
@@ -1185,7 +1227,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A)
 	{
 		if(studentM==null) return false;
@@ -1200,6 +1243,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public AbilityLimits getCommonSkillLimit(MOB studentM)
 	{
 		AbilityLimits aL=new AbilityLimits();
@@ -1215,6 +1259,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return aL;
 	}
 
+	@Override
 	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A)
 	{
 		AbilityLimits aL=getCommonSkillLimit(studentM);
@@ -1228,6 +1273,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return aL;
 	}
 
+	@Override
 	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A)
 	{
 		AbilityLimits aL = getCommonSkillRemainders(studentM);
@@ -1241,6 +1287,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return aL;
 	}
 
+	@Override
 	public AbilityLimits getCommonSkillRemainders(MOB student)
 	{
 		AbilityLimits aL = getCommonSkillLimit(student);
@@ -1276,7 +1323,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return aL;
 	}
 
-	public boolean qualifiesByLevel(MOB studentM, Ability A){return (A==null)?false:qualifiesByLevel(studentM,A.ID());}
+	@Override public boolean qualifiesByLevel(MOB studentM, Ability A){return (A==null)?false:qualifiesByLevel(studentM,A.ID());}
+	@Override
 	public boolean qualifiesByLevel(MOB studentM, String abilityID)
 	{
 		if(studentM==null) return false;
@@ -1301,6 +1349,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public boolean getDefaultGain(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1318,6 +1367,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public boolean getAllQualified(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1335,6 +1385,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	@Override
 	public AbilityMapping getAbleMap(String ID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1346,8 +1397,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
-	public AbilityMapping getAllAbleMap(String abilityID){ return getAbleMap("All",abilityID);}
+	@Override public AbilityMapping getAllAbleMap(String abilityID){ return getAbleMap("All",abilityID);}
 
+	@Override
 	public boolean getSecretSkill(String ID, boolean checkAll, String abilityID)
 	{
 		boolean secretFound=false;
@@ -1369,6 +1421,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 
+	@Override
 	public boolean getAllSecretSkill(String abilityID)
 	{
 		AbilityMapping AB=getAllAbleMap(abilityID);
@@ -1395,7 +1448,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(abilityID))
 				list.add(ableMap.get(abilityID));
 		}
-		
+
 		for(Pair<Clan,Integer> c : mob.clans())
 		{
 			if(completeAbleMap.containsKey(c.first.getGovernmentName()))
@@ -1410,7 +1463,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			list.add(AB);
 		return list;
 	}
-	
+
+	@Override
 	public boolean getSecretSkill(MOB mob, String abilityID)
 	{
 		boolean secretFound=false;
@@ -1425,6 +1479,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 
+	@Override
 	public boolean getSecretSkill(String abilityID)
 	{
 		boolean secretFound=false;
@@ -1461,6 +1516,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return secretFound;
 	}
 
+	@Override
 	public Integer[] getCostOverrides(String ID, boolean checkAll, String abilityID)
 	{
 		Integer[] found=null;
@@ -1478,6 +1534,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return found;
 	}
 
+	@Override
 	public Integer[] getAllCostOverrides(String abilityID)
 	{
 		AbilityMapping AB=getAllAbleMap(abilityID);
@@ -1485,11 +1542,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
+	@Override
 	public Map<String, int[]> getHardOverrideManaCache()
 	{
 		return hardOverrideCache;
 	}
 
+	@Override
 	public Integer[] getCostOverrides(MOB mob, String abilityID)
 	{
 		Integer[] found=null;
@@ -1503,6 +1562,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return found;
 	}
 
+	@Override
 	public Integer[] getCostOverrides(String abilityID)
 	{
 		Integer[] found=null;
@@ -1532,6 +1592,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return found;
 	}
 
+	@Override
 	public String getDefaultParm(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1550,6 +1611,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return "";
 	}
 
+	@Override
 	public String getPreReqStrings(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1568,6 +1630,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return "";
 	}
 
+	@Override
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID)
 	{
 		if(mob==null) return getMaxProficiency(abilityID);
@@ -1576,6 +1639,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return getMaxProficiency(C.ID(),checkAll,abilityID);
 	}
 
+	@Override
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1593,6 +1657,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return getMaxProficiency(abilityID);
 	}
 
+	@Override
 	public int getMaxProficiency(String abilityID)
 	{
 		if(maxProficiencyMap.containsKey(abilityID))
@@ -1600,6 +1665,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return 100;
 	}
 
+	@Override
 	public int getDefaultProficiency(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1669,7 +1735,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(I.phyStats().weight()>amt[0])
 		{
 			I=(Item)CMLib.materials().unbundle(I,amt[0],null);
-			if(I==null) 
+			if(I==null)
 				return false;
 			amt[0]=amt[0]-I.phyStats().weight();
 		}
@@ -1687,6 +1753,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	// returns Vector of components found if all good, returns Integer of bad row if not.
+	@Override
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
@@ -1739,10 +1806,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return passes;
 	}
 
-	public List<AbilityComponent> getAbilityComponentDVector(String AID){ return getAbilityComponentMap().get(AID.toUpperCase().trim());}
+	@Override public List<AbilityComponent> getAbilityComponentDVector(String AID){ return getAbilityComponentMap().get(AID.toUpperCase().trim());}
 
-	public List<DVector> getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
+	@Override public List<DVector> getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
 
+	@Override
 	public DVector getAbilityComponentDecodedDVector(AbilityComponent comp)
 	{
 		DVector curr=new DVector(2);
@@ -1762,7 +1830,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
 			curr.addElement("DISPOSITION","inventory");
-		
+
 		if(comp.isConsumed())
 			curr.addElement("FATE","consumed");
 		else
@@ -1781,6 +1849,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return curr;
 	}
 
+	@Override
 	public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, AbilityComponent comp)
 	{
 		String[] s=new String[6];
@@ -1822,6 +1891,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		comp.setMask(s[5]);
 	}
 
+	@Override
 	public List<DVector> getAbilityComponentDecodedDVectors(List<AbilityComponent> req)
 	{
 		if(req==null) return null;
@@ -1831,6 +1901,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return V;
 	}
 
+	@Override
 	public AbilityComponent createBlankAbilityComponent()
 	{
 		AbilityComponent comp = (AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
@@ -1843,6 +1914,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return comp;
 	}
 
+	@Override
 	public String getAbilityComponentCodedString(List<AbilityComponent> comps)
 	{
 		return getAbilityComponentCodedStringFromDVectors(getAbilityComponentDecodedDVectors(comps));
@@ -1872,6 +1944,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return buf.toString();
 	}
 
+	@Override
 	public String getAbilityComponentCodedString(String AID)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -1880,6 +1953,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return AID+"="+buf.toString();
 	}
 
+	@Override
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r)
 	{
 		int amt=0;
@@ -1922,11 +1996,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return buf.toString();
 	}
 
+	@Override
 	public String getAbilityComponentDesc(MOB mob, String AID)
 	{
 		return getAbilityComponentDesc(mob,getAbilityComponentDVector(AID));
 	}
 
+	@Override
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req)
 	{
 		if(req==null) return null;
@@ -1935,6 +2011,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return buf.toString();
 	}
 
+	@Override
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H)
 	{
 		int x=s.indexOf('=');
@@ -1954,8 +2031,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			build=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
 			build.setConnector(AbilityComponent.CompConnector.AND);
 			if(parms.startsWith("||"))
-			{ 
-				build.setConnector(AbilityComponent.CompConnector.OR); 
+			{
+				build.setConnector(AbilityComponent.CompConnector.OR);
 				parms=parms.substring(2).trim();
 			}
 			else
@@ -1984,24 +2061,24 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			x=parmS.indexOf(':');
 			if(x<0)
 			{
-				error="Malformed component line (code 0-1): "+parmS; 
+				error="Malformed component line (code 0-1): "+parmS;
 				continue;
 			}
-			if(parmS.substring(0,x).equalsIgnoreCase("held")) 
+			if(parmS.substring(0,x).equalsIgnoreCase("held"))
 				build.setLocation(AbilityComponent.CompLocation.HELD);
 			else
-			if(parmS.substring(0,x).equalsIgnoreCase("worn")) 
+			if(parmS.substring(0,x).equalsIgnoreCase("worn"))
 				build.setLocation(AbilityComponent.CompLocation.WORN);
 			else
-			if(parmS.substring(0,x).equalsIgnoreCase("nearby")) 
+			if(parmS.substring(0,x).equalsIgnoreCase("nearby"))
 				build.setLocation(AbilityComponent.CompLocation.NEARBY);
 			else
-			if(parmS.substring(0,x).equalsIgnoreCase("onground")) 
+			if(parmS.substring(0,x).equalsIgnoreCase("onground"))
 				build.setLocation(AbilityComponent.CompLocation.ONGROUND);
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("inventory")))
 			{
-				error="Malformed component line (code 0-2): "+parmS; 
+				error="Malformed component line (code 0-2): "+parmS;
 				continue;
 			}
 			parmS=parmS.substring(x+1);
@@ -2009,12 +2086,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			build.setConsumed(true);
 			x=parmS.indexOf(':');
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
-			if(parmS.substring(0,x).equalsIgnoreCase("kept")) 
+			if(parmS.substring(0,x).equalsIgnoreCase("kept"))
 				build.setConsumed(false);
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
 			{
-				error="Malformed component line (code 1-2): "+parmS; 
+				error="Malformed component line (code 1-2): "+parmS;
 				continue;
 			}
 			parmS=parmS.substring(x+1);
@@ -2024,10 +2101,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(x<0){error="Malformed component line (code 2-1): "+parmS; continue;}
 			if((x>0)&&(!CMath.isInteger(parmS.substring(0,x))))
 			{
-				error="Malformed component line (code 2-2): "+parmS; 
+				error="Malformed component line (code 2-2): "+parmS;
 				continue;
 			}
-			if(x>0) 
+			if(x>0)
 				build.setAmount(CMath.s_int(parmS.substring(0,x)));
 			parmS=parmS.substring(x+1);
 
@@ -2062,6 +2139,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	// format of each data entry is 1=ANDOR(B), 2=DISPO(I), 3=CONSUMED(B), 4=AMT(I), 5=MATERIAL(L)RESOURCE(I)NAME(S), 6=MASK(S)
+	@Override
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap()
 	{
 		Map<String, List<AbilityComponent>> H=(Map)Resources.getResource("COMPONENT_MAP");
@@ -2087,6 +2165,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return H;
 	}
 
+	@Override
 	public int destroyAbilityComponents(List<Object> found)
 	{
 		int value=0;
@@ -2115,6 +2194,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return value;
 	}
 
+	@Override
 	public void alterAbilityComponentFile(String compID, boolean delete)
 	{
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
@@ -2230,7 +2310,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 						i+=8;
 					}
 					else
-					if(ss.startsWith("AUTOGAIN") 
+					if(ss.startsWith("AUTOGAIN")
 					&& (ss.length()==8))
 					{
 						cur=null;
@@ -2252,6 +2332,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					true,CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 	}
 
+	@Override
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
 	{
 		Map<String, Map<String,AbilityMapping>> bothMaps;
@@ -2260,7 +2341,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			bothMaps=(Map)Resources.getResource("ALLQUALIFIES_MAP");
 			if(bothMaps!=null) return bothMaps;
 		}
-		
+
 		bothMaps=new TreeMap<String,Map<String,AbilityMapping>>();
 		bothMaps.put("ALL", new TreeMap<String,AbilityMapping>());
 		bothMaps.put("EACH", new TreeMap<String,AbilityMapping>());
@@ -2352,7 +2433,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			for(String ID : deleteThese)
 				revT.remove(ID);
 		}
-		
+
 		for(String ID : completeAbleMap.keySet())
 		{
 			Map<String, AbilityMapping> ableMap = completeAbleMap.get(ID);
@@ -2368,6 +2449,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
+	@Override
 	public synchronized void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap)
 	{
 		// undo and then reapply the all qualifys list

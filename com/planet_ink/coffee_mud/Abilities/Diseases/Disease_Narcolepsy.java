@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,24 @@ import java.util.*;
 
 public class Disease_Narcolepsy extends Disease
 {
-	public String ID() { return "Disease_Narcolepsy"; }
-	public String name(){ return "Narcolepsy";}
-	public String displayText(){ return "(Narcolepsy)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Narcolepsy"; }
+	@Override public String name(){ return "Narcolepsy";}
+	@Override public String displayText(){ return "(Narcolepsy)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return (int)(CMProps.getMillisPerMudHour()/CMProps.getTickMillis());}
-	protected String DISEASE_DONE(){return "Your narcolepsy is cured!";}
-	protected String DISEASE_START(){return "^G<S-NAME> seem(s) sleepy.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sleepy...";}
-	public int abilityCode(){return 0;}
-	public int difficultyLevel(){return 6;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return (int)(CMProps.getMillisPerMudHour()/CMProps.getTickMillis());}
+	@Override protected String DISEASE_DONE(){return "Your narcolepsy is cured!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) sleepy.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sleepy...";}
+	@Override public int abilityCode(){return 0;}
+	@Override public int difficultyLevel(){return 6;}
 	protected int attDown=1;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 
@@ -75,6 +76,7 @@ public class Disease_Narcolepsy extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)/2);

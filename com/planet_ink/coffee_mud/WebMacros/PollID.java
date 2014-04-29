@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,9 @@ import java.util.*;
 */
 public class PollID extends StdWebMacro
 {
-	public String name() { return "PollID"; }
+	@Override public String name() { return "PollID"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String last=httpReq.getUrlParameter("POLL");

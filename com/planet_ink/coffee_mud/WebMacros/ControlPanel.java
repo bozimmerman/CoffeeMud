@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 */
 public class ControlPanel extends StdWebMacro
 {
-	public String name() { return "ControlPanel"; }
-	public boolean isAdminMacro()    {return true;}
+	@Override public String name() { return "ControlPanel"; }
+	@Override public boolean isAdminMacro()    {return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		
+
 		String lastDisable=httpReq.getUrlParameter("DISABLEFLAG");
 		if(parms.containsKey("DISABLERESET"))
 		{
@@ -66,7 +67,7 @@ public class ControlPanel extends StdWebMacro
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";
-			
+
 		}
 		if(parms.containsKey("DISABLEID"))
 		{
@@ -83,8 +84,8 @@ public class ControlPanel extends StdWebMacro
 				return " @break@";
 			return flag.description();
 		}
-		
-		
+
+
 		String lastDebug=httpReq.getUrlParameter("DEBUGFLAG");
 		if(parms.containsKey("ISDEBUGGING"))
 		{
@@ -111,7 +112,7 @@ public class ControlPanel extends StdWebMacro
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";
-			
+
 		}
 		if(parms.containsKey("DEBUGID"))
 		{
@@ -128,7 +129,7 @@ public class ControlPanel extends StdWebMacro
 				return " @break@";
 			return flag.description();
 		}
-		
+
 		String query=parms.get("QUERY");
 		if((query==null)||(query.length()==0))
 			return "";
@@ -206,7 +207,7 @@ public class ControlPanel extends StdWebMacro
 			else
 			if(field.equalsIgnoreCase("SAVETHREAD"))
 			{
-				
+
 			}
 			return "";
 		}

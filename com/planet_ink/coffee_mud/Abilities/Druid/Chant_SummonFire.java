@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonFire extends Chant
 {
-	public String ID() { return "Chant_SummonFire"; }
-	public String name(){ return "Summon Fire";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonFire"; }
+	@Override public String name(){ return "Summon Fire";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Room FireLocation=null;
 	protected Item littleFire=null;
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(FireLocation==null)
@@ -65,6 +66,7 @@ public class Chant_SummonFire extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))

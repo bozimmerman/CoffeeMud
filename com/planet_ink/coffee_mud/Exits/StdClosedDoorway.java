@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,13 @@ import java.util.*;
 */
 public class StdClosedDoorway extends StdExit
 {
-	public String ID(){	return "StdClosedDoorway";}
-	public String Name(){ return "a door";}
-	public String displayText(){ return "";}
-	public String description(){ return "An ordinary wooden door with swinging hinges and a latch.";}
-	public boolean hasADoor(){return true;}
-	public boolean hasALock(){return false;}
-	public boolean defaultsLocked(){return false;}
-	public boolean defaultsClosed(){return true;}
-	public String closedText(){return "a closed door";}
+	@Override public String ID(){	return "StdClosedDoorway";}
+	@Override public String Name(){ return "a door";}
+	@Override public String displayText(){ return "";}
+	@Override public String description(){ return "An ordinary wooden door with swinging hinges and a latch.";}
+	@Override public boolean hasADoor(){return true;}
+	@Override public boolean hasALock(){return false;}
+	@Override public boolean defaultsLocked(){return false;}
+	@Override public boolean defaultsClosed(){return true;}
+	@Override public String closedText(){return "a closed door";}
 }

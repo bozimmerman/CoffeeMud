@@ -34,7 +34,7 @@ public interface SearchIDList<T> extends List<T>
 	 * @return the object or null if not found
 	 */
 	public T find(String arg0);
-	
+
 	/**
 	 * Searches the sorted list of objects for one with the
 	 * same ID as the object given.

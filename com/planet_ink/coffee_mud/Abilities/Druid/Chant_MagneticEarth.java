@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MagneticEarth extends Chant
 {
-	public String ID() { return "Chant_MagneticEarth"; }
-	public String name(){ return "Magnetic Earth";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Chant_MagneticEarth"; }
+	@Override public String name(){ return "Magnetic Earth";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -93,6 +94,7 @@ public class Chant_MagneticEarth extends Chant
 	}
 
 	protected boolean checked=false;
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((!checked)
@@ -105,7 +107,8 @@ public class Chant_MagneticEarth extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -122,7 +125,8 @@ public class Chant_MagneticEarth extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

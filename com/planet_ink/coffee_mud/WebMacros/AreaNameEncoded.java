@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,9 @@ import java.net.URLEncoder;
 */
 public class AreaNameEncoded extends StdWebMacro
 {
-	public String name() { return "AreaNameEncoded"; }
+	@Override public String name() { return "AreaNameEncoded"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String last=httpReq.getUrlParameter("AREA");

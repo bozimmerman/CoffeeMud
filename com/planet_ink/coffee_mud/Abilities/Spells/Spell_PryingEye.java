@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_PryingEye extends Spell
 {
-	public String ID() { return "Spell_PryingEye"; }
-	public String name(){return "Prying Eye";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_PryingEye"; }
+	@Override public String name(){return "Prying Eye";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	protected List<Integer> dirs=new LinkedList<Integer>();
-	
+
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -52,7 +53,7 @@ public class Spell_PryingEye extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) 
+			if(mob.amDead())
 				mob.setLocation(null);
 			mob.setSession(null);
 			if(invoker!=null)
@@ -61,6 +62,7 @@ public class Spell_PryingEye extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -70,11 +72,12 @@ public class Spell_PryingEye extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) 
+			if(msg.source().playerStats()!=null)
 				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -105,7 +108,8 @@ public class Spell_PryingEye extends Spell
 			unInvoke();
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -113,7 +117,7 @@ public class Spell_PryingEye extends Spell
 			mob.tell("You must specify directions for the eye to follow.");
 			return false;
 		}
-		
+
 		List<Integer> directions=new LinkedList<Integer>();
 		for(Object o : commands)
 		{
@@ -125,7 +129,7 @@ public class Spell_PryingEye extends Spell
 			}
 			directions.add(Integer.valueOf(dir));
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -135,7 +139,7 @@ public class Spell_PryingEye extends Spell
 			otherA.unInvoke();
 			mob.delEffect(otherA);
 		}
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -173,7 +177,7 @@ public class Spell_PryingEye extends Spell
 				CMLib.beanCounter().clearZeroMoney(eyeM,null);
 				R.showOthers(eyeM,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				eyeM.setStartRoom(null); // keep before postFollow for Conquest
-				if(eyeM.amDead()||eyeM.amDestroyed()) 
+				if(eyeM.amDead()||eyeM.amDestroyed())
 					return false;
 				eyeM.setSession(mob.session());
 				beneficialAffect(mob,eyeM,asLevel,Ability.TICKS_ALMOST_FOREVER);

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Mood extends StdCommand
 	public Mood(){}
 
 	private final String[] access={"MOOD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,5 +53,5 @@ public class Mood extends StdCommand
 			mob.tell("This command is not implemented.");
 		return false;
 	}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

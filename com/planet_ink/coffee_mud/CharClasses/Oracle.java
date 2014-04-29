@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Oracle extends Cleric
 {
-	public String ID(){return "Oracle";}
-	public String name(){return "Oracle";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
+	@Override public String ID(){return "Oracle";}
+	@Override public String name(){return "Oracle";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 0;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 0;}
 
 	public Oracle()
 	{
@@ -50,6 +50,7 @@ public class Oracle extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -143,8 +144,9 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AboveTheLaw",false);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -156,16 +158,16 @@ public class Oracle extends Cleric
 	private final String[] raceRequiredList=new String[]{
 		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
-	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override public String getOtherBonusDesc(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
 	protected int numNonQualified(MOB mob)
 	{
@@ -187,14 +189,15 @@ public class Oracle extends Cleric
 		}
 		return numNonQualified;
 	}
-	
+
 	protected int maxNonQualified(MOB mob)
 	{
 		int level=mob.charStats().getClassLevel(this)-30;
 		level++;
 		return level;
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -204,7 +207,7 @@ public class Oracle extends Cleric
 		&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if(numNonQualified(mob)>=maxNonQualified(mob)) return;
-			
+
 			Ability newOne=null;
 			int tries=0;
 			while((newOne==null)&&((++tries)<100))
@@ -242,6 +245,7 @@ public class Oracle extends Cleric
 		}
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -252,7 +256,8 @@ public class Oracle extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
+	@Override
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;

@@ -45,11 +45,13 @@ public class BribeGateGuard extends StdBehavior
 	protected static boolean surviveReboot=false; // survive reboot
 	protected static Hashtable notTheJournal=new Hashtable();
 
+	@Override
 	public String ID()
 	{
 		return "BribeGateGuard";
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		BribeGateGuard obj=(BribeGateGuard)super.copyOf();
@@ -59,12 +61,13 @@ public class BribeGateGuard extends StdBehavior
 		obj.toldAlready.putAll(toldAlready);
 		return obj;
 	}
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "corruptable gate guarding";
 	}
-	
+
 	protected double price()
 	{
 		return getVal(getParms(), "price", 5);
@@ -298,7 +301,7 @@ public class BribeGateGuard extends StdBehavior
 				}
 				x = -1;
 			}
-			else 
+			else
 			{
 				x = text.toUpperCase().indexOf(key.toUpperCase(), x + 1);
 			}
@@ -328,6 +331,7 @@ public class BribeGateGuard extends StdBehavior
 		return defaultValue;
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if (!super.okMessage(oking, msg))
@@ -451,6 +455,7 @@ public class BribeGateGuard extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
@@ -479,13 +484,13 @@ public class BribeGateGuard extends StdBehavior
 		&& (!msg.source().isMonster()))
 		{
 			toldAlready.remove(source.Name());
-			if (paidPlayers.contains(source)) 
+			if (paidPlayers.contains(source))
 			{ // the player that the guard acknowledged as paid has now left
 				paidPlayers.remove(source);
 				if ( (msg.tool() != null) && (msg.tool()instanceof Exit))
 				{
 					Exit exit = (Exit) msg.tool();
-					if (exit.Name().equals(e.Name())) 
+					if (exit.Name().equals(e.Name()))
 					{ // the player is walking through the gate.	NOW we charge their balance
 						charge(price(), observer, source);
 						if(debug)
@@ -521,7 +526,7 @@ public class BribeGateGuard extends StdBehavior
 				if (debug)	// debugging
 					CMLib.commands().postSay(observer, source,
 										"I'm telling you this from execute", true, false);
-				try 
+				try
 				{
 					if (dir >= 0)
 						observer.doCommand(CMParms.parse("OPEN " + Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
@@ -534,7 +539,7 @@ public class BribeGateGuard extends StdBehavior
 			{
 				paidPlayers.addElement(source);
 				toldAlready.put(source.Name(),Boolean.FALSE);
-				try 
+				try
 				{
 					if (dir >= 0)
 						observer.doCommand(CMParms.parse("OPEN " +Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
@@ -556,6 +561,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking, tickID);
@@ -597,7 +603,7 @@ public class BribeGateGuard extends StdBehavior
 						if (dir >= 0)
 							mob.doCommand(CMParms.parse("OPEN " +Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
 					}
-					else 
+					else
 					{
 						if(toldAlready.containsKey(M.Name()))
 							continue;

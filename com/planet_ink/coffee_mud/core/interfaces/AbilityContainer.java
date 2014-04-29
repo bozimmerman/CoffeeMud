@@ -20,22 +20,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * Something that can know or contain abilities for use.
 * @author Bo Zimmerman
 *
 */
-public interface AbilityContainer 
+public interface AbilityContainer
 {
 	/**
-	 * Adds a new ability to this for use.  
+	 * Adds a new ability to this for use.
 	 * No ability with the same ID can be contained twice.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @param to the Ability to add.
 	 */
 	public void addAbility(Ability to);
 	/**
-	 * Removes the exact given ability object from here. 
+	 * Removes the exact given ability object from here.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @param to the exact Ability to remove
 	 */
@@ -49,7 +49,7 @@ public interface AbilityContainer
 	 */
 	public int numAbilities();
 	/**
-	 * Returns the Ability object at that index in this container.  
+	 * Returns the Ability object at that index in this container.
 	 * Any extraneous abilities bestowed from other sources MAY
 	 * be returned, so long as index > numAbilities.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
@@ -58,7 +58,7 @@ public interface AbilityContainer
 	 */
 	public Ability fetchAbility(int index);
 	/**
-	 * If contained herein, this will return the ability from this 
+	 * If contained herein, this will return the ability from this
 	 * container of the given ID.
 	 * Any extraneous abilities bestowed from other sources MAY
 	 * be returned by this method.

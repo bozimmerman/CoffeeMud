@@ -40,8 +40,9 @@ public class MPRun extends StdCommand
 	public MPRun(){}
 
 	private final String[] access={"MPRUN"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -84,7 +85,7 @@ public class MPRun extends StdCommand
 		return false;
 	}
 
-	private void executeScript(MOB mob, String script) 
+	private void executeScript(MOB mob, String script)
 	{
 		ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		S.setSavable(false);
@@ -96,7 +97,7 @@ public class MPRun extends StdCommand
 		S.tick(mob,Tickable.TICKID_MOB);
 	}
 
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return true; }
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return true; }
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

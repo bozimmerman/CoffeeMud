@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Desert extends StdRoom
 {
-	public String ID(){return "Desert";}
+	@Override public String ID(){return "Desert";}
 	public Desert()
 	{
 		super();
@@ -44,8 +44,8 @@ public class Desert extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	protected int baseThirst(){return 4;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	@Override protected int baseThirst(){return 4;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_CACTUS),
@@ -56,5 +56,5 @@ public class Desert extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_DATES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

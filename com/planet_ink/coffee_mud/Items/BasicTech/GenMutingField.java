@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenMutingField extends GenPersonalShield
 {
-	public String ID(){	return "GenMutingField";}
+	@Override public String ID(){	return "GenMutingField";}
 
 	public GenMutingField()
 	{
@@ -43,24 +43,24 @@ public class GenMutingField extends GenPersonalShield
 		setDisplayText("a muting field generator sits here.");
 		setDescription("The muting field generator is worn about the body and activated to use. It neutralizes sonic and stunning weapon damage. ");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
+	protected String fieldOnStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"An dense field surrounds <O-NAME>.":
-			"An dense field surrounds <T-NAME>."; 
+			"An dense field surrounds <T-NAME>.";
 	}
 
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"The dense field around <O-NAME> flickers and dies out.":
-			"The dense field around <T-NAME> flickers and dies out."; 
+			"The dense field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_NOT_HEAR);
@@ -82,14 +82,14 @@ public class GenMutingField extends GenPersonalShield
 		}
 		return false;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(!activated())
 			return false;
-		if((msg.tool() instanceof Electronics) 
-		&& (msg.tool() instanceof Weapon) 
+		if((msg.tool() instanceof Electronics)
+		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
 		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SONICING))
 		{

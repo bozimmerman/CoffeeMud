@@ -38,10 +38,11 @@ public class Unload extends StdCommand
 	public Unload(){}
 
 	private final String[] access={"UNLOAD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "[FILENAME]"};
-	
-	
+
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -187,7 +188,7 @@ public class Unload extends StdCommand
 				{
 					MOB M=(MOB)users.elementAt(u);
 					if(M.session()!=null)
-					{ 
+					{
 						if(M!=mob)
 						{
 							if(M.session()!=null) M.session().stopSession(false,false,false);
@@ -217,7 +218,7 @@ public class Unload extends StdCommand
 						M.destroy();
 					}
 				}
-				
+
 				mob.tell(done+" user(s) unloaded.");
 				return true;
 			}
@@ -376,9 +377,9 @@ public class Unload extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 }

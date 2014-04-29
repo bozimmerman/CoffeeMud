@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,16 +32,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Transmuter extends SpecialistMage
 {
-	public String ID(){return "Transmuter";}
-	public String name(){return "Transmuter";}
-	public int domain(){return Ability.DOMAIN_TRANSMUTATION;}
-	public int opposed(){return Ability.DOMAIN_CONJURATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Transmuter";}
+	@Override public String name(){return "Transmuter";}
+	@Override public int domain(){return Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int opposed(){return Ability.DOMAIN_CONJURATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_MagicMissile");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ShrinkMouth",25,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);

@@ -30,9 +30,10 @@ public class Resources
 	private static boolean 	 compress=false;
 	private static Object propResourceSync=new Object();
 	private static Map<String,Map<String,String>> propResources;
-	
+
 	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>()
 	{
+		@Override
 		public int compare(String o1, String o2)
 		{
 			if(o1==null)
@@ -46,20 +47,20 @@ public class Resources
 			return o1.compareToIgnoreCase(o2);
 		}
 	});
-	
+
 	private static class CompressedResource
 	{
 		public byte[] data;
 		public CompressedResource(byte[] d) { data=d;}
 	}
-	
+
 	public Resources()
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(rscs[c]==null) rscs[c]=this;
 	}
-	
+
 	public static void shareWith(char code)
 	{
 		if(Thread.currentThread().getThreadGroup().getName().charAt(0)==code)
@@ -71,10 +72,10 @@ public class Resources
 		{
 			initialize();
 			rscs[code]=rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-			
+
 		}
 	}
-	
+
 	public static final Resources initialize() { return new Resources(); }
 	public static final Resources instance()
 	{
@@ -84,7 +85,7 @@ public class Resources
 	}
 	public static final Resources instance(final char c){ return rscs[c];}
 	private static final Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-	
+
 	public static final Resources newResources(){ return new Resources();}
 
 	public static final void clearResources(){r()._clearResources();}
@@ -119,7 +120,7 @@ public class Resources
 			}
 		return "\n\r";
 	}
-	
+
 	public static final List<String> getFileLineVector(final StringBuffer buf)
 	{
 		final Vector<String> V=new Vector<String>();
@@ -183,7 +184,7 @@ public class Resources
 		removeResource(key);
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static final Map<String, List<String>> getCachedMultiLists(final String filename, boolean createIfNot)
 	{
@@ -199,7 +200,7 @@ public class Resources
 		}
 		return H;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static final boolean updateCachedMultiLists(final String filename)
 	{
@@ -213,7 +214,7 @@ public class Resources
 		updateMultiList(filename, H);
 		return true;
 	}
-	
+
 	public static final Map<String, List<String>> getMultiLists(String filename)
 	{
 		final Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
@@ -277,6 +278,7 @@ public class Resources
 		final boolean allOfThem=(lowerSrch.length()==0);
 		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>()
 		{
+			@Override
 			public boolean passesFilter(String obj)
 			{
 				return (allOfThem) || (obj.toLowerCase().indexOf(lowerSrch)>=0);
@@ -350,7 +352,7 @@ public class Resources
 		}
 		return null;
 	}
-	
+
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
 		Object rsc=_getResource(filename);
@@ -473,7 +475,7 @@ public class Resources
 			return propResources.get(section);
 		}
 	}
-	
+
 	public static final boolean isPropResource(String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -483,7 +485,7 @@ public class Resources
 			return secMap.containsKey(key);
 		}
 	}
-	
+
 	public static final String getPropResource(String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -495,7 +497,7 @@ public class Resources
 			return secMap.get(key);
 		}
 	}
-	
+
 	public static final void setPropResource(String section, String key, String value)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -508,7 +510,7 @@ public class Resources
 				secMap.put(key, value);
 		}
 	}
-	
+
 	public static final void savePropResources()
 	{
 		if(propResources!=null)

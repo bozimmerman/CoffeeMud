@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Pottery extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Pottery"; }
-	public String name(){ return "Pottery";}
+	@Override public String ID() { return "Pottery"; }
+	@Override public String name(){ return "Pottery";}
 	private static final String[] triggerStrings = {"POT","POTTERY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "_CLAY|_CHINA";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "_CLAY|_CHINA";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tLID_LOCK||STONE_FLAG\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
@@ -59,6 +60,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -74,15 +76,17 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "pottery.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "pottery.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -115,8 +119,9 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -124,7 +129,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			return false;
 		if((I.material()!=RawMaterial.RESOURCE_CLAY)&&((I.material()!=RawMaterial.RESOURCE_CHINA)))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof Rideable)
 		{
@@ -161,18 +166,20 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		fireRequired=true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -263,13 +270,13 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"pot list\" for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		int[] pm={RawMaterial.RESOURCE_CLAY,RawMaterial.RESOURCE_CHINA};

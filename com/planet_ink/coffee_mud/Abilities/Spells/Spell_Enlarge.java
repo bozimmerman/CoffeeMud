@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Enlarge extends Spell
 {
-	public String ID() { return "Spell_Enlarge"; }
-	public String name(){return "Enlarge Object";}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Spell_Enlarge"; }
+	@Override public String name(){return "Enlarge Object";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -50,6 +51,7 @@ public class Spell_Enlarge extends Spell
 		affectableStats.setName(affected.name()+addOnString);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -68,6 +70,7 @@ public class Spell_Enlarge extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);

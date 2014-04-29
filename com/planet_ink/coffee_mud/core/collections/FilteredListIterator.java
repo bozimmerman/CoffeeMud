@@ -26,13 +26,13 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	private K 				prevElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredListIterator(ListIterator<K> eset, Filterer<K> fil) 
+	public FilteredListIterator(ListIterator<K> eset, Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
-	
-	public void setFilterer(Filterer<K> fil) 
+
+	public void setFilterer(Filterer<K> fil)
 	{
 		filterer=fil;
 	}
@@ -49,7 +49,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			nextElement = null;
 		}
 	}
-	
+
 	private void stagePrevElement()
 	{
 		nextElement=prevElement;
@@ -62,7 +62,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			prevElement = null;
 		}
 	}
-	
+
 	private void initialize()
 	{
 		if(!initialized)
@@ -72,15 +72,17 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			initialized=true;
 		}
 	}
-	
-	public boolean hasNext() 
-	{ 
+
+	@Override
+	public boolean hasNext()
+	{
 		if(!initialized)
 			initialize();
 		return nextElement!=null;
 	}
-	
-	public K next() 
+
+	@Override
+	public K next()
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
@@ -89,16 +91,19 @@ public class FilteredListIterator<K> implements ListIterator<K>
 		return element;
 	}
 
+	@Override
 	public void remove()
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
+	@Override
 	public void add(K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
+	@Override
 	public boolean hasPrevious()
 	{
 		if(!initialized)

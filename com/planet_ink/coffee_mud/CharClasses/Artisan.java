@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Artisan extends StdCharClass
 {
-	public String ID(){return "Artisan";}
-	public String name(){return "Artisan";}
-	public String baseClass(){return "Commoner";}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return -1;}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
+	@Override public String ID(){return "Artisan";}
+	@Override public String name(){return "Artisan";}
+	@Override public String baseClass(){return "Commoner";}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return -1;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
 	public Artisan()
@@ -57,6 +57,7 @@ public class Artisan extends StdCharClass
 		for(int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -122,11 +123,11 @@ public class Artisan extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Speculate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Painting",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"LockSmith",0,"",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Construction",true,CMParms.parseSemicolons("Carpentry",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Masonry",true,CMParms.parseSemicolons("Sculpting",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Cage",false);
@@ -139,25 +140,25 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Haggle",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterShearing",false,CMParms.parseSemicolons("Shearing(100)",true),"+WIS 16");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing(100)",true),"+STR 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterDrilling",false,CMParms.parseSemicolons("Drilling(100)",true),"+INT 16");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing(100);Specialization_*",true),"+STR 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterFishing",false,CMParms.parseSemicolons("Fishing(100)",true),"+DEX 16");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Scrapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"MasterFarming",false,CMParms.parseSemicolons("Farming(100)",true),"+WIS 16");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterForaging",false,CMParms.parseSemicolons("Foraging(100)",true),"+CHA 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterDistilling",false,CMParms.parseSemicolons("Distilling(100)",true),"+CHA 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterChopping",false,CMParms.parseSemicolons("Chopping(100)",true),"+STR 16");
@@ -167,9 +168,10 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterMining",false,CMParms.parseSemicolons("Mining(100)",true),"+STR 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterBaking",false,CMParms.parseSemicolons("Baking(100)",true),"+CON 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
-		
+
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
@@ -199,14 +201,15 @@ public class Artisan extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -218,5 +221,5 @@ public class Artisan extends StdCharClass
 		return outfitChoices;
 	}
 
-	public String getOtherBonusDesc(){return "Gains experience when using common skills.";}
+	@Override public String getOtherBonusDesc(){return "Gains experience when using common skills.";}
 }

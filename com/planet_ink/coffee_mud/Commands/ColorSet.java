@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,8 @@ public class ColorSet extends StdCommand
 	public ColorSet(){}
 
 	private final String[] access={"COLORSET"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public String colorDescription(String code)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -105,15 +105,16 @@ public class ColorSet extends StdCommand
 		pstats.setColorStr(newChanges);
 		clookup[0]=session.getColorCodes().clone();
 	}
-	
+
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final Session session=mob.session();
-		if(session==null) 
+		if(session==null)
 			return false;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) 
+		if(pstats==null)
 			return false;
 		final String[][] clookup=new String[][]{session.getColorCodes().clone()};
 		if((commands.size()>1)
@@ -123,7 +124,7 @@ public class ColorSet extends StdCommand
 			mob.tell("Your colors have been changed back to default.");
 			return false;
 		}
-		if(clookup[0]==null) 
+		if(clookup[0]==null)
 			return false;
 		final
 		String[][] theSet={{"Normal Text","N"},
@@ -143,11 +144,11 @@ public class ColorSet extends StdCommand
 						   {"MOBs","M"},
 						   {"Channel Colors","Q"}
 		};
-		
+
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
 		{
-			@Override public void showPrompt() 
+			@Override public void showPrompt()
 			{
 				StringBuffer buf=new StringBuffer("");
 				for(int i=0;i<theSet.length;i++)
@@ -160,12 +161,12 @@ public class ColorSet extends StdCommand
 				session.promptPrint("Enter Number or RETURN: ");
 			}
 			@Override public void timedOut() {}
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
-				if(input.trim().length()==0) 
+				if(input.trim().length()==0)
 					return;
 				final int num=CMath.s_int(input.trim())-1;
-				if(input.trim().length()==0) 
+				if(input.trim().length()==0)
 					return;
 				if((num<0)||(num>=theSet.length))
 					mob.tell("That is not a valid entry!");
@@ -261,12 +262,12 @@ public class ColorSet extends StdCommand
 				}
 			}
 		};
-		
+
 		session.prompt(IC[0]);
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

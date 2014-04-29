@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 */
 public class Prop_ReqPKill extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqPKill"; }
-	public String name(){ return "Playerkill ONLY Zone";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqPKill"; }
+	@Override public String name(){ return "Playerkill ONLY Zone";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
-	public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

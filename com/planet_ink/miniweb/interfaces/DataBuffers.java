@@ -34,11 +34,11 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * Close out and clear all internal data buffers
 	 * This is a required operation, which is done automatically
 	 * if all data is iterated through, but should be done
-	 * manually otherwise. 
+	 * manually otherwise.
 	 */
 	public void close();
-	
-	
+
+
 	/**
 	 * Flushes all internet bytebuffers to a single one.
 	 * This can be an expensive operation, but will call
@@ -46,7 +46,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @return these buffers flushed to one
 	 */
 	public ByteBuffer flushToBuffer();
-	
+
 	/**
 	 * Return the length of all bytes buffers here
 	 * @return an overall size
@@ -79,14 +79,14 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
 	 */
 	public void insertTop(final ByteBuffer buf, final long lastModifiedTime);
-	
+
 	/**
 	 * Add a new random access file to this beginning of this set.
 	 * @param file the input stream to add
 	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
 	 */
 	public void insertTop(final RandomAccessFile file, final long lastModifiedTime);
-	
+
 	/**
 	 * Add a new random access file to this set.
 	 * @param file the input stream to add
@@ -100,7 +100,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
 	 */
 	public void insertTop(final byte[] buf, final long lastModifiedTime);
-	
+
 	/**
 	 * Reconfigure this databuffer to return the given ranges
 	 * Each range is 2 dimentional int array, startpos, endpos.

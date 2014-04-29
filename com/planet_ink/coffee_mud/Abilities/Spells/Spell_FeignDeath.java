@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FeignDeath extends Spell
 {
-	public String ID() { return "Spell_FeignDeath"; }
-	public String name(){return "Feign Death";}
-	public String displayText(){return "(Feign Death)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Spell_FeignDeath"; }
+	@Override public String name(){return "Feign Death";}
+	@Override public String displayText(){return "(Feign Death)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	public DeadBody Body=null;
 	public Room deathRoom=null;
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -74,6 +75,7 @@ public class Spell_FeignDeath extends Spell
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -110,6 +112,7 @@ public class Spell_FeignDeath extends Spell
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -122,6 +125,7 @@ public class Spell_FeignDeath extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

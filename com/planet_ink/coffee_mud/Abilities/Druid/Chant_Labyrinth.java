@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Labyrinth extends Chant
 {
-	public String ID() { return "Chant_Labyrinth"; }
-	public String name(){ return "Labyrinth";}
-	public String displayText(){return "(Labyrinth)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public String ID() { return "Chant_Labyrinth"; }
+	@Override public String name(){ return "Labyrinth";}
+	@Override public String displayText(){return "(Labyrinth)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	Room oldRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -61,6 +62,7 @@ public class Chant_Labyrinth extends Chant
 		room.destroy();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -77,7 +79,8 @@ public class Chant_Labyrinth extends Chant
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -87,8 +90,9 @@ public class Chant_Labyrinth extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
-	
+
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().roomID().length()==0)

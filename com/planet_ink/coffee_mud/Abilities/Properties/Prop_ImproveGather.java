@@ -15,10 +15,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +34,19 @@ import java.util.*;
 */
 public class Prop_ImproveGather extends Property
 {
-	public String ID() { return "Prop_ImproveGather"; }
-	public String name(){ return "Improve Gathering Skills";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ImproveGather"; }
+	@Override public String name(){ return "Improve Gathering Skills";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 	protected String[] improves=new String[] {"ALL"};
 	protected int improvement=2;
 
+	@Override
 	public String accountForYourself()
 	{ return "Improves common skills "+CMParms.toStringList(improves)+". Gain: "+improvement; }
 
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -59,7 +60,8 @@ public class Prop_ImproveGather extends Property
 		List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
 		improves=skills.toArray(new String[0]);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.tool() instanceof Ability)
@@ -67,7 +69,7 @@ public class Prop_ImproveGather extends Property
 		&&(improvement != ((Ability)msg.tool()).abilityCode())
 		&&(msg.source().location()!=null)
 		&&(msg.source()==affected)||(msg.source().location()==affected)||(msg.source().location().getArea()==affected)
-			||((affected instanceof Item)&&(((Item)affected).owner()==msg.source())&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY))))
+			||((affected instanceof Item)&&(((Item)affected).owner()==msg.source())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
 		&&(msg.source().fetchEffect(msg.tool().ID())==msg.tool())
 		&&(CMParms.contains(improves, "ALL")||CMParms.contains(improves, msg.tool().ID().toUpperCase()))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))

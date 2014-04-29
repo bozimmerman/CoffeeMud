@@ -26,7 +26,7 @@ public class LayoutTester
 	public static void draw(LayoutManager layout, int size, int dir)
 	{
 		List<LayoutNode> V=layout.generate(size, dir);
-		
+
 		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
@@ -39,10 +39,10 @@ public class LayoutTester
 			if(ls.coord()[1]<lowestY) lowestY = ls.coord()[1];
 			if(ls.coord()[0]>highestX) highestX = ls.coord()[0];
 			if(ls.coord()[1]>highestY) highestY = ls.coord()[1];
-			if(!HY.containsKey(Long.valueOf(ls.coord()[1]))) 
+			if(!HY.containsKey(Long.valueOf(ls.coord()[1])))
 				HY.put(Long.valueOf(ls.coord()[1]), new Vector<LayoutNode>());
 			HY.get(Long.valueOf(ls.coord()[1])).add(ls);
-			
+
 		}
 		for(long y=lowestY;y<=highestY;y++)
 		{
@@ -74,7 +74,7 @@ public class LayoutTester
 		}
 		return true;
 	}
-	
+
 	public static void main(String[] args)
 	{
 		Directions.instance();

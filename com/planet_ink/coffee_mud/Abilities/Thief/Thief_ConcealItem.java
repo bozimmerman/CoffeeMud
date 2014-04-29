@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,28 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_ConcealItem extends ThiefSkill
 {
-	public String ID() { return "Thief_ConcealItem"; }
-	public String name(){ return "Conceal Item";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_ConcealItem"; }
+	@Override public String name(){ return "Conceal Item";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ITEMCONCEAL","ICONCEAL","CONCEALITEM"};
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
 		stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -66,7 +68,8 @@ public class Thief_ConcealItem extends ThiefSkill
 			P.recoverPhyStats();
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -76,13 +79,13 @@ public class Thief_ConcealItem extends ThiefSkill
 		}
 		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
-		
+
 		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
 		{
 			mob.tell("You aren't good enough to conceal anything that large.");
 			return false;
 		}
-		
+
 		if(((!CMLib.flags().isGettable(item))
 			||(CMLib.flags().isRejuvingItem(item))
 			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))

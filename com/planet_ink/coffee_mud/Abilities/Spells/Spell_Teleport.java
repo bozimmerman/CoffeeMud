@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Teleport extends Spell
 {
-	public String ID() { return "Spell_Teleport"; }
-	public String name(){return "Teleport";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Teleport"; }
+	@Override public String name(){return "Teleport";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
@@ -51,7 +51,8 @@ public class Spell_Teleport extends Spell
 		||(!CMLib.flags().canAccess(mob,room))
 		||(CMLib.law().getLandTitle(room)!=null);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

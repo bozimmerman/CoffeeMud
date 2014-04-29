@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,17 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_ControlFire extends Chant
 {
-	public String ID() { return "Chant_ControlFire"; }
-	public String name(){ return "Control Fire";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 0;}
-	public long flags(){return Ability.FLAG_FIREBASED;}
-	
-	private Item getFireSource(MOB target) 
+	@Override public String ID() { return "Chant_ControlFire"; }
+	@Override public String name(){ return "Control Fire";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 0;}
+	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	private Item getFireSource(MOB target)
 	{
 		for(int i=0;i<target.numItems();i++)
 		{
@@ -63,7 +63,8 @@ public class Chant_ControlFire extends Chant
 		}
 		return null;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -76,7 +77,8 @@ public class Chant_ControlFire extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

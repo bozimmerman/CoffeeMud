@@ -36,9 +36,9 @@ import java.util.*;
  */
 /**
  * The core of most object types in CoffeeMud. Much of the most common fields and
- * data are derived from this.  It represents something that appears in the 
+ * data are derived from this.  It represents something that appears in the
  * environment, either physically, or as energy or other phenomenon.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -145,7 +145,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the format expected for the miscText field
 	 */
 	public String miscTextFormat();
-	
+
 	/**
 	 * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
 	 * calling getStat on both objects and comparing the values.
@@ -155,7 +155,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return whether this object is the same as the one passed in
 	 */
 	public boolean sameAs(Environmental E);
-	
+
 	/**
 	 * If this object expires, it should have a timestamp saying when it expires, in real time.
 	 * When it expires, a MSG_EXPIRE message will be sent to it.
@@ -182,7 +182,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the minimum range
 	 */
 	public int minRange();
-	
+
 	/**
 	 * Localize an internal string -- shortcut. Same as calling:
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary#fullSessionTranslation(String, String...)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_CharmArea extends Chant
 {
-	public String ID() { return "Chant_CharmArea"; }
-	public String name(){ return "Charm Area";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_CharmArea"; }
+	@Override public String name(){ return "Charm Area";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
@@ -71,6 +72,7 @@ public class Chant_CharmArea extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,7 +82,8 @@ public class Chant_CharmArea extends Chant
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"There is something charming about this place."));
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +101,7 @@ public class Chant_CharmArea extends Chant
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 			}
 			if(target instanceof MOB)
 			{
@@ -106,7 +109,8 @@ public class Chant_CharmArea extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

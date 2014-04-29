@@ -42,9 +42,9 @@ import java.util.*;
  */
 public class DefaultClan implements Clan
 {
-	public String ID(){return "DefaultClan";}
+	@Override public String ID(){return "DefaultClan";}
 	private int tickStatus=Tickable.STATUS_NOT;
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 
 	protected String 			clanName="";
 	protected String			clanCategory=null;
@@ -74,15 +74,16 @@ public class DefaultClan implements Clan
 	public long lastGovernmentLoadTime=-1;
 	public ClanGovernment govt = null;
 	//*****************
-	
-	protected final static List<Ability> empty=new XVector<Ability>(1,true); 
-	
+
+	protected final static List<Ability> empty=new XVector<Ability>(1,true);
+
 	protected final List<Pair<Clan,Integer>> channelSet = new XVector<Pair<Clan,Integer>>(1,true);
 
 	/** return a new instance of the object*/
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -95,18 +96,19 @@ public class DefaultClan implements Clan
 		}
 	}
 
-	public ClanGovernment getGovernment() 
-	{ 
+	@Override
+	public ClanGovernment getGovernment()
+	{
 		return govt();
 	}
 
-	protected ClanGovernment govt() 
+	protected ClanGovernment govt()
 	{
 		if((govt != null) && ((government < 0) || (lastGovernmentLoadTime == CMLib.clans().getLastGovernmentLoad())))
 			return govt;
 		else
 		{
-			
+
 			ClanGovernment govt = CMLib.clans().getStockGovernment(government);
 			if(govt == null)
 			{
@@ -117,7 +119,7 @@ public class DefaultClan implements Clan
 			return govt;
 		}
 	}
-	
+
 	private synchronized void clanKills()
 	{
 		if(lastClanKillRecord==null)
@@ -155,6 +157,7 @@ public class DefaultClan implements Clan
 		}
 	}
 
+	@Override
 	public void updateVotes()
 	{
 		StringBuffer str=new StringBuffer("");
@@ -184,6 +187,7 @@ public class DefaultClan implements Clan
 		else
 			CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
 	}
+	@Override
 	public void addVote(ClanVote CV)
 	{
 		if(CV==null)
@@ -191,12 +195,14 @@ public class DefaultClan implements Clan
 		votes();
 		voteList.add(CV);
 	}
+	@Override
 	public void delVote(ClanVote CV)
 	{
 		votes();
 		voteList.remove(CV);
 	}
 
+	@Override
 	public void recordClanKill(MOB killer, MOB killed)
 	{
 		clanKills();
@@ -210,6 +216,7 @@ public class DefaultClan implements Clan
 				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 0, 1);
 		}
 	}
+	@Override
 	public int getCurrentClanKills(MOB killer)
 	{
 		if(killer==null)
@@ -224,25 +231,30 @@ public class DefaultClan implements Clan
 		}
 	}
 
+	@Override
 	public boolean isOnlyFamilyApplicants()
 	{
 		return govt().isFamilyOnly();
 	}
 
+	@Override
 	public boolean isLoyaltyThroughItems()
 	{
 		return govt().isConquestItemLoyalty();
 	}
 
+	@Override
 	public boolean isWorshipConquest()
 	{
 		return govt().isConquestByWorship();
 	}
 
+	@Override
 	public long calculateMapPoints()
 	{
 		return calculateMapPoints(getControlledAreas());
 	}
+	@Override
 	public long calculateMapPoints(List<Area> controlledAreas)
 	{
 		long points=0;
@@ -256,6 +268,7 @@ public class DefaultClan implements Clan
 		return points;
 	}
 
+	@Override
 	public List<Area> getControlledAreas()
 	{
 		Vector<Area> done=new Vector<Area>();
@@ -274,6 +287,7 @@ public class DefaultClan implements Clan
 		return done;
 	}
 
+	@Override
 	public Enumeration<ClanVote> votes()
 	{
 		if(voteList==null)
@@ -318,11 +332,13 @@ public class DefaultClan implements Clan
 		return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 	}
 
+	@Override
 	public int getAutoPosition()
 	{
 		return autoPosition<0?govt().getAutoRole():autoPosition;
 	}
-	
+
+	@Override
 	public void setAutoPosition(int pos)
 	{
 		if(pos == govt().getAutoRole())
@@ -331,6 +347,7 @@ public class DefaultClan implements Clan
 			autoPosition=pos;
 	}
 
+	@Override
 	public void setExp(long newexp)
 	{
 		synchronized(expSync)
@@ -364,18 +381,20 @@ public class DefaultClan implements Clan
 			}
 		}
 	}
-	public void adjExp(int howMuch) { if(howMuch!=0) setExp(getExp()+howMuch); }
-	public long getExp(){return exp;}
+	@Override public void adjExp(int howMuch) { if(howMuch!=0) setExp(getExp()+howMuch); }
+	@Override public long getExp(){return exp;}
 
-	public int getTrophies(){return clanTrophies;}
-	public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
+	@Override public int getTrophies(){return clanTrophies;}
+	@Override public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
 
+	@Override
 	public void setTaxes(double rate)
 	{
 		taxRate=rate;
 	}
-	public double getTaxes(){return taxRate;}
+	@Override public double getTaxes(){return taxRate;}
 
+	@Override
 	public int getClanRelations(String id)
 	{
 		long i[]=relations.get(id.toUpperCase());
@@ -383,12 +402,14 @@ public class DefaultClan implements Clan
 		return  REL_NEUTRAL;
 	}
 
+	@Override
 	public long getLastRelationChange(String id)
 	{
 		long i[]=relations.get(id.toUpperCase());
 		if(i!=null) return i[1];
 		return 0;
 	}
+	@Override
 	public void setClanRelations(String id, int rel, long time)
 	{
 		relations.remove(id.toUpperCase());
@@ -398,14 +419,16 @@ public class DefaultClan implements Clan
 		relations.put(id.toUpperCase(),i);
 	}
 
-	public int getGovernmentID(){return government;}
-	public void setGovernmentID(int type){government=type; lastGovernmentLoadTime=-1;}
+	@Override public int getGovernmentID(){return government;}
+	@Override public void setGovernmentID(int type){government=type; lastGovernmentLoadTime=-1;}
+	@Override
 	public String getCategory()
 	{
 		if(clanCategory!=null)
 			return clanCategory;
 		return govt().getCategory();
 	}
+	@Override
 	public int getMinClanMembers()
 	{
 		if(overrideMinClanMembers!=null)
@@ -414,6 +437,7 @@ public class DefaultClan implements Clan
 			return govt().getOverrideMinMembers().intValue();
 		return CMProps.getIntVar(CMProps.Int.MINCLANMEMBERS);
 	}
+	@Override
 	public void setMinClanMembers(int amt)
 	{
 		overrideMinClanMembers=null;
@@ -430,6 +454,7 @@ public class DefaultClan implements Clan
 			overrideMinClanMembers=Integer.valueOf(amt);
 		}
 	}
+	@Override
 	public void setCategory(String newCategory)
 	{
 		if(govt().getCategory().equalsIgnoreCase(newCategory))
@@ -437,12 +462,14 @@ public class DefaultClan implements Clan
 		else
 			clanCategory=newCategory;
 	}
+	@Override
 	public boolean isRivalrous()
 	{
 		if(isRivalrous==null)
 			return govt().isRivalrous();
 		return isRivalrous.booleanValue();
 	}
+	@Override
 	public void setRivalrous(boolean isRivalrous)
 	{
 		if(govt().isRivalrous()==isRivalrous)
@@ -450,23 +477,27 @@ public class DefaultClan implements Clan
 		else
 			this.isRivalrous=Boolean.valueOf(isRivalrous);
 	}
+	@Override
 	public void create()
 	{
 		CMLib.database().DBCreateClan(this);
 		CMLib.clans().addClan(this);
 	}
 
+	@Override
 	public void update()
 	{
 		CMLib.database().DBUpdateClan(this);
 	}
 
+	@Override
 	public void addMember(MOB M, int role)
 	{
 		M.setClan(clanID(),role);
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), role);
 		updateClanPrivileges(M);
 	}
+	@Override
 	public void delMember(MOB M)
 	{
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), -1);
@@ -474,6 +505,7 @@ public class DefaultClan implements Clan
 		updateClanPrivileges(M);
 	}
 
+	@Override
 	public boolean updateClanPrivileges(MOB M)
 	{
 		boolean did=false;
@@ -567,6 +599,7 @@ public class DefaultClan implements Clan
 		return did;
 	}
 
+	@Override
 	public void destroyClan()
 	{
 		List<MemberRecord> members=getMemberList();
@@ -593,6 +626,7 @@ public class DefaultClan implements Clan
 		return C;
 	}
 
+	@Override
 	public String getDetail(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -757,7 +791,7 @@ public class DefaultClan implements Clan
 			if(abilities.size()>0)
 			{
 				final List<String> names = new Vector<String>();
-				for(AbilityMapper.AbilityMapping aMap : abilities) 
+				for(AbilityMapper.AbilityMapping aMap : abilities)
 				{
 					final Ability A=CMClass.getAbility(aMap.abilityID);
 					if(A!=null)
@@ -773,8 +807,9 @@ public class DefaultClan implements Clan
 		return msg.toString();
 	}
 
-	public String getGovernmentName() { return CMStrings.capitalizeAndLower(govt().getName());}
+	@Override public String getGovernmentName() { return CMStrings.capitalizeAndLower(govt().getName());}
 
+	@Override
 	public boolean canBeAssigned(MOB mob, int role)
 	{
 		if(mob==null) return false;
@@ -783,6 +818,7 @@ public class DefaultClan implements Clan
 		return CMLib.masking().maskCheck(fixRequirementMask(pos.getInnerMaskStr()), mob, true);
 	}
 
+	@Override
 	public Authority getAuthority(int roleID, Function function)
 	{
 		if((roleID<0)||(roleID>=govt().getPositions().length))
@@ -830,7 +866,8 @@ public class DefaultClan implements Clan
 		}
 		return mask.toString();
 	}
-	
+
+	@Override
 	public String getBasicRequirementMask()
 	{
 		return fixRequirementMask(govt().getRequiredMaskStr());
@@ -846,32 +883,34 @@ public class DefaultClan implements Clan
 		return members;
 	}
 
-	public int getSize() { return CMLib.database().DBClanMembers(clanID()).size(); }
+	@Override public int getSize() { return CMLib.database().DBClanMembers(clanID()).size(); }
 
-	public String name() {return clanName;}
-	public String getName() {return clanName;}
-	public String clanID() {return clanName;}
-	public void setName(String newName) {clanName = newName; }
+	@Override public String name() {return clanName;}
+	@Override public String getName() {return clanName;}
+	@Override public String clanID() {return clanName;}
+	@Override public void setName(String newName) {clanName = newName; }
 
-	public String getPremise() {return clanPremise;}
-	public void setPremise(String newPremise){ clanPremise = newPremise;}
+	@Override public String getPremise() {return clanPremise;}
+	@Override public void setPremise(String newPremise){ clanPremise = newPremise;}
 
-	public int getClanLevel() {return clanLevel;}
+	@Override public int getClanLevel() {return clanLevel;}
+	@Override
 	public void setClanLevel(int newClanLevel)
-	{ 
-		if(newClanLevel<=0) 
+	{
+		if(newClanLevel<=0)
 			clanLevel=1;
 		else
 			clanLevel = newClanLevel;
 	}
 
-	public String getAcceptanceSettings() { return acceptanceSettings; }
-	public void setAcceptanceSettings(String newSettings) { acceptanceSettings=newSettings; }
+	@Override public String getAcceptanceSettings() { return acceptanceSettings; }
+	@Override public void setAcceptanceSettings(String newSettings) { acceptanceSettings=newSettings; }
 
-	public String getClanClass(){return clanClass;}
-	public void setClanClass(String newClass){clanClass=newClass;}
+	@Override public String getClanClass(){return clanClass;}
+	@Override public void setClanClass(String newClass){clanClass=newClass;}
 
-	public String getPolitics() 
+	@Override
+	public String getPolitics()
 	{
 		StringBuffer str=new StringBuffer("");
 		str.append("<POLITICS>");
@@ -906,7 +945,8 @@ public class DefaultClan implements Clan
 		str.append("</POLITICS>");
 		return str.toString();
 	}
-	
+
+	@Override
 	public void setPolitics(String politics)
 	{
 		XMLLibrary.XMLpiece piece;
@@ -957,18 +997,19 @@ public class DefaultClan implements Clan
 		}
 	}
 
-	public int getStatus() { return clanStatus; }
-	public void setStatus(int newStatus) { clanStatus=newStatus; }
+	@Override public int getStatus() { return clanStatus; }
+	@Override public void setStatus(int newStatus) { clanStatus=newStatus; }
 
-	public String getRecall() { return clanRecall; }
-	public void setRecall(String newRecall) { clanRecall=newRecall; }
+	@Override public String getRecall() { return clanRecall; }
+	@Override public void setRecall(String newRecall) { clanRecall=newRecall; }
 
-	public String getMorgue() { return clanMorgue; }
-	public void setMorgue(String newMorgue) { clanMorgue=newMorgue; }
+	@Override public String getMorgue() { return clanMorgue; }
+	@Override public void setMorgue(String newMorgue) { clanMorgue=newMorgue; }
 
-	public String getDonation() { return clanDonationRoom; }
-	public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
+	@Override public String getDonation() { return clanDonationRoom; }
+	@Override public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
 
+	@Override
 	public List<MemberRecord> getMemberList()
 	{
 		return getMemberList(-1);
@@ -993,6 +1034,7 @@ public class DefaultClan implements Clan
 		return filteredMembers;
 	}
 
+	@Override
 	public List<MemberRecord> getMemberList(int posFilter)
 	{
 		return filterMemberList(CMLib.database().DBClanMembers(clanID()), posFilter);
@@ -1003,6 +1045,7 @@ public class DefaultClan implements Clan
 		return CMLib.database().DBGetClanMember(clanID(),name);
 	}
 
+	@Override
 	public List<FullMemberRecord> getFullMemberList()
 	{
 		List<FullMemberRecord> members=new Vector<FullMemberRecord>();
@@ -1022,11 +1065,11 @@ public class DefaultClan implements Clan
 				else
 				{
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
-					if(tP != null) 
+					if(tP != null)
 					{
 						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last,member.mobpvps,member.playerpvps));
-					} 
-					else 
+					}
+					else
 					{
 						CMLib.database().DBUpdateClanMembership(member.name, clanID(), -1);
 					}
@@ -1052,6 +1095,7 @@ public class DefaultClan implements Clan
 		return list.toString();
 	}
 
+	@Override
 	public int getNumVoters(Function function)
 	{
 		int voters=0;
@@ -1063,6 +1107,7 @@ public class DefaultClan implements Clan
 		return voters;
 	}
 
+	@Override
 	public List<Integer> getTopRankedRoles(Function func)
 	{
 		final List<ClanPosition> allRoles=new LinkedList<ClanPosition>();
@@ -1079,22 +1124,24 @@ public class DefaultClan implements Clan
 				roleIDs.add(Integer.valueOf(pos.getRoleID()));
 		return roleIDs;
 	}
-	
-	public int getNumberRoles(){ return govt().getPositions().length;}
 
-	public int getTopQualifiedRoleID(Function func, MOB mob) 
+	@Override public int getNumberRoles(){ return govt().getPositions().length;}
+
+	@Override
+	public int getTopQualifiedRoleID(Function func, MOB mob)
 	{
 		if(mob==null) return govt().getAutoRole();
 		ClanPosition topPos = null;
 		for(ClanPosition pos : govt().getPositions())
-			if(canBeAssigned(mob,pos.getRoleID()) 
+			if(canBeAssigned(mob,pos.getRoleID())
 			&&((topPos==null)||(pos.getRank() < topPos.getRank()))
 			&&((func==null)||(getAuthority(pos.getRoleID(),func)!=Authority.CAN_NOT_DO)))
 				topPos = pos;
 		if(topPos == null) return govt().getAutoRole();
 		return topPos.getRoleID();
 	}
-	
+
+	@Override
 	public int getRoleFromName(String position)
 	{
 		position=position.toUpperCase().trim();
@@ -1113,14 +1160,16 @@ public class DefaultClan implements Clan
 				return pos.getRoleID();
 		return -1;
 	}
-	
+
+	@Override
 	public boolean isPubliclyListedFor(MOB mob)
 	{
 		if((!govt().isPublic())&&(mob.getClanRole(clanID())==null))
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public String[] getRolesList()
 	{
 		final List<String> roleNames=new LinkedList<String>();
@@ -1129,6 +1178,7 @@ public class DefaultClan implements Clan
 		return roleNames.toArray(new String[0]);
 	}
 
+	@Override
 	public int getMostInRole(int roleID)
 	{
 		if((roleID<0)||(roleID>=govt().getPositions().length))
@@ -1136,7 +1186,8 @@ public class DefaultClan implements Clan
 		return govt().getPositions()[roleID].getMax();
 	}
 
-	
+
+	@Override
 	public String getRoleName(int roleID, boolean titleCase, boolean plural)
 	{
 		if((roleID<0)||(roleID>=govt().getPositions().length))
@@ -1169,7 +1220,8 @@ public class DefaultClan implements Clan
 			}
 		return false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLAN)
@@ -1181,7 +1233,7 @@ public class DefaultClan implements Clan
 			lastPropsReload=CMProps.getLastResetTime();
 			this.overrideMinClanMembers=null;
 		}
-		
+
 		try
 		{
 			List<FullMemberRecord> members=getFullMemberList();
@@ -1193,7 +1245,7 @@ public class DefaultClan implements Clan
 				if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
 					activeMembers++;
 			}
-			
+
 			int minimumMembers = getMinClanMembers();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 				Log.debugOut("DefaultClan","("+clanID()+"): "+activeMembers+"/"+minimumMembers+" active members.");
@@ -1222,12 +1274,12 @@ public class DefaultClan implements Clan
 						{
 							MOB player=CMLib.players().getLoadPlayer(name);
 							if(player!=null)
-								CMLib.smtp().emailIfPossible("AutoPurge",player.Name(),"AutoPurge: "+name(), 
+								CMLib.smtp().emailIfPossible("AutoPurge",player.Name(),"AutoPurge: "+name(),
 										""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
 										+" members do not log on within 24 hours.");
 						}
 					}
-					
+
 					Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
 					clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 					update();
@@ -1261,7 +1313,7 @@ public class DefaultClan implements Clan
 					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
-				
+
 				AutoPromoteFlag basePromoteBy = govt().getAutoPromoteBy();
 				boolean overWrite = false;
 				if(basePromoteBy==AutoPromoteFlag.LEVEL_OVERWRITE)
@@ -1275,7 +1327,7 @@ public class DefaultClan implements Clan
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.RANK;
 				}
-				
+
 				if(overWrite || (highMembers.size()==0))
 				{
 					List<MemberRecord> highestQualifiedMembers = new LinkedList<MemberRecord>();
@@ -1304,7 +1356,7 @@ public class DefaultClan implements Clan
 								if(i.next().role != bestPos.getRoleID())
 									i.remove();
 					}
-					
+
 					int highestLevel=-1;
 					for(MemberRecord member : highestQualifiedMembers)
 					{
@@ -1367,7 +1419,7 @@ public class DefaultClan implements Clan
 					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
-				
+
 				if(highMembers.size()==0)
 				{
 					if(!isSafeFromPurge())
@@ -1473,6 +1525,7 @@ public class DefaultClan implements Clan
 		return true;
 	}
 
+	@Override
 	public boolean doesOutRank(int highRoleID, int lowRoleID)
 	{
 		ClanGovernment govt=govt();
@@ -1485,7 +1538,8 @@ public class DefaultClan implements Clan
 			return true;
 		return govt.getPositions()[highRoleID].getRank() < govt.getPositions()[lowRoleID].getRank();
 	}
-	
+
+	@Override
 	public void clanAnnounce(String msg)
 	{
 		if(channelSet.size()==0)
@@ -1502,7 +1556,8 @@ public class DefaultClan implements Clan
 	}
 
 	private static final SearchIDList<Ability> emptyAbles =new CMUniqSortSVec<Ability>(1);
-	
+
+	@Override
 	public SearchIDList<Ability> clanAbilities(MOB mob)
 	{
 		Pair<Clan,Integer> p=(mob!=null)?mob.getClanRole(clanID()):null;
@@ -1510,17 +1565,20 @@ public class DefaultClan implements Clan
 			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
 		return emptyAbles;
 	}
-	
+
+	@Override
 	public int numClanEffects(MOB mob)
 	{
 		return govt().getClanLevelEffectsSize(mob, Integer.valueOf(getClanLevel()));
 	}
-	
+
+	@Override
 	public ChameleonList<Ability> clanEffects(MOB mob)
 	{
 		return govt().getClanLevelEffects(mob,this,Integer.valueOf(getClanLevel()));
 	}
-	
+
+	@Override
 	public int applyExpMods(int exp)
 	{
 		boolean changed=false;
@@ -1568,7 +1626,8 @@ public class DefaultClan implements Clan
 		if(changed) update();
 		return exp;
 	}
-	
+
+	@Override
 	public MOB getResponsibleMember()
 	{
 		final List<MemberRecord> members=getMemberList();
@@ -1601,10 +1660,11 @@ public class DefaultClan implements Clan
 		return null;
 	}
 
-	public String[] getStatCodes(){ return CLAN_STATS;}
-	public int getSaveStatIndex(){ return CLAN_STATS.length;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	public String getStat(String code) 
+	@Override public String[] getStatCodes(){ return CLAN_STATS;}
+	@Override public int getSaveStatIndex(){ return CLAN_STATS.length;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
+	public String getStat(String code)
 	{
 		int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
 		if(dex<0) return "";
@@ -1631,7 +1691,7 @@ public class DefaultClan implements Clan
 				 list.append("\""+areas.get(i).name()+"\" ");
 			 return list.toString().trim();
 		}
-		case 15: 
+		case 15:
 		{
 			List<MemberRecord> members=getMemberList();
 				 StringBuffer list=new StringBuffer("");
@@ -1649,12 +1709,13 @@ public class DefaultClan implements Clan
 		case 19: return ""+isRivalrous();
 		case 20: return ""+getMinClanMembers();
 		case 21: return ""+getClanClass();
-		case 22: return ""+getName(); 
+		case 22: return ""+getName();
 		}
 		return "";
 	}
-	
-	public void setStat(String code, String val) 
+
+	@Override
+	public void setStat(String code, String val)
 	{
 		int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
 		if(dex<0) return;

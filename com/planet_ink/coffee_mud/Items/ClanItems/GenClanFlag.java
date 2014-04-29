@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenClanFlag extends StdClanFlag
 {
-	public String ID(){	return "GenClanFlag";}
+	@Override public String ID(){	return "GenClanFlag";}
 	protected String readableText="";
 	public GenClanFlag()
 	{
@@ -50,15 +50,17 @@ public class GenClanFlag extends StdClanFlag
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -66,6 +68,7 @@ public class GenClanFlag extends StdClanFlag
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLANID","CITYPE"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -78,6 +81,7 @@ public class GenClanFlag extends StdClanFlag
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -92,6 +96,7 @@ public class GenClanFlag extends StdClanFlag
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -99,6 +104,7 @@ public class GenClanFlag extends StdClanFlag
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -112,6 +118,7 @@ public class GenClanFlag extends StdClanFlag
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenClanFlag)) return false;

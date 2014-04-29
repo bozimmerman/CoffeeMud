@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,8 +86,8 @@ public interface Weapon extends Item
 	"DAGGER",
 	"STAFF",
 	"THROWN"};
-	
-	
+
+
 	public int weaponType();
 	public int weaponClassification();
 	public void setWeaponType(int newType);

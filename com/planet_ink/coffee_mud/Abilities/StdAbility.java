@@ -37,8 +37,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdAbility implements Ability
 {
-	public String ID() { return "StdAbility"; }
-	
+	@Override public String ID() { return "StdAbility"; }
+
 	protected boolean			isAnAutoEffect	= false;
 	protected int				proficiency		= 0;
 	protected boolean			savable			= true;
@@ -50,9 +50,9 @@ public class StdAbility implements Ability
 	protected volatile int 		tickDown		= -1;
 	protected long 				lastCastHelp	= 0;
 	protected boolean 			amDestroyed		= false;
-	
+
 	private static final int[] STATIC_USAGE_NADA= new int[3];
-	
+
 	public StdAbility()
 	{
 		super();
@@ -60,6 +60,7 @@ public class StdAbility implements Ability
 	}
 	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
 
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -73,80 +74,89 @@ public class StdAbility implements Ability
 		return new StdAbility();
 	}
 
-	public String Name(){return name();}
-	public String name(){ return "an ability";}
-	public String description(){return "&";}
-	public String displayText(){return "Affected list display for "+ID();}
-	public String image(){return "";}
-	public String rawImage(){return "";}
-	public void setImage(String newImage){}
+	@Override public String Name(){return name();}
+	@Override public String name(){ return "an ability";}
+	@Override public String description(){return "&";}
+	@Override public String displayText(){return "Affected list display for "+ID();}
+	@Override public String image(){return "";}
+	@Override public String rawImage(){return "";}
+	@Override public void setImage(String newImage){}
 	public static final String[] empty={};
-	public String[] triggerStrings(){return empty;}
-	
+	@Override public String[] triggerStrings(){return empty;}
+
+	@Override
 	public int maxRange()
 	{
 		return adjustedMaxInvokerRange(0);
 	}
-	
+
+	@Override
 	public int minRange()
 	{
 		return 0;
 	}
-	
+
+	@Override
 	public double castingTime(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getActionSkillCost(ID());
 	}
-	
+
+	@Override
 	public double combatCastingTime(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCombatActionSkillCost(ID());
 	}
-	
+
+	@Override
 	public double checkedCastingCost(final MOB mob, final List<String> commands)
 	{
 		if(mob!=null)
 		{
-			if(mob.isInCombat()) 
+			if(mob.isInCombat())
 				return combatCastingTime(mob,commands);
 			if(abstractQuality()==Ability.QUALITY_MALICIOUS)
 				return combatCastingTime(mob,commands);
 		}
 		return castingTime(mob,commands);
 	}
-	
+
+	@Override
 	public boolean putInCommandlist()
 	{
 		return true;
 	}
-	
+
+	@Override
 	public boolean isAutoInvoked()
 	{
 		return false;
 	}
-	
+
+	@Override
 	public boolean bubbleAffect()
 	{
 		return false;
 	}
-	
-	protected int getTicksBetweenCasts() 
+
+	protected int getTicksBetweenCasts()
 	{
 		return 0;
 	}
-	
+
 	protected long getTimeOfNextCast()
 	{
 		return 0;
 	}
-	
+
 	protected void setTimeOfNextCast(long absoluteTime){}
-	
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() 
+
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
 	{
-		return CMProps.getSkillTrainCostFormula(ID()); 
+		return CMProps.getSkillTrainCostFormula(ID());
 	}
 
+	@Override
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{
 		int qualifyingLevel;
@@ -179,7 +189,7 @@ public class StdAbility implements Ability
 		final double value=CMath.parseMathExpression(rawCost.costDefinition,vars);
 		return new ExpertiseLibrary.SkillCost(rawCost.type,Double.valueOf(value));
 	}
-	
+
 	public int practicesToPractice(MOB mob)
 	{
 		if(mob!=null)
@@ -190,12 +200,12 @@ public class StdAbility implements Ability
 		}
 		return iniPracticesToPractice();
 	}
-	
+
 	protected int iniPracticesToPractice()
 	{
 		return 1;
 	}
-	
+
 	public void setTimeOfNextCast(MOB caster)
 	{
 		long newTime=(getTicksBetweenCasts()*CMProps.getTickMillis());
@@ -205,17 +215,20 @@ public class StdAbility implements Ability
 		newTime=Math.round(CMath.mul(newTime,mul));
 		setTimeOfNextCast(System.currentTimeMillis() +newTime);
 	}
-	
+
+	@Override
 	public String miscTextFormat()
 	{
 		return CMParms.FORMAT_UNDEFINED;
 	}
-	
+
+	@Override
 	public long flags()
 	{
 		return 0;
 	}
 
+	@Override
 	public int usageType()
 	{
 		return USAGE_MANA;
@@ -223,19 +236,22 @@ public class StdAbility implements Ability
 
 	protected int overrideMana(){return -1;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
 
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	@Override
 	public int enchantQuality()
 	{
 		return abstractQuality();
 	}
-	
-	public void initializeClass() { }
 
-	public String _(final String str, final String ... xs) 
+	@Override public void initializeClass() { }
+
+	@Override
+	public String _(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
@@ -251,7 +267,7 @@ public class StdAbility implements Ability
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.rangeToTarget()>maxRange())
 				return Ability.QUALITY_INDIFFERENT;
-			
+
 		}
 		switch(abstractQuality)
 		{
@@ -268,6 +284,7 @@ public class StdAbility implements Ability
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		return castingQuality(mob,target,abstractQuality());
@@ -288,7 +305,7 @@ public class StdAbility implements Ability
 		}
 		return 0;
 	}
-	
+
 	protected int getX1Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X1);}
 	protected int getX2Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X2);}
 	protected int getX3Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X3);}
@@ -338,37 +355,44 @@ public class StdAbility implements Ability
 										 Ability.CAN_ROOMS|
 										 Ability.CAN_EXITS;}
 
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL;
 	}
 
+	@Override
 	public long expirationDate()
 	{
 		return (tickDown) * CMProps.getTickMillis();
 	}
-	
+
+	@Override
 	public void setExpirationDate(long time)
 	{
 		if(time>System.currentTimeMillis())
 			tickDown=(int)((time-System.currentTimeMillis())/CMProps.getTickMillis());
 	}
-	
+
+	@Override
 	public boolean isNowAnAutoEffect()
 	{
 		return isAnAutoEffect;
 	}
-	
+
+	@Override
 	public boolean isSavable()
 	{
 		return savable;
 	}
-	
+
+	@Override
 	public void setSavable(boolean truefalse)
 	{
 		savable=truefalse;
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		amDestroyed=true;
@@ -376,55 +400,66 @@ public class StdAbility implements Ability
 		invoker=null;
 		miscText=null;
 	}
-	
+
+	@Override
 	public boolean amDestroyed()
 	{
 		return amDestroyed;
 	}
-	
+
+	@Override
 	public void setName(String newName)
 	{}
-	
+
+	@Override
 	public void setDisplayText(String newDisplayText)
 	{}
-	
+
+	@Override
 	public void setDescription(String newDescription)
 	{}
-	
+
+	@Override
 	public int abilityCode()
 	{
 		return 0;
 	}
-	
+
+	@Override
 	public void setAbilityCode(int newCode)
 	{}
-	
+
+	@Override
 	public List<String> externalFiles()
 	{
 		return null;
 	}
-	
+
 	protected long minCastWaitTime()
 	{
 		return 0;
 	}
 
 	// ** For most abilities, the following stuff actually matters */
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		miscText=newMiscText;
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return miscText;
 	}
-	
+
+	@Override
 	public int proficiency()
-	{ 
+	{
 		return proficiency;
 	}
-	
+
+	@Override
 	public void setProficiency(int newProficiency)
 	{
 		proficiency=newProficiency;
@@ -436,6 +471,7 @@ public class StdAbility implements Ability
 		return (int)Math.round(CMath.mul(baseTickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
 	}
 
+	@Override
 	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
@@ -481,6 +517,7 @@ public class StdAbility implements Ability
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
 
+	@Override
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
 		if(caster==null) return 1;
@@ -532,16 +569,19 @@ public class StdAbility implements Ability
 		return adjLevel+getXLEVELLevel(caster);
 	}
 
+	@Override
 	public boolean canTarget(int can_code)
 	{
 		return CMath.bset(canTargetCode(),can_code);
 	}
-	
+
+	@Override
 	public boolean canAffect(int can_code)
 	{
 		return CMath.bset(canAffectCode(),can_code);
 	}
-	
+
+	@Override
 	public boolean canAffect(Physical P)
 	{
 		if((P==null)&&(canAffectCode()==0)) return true;
@@ -554,6 +594,7 @@ public class StdAbility implements Ability
 		return false;
 	}
 
+	@Override
 	public boolean canTarget(Physical P)
 	{
 		if((P==null)&&(canTargetCode()==0)) return true;
@@ -641,7 +682,7 @@ public class StdAbility implements Ability
 	}
 
 	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
-	{ 
+	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
 	}
 
@@ -775,6 +816,7 @@ public class StdAbility implements Ability
 		return (Item)target;
 	}
 
+	@Override
 	public int compareTo(CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
@@ -783,7 +825,8 @@ public class StdAbility implements Ability
 	protected void cloneFix(Ability E)
 	{
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -800,6 +843,7 @@ public class StdAbility implements Ability
 		}
 	}
 
+	@Override
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
 	{
 		if(auto)
@@ -825,16 +869,19 @@ public class StdAbility implements Ability
 		return (CMLib.dice().rollPercentage()<pctChance);
 	}
 
+	@Override
 	public Physical affecting()
 	{
 		return affected;
 	}
 
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		affected=P;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		unInvoked=true;
@@ -864,25 +911,31 @@ public class StdAbility implements Ability
 		}
 	}
 
+	@Override
 	public boolean canBeUninvoked()
 	{
 		return canBeUninvoked;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{}
 
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
 
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
 
+	@Override
 	public MOB invoker()
 	{
 		return invoker;
 	}
 
+	@Override
 	public void setInvoker(MOB mob)
 	{
 		invoker=mob;
@@ -960,6 +1013,7 @@ public class StdAbility implements Ability
 		return usageCosts;
 	}
 
+	@Override
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		if(mob==null)
@@ -974,8 +1028,8 @@ public class StdAbility implements Ability
 			return overrideCache.get(ID());
 		}
 		if(usageType()==Ability.USAGE_NADA) return STATIC_USAGE_NADA;
-		
-		
+
+
 		int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
 		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
 		final int[] myCache=abilityUsageCache[myCacheIndex];
@@ -1009,7 +1063,7 @@ public class StdAbility implements Ability
 				lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
 				if(lowest<0) lowest=0;
 			}
-	
+
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
@@ -1041,6 +1095,7 @@ public class StdAbility implements Ability
 		return usageCost;
 	}
 
+	@Override
 	public void helpProficiency(MOB mob, int adjustment)
 	{
 		if(mob==null) return;
@@ -1083,11 +1138,13 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector(1);
@@ -1096,6 +1153,7 @@ public class StdAbility implements Ability
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		//expertiseCache=null; // this was insane!
@@ -1120,7 +1178,7 @@ public class StdAbility implements Ability
 					mob.tell("You must wait "+C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())+" before you can do that again.");
 				return false;
 			}
-			
+
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			   &&(CMLib.flags().isBound(mob)))
 			{
@@ -1348,6 +1406,7 @@ public class StdAbility implements Ability
 		A.setMiscText("+"+ID());
 	}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(isAutoInvoked())
@@ -1364,6 +1423,7 @@ public class StdAbility implements Ability
 		}
 		return false;
 	}
+	@Override
 	public void makeNonUninvokable()
 	{
 		unInvoked=false;
@@ -1371,26 +1431,29 @@ public class StdAbility implements Ability
 		savable=true;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		return name();
 	}
-	
+
 	public int getTickDownRemaining()
 	{
 		return tickDown;
 	}
-	
+
 	public void setTickDownRemaining(int newTick)
 	{
 		tickDown=newTick;
 	}
-	
+
+	@Override
 	public int getTickStatus()
 	{
 		return Tickable.STATUS_NOT;
 	}
 
+	@Override
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
@@ -1428,12 +1491,14 @@ public class StdAbility implements Ability
 		return false;
 	}
 
+	@Override
 	public String requirements(MOB mob)
 	{
 		final ExpertiseLibrary.SkillCost cost=getTrainingCost(mob);
 		return cost.requirements(mob);
 	}
-	
+
+	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		final ExpertiseLibrary.SkillCost cost=getTrainingCost(student);
@@ -1548,7 +1613,7 @@ public class StdAbility implements Ability
 	}
 
 	protected int verbalCastMask(MOB mob,Physical target, boolean auto)
-	{ 
+	{
 		return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
 	}
 
@@ -1560,12 +1625,13 @@ public class StdAbility implements Ability
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
-	
+
 	protected int somanticCastMask(MOB mob, Physical target, boolean auto)
 	{
 		return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;
 	}
 
+	@Override
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
 		if((practicesToPractice(student)>0)&&(student.getPractices()<practicesToPractice(student)))
@@ -1643,6 +1709,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
+	@Override
 	public void teach(MOB teacher, MOB student)
 	{
 		if(student.fetchAbility(ID())==null)
@@ -1667,6 +1734,7 @@ public class StdAbility implements Ability
 		student.recoverMaxState();
 	}
 
+	@Override
 	public void practice(MOB teacher, MOB student)
 	{
 		if(student.getPractices()<practicesToPractice(student))
@@ -1688,22 +1756,26 @@ public class StdAbility implements Ability
 			}
 		}
 	}
-	
+
+	@Override
 	public void makeLongLasting()
 	{
 		tickDown=Integer.MAX_VALUE;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		return;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
@@ -1725,6 +1797,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
+	@Override
 	public boolean appropriateToMyFactions(MOB mob)
 	{
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
@@ -1737,21 +1810,23 @@ public class StdAbility implements Ability
 		return true;
 	}
 
+	@Override
 	public boolean isGeneric()
 	{
 		return false;
 	}
 
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT","TICKDOWN"};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -1762,6 +1837,7 @@ public class StdAbility implements Ability
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -1771,6 +1847,7 @@ public class StdAbility implements Ability
 		case 2: tickDown=CMath.s_int(val); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdAbility)) return false;

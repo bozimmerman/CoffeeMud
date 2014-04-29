@@ -42,7 +42,7 @@ public class ListCmd extends StdCommand
 	public ListCmd(){}
 
 	private final String[] access={"LIST"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static class WorldFilter implements Filterer<Area>
 	{
@@ -60,7 +60,7 @@ public class ListCmd extends StdCommand
 			return (obj.getTimeObj()==to);
 		}
 	}
-	
+
 	public StringBuilder listAllQualifies(Session viewerS, Vector cmds)
 	{
 		StringBuilder str=new StringBuilder("");
@@ -169,7 +169,7 @@ public class ListCmd extends StdCommand
 		else
 			return new StringBuilder("Illegal parameters... try LIST REALESTATE AREA/WORLD (USERNAME/CLANNAME)");
 	}
-	
+
 	public StringBuilder roomPropertyDetails(Session viewerS, Enumeration these, String owner)
 	{
 		StringBuilder lines=new StringBuilder("");
@@ -191,7 +191,7 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	
+
 	public String cataMark(Environmental E)
 	{
 		if(E==null) return "";
@@ -199,7 +199,7 @@ public class ListCmd extends StdCommand
 			return "^g";
 		return "";
 	}
-	
+
 	public boolean canShowTo(MOB showTo, MOB show)
 	{
 		if((show!=null)
@@ -224,7 +224,7 @@ public class ListCmd extends StdCommand
 		String who="";
 		if(commands.size()>start)
 			who=commands.get(start).toString().toUpperCase();
-		
+
 		StringBuffer lines=new StringBuffer("");
 		String rest=CMParms.combine(commands,start);
 		if((who.equals("ROOM"))
@@ -518,7 +518,7 @@ public class ListCmd extends StdCommand
 		}catch(NoSuchElementException nse){}
 		return lines;
 	}
-	
+
 	public StringBuilder roomTypes(MOB mob, Enumeration<Room> these, Room likeRoom, Vector commands)
 	{
 		StringBuilder lines=new StringBuilder("");
@@ -688,7 +688,7 @@ public class ListCmd extends StdCommand
 		return lines;
 
 	}
-	
+
 	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, PhysicalAgent E)
 	{
 		if(E==null) return;
@@ -718,7 +718,7 @@ public class ListCmd extends StdCommand
 				DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
 		}
 	}
-	
+
 	public void addShopScripts(DVector DV, Room R, MOB M, Item I, Environmental E)
 	{
 		if(E==null) return;
@@ -733,7 +733,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 	}
-	
+
 	public StringBuilder listScripts(Session viewerS, MOB mob, Vector cmds)
 	{
 		if(cmds.size()==0) return new StringBuilder("");
@@ -754,7 +754,7 @@ public class ListCmd extends StdCommand
 				LP=ae.nextElement(); if(LP==null) continue;
 				AE=LP.obj(); if(AE==null) continue;
 				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
-				
+
 				if((AE instanceof Area)||(AE instanceof Exit))
 				{
 					if(R==null) R=A.getRandomProperRoom();
@@ -790,7 +790,7 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
-		
+
 		StringBuilder lines=new StringBuilder("");
 		if(rest.equalsIgnoreCase("COUNT"))
 		{
@@ -825,7 +825,7 @@ public class ListCmd extends StdCommand
 				lines.append(CMStrings.padRight(""+counter,COL_LEN2));
 				lines.append("\n\r");
 			}
-		} 
+		}
 		else
 		if(rest.equalsIgnoreCase("DETAILS"))
 		{
@@ -1168,7 +1168,7 @@ public class ListCmd extends StdCommand
 		*/
 		return buf;
 	}
-	
+
 	public void listUsers(Session viewerS, MOB mob, Vector commands)
 	{
 		if(commands.size()==0) return;
@@ -1624,12 +1624,12 @@ public class ListCmd extends StdCommand
 				finalColName=finalCol;
 				if(finalColName.startsWith("ticker"))
 					finalColName=finalColName.substring(6);
-				if(finalColName.startsWith("milli")) 
+				if(finalColName.startsWith("milli"))
 					finalColName="ms"+finalColName.substring(5);
 				finalColName=CMStrings.limit(CMStrings.capitalizeAndLower(finalColName),5);
 			}
 		}
-		
+
 		if("ACTIVE".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 			activeOnly=true;
 		else
@@ -1854,7 +1854,7 @@ public class ListCmd extends StdCommand
 			   .append("\n\r");
 		return str.toString()+"^N";
 	}
-	
+
 	public String listRecipes(MOB mob, String rest)
 	{
 		StringBuilder str = new StringBuilder("");
@@ -1878,7 +1878,7 @@ public class ListCmd extends StdCommand
 			if(str.toString().endsWith(", "))
 				str.delete(str.length()-2,str.length());
 		}
-		else 
+		else
 		{
 			Ability A=CMClass.findAbility(rest,Ability.ACODE_COMMON_SKILL,-1,false);
 			if(A==null)
@@ -1904,7 +1904,7 @@ public class ListCmd extends StdCommand
 	{
 		return CMParms.toStringList(RawMaterial.Material.values());
 	}
-	
+
 	public String listExpired(MOB mob)
 	{
 		StringBuilder buf=new StringBuilder("");
@@ -1925,7 +1925,7 @@ public class ListCmd extends StdCommand
 			buf.append("\n\rAccount expiration system is not enabled on this mud.\n\r");
 		return buf.toString();
 	}
-	
+
 	public String listEnvResources(Session viewerS, String rest)
 	{
 		List<String> parms=CMParms.parse(rest.toUpperCase());
@@ -2010,7 +2010,7 @@ public class ListCmd extends StdCommand
 			if(cmd.cmd.startsWith(s))
 				if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
 				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-				{ 
+				{
 					return i;
 				}
 		}
@@ -2032,7 +2032,7 @@ public class ListCmd extends StdCommand
 			ListCmdEntry cmd=SECURITY_LISTMAP[i];
 			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-			{ 
+			{
 				return i;
 			}
 		}
@@ -2097,7 +2097,7 @@ public class ListCmd extends StdCommand
 			buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),SCREEN_LEN-glen-2)+"\n\r");
 		return buf.toString();
 	}
-	
+
 	public String listClans(Session viewerS, List commands)
 	{
 		StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
@@ -2116,7 +2116,7 @@ public class ListCmd extends StdCommand
 		}
 		return buf.toString();
 	}
-	
+
 	public StringBuilder listContent(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -2244,7 +2244,7 @@ public class ListCmd extends StdCommand
 		int logSize=Log.instance().numLines();
 		int end=logSize;
 		Log.LogReader log=Log.instance().getLogReader();
-		
+
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
@@ -2318,7 +2318,7 @@ public class ListCmd extends StdCommand
 		}
 		log.close();
 	}
-	
+
 	private static class ListCmdEntry
 	{
 		public String 			   cmd;
@@ -2328,9 +2328,9 @@ public class ListCmd extends StdCommand
 			this.cmd=cmd;
 			this.flags=new CMSecurity.SecGroup(flags);
 		}
-		
+
 	}
-	
+
 	public final static ListCmdEntry[] SECURITY_LISTMAP={
 		/*00*/new ListCmdEntry("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		/*01*/new ListCmdEntry("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
@@ -2409,13 +2409,13 @@ public class ListCmd extends StdCommand
 		/*74*/new ListCmdEntry("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS})
 	};
 
-	public boolean pause(Session sess) 
+	public boolean pause(Session sess)
 	{
 		if((sess==null)||(sess.isStopped())) return false;
 		sess.rawCharsOut("<pause - enter>".toCharArray());
 		try
 		{
-			String s=sess.blockingIn(10 * 60 * 1000); 
+			String s=sess.blockingIn(10 * 60 * 1000);
 			if(s!=null)
 			{
 				s=s.toLowerCase();
@@ -2458,8 +2458,8 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	private enum ListAreaStats 
-	{ 
+	private enum ListAreaStats
+	{
 		NAME("Name",30), AUTHOR("Auth",15), DESCRIPTION("Desc",50), ROOMS("Rooms",6), STATE("State",10), HIDDEN("Hiddn",6);
 		public String shortName;
 		public Integer len;
@@ -2481,7 +2481,7 @@ public class ListCmd extends StdCommand
 			default: return "";
 			}
 		}
-	} 
+	}
 
 	public Object getAreaStatFromSomewhere(Area A, String stat)
 	{
@@ -2541,7 +2541,7 @@ public class ListCmd extends StdCommand
 		if(mob.session()!=null)
 			mob.session().rawPrint(str.toString());
 	}
-	
+
 	public void listCurrents(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -2635,7 +2635,7 @@ public class ListCmd extends StdCommand
 			columns.add(new Triad<String,String,Integer>("Pop",Area.Stats.POPULATION.name(),Integer.valueOf(6)));
 			columns.add(new Triad<String,String,Integer>("MedLv",Area.Stats.MED_LEVEL.name(),Integer.valueOf(6)));
 		}
-		
+
 		Session s=mob.session();
 		double wrap=(s==null)?78:s.getWrap();
 		double totalCols=0;
@@ -2648,7 +2648,7 @@ public class ListCmd extends StdCommand
 			int newSize=(int)Math.round(Math.floor(CMath.mul(pct, wrap)));
 			columns.get(i).third=Integer.valueOf(newSize);
 		}
-		
+
 		StringBuilder str=new StringBuilder("");
 		for(Triad<String,String,Integer> head : columns)
 			str.append(CMStrings.padRight(head.first, head.third.intValue()));
@@ -2707,7 +2707,7 @@ public class ListCmd extends StdCommand
 		if(s!=null)
 			s.colorOnlyPrint(str.toString(), true);
 	}
-	
+
 	public void listSessions(MOB mob, Vector commands)
 	{
 		String sort="";
@@ -2787,7 +2787,7 @@ public class ListCmd extends StdCommand
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(lines.toString());
 	}
-	
+
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -2924,7 +2924,7 @@ public class ListCmd extends StdCommand
 		case 73: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>()
 		{
 						@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
-					})).toString()); 
+					})).toString());
 				break;
 		case 74: s.wraplessPrintln(listExpired(mob)); break;
 		case 999: listSql(mob,rest); break;
@@ -2934,6 +2934,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -3005,7 +3006,7 @@ public class ListCmd extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 
 
 }

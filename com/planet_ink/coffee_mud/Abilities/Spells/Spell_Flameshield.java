@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Flameshield extends Spell
 {
-	public String ID() { return "Spell_Flameshield"; }
-	public String name(){return "Flameshield";}
-	public String displayText(){return "(Flameshield)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Spell_Flameshield"; }
+	@Override public String name(){return "Flameshield";}
+	@Override public String displayText(){return "(Flameshield)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 	final static String msgStr="The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!";
 	protected long oncePerTickTime=0;
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,6 +61,7 @@ public class Spell_Flameshield extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flame shield vanishes in a puff of smoke.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -97,6 +99,7 @@ public class Spell_Flameshield extends Spell
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -106,6 +109,7 @@ public class Spell_Flameshield extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

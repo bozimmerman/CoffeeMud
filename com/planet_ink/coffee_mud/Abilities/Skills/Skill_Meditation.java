@@ -34,16 +34,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Meditation extends StdSkill
 {
-	public String ID() { return "Skill_Meditation"; }
-	public String name(){ return "Meditation";}
-	public String displayText(){ return "(Meditating)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Meditation"; }
+	@Override public String name(){ return "Meditation";}
+	@Override public String displayText(){ return "(Meditating)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MEDITATE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -62,6 +63,7 @@ public class Skill_Meditation extends StdSkill
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -84,6 +86,7 @@ public class Skill_Meditation extends StdSkill
 		return;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -122,6 +125,7 @@ public class Skill_Meditation extends StdSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

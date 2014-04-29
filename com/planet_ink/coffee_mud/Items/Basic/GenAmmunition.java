@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenAmmunition extends StdItem implements Ammunition
 {
-	public String ID(){	return "GenAmmunition";}
+	@Override public String ID(){	return "GenAmmunition";}
 	protected String	readableText="";
 	public GenAmmunition()
 	{
@@ -48,21 +48,24 @@ public class GenAmmunition extends StdItem implements Ammunition
 		recoverPhyStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public String readableText(){return readableText;}
+	@Override public String readableText(){return readableText;}
+	@Override
 	public void setReadableText(String text)
 	{
 		if(isReadable()) CMLib.flags().setReadable(this,false);
 		readableText=text;
 	}
-	public String ammunitionType(){return readableText;}
-	public void setAmmunitionType(String text){readableText=text;}
+	@Override public String ammunitionType(){return readableText;}
+	@Override public void setAmmunitionType(String text){readableText=text;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -70,6 +73,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,26 +38,26 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class QuestMaker extends StdWebMacro
 {
-	public String name()	{return "QuestMaker";}
+	@Override public String name()	{return "QuestMaker";}
 
-	public boolean isAdminMacro()	{return true;}
+	@Override public boolean isAdminMacro()	{return true;}
 
 	private static final Pattern keyPattern=Pattern.compile("^AT_(.+)");
-	
+
 	public DVector getPage(MOB mob, HTTPRequest httpReq, String template, String page, String fileToGet)
 	{
 		DVector pageList=(DVector)httpReq.getRequestObjects().get("QM_PAGE_LIST");
 		DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
 		if(template.length()==0)
-		{ 
-			httpReq.removeUrlParameter("QM_FILE_PAGES"); 
+		{
+			httpReq.removeUrlParameter("QM_FILE_PAGES");
 			filePages=null;
 			if(pageList!=null) return pageList;
 			pageList=CMLib.quests().getQuestTemplate(mob, fileToGet);
 			httpReq.getRequestObjects().put("QM_PAGE_LIST",pageList);
 			return pageList;
 		}
-		
+
 		int pageNumber=CMath.s_int(page)-1;
 		if(filePages==null)
 		{
@@ -96,7 +96,7 @@ public class QuestMaker extends StdWebMacro
 		}
 		return list.toString();
 	}
-	
+
 	public List<MOB> getCatalogMobsForList(Physical[] fromList)
 	{
 		List<MOB> toList=new Vector<MOB>();
@@ -109,7 +109,7 @@ public class QuestMaker extends StdWebMacro
 		}
 		return toList;
 	}
-	
+
 	public List<Item> getCatalogItemsForList(Physical[] fromList)
 	{
 		List<Item> toList=new Vector<Item>();
@@ -122,7 +122,7 @@ public class QuestMaker extends StdWebMacro
 		}
 		return toList;
 	}
-	
+
 	private String mobList(List<MOB> mobList, MOB oldMob, String oldValue)
 	{
 		StringBuffer list=new StringBuffer("");
@@ -149,27 +149,28 @@ public class QuestMaker extends StdWebMacro
 		}
 		return list.toString();
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[error -- no authenticated mob!]";
-		
+
 		String qFileToGet=null;
 		if(parms.containsKey("QMFILETOGET"))
 			qFileToGet=parms.get("QMFILETOGET");
-		
+
 		String qTemplate=httpReq.getUrlParameter("QMTEMPLATE");
 		if((qTemplate==null)||(qTemplate.length()==0)) qTemplate="";
-		
+
 		String qPageStr=httpReq.getUrlParameter("QMPAGE");
 		if((qPageStr==null)||(qPageStr.length()==0)) qPageStr="";
-		
+
 		String qPageErrors=httpReq.getUrlParameter("QMPAGEERRORS");
 		if((qPageErrors==null)||(qPageErrors.length()==0)) qPageErrors="";
-		
+
 		if(parms.containsKey("QMPAGETITLE"))
 		{
 			DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,null);
@@ -235,7 +236,7 @@ public class QuestMaker extends StdWebMacro
 				list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+htmlOutgoingFilter(oldVal)+"\">\n\r");
 			}
 			list.append("</TD></TR>\n\r");
-			
+
 			String lastLabel=null;
 			for(int step=1;step<pageData.size();step++)
 			{
@@ -551,10 +552,10 @@ public class QuestMaker extends StdWebMacro
 					{
 					case QuestManager.QM_COMMAND_$TITLE: break;
 					case QuestManager.QM_COMMAND_$LABEL: break;
-					case QuestManager.QM_COMMAND_$HIDDEN: 
+					case QuestManager.QM_COMMAND_$HIDDEN:
 						httpReq.addFakeUrlParameter(httpKeyName,defValue);
 						break;
-					case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE: 
+					case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
 					{
 						List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
@@ -600,7 +601,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$ITEMXML: 
+					case QuestManager.QM_COMMAND_$ITEMXML:
 					{
 						List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
@@ -677,7 +678,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$MOBXML: 
+					case QuestManager.QM_COMMAND_$MOBXML:
 					{
 						List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
@@ -747,7 +748,7 @@ public class QuestMaker extends StdWebMacro
 					{
 						var=(String)pageDV.elementAt(v,2);
 						String httpKeyName=var;
-						if(httpKeyName.startsWith("$")) 
+						if(httpKeyName.startsWith("$"))
 							httpKeyName=httpKeyName.substring(1);
 						else
 							continue;
@@ -767,9 +768,9 @@ public class QuestMaker extends StdWebMacro
 								for(int v1=0;v1<V.size();v1++)
 								{
 									Item I=RoomData.getItemFromCode(RoomData.getItemCache(),V.get(v1));
-									if(I==null) 
+									if(I==null)
 										I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),V.get(v1));
-									if(I==null) 
+									if(I==null)
 										I=RoomData.getItemFromCatalog(V.get(v1));
 									if(I!=null)
 										val+=CMLib.coffeeMaker().getItemXML(I).toString();

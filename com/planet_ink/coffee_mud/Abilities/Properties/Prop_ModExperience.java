@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 */
 public class Prop_ModExperience extends Property
 {
-	public String ID() { return "Prop_ModExperience"; }
-	public String name(){ return "Modifying Experience Gained";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ModExperience"; }
+	@Override public String name(){ return "Modifying Experience Gained";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
 	protected boolean selfXP=false;
 	protected LinkedList<CMath.CompiledOperation> operation = null;
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
+	@Override
 	public String accountForYourself()
 	{ return "Modifies experience gained: "+operationFormula;	}
 
@@ -61,7 +62,8 @@ public class Prop_ModExperience extends Property
 			return "@x1 * (" + val.substring(0,val.length()-1) + " / 100)";
 		return Integer.toString(CMath.s_int(val));
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -106,7 +108,8 @@ public class Prop_ModExperience extends Property
 			operation = CMath.compileMathExpression(translateNumber(s.trim()));
 		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)

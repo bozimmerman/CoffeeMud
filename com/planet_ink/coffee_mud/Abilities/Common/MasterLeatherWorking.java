@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "MasterLeatherWorking"; }
-	public String name(){ return "Master Leather Working";}
+	@Override public String ID() { return "MasterLeatherWorking"; }
+	@Override public String name(){ return "Master Leather Working";}
 	private static final String[] triggerStrings = {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "LEATHER";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "LEATHER";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
@@ -62,9 +63,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	public String parametersFile(){ return "masterleatherworking.txt";}
+	@Override public String parametersFile(){ return "masterleatherworking.txt";}
 
-	
+
 	public enum Stage
 	{
 		Designer(30,4),
@@ -82,6 +83,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -134,6 +136,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -141,7 +144,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I.basePhyStats().level()<31)
 			return (isANativeItem(I.Name()));
@@ -187,7 +190,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -200,6 +204,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		return true;
 	}
 
+	@Override
 	protected List<List<String>> loadRecipes()
 	{
 		String filename=parametersFile();
@@ -249,16 +254,18 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		return recipes;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -423,13 +430,13 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"mleatherwork list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.MATERIAL_LEATHER};
 			int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};

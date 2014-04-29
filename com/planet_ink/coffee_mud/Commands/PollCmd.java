@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ public class PollCmd extends StdCommand
 	public PollCmd(){}
 
 	private final String[] access={"POLL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((mob==null)||mob.isMonster()) return false;
 		java.util.List<Poll>[] mypolls=CMLib.polls().getMyPollTypes(mob,(commands==null));
-		
+
 		if((mypolls[0].size()==0)&&(mypolls[2].size()==0))
 		{
 			if((commands!=null)&&(mypolls[1].size()==0))
@@ -59,7 +60,7 @@ public class PollCmd extends StdCommand
 				return false;
 			}
 		}
-		
+
 		for(Poll P : mypolls[0])
 		{
 			CMLib.polls().processVote(P, mob);
@@ -86,7 +87,7 @@ public class PollCmd extends StdCommand
 				mob.session().prompt("Press ENTER to continue:");
 			}
 		}
-			
+
 		if(mypolls[2].size()>0)
 			mob.tell("\n\r^HPrevious polling results:^N\n\r");
 		int i=0;
@@ -102,8 +103,8 @@ public class PollCmd extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

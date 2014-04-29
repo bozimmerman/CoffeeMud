@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class BrassDragon extends Dragon
 {
-	public String ID(){return "BrassDragon";}
+	@Override public String ID(){return "BrassDragon";}
 	public BrassDragon()
 	{
 		// ===== call the super class constructor

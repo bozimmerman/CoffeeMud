@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,16 +39,19 @@ public class Run extends Go
 	public Run(){}
 
 	private final String[] access={"RUN"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
+	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),400.0));
 	}
+	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),400.0));
 	}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 	throws java.io.IOException
 	{

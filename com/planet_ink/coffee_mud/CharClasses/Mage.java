@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,24 +35,24 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Mage extends StdCharClass
 {
-	public String ID(){return "Mage";}
-	public String name(){return "Mage";}
-	public String baseClass(){return ID();}
-	public int getBonusPracLevel(){return 4;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public int getPracsFirstLevel(){return 6;}
-	public int getTrainsFirstLevel(){return 3;}
-	public String getMovementFormula(){return "8*((@x2<@x3)/18)"; }
-	public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?4))"; }
-	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
+	@Override public String ID(){return "Mage";}
+	@Override public String name(){return "Mage";}
+	@Override public String baseClass(){return ID();}
+	@Override public int getBonusPracLevel(){return 4;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public int getPracsFirstLevel(){return 6;}
+	@Override public int getTrainsFirstLevel(){return 3;}
+	@Override public String getMovementFormula(){return "8*((@x2<@x3)/18)"; }
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?4))"; }
+	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 	protected boolean grantSomeSpells(){return true;}
 
 	public Mage()
@@ -60,6 +60,7 @@ public class Mage extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -84,7 +85,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_SpiderClimb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_WizardsChest",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_RepairingAura",false);
-		
+
 		// level 2
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_Blur",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_Infravision",false);
@@ -317,23 +318,25 @@ public class Mage extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Elf","Gith","Dragon","Humanoid","Illithid",
 		"Gnome","Fairy-kin","HalfElf"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
 
-	public Pair<String,Integer>[] getMinimumStatRequirements() { 
-		return minimumStatRequirements; 
+	@Override
+	public Pair<String,Integer>[] getMinimumStatRequirements() {
+		return minimumStatRequirements;
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -386,6 +389,7 @@ public class Mage extends StdCharClass
 		}
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

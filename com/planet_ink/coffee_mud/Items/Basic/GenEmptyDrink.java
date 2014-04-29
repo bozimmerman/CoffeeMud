@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenEmptyDrink extends GenDrink
 {
-	public String ID(){    return "GenEmptyDrink";}
-	
-	
+	@Override public String ID(){    return "GenEmptyDrink";}
+
+
 	public GenEmptyDrink()
 	{
 		super();

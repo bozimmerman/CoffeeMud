@@ -46,10 +46,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *
  */
 public class REMOTEINFO {
-	
+
    public String name;
    public String version;
    public String network;
    public String hub;
-	
+
 }

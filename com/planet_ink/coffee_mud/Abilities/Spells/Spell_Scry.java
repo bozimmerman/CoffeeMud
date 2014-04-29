@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Scry extends Spell
 {
-	public String ID() { return "Spell_Scry"; }
-	public String name(){return "Scry";}
-	public String displayText(){return "";}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_Scry"; }
+	@Override public String name(){return "Scry";}
+	@Override public String displayText(){return "";}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	public static final DVector scries=new DVector(2);
 	private boolean recurse=false;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,6 +58,7 @@ public class Spell_Scry extends Spell
 
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -89,6 +91,7 @@ public class Spell_Scry extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -130,7 +133,7 @@ public class Spell_Scry extends Spell
 			try
 			{
 				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
-				if(targets.size()>0) 
+				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}catch(NoSuchElementException nse){}
 		}

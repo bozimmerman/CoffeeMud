@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,21 +34,24 @@ import java.util.*;
 */
 public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_CombatAdjuster"; }
-	public String name(){ return "Adjust combat stats";}
-	protected int canAffectCode(){return 0;}
+	@Override public String ID() { return "Prop_CombatAdjuster"; }
+	@Override public String name(){ return "Adjust combat stats";}
+	@Override protected int canAffectCode(){return 0;}
 	// attack, damage, armor, hp, mana, move
 	protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0};
+	@Override
 	public String accountForYourself()
 	{ return "Adjusted combat stats";	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ALWAYS;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedMOB, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affectedMOB,affectableStats);
@@ -59,6 +62,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 		if(alladj[1]!=1.0)
 			affectableStats.setDamage((int)Math.round(CMath.mul(affectableStats.damage(),alladj[1])));
 	}
+	@Override
 	public void affectCharState(MOB mob, CharState maxState)
 	{
 		super.affectCharState(mob,maxState);
@@ -69,6 +73,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 		if(alladj[5]!=1.0)
 			maxState.setMovement((int)Math.round(CMath.mul(maxState.getMovement(),alladj[5])));
 	}
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);

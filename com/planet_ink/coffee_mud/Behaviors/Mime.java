@@ -37,11 +37,12 @@ public class Mime extends ActiveTicker
 	protected volatile boolean disabled=false;
 	protected volatile CMMsg lastMsg=null;
 
-	public String ID(){return "Mime";}
-	public long flags(){return Behavior.FLAG_MOBILITY;}
-	
+	@Override public String ID(){return "Mime";}
+	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "miming";
 	}
 
@@ -51,10 +52,12 @@ public class Mime extends ActiveTicker
 		minTicks=1; maxTicks=1; chance=100;
 		tickReset();
 	}
+	@Override
 	protected int canImproveCode(){return Behavior.CAN_MOBS
 										  |Behavior.CAN_EXITS
 										  |Behavior.CAN_ITEMS
 										  |Behavior.CAN_ROOMS;}
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -98,6 +101,7 @@ public class Mime extends ActiveTicker
 				   msg.othersCode(),oth);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

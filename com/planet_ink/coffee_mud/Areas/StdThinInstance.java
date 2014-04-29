@@ -36,30 +36,30 @@ import java.util.*;
 */
 public class StdThinInstance extends StdThinArea
 {
-	public String ID(){    return "StdThinInstance";}
-	
+	@Override public String ID(){    return "StdThinInstance";}
+
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
-	public long flags(){return flags;}
-	
+	@Override public long flags(){return flags;}
+
 	private SVector<AreaInstanceChild> instanceChildren = new SVector<AreaInstanceChild>();
 	private volatile int instanceCounter=0;
 	private long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	private WeakReference<Area> parentArea = null;
-	
+
 	protected String getStrippedRoomID(String roomID)
 	{
 		int x=roomID.indexOf('#');
 		if(x<0) return null;
 		return roomID.substring(x);
 	}
-	
+
 	protected String convertToMyArea(String roomID)
 	{
 		String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null) return null;
 		return Name()+strippedID;
 	}
-	
+
 	protected Area getParentArea()
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
@@ -75,24 +75,25 @@ public class StdThinInstance extends StdThinArea
 		parentArea=new WeakReference<Area>(parentA);
 		return parentA;
 	}
-	
+
+	@Override
 	public Room getRoom(String roomID)
 	{
 		if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			return super.getRoom(roomID);
-		
+
 		if(!isRoom(roomID)) return null;
 		Room R=super.getRoom(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
 			Area parentA=getParentArea();
 			if(parentA==null) return null;
-			
+
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 			R=parentA.getRoom(parentA.Name()+getStrippedRoomID(roomID));
 			if(R==null) return null;
-			
+
 			Room origRoom=R;
 			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
 			TreeMap<String,Room> V=new TreeMap<String,Room>();
@@ -107,7 +108,7 @@ public class StdThinInstance extends StdThinArea
 			R.setRoomID(roomID);
 			R.setArea(this);
 			addProperRoom(R);
-			
+
 			synchronized(("SYNC"+roomID).intern())
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -189,7 +190,8 @@ public class StdThinInstance extends StdThinArea
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -207,7 +209,8 @@ public class StdThinInstance extends StdThinArea
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -241,7 +244,7 @@ public class StdThinInstance extends StdThinArea
 					StdThinInstance parentA=(StdThinInstance)A;
 					synchronized(instanceChildren)
 					{
-						for(int i=0;i<parentA.instanceChildren.size();i++) 
+						for(int i=0;i<parentA.instanceChildren.size();i++)
 						{
 							List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
 							if(parentA.instanceChildren.elementAt(i).A==this)
@@ -281,7 +284,7 @@ public class StdThinInstance extends StdThinArea
 		Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
-		if(statData!=null) 
+		if(statData!=null)
 			return statData;
 		synchronized(("STATS_"+areaName).intern())
 		{
@@ -321,7 +324,8 @@ public class StdThinInstance extends StdThinArea
 		}
 		return statData;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -339,12 +343,12 @@ public class StdThinInstance extends StdThinArea
 			synchronized(instanceChildren)
 			{
 				int myDex=-1;
-				for(int i=0;i<instanceChildren.size();i++) 
+				for(int i=0;i<instanceChildren.size();i++)
 				{
 					List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 					for(Iterator<WeakReference<MOB>> vi = V.iterator();vi.hasNext();)
 					if(msg.source() == vi.next().get())
-					{  
+					{
 						myDex=i; break;
 					}
 				}
@@ -395,7 +399,7 @@ public class StdThinInstance extends StdThinArea
 					newA.setAreaState(Area.State.ACTIVE); // starts ticking
 					final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
 					newMobList.add(new WeakReference<MOB>(msg.source()));
-					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList); 
+					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList);
 					instanceChildren.add(child);
 				}
 				else

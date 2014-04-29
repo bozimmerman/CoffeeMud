@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WeaknessAcid extends Spell
 {
-	public String ID() { return "Spell_WeaknessAcid"; }
-	public String name(){return "Weakness to Acid";}
-	public String displayText(){return "(Weakness to Acid)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_WeaknessAcid"; }
+	@Override public String name(){return "Weakness to Acid";}
+	@Override public String displayText(){return "(Weakness to Acid)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -61,6 +62,7 @@ public class Spell_WeaknessAcid extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -74,6 +76,7 @@ public class Spell_WeaknessAcid extends Spell
 
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -81,6 +84,7 @@ public class Spell_WeaknessAcid extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
-	public String ID() { return "ItemRejuv"; }
-	public String name(){ return "ItemRejuv";}
-	public String displayText(){ return "(ItemRejuv)";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "ItemRejuv"; }
+	@Override public String name(){ return "ItemRejuv";}
+	@Override public String displayText(){ return "(ItemRejuv)";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected Room myProperLocation=null;
 	protected Vector contents=new Vector();
 	protected Vector ccontents=new Vector();
@@ -67,9 +67,11 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		}
 	}
 
-	public Room properLocation(){return myProperLocation;}
+	@Override public Room properLocation(){return myProperLocation;}
+	@Override
 	public void setProperLocation(Room room)
 	{ myProperLocation=room; }
+	@Override
 	public void loadMeUp(Item item, Room room)
 	{
 		unloadIfNecessary(item);
@@ -86,6 +88,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		CMLib.threads().startTickDown(ability,Tickable.TICKID_ROOM_ITEM_REJUV,item.phyStats().rejuv());
 	}
 
+	@Override
 	public void unloadIfNecessary(Item item)
 	{
 		ItemRejuv a=(ItemRejuv)item.fetchEffect(new ItemRejuv().ID());
@@ -93,15 +96,17 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			a.unInvoke();
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return ""; }
 
+	@Override
 	public boolean isVerifiedContents(Item item)
 	{
 		if(item==null) return false;
 		return contents.contains(item);
 	}
-	
+
 	public synchronized void verifyFixContents()
 	{
 		final Room R=myProperLocation;
@@ -136,6 +141,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

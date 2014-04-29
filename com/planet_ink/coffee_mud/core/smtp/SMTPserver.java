@@ -46,16 +46,17 @@ public class SMTPserver extends Thread implements Tickable
 	public static final float  HOST_VERSION_MAJOR=(float)1.1;
 	public static final float  HOST_VERSION_MINOR=(float)1.0;
 	public static final String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
-	
-	public String ID(){return "SMTPserver";}
-	public String name(){return "SMTPserver";}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
+
+	@Override public String ID(){return "SMTPserver";}
+	@Override public String name(){return "SMTPserver";}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
+	@Override
 	public void initializeClass()
 	{
 	}
-	public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+	@Override public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
 	public int	 		tickStatus=STATUS_NOT;
 	public boolean 		isOK = false;
 	private MudHost 	mud;
@@ -71,14 +72,14 @@ public class SMTPserver extends Thread implements Tickable
 
 	public SMTPserver()
 	{
-		super("SMTP"); 
+		super("SMTP");
 		mud=null;
 		isOK=false;
 		threadPool = new CMThreadPoolExecutor("SMTP", 0, 3, 30, TimeUnit.SECONDS, 5, 256);
 		threadPool.setThreadFactory(new CMThreadFactory("SMTP"));
 		setDaemon(true);
 	}
-	
+
 	public SMTPserver(MudHost a_mud)
 	{
 		super("SMTP");
@@ -92,7 +93,7 @@ public class SMTPserver extends Thread implements Tickable
 		setDaemon(true);
 	}
 
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
 	public String mailboxName(){return CMProps.getVar(CMProps.Str.MAILBOX);}
@@ -128,7 +129,7 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		if(CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
 			threadTimeoutMins=CMath.s_int(page.getStr("REQUESTTIMEOUTMINS"));
-		
+
 		if(CMath.isNumber(page.getStr("MAXTHREADS")))
 			maxThreads=CMath.s_int(page.getStr("MAXTHREADS"));
 
@@ -150,11 +151,11 @@ public class SMTPserver extends Thread implements Tickable
 					page.getStr("UNSUBSCRIBEDMSG")
 				};
 			for(int i=0;i<msgs.length;i++)
-				if(msgs[i]==null) 
+				if(msgs[i]==null)
 					msgs[i]="";
 			CMProps.setListVar(CMProps.StrList.SUBSCRIPTION_STRS, msgs);
 		}
-		
+
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
@@ -165,10 +166,10 @@ public class SMTPserver extends Thread implements Tickable
 
 		return true;
 	}
-	
+
 	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(String journalStr)
 	{
-		TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>(); 
+		TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>();
 		if((journalStr==null)||(journalStr.length()>0))
 		{
 			List<String> V=CMParms.parseCommas(journalStr,true);
@@ -203,7 +204,7 @@ public class SMTPserver extends Thread implements Tickable
 						else
 							crit.append(s+" ");
 					}
-					set.put(s.toUpperCase().trim(), 
+					set.put(s.toUpperCase().trim(),
 							new JournalsLibrary.SMTPJournal(s, forward, subscribeOnly, keepAll, crit.toString().trim()));
 				}
 			}
@@ -230,7 +231,7 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		return set;
 	}
-	
+
 	public JournalsLibrary.SMTPJournal getAJournal(String journal)
 	{
 		TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
@@ -273,6 +274,7 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
+	@Override
 	public void run()
 	{
 		int q_len = 6;
@@ -388,6 +390,7 @@ public class SMTPserver extends Thread implements Tickable
 	public void shutdown()	{shutdown(null);}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickStatus!=STATUS_NOT) return true;
@@ -397,7 +400,7 @@ public class SMTPserver extends Thread implements Tickable
 		if((tickID==Tickable.TICKID_READYTOSTOP)||(tickID==Tickable.TICKID_EMAIL))
 		{
 			MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
-			
+
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
 			long lastAllProcessing=0;
 			if(Resources.isPropResource("SMTP","LASTALLPROCESING"))
@@ -405,7 +408,7 @@ public class SMTPserver extends Thread implements Tickable
 			if(lastAllProcessing==0)
 				lastAllProcessing=System.currentTimeMillis()-(10*60*1000);
 			long nextAllProcessing=System.currentTimeMillis();
-			
+
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
 			// remember that new to all messages need to be parsed
@@ -455,7 +458,7 @@ public class SMTPserver extends Thread implements Tickable
 								String jrnlMessage=msg.msg;
 								if(jrnlMessage.startsWith("<HTML><BODY>"))
 								{
-									
+
 								}
 								else
 								{
@@ -526,9 +529,10 @@ public class SMTPserver extends Thread implements Tickable
 		tickStatus=STATUS_NOT;
 		return true;
 	}
-	
+
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does
+	@Override
 	public void interrupt()
 	{
 		if(servsock!=null)

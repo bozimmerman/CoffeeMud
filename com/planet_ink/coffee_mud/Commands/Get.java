@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,10 @@ public class Get extends StdCommand
 	public Get(){}
 
 	private final String[] access={"GET","G"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
-	{ 
+	{
 		return get(mob,container,getThis,quiet,"get",false);
 	}
 
@@ -84,6 +84,7 @@ public class Get extends StdCommand
 		return true;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -143,7 +144,7 @@ public class Get extends StdCommand
 		{
 			Vector V=new Vector();
 			Container container=null;
-			if(containers.size()>0) 
+			if(containers.size()>0)
 				container=containers.get(c++);
 			int addendum=1;
 			String addendumStr="";
@@ -162,7 +163,7 @@ public class Get extends StdCommand
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr);
 				}
 				if(getThis==null) break;
-				
+
 				if((maxToGet>1)&&(getThis instanceof RawMaterial)&&(container!=null)
 				&&(((RawMaterial)getThis).container()==container))
 				{
@@ -174,7 +175,7 @@ public class Get extends StdCommand
 						maxToGet=1;
 					}
 				}
-				
+
 				if((getThis instanceof Item)
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
@@ -226,9 +227,9 @@ public class Get extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

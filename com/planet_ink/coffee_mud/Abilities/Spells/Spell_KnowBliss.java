@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_KnowBliss extends Spell
 {
-	public String ID() { return "Spell_KnowBliss"; }
-	public String name(){return "Know Bliss";}
-	public String displayText(){return "(Know Bliss)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public String ID() { return "Spell_KnowBliss"; }
+	@Override public String name(){return "Know Bliss";}
+	@Override public String displayText(){return "(Know Bliss)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int hpAdjustment=0;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -62,6 +63,7 @@ public class Spell_KnowBliss extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -74,6 +76,7 @@ public class Spell_KnowBliss extends Spell
 			unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -87,6 +90,7 @@ public class Spell_KnowBliss extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -103,6 +107,7 @@ public class Spell_KnowBliss extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,25 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenElecWeapon extends StdElecWeapon
 {
-	public String ID(){	return "GenElecWeapon";}
+	@Override public String ID(){	return "GenElecWeapon";}
 	protected String	readableText="";
 	public GenElecWeapon()
 	{
 		super();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -60,6 +62,7 @@ public class GenElecWeapon extends StdElecWeapon
 	}
 	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  			   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -78,6 +81,7 @@ public class GenElecWeapon extends StdElecWeapon
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -98,6 +102,7 @@ public class GenElecWeapon extends StdElecWeapon
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -105,6 +110,7 @@ public class GenElecWeapon extends StdElecWeapon
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -118,6 +124,7 @@ public class GenElecWeapon extends StdElecWeapon
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenElecWeapon)) return false;

@@ -18,7 +18,7 @@ public class MXPEntity implements Cloneable
 {
 	private String name="";
 	private String definition="";
-	
+
 	public MXPEntity(String theName, String theDefinition)
 	{
 		super();

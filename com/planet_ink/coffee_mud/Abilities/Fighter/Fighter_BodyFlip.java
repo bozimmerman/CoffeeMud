@@ -37,17 +37,18 @@ import java.util.*;
 public class Fighter_BodyFlip extends FighterSkill
 {
 	boolean doneTicking=false;
-	public String ID() { return "Fighter_BodyFlip"; }
-	public String name(){ return "Body Flip";}
-	public String displayText(){ return "(Flipped and stunned)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Fighter_BodyFlip"; }
+	@Override public String name(){ return "Body Flip";}
+	@Override public String displayText(){ return "(Flipped and stunned)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BODYFLIP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Fighter_BodyFlip extends FighterSkill
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -69,6 +71,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -93,6 +96,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -116,6 +120,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -25,19 +25,19 @@ limitations under the License.
 public class MWThread extends Thread
 {
 	private final MiniWebConfig config;
-	
+
 	public MWThread(MiniWebConfig config, Runnable r, String name)
 	{
 		super(r, name);
 		this.config=config;
 	}
-	
+
 	public MWThread(MiniWebConfig config, String name)
 	{
 		super(name);
 		this.config=config;
 	}
-	
+
 	public MiniWebConfig getConfig()
 	{
 		return config;

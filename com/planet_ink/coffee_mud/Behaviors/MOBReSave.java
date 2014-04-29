@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,9 +36,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MOBReSave extends ActiveTicker
 {
-	public String ID(){return "MOBReSave";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags(){return 0;}
+	@Override public String ID(){return "MOBReSave";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public long flags(){return 0;}
 	protected static HashSet roomsReset=new HashSet();
 	protected boolean noRecurse=false;
 	protected CharStats startStats=null;
@@ -51,11 +51,13 @@ public class MOBReSave extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "persisting";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -63,8 +65,9 @@ public class MOBReSave extends ActiveTicker
 		for(int c: CharStats.CODES.ALL())
 			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.CODES.ABBR(c),-1));
 	}
-	
-	public String getParms() 
+
+	@Override
+	public String getParms()
 	{
 		if(host==null) return super.getParms();
 		MOB M=(MOB)host.get();
@@ -74,6 +77,7 @@ public class MOBReSave extends ActiveTicker
 			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));
 		return rebuiltParms.toString();
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)

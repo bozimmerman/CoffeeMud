@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Autocaltrops extends ThiefSkill
 {
-	public String ID() { return "Thief_Autocaltrops"; }
-	public String displayText() {return "(Autocaltropping)";}
-	public String name(){ return "AutoCaltrops";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Thief_Autocaltrops"; }
+	@Override public String displayText() {return "(Autocaltropping)";}
+	@Override public String name(){ return "AutoCaltrops";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOCALTROPS"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected boolean noRepeat=false;
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -58,7 +59,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 		&&(((MOB)affected).location()!=null))
 			dropem(msg.source(),(Room)msg.target());
 	}
-	
+
 	public void dropem(MOB mob, Room R)
 	{
 		Ability A=mob.fetchAbility("Thief_Caltrops");
@@ -73,14 +74,16 @@ public class Thief_Autocaltrops extends ThiefSkill
 		mob.curState().setMana(mana);
 		mob.curState().setMana(movement);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
 			((MOB)affected).tell("You stop throwing down caltrops.");
-		super.unInvoke();    
+		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;

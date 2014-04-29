@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 */
 public class Play_Battlehymn extends Play
 {
-	public String ID() { return "Play_Battlehymn"; }
-	public String name(){ return "Battlehymn";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return "a "+name();}
+	@Override public String ID() { return "Play_Battlehymn"; }
+	@Override public String name(){ return "Battlehymn";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return "a "+name();}
 
 	protected int timesTicking=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -49,6 +50,7 @@ public class Play_Battlehymn extends Play
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.mul(affectableStats.damage(),CMath.div(adjustedLevel(invoker(),0),100))));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

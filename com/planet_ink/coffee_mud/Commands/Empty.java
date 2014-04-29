@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,9 @@ public class Empty extends Drop
 	public Empty(){}
 
 	private final String[] access={"EMPTY","EMP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -69,7 +70,7 @@ public class Empty extends Drop
 			else
 			{
 				target=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_UNWORNONLY);
-				if(target==null) 
+				if(target==null)
 					target=mob.location().fetchFromRoomFavorItems(null,s);
 				else
 					commands.addElement("delme");
@@ -77,7 +78,7 @@ public class Empty extends Drop
 			if(target!=null)
 				commands.removeElementAt(commands.size()-1);
 		}
-		
+
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("Empty it where?");
@@ -134,13 +135,13 @@ public class Empty extends Drop
 		else
 		if(target instanceof MOB) str+=".";
 		else str+=" into "+target.Name()+".";
-		
+
 		if((V.size()==0)&&(drink!=null))
 		{
 			mob.tell(drink.name()+" must be POURed out.");
 			return false;
 		}
-		
+
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -158,7 +159,7 @@ public class Empty extends Drop
 			Container C=(Container)V.elementAt(v);
 			if(C==target) continue;
 			List<Item> V2=C.getContents();
-			
+
 			boolean skipMessage=false;
 			if((C instanceof Drink)&&(((Drink)C).containsDrink()))
 			{
@@ -208,9 +209,9 @@ public class Empty extends Drop
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

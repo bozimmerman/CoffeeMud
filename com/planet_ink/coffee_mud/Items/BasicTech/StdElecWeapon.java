@@ -15,10 +15,11 @@ import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +36,7 @@ import java.util.*;
 */
 public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 {
-	public String ID(){    return "StdElecWeapon";}
+	@Override public String ID(){    return "StdElecWeapon";}
 
 	protected int		weaponType				= Weapon.TYPE_SHOOT;
 	protected int		weaponClassification	= Weapon.CLASS_RANGED;
@@ -46,7 +47,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	protected ModeType[]modeTypes 				= new ModeType[]{ ModeType.NORMAL };
 
 	protected enum ModeType { STUN, NORMAL, KILL, DISINTEGRATE, MAIM, DISRUPT, LASER, SONIC }
-	
+
 	public StdElecWeapon()
 	{
 		super();
@@ -70,7 +71,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	// this method is the reason not to make the types an editable field; the
-	// murder-motel-like interaction between shields and weapons is finely 
+	// murder-motel-like interaction between shields and weapons is finely
 	// balanced based on what this does.
 	@Override public int weaponType()
 	{
@@ -91,7 +92,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			return weaponType;
 		}
 	}
-	
+
 	protected ModeType getState(String s)
 	{
 		s=s.toUpperCase().trim();
@@ -107,7 +108,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	{
 		return mode.name().toLowerCase();
 	}
-	
+
+	@Override
 	public void setMiscText(String text)
 	{
 		miscText=text;
@@ -124,17 +126,18 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 				mode=t;
 		}
 	}
-	
-	public String text() { return mode.toString(); }
-	
+
+	@Override public String text() { return mode.toString(); }
+
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
 		if(mode!=null)
 		switch(mode)
 		{
-		case STUN: 
-			phyStats().setDamage(1); 
+		case STUN:
+			phyStats().setDamage(1);
 			break;
 		case NORMAL:
 		case MAIM:
@@ -144,7 +147,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			break;
 		case DISINTEGRATE:
 		case DISRUPT:
-			phyStats().setDamage(1+(phyStats().damage()*2)); 
+			phyStats().setDamage(1+(phyStats().damage()*2));
 			break;
 		}
 	}
@@ -154,11 +157,13 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
 	@Override public TechType getTechType() { return TechType.PERSONAL_WEAPON; }
 
+	@Override
 	public String secretIdentity()
 	{
 		return super.secretIdentity()+"\n\rAttack: "+phyStats().attackAdjustment()+", Damage: "+phyStats().damage();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -170,7 +175,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 				affectableStats.setDamage(affectableStats.damage()+phyStats().damage());
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -229,7 +235,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			}
 		}
 		else
-		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Item.IN_INVENTORY)))
+		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			super.executeMsg(myHost,msg);
 			MOB mob=(MOB)owner();
@@ -273,7 +279,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 						// this is normal...
 						break;
 					}
-					case DISINTEGRATE: 
+					case DISINTEGRATE:
 					{
 						Environmental targ=msg.target();
 						if((msg.value()>(basePhyStats().damage()*1.5))
@@ -318,7 +324,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 						}
 						break;
 					}
-					case MAIM: 
+					case MAIM:
 					{
 						if(msg.value()>0)
 						{
@@ -328,7 +334,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 						}
 						break;
 					}
-					case DISRUPT: 
+					case DISRUPT:
 					{
 						Environmental targ=msg.target();
 						if((msg.value()>(basePhyStats().damage()*1.5))
@@ -363,11 +369,12 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Item.IN_INVENTORY)))
+		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
@@ -440,7 +447,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		return true;
 	}
 
-	@Override 
+	@Override
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
@@ -452,19 +459,19 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	{
 		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
-	@Override 
+	@Override
 	public String hitString(int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
 	}
-	@Override 
+	@Override
 	public int minRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
 			return 0;
 		return minRange;
 	}
-	@Override 
+	@Override
 	public int maxRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
@@ -472,6 +479,6 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		return maxRange;
 	}
 	@Override public void setRanges(int min, int max){minRange=min;maxRange=max;}
-	
+
 	@Override public boolean subjectToWearAndTear() { return false; }
 }

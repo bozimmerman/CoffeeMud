@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FakeWeapon extends Spell
 {
-	public String ID() { return "Spell_FakeWeapon"; }
-	public String name(){return "Fake Weapon";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_FakeWeapon"; }
+	@Override public String name(){return "Fake Weapon";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		Item item=null;
@@ -51,6 +52,7 @@ public class Spell_FakeWeapon extends Spell
 			item.destroy();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof Item))
@@ -59,7 +61,7 @@ public class Spell_FakeWeapon extends Spell
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
 				int damageType=Weapon.TYPE_BURSTING;
-				if(affected instanceof Weapon) 
+				if(affected instanceof Weapon)
 					damageType=((Weapon)affected).weaponType();
 				if(msg.sourceMessage()!=null)
 					msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
@@ -99,6 +101,7 @@ public class Spell_FakeWeapon extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String weaponName=CMParms.combine(commands,0);

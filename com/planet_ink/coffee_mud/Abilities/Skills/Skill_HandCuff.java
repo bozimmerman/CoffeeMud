@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,28 +35,30 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_HandCuff extends StdSkill
 {
-	public String ID() { return "Skill_HandCuff"; }
-	public String name(){ return "Handcuff";}
-	public String displayText(){ return "(Handcuffed)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_HandCuff"; }
+	@Override public String name(){ return "Handcuff";}
+	@Override public String displayText(){ return "(Handcuffed)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
-	public long flags(){return Ability.FLAG_BINDING;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
+	@Override public long flags(){return Ability.FLAG_BINDING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	public int amountRemaining=0;
 	public boolean oldAssist=false;
 	public boolean oldGuard=false;
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -138,6 +140,7 @@ public class Skill_HandCuff extends StdSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -159,6 +162,7 @@ public class Skill_HandCuff extends StdSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target instanceof MOB))
@@ -174,7 +178,8 @@ public class Skill_HandCuff extends StdSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(!auto))

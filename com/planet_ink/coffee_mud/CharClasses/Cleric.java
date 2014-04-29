@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Cleric extends StdCharClass
 {
-	public String ID(){return "Cleric";}
-	public String name(){return "Cleric";}
-	public String baseClass(){return ID();}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
-	public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
+	@Override public String ID(){return "Cleric";}
+	@Override public String name(){return "Cleric";}
+	@Override public String baseClass(){return ID();}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
 	private HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
 	private HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
 	private HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+	@Override
 	protected HashSet disallowedWeaponClasses(MOB mob)
 	{
 		if(CMLib.flags().isEvil(mob)) return disallowedWeaponsE;
@@ -63,6 +64,7 @@ public class Cleric extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -191,6 +193,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
 	}
 
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -241,17 +244,17 @@ public class Cleric extends StdCharClass
 		}
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherLimitsDesc(){return "Using prayers outside your alignment introduces failure chance.";}
+	@Override public String getOtherLimitsDesc(){return "Using prayers outside your alignment introduces failure chance.";}
 
 	protected int holyQuality(Ability A)
 	{
@@ -266,6 +269,7 @@ public class Cleric extends StdCharClass
 		return 500;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -285,7 +289,7 @@ public class Cleric extends StdCharClass
 			Ability A=(Ability)msg.tool();
 			if(A.appropriateToMyFactions(myChar))
 				return true;
-			
+
 			int hq=holyQuality(A);
 			int basis=0;
 
@@ -348,6 +352,7 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		Vector outfitChoices=new Vector();

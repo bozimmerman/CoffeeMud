@@ -40,7 +40,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	{
 		return new Quint.FifthConverter<T, K, L,M,N>();
 	}
-	
+
 	public Enumeration<T> firstElements()
 	{
 		return new ConvertingEnumeration<Quint<T,K,L,M,N>,T>(
@@ -199,7 +199,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -209,7 +209,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -219,7 +219,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -229,7 +229,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
+				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -239,7 +239,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth))) 
+				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -249,7 +249,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -259,7 +259,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -269,7 +269,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -279,7 +279,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
+				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -289,7 +289,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth))) 
+				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -334,7 +334,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		for(final Iterator<Quint<T,K,L,M,N>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((k==null ? pair.second==null : k.equals(pair.second))) 
+			if((k==null ? pair.second==null : k.equals(pair.second)))
 			{
 				i.remove();
 				return true;
@@ -348,7 +348,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		for(final Iterator<Quint<T,K,L,M,N>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((l==null ? pair.third==null : l.equals(pair.third))) 
+			if((l==null ? pair.third==null : l.equals(pair.third)))
 			{
 				i.remove();
 				return true;
@@ -362,7 +362,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		for(final Iterator<Quint<T,K,L,M,N>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((m==null ? pair.fourth==null : m.equals(pair.fourth))) 
+			if((m==null ? pair.fourth==null : m.equals(pair.fourth)))
 			{
 				i.remove();
 				return true;
@@ -376,7 +376,7 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 		for(final Iterator<Quint<T,K,L,M,N>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((m==null ? pair.fifth==null : m.equals(pair.fifth))) 
+			if((m==null ? pair.fifth==null : m.equals(pair.fifth)))
 			{
 				i.remove();
 				return true;

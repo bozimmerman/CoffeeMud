@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdPerfume extends StdDrink implements Perfume
 {
-	public String ID(){	return "StdPerfume";}
+	@Override public String ID(){	return "StdPerfume";}
 
 	List<String> smellList=new Vector();
-	
+
 	public StdPerfume()
 	{
 		super();
@@ -57,8 +57,10 @@ public class StdPerfume extends StdDrink implements Perfume
 		recoverPhyStats();
 	}
 
+	@Override
 	public List<String> getSmellEmotes(Perfume me)
 	{	return smellList;}
+	@Override
 	public String getSmellList()
 	{
 		StringBuffer list=new StringBuffer("");
@@ -66,9 +68,11 @@ public class StdPerfume extends StdDrink implements Perfume
 			list.append((smellList.get(i))+";");
 		return list.toString();
 	}
+	@Override
 	public void setSmellList(String list)
 	{smellList=CMParms.parseSemicolons(list,true);}
-	
+
+	@Override
 	public void wearIfAble(MOB mob, Perfume me)
 	{
 		Ability E=mob.fetchEffect("Prop_MOBEmoter");
@@ -88,7 +92,8 @@ public class StdPerfume extends StdDrink implements Perfume
 			E.setSavable(false);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.target()==this)
@@ -106,7 +111,8 @@ public class StdPerfume extends StdDrink implements Perfume
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.target()==this)

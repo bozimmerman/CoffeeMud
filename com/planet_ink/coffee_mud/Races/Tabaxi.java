@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,37 +34,39 @@ import java.util.*;
 */
 public class Tabaxi extends GreatCat
 {
-	public String ID(){	return "Tabaxi"; }
-	public String name(){ return "Tabaxi"; }
-	public int shortestMale(){return 69;}
-	public int shortestFemale(){return 69;}
-	public int heightVariance(){return 8;}
-	public int lightestWeight(){return 120;}
-	public int weightVariance(){return 80;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Feline";}
+	@Override public String ID(){	return "Tabaxi"; }
+	@Override public String name(){ return "Tabaxi"; }
+	@Override public int shortestMale(){return 69;}
+	@Override public int shortestFemale(){return 69;}
+	@Override public int heightVariance(){return 8;}
+	@Override public int lightestWeight(){return 120;}
+	@Override public int weightVariance(){return 80;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Feline";}
 	private String[] racialAbilityNames={"Skill_Hide","Skill_Sneak"};
 	private int[]racialAbilityLevels={4,4};
 	private int[]racialAbilityProficiencies={50,50};
 	private boolean[]racialAbilityQuals={false,false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED); //would like to turn this darkvison if it is okay with Zac.
 		affectableStats.setSpeed(affectableStats.speed() * 2.0);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
@@ -77,6 +79,7 @@ public class Tabaxi extends GreatCat
 		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

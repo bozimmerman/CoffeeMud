@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class UnderWaterGrid extends StdGrid
 {
-	public String ID(){return "UnderWaterGrid";}
+	@Override public String ID(){return "UnderWaterGrid";}
 	public UnderWaterGrid()
 	{
 		super();
@@ -58,10 +58,11 @@ public class UnderWaterGrid extends StdGrid
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 
-	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public String getGridChildLocaleID(){return "UnderWater";}
-	protected int baseThirst(){return 0;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	@Override public String getGridChildLocaleID(){return "UnderWater";}
+	@Override protected int baseThirst(){return 0;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
@@ -71,18 +72,21 @@ public class UnderWaterGrid extends StdGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 
+	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
 		if(dirCode==Directions.UP)
@@ -93,7 +97,8 @@ public class UnderWaterGrid extends StdGrid
 		else
 			return subMap[subMap.length-1][subMap[0].length-1];
 	}
-	
+
+	@Override
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
@@ -150,6 +155,7 @@ public class UnderWaterGrid extends StdGrid
 		}
 	}
 
+	@Override
 	public void buildGrid()
 	{
 		clearGrid(null);
@@ -172,10 +178,10 @@ public class UnderWaterGrid extends StdGrid
 
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
-						
+
 						if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS()))
 							linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
-						
+
 						if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS()))
 							linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
 					}

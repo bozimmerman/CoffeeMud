@@ -12,10 +12,10 @@ import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
  * Uses algorithms from: http://www.sai.msu.su/~megera/postgres/gist/papers/Rstar3.pdf
  * @author Colonel32
  * @author cnvandev
- * 
+ *
  * Adapted to 3d by:
  * @author Bo Zimmerman
- * 
+ *
  * Found at:
  * https://github.com/pruby/xppylons/blob/master/src/com/untamedears/xppylons/rtree/AABB.java
  * (No license found)
@@ -26,15 +26,15 @@ public class RTree<T extends BoundedObject> {
 	private int minSize;
 	private SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>> trackMap;
 	private QuadraticNodeSplitter splitter;
-	
-	
+
+
 	public class RTreeNode implements BoundedObject {
 		RTreeNode parent;
 		BoundedCube box;
 		Vector<RTreeNode> children;
 		TrackingVector<T> data;
 		final RTreeNode me=this;
-		
+
 		public RTreeNode() {}
 
 		public RTreeNode(boolean isLeaf)	{
@@ -58,7 +58,7 @@ public class RTree<T extends BoundedObject> {
 		{
 			return data != null;
 		}
-		
+
 		public boolean isRoot()
 		{
 			return parent == null;
@@ -82,12 +82,12 @@ public class RTree<T extends BoundedObject> {
 		{
 			if (box == null)
 				box = new BoundedCube();
-			
+
 			if (!isLeaf())
 			{
 				if (children.isEmpty())
 					return;
-				
+
 				box.set(children.get(0).box);
 				for (int i = 1; i < children.size(); i++)
 				{
@@ -98,7 +98,7 @@ public class RTree<T extends BoundedObject> {
 			{
 				if (data.isEmpty())
 					return;
-				
+
 				box.set(data.get(0).getBounds());
 				for (int i = 1; i < data.size(); i++)
 				{
@@ -118,9 +118,9 @@ public class RTree<T extends BoundedObject> {
 				root = null;
 				return;
 			}
-			
+
 			parent.children.remove(this);
-			
+
 			if (parent.children.isEmpty())
 			{
 				parent.remove();
@@ -136,11 +136,12 @@ public class RTree<T extends BoundedObject> {
 			return isLeaf() ? data : children;
 		}
 
+		@Override
 		public BoundedCube getBounds()
 		{
 			return box;
 		}
-		
+
 		public boolean contains(long px, long py, int pz)
 		{
 			return box.contains(px, py, pz);
@@ -150,7 +151,7 @@ public class RTree<T extends BoundedObject> {
 		{
 			return isLeaf() ? data.size() : children.size();
 		}
-		
+
 		public int depth()
 		{
 			RTreeNode n = this;
@@ -163,12 +164,13 @@ public class RTree<T extends BoundedObject> {
 			return d;
 		}
 
+		@Override
 		public String toString()
 		{
 			return "Depth: "+depth()+", size: "+size();
 		}
 	}
-	
+
 	private class QuadraticNodeSplitter {
 		public void split(RTreeNode n)
 		{
@@ -239,7 +241,7 @@ public class RTree<T extends BoundedObject> {
 			group2.computeMBR();
 			split(parent);
 		}
-		
+
 		private void distributeBranches(RTreeNode n, RTreeNode g1, RTreeNode g2)
 		{
 			assert(!(n.isLeaf() || g1.isLeaf() || g2.isLeaf()));
@@ -312,7 +314,7 @@ public class RTree<T extends BoundedObject> {
 				n.children.clear();
 			}
 		}
-		
+
 		private void distributeLeaves(RTreeNode n, RTreeNode g1, RTreeNode g2)
 		{
 			// Same process as above; just different types.
@@ -399,7 +401,7 @@ public class RTree<T extends BoundedObject> {
 	{
 		this(2, 12);
 	}
-	
+
 	/**
 	 * Creates an R-Tree. Sets the splitting algorithm to quadratic splitting.
 	 * @param minChildren Minimum children in a node.  {@code 2 <= minChildren <= maxChildren/2}
@@ -411,7 +413,7 @@ public class RTree<T extends BoundedObject> {
 		if (minChildren < 2 || minChildren > maxChildren/2)
 			throw new IllegalArgumentException("2 <= minChildren <= maxChildren/2");
 		splitter = new QuadraticNodeSplitter();
-				
+
 		this.minSize = minChildren;
 		this.maxSize = maxChildren;
 		root = null;
@@ -422,7 +424,7 @@ public class RTree<T extends BoundedObject> {
 		splitter = new QuadraticNodeSplitter();
 		root = null;
 	}
-	
+
 	/**
 	 * Adds items whose AABB intersects the query AABB to results
 	 * @param results A collection to store the query results
@@ -457,7 +459,7 @@ public class RTree<T extends BoundedObject> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns one item that intersects the query box, or null if nothing intersects
 	 * the query box.
@@ -568,7 +570,7 @@ public class RTree<T extends BoundedObject> {
 	 * Removes the specified object if it is in the tree.
 	 * @param o
 	 */
-	public boolean remove(T o) 
+	public boolean remove(T o)
 	{
 		if(root==null) return false;
 		boolean removed=false;
@@ -615,12 +617,12 @@ public class RTree<T extends BoundedObject> {
 			splitter.split(n);
 		}
 	}
-	
-	
+
+
 
 	public boolean contains(T o)
 	{
-		if (o == null) 
+		if (o == null)
 			return false;
 		if (root == null)
 			return false;
@@ -632,21 +634,21 @@ public class RTree<T extends BoundedObject> {
 	{
 		return trackMap.keys();
 	}
-	
+
 	public Enumeration<Entry<T, List<WeakReference<TrackingVector<T>>>>> objectEntries()
 	{
 		return trackMap.entries();
 	}
-	
+
 	public boolean leafSearch(T o)
 	{
-		if (o == null) 
+		if (o == null)
 			return false;
 		if (root == null)
 			return false;
 		return firstLeafSearch(o, root)!=null;
 	}
-	
+
 	/**
 	 * Counts the number of items in the tree.
 	 */
@@ -694,14 +696,14 @@ public class RTree<T extends BoundedObject> {
 					maxnode = n.children.get(i);
 				}
 			}
-			
+
 			if (maxnode == null) // Not sure how this could occur
 				return null;
-			
+
 			return chooseLeaf(o, maxnode);
 		}
 	}
-	
+
 	private RTreeNode firstLeafSearch(T o, RTreeNode n)
 	{
 		assert(n != null);
@@ -723,7 +725,7 @@ public class RTree<T extends BoundedObject> {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns the amount that other will need to be expanded to fit this.
 	 */
@@ -742,7 +744,7 @@ public class RTree<T extends BoundedObject> {
 
 		return total;
 	}
-	
+
 	private static long area(BoundedCube rect)
 	{
 		return rect.width() * rect.height() * rect.depth();

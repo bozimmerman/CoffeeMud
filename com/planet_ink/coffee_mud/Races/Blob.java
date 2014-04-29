@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,21 @@ import java.util.*;
 */
 public class Blob extends Unique
 {
-	public String ID(){	return "Blob"; }
-	public String name(){ return "Blob"; }
-	public int shortestMale(){return 24;}
-	public int shortestFemale(){return 20;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 200;}
-	public int weightVariance(){return 200;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Slime";}
-	public boolean fertile(){return true;}
+	@Override public String ID(){	return "Blob"; }
+	@Override public String name(){ return "Blob"; }
+	@Override public int shortestMale(){return 24;}
+	@Override public int shortestFemale(){return 20;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 200;}
+	@Override public int weightVariance(){return 200;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Slime";}
+	@Override public boolean fertile(){return true;}
 
-	public String arriveStr() { return "drags itself in"; }
-	public String leaveStr() { return "drags itself"; }
-	
+	@Override public String arriveStr() { return "drags itself in"; }
+	@Override public String leaveStr() { return "drags itself"; }
+
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -61,6 +62,7 @@ public class Blob extends Unique
 		return naturalWeapon;
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

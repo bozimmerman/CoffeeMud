@@ -38,8 +38,9 @@ public class AutoLoot extends StdCommand
 	public AutoLoot(){}
 
 	private final String[] access={"AUTOLOOT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -55,7 +56,7 @@ public class AutoLoot extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
 }
 

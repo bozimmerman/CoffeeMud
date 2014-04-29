@@ -36,14 +36,14 @@ public class MWServletSession implements SimpleServletSession
 	private final Date				startTime;
 	private final Map<String,Object>objects			= new Hashtable<String,Object>();
 	private volatile long			lastTouchTime;
-	
+
 	public MWServletSession(String sessionID)
 	{
 		this.sessionID=sessionID;
 		this.startTime=new Date(System.currentTimeMillis());
 		lastTouchTime=System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * Returns special defined string "user".
 	 * By default, this string is empty ""
@@ -87,7 +87,7 @@ public class MWServletSession implements SimpleServletSession
 		return startTime;
 	}
 	/**
-	 * Returns the time, in milliseconds, when this session 
+	 * Returns the time, in milliseconds, when this session
 	 * was last "touched" by the client
 	 * @return time in millis
 	 */
@@ -129,6 +129,7 @@ public class MWServletSession implements SimpleServletSession
 	/**
 	 * Marks this session as having been access by the client at this time
 	 */
+	@Override
 	public void touch()
 	{
 		lastTouchTime=System.currentTimeMillis();

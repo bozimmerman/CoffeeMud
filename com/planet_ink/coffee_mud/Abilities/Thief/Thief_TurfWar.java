@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,25 +35,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_TurfWar extends ThiefSkill
 {
-	public String ID() { return "Thief_TurfWar"; }
-	public String name(){ return "Turf War";}
-	public String displayText(){return "(Turf War)";}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_TurfWar"; }
+	@Override public String name(){ return "Turf War";}
+	@Override public String displayText(){return "(Turf War)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"TURFWAR"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	public static Ability sparringRoomA=null;
 	protected MOB defender=null;
 	protected long defenderPKILLMask=0;
-	
-	
+
+
 	protected long timeToNextCast = 0;
-	protected int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
-	protected long getTimeOfNextCast(){ return timeToNextCast; }
-	protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+	@Override protected int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
+	@Override protected long getTimeOfNextCast(){ return timeToNextCast; }
+	@Override protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
 
 	public static synchronized Ability getSparringRoom()
 	{
@@ -68,7 +68,8 @@ public class Thief_TurfWar extends ThiefSkill
 		}
 		return sparringRoomA;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -89,7 +90,8 @@ public class Thief_TurfWar extends ThiefSkill
 		return (A.text().equals(M.Name())
 			||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())));
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		Ability A=getSparringRoom();
@@ -97,6 +99,7 @@ public class Thief_TurfWar extends ThiefSkill
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -145,7 +148,8 @@ public class Thief_TurfWar extends ThiefSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		MOB attacker=invoker();
@@ -157,7 +161,7 @@ public class Thief_TurfWar extends ThiefSkill
 			if(defenderPKILLMask==0)
 				defender.setBitmap(CMath.unsetb(defender.getBitmap(),MOB.ATT_PLAYERKILL));
 		}
-		
+
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
@@ -175,7 +179,8 @@ public class Thief_TurfWar extends ThiefSkill
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -190,13 +195,13 @@ public class Thief_TurfWar extends ThiefSkill
 			mob.tell("A turf war is already underway here.");
 			return false;
 		}
-		
+
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
 			mob.tell("You must turn on your playerkill flag first.");
 			return false;
 		}
-		
+
 		A=target.fetchEffect("Thief_TagTurf");
 		Clan turfC=null;
 		MOB turfM=null;

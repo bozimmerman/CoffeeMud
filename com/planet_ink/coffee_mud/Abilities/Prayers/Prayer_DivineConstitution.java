@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DivineConstitution extends Prayer
 {
-	public String ID() { return "Prayer_DivineConstitution"; }
-	public String name(){ return "Divine Constitution";}
-	public String displayText(){ return "(Divine Constitution)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_DivineConstitution"; }
+	@Override public String name(){ return "Divine Constitution";}
+	@Override public String displayText(){ return "(Divine Constitution)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 	protected int conPts=1;
 	protected int xtraHPs=0;
 	protected int maxPoints=6;
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -56,6 +57,7 @@ public class Prayer_DivineConstitution extends Prayer
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ, affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+conPts);
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableMaxState)
 	{
 		super.affectCharState(affected, affectableMaxState);
@@ -63,6 +65,7 @@ public class Prayer_DivineConstitution extends Prayer
 		affectableMaxState.setHitPoints(affectableMaxState.getHitPoints()+xtraHPs);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 
@@ -93,6 +96,7 @@ public class Prayer_DivineConstitution extends Prayer
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -107,6 +111,7 @@ public class Prayer_DivineConstitution extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> divine constitution fades.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

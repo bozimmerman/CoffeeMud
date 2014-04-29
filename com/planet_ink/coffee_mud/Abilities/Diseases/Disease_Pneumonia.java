@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Pneumonia extends Disease
 {
-	public String ID() { return "Disease_Pneumonia"; }
-	public String name(){ return "Pneumonia";}
-	public String displayText(){ return "(Pneumonia)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Pneumonia"; }
+	@Override public String name(){ return "Pneumonia";}
+	@Override public String displayText(){ return "(Pneumonia)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 38;}
-	protected int DISEASE_DELAY(){return 3;}
-	protected String DISEASE_DONE(){return "Your pneumonia clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with pneumonia.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> shake(s) feverishly.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 3;}
+	@Override protected int DISEASE_TICKS(){return 38;}
+	@Override protected int DISEASE_DELAY(){return 3;}
+	@Override protected String DISEASE_DONE(){return "Your pneumonia clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with pneumonia.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> shake(s) feverishly.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 3;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -77,6 +78,7 @@ public class Disease_Pneumonia extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
@@ -88,6 +90,7 @@ public class Disease_Pneumonia extends Disease
 			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

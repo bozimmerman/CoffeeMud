@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FrozenPlains extends Plains
 {
-	public String ID(){return "FrozenPlains";}
+	@Override public String ID(){return "FrozenPlains";}
 	public FrozenPlains()
 	{
 		super();
@@ -46,5 +46,5 @@ public class FrozenPlains extends Plains
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FUR)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Plains.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

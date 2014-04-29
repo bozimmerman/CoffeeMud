@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SoulPeering extends Prayer
 {
-	public String ID() { return "Prayer_SoulPeering"; }
-	public String name(){return "Soul Peering";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public String ID() { return "Prayer_SoulPeering"; }
+	@Override public String name(){return "Soul Peering";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

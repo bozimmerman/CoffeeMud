@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class SwampGrid extends StdGrid
 {
-	public String ID(){return "SwampGrid";}
+	@Override public String ID(){return "SwampGrid";}
 	public SwampGrid()
 	{
 		super();
@@ -44,8 +44,8 @@ public class SwampGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
 
-	public String getGridChildLocaleID(){return "Swamp";}
-	public List<Integer> resourceChoices(){return Swamp.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Swamp";}
+	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }

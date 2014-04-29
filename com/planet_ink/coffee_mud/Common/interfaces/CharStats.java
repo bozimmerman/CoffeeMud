@@ -40,7 +40,7 @@ public interface CharStats extends CMCommon, Modifiable
 {
 	/** stat constant for strength */
 	public static final int VALUE_ALLSTATS_DEFAULT=10;
-	
+
 	/** stat constant for strength */
 	public static final int STAT_STRENGTH=0;
 	/** stat constant for intelligence */
@@ -115,7 +115,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param intoStats another CharStats object.
 	 */
 	public void copyInto(CharStats intoStats);
-	
+
    /**
 	 * Get the value of one of the STAT_ constants, representing attributes,
 	 * saving throws, and max attributes, from the CharStats interface.
@@ -124,7 +124,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the value of the given STAT
 	 */
 	public int getStat(int statNum);
-	
+
 	/**
 	 * A method that simply calculates the nomimal max of the given
 	 * ordinary stat code from available data.
@@ -152,7 +152,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param value the value of the given STAT
 	 */
 	public void setPermanentStat(int statNum, int value);
-	
+
 	/**
 	 * Set one of the basic attributes to approx the value.  The basic attributes
 	 * are defined as the first 6 STAT_ constants from the CharStats interface.
@@ -163,7 +163,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param value the value of the max, and approxvalue of the given STAT
 	 */
 	public void setRacialStat(int statNum, int value);
-	
+
 	/**
 	 * Get one of the basic attributes after racial adjustment.
 	 * @see CharStats
@@ -191,19 +191,19 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the final saving throw value
 	 */
 	public int getSave(int which);
-	
+
 	/**
 	 * Get saving throw and max stat info as an semicolon string list.
 	 * @return semicolon string
 	 */
 	public String getNonBaseStatsAsString();
-	
+
 	/**
 	 * set saving throw and max stat info from a semicolon string list.
 	 * @param str semicolon string
 	 */
 	public void setNonBaseStatsFromString(String str);
-	
+
 	/**
 	 * Return the number of a given body part which this mob has.  The
 	 * racial part number comes from the Race interface BODY_ constants.
@@ -212,7 +212,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the number of the given body part this mob has
 	 */
 	public int getBodyPart(int racialPartNumber);
-	
+
 	/**
 	 * Alter the number of a given body part which this mob has.  The
 	 * racial part number comes from the Race interface BODY_ constants.
@@ -222,7 +222,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param number the amount to change by, positive or negative
 	 */
 	public void alterBodypart(int racialPartNumber, int number);
-	
+
 	/**
 	 * Check the difference between the number of a given body part which
 	 * this mob has and the number he or she should have.  The
@@ -233,13 +233,13 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the difference between parts he has and should have
 	 */
 	public int getBodypartAlteration(int racialPartNumber);
-	
+
 	/**
 	 * Returns the entire current body part situation as a string list.
 	 * @return the body parts alteration list
 	 */
 	public String getBodyPartsAsString();
-	
+
 	/**
 	 * Sets the body part situation for this mob from a string list.  The
 	 * name is a reminder to make sure the mobs Race is established first.
@@ -254,7 +254,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return number of character classes
 	 */
 	public int numClasses();
-	
+
 	/**
 	 * Returns the CharClass object for this mob which corresponds to the
 	 * the given index.  The oldest class is always indexed at 0, with next
@@ -264,7 +264,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the CharClass object
 	 */
 	public CharClass getMyClass(int i);
-	
+
 	/**
 	 * Returns the CharClass object for this mob which corresponds to the
 	 * the final index.  The oldest class is always indexed at 0, with next
@@ -275,9 +275,9 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the 0 index CharClass object
 	 */
 	public CharClass getCurrentClass();
-	
+
 	/**
-	 * Returns all CharClass objects for this mob. 
+	 * Returns all CharClass objects for this mob.
 	 * The oldest class is always indexed at 0, with next
 	 * newest at 1, and the current one last.
 	 * @see #numClasses()
@@ -285,7 +285,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the Collection of CharClass objects
 	 */
 	public Collection<CharClass> getCharClasses();
-	
+
 	/**
 	 * Returns the number of levels that this mob has in the CharClass
 	 * object which corresponds to the final index.
@@ -295,14 +295,14 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the number of levels in the 0 index class
 	 */
 	public int getCurrentClassLevel();
-	
+
 	/**
 	 * Creates the enumerated set of character class objects stored here
 	 * from a semicolon list of string names
 	 * @param classes the semicolon list of character class names
 	 */
 	public void setMyClasses(String classes);
-	
+
 	/**
 	 * Creates the enumerated set of character class levels stored here
 	 * from a semicolon list of levels.
@@ -364,7 +364,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return true if the player is level capped, false otherwise
 	 */
 	public boolean isLevelCapped(CharClass C);
-	
+
 	/**
 	 * Changes the number of class levels the mob has in the given character class
 	 * to the given level.  If the mob does not have any levels in the given
@@ -409,7 +409,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return a list of resource codes that this race can breathe
 	 */
 	public int[] getBreathables();
-	
+
 	/**
 	 * Sets resource codes of what this race can breathe as
 	 * an atmosphere.  The list MUST BE sorted.  If the list
@@ -499,27 +499,27 @@ public interface CharStats extends CMCommon, Modifiable
 	 * Resets all the stats in this object to their factory defaults.
 	 */
 	public void reset();
-	
+
 	/**
 	 * Resets all of the basic 1-6 stats in this object, to the same given value
 	 * @param def the value to set all stats to.
 	 */
 	public void setAllBaseValues(int def);
-	
+
 	/**
 	 * Returns the sum of local and race-based unwearability codes.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Item
 	 * @return a bitmap of unwearable locations
 	 */
 	public long getWearableRestrictionsBitmap();
-	
+
 	/**
 	 * Sets the sum of local and race-based unwearability codes.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Item
 	 * @param bitmap a bitmap of unwearable locations
 	 */
 	public void setWearableRestrictionsBitmap(long bitmap);
-	
+
 	/**
 	 * Sets the apparant gender of the mob. If null is used, this value is reset
 	 * and the mobs real gender name will be displayed through the genderName method
@@ -782,7 +782,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public class CODES
 	{
 		private static CODES[] insts=new CODES[256];
-		
+
 		private int[] baseStatCodes = new int[0];
 		private int[] maxStatCodes = new int[0];
 		private int[] MaxBaseCrossCodes = new int[0];
@@ -796,7 +796,7 @@ public interface CharStats extends CMCommon, Modifiable
 		private String[] shortNames=new String[0];
 		private String[] statAttributionDescriptions=new String[0];
 		private int[] statCMMsgMapping=new int[0];
-		
+
 		public CODES()
 		{
 			super();
@@ -809,15 +809,15 @@ public interface CharStats extends CMCommon, Modifiable
 			for(int i=0;i<6;i++)
 				addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
-			for(int i=7;i<22;i++) 
+			for(int i=7;i<22;i++)
 				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			int baseCtr=0;
-			for(int i=22;i<28;i++) 
+			for(int i=22;i<28;i++)
 				addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			addAllStat(DEFAULT_STAT_ABBR[28],DEFAULT_STAT_DESCS[28],DEFAULT_STAT_NAMES[28],DEFAULT_STAT_DESC_ATTS[28],DEFAULT_STAT_MSG_MAP[28],false);
-			for(int i=29;i<31;i++) 
+			for(int i=29;i<31;i++)
 				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
+			for(int i=31;i<DEFAULT_NUM_STATS;i++)
 				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
 			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{
@@ -887,23 +887,23 @@ public interface CharStats extends CMCommon, Modifiable
 			if(c==null) c=new CODES();
 			return c;
 		}
-		public static void reset() { 
+		public static void reset() {
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
 		}
-		
+
 		/**
 		 * Returns an array of the numeric codes for all base stats
 		 * @return an array of the numeric codes for all base stats
 		 */
 		public static int[] BASE() { return c().baseStatCodes;}
-		
+
 		/**
 		 * Returns the name of all base stats
 		 * @return names of all base stats
 		 */
 		public static String[] BASENAMES() { return c().baseStatNames;}
-		
+
 		/**
 		 * Returns an array of the numeric codes for all base stats
 		 * @return an array of the numeric codes for all base stats
@@ -925,7 +925,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns -1 if the code is not a max adj code.
 		 * @return the translated code
 		 */
-		public static int toMAXBASE(int max) 
+		public static int toMAXBASE(int max)
 		{
 			CODES c = c();
 			if(max<c.MaxBaseCrossCodes.length)
@@ -938,7 +938,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns -1 if the code is not a max adj code.
 		 * @return the translated code
 		 */
-		public int toMaxBase(int max) 
+		public int toMaxBase(int max)
 		{
 			if(max<MaxBaseCrossCodes.length)
 				return MaxBaseCrossCodes[max];
@@ -1092,7 +1092,7 @@ public interface CharStats extends CMCommon, Modifiable
 			}
 			return -1;
 		}
-		
+
 		/**
 		 * Returns the code for the given stat name
 		 * @param name the case insensitive name
@@ -1100,7 +1100,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @return the stat code
 		 */
 		public static int findWhole(String name, boolean exactOnly) { return c().find(name, exactOnly); }
-		
+
 		/**
 		 * Adds a new base stat to this object for all mobs and players to share
 		 * @param abbr 1-3 letter short code for this stat
@@ -1131,9 +1131,9 @@ public interface CharStats extends CMCommon, Modifiable
 			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
 			int maxCode = allStatCodes.length;
 			maxStatCodes[maxStatCodes.length-1]=maxCode;
-			
+
 			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
-			
+
 			MaxBaseCrossCodes=Arrays.copyOf(MaxBaseCrossCodes, allStatCodes.length);
 			MaxBaseCrossCodes[maxCode]=baseCode;
 			MaxBaseCrossCodes[baseCode]=maxCode;

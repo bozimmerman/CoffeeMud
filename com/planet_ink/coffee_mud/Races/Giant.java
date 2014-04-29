@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,27 @@ import java.util.*;
 */
 public class Giant extends StdRace
 {
-	public String ID(){	return "Giant"; }
-	public String name(){ return "Giant"; }
-	public int shortestMale(){return 84;}
-	public int shortestFemale(){return 80;}
-	public int heightVariance(){return 24;}
-	public int lightestWeight(){return 300;}
-	public int weightVariance(){return 200;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Giant-kin";}
+	@Override public String ID(){	return "Giant"; }
+	@Override public String name(){ return "Giant"; }
+	@Override public int shortestMale(){return 84;}
+	@Override public int shortestFemale(){return 80;}
+	@Override public int heightVariance(){return 24;}
+	@Override public int lightestWeight(){return 300;}
+	@Override public int weightVariance(){return 200;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Giant-kin";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,5,40,125,188,250,270,290};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -61,14 +62,17 @@ public class Giant extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,7);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "thunders in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "storms";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -82,6 +86,7 @@ public class Giant extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -118,6 +123,7 @@ public class Giant extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in towering health^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

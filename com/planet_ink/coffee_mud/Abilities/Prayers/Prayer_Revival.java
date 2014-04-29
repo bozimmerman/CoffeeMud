@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Revival extends Prayer
 {
-	public String ID() { return "Prayer_Revival"; }
-	public String name(){ return "Revival";}
-	public String displayText(){return "(Revival)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Prayer_Revival"; }
+	@Override public String name(){ return "Revival";}
+	@Override public String displayText(){return "(Revival)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,6 +56,7 @@ public class Prayer_Revival extends Prayer
 
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -154,6 +156,7 @@ public class Prayer_Revival extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

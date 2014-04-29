@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,9 +37,9 @@ import java.util.List;
  * spawns, creates, watches, shuts down, and cleans up the various
  * objects, subsidiary quests, and existing objects modifications
  * related to this Quest.
- * 
- * To the user, a quest is a task the user must complete for 
- * reward.  To the Archon, a quest is something that adds 
+ *
+ * To the user, a quest is a task the user must complete for
+ * reward.  To the Archon, a quest is something that adds
  * content to an area at particular times, or under particular
  * circumstances.
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
@@ -51,53 +51,54 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setName(String)
 	 * @return the unique name of the quest
 	 */
+	@Override
 	public String name();
-	
+
 	/**
 	 * Sets the unique name of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#name()
 	 * @param newName the unique name of the quest
 	 */
 	public void setName(String newName);
-	
+
 	/**
 	 * Returns the author of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setAuthor(String)
 	 * @return the author of the quest
 	 */
 	public String author();
-	
+
 	/**
 	 * Sets the author of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#author()
 	 * @param newName the author of the quest
 	 */
 	public void setAuthor(String newName);
-	
+
 	/**
 	 * Returns the friendly display name of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setDisplayName(String)
 	 * @return the friendly display name of the quest
 	 */
 	public String displayName();
-	
+
 	/**
 	 * Sets the friendly display name of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#displayName()
 	 * @param newName the friendly display name of the quest
 	 */
 	public void setDisplayName(String newName);
-	
+
 	/**
 	 * Returns the unique start date of the quest.  The format
-	 * is either MONTH-DAY for real life dates, or 
-	 * MUDDAY MONTH-DAY for mudday based dates. 
+	 * is either MONTH-DAY for real life dates, or
+	 * MUDDAY MONTH-DAY for mudday based dates.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setStartDate(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setStartMudDate(String)
 	 * @return the unique formatted start date of the quest
 	 */
 	public String startDate();
-	
+
 	/**
 	 * Sets the real-life start date of this quest. The format
 	 * is MONTH-DAY.
@@ -106,7 +107,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param newName the real-life start date of this quest
 	 */
 	public void setStartDate(String newName);
-	
+
 	/**
 	 * Sets the in-game mud start date of this quest. The format
 	 * is MONTH-DAY.
@@ -115,7 +116,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param newName the in-game mud start date of this quest
 	 */
 	public void setStartMudDate(String newName);
-	
+
 	/**
 	 * Returns the duration, in ticks of this quest. A value of
 	 * 0 means the quest runs indefinitely.
@@ -123,7 +124,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the duration, in ticks, of this quest
 	 */
 	public int duration();
-	
+
 	/**
 	 * Sets the duration, in ticks of this quest. A value of
 	 * 0 means the quest runs indefinitely.
@@ -131,7 +132,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param newTicks the duration, in ticks, of this quest
 	 */
 	public void setDuration(int newTicks);
-	
+
 	/**
 	 * Returns whether this quest object is suspended.  A
 	 * suspended quest is always in a stopped state.
@@ -139,7 +140,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if this quest object is suspended
 	 */
 	public boolean suspended();
-	
+
 	/**
 	 * Sets whether this quest object is suspended.  A
 	 * suspended quest should always in a stopped state.
@@ -147,17 +148,17 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param truefalse true if this quest object is suspended
 	 */
 	public void setSuspended(boolean truefalse);
-	
+
 	/**
-	 * Sets the quest script.  This may be semicolon-separated 
-	 * instructions, or a LOAD command followed by the quest 
+	 * Sets the quest script.  This may be semicolon-separated
+	 * instructions, or a LOAD command followed by the quest
 	 * script path.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#script()
 	 * @param parm the actual quest script
 	 * @param showErrors true to report file errors, false otherwise
 	 */
 	public boolean setScript(String parm, boolean showErrors);
-	
+
 	/**
 	 * Accepts a pre-parsed quest script and extracts certain
 	 * non-iterative variables, such as the quest name and
@@ -167,14 +168,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param startAtLine which line of the script to start at
 	 */
 	public void setVars(List<?> script, int startAtLine);
-	
+
 	/**
 	 * Returns the unparsed quest script as a single happy string.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setScript(String)
 	 * @return the unparsed quest script as a single happy string.
 	 */
 	public String script();
-	
+
 	/**
 	 * This will execute the quest script.  If the quest is running, it
 	 * will call stopQuest first to shut it down.  It will spawn its
@@ -185,11 +186,11 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return whether the quest was successfully started
 	 */
 	public boolean startQuest();
-	
+
 	/**
-	 * this will stop executing of the quest script.  It will clean up 
-	 * any objects or mobs which may have been loaded, restoring map 
-	 * mobs to their previous state.  If the quest is autorandom, it 
+	 * this will stop executing of the quest script.  It will clean up
+	 * any objects or mobs which may have been loaded, restoring map
+	 * mobs to their previous state.  If the quest is autorandom, it
 	 * will restart the waiting process
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
@@ -198,10 +199,10 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public void stopQuest();
 
 	/**
-	 * this will stop executing of the quest script.  It will clean up 
-	 * any objects or mobs which may have been loaded, restoring map 
+	 * this will stop executing of the quest script.  It will clean up
+	 * any objects or mobs which may have been loaded, restoring map
 	 * mobs to their previous state.  It will then enter a stopped-paused
-	 * state for the given ticks.  Any start failures after that 
+	 * state for the given ticks.  Any start failures after that
 	 * will cause the pause time to be doubled before the next try.
 	 * @param firstPauseTicks ticks to remain in stopped state before restarting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
@@ -209,16 +210,16 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
 	 */
 	public void resetQuest(int firstPauseTicks);
-	
+
 	/**
 	 * If any files are embedded and cached inside this quest
 	 * script, this method will clear them from resources and
 	 * memory.
 	 */
 	public void internalQuestDelete();
-	
+
 	/**
-	 * This method is called when a quest is done with a 
+	 * This method is called when a quest is done with a
 	 * particular step in a multi-step quest.  This method
 	 * will clean up any objects from the current step or
 	 * previous steps and attempt to start up the next
@@ -238,15 +239,15 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if it is in a dormant state, or false if quest was deleted
 	 */
 	public boolean enterDormantState();
-	
+
 	/**
-	 * Sets whether this quest object is a spawned copy 
+	 * Sets whether this quest object is a spawned copy
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#isCopy()
 	 * @param truefalse true if this quest object is a spawned copy
 	 */
 	public void setCopy(boolean truefalse);
 	/**
-	 * Returns whether this quest object is a spawned copy 
+	 * Returns whether this quest object is a spawned copy
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setCopy(boolean)
 	 * @return whether this quest object is a spawned copy
 	 */
@@ -276,7 +277,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/**
 	 * Quest scripts can have files of various sorts embedded
 	 * in them.  This method will return the text of any such
-	 * files of the given name, if they were embedded, or if 
+	 * files of the given name, if they were embedded, or if
 	 * not, it will attempt to open the file in the filesystem
 	 * and return that one instead.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
@@ -380,7 +381,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the id of the room in use by this quest at the given index
 	 */
 	public String getQuestRoomID(int i);
-	
+
 	/**
 	 * they are called when you want the quest engine to be aware of a
 	 * a quest-specific object thats being added to the map, so that it
@@ -408,7 +409,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public void runtimeRegisterObject(PhysicalAgent P);
 	/**
 	 * Called when you want the quest engine to be aware of a quest specific object
-	 * that is being added to the map, so that it can be cleaned up later.  This is 
+	 * that is being added to the map, so that it can be cleaned up later.  This is
 	 * called to add an effect to the given object.
 	 * this method should only be used WHILE a quest script is being interpreted
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
@@ -422,7 +423,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public void runtimeRegisterEffect(PhysicalAgent affected, String abilityID, String parms, boolean give);
 	/**
 	 * Called when you want the quest engine to be aware of a quest specific object
-	 * that is being added to the map, so that it can be cleaned up later.  This is 
+	 * that is being added to the map, so that it can be cleaned up later.  This is
 	 * called to add a behavior to the given object.
 	 * this method should only be used WHILE a quest script is being interpreted
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
@@ -434,7 +435,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param give false to remove this behavior, true to replace an existing one
 	 */
 	public void runtimeRegisterBehavior(PhysicalAgent behaving, String behaviorID, String parms, boolean give);
-	
+
 	/**
 	 * Registers the given player name as having won this quest.  The name
 	 * may be prefixed with a "-" to undeclare the winner (for player deletes).
@@ -488,7 +489,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#playerMask()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setPlayerMask(String)
-	 * @return minimum number of players matching player criteria required 
+	 * @return minimum number of players matching player criteria required
 	 */
 	public int minPlayers();
 	/**
@@ -501,7 +502,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 */
 	public void setMinPlayers(int players);
 	/**
-	 * Returns the run level. -1 means runs always, otherwise, 
+	 * Returns the run level. -1 means runs always, otherwise,
 	 * this quest will always defer to running quests of equal
 	 * or lower run level.  Higher, therefore, is weaker.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setRunLevel(int)
@@ -509,7 +510,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 */
 	public int runLevel();
 	/**
-	 * Sets the run level. -1 means runs always, otherwise, 
+	 * Sets the run level. -1 means runs always, otherwise,
 	 * this quest will always defer to running quests of equal
 	 * or lower run level.  Higher, therefore, is weaker.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runLevel()
@@ -576,7 +577,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * it thread time.
 	 */
 	public void autostartup();
-	
+
 	/**
 	 * Returns whether this quest is in a running state
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
@@ -646,7 +647,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param flags the flag bitmap
 	 */
 	public void setFlags(long flags);
-	
+
 	/** A quest spawn flag denoting that this quest does not spawn its steps */
 	public final static int SPAWN_NO=0;
 	/** A quest spawn flag denoting that this quest spawns only its first step */
@@ -655,13 +656,13 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public final static int SPAWN_ANY=2;
 	/** Descriptions of the several quest step spawn flags */
 	public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
-	
+
 	/** A quest flag @see {@link Quest#getFlags()} */
 	public final static int FLAG_SUSPENDED=1;
-	
+
 	/** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
-										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
+										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY",
 										 "INSTRUCTIONS", "PERSISTANCE", "AUTHOR"};
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",

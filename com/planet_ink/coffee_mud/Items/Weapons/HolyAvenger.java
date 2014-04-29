@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class HolyAvenger extends TwoHandedSword
 {
-	public String ID(){	return "HolyAvenger";}
+	@Override public String ID(){	return "HolyAvenger";}
 	public HolyAvenger()
 	{
 		super();
@@ -56,6 +56,7 @@ public class HolyAvenger extends TwoHandedSword
 
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -88,6 +89,7 @@ public class HolyAvenger extends TwoHandedSword
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

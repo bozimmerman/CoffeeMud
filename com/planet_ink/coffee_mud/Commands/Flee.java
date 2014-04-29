@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Flee extends Go
 	public Flee(){}
 
 	private final String[] access={"FLEE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,7 +55,7 @@ public class Flee extends Go
 				return false;
 			}
 		}
-		
+
 		boolean XPloss=true;
 		MOB fighting=mob.getVictim();
 		if(fighting!=null)
@@ -71,13 +72,13 @@ public class Flee extends Go
 				XPloss=false;
 			}
 		}
-		
+
 		if((!XPloss)&&(direction.length()==0))
 		{
 			mob.tell("You stop fighting.");
 			direction="NOWHERE";
 		}
-		
+
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{
@@ -134,8 +135,8 @@ public class Flee extends Go
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

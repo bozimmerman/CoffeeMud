@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Put extends StdCommand
 	public Put(){}
 
 	private final String[] access={"PUT","PU","P"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void putout(MOB mob, Vector commands, boolean quiet)
 	{
@@ -66,6 +66,7 @@ public class Put extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -82,7 +83,7 @@ public class Put extends StdCommand
 			if(C!=null) C.execute(mob,commands,metaFlags);
 			return false;
 		}
-		
+
 		if(commands.size()>=4)
 		{
 			String s=CMParms.combine(commands, 0).toLowerCase();
@@ -126,7 +127,7 @@ public class Put extends StdCommand
 
 		int maxToPut=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToPut<0) return false;
-		
+
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -183,9 +184,9 @@ public class Put extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

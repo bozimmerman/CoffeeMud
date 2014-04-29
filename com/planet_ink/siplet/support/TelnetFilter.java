@@ -7,7 +7,7 @@ import com.planet_ink.siplet.applet.Siplet.MSPStatus;
 import com.planet_ink.siplet.support.MiniJSON.JSONObject;
 import com.planet_ink.siplet.support.MiniJSON.MJSONException;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ public class TelnetFilter
 {
 	public final static boolean debugChars=false;
 	public final static boolean debugTelnetCodes=false;
-	
+
 	protected static final char IAC_SE=240;
 	protected static final char IAC_ = 255;
 	protected static final char IAC_SB=250;
@@ -53,7 +53,7 @@ public class TelnetFilter
 	protected static final char MCCP_COMPRESS = 85;
 	protected static final char MCCP_COMPRESS2 = 86;
 	protected static final char TELOPT_NEWENVIRONMENT = 39;
-	
+
 	private static String defaultBackground="black";
 	private static String defaultForeground="white";
 	private static String[] colorCodes1={ // 30-37
@@ -63,9 +63,9 @@ public class TelnetFilter
 			"#999966", // brown
 			"#000099", // blue
 			"purple", // purple
-			"darkcyan", // cyan 
+			"darkcyan", // cyan
 			"lightgrey"}; // grey
-	private static String[] colorCodes2={ 
+	private static String[] colorCodes2={
 			"gray", // dark grey
 			"red", // light red
 			"lightgreen", // light green
@@ -74,7 +74,7 @@ public class TelnetFilter
 			"violet", // light purple
 			"cyan", // light cyan
 			"white" }; // white
-	
+
 	protected String  lastBackground=null;
 	protected String  lastForeground=null;
 	protected boolean blinkOn=false;
@@ -97,21 +97,21 @@ public class TelnetFilter
 	protected boolean   MCCPsupport=false;
 	private StringBuilder msdpInforms=new StringBuilder("");
 	private StringBuilder gmcpInforms=new StringBuilder("");
-	
+
 	private MSP mspModule=new MSP();
 	private MSDP msdpModule=new MSDP();
 	private GMCP gmcpModule=new GMCP();
 	private MXP mxpModule=new MXP();
-	
+
 	private TelnetFilter(){}
 	public TelnetFilter(Siplet codebase)
 	{
 		this();
 		codeBase=codebase;
 	}
-	
+
 	public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
-	
+
 	public String getEnquedResponses()
 	{
 		return (MXPsupport()?mxpModule.getAnyResponses():"");
@@ -141,15 +141,15 @@ public class TelnetFilter
 	private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }
 	private String underlineOff(){ if(underlineOn){underlineOn=false; return "</U>";}return ""; }
 	private String fontOff()
-	{ 
+	{
 		if(fontOn)
 		{
 			setLastBackground(defaultBackground);
 			setLastForeground(defaultForeground);
-			fontOn=false; 
+			fontOn=false;
 			return "</FONT>";
 		}
-		return ""; 
+		return "";
 	}
 	private String italicsOff(){ if(italicsOn){italicsOn=false; return "</I>";}return ""; }
 	private String allOff()
@@ -161,7 +161,7 @@ public class TelnetFilter
 		off.append(italicsOff());
 		return off.toString();
 	}
-	
+
 	public String getMsdpHtml()
 	{
 		synchronized(msdpInforms)
@@ -173,7 +173,7 @@ public class TelnetFilter
 			return "<BR><PRE>"+bah+"</PRE><BR>";
 		}
 	}
-	
+
 	public String getGmcpHtml()
 	{
 		synchronized(gmcpInforms)
@@ -185,7 +185,7 @@ public class TelnetFilter
 			return "<BR><PRE>"+bah+"</PRE>";
 		}
 	}
-	
+
 	public static int getColorCodeIndex(String word)
 	{
 		if(word==null) word=defaultForeground;
@@ -220,7 +220,7 @@ public class TelnetFilter
 	}
 	private String lastBackground(){return MXPsupport()?mxpModule.lastBackground:lastBackground;}
 	private String lastForeground(){return MXPsupport()?mxpModule.lastForeground:lastForeground;}
-	
+
 	private String escapeTranslate(String escapeString)
 	{
 		if(escapeString.endsWith("m"))
@@ -237,17 +237,17 @@ public class TelnetFilter
 				code=Util.s0_int(s);
 				switch(code)
 				{
-				case 0: 
+				case 0:
 						if(i==(V.size()-1))
 							str.append(allOff());
 						boldOn=false;
 						break;
 				case 1:
-					boldOn=true; 
+					boldOn=true;
 					if((V.size()==1)&&(lastForeground()!=null))
 						foreground=colorCodes2[getRelativeColorCodeIndex(lastForeground())];
 					break;
-				case 4: 
+				case 4:
 					{
 						if(!underlineOn)
 						{
@@ -256,7 +256,7 @@ public class TelnetFilter
 						}
 						break;
 					}
-				case 5: 
+				case 5:
 				{
 					if(!blinkOn)
 					{
@@ -265,7 +265,7 @@ public class TelnetFilter
 					}
 					break;
 				}
-				case 6: 
+				case 6:
 				{
 					if(!italicsOn)
 					{
@@ -274,14 +274,14 @@ public class TelnetFilter
 					}
 					break;
 				}
-				case 7: 
+				case 7:
 				{
 					// this is reverse on, and requires a wierd color reversal
 					// from whatever the previous colors were.
 					// do it later
 					break;
 				}
-				case 8: 
+				case 8:
 				{
 					background=defaultBackground;
 					foreground=defaultBackground;
@@ -332,7 +332,7 @@ public class TelnetFilter
 					if(lastForeground()==null)setLastForeground(defaultForeground);
 					if(background==null) background=lastBackground();
 					if(foreground==null) foreground=lastForeground();
-					
+
 					if((!lastBackground().equals(background))
 					||(!lastForeground().equals(foreground)))
 					{
@@ -381,8 +381,8 @@ public class TelnetFilter
 		buf.append(c);
 		if(c==65535) throw new java.io.InterruptedIOException("ARGH!");
 	}
-	
-	
+
+
 	public int TelenetFilter(StringBuffer buf, DataOutputStream response, InputStream rawin, BufferedReader[] in)
 	throws IOException
 	{
@@ -418,7 +418,7 @@ public class TelnetFilter
 								last = buf.charAt(++i);
 								if(last == IAC_)
 									subOptionData.write(IAC_); // this is iac iac -- escape, dup type thing?
-								else 
+								else
 								if(last == IAC_SE)
 									break;
 							}
@@ -799,7 +799,7 @@ public class TelnetFilter
 		}
 		return buf.length();
 	}
-	
+
 	// filters out color codes -> <FONT>
 	// CRS -> <BR>
 	// SPACES -> &nbsp;
@@ -894,7 +894,7 @@ public class TelnetFilter
 				if(MXPsupport())
 				{
 					int x=mxpModule.newlineDetected(buf,i+1,eolEater);
-					if(eolEater[0]) 
+					if(eolEater[0])
 						buf.deleteCharAt(i);
 					else
 					{

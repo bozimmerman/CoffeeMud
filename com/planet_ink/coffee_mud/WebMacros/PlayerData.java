@@ -37,7 +37,7 @@ import java.util.Map.Entry;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PlayerData extends StdWebMacro
 {
-	public String name() { return "PlayerData"; }
+	@Override public String name() { return "PlayerData"; }
 
 	public final static String[] BASICS={
 		"NAME",
@@ -134,7 +134,7 @@ public class PlayerData extends StdWebMacro
 		case 6: str.append(M.basePhyStats().level()+", "); break;
 		case 7: str.append(M.baseCharStats().displayClassLevel(M,true)+", "); break;
 		case 8: str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass())+", "); break;
-		case 9: 
+		case 9:
 		{
 				for(int c=M.charStats().numClasses()-1;c>=0;c--)
 				{
@@ -160,7 +160,7 @@ public class PlayerData extends StdWebMacro
 		case 19: str.append(CMLib.beanCounter().getMoney(M)+", "); break;
 		case 20: str.append(M.getWorshipCharID()+", "); break;
 		case 21: str.append(M.getLiegeID()+", "); break;
-		case 22: 
+		case 22:
 		case 23: {
 					StringBuilder buf=new StringBuilder("");
 					for(Pair<Clan,Integer> p : M.clans())
@@ -266,7 +266,7 @@ public class PlayerData extends StdWebMacro
 		case 54: str.append(M.basePhyStats().armor()+", "); break;
 		case 55: str.append(M.phyStats().speed()+", "); break;
 		case 56: str.append(M.basePhyStats().speed()+", "); break;
-		case 57: 
+		case 57:
 		{
 			for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
 			{
@@ -279,13 +279,13 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 58: 
+		case 58:
 		{
 			for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 			  str.append(e.nextElement().toString()+", ");
 			break;
 		}
-		case 59: 
+		case 59:
 		{
 			if(M.playerStats()!=null)
 			{
@@ -298,7 +298,7 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 60: 
+		case 60:
 		{
 			if(M.playerStats()!=null)
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
@@ -308,7 +308,7 @@ public class PlayerData extends StdWebMacro
 				}
 				break;
 		}
-		case 61: 
+		case 61:
 		{
 			for(Enumeration e=M.fetchFactions();e.hasMoreElements();)
 			{
@@ -320,7 +320,7 @@ public class PlayerData extends StdWebMacro
 			break;
 		}
 		case 62: str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)?"true":"false"); break;
-		case 63: 
+		case 63:
 		{
 			if(M.playerStats()!=null)
 			{
@@ -347,6 +347,7 @@ public class PlayerData extends StdWebMacro
 		return str.toString();
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -388,7 +389,7 @@ public class PlayerData extends StdWebMacro
 					if(parms.containsKey(stat))
 					{
 						String old=httpReq.getUrlParameter(stat);
-						if((firstTime)||(old.length()==0)) 
+						if((firstTime)||(old.length()==0))
 						{
 							if((!CharStats.CODES.isBASE(i))&&(i!=CharStats.STAT_GENDER))
 								old=""+C.getSave(i);
@@ -408,7 +409,7 @@ public class PlayerData extends StdWebMacro
 					if(parms.containsKey("BASE"+stat))
 					{
 						String old=httpReq.getUrlParameter("BASE"+stat);
-						if((firstTime)||(old.length()==0)) 
+						if((firstTime)||(old.length()==0))
 							old=""+C.getStat(i);
 						str.append(old+", ");
 					}
@@ -427,7 +428,7 @@ public class PlayerData extends StdWebMacro
 			if(parms.containsKey("RACE"))
 			{
 				String old=httpReq.getUrlParameter("RACE");
-				if((firstTime)||(old.length()==0)) 
+				if((firstTime)||(old.length()==0))
 					old=""+M.baseCharStats().getMyRace().ID();
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
@@ -477,7 +478,7 @@ public class PlayerData extends StdWebMacro
 			if(parms.containsKey("ALIGNMENT"))
 			{
 				String old=httpReq.getUrlParameter("ALIGNMENT");
-				if((firstTime)||(old.length()==0)) 
+				if((firstTime)||(old.length()==0))
 					old=""+M.fetchFaction(CMLib.factions().AlignID());
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 				{

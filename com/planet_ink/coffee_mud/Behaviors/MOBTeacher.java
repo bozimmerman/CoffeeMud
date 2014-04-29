@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ import java.util.Map.Entry;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MOBTeacher extends CombatAbilities
 {
-	public String ID(){return "MOBTeacher";}
+	@Override public String ID(){return "MOBTeacher";}
 	protected MOB myMOB=null;
 	protected boolean teachEverything=true;
 	protected boolean noCommon=false;
@@ -48,11 +48,13 @@ public class MOBTeacher extends CombatAbilities
 	protected int tickDownToKnowledge=4;
 	protected List<ExpertiseDefinition> trainableExpertises=null;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "skill teaching";
 	}
-	
+
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		if(forMe instanceof MOB)
@@ -91,7 +93,7 @@ public class MOBTeacher extends CombatAbilities
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			
+
 			if((A!=null)
 			&&(((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
@@ -111,6 +113,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -158,11 +161,11 @@ public class MOBTeacher extends CombatAbilities
 					mob.recoverCharStats();
 				}
 			}
-			
+
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void addAbility(MOB mob, Ability A, int pct, Map<String,Ability> myAbles)
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
@@ -279,6 +282,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.recoverCharStats();
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -291,6 +295,7 @@ public class MOBTeacher extends CombatAbilities
 		ensureCharClass();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
@@ -300,6 +305,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 		return super.okMessage(host,msg);
 	}
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		if(myMOB==null) return;
@@ -338,7 +344,7 @@ public class MOBTeacher extends CombatAbilities
 				else
 				{
 					x=s.lastIndexOf('`');
-					if(x>0) 
+					if(x>0)
 						s=s.substring(0,x);
 				}
 
@@ -392,7 +398,7 @@ public class MOBTeacher extends CombatAbilities
 							if(EXI.getValue()==null)
 							{
 								ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
-								if((def != null) && (!trainableExpertises.contains(def))) 
+								if((def != null) && (!trainableExpertises.contains(def)))
 									trainableExpertises.add(def);
 							}
 							else
@@ -401,7 +407,7 @@ public class MOBTeacher extends CombatAbilities
 								for(String experID : childrenIDs)
 								{
 									ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
-									if((def != null) && (!trainableExpertises.contains(def))) 
+									if((def != null) && (!trainableExpertises.contains(def)))
 										trainableExpertises.add(def);
 								}
 							}

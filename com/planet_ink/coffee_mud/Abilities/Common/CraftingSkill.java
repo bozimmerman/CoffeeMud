@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CraftingSkill extends GatheringSkill
 {
-	public String ID() { return "CraftingSkill"; }
-	public String name(){ return "Crafting Skill";}
-	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
-	public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
+	@Override public String ID() { return "CraftingSkill"; }
+	@Override public String name(){ return "Crafting Skill";}
+	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
+	@Override public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
 	protected Item buildingI=null;
 	protected Recipe recipeHolder = null;
 	protected boolean fireRequired=true;
@@ -66,16 +66,16 @@ public class CraftingSkill extends GatheringSkill
 			this.forceLevels=forceLevels;
 		}
 	}
-	
+
 	public CraftingSkill(){super();}
-	
+
 	public String parametersFile(){ return "";}
-	
+
 	public double getItemWeightMultiplier(boolean bundling)
 	{
 		return 1.0;
 	}
-	
+
 	public int getStandardWeight(int baseWoodRequired, boolean bundling)
 	{
 		int newWeight=(int)Math.round( baseWoodRequired * this.getItemWeightMultiplier( bundling ));
@@ -83,7 +83,7 @@ public class CraftingSkill extends GatheringSkill
 			return 1;
 		return newWeight;
 	}
-	
+
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -142,7 +142,7 @@ public class CraftingSkill extends GatheringSkill
 			}
 			commonEmote(mob,"<S-NAME> mess(es) up mending "+buildingI.name()+".");
 		}
-		
+
 	}
 
 	protected long getContainerType(final String s)
@@ -155,7 +155,7 @@ public class CraftingSkill extends GatheringSkill
 		for(final String splitS : allTypes)
 		{
 			int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
-			if(bit>0) 
+			if(bit>0)
 				return 0;
 			else
 				ret = ret | CMath.pow(2,(bit-1));
@@ -211,12 +211,12 @@ public class CraftingSkill extends GatheringSkill
 				}
 			}
 		}
-		if(recipes instanceof Vector) 
+		if(recipes instanceof Vector)
 			((Vector)recipes).trimToSize();
 		return recipes;
 	}
 
-	protected int adjustWoodRequired(int woodRequired, MOB mob) 
+	protected int adjustWoodRequired(int woodRequired, MOB mob)
 	{
 		int newWoodRequired=woodRequired-(int)Math.round((0.05*woodRequired*getXPCOSTLevel(mob)));
 		if(newWoodRequired<=0)
@@ -419,7 +419,7 @@ public class CraftingSkill extends GatheringSkill
 					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),req1[i]);
 				else
 					firstWood=CMLib.materials().findFirstResource(mob.location(),req1[i]);
-				
+
 				if(firstWood!=null) break;
 			}
 		}
@@ -554,7 +554,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			Vector V=new Vector();
 			V.addElement(Integer.valueOf(material));
-			if(forceLevels) 
+			if(forceLevels)
 				V.addElement(Boolean.TRUE);
 			if(recipeName!=null) V.addElement(recipeName);
 			invoke(mob,V,null,true,-1);
@@ -796,7 +796,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected boolean deconstructRecipeInto(final Item I, final Recipe R)
 	{
-		
+
 		if((I==null)||(R==null))
 			return false;
 		if(!(this instanceof ItemCraftor))
@@ -968,7 +968,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return false;
 	}
-	
+
 	public boolean mayICraft(final MOB crafterM, final Item I)
 	{
 		if(!mayICraft(I))
@@ -1077,7 +1077,7 @@ public class CraftingSkill extends GatheringSkill
 	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate)
 	{
 		if(autoGenerate>0) return new LinkedList<Object>();
-		
+
 		final List<AbilityComponent> componentsRequirements;
 		if(componentID.trim().startsWith("("))
 		{
@@ -1107,7 +1107,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return new LinkedList<Object>();
 	}
-	
+
 	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
 	{
 		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ), Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
@@ -1141,7 +1141,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return "?";
 	}
-	
+
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		recipeHolder=null;

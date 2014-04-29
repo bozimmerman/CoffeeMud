@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,17 @@ public interface SpaceShip extends SpaceObject
 	public void dockHere(LocationRoom R);
 
 	public void unDock(boolean toSpace);
-	
+
 	public LocationRoom getIsDocked();
-	
+
 	public Area getShipArea();
-	
+
 	public void setShipArea(String xml);
-	
+
 	public void renameSpaceShip(String newName);
-	
+
 	public SpaceObject getShipSpaceObject();
-	
+
 	/**
 	 * The Outer Mold Line coefficient -- how streamlined are you?
 	 * @return the coefficient, from 0.05-0.3
@@ -55,9 +55,9 @@ public interface SpaceShip extends SpaceObject
 	 * @param coeff the Outer Mold Line coefficient
 	 */
 	public void setOMLCoeff(double coeff);
-	
+
 	/**
-	 * The direction of facing of this object in radians. 
+	 * The direction of facing of this object in radians.
 	 * @return 2 dimensional array for the direction of facing
 	 */
 	public double[] facing();
@@ -66,9 +66,9 @@ public interface SpaceShip extends SpaceObject
 	 * @param dir 2 dimensional array for the direction of facing
 	 */
 	public void setFacing(double[] dir);
-	
+
 	/**
-	 * The orientation of the top of the object in radians. 
+	 * The orientation of the top of the object in radians.
 	 * @return radian for the direction of orientation
 	 */
 	public double roll();

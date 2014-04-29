@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import java.util.*;
 */
 @SuppressWarnings("rawtypes")
 public class ThinPlayerData extends StdWebMacro {
-	
-	public String name() { return "ThinPlayerData"; }
-	
+
+	@Override public String name() { return "ThinPlayerData"; }
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -57,7 +58,7 @@ public class ThinPlayerData extends StdWebMacro {
 				PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
 				if(TP.name.equalsIgnoreCase(last))
 				{
-					player = TP; 
+					player = TP;
 					break;
 				}
 			}

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,8 @@ public class Go extends StdCommand
 	public Go(){}
 
 	private final String[] access={"GO","WALK"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	protected Command stander=null;
 	protected Vector ifneccvec=null;
 	public void standIfNecessary(MOB mob, int metaFlags)
@@ -57,6 +57,7 @@ public class Go extends StdCommand
 			stander.execute(mob,ifneccvec,metaFlags);
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -77,7 +78,7 @@ public class Go extends StdCommand
 
 		boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
-		
+
 		int direction=-1;
 		if(whereStr.equalsIgnoreCase("OUT"))
 		{
@@ -86,7 +87,7 @@ public class Go extends StdCommand
 				mob.tell("You aren't indoors.");
 				return false;
 			}
-			
+
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if((R.getExitInDir(d)!=null)
@@ -188,6 +189,7 @@ public class Go extends StdCommand
 		return false;
 	}
 
+	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		double cost=CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),100.0);
@@ -196,5 +198,5 @@ public class Go extends StdCommand
 		return CMProps.getActionCost(ID(), cost);
 	}
 
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

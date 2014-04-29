@@ -37,7 +37,8 @@ public class Compress extends StdCommand
 	public Compress(){}
 
 	private final String[] access={"COMPRESS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -53,8 +54,8 @@ public class Compress extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

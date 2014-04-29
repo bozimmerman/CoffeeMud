@@ -41,20 +41,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MOBHunter extends ActiveTicker
 {
-	public String ID(){return "MOBHunter";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags(){return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
+	@Override public String ID(){return "MOBHunter";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public long flags(){return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 	protected boolean debug=false;
 	int radius=20;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().length()>0)
 			return "hunters of  "+CMLib.masking().maskDesc(getParms());
 		else
 			return "creature hunting";
 	}
-	
+
 	public MOBHunter()
 	{
 		super();
@@ -69,6 +70,7 @@ public class MOBHunter extends ActiveTicker
 		return false;
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -102,6 +104,7 @@ public class MOBHunter extends ActiveTicker
 		return prey;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

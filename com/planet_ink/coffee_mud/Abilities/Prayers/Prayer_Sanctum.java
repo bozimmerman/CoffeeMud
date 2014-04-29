@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Sanctum extends Prayer
 {
-	public String ID() { return "Prayer_Sanctum"; }
-	public String name(){return "Sanctum";}
-	public String displayText(){return "(Sanctum)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Sanctum"; }
+	@Override public String name(){return "Sanctum";}
+	@Override public String displayText(){return "(Sanctum)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	protected boolean inRoom(MOB mob, Room R)
 	{
@@ -51,7 +51,8 @@ public class Prayer_Sanctum extends Prayer
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -117,6 +118,7 @@ public class Prayer_Sanctum extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();
@@ -138,7 +140,7 @@ public class Prayer_Sanctum extends Prayer
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
-				
+
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{

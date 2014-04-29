@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,10 +41,11 @@ import java.util.*;
  */
 public interface WebMacro extends CMObject
 {
-	/** 
+	/**
 	 * The public name of this macro
 	 * @return The public name of this macro
 	 */
+	@Override
 	public String name();
 	/**
 	 * Whether the runMacro or runBinaryMacro executor should be called.
@@ -58,7 +59,7 @@ public interface WebMacro extends CMObject
 	 * @return true if the macro is restricted to the admin web server
 	 */
 	public boolean isAdminMacro();
-	
+
 	/**
 	 * Whether this macro returns an attachment instead of something
 	 * displayable.  If true, the content-disposition will reflect
@@ -69,7 +70,7 @@ public interface WebMacro extends CMObject
 	 * @param filename the filename from getFilename
 	 */
 	public void setServletResponse(SimpleServletResponse response, final String filename);
-	
+
 	/**
 	 * Whether this macro substitutes as an aspect of the web path instead
 	 * of a standard web macro.  If true is returned, URLs such as:
@@ -90,7 +91,7 @@ public interface WebMacro extends CMObject
 	 * @return usually the default filename again
 	 */
 	public String getFilename(HTTPRequest httpReq, String filename);
-	
+
 	/**
 	 * This method is executed only if this macro returns true for preferBinary().
 	 * It will execute the macro and return its results as a binary byte array.

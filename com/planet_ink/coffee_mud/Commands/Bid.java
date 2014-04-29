@@ -37,7 +37,8 @@ public class Bid extends StdCommand
 	public Bid(){}
 
 	private final String[] access={"BID"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -63,7 +64,7 @@ public class Bid extends StdCommand
 		Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
 		bidStr=CMLib.beanCounter().nameCurrencyShort((String)bidThang[0],CMath.mul(((Double)bidThang[1]).doubleValue(),((Long)bidThang[2]).longValue()));
 		commands.removeElementAt(0);
-		
+
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(CMath.s_int((String)commands.firstElement())>0))
@@ -107,7 +108,7 @@ public class Bid extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 }

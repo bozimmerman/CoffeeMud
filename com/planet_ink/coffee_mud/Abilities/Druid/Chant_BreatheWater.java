@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_BreatheWater extends Chant
 {
-	public String ID() { return "Chant_BreatheWater"; }
-	public String name(){ return "Fish Gills";}
-	public String displayText(){return "(Fish Gills)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_BreatheWater"; }
+	@Override public String name(){ return "Fish Gills";}
+	@Override public String displayText(){return "(Fish Gills)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -56,6 +57,7 @@ public class Chant_BreatheWater extends Chant
 			mob.tell("Your fish gills disappear.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
@@ -75,6 +77,7 @@ public class Chant_BreatheWater extends Chant
 		affectableStats.setBreathables(newSet);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

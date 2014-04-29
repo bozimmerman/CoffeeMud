@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_InsatiableThirst extends Spell
 {
-	public String ID() { return "Spell_InsatiableThirst"; }
-	public String name(){return "Insatiable Thirst";}
-	public String displayText(){return "(Insatiable Thirst)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_InsatiableThirst"; }
+	@Override public String name(){return "Insatiable Thirst";}
+	@Override public String displayText(){return "(Insatiable Thirst)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

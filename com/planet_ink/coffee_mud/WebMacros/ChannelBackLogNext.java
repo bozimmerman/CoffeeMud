@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 */
 public class ChannelBackLogNext extends StdWebMacro
 {
-	public String name() { return "ChannelBackLogNext"; }
+	@Override public String name() { return "ChannelBackLogNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -63,7 +64,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					que.addAll(oldQue);
 					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE",que);
 				}
-				
+
 				while(true)
 				{
 					int num=CMath.s_int(last);
@@ -77,8 +78,8 @@ public class ChannelBackLogNext extends StdWebMacro
 						return " @break@";
 					}
 					boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-					
-					final ChannelsLibrary.ChannelMsg cmsg=que.get(num); 
+
+					final ChannelsLibrary.ChannelMsg cmsg=que.get(num);
 					final CMMsg msg=cmsg.msg;
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))

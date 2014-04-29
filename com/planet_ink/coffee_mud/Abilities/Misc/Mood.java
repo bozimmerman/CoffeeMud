@@ -38,15 +38,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Mood extends StdAbility
 {
-	public String ID() { return "Mood"; }
-	public String name(){ return "Mood";}
-	public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Mood"; }
+	@Override public String name(){ return "Mood";}
+	@Override public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	protected int moodCode=-1;
 	protected Object lastOne=null;
 	protected CMMsg lastMsg=null;
@@ -97,6 +97,7 @@ public class Mood extends StdAbility
 	"tiny-brained wiper of other people`s bottoms"
 	};
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		// this checks the input, and allows us to get mood
@@ -123,6 +124,7 @@ public class Mood extends StdAbility
 		super.setMiscText(newText);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -134,6 +136,7 @@ public class Mood extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
@@ -191,6 +194,7 @@ public class Mood extends StdAbility
 		return null;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg==lastMsg)
@@ -652,6 +656,7 @@ public class Mood extends StdAbility
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		switch(moodCode)
@@ -700,6 +705,7 @@ public class Mood extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);

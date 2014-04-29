@@ -23,23 +23,23 @@ public class Quad<T,K,L,M> extends Triad<T,K,L>
 		super(frst,scnd,thrd);
 		fourth=frth;
 	}
-	public static final class FirstConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,T> 
+	public static final class FirstConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,T>
 	{
-		public T convert(Quad<T, K,L, M> obj) { return obj.first;}
+		@Override public T convert(Quad<T, K,L, M> obj) { return obj.first;}
 	}
-	public static final class SecondConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,K> 
+	public static final class SecondConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,K>
 	{
-		public K convert(Quad<T, K, L, M> obj) { return obj.second;}
+		@Override public K convert(Quad<T, K, L, M> obj) { return obj.second;}
 	}
 	public static final class ThirdConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,L>
 	{
-		public L convert(Quad<T, K, L, M> obj) { return obj.third;}
+		@Override public L convert(Quad<T, K, L, M> obj) { return obj.third;}
 	}
 	public static final class FourthConverter<T,K,L,M> implements Converter<Quad<T,K,L, M>,M>
 	{
-		public M convert(Quad<T, K, L, M> obj) { return obj.fourth;}
+		@Override public M convert(Quad<T, K, L, M> obj) { return obj.fourth;}
 	}
-	
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -56,7 +56,7 @@ public class Quad<T,K,L,M> extends Triad<T,K,L>
 		return super.equals(o);
 	}
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		return super.hashCode()  ^ ((fourth==null)?0:fourth.hashCode());
 	}

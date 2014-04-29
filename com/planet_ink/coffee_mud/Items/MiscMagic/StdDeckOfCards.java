@@ -17,25 +17,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
 	Copyright (c) 2005-2014 Bo Zimmerman
 	All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 	following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
-	disclaimer. 
+	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+	disclaimer.
 
-	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following 
-	disclaimer in the documentation and/or other materials provided with the distribution. 
+	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+	disclaimer in the documentation and/or other materials provided with the distribution.
 
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	Deck Of Cards
@@ -43,7 +43,7 @@ import java.util.*;
 	It inherets from the HandOfCards class for most of its
 	important functionality such as retreiving and adding cards and
 	shuffling and sorting.
-	   
+
 	The Deck has added functionality to make the "reigning in" of cards
 	once a game is over easier.  It also has methods to keep track of
 	one or more Hands, each of which must be attributed to a player.
@@ -51,23 +51,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 {
-	public String ID(){	return "StdDeckOfCards";}
-	
+	@Override public String ID(){	return "StdDeckOfCards";}
+
 	// a flag to tell us whether the deck instance
-	// has already been filled with cards.  
+	// has already been filled with cards.
 	boolean alreadyFilled=false;
-	
-	// a vector of all the cards in the deck. 
+
+	// a vector of all the cards in the deck.
 	// this is our private cache, since, as soon
 	// as cards start getting dealt, we would lose
 	// track of them otherwise.
 	protected List<Item> cardsCache=null;
-	
+
 	// this object can manage one or more hands
 	// keyed by the mob/player object.
 	// This functionality is optional.
 	DVector hands=new DVector(2);
-	
+
 	// the constructor for this class doesn't do much except set
 	// some of the display properties of the deck container
 	public StdDeckOfCards()
@@ -79,13 +79,13 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		recoverPhyStats();
 	}
 
-	protected boolean abilityImbuesMagic(){return false;}
+	@Override protected boolean abilityImbuesMagic(){return false;}
 	// makePlayingCard(int cardBitCode)
 	// this method creates a playing card object for
 	// population in the deck.  The card created is
 	// determined by the cardCode, which is a bit masked
 	// value where bits 4-5 determine suit, and lower bits
-	// the value.  
+	// the value.
 	protected PlayingCard makePlayingCard(int cardBitCode)
 	{
 		Item I=CMClass.getItem("StdPlayingCard");
@@ -106,7 +106,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 				allCards.addElement(makePlayingCard(PlayingCard.suits[i]+PlayingCard.cards[ii]));
 		return allCards;
 	}
-	
+
 	// fillInTheDeck()
 	// this method creates all 52 cards in the deck
 	// and adds them to a deck owner
@@ -123,11 +123,12 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		hands.clear();
 		return cardsCache;
 	}
-	
+
 	// createDeck(Environmental owner)
 	// This static method creates a new deck of cards container,
-	// gives it to the given owner object (mob or room), and 
+	// gives it to the given owner object (mob or room), and
 	// then populates the deck container with all appropriate cards.
+	@Override
 	public DeckOfCards createDeck(Environmental owner)
 	{
 		StdDeckOfCards deck=new StdDeckOfCards();
@@ -149,7 +150,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		deck.fillInTheDeck();
 		return deck;
 	}
-	
+
 	// resetDeckBackTo52Cards()
 	// resets the deck back to 52 cards.  It will
 	// grab cards from all external sources first
@@ -158,13 +159,14 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// create a set of cards for the deck.
 	// this method also destroys any hands being
 	// managed.
+	@Override
 	public boolean resetDeckBackTo52Cards()
 	{
 		if((cardsCache==null)||(cardsCache.size()==0))
 			return false;
-		
+
 		// first retreive all our cards by looping
-		// through our cached list.  If we already 
+		// through our cached list.  If we already
 		// have a card, make sure its faced-down
 		for(int i=0;i<cardsCache.size();i++)
 		{
@@ -175,11 +177,11 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 				card.turnFaceDown();
 		}
 		// next destroy and clear any hands we may
-		// be managing.  
+		// be managing.
 		for(int h=hands.size()-1;h>=0;h--)
 			((Item)hands.elementAt(h,2)).destroy();
 		hands.clear();
-		
+
 		// if something went wrong (because a player cast
 		// disintegrate on their cards or something) we
 		// just ditch the entire deck and rebuild it.
@@ -195,11 +197,12 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		}
 		return numberOfCards()==52;
 	}
-	
+
 	// getPlayerHand(MOB player)
 	// If a hand of cards has previously been added to this
 	// deck for internal management, this method will return
 	// that hand given the player object.
+	@Override
 	public HandOfCards getPlayerHand(MOB player)
 	{
 		if(player!=null)
@@ -214,6 +217,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// if no hand is passed in, a new empty one is created
 	// the hand is then added to our table, keyed by the player
 	// object
+	@Override
 	public HandOfCards addPlayerHand(MOB player, HandOfCards cards)
 	{
 		if(player==null) return null;
@@ -232,6 +236,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// being managed by this deck, this method will remove all
 	// of the cards from the hand, return them to the deck,
 	// then remove the hand from management, and destroy the hand.
+	@Override
 	public void removePlayerHand(MOB player)
 	{
 		HandOfCards cards=getPlayerHand(player);
@@ -242,11 +247,12 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		hands.removeElement(player);
 		cards.destroy();
 	}
-	
+
 	// addCard(PlayingCard card)
 	// this method adds to the base functionality found
 	// in HandOfCards.java by ensuring that all cards
 	// added to the deck are added face down.
+	@Override
 	public boolean addCard(PlayingCard card)
 	{
 		if(card!=null) card.turnFaceDown();
@@ -259,6 +265,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// and if so, whether this object should modify or cancel
 	// the event before it takes place.
 	// There are two things our deck needs to handle here.
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// In this case, we use the instance of an event to trigger
@@ -267,7 +274,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		// be "in the world" and ready to receive cards.
 		if((!alreadyFilled)&&(owner()!=null))
 			fillInTheDeck();
-		
+
 		// This handler also checks to see if anyone is saying "shuffle"
 		// directly to the deck item.  If so, we cancel the message by
 		// returning false (since it would make them look silly to be
@@ -291,5 +298,5 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 }

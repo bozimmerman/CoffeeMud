@@ -37,7 +37,7 @@ public class CharGen extends StdCommand
 	public CharGen(){}
 
 	private final String[] access={"CHARGEN"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	protected void equipPlayer(MOB M)
 	{
@@ -45,9 +45,9 @@ public class CharGen extends StdCommand
 		CharClass C=M.baseCharStats().getCurrentClass();
 		for(long wornCode : Wearable.CODES.ALL())
 		{
-			if((wornCode == Wearable.IN_INVENTORY) 
+			if((wornCode == Wearable.IN_INVENTORY)
 			|| (wornCode == Wearable.WORN_HELD)
-			|| (wornCode == Wearable.WORN_MOUTH)) 
+			|| (wornCode == Wearable.WORN_MOUTH))
 				 continue;
 			if(wornCode==Wearable.WORN_WIELD)
 			{
@@ -138,8 +138,8 @@ public class CharGen extends StdCommand
 			}
 		}
 	}
-	
-	
+
+
 	protected MOB levelMOBup(int level, CharClass C, boolean player)
 	{
 		MOB mob=CMClass.getFactoryMOB();
@@ -294,7 +294,7 @@ public class CharGen extends StdCommand
 		DVector classSet=new DVector(2);
 		Hashtable failSkillCheck=null;
 	}
-	
+
 	public void combatRun(MOB mob, Vector commands)
 	{
 		CombatStats c=new CombatStats();
@@ -313,7 +313,7 @@ public class CharGen extends StdCommand
 				{"Thief","Thiefness"},
 				{"Fighter","Fighterness"},
 		};
-		
+
 		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			CharClass C=(CharClass)e.nextElement();
@@ -329,7 +329,7 @@ public class CharGen extends StdCommand
 				c.classSet.addElement(C,behav);
 			}
 		}
-		
+
 		// set the parameters
 		boolean classCleared=false;
 		boolean nextLevel=false;
@@ -414,23 +414,23 @@ public class CharGen extends StdCommand
 			if(s.equalsIgnoreCase("FAILCHECK"))
 				c.failSkillCheck=new Hashtable();
 		}
-		
+
 		if(c.skipLevels<=0)
 		{
 			c.skipLevels=1;
 			if((c.levelStart==1)&&(c.levelEnd==91))
 				c.skipLevels=15;
 		}
-		
-		
-			
-		
+
+
+
+
 		c.A=CMClass.getAreaType("StdArea");
 		c.A.setName("UNKNOWNAREA");
 		CMLib.map().addArea(c.A);
 		c.allData=new int[c.classSet.size()][c.levelEnd-c.levelStart+1][17];
 		c.allSkills=new String[c.classSet.size()][c.levelEnd-c.levelStart+1][4];
-		
+
 		final String[] allDataHeader={
 			"BestIterScore",//0
 			"BestHitScore",//1
@@ -453,8 +453,8 @@ public class CharGen extends StdCommand
 			"BestHitSkill",//19
 			"BestSingleHitSkill",//20
 		};
-		
-		
+
+
 		boolean[] aborted = new boolean[1];
 		aborted[0]=false;
 		final java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
@@ -478,7 +478,8 @@ public class CharGen extends StdCommand
 					this.aborted=aborted;
 					this.start();
 				}
-				public void run() 
+				@Override
+				public void run()
 				{
 					MOB mob=c.mob;
 					int[][][] allData = c.allData;
@@ -491,7 +492,7 @@ public class CharGen extends StdCommand
 						mob.tell(C.ID()+": "+level);
 						int roomRobin=0;
 						Room R=null;
-						
+
 						int[] bestSingleHitScore=new int[]{0};
 						String[] bestSingleHitSkill=new String[]{""};
 						int[] bestSingleHitPhys=new int[]{0};
@@ -499,9 +500,9 @@ public class CharGen extends StdCommand
 						String[] bestHitSkill=new String[]{""};
 						int[] bestIterScore=new int[]{Integer.MAX_VALUE};
 						String[] bestIterSkill=new String[]{""};
-						
+
 						int[] losses=new int[]{0};
-						
+
 						XVector<Integer> medScore=new XVector<Integer>();
 						XVector<Integer> medWinIters=new XVector<Integer>();
 						XVector<Integer> medPhysDone=new XVector<Integer>();
@@ -511,7 +512,7 @@ public class CharGen extends StdCommand
 						XVector<Integer> medLossIters=new XVector<Integer>();
 						XVector<Double> medPlayerDamPct = new XVector();
 						XVector<Double> medPlayerManaPct = new XVector();
-						
+
 						int H1=0;
 						int H2=0;
 						boolean playerExampleShown=false;
@@ -529,9 +530,9 @@ public class CharGen extends StdCommand
 							B1.setParms(C.ID());
 							switch(roomRobin)
 							{
-							case 0: R=CMClass.getLocale("Woods"); break; 
-							case 1: R=CMClass.getLocale("CaveRoom"); break; 
-							case 2: R=CMClass.getLocale("CityStreet"); break; 
+							case 0: R=CMClass.getLocale("Woods"); break;
+							case 1: R=CMClass.getLocale("CaveRoom"); break;
+							case 2: R=CMClass.getLocale("CityStreet"); break;
 							}
 							if((++roomRobin)>2) roomRobin=0;
 							if(R!=null)
@@ -542,7 +543,7 @@ public class CharGen extends StdCommand
 								R.recoverPhyStats();
 							}
 							c.A.getTimeObj().setHourOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
-							
+
 							//Session S=(Session)CMClass.getCommon("FakeSession");
 							//S.initializeSession(null,"MEMORY");
 							MOB M1=null;
@@ -608,7 +609,7 @@ public class CharGen extends StdCommand
 							M1.resetToMaxState();
 							playerArmor=CMLib.combat().adjustedArmor(M1);
 							playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);
-							
+
 							MOB M2=CMClass.getFactoryMOB();  // MOB stat
 							Behavior B2=CMClass.getBehavior("CombatAbilities");
 							M2.baseCharStats().setMyRace(humanR);
@@ -635,11 +636,11 @@ public class CharGen extends StdCommand
 							M2.recoverCharStats();
 							M2.recoverPhyStats();
 							M2.resetToMaxState();
-							
+
 							M1.setVictim(M2);
 							M2.setVictim(M1);
-							
-							
+
+
 							if(!playerExampleShown)
 							{
 								playerExampleShown=true;
@@ -654,10 +655,10 @@ public class CharGen extends StdCommand
 								}
 								*/
 							}
-							
+
 							H1=M1.curState().getHitPoints();
 							H2=M2.curState().getHitPoints();
-							
+
 							int iterations=0;
 							int cumScore=0;
 							int hits = 0;
@@ -670,8 +671,8 @@ public class CharGen extends StdCommand
 							String ZEROSKILL2=null;
 							String ALMOSTZEROSKILL=null;
 							int l1=0, l2=0;
-							
-							
+
+
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
 								 &&(M2.getVictim()==M1)
@@ -708,7 +709,7 @@ public class CharGen extends StdCommand
 								{
 									Log.errOut("CharGen",t);
 								}
-								
+
 								int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
 								h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
 								if((h==0)&&((!M1.amDead())&&(!M2.amDead())))
@@ -726,7 +727,7 @@ public class CharGen extends StdCommand
 									else
 									if(zeroCheck==100)
 									{
-										
+
 										Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+iterations+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
 										//Log.errOut("CharGen",S.afkMessage());
 										break;
@@ -841,7 +842,7 @@ public class CharGen extends StdCommand
 							allData[charClassDex][level-levelStart][15]=medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size())))).intValue();
 						if(medPlayerManaPct.size()>0)
 							allData[charClassDex][level-levelStart][16]=medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size())))).intValue();
-						
+
 						allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 						allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
 						allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
@@ -868,7 +869,7 @@ public class CharGen extends StdCommand
 										if(pct>20)
 											fails.append(s+"("+pct+"%) ");
 									}
-									
+
 								}
 								if(fileExp==null)
 									mob.tell(fails.toString());
@@ -955,6 +956,7 @@ public class CharGen extends StdCommand
 		c.A.destroy();
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -971,13 +973,13 @@ public class CharGen extends StdCommand
 				combatRun(mob,commands);
 				return true;
 			}
-			
+
 			if(((String)commands.firstElement()).equalsIgnoreCase("NEW"))
 			{
 				commands.removeElementAt(0);
 				createNewOnly=true;
 			}
-			
+
 			if(((String)commands.firstElement()).equalsIgnoreCase("PLAYER"))
 			{
 				commands.removeElementAt(0);
@@ -1046,9 +1048,9 @@ public class CharGen extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CHARGEN);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CHARGEN);}
+
+
 }

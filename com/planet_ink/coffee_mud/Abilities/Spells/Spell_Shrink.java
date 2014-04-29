@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Shrink extends Spell
 {
-	public String ID() { return "Spell_Shrink"; }
-	public String name(){return "Shrink";}
-	public String displayText(){return "(Shrunk)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_Shrink"; }
+	@Override public String name(){return "Shrink";}
+	@Override public String displayText(){return "(Shrunk)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -75,10 +76,11 @@ public class Spell_Shrink extends Spell
 			}
 		}
 		super.unInvoke();
-		if(recheckMOB!=null) 
+		if(recheckMOB!=null)
 			CMLib.utensils().confirmWearability(recheckMOB);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -89,6 +91,7 @@ public class Spell_Shrink extends Spell
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,baseDex + 5);
 	}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectedStats)
 	{
 		super.affectPhyStats(host,affectedStats);
@@ -97,6 +100,7 @@ public class Spell_Shrink extends Spell
 		affectedStats.setHeight(height);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

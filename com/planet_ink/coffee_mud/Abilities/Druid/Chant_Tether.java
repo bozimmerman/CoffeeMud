@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Tether extends Chant
 {
-	public String ID() { return "Chant_Tether"; }
-	public String name(){ return "Tether";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	public String displayText(){ return "(Tether)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_Tether"; }
+	@Override public String name(){ return "Tether";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public String displayText(){ return "(Tether)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	public Room tetheredTo=null;
 	public Room lastRoom=null;
 
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -72,6 +73,7 @@ public class Chant_Tether extends Chant
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -85,6 +87,7 @@ public class Chant_Tether extends Chant
 			mob.tell("Your tether has left you.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -103,6 +106,7 @@ public class Chant_Tether extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

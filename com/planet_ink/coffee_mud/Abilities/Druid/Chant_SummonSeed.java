@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonSeed extends Chant
 {
-	public String ID() { return "Chant_SummonSeed"; }
-	public String name(){ return "Summon Seeds";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public String ID() { return "Chant_SummonSeed"; }
+	@Override public String name(){ return "Summon Seeds";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
 	public static final Integer[] NON_SEEDS={Integer.valueOf(RawMaterial.RESOURCE_ASH),
 											Integer.valueOf(RawMaterial.RESOURCE_SOAP),
@@ -49,7 +49,8 @@ public class Chant_SummonSeed extends Chant
 											Integer.valueOf(RawMaterial.RESOURCE_BREAD),
 											Integer.valueOf( RawMaterial.RESOURCE_CRACKER),
 	};
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String s=CMParms.combine(commands,0);

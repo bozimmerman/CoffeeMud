@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +45,7 @@ public interface ClanItem extends Item
 	public final static int CI_ANTIPROPAGANDA=11;
 	public final static int CI_SPECIALAPRON=12;
 	public final static int CI_LEGALBADGE=13;
-	
+
 	public final static String[] CI_DESC={
 		"FLAG",
 		"BANNER",
@@ -62,13 +62,13 @@ public interface ClanItem extends Item
 		"SPECIALAPRON",
 		"LEGALBADGE"
 	};
-	
+
 	public String clanID();
 	public void setClanID(String ID);
-	
+
 	public int ciType();
 	public void setCIType(int type);
-	
+
 	public Environmental rightfulOwner();
 	public void setRightfulOwner(Environmental E);
 }

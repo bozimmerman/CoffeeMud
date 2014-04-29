@@ -34,13 +34,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class After extends StdCommand implements Tickable
 {
-	public String name(){return "SysOpSkills";} // for tickables use
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public String name(){return "SysOpSkills";} // for tickables use
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public List<AfterCommand> afterCmds=new Vector<AfterCommand>();
 
 	public After(){}
-	
+
 	private static class AfterCommand
 	{
 		long start=0;
@@ -52,7 +52,8 @@ public class After extends StdCommand implements Tickable
 	}
 
 	private final String[] access={"AFTER"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -118,11 +119,12 @@ public class After extends StdCommand implements Tickable
 		return false;
 	}
 
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AFTER);}
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AFTER);}
 
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(afterCmds.size()==0) return false;

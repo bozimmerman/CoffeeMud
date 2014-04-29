@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,8 @@ public class Password extends StdCommand
 	public Password(){}
 
 	private final String[] access={"PASSWORD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -89,8 +90,8 @@ public class Password extends StdCommand
 		});
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

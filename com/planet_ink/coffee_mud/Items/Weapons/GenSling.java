@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenSling extends StdSling
 {
-	public String ID(){	return "GenSling";}
+	@Override public String ID(){	return "GenSling";}
 	protected String	readableText="";
 	public GenSling()
 	{
@@ -46,16 +46,18 @@ public class GenSling extends StdSling
 		recoverPhyStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";

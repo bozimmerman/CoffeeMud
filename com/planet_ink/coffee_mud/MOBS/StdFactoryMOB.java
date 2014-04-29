@@ -41,8 +41,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdFactoryMOB extends StdMOB
 {
-	public String ID(){return "StdFactoryMOB";}
-	
+	@Override public String ID(){return "StdFactoryMOB";}
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -56,8 +57,9 @@ public class StdFactoryMOB extends StdMOB
 		return new StdFactoryMOB();
 	}
 
+	@Override
 	protected void finalize() throws Throwable
-	{ 
+	{
 		if(!amDestroyed)
 			destroy();
 		amDestroyed=false;
@@ -67,7 +69,8 @@ public class StdFactoryMOB extends StdMOB
 			super.finalize();
 		}
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		try

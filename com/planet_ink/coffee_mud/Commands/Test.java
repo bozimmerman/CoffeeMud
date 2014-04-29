@@ -53,8 +53,8 @@ public class Test extends StdCommand
 	public Test(){}
 
 	private final String[] access={"Test"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public static final String[] spells={"Spell_Blur","Spell_ResistMagicMissiles"};
 	public static String semiSpellList=null;
 	public static String semiSpellList()
@@ -107,15 +107,15 @@ public class Test extends StdCommand
 			return true;
 		return false;
 	}
-	
-	
+
+
 	public void giveAbility(Physical P, Ability A)
 	{
 		Ability A2=((Ability)A.copyOf());
 		A2.setMiscText(A.text());
 		P.addNonUninvokableEffect(A2);
 	}
-	
+
 	public boolean testResistance(MOB mob)
 	{
 		Item I=CMClass.getWeapon("Dagger");
@@ -136,7 +136,7 @@ public class Test extends StdCommand
 		return true;
 	}
 
-	
+
 	public Item[] giveTo(Item I, Ability A, MOB mob1, MOB mob2, int code)
 	{
 		Item[] IS=new Item[2];
@@ -154,9 +154,9 @@ public class Test extends StdCommand
 			if((I1 instanceof Rideable)&&(code==2))
 				mob1.setRiding((Rideable)I1);
 		}
-			
+
 		IS[0]=I1;
-		
+
 		Item I2=(Item)I.copyOf();
 		if(A!=null)
 			giveAbility(I2,A);
@@ -178,7 +178,7 @@ public class Test extends StdCommand
 		mob1.location().recoverRoomStats();
 		return IS;
 	}
-	
+
 	public boolean spellCheck(String[] spells, MOB mob)
 	{
 		for(int i=0;i<spells.length;i++)
@@ -220,7 +220,7 @@ public class Test extends StdCommand
 		mobs[1].baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mobs[1].recoverCharStats();
 		backups[0]=(MOB)mobs[1].copyOf();
-		
+
 		mobs[0].bringToLife(R,true);
 		mobs[1].bringToLife(R,true);
 	}
@@ -247,12 +247,13 @@ public class Test extends StdCommand
 
 		vals[0]=((inte+wis));
 		v[1]= (int)Math.round(CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0));
-		
+
 		vals[0]=str;
 		v[2]= (int)Math.round(CMath.parseMathExpression(stateMovesRecoverFormula, vals, 0.0));
 		return v;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -435,7 +436,7 @@ public class Test extends StdCommand
 				for(int i=0;i<times;i++)
 					mob.basePhyStats().copyInto((PhyStats)newStats);
 				mob.tell("PhyStats CopyInto took :"+(System.currentTimeMillis()-time));
-				
+
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
 					newStats=mob.baseCharStats().copyOf();
@@ -444,7 +445,7 @@ public class Test extends StdCommand
 				for(int i=0;i<times;i++)
 					mob.baseCharStats().copyInto((CharStats)newStats);
 				mob.tell("CharStats CopyInto took :"+(System.currentTimeMillis()-time));
-				
+
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
 					newStats=mob.maxState().copyOf();
@@ -567,7 +568,7 @@ public class Test extends StdCommand
 				mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				I.setRiding((Rideable)M2);
 			}
-			
+
 			Ability A2=null;
 			Item I=null;
 			CMMsg msg=null;
@@ -598,7 +599,7 @@ public class Test extends StdCommand
 				R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 				R.recoverRoomStats();
 				if(spellCheck(spells,mobs[0])){ mob.tell("Error1-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HaveEnabler.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#1-2: "+HaveEnabler.accountForYourself());
@@ -627,7 +628,7 @@ public class Test extends StdCommand
 				R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error2-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HaveSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#2-2: "+HaveSpellCast.accountForYourself());
@@ -641,7 +642,7 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error2-5"); return false;}
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error2-6"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HaveSpellCast.setMiscText(semiSpellList()+"MASK=-Human");
 				mob.tell("Test#2-3: "+HaveSpellCast.accountForYourself());
@@ -669,7 +670,7 @@ public class Test extends StdCommand
 				IS[0].unWear();
 				R.recoverRoomStats();
 				if(spellCheck(spells,mobs[0])){ mob.tell("Error3-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				WearEnabler.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#3-2: "+WearEnabler.accountForYourself());
@@ -695,7 +696,7 @@ public class Test extends StdCommand
 				IS[0].unWear();
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error4-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				WearSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#4-2: "+WearSpellCast.accountForYourself());
@@ -707,7 +708,7 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error4-5"); return false;}
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error4-6"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				WearSpellCast.setMiscText(semiSpellList()+"MASK=-Human");
 				mob.tell("Test#4-3: "+WearSpellCast.accountForYourself());
@@ -733,7 +734,7 @@ public class Test extends StdCommand
 				mobs[0].setRiding(null);
 				R.recoverRoomStats();
 				if(spellCheck(spells,mobs[0])){ mob.tell("Error5-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				RideEnabler.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#5-2: "+RideEnabler.accountForYourself());
@@ -759,7 +760,7 @@ public class Test extends StdCommand
 				mobs[0].setRiding(null);
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error6-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				RideSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#6-2: "+RideSpellCast.accountForYourself());
@@ -771,7 +772,7 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error6-5"); return false;}
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error6-6"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				RideSpellCast.setMiscText(semiSpellList()+"MASK=-Human");
 				mob.tell("Test#6-3: "+RideSpellCast.accountForYourself());
@@ -800,7 +801,7 @@ public class Test extends StdCommand
 				if(!effectCheck(spells,mobs[0])){ mob.tell("Error7-1"); return false;}
 				CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error7-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HereSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#7-2: "+HereSpellCast.accountForYourself());
@@ -816,7 +817,7 @@ public class Test extends StdCommand
 				CMLib.tracking().walk(mobs[1],Directions.DOWN,false,false);
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error7-5"); return false;}
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error7-6"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HereSpellCast.setMiscText(semiSpellList()+"MASK=-Human");
 				mob.tell("Test#7-3: "+HereSpellCast.accountForYourself());
@@ -863,7 +864,7 @@ public class Test extends StdCommand
 				C.execute(mobs[0],new XVector("Put","Food","Sack"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell("Error9-1"); return false;}
 				R.recoverRoomStats();
-				
+
 				reset(mobs,backups,R,IS,R2);
 				UseSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#9-2: "+UseSpellCast.accountForYourself());
@@ -893,7 +894,7 @@ public class Test extends StdCommand
 				C.execute(mobs[0],new XVector("Eat","ALL"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell("Error10-1"); return false;}
 				R.recoverRoomStats();
-				
+
 				reset(mobs,backups,R,IS,R2);
 				UseSpellCast2.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
 				mob.tell("Test#10-2: "+UseSpellCast2.accountForYourself());
@@ -928,45 +929,45 @@ public class Test extends StdCommand
 				List<String> V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
 				if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
 				if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-2"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~",'~',true);
 				if(V.size()!=1){ mob.tell("Error cmparms-3"); return false;}
 				if(!V.get(0).equals("blah")){ mob.tell("Error cmparms-4"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~",'~',false);
 				if(V.size()!=3){ mob.tell("Error cmparms-5"); return false;}
 				if(!CMParms.combineWithX(V, "~", 0).equals("blah~~~")){ mob.tell("Error cmparms-6"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~BLAH~~BLAH!","~~",true);
 				if(V.size()!=3){ mob.tell("Error cmparms-7"); return false;}
 				if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-8"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~~~","~~",true);
 				if(V.size()!=1){ mob.tell("Error cmparms-9"); return false;}
 				if(!V.get(0).equals("blah")){ mob.tell("Error cmparms-10"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~~~","~~",false);
 				if(V.size()!=3){ mob.tell("Error cmparms-11"); return false;}
 				if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~~~~~")){ mob.tell("Error cmparms-12"); return false;}
-				
+
 				V=CMParms.parseSentences("blah. blahblah. poo");
 				if(V.size()!=3){ mob.tell("Error cmparms-13"); return false;}
 				if(!V.get(0).equals("blah.")){ mob.tell("Error cmparms-14:"+V.get(0)); return false;}
 				if(!V.get(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.get(1)); return false;}
 				if(!V.get(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.get(2)); return false;}
-				
+
 				V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',true);
 				if(V.size()!=3){ mob.tell("Error cmparms-17"); return false;}
 				if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-18"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",true);
 				if(V.size()!=3){ mob.tell("Error cmparms-19"); return false;}
 				if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-20"); return false;}
-				
+
 				V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',false);
 				if(V.size()!=4){ mob.tell("Error cmparms-21"); return false;}
 				if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~~")){ mob.tell("Error cmparms-22"); return false;}
-				
+
 				V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",false);
 				if(V.size()!=4){ mob.tell("Error cmparms-23"); return false;}
 				if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~")){ mob.tell("Error cmparms-24"); return false;}
@@ -992,7 +993,7 @@ public class Test extends StdCommand
 				}
 				if(!effectCheck(maliciousspells,mobs[1])){ mob.tell("Error11-3"); return false;}
 				R.recoverRoomStats();
-				
+
 				reset(mobs,backups,R,IS,R2);
 				FightSpellCast.setMiscText(maliciousSemiSpellList()+"MASK=-RACE +Human");
 				mob.tell("Test#11-2: "+FightSpellCast.accountForYourself());
@@ -1009,7 +1010,7 @@ public class Test extends StdCommand
 				}
 				if(effectCheck(maliciousspells,mobs[1])){ mob.tell("Error11-6"); return false;}
 				R.recoverRoomStats();
-				
+
 				reset(mobs,backups,R,IS,R2);
 				FightSpellCast.setMiscText(maliciousSemiSpellList()+"MASK=-RACE +Human");
 				mob.tell("Test#11-3: "+FightSpellCast.accountForYourself());
@@ -1085,7 +1086,7 @@ public class Test extends StdCommand
 				giveAbility(mobs[0],Resistance);
 				R.recoverRoomStats();
 				if(!testResistance(mobs[0])){ mob.tell("Error15-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				Resistance.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
 				mob.tell("Test#15-2: "+Resistance.accountForYourself());
@@ -1113,7 +1114,7 @@ public class Test extends StdCommand
 				R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 				R.recoverRoomStats();
 				if(testResistance(mobs[0])){ mob.tell("Error16-3"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HaveResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
 				mob.tell("Test#16-2: "+HaveResister.accountForYourself());
@@ -1146,7 +1147,7 @@ public class Test extends StdCommand
 				IS[0].unWear();
 				R.recoverRoomStats();
 				if(testResistance(mobs[0])){ mob.tell("Error17-3"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				WearResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
 				mob.tell("Test#17-2: "+WearResister.accountForYourself());
@@ -1177,7 +1178,7 @@ public class Test extends StdCommand
 				mobs[0].setRiding(null);
 				R.recoverRoomStats();
 				if(testResistance(mobs[0])){ mob.tell("Error18-3"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				RideResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
 				mob.tell("Test#18-2: "+RideResister.accountForYourself());
@@ -1209,7 +1210,7 @@ public class Test extends StdCommand
 				R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 				R.recoverRoomStats();
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-3"); return false;}
-				
+
 				HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
 				mob.tell("Test#19-2: "+HaveAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-4"); return false;}
@@ -1241,7 +1242,7 @@ public class Test extends StdCommand
 				IS[0].unWear();
 				R.recoverRoomStats();
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error20-3"); return false;}
-				
+
 				WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
 				mob.tell("Test#20-1: "+WearAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error20-4"); return false;}
@@ -1271,7 +1272,7 @@ public class Test extends StdCommand
 				mobs[0].setRiding(null);
 				R.recoverRoomStats();
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error21-3"); return false;}
-				
+
 				RideAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
 				mob.tell("Test#21-1: "+RideAdjuster.accountForYourself());
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error21-4"); return false;}
@@ -1305,7 +1306,7 @@ public class Test extends StdCommand
 				CMLib.tracking().walk(mobs[0],Directions.DOWN,false,false);
 				R2.recoverRoomStats();
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-2"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
 				mob.tell("Test#22-2: "+HereAdjuster.accountForYourself());
@@ -1323,7 +1324,7 @@ public class Test extends StdCommand
 				R2.recoverRoomStats();
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error22-5"); return false;}
 				if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-6"); return false;}
-				
+
 				reset(mobs,backups,R,IS,R2);
 				HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-Human");
 				mob.tell("Test#22-3: "+HereAdjuster.accountForYourself());
@@ -1350,34 +1351,34 @@ public class Test extends StdCommand
 				Ability reqA=CMClass.getAbility("Prop_ReqAlignments");
 				reqA.setMiscText("NOFOL -EVIL");
 				R2.addNonUninvokableEffect(reqA);
-				
+
 				CMLib.factions().setAlignment(mobs[0],Faction.Align.EVIL);
-				
+
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() == R2)
 				{ mob.tell("Error23-1"); return false;}
-				
+
 				CMLib.factions().setAlignment(mobs[0],Faction.Align.NEUTRAL);
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() != R2)
 				{ mob.tell("Error23-2"); return false;}
-				
+
 				R.bringMobHere(mobs[0],false);
-				
+
 				reqA.setMiscText("NOFOL -ALL +EVIL");
 				CMLib.factions().setAlignment(mobs[0],Faction.Align.NEUTRAL);
-				
+
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() == R2)
 				{ mob.tell("Error23-3"); return false;}
-				
+
 				CMLib.factions().setAlignment(mobs[0],Faction.Align.EVIL);
-				
+
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() != R2)
 				{ mob.tell("Error23-4"); return false;}
-				
-				
+
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqCapacity"))
@@ -1388,73 +1389,73 @@ public class Test extends StdCommand
 				reqA.setMiscText("people=1 weight=100 items=1");
 				R2.addNonUninvokableEffect(reqA);
 				IS=giveTo(CMClass.getWeapon("Sword"),null,mobs[0],mobs[1],0);
-				
+
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() != R2)
 				{ mob.tell("Error24-1"); return false;}
-				
+
 				CMLib.tracking().walk(mobs[1],Directions.UP,false,false);
 				if(mobs[1].location() == R2)
 				{ mob.tell("Error24-2"); return false;}
-				
-				
+
+
 				mobs[0].moveItemTo(IS[0]);
 				mobs[0].moveItemTo(IS[1]);
-				
+
 				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_DROP,null);
 				if(!R2.okMessage(mobs[0], msg))
 				{ mob.tell("Error24-3"); return false;}
 				R2.send(mobs[0], msg);
-				
+
 				msg=CMClass.getMsg(mobs[0],IS[1],null,CMMsg.MSG_DROP,null);
 				if(R2.okMessage(mobs[0], msg))
 				{ mob.tell("Error24-4"); return false;}
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqClasses")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqEntry")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqHeight")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqLevels")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqNoMOB")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqPKill")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqRaces")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqStat")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_ReqTattoo")))
 			{
-				
+
 			}
 			if((what.equalsIgnoreCase("all")||what.equalsIgnoreCase("rtree"))&&(mob.session()!=null))
 			{
@@ -1484,7 +1485,7 @@ public class Test extends StdCommand
 							{
 								return cube;
 							}
-							public String toString() { return "g"+grp+"#"+num; }
+							@Override public String toString() { return "g"+grp+"#"+num; }
 						};
 						origSet.add(obj);
 					}
@@ -1575,7 +1576,7 @@ public class Test extends StdCommand
 						{ mob.tell("Error25-7#"+gnum+"/"+i+":"+tree.count()+"/"+(ct-1)); return false;}
 					}
 				}
-				
+
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{
@@ -1602,7 +1603,7 @@ public class Test extends StdCommand
 					S1.getPreviousCMD().add("Y");
 					S1.getPreviousCMD().add("TESTCLAN");
 					S1.getPreviousCMD().add("Y");
-					
+
 				}
 				finally
 				{
@@ -1626,7 +1627,7 @@ public class Test extends StdCommand
 			mob.tell("Test what?");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
+
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
 }

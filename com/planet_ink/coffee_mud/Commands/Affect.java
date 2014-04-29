@@ -37,23 +37,23 @@ import java.util.concurrent.TimeUnit;
 public class Affect extends StdCommand
 {
 	private final String[] access={"AFFECTS","AFFECT","AFF","AF"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 //	private final static Class[][] internalParameters=new Class[][]{{Physical.class}};
-	
+
 	public String getMOBState(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 		{
-			if(CMSecurity.isASysOp(mob)) 
+			if(CMSecurity.isASysOp(mob))
 				mob.playerStats().setHygiene(0);
 			else
 			{
 				int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-				if(x<=1) msg.append("^!You could use a bath.^?\n\r"); 
+				if(x<=1) msg.append("^!You could use a bath.^?\n\r");
 				else
-				if(x<=3) msg.append("^!You could really use a bath.^?\n\r"); 
+				if(x<=3) msg.append("^!You could really use a bath.^?\n\r");
 				else
 				if(x<=7) msg.append("^!You need to bathe, soon.^?\n\r");
 				else
@@ -88,7 +88,7 @@ public class Affect extends StdCommand
 
 		if(mob.riding()!=null)
 			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
-		
+
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 			msg.append("^!Your playerkill flag is on.^?\n\r");
 
@@ -100,7 +100,7 @@ public class Affect extends StdCommand
 			msg.append("^!You are sneaking.^?\n\r");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 			msg.append("^!You are in QUIET mode.^?\n\r");
-		
+
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 			msg.append("^!You are fatigued.^?\n\r");
 		if(mob.curState().getHunger()<1)
@@ -109,7 +109,7 @@ public class Affect extends StdCommand
 			msg.append("^!You are thirsty.^?\n\r");
 		return msg.toString();
 	}
-	
+
 	public String getAffects(Session S, Physical P, boolean xtra, boolean autosAlso)
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -146,12 +146,12 @@ public class Affect extends StdCommand
 						disps[d]=V.get(d);
 					colnum=NUM_COLS;
 				}
-				for(int d=0;d<disps.length;d++) 
+				for(int d=0;d<disps.length;d++)
 				{
 					disp=disps[d];
 					if(((++colnum)>=NUM_COLS)||(CMStrings.lengthMinusColors(disp)>COL_LEN))
-					{ 
-						msg.append("\n\r"); 
+					{
+						msg.append("\n\r");
 						colnum=0;
 					}
 					msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+CMStrings.removeColors(A.name())+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
@@ -163,6 +163,7 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -196,7 +197,7 @@ public class Affect extends StdCommand
 					}
 					return false;
 				}
-				
+
 			}
 			if(S==mob.session())
 				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
@@ -210,9 +211,10 @@ public class Affect extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
+	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		//if(!super.checkArguments(internalParameters, args)) return Boolean.FALSE.toString();

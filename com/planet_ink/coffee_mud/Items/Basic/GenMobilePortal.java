@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GenMobilePortal extends GenPortal implements Rideable, Exit
 {
-	public String ID(){ return "GenMobilePortal";}
-	
+	@Override public String ID(){ return "GenMobilePortal";}
+
 	protected StdPortal myStationaryPortal=null;
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -101,5 +102,5 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 		}
 		}
 	}
-   
+
 }

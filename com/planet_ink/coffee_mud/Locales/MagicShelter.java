@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class MagicShelter extends StdRoom
 {
-	public String ID(){return "MagicShelter";}
+	@Override public String ID(){return "MagicShelter";}
 	public MagicShelter()
 	{
 		super();
@@ -75,8 +75,9 @@ public class MagicShelter extends StdRoom
 		}
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_MAGIC;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_MAGIC;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

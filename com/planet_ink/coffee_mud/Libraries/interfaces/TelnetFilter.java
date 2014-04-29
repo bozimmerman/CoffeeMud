@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,22 +33,22 @@ import java.util.*;
 public interface TelnetFilter extends CMLibrary
 {
 	public final static String hexStr="0123456789ABCDEF";
-	
-	public enum Pronoun 
+
+	public enum Pronoun
 	{
-		HISHER("-HIS-HER","-h"), 
-		HIMHER("-HIM-HER","-m"), 
-		NAME("-NAME",null), 
-		NAMESELF("-NAMESELF","-s"), 
-		HESHE("-HE-SHE","-e"), 
-		ISARE("-IS-ARE",null), 
-		HASHAVE("-HAS-HAVE",null), 
+		HISHER("-HIS-HER","-h"),
+		HIMHER("-HIM-HER","-m"),
+		NAME("-NAME",null),
+		NAMESELF("-NAMESELF","-s"),
+		HESHE("-HE-SHE","-e"),
+		ISARE("-IS-ARE",null),
+		HASHAVE("-HAS-HAVE",null),
 		YOUPOSS("-YOUPOSS","`s"),
-		HIMHERSELF("-HIM-HERSELF","-ms"), 
-		HISHERSELF("-HIS-HERSELF","-hs"), 
-		SIRMADAM("-SIRMADAM",null), 
-		ISARE2("IS-ARE",null), 
-		NAMENOART("-NAMENOART",null), 
+		HIMHERSELF("-HIM-HERSELF","-ms"),
+		HISHERSELF("-HIS-HERSELF","-hs"),
+		SIRMADAM("-SIRMADAM",null),
+		ISARE2("IS-ARE",null),
+		NAMENOART("-NAMENOART",null),
 		ACCOUNTNAME("-ACCOUNTNAME",null);
 		public final String suffix;
 		public final String emoteSuffix;
@@ -58,7 +58,7 @@ public interface TelnetFilter extends CMLibrary
 			this.emoteSuffix=emoteSuffix;
 		}
 	}
-	
+
 	public Map<String, Pronoun> getTagTable();
 	public String simpleOutFilter(String msg);
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations

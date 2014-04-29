@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_CombatPrecognition extends Spell
 {
-	public String ID() { return "Spell_CombatPrecognition"; }
-	public String name(){return "Combat Precognition";}
-	public String displayText(){return "(Combat Precognition)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int overrideMana(){return 100;}
+	@Override public String ID() { return "Spell_CombatPrecognition"; }
+	@Override public String name(){return "Combat Precognition";}
+	@Override public String displayText(){return "(Combat Precognition)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int overrideMana(){return 100;}
 	boolean lastTime=false;
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -121,7 +122,8 @@ public class Spell_CombatPrecognition extends Spell
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -132,7 +134,8 @@ public class Spell_CombatPrecognition extends Spell
 
 		mob.tell("Your combat precognition fades away.");
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

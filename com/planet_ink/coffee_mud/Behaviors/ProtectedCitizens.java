@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ProtectedCitizens extends ActiveTicker
 {
-	public String ID(){return "ProtectedCitizens";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
+	@Override public String ID(){return "ProtectedCitizens";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
 	protected static MaskingLibrary.CompiledZapperMask citizenZapper=null;
 	protected static MaskingLibrary.CompiledZapperMask helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
@@ -58,11 +58,13 @@ public class ProtectedCitizens extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "whiney citizen";
 	}
-	
+
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -99,7 +101,7 @@ public class ProtectedCitizens extends ActiveTicker
 		helperZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return helperZapper;
 	}
-	
+
 	public String[] getClaims()
 	{
 		if(claims!=null) return claims;
@@ -258,6 +260,7 @@ public class ProtectedCitizens extends ActiveTicker
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

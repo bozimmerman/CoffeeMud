@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,13 +38,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_AstralProjection extends Chant
 {
-	public String ID() { return "Chant_AstralProjection"; }
-	public String name(){return "Astral Projection";}
-	public String displayText(){return "(Astral Projection)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_AstralProjection"; }
+	@Override public String name(){return "Astral Projection";}
+	@Override public String displayText(){return "(Astral Projection)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -70,6 +71,7 @@ public class Chant_AstralProjection extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
@@ -83,6 +85,7 @@ public class Chant_AstralProjection extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -105,6 +108,7 @@ public class Chant_AstralProjection extends Chant
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -117,6 +121,7 @@ public class Chant_AstralProjection extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

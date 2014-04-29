@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanCommonContainer extends StdClanContainer
 {
-	public String ID(){	return "StdClanCommonContainer";}
+	@Override public String ID(){	return "StdClanCommonContainer";}
 	protected int workDown=0;
 	public StdClanCommonContainer()
 	{
@@ -52,6 +52,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

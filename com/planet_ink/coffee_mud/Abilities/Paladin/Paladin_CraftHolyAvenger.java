@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,11 +38,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
-	public String ID() { return "Paladin_CraftHolyAvenger"; }
-	public String name(){ return "Craft Holy Avenger";}
+	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
+	@Override public String name(){ return "Craft Holy Avenger";}
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -58,6 +59,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -79,6 +81,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;

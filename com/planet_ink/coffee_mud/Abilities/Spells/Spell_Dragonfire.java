@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Dragonfire extends Spell
 {
-	public String ID() { return "Spell_Dragonfire"; }
-	public String name(){return "Dragonfire";}
-	public String displayText(){return "(Dragonfire)";}
-	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Spell_Dragonfire"; }
+	@Override public String name(){return "Dragonfire";}
+	@Override public String displayText(){return "(Dragonfire)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_FIREBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -51,7 +52,7 @@ public class Spell_Dragonfire extends Spell
 			mob.tell("There doesn't appear to be anyone here worth burning.");
 			return false;
 		}
-		
+
 		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
 			mob.tell("You can't breathe!");

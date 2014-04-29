@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,15 @@ import java.util.*;
 */
 public class Skill_TwoWeaponFighting extends StdSkill
 {
-	public String ID() { return "Skill_TwoWeaponFighting"; }
-	public String name(){ return "Two Weapon Fighting";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Skill_TwoWeaponFighting"; }
+	@Override public String name(){ return "Two Weapon Fighting";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 
 	protected boolean attackedSinceLastTick=false;
 
@@ -62,6 +62,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		return null;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
@@ -77,7 +78,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -87,6 +89,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		super.executeMsg(host, msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))

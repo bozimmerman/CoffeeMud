@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,25 @@ import java.util.*;
 
 public class Disease_Yawning extends Disease
 {
-	public String ID() { return "Disease_Yawning"; }
-	public String name(){ return "Yawning";}
-	public String displayText(){ return "(Yawning)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Yawning"; }
+	@Override public String name(){ return "Yawning";}
+	@Override public String displayText(){ return "(Yawning)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 30;}
-	protected int DISEASE_DELAY(){return 3;}
-	protected String DISEASE_DONE(){return "You stop yawning.";}
-	protected String DISEASE_START(){return "^G<S-NAME> seem(s) really tired.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
-	protected boolean DISEASE_REQSEE(){return true;}
-	protected boolean DISEASE_MALICIOUS(){return false;}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	public int difficultyLevel(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 30;}
+	@Override protected int DISEASE_DELAY(){return 3;}
+	@Override protected String DISEASE_DONE(){return "You stop yawning.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) really tired.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
+	@Override protected boolean DISEASE_REQSEE(){return true;}
+	@Override protected boolean DISEASE_MALICIOUS(){return false;}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int difficultyLevel(){return 0;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

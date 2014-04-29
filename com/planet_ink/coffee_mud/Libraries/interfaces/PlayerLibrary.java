@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,12 +61,12 @@ public interface PlayerLibrary extends CMLibrary
 	public int bumpPrideStat(final MOB mob, final AccountStats.PrideStat stat, final int amt);
 	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
 	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat);
-	
+
 	public static final String[] CHAR_THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
 	public static final String[] CHAR_THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
-	
+
 	public static final String[] ACCOUNT_THIN_SORT_CODES={ "NAME","LAST","EMAIL","IP","NUMPLAYERS"};
-	
+
 	public static class ThinPlayer
 	{
 		public String name="";
@@ -78,7 +78,7 @@ public interface PlayerLibrary extends CMLibrary
 		public String email="";
 		public String ip="";
 	}
-	
+
 	public static class ThinnerPlayer
 	{
 		public String name="";
@@ -91,14 +91,14 @@ public interface PlayerLibrary extends CMLibrary
 		{
 			return new Tickable()
 			{
-				public int getTickStatus() {return 0;}
-				public String name() { return name;}
-				public boolean tick(Tickable ticking, int tickID) { return false;}
-				public String ID() { return "StdMOB";}
-				public CMObject copyOf() { return this;}
-				public void initializeClass() {}
-				public CMObject newInstance() { return this;}
-				public int compareTo(CMObject o) {return (o==this)?0:-1;}
+				@Override public int getTickStatus() {return 0;}
+				@Override public String name() { return name;}
+				@Override public boolean tick(Tickable ticking, int tickID) { return false;}
+				@Override public String ID() { return "StdMOB";}
+				@Override public CMObject copyOf() { return this;}
+				@Override public void initializeClass() {}
+				@Override public CMObject newInstance() { return this;}
+				@Override public int compareTo(CMObject o) {return (o==this)?0:-1;}
 			};
 		}
 		public boolean matchesPassword(String checkPass)

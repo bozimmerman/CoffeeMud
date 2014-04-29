@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Shatter extends Spell
 {
-	public String ID() { return "Spell_Shatter"; }
-	public String name(){return "Shatter";}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	
+	@Override public String ID() { return "Spell_Shatter"; }
+	@Override public String name(){return "Shatter";}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
 	public Item getItem(MOB mobTarget)
 	{
 		Vector goodPossibilities=new Vector();
@@ -65,6 +65,7 @@ public class Spell_Shatter extends Spell
 		return null;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -78,7 +79,8 @@ public class Spell_Shatter extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);

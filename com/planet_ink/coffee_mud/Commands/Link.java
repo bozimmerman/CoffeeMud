@@ -18,7 +18,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ public class Link extends At
 	public Link(){}
 
 	private final String[] access={"LINK"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-		
+
 		if(commands.size()<3)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is LINK [ROOM ID] [DIRECTION]\n\r");
@@ -83,7 +84,7 @@ public class Link extends At
 		Log.sysOut("Link",mob.Name()+" linked "+CMLib.map().getExtendedRoomID(mob.location())+" to room "+CMLib.map().getExtendedRoomID(thisRoom)+".");
 		return false;
 	}
-	
+
 	protected void exitifyNewPortal(MOB mob, Room room, int direction)
 	{
 		Room opRoom=mob.location().rawDoors()[direction];
@@ -100,7 +101,7 @@ public class Link extends At
 
 		if(opRoom!=null)
 			mob.location().rawDoors()[direction]=null;
-		
+
 		WorldMap.CrossExit CE=null;
 		GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
 		int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
@@ -121,12 +122,12 @@ public class Link extends At
 			CE=WorldMap.CrossExit.make(hereX,hereY,direction,CMLib.map().getExtendedRoomID(room),true);
 			hereGL.addOuterExit(CE);
 		}
-		
+
 		if(thereGL!=null)
 			mob.location().rawDoors()[direction]=thereGL;
 		else
 			mob.location().rawDoors()[direction]=room;
-		
+
 		Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
@@ -145,7 +146,7 @@ public class Link extends At
 			}
 			CE=WorldMap.CrossExit.make(thereX,thereY,direction,CMLib.map().getExtendedRoomID(mob.location()),false);
 			thereGL.addOuterExit(CE);
-			
+
 			if((room.rawDoors()[opDir]==null)
 			||(thereGL==room.rawDoors()[opDir])
 			||(thereGL.isMyGridChild(room.rawDoors()[opDir])))
@@ -210,10 +211,10 @@ public class Link extends At
 			CMLib.database().DBUpdateExits(room);
 	}
 
-	
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS);}
 
-	
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS);}
+
+
 }

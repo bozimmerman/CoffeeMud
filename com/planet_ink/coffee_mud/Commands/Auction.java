@@ -38,29 +38,29 @@ public class Auction extends Channel implements Tickable
 	public Auction(){}
 
 	private final String[] access={"AUCTION"};
-	public String[] getAccessWords(){return access;}
-	public String name(){return "Auction";}
+	@Override public String[] getAccessWords(){return access;}
+	@Override public String name(){return "Auction";}
 	protected final static String MESSAGE_NOAUCTION(){return "There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.";}
 	public String liveAuctionStatus()
-	{ 
+	{
 		if(liveData.auctioningI!=null)
 		{
 			String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
 			if(bidWords.length()==0) bidWords="0";
 			return "Up for live auction: "+liveData.auctioningI.name()+".  The current bid is "+bidWords+".";
 		}
-		return "";	
+		return "";
 	}
 	protected Auctioneer.AuctionData   liveData=new Auctioneer.AuctionData();
-	
+
 	protected static final int STATE_START=0;
 	protected static final int STATE_RUNOUT=1;
 	protected static final int STATE_ONCE=2;
 	protected static final int STATE_TWICE=3;
 	protected static final int STATE_THREE=4;
 	protected static final int STATE_CLOSED=5;
-	
-	public int getTickStatus(){ return Tickable.STATUS_NOT;}
+
+	@Override public int getTickStatus(){ return Tickable.STATUS_NOT;}
 
 	public void setLiveAuctionState(int code)
 	{
@@ -68,6 +68,7 @@ public class Auction extends Channel implements Tickable
 		liveData.tickDown=15000/CMProps.getTickMillis();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_LIVEAUCTION)&&((--liveData.tickDown)<=0))
@@ -158,8 +159,8 @@ public class Auction extends Channel implements Tickable
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean doLiveAuction(MOB mob, Vector commands, Environmental target)
 	{
 		Vector V=new Vector();
@@ -209,7 +210,7 @@ public class Auction extends Channel implements Tickable
 		}
 		return true;
 	}
-	
+
 	public void auctionNotify(MOB M, String resp, String regardingItem)
 	throws java.io.IOException
 	{
@@ -226,8 +227,9 @@ public class Auction extends Channel implements Tickable
 											resp);
 		}
 	}
-	
-	
+
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -250,7 +252,7 @@ public class Auction extends Channel implements Tickable
 			cmd="";
 		else
 			cmd=((String)commands.elementAt(0)).toUpperCase();
-		
+
 		if(cmd.equals("LIST"))
 		{
 			commands.removeElementAt(0);
@@ -283,7 +285,7 @@ public class Auction extends Channel implements Tickable
 			}
 			else
 				V.addElement("0");
-			
+
 			String s=CMParms.combine(commands,0);
 			Environmental E=mob.findItem(null,s);
 			if((E==null)||(E instanceof MOB))
@@ -304,7 +306,7 @@ public class Auction extends Channel implements Tickable
 			Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
 			double deposit=aRates.liveListPrice;
 			String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
-			
+
 			if(deposit>0.0)
 			{
 				if((mob.isMonster())
@@ -408,8 +410,8 @@ public class Auction extends Channel implements Tickable
 		return false;
 	}
 
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

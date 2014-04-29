@@ -42,14 +42,14 @@ import java.util.*;
  */
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
-	public String ID(){return "CMAbleParms";}
+	@Override public String ID(){return "CMAbleParms";}
 
 	protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null;
 
-	protected final static int[] ALL_BUCKET_MATERIAL_CHOICES = new int[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_LEATHER, 
+	protected final static int[] ALL_BUCKET_MATERIAL_CHOICES = new int[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_LEATHER,
 			RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS,RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK };
 	protected final static int[] ALLOWED_BUCKET_ACODES = new int[]{Ability.ACODE_CHANT,Ability.ACODE_SPELL,Ability.ACODE_PRAYER,Ability.ACODE_SONG,Ability.ACODE_SKILL,
-			Ability.ACODE_THIEF_SKILL}; 
+			Ability.ACODE_THIEF_SKILL};
 	protected final static int[] ALLOWED_BUCKET_QUALITIES = new int[]{Ability.QUALITY_BENEFICIAL_OTHERS,Ability.QUALITY_BENEFICIAL_SELF,Ability.QUALITY_INDIFFERENT,
 			Ability.QUALITY_OK_OTHERS,Ability.QUALITY_OK_SELF};
 	protected final static String[] ADJUSTER_TOKENS = new String[]{"+","-","="};
@@ -59,8 +59,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		super();
 	}
-	
 
+
+	@Override
 	public String encodeCodedSpells(Affectable I)
 	{
 		final StringBuilder str=new StringBuilder("");
@@ -71,15 +72,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return A.ID()+";"+A.text();
 			if(str.length()>0) str.append(";");
 			str.append(A.ID());
-			if(A.text().length()>0) 
+			if(A.text().length()>0)
 				str.append(";").append(A.text());
 		}
 		return str.toString();
 	}
 
+	@Override
 	public List<Ability> getCodedSpells(String spells)
 	{
-		Vector<Ability> spellsV=new Vector<Ability>(); 
+		Vector<Ability> spellsV=new Vector<Ability>();
 		if(spells.length()==0) return spellsV;
 		if(spells.startsWith("*"))
 		{
@@ -100,7 +102,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		Ability A=null;
 		for(int v=0;v<V.size();v++)
 		{
-			spells=V.get(v); 
+			spells=V.get(v);
 			A=CMClass.getAbility(spells);
 			if(A==null)
 			{
@@ -124,27 +126,28 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			String layers=misctype.substring(0,colon).toUpperCase().trim();
 			misctype=misctype.substring(colon+1).trim();
 			if((layers.startsWith("MS"))||(layers.startsWith("SM")))
-			{ 
-				layers=layers.substring(2); 
+			{
+				layers=layers.substring(2);
 				layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;
 			}
 			else
 			if(layers.startsWith("M"))
-			{ 
-				layers=layers.substring(1); 
+			{
+				layers=layers.substring(1);
 				layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;
 			}
 			else
 			if(layers.startsWith("S"))
-			{ 
-				layers=layers.substring(1); 
+			{
+				layers=layers.substring(1);
 				layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;
 			}
 			clothingLayers[0]=CMath.s_short(layers);
 		}
 		return misctype;
 	}
-	
+
+	@Override
 	public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation)
 	{
 		if(layers != null)
@@ -153,7 +156,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			layers[0] = 0;
 			wearLocation=parseLayers(layerAtt,layers,wearLocation);
 		}
-		
+
 		double hardnessMultiplier = hardBonus[0];
 		wornLoc[0] = 0;
 		hardBonus[0]=0.0;
@@ -188,16 +191,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
 	}
 
-	public Vector<Object> parseRecipeFormatColumns(String recipeFormat) 
+	public Vector<Object> parseRecipeFormatColumns(String recipeFormat)
 	{
 		char C = '\0';
 		StringBuffer currentColumn = new StringBuffer("");
 		Vector<String> currentColumns = null;
 		char[] recipeFmtC = recipeFormat.toCharArray();
 		Vector<Object> columnsV = new Vector<Object>();
-		for(int c=0;c<=recipeFmtC.length;c++) 
+		for(int c=0;c<=recipeFmtC.length;c++)
 		{
-			if(c==recipeFmtC.length) 
+			if(c==recipeFmtC.length)
 			{
 				break;
 			}
@@ -207,9 +210,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			&&(recipeFmtC[c+1]=='|')
 			&&(currentColumn.length()>0))
 			{
-				if(currentColumn.length()>0) 
+				if(currentColumn.length()>0)
 				{
-					if(currentColumns == null) 
+					if(currentColumns == null)
 					{
 						currentColumns = new Vector<String>();
 						columnsV.addElement(currentColumns);
@@ -252,7 +255,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		if(currentColumn.length()>0)
 		{
-			if(currentColumns == null) 
+			if(currentColumns == null)
 			{
 				currentColumns = new Vector<String>();
 				columnsV.addElement(currentColumns);
@@ -264,13 +267,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return columnsV;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
 	{
 		Vector<Object> columns = parseRecipeFormatColumns(C.parametersFormat());
 		Map<String,AbilityParmEditor> editors = this.getEditors();
 		StringBuilder recipe = new StringBuilder("");
-		for(int d=0;d<columns.size();d++) 
+		for(int d=0;d<columns.size();d++)
 		{
 			if(columns.get(d) instanceof String)
 			{
@@ -294,7 +298,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				for(int c=0;c<colV.size();c++)
 				{
 					AbilityParmEditor A = editors.get(colV.get(c));
-					if(A==null) 
+					if(A==null)
 						throw new CMException("Column name "+(colV.get(c))+" is not found.");
 					if((applicableA==null)
 							||(A.appliesToClass(I) > applicableA.appliesToClass(I)))
@@ -313,12 +317,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		return recipe.toString();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected static int getClassFieldIndex(DVector dataRow)
 	{
 		for(int d=0;d<dataRow.size();d++)
-			if(dataRow.elementAt(d,1) instanceof List) 
+			if(dataRow.elementAt(d,1) instanceof List)
 			{
 				List<String> V=(List<String>)dataRow.elementAt(d,1);
 				if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK"))
@@ -341,7 +345,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		String classID = null;
 		int fieldIndex = getClassFieldIndex(dataRow);
 		for(int d=0;d<dataRow.size();d++)
-			if((dataRow.elementAt(d,1) instanceof List) 
+			if((dataRow.elementAt(d,1) instanceof List)
 			&&(!classIDRequired)
 			&&(((List<String>)dataRow.elementAt(d,1)).size()>1))
 				classIDRequired=true;
@@ -378,7 +382,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					str.delete(0,div.length());
 					return data.toString();
-				} 
+				}
 				else
 					if(str.charAt(d)!=div.charAt(d))
 						break;
@@ -405,7 +409,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		DVector dataRow = new DVector(2);
 		List<String> currCol = null;
 		String lastDiv = null;
-		
+
 		int lastLen = str.length();
 		while(str.length() > 0)
 		{
@@ -437,8 +441,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						data = "";
 					dataRow.addElement(currCol,data);
 					currCol = null;
-				} 
-				else 
+				}
+				else
 				{
 					String data = stripData(str,lastDiv);
 					if(data == null)
@@ -462,7 +466,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		Item classModelI = getSampleItem(dataRow);
 		return fixDataColumn(dataRow,rowShow,classModelI);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
 	{
@@ -471,8 +475,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
 			return false;
-		} 
-		for(int d=0;d<dataRow.size();d++) 
+		}
+		for(int d=0;d<dataRow.size();d++)
 		{
 			List<String> colV=(List<String>)dataRow.elementAt(d,1);
 			if(colV.size()==1)
@@ -488,7 +492,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				for(int c=0;c<colV.size();c++)
 				{
 					AbilityParmEditor A = editors.get(colV.get(c));
-					if(A==null) 
+					if(A==null)
 						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
 					if((applicableA==null)
 							||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
@@ -514,7 +518,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected void fixDataColumns(Vector<DVector> rowsV) throws CMException
 	{
 		DVector dataRow = new DVector(2);
-		for(int r=0;r<rowsV.size();r++) 
+		for(int r=0;r<rowsV.size();r++)
 		{
 			dataRow=rowsV.elementAt(r);
 			if(!fixDataColumn(dataRow,r))
@@ -535,11 +539,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return str;
 	}
 
+	@Override
 	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException
 	{
 		testRecipeParsing(recipesString,recipeFormat,null);
 	}
-	
+
+	@Override
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
 	{
 		StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS).text();
@@ -549,12 +555,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		catch(CMException e)
 		{
-			
+
 			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
 			return;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
 	{
@@ -581,7 +587,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				AbilityParmEditor A = editors.get(editRow.elementAt(a,1));
 				try
-				{ 
+				{
 					String oldVal = (String)editRow.elementAt(a,2);
 					fakeSession.getPreviousCMD().clear();
 					fakeSession.getPreviousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
@@ -630,7 +636,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		for(int l=0;l<lengths.length;l++)
 			currLenTotal+=lengths[l];
 		int curCol = 0;
-		while((currLenTotal+lengths.length)>72) 
+		while((currLenTotal+lengths.length)>72)
 		{
 			if(lengths[curCol]>1)
 			{
@@ -641,7 +647,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(curCol >= lengths.length)
 				curCol = 0;
 		}
-		while((currLenTotal+lengths.length)<72) 
+		while((currLenTotal+lengths.length)<72)
 		{
 			lengths[curCol]++;
 			currLenTotal++;
@@ -651,12 +657,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	@Override
 	public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat)
 	{
 		AbilityRecipeDataImpl recipe = new AbilityRecipeDataImpl(recipeFilename, recipeFormat);
 		return recipe;
 	}
 
+	@Override
 	public StringBuffer getRecipeList(ItemCraftor iA)
 	{
 		AbilityRecipeData recipe = parseRecipe(iA.parametersFile(),iA.parametersFormat());
@@ -673,7 +681,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		for(int l=0;l<recipe.columnLengths().length;l++)
 			list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
 		list.append("\n\r");
-		for(int r=0;r<recipe.dataRows().size();r++) 
+		for(int r=0;r<recipe.dataRows().size();r++)
 		{
 			dataRow=recipe.dataRows().elementAt(r);
 			list.append(CMStrings.padRight(""+(r+1),3)+" ");
@@ -684,6 +692,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return list;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
 	{
@@ -733,7 +742,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			else
 				break;
-			if(editRow != null) 
+			if(editRow != null)
 			{
 				int showFlag=-1;
 				if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -775,6 +784,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	@Override
 	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveToVFS)
 	{
 		StringBuffer saveBuf = new StringBuffer("");
@@ -811,7 +821,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			Resources.removeMultiLists(recipeFilename);
 		}
 	}
-	
+
 	protected static int getAppropriateResourceBucket(final Item I, final Object A)
 	{
 		final int myMaterial = ((I.material() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL) ? RawMaterial.MATERIAL_METAL : (I.material() & RawMaterial.MATERIAL_MASK);
@@ -821,16 +831,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			switch(((Ability)A).abilityCode() & Ability.ALL_ACODES)
 			{
-				case Ability.ACODE_CHANT: 
+				case Ability.ACODE_CHANT:
 					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_ROCK}, myMaterial );
-				case Ability.ACODE_SPELL: 
+				case Ability.ACODE_SPELL:
 					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_WOODEN, RawMaterial.MATERIAL_PRECIOUS}, myMaterial );
-				case Ability.ACODE_PRAYER: 
+				case Ability.ACODE_PRAYER:
 					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_METAL, RawMaterial.MATERIAL_ROCK}, myMaterial );
-				case Ability.ACODE_SONG: 
+				case Ability.ACODE_SONG:
 					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_LIQUID, RawMaterial.MATERIAL_WOODEN}, myMaterial );
 				case Ability.ACODE_THIEF_SKILL:
-				case Ability.ACODE_SKILL: 
+				case Ability.ACODE_SKILL:
 					return CMLib.dice().pick( new int[]{RawMaterial.MATERIAL_CLOTH, RawMaterial.MATERIAL_METAL}, myMaterial );
 				case Ability.ACODE_PROPERTY:
 					if(A instanceof TriggeredAffect)
@@ -855,7 +865,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		return false;
 	}
-	
+
 	protected static void addExtraMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Object A, double weight)
 	{
 		int times = 1;
@@ -868,8 +878,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(myBucket != RawMaterial.RESOURCE_NOTHING)
 		{
 			final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(myBucket);
-			Integer resourceCode = (bucket.size()==0) 
-					? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) 
+			Integer resourceCode = (bucket.size()==0)
+					? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() ))
 					: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;
 			for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
 			{
@@ -894,7 +904,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 		}
 	}
-	
+
 	protected static void addExtraAbilityMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Ability A)
 	{
 		double level = CMLib.ableMapper().lowestQualifyingLevel( A.ID() );
@@ -968,19 +978,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		return extraMatsM;
 	}
-	
+
+	@Override
 	public synchronized Map<String,AbilityParmEditor> getEditors()
 	{
 		if(DEFAULT_EDITORS != null)
 			return DEFAULT_EDITORS;
-		
+
 		Vector<AbilityParmEditorImpl> V=new XVector<AbilityParmEditorImpl>(new AbilityParmEditorImpl[] {
 				new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(CMClass.abilities());}
-					public String defaultValue(){ return "Spell_ID";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public void createChoices() { createChoices(CMClass.abilities());}
+					@Override public String defaultValue(){ return "Spell_ID";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Potion)
 							return ((Potion)I).getSpellList();
 						else
@@ -991,23 +1003,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
-					public String defaultValue(){ return "IRON";}
+					@Override public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
+					@Override public String defaultValue(){ return "IRON";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						return RawMaterial.CODES.NAME(I.material());
 					}
 				},
 				new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "Item Name";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "Item Name";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						String oldName=I.Name();
 						if(I.material()==RawMaterial.RESOURCE_GLASS)
 							return CMLib.english().cleanArticles(oldName);
-						
+
 						String newName=oldName;
 						List<String> V=CMParms.parseSpaces( oldName,true);
 						for(int i=0;i<V.size();i++)
@@ -1058,13 +1072,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return newName;
 					}
-				}, 
+				},
 				new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "1";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "1";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if((I instanceof Weapon)||(I instanceof Armor))
 						{
 							int timsLevel = CMLib.itemBuilder().timsLevelCalculator(I);
@@ -1076,27 +1091,30 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "20";}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "20";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						return ""+(10 + (I.basePhyStats().level()/2));
 					}
 				},
 				new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public boolean confirmValue(String oldVal) { return true;}
-					public String defaultValue(){ return "10";}
+					@Override public void createChoices() {}
+					@Override public boolean confirmValue(String oldVal) { return true;}
+					@Override public String defaultValue(){ return "10";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						return ""+Math.round(CMath.mul(I.basePhyStats().weight(),(A!=null)?A.getItemWeightMultiplier(false):1.0));
 					}
 				},
 				new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() {}
-					public boolean confirmValue(String oldVal) { return true;}
+					@Override public void createChoices() {}
+					@Override public boolean confirmValue(String oldVal) { return true;}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
@@ -1137,8 +1155,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						int amt=(int)Math.round(CMath.mul(I.basePhyStats().weight()-1,(A!=null)?A.getItemWeightMultiplier(false):1.0));
 						if(amt<1) amt=1;
 						Map<Integer,int[]> extraMatsM = CMAbleParms.extraMaterial( I );
@@ -1168,10 +1187,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return CMLib.ableMapper().getAbilityComponentCodedString(comps);
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
-						if(value.endsWith("$")) 
+						if(value.endsWith("$"))
 							value = value.substring(0,oldVal.length()-1);
 						value = value.trim();
 						String curWhich=httpReq.getUrlParameter(fieldName+"_WHICH");
@@ -1182,7 +1202,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						else if(CMLib.ableMapper().getAbilityComponentMap().containsKey(value.toUpperCase().trim())) type=1;
 						else if(value.startsWith("(")) type=2;
 						else type=0;
-						
+
 						List<AbilityComponent> comps=null;
 						if(type==2)
 						{
@@ -1192,7 +1212,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							comps=H.get("ID");
 						}
 						if(comps==null) comps=new ArrayList<AbilityComponent>(1);
-							
+
 						StringBuffer str = new StringBuffer("<FONT SIZE=-1>");
 						str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==0?"CHECKED ":"")+"VALUE=\"AMOUNT\">");
 						str.append("\n\rAmount: <INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(type!=0?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
@@ -1262,7 +1282,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									for(RawMaterial.Material m : M)
 									{
 										str.append("<OPTION VALUE="+m.mask());
-										if((type==2)&&(comp!=null)&&(m.mask()==comp.getLongType())) 
+										if((type==2)&&(comp!=null)&&(m.mask()==comp.getLongType()))
 											str.append(" SELECTED");
 										str.append(">"+m.noun());
 									}
@@ -1283,7 +1303,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									for(Pair<String,Integer> p : L)
 									{
 										str.append("<OPTION VALUE="+p.second);
-										if((type==2)&&(comp!=null)&&(p.second.longValue()==comp.getLongType())) 
+										if((type==2)&&(comp!=null)&&(p.second.longValue()==comp.getLongType()))
 											str.append(" SELECTED");
 										str.append(">"+p.first);
 									}
@@ -1294,13 +1314,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							for(AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
 							{
 								str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
-								if((type==2)&&(comp!=null)&&(conn==comp.getLocation())) 
+								if((type==2)&&(comp!=null)&&(conn==comp.getLocation()))
 									str.append("SELECTED ");
 								str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 							}
 							str.append("</SELECT>");
 							str.append("\n\rConsumed:<INPUT TYPE=CHECKBOX NAME="+fieldName+"_CUST_CON_"+(i+1)+" "+((type!=2)||(comp==null)||(!comp.isConsumed())?"":"CHECKED")+"  ONCLICK=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
-							if(i<comps.size()) 
+							if(i<comps.size())
 								str.append("\n\r<BR>\n\r");
 							else
 								str.append("\n\r<a href=\"javascript:ReShow();\">&lt;*&gt;</a>\n\r");
@@ -1309,7 +1329,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("</FONT>");
 						return str.toString();
 					}
-					public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+					@Override public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						++showNumber[0];
@@ -1321,7 +1342,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								+"\n\rCustom Component: ([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK]) && ...";
 							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,help).trim();
 							if(str.equals(oldVal)) return oldVal;
-							if(CMath.isInteger(str)) 
+							if(CMath.isInteger(str))
 								return Integer.toString(CMath.s_int(str));
 							if(CMLib.ableMapper().getAbilityComponentMap().containsKey(str.toUpperCase().trim()))
 								return str.toUpperCase().trim();
@@ -1335,31 +1356,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return str;
 					}
-					public String defaultValue(){ return "1";}
+					@Override public String defaultValue(){ return "1";}
 				},
 				new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public boolean confirmValue(String oldVal) { return true;}
-					public String defaultValue(){ return "";}
+					@Override public void createChoices() {}
+					@Override public boolean confirmValue(String oldVal) { return true;}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						return "";
 					}
 				},
 				new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "5";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "5";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return ""+I.baseGoldValue();
 					}
 				},
 				new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES)
 				{
-					public void createChoices() 
-					{ 
+					@Override
+					public void createChoices()
+					{
 						Vector<Item> V  = new Vector<Item>();
 						V.addAll(new XVector<ClanItem>(CMClass.clanItems()));
 						V.addAll(new XVector<Armor>(CMClass.armor()));
@@ -1377,22 +1401,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						createChoices(V2);
 					}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I.isGeneric()) return I.ID();
 						if(I instanceof Weapon) return "GenWeapon";
 						if(I instanceof Armor) return "GenArmor";
 						if(I instanceof Rideable) return "GenRideable";
 						return "GenItem";
 					}
-					public String defaultValue(){ return "GenItem";}
+					@Override public String defaultValue(){ return "GenItem";}
 				},
 				new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL)
 				{
-					public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
-					public void createChoices() {}
-					public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
-					public String defaultValue(){ return "NECK";}
+					@Override public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
+					@Override public void createChoices() {}
+					@Override public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
+					@Override public String defaultValue(){ return "NECK";}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						short[] layerAtt = new short[1];
@@ -1421,6 +1447,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						String value = webValue(httpReq,parms,oldVal,fieldName);
@@ -1451,7 +1478,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_MULTIWEAR value=\"on\" "+(multiWear?"CHECKED":"")+">Is multi-wear.");
 						return str.toString();
 					}
-					
+
 					public String reconvert(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus)
 					{
 						StringBuffer newVal = new StringBuffer("");
@@ -1478,8 +1505,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return newVal.toString();
 					}
-					public String convertFromItem(final ItemCraftor C, final Item I) 
-					{ 
+					@Override
+					public String convertFromItem(final ItemCraftor C, final Item I)
+					{
 						if(!(I instanceof Armor)) return "HELD";
 						Armor A=(Armor)I;
 						final boolean[] logicalAnd=new boolean[]{I.rawLogicalAnd()};
@@ -1489,6 +1517,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final short[] layers=new short[]{A.getClothingLayer()};
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
+					@Override
 					public String[] fakeUserInput(String oldVal)
 					{
 						Vector<String> V = new Vector<String>();
@@ -1517,8 +1546,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								V.addElement(""+(i+2));
 							}
 						V.addElement("0");
-						return CMParms.toStringArray(V); 
+						return CMParms.toStringArray(V);
 					}
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						short[] layerAtt = new short[1];
@@ -1534,11 +1564,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "20";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "20";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Container)
 							return ""+((Container)I).capacity();
 						return "0";
@@ -1546,20 +1577,22 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "1";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "1";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return ""+I.basePhyStats().armor();
 					}
 				},
 				new AbilityParmEditorImpl("CONTAINER_TYPE","Con.",PARMTYPE_MULTICHOICES)
 				{
-					public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
-					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-					public String defaultValue(){ return "0";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
+					@Override public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+					@Override public String defaultValue(){ return "0";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1576,15 +1609,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",PARMTYPE_MULTICHOICES)
 				{
-					public void createChoices() { 
+					@Override
+					public void createChoices() {
 						createBinaryChoices(Container.CONTAIN_DESCS);
 						choices().addElement("LID","Lid");
 						choices().addElement("LOCK","Lock");
 						choices().addElement("","");
 					}
-					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1603,7 +1638,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() {}
+					@Override public void createChoices() {}
+					@Override
 					public boolean confirmValue(String oldVal)
 					{
 						if(oldVal.length()==0) return true;
@@ -1612,15 +1648,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						int x=oldVal.indexOf('(');
 						int y=oldVal.indexOf(';');
 						if((x<y)&&(x>0)) y=x;
-						if(y<0) 
+						if(y<0)
 							return CMClass.getAbility(oldVal)!=null;
 						return CMClass.getAbility(oldVal.substring(0,y))!=null;
 					}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return CMLib.ableParms().encodeCodedSpells(I);
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
 					public String rebuild(List<Ability> spells) throws CMException
 					{
 						StringBuffer newVal = new StringBuffer("");
@@ -1643,7 +1680,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 						return newVal.toString();
 					}
-					public String[] fakeUserInput(String oldVal) 
+					@Override
+					public String[] fakeUserInput(String oldVal)
 					{
 						Vector<String> V = new Vector<String>();
 						Vector<String> V2 = new Vector<String>();
@@ -1658,7 +1696,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addElement("");
 						return CMParms.toStringArray(V);
 					}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) 
+					@Override
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						List<Ability> spells=null;
 						if(httpReq.isUrlParameter(fieldName+"_AFFECT1"))
@@ -1692,6 +1731,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return oldVal;
 						}
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
@@ -1728,6 +1768,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("</TABLE>");
 						return str.toString();
 					}
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
@@ -1744,7 +1785,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							StringBuffer sameCheck = new StringBuffer("");
 							for(int s=0;s<spells.size();s++)
 								sameCheck.append(spells.get(s).ID()).append(';').append(spells.get(s).text()).append(';');
-							if(sameCheck.toString().equals(rawCheck.toString())) 
+							if(sameCheck.toString().equals(rawCheck.toString()))
 								return oldVal;
 							try
 							{
@@ -1762,11 +1803,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "1";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "1";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Weapon)
 							return ""+((Weapon)I).basePhyStats().damage();
 						return "0";
@@ -1774,10 +1816,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-					public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+					@Override public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Container))
 							return "";
@@ -1789,11 +1832,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
-					public void createChoices() { createChoices(new String[]{"","STATUE"});}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
+					@Override public void createChoices() { createChoices(new String[]{"","STATUE"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Weapon) return "";
 						if(I instanceof Armor) return "";
 						if(I instanceof Ammunition) return "";
@@ -1807,10 +1851,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
-					public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
+					@Override public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Rideable)) return "";
 						switch(((Rideable)I).rideBasis())
@@ -1826,10 +1871,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "25";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "25";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Drink)) return "";
 						return ""+((Drink)I).liquidHeld();
@@ -1837,11 +1883,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
-					public String defaultValue(){ return "BLUNT";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+					@Override public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
+					@Override public String defaultValue(){ return "BLUNT";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Weapon)
 							return Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()];
 						return "0";
@@ -1849,10 +1896,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
-					public void createChoices() { createChoices(new String[]{"","SMOKE"});}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
+					@Override public void createChoices() { createChoices(new String[]{"","SMOKE"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof Light)) return "";
 						if((I instanceof Container)
@@ -1864,11 +1912,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "1";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "1";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Weapon)
 							return ((Weapon)I).rawLogicalAnd()?"2":"1";
 						return "";
@@ -1876,10 +1925,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
-					public void createChoices() {}
-					public String defaultValue(){ return "10";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "10";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Light)
 							return ""+((Light)I).getDuration();
@@ -1888,10 +1938,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
-					public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
-					public String defaultValue(){ return "1";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
+					@Override public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
+					@Override public String defaultValue(){ return "1";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof ClanItem)
 							return ""+((ClanItem)I).ciType();
@@ -1900,8 +1951,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "100";}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "100";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof ClanItem)) return "100";
@@ -1916,9 +1968,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
-					public void createChoices() { createChoices(new String[]{"","AREA"});}
-					public String defaultValue(){ return "";}
+					@Override public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
+					@Override public void createChoices() { createChoices(new String[]{"","AREA"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return (I.getClass().getName().toString().indexOf("LawBook")>0)?"AREA":"";
@@ -1926,9 +1979,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(CMLib.flags().isReadable(I))
 							return I.readableText();
@@ -1937,7 +1991,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof ClanItem)?5:-1;}
+					@Override public int appliesToClass(Object o) { return (o instanceof ClanItem)?5:-1;}
+					@Override
 					public void createChoices()
 					{
 						Vector<Object> V  = new Vector<Object>();
@@ -1951,7 +2006,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addElement("");
 						createChoices(V);
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I.getClass().getName().toString().indexOf("LawBook")>0)
@@ -1963,8 +2019,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("FOOD_DRINK","ETyp",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
-					public String defaultValue(){ return "";}
+					@Override public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						final String str=(I.name()+" "+I.displayText()+" "+I.description()).toUpperCase();
@@ -1981,9 +2038,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
-					public String defaultValue(){ return "";}
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Perfume)
@@ -1993,8 +2051,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resc/Itm",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() {}
-					public boolean confirmValue(String oldVal) { return true;}
+					@Override public void createChoices() {}
+					@Override public boolean confirmValue(String oldVal) { return true;}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
@@ -2006,14 +2065,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return "";
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
-						if(value.endsWith("$")) 
+						if(value.endsWith("$"))
 							value = value.substring(0,oldVal.length()-1);
 						value = value.trim();
 						StringBuffer str = new StringBuffer("");
@@ -2040,7 +2101,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("\n\r<INPUT TYPE=TEXT NAME="+fieldName+"_WORD VALUE=\""+(rsc?"":value)+"\">");
 						return str.toString();
 					}
-					public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+					@Override public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						++showNumber[0];
@@ -2063,11 +2125,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return str;
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
 				},
 				new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() {}
+					@Override public void createChoices() {}
+					@Override
 					public boolean confirmValue(String oldVal)
 					{
 						if(oldVal.trim().length()==0)
@@ -2078,16 +2141,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return true;
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return "";
 					}
+					@Override
 					public String[] fakeUserInput(String oldVal)
 					{
 						if(oldVal.endsWith("$"))
-							return new String[]{oldVal.substring(0,oldVal.length()-1)}; 
-						return new String[]{oldVal}; 
+							return new String[]{oldVal.substring(0,oldVal.length()-1)};
+						return new String[]{oldVal};
 					}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
@@ -2097,18 +2163,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(r>=0) return RawMaterial.CODES.NAME(r);
 						return (value.trim().length()==0)?"":(value+"$");
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						return A.webField(httpReq,parms,oldVal,fieldName);
 					}
+					@Override
 					public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal)
 					{
 						if(oldVal.endsWith("$"))
 							return oldVal.substring(0,oldVal.length()-1);
 						return oldVal;
 					}
-					
+
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						++showNumber[0];
@@ -2137,13 +2206,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return str;
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
 				},
 				new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
-					public String defaultValue(){ return "arrows";}
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
+					@Override public String defaultValue(){ return "arrows";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Ammunition)
@@ -2153,9 +2223,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
-					public String defaultValue(){ return "1";}
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
+					@Override public String defaultValue(){ return "1";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Ammunition)
@@ -2165,11 +2236,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) 
-				{ 
-					public int appliesToClass(Object o) { return ((o instanceof Weapon)&&(!(o instanceof Ammunition)))?2:-1;}
-					public void createChoices() {} 
-					public String defaultValue(){ return "5";}
+				new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER)
+				{
+					@Override public int appliesToClass(Object o) { return ((o instanceof Weapon)&&(!(o instanceof Ammunition)))?2:-1;}
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "5";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if((I instanceof Ammunition)||(I instanceof Weapon))
@@ -2179,6 +2251,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES)
 				{
+					@Override
 					public void createChoices()
 					{
 						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
@@ -2188,6 +2261,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addAll(V2);
 						createChoices(V);
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(CMStrings.containsWordIgnoreCase(I.Name(),"rice"))
@@ -2196,10 +2270,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return "WOOD";
 						return RawMaterial.CODES.NAME(I.material());
 					}
-					public String defaultValue(){ return "IRON";}
+					@Override public String defaultValue(){ return "IRON";}
 				},
 				new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES)
 				{
+					@Override
 					public void createChoices()
 					{
 						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
@@ -2210,18 +2285,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addElement("");
 						createChoices(V);
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						return "";
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
 				},
 				new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "Herb Name";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "Herb Name";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I.material()==RawMaterial.RESOURCE_HERBS)
 							return CMStrings.lastWordIn(I.Name());
 						return "";
@@ -2229,11 +2306,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
-					public String defaultValue(){ return "2";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
-					{ 
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
+					@Override public String defaultValue(){ return "2";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
+					{
 						if(I instanceof Rideable)
 							return ""+((Rideable)I).riderCapacity();
 						return "0";
@@ -2241,9 +2319,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
-					public String defaultValue(){ return "METAL";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
+					@Override public String defaultValue(){ return "METAL";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						switch(I.material()&RawMaterial.MATERIAL_MASK)
 						{
@@ -2258,17 +2337,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() { 
+					@Override
+					public void createChoices() {
 						createChoices(CMClass.races());
 						choices().addElement("","");
 						for(int x=0;x<choices().size();x++)
 							choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						return ""; // absolutely no way to determine
 					}
-					public String defaultValue(){ return "";}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public boolean confirmValue(String oldVal)
 					{
 						if(oldVal.trim().length()==0)
@@ -2279,6 +2361,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								return false;
 						return true;
 					}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						Vector<String> raceIDs=null;
@@ -2293,6 +2376,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							raceIDs = CMParms.parse(oldVal.toUpperCase().trim());
 						return CMParms.combine(raceIDs,0);
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						Vector<String> raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
@@ -2307,7 +2391,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("</SELECT>");
 						return str.toString();
 					}
-					public String[] fakeUserInput(String oldVal) { 
+					@Override
+					public String[] fakeUserInput(String oldVal) {
 						Vector<String> parsedVals = CMParms.parse(oldVal.toUpperCase());
 						if(parsedVals.size()==0)
 							return new String[]{""};
@@ -2325,7 +2410,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						races.addElement("");
 						return CMParms.toStringArray(races);
 					}
-					
+
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						if((showFlag>0)&&(showFlag!=showNumber[0])) return oldVal;
@@ -2374,10 +2460,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
-					public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
-					public String defaultValue(){ return "DRUMS";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
+					@Override public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
+					@Override public String defaultValue(){ return "DRUMS";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof MusicalInstrument)
 							return MusicalInstrument.TYPE_DESC[((MusicalInstrument)I).instrumentType()];
@@ -2386,8 +2473,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(new String[]{"","STONE"});}
-					public String defaultValue(){ return "";}
+					@Override public void createChoices() { createChoices(new String[]{"","STONE"});}
+					@Override public String defaultValue(){ return "";}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I.material()==RawMaterial.RESOURCE_STONE)
@@ -2397,15 +2485,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "New Post";}
-					public String convertFromItem(final ItemCraftor A, final Item I) { return ""; }
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "New Post";}
+					@Override public String convertFromItem(final ItemCraftor A, final Item I) { return ""; }
 				},
 				new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public String defaultValue(){ return "<S-NAME> is standing here.";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() {}
+					@Override public String defaultValue(){ return "<S-NAME> is standing here.";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(!(I instanceof DeadBody)) return "";
 						String pose=I.displayText();
@@ -2421,9 +2510,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES)
 				{
-					public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
-					public String defaultValue(){ return "WOOD";}
-					public String convertFromItem(final ItemCraftor A, final Item I) 
+					@Override public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
+					@Override public String defaultValue(){ return "WOOD";}
+					@Override
+					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						switch(I.material()&RawMaterial.MATERIAL_MASK)
 						{
@@ -2437,43 +2527,47 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES)
 				{
-					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
-					public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
-					public String defaultValue(){ return "BASHING";}
+					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+					@Override public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
+					@Override public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
+					@Override public String defaultValue(){ return "BASHING";}
 				},
 				new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-					public String convertFromItem(final ItemCraftor A, final Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
-					public String defaultValue(){ return "0";}
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+					@Override public String convertFromItem(final ItemCraftor A, final Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
+					@Override public String defaultValue(){ return "0";}
 				},
 				new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING)
 				{
-					public void createChoices() {}
-					public int appliesToClass(Object o) { return -1;}
-					public String defaultValue(){ return "";}
-					public String convertFromItem(final ItemCraftor A, final Item I){ return ""; }
-					public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
+					@Override public void createChoices() {}
+					@Override public int appliesToClass(Object o) { return -1;}
+					@Override public String defaultValue(){ return "";}
+					@Override public String convertFromItem(final ItemCraftor A, final Item I){ return ""; }
+					@Override public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{ return "";}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) { return ""; }
+					@Override public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) { return ""; }
 				},
 				new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL)
 				{
-					public void createChoices() { 
-						createChoices(RawMaterial.CODES.NAMES()); 
+					@Override
+					public void createChoices() {
+						createChoices(RawMaterial.CODES.NAMES());
 						choices().addElement("","");
 					}
+					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
-					{ 
+					{
 						int amt=(int)Math.round(CMath.mul(I.basePhyStats().weight()-1,(A!=null)?A.getItemWeightMultiplier(false):1.0));
 						if(amt<1) amt=1;
 						return RawMaterial.CODES.NAME(I.material())+"/"+amt;
 					}
-					public String defaultValue(){ return "";}
-					public int appliesToClass(Object o) { return 0;}
+					@Override public String defaultValue(){ return "";}
+					@Override public int appliesToClass(Object o) { return 0;}
+					@Override
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						if(httpReq.isUrlParameter(fieldName+"_RESOURCE"))
@@ -2486,6 +2580,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
+					@Override
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
@@ -2510,7 +2605,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");
 						return str.toString();
 					}
-					public boolean confirmValue(String oldVal) { 
+					@Override
+					public boolean confirmValue(String oldVal) {
 						if(oldVal.trim().length()==0) return true;
 						oldVal=oldVal.trim();
 						int x=oldVal.indexOf('/');
@@ -2521,11 +2617,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return false;
 						return true;
 					}
-					public String[] fakeUserInput(String oldVal) { 
+					@Override
+					public String[] fakeUserInput(String oldVal) {
 						int x=oldVal.indexOf('/');
 						if(x<=0) return new String[]{""};
 						return new String[]{oldVal.substring(0,x),oldVal.substring(x+1)};
 					}
+					@Override
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{
 						oldVal=oldVal.trim();
@@ -2543,7 +2641,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				
+
 		});
 		DEFAULT_EDITORS = new Hashtable<String,AbilityParmEditor>();
 		for(int v=0;v<V.size();v++)
@@ -2553,8 +2651,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		return DEFAULT_EDITORS;
 	}
-	
-	protected class AbilityRecipeDataImpl implements AbilityRecipeData 
+
+	protected class AbilityRecipeDataImpl implements AbilityRecipeData
 	{
 		private String recipeFilename;
 		private String recipeFormat;
@@ -2566,7 +2664,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public int classFieldIndex;
 		private String parseError = null;
 		private boolean wasVFS = false;
-		
+
 		public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
 		{
 			this.recipeFilename = recipeFilename;
@@ -2609,7 +2707,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			columnHeaders = new String[numberOfDataColumns];
 			calculateRecipeCols(columnLengths,columnHeaders,dataRows);
 		}
-		public boolean wasVFS(){ return wasVFS;}
+		@Override public boolean wasVFS(){ return wasVFS;}
+		@Override
 		public DVector newRow(String classFieldData)
 		{
 			DVector editRow = blankRow();
@@ -2631,6 +2730,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 			return editRow;
 		}
+		@Override
 		public DVector blankRow()
 		{
 			DVector editRow = new DVector(2);
@@ -2639,37 +2739,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					editRow.addElement(columns().elementAt(c),"");
 			return editRow;
 		}
-		public int getClassFieldIndex() { return classFieldIndex;}
-		public String recipeFilename(){ return recipeFilename;}
-		public String recipeFormat(){ return recipeFormat;}
-		public Vector<DVector> dataRows() { return dataRows;}
-		public Vector<? extends Object> columns() { return columns;}
-		public int[] columnLengths() { return columnLengths;}
-		public String[] columnHeaders(){ return columnHeaders;}
-		public int numberOfDataColumns(){ return numberOfDataColumns;}
-		public String parseError(){ return parseError;}
+		@Override public int getClassFieldIndex() { return classFieldIndex;}
+		@Override public String recipeFilename(){ return recipeFilename;}
+		@Override public String recipeFormat(){ return recipeFormat;}
+		@Override public Vector<DVector> dataRows() { return dataRows;}
+		@Override public Vector<? extends Object> columns() { return columns;}
+		@Override public int[] columnLengths() { return columnLengths;}
+		@Override public String[] columnHeaders(){ return columnHeaders;}
+		@Override public int numberOfDataColumns(){ return numberOfDataColumns;}
+		@Override public String parseError(){ return parseError;}
 	}
-	protected abstract class AbilityParmEditorImpl implements AbilityParmEditor 
+	protected abstract class AbilityParmEditorImpl implements AbilityParmEditor
 	{
 		private String ID;
 		private DVector choices = null;
 		private int fieldType;
 		private String prompt = null;
 		private String header = null;
-		
+
 		public AbilityParmEditorImpl(String fieldName, String shortHeader, int type)
 		{
-			ID=fieldName; 
+			ID=fieldName;
 			fieldType = type;
 			header = shortHeader;
 			prompt = CMStrings.capitalizeAndLower(CMStrings.replaceAll(ID,"_"," "));
 			createChoices();
 		}
-		public String ID(){ return ID;}
-		public int parmType(){ return fieldType;}
-		public String prompt() { return prompt; }
-		public String colHeader() { return header;}
-		
+		@Override public String ID(){ return ID;}
+		@Override public int parmType(){ return fieldType;}
+		@Override public String prompt() { return prompt; }
+		@Override public String colHeader() { return header;}
+
+		@Override
 		public boolean confirmValue(String oldVal)
 		{
 			boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
@@ -2697,6 +2798,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return false;
 		}
+		@Override
 		@SuppressWarnings("unchecked")
 		public String[] fakeUserInput(String oldVal)
 		{
@@ -2752,7 +2854,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return new String[]{};
 		}
-		
+
+		@Override
 		public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
 		throws java.io.IOException
 		{
@@ -2799,7 +2902,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return str;
 		}
-		
+
+		@Override
 		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 		{
 			String webValue = httpReq.getUrlParameter(fieldName);
@@ -2812,14 +2916,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return (webValue == null)?oldVal:webValue;
 			case PARMTYPE_MULTICHOICES:
 			{
-				if(webValue == null) 
+				if(webValue == null)
 					return oldVal;
 				String id="";
 				long num=0;
 				int index=0;
 				for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
 				{
-					String newVal = httpReq.getUrlParameter(fieldName+id); 
+					String newVal = httpReq.getUrlParameter(fieldName+id);
 					if(CMath.s_long(newVal)<=0)
 						return newVal;
 					num |= CMath.s_long(newVal);
@@ -2831,9 +2935,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return "";
 		}
-		
-		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) { return oldVal; }
-		
+
+		@Override public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) { return oldVal; }
+
+		@Override
 		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 		{
 			int textSize = 50;
@@ -2860,7 +2965,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					int bits = CMath.s_int(webValue);
 					for(int i=0;i<choices.size();i++)
 					{
-						int bitVal =CMath.s_int((String)choices.elementAt(i,1)); 
+						int bitVal =CMath.s_int((String)choices.elementAt(i,1));
 						if((bitVal>0)&&(CMath.bset(bits,bitVal)))
 							choiceValues.addElement((String)choices.elementAt(i,1));
 					}
@@ -2892,9 +2997,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return "";
 		}
-		
-		public abstract void createChoices(); 
-		public DVector createChoices(Enumeration<? extends Object> e) 
+
+		public abstract void createChoices();
+		@Override
+		public DVector createChoices(Enumeration<? extends Object> e)
 		{
 			if(choices != null) return choices;
 			choices = new DVector(2);
@@ -2916,17 +3022,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return choices;
 		}
-		public DVector createChoices(Vector<? extends Object> V) 
+		@Override
+		public DVector createChoices(Vector<? extends Object> V)
 		{
 			return createChoices(V.elements());
 		}
-		public DVector createChoices(String[] S) 
+		@Override
+		public DVector createChoices(String[] S)
 		{
 			XVector<String> X=new XVector<String>(S);
 			Collections.sort(X);
 			return createChoices(X.elements());
 		}
-		public DVector createBinaryChoices(String[] S) { 
+		public DVector createBinaryChoices(String[] S) {
 			if(choices != null) return choices;
 			choices = createChoices(new XVector<String>(S).elements());
 			for(int i=0;i<choices.size();i++)
@@ -2938,15 +3046,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return choices;
 		}
-		public DVector createNumberedChoices(String[] S) { 
+		public DVector createNumberedChoices(String[] S) {
 			if(choices != null) return choices;
 			choices = createChoices(new XVector<String>(S).elements());
 			for(int i=0;i<choices.size();i++)
 				choices.setElementAt(i,1,Integer.toString(i));
 			return choices;
 		}
-		public DVector choices() { return choices; } 
-		public int appliesToClass(Object o) { return 0;}
+		@Override public DVector choices() { return choices; }
+		@Override public int appliesToClass(Object o) { return 0;}
 	}
-	
+
 }

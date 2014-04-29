@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,18 +39,19 @@ public class ClanResign extends StdCommand
 	public ClanResign(){}
 
 	private final String[] access={"CLANRESIGN"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
-		
+
 		Clan chkC=null;
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
 			{	chkC=c.first; break; }
-		
+
 		final Session S=mob.session();
 		final Clan C=chkC;
 		if(C==null)
@@ -64,7 +65,7 @@ public class ClanResign extends StdCommand
 			{
 				@Override public void showPrompt() { S.promptPrint("Resign from "+C.getName()+".  Are you absolutely SURE (y/N)?");}
 				@Override public void timedOut() { }
-				@Override public void callBack() 
+				@Override public void callBack()
 				{
 					String check=this.input;
 					if(check.equalsIgnoreCase("Y"))
@@ -91,8 +92,8 @@ public class ClanResign extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

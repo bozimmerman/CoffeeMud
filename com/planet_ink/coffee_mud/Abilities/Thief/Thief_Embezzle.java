@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Embezzle extends ThiefSkill
 {
-	public String ID() { return "Thief_Embezzle"; }
-	public String name(){ return "Embezzle";}
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_Embezzle"; }
+	@Override public String name(){ return "Embezzle";}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"EMBEZZLE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public List<MOB> mobs=new Vector<MOB>();
 	private LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
 
@@ -70,6 +70,7 @@ public class Thief_Embezzle extends ThiefSkill
 		return times+1;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(affected))
@@ -89,6 +90,7 @@ public class Thief_Embezzle extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -99,6 +101,7 @@ public class Thief_Embezzle extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -107,7 +110,7 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 		}
 		MOB target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,23 @@ import java.util.*;
 */
 public class Specialization_Armor extends StdAbility
 {
-	public String ID() { return "Specialization_Armor"; }
-	public String name(){ return "Armor Specialization";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Specialization_Armor"; }
+	@Override public String name(){ return "Armor Specialization";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 
 	protected final static long WORN_ARMOR=Item.WORN_ARMS|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_WRIST
 											|Item.WORN_LEGS|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST;
-	
+
 	protected double bonus=-1;
 
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
 
-	
+
 	private void recalculateBonus(MOB mob)
 	{
 		bonus=0;
@@ -61,9 +61,9 @@ public class Specialization_Armor extends StdAbility
 				Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I.basePhyStats().armor()>0)
-				&&(!I.amWearingAt(Item.IN_INVENTORY))
-				&&(!I.amWearingAt(Item.WORN_HELD))
-				&&(!I.amWearingAt(Item.WORN_FLOATING_NEARBY))
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+				&&(!I.amWearingAt(Wearable.WORN_HELD))
+				&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 				&&(CMath.banyset(I.rawProperLocationBitmap(), WORN_ARMOR)))
 				{
 					bonus+=1.0;
@@ -71,7 +71,8 @@ public class Specialization_Armor extends StdAbility
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.source()==affected)
@@ -85,6 +86,7 @@ public class Specialization_Armor extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -96,10 +98,11 @@ public class Specialization_Armor extends StdAbility
 			affectableStats.setArmor(affectableStats.armor()
 					-(int)Math.round(bonus*CMath.div(proficiency(),100.0))
 					-(getXLEVELLevel((MOB)affected)/2));
-					
+
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -114,5 +117,5 @@ public class Specialization_Armor extends StdAbility
 		}
 		return true;
 	}
-	
+
 }

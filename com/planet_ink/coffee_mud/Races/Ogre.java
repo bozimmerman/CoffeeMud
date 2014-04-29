@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,30 +35,31 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ogre extends Humanoid
 {
-	public String ID(){	return "Ogre"; }
-	public String name(){ return "Ogre"; }
-	public int shortestMale(){return 74;}
-	public int shortestFemale(){return 69;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 290;}
-	public int weightVariance(){return 90;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Giant-kin";}
+	@Override public String ID(){	return "Ogre"; }
+	@Override public String name(){ return "Ogre"; }
+	@Override public int shortestMale(){return 74;}
+	@Override public int shortestFemale(){return 69;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 290;}
+	@Override public int weightVariance(){return 90;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Giant-kin";}
 	private String[]culturalAbilityNames={"Gigantic","Orcish","Butchering"};
 	private int[]culturalAbilityProficiencies={100,50,75};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	private int[] agingChart={0,2,6,30,69,104,136,142,148};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -83,7 +84,8 @@ public class Ogre extends Humanoid
 			affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-1);
 		}
 	}
-	
+
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

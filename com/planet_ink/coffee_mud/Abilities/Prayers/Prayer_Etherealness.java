@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Etherealness extends Prayer
 {
-	public String ID() { return "Prayer_Etherealness"; }
-	public String name(){ return "Etherealness";}
-	public String displayText(){ return "(Etherealness)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Etherealness"; }
+	@Override public String name(){ return "Etherealness";}
+	@Override public String displayText(){ return "(Etherealness)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,6 +61,7 @@ public class Prayer_Etherealness extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -67,6 +69,7 @@ public class Prayer_Etherealness extends Prayer
 		affectableStats.setHeight(-1);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -121,6 +124,7 @@ public class Prayer_Etherealness extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -132,7 +136,8 @@ public class Prayer_Etherealness extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

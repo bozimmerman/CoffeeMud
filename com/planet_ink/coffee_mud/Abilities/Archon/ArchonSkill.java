@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ArchonSkill extends StdAbility
 {
-	public String ID() { return "ArchonSkill"; }
-	public String name(){ return "an Archon Skill";}
-	public String displayText(){return "(in the realms of greatest power)";}
-	public boolean putInCommandlist(){return false;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "ArchonSkill"; }
+	@Override public String name(){ return "an Archon Skill";}
+	@Override public String displayText(){return "(in the realms of greatest power)";}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public int classificationCode()
 	{ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;	}
 
@@ -53,7 +54,7 @@ public class ArchonSkill extends StdAbility
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,true,alreadyAffOk);
 		if(target!=null) return target;
-		
+
 		String targetName=CMParms.combine(commands,0);
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -75,7 +76,7 @@ public class ArchonSkill extends StdAbility
 			try
 			{
 				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, targetName, 50);
-				if(targets.size()>0) 
+				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
 			catch(NoSuchElementException e){}
@@ -86,11 +87,11 @@ public class ArchonSkill extends StdAbility
 			if(CMLib.players().playerExists(targetName))
 				target=CMLib.players().getLoadPlayer(targetName);
 		}
-		
+
 		if((target!=null)&&((!playerOnly)||(!target.isMonster())))
 			targetName=target.name();
 
-		
+
 		if(((target==null)||((playerOnly)&&(target.isMonster())))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
 		{

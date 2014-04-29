@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Burning extends StdAbility
 {
-	public String ID() { return "Burning"; }
-	public String name(){ return "Burning";}
-	public String displayText(){ return "(Burning)";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Burning"; }
+	@Override public String name(){ return "Burning";}
+	@Override public String displayText(){ return "(Burning)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Physical affected=this.affected;
@@ -260,6 +261,7 @@ public class Burning extends StdAbility
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -295,6 +297,7 @@ public class Burning extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -317,11 +320,13 @@ public class Burning extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;

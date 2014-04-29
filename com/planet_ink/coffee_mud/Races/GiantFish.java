@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,25 @@ import java.util.*;
 */
 public class GiantFish extends Fish
 {
-	public String ID(){	return "GiantFish"; }
-	public String name(){ return "Giant Fish"; }
-	public int shortestMale(){return 50;}
-	public int shortestFemale(){return 55;}
-	public int heightVariance(){return 20;}
-	public int lightestWeight(){return 1955;}
-	public int weightVariance(){return 405;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	public String racialCategory(){return "Amphibian";}
+	@Override public String ID(){	return "GiantFish"; }
+	@Override public String name(){ return "Giant Fish"; }
+	@Override public int shortestMale(){return 50;}
+	@Override public int shortestFemale(){return 55;}
+	@Override public int heightVariance(){return 20;}
+	@Override public int lightestWeight(){return 1955;}
+	@Override public int weightVariance(){return 405;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Amphibian";}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,4,6,8,10,12,14,16};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -59,14 +60,17 @@ public class GiantFish extends Fish
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,10);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "swims in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "swims";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -79,6 +83,7 @@ public class GiantFish extends Fish
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

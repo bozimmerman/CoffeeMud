@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,16 +38,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GatheringSkill extends CommonSkill
 {
-	public String ID() { return "GatheringSkill"; }
-	public String name(){ return "GatheringSkill";}
+	@Override public String ID() { return "GatheringSkill"; }
+	@Override public String name(){ return "GatheringSkill";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "";}
 	protected static final Map<String,List<Integer>> supportedResources=new Hashtable();
-	
-	public GatheringSkill(){super();}
-	
 
+	public GatheringSkill(){super();}
+
+
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
@@ -119,7 +120,7 @@ public class GatheringSkill extends CommonSkill
 		supportedResources.put(ID(),maskV);
 		return maskV;
 	}
-	
+
 	public boolean bundle(MOB mob, Vector what)
 	{
 		if((what.size()<3)
@@ -218,6 +219,6 @@ public class GatheringSkill extends CommonSkill
 		R.recoverRoomStats();
 		return true;
 	}
-	
-	
+
+
 }

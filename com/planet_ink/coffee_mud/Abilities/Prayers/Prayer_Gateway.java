@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Gateway extends Prayer
 {
-	public String ID() { return "Prayer_Gateway"; }
-	public String name(){return "Gateway";}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Prayer_Gateway"; }
+	@Override public String name(){return "Gateway";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room newRoom=null;
 	Room oldRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -66,6 +67,7 @@ public class Prayer_Gateway extends Prayer
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&(commands.size()==0))
@@ -87,7 +89,7 @@ public class Prayer_Gateway extends Prayer
 		try
 		{
 			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
-			if(rooms.size()>0) 
+			if(rooms.size()>0)
 				newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		}catch(NoSuchElementException e){}
 

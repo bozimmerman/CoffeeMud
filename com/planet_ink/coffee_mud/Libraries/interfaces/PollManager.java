@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public interface PollManager extends CMLibrary
 	public void processVote(Poll P, MOB mob);
 	public void modifyVote(Poll P, MOB mob) throws java.io.IOException;
 	public void processResults(Poll P, MOB mob);
-	
+
 	public void createPoll(Poll P);
 	public void updatePollResults(Poll P);
 	public void updatePoll(String oldName, Poll P);

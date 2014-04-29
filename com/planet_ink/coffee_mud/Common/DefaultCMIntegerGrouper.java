@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,21 @@ import java.util.*;
 */
 public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 {
-	public String ID(){return "DefaultCMIntegerGrouper";}
-	public String name() { return ID();}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public void initializeClass(){}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}
-	
+	@Override public String ID(){return "DefaultCMIntegerGrouper";}
+	@Override public String name() { return ID();}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public void initializeClass(){}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}
+
 	public int[] xs=new int[0];
 	public long[] ys=new long[0];
-	
+
+	@Override
 	public String text()
 	{
 		return "{"+CMParms.toTightStringList(xs)+"},{"+CMParms.toTightStringList(ys)+"}";
 	}
+	@Override
 	public CMObject copyOf()
 	{
 		DefaultCMIntegerGrouper R=new DefaultCMIntegerGrouper();
@@ -55,15 +57,16 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		R.ys=ys.clone();
 		return R;
 	}
-	
-	
+
+
+	@Override
 	public CMIntegerGrouper parseText(String txt)
 	{
 		xs=new int[0];
 		ys=new long[0];
 		txt=txt.trim();
 		if(txt.length()==0) return null;
-		if((!txt.startsWith("{"))&&(!txt.endsWith("}"))) 
+		if((!txt.startsWith("{"))&&(!txt.endsWith("}")))
 			return null;
 		int x=txt.indexOf("},{");
 		if(x<0) return null;
@@ -79,10 +82,11 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 			ys[v]=CMath.s_long(YV.get(v));
 		return this;
 	}
-	
-	public long[] packedGridRoomNums(){return ys;}
-	public int[] packedRoomNums(){return xs;}
-	
+
+	@Override public long[] packedGridRoomNums(){return ys;}
+	@Override public int[] packedRoomNums(){return xs;}
+
+	@Override
 	public boolean contains(long x)
 	{
 		if(x==-1) return true;
@@ -119,7 +123,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		}
 		return (-start)-1;
 	}
-	
+
 	public int getYindex(long y)
 	{
 		int start=0;
@@ -148,7 +152,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		}
 		return (-start)-1;
 	}
-	
+
+	@Override
 	public int[] allPrimaryRoomNums()
 	{
 		int count=0;
@@ -176,6 +181,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return nums;
 	}
 
+	@Override
 	public long[] allRoomNums()
 	{
 		long[] nums=new long[roomCount()];
@@ -203,17 +209,19 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return nums;
 	}
 
-	public boolean isEmpty() 
-	{ 
-		return xs.length > 0 || ys.length > 0; 
+	@Override
+	public boolean isEmpty()
+	{
+		return xs.length > 0 || ys.length > 0;
 	}
 
+	@Override
 	public int roomCount()
 	{
 		int count=0;
 		for(int i=0;i<xs.length;i++)
 			if((xs[i]&NEXT_FLAG)>0)
-				count=count+1+(xs[i+1]-(xs[i++]&NEXT_BITS)); 
+				count=count+1+(xs[i+1]-(xs[i++]&NEXT_BITS));
 			else
 				count++;
 		for(int i=0;i<ys.length;i++)
@@ -224,6 +232,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return count;
 	}
 
+	@Override
 	public long random()
 	{
 		int roomCount=roomCount();
@@ -280,6 +289,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		ys=newis;
 	}
 
+	@Override
 	public synchronized CMIntegerGrouper remove(long x)
 	{
 		if(x==-1) return null;
@@ -289,6 +299,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 			removey(x);
 		return this;
 	}
+	@Override
 	public synchronized CMIntegerGrouper remove(CMIntegerGrouper grp)
 	{
 		long[] dely=grp.allRoomNums();
@@ -372,6 +383,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 			}
 	}
 
+	@Override
 	public CMIntegerGrouper add(CMIntegerGrouper grp)
 	{
 		if(grp==null) return this;
@@ -381,6 +393,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return this;
 	}
 
+	@Override
 	public synchronized CMIntegerGrouper add(long x)
 	{
 		if(x==-1) return null;
@@ -391,6 +404,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return this;
 	}
 
+	@Override
 	public void addy(long x)
 	{
 		int index=getYindex(x);
@@ -459,6 +473,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return;
 	}
 
+	@Override
 	public void addx(int x)
 	{
 		int index=getXindex(x);

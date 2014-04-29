@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Mobile extends ActiveTicker implements MobileBehavior
 {
-	public String ID(){return "Mobile";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags(){return Behavior.FLAG_MOBILITY;}
-	
+	@Override public String ID(){return "Mobile";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
+
 	protected boolean wander=false;
 	protected boolean dooropen=false;
 	protected boolean firstRun=false;
@@ -48,12 +48,14 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	protected int[] altStatusTaker=null;
 	protected int tickStatus=Tickable.STATUS_NOT;
 	protected int ticksSuspended=0;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "wandering";
 	}
-	
+
+	@Override
 	public int getTickStatus()
 	{
 		int[] o=altStatusTaker;
@@ -108,6 +110,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -200,7 +203,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC2+0;
@@ -225,11 +229,11 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			{
 				Vector objections=null;
 				if(room==null) return true;
-				
+
 				if((room.getArea()!=null)
 				&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
 					return true;
-				
+
 				if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
 				{
 					tickDown=0;
@@ -254,6 +258,5 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
-	@Override
-	public void suspendMobility(int numTicks) { ticksSuspended=numTicks;}
+	@Override public void suspendMobility(int numTicks) { ticksSuspended=numTicks;}
 }

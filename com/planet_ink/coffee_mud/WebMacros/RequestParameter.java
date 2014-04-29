@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.net.URLEncoder;
 */
 public class RequestParameter extends StdWebMacro
 {
-	public String name() { return "RequestParameter"; }
+	@Override public String name() { return "RequestParameter"; }
 	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM,AFTER,CAPITALCASE}
 	private static HashSet<String> modifiers=new HashSet<String>();
 	static
@@ -43,7 +43,8 @@ public class RequestParameter extends StdWebMacro
 		for(MODIFIER M : MODIFIER.values())
 			modifiers.add(M.name());
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String str="";

@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.MUDZapper;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,8 +51,8 @@ public interface FactionManager extends CMLibrary, Tickable
 	public Faction getFactionByName(String factionNamed);
 	public Faction getFactionByNumber(int index);
 	public String makeFactionFilename(String factionID);
-	public boolean removeFaction(String factionID); 
-	public String listFactions(); 
+	public boolean removeFaction(String factionID);
+	public String listFactions();
 	public String getName(String factionID);
 	public int getMinimum(String factionID);
 	public int getMaximum(String factionID);
@@ -60,7 +60,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	public int getPercentFromAvg(String factionID, int faction);
 	public Faction.FRange getRange(String factionID, int faction);
 	public Enumeration<Faction.FRange> getRanges(String factionID);
-	public double getRangePercent(String factionID, int faction); 
+	public double getRangePercent(String factionID, int faction);
 	public int getTotal(String factionID);
 	public int getRandom(String factionID);
 	public void updatePlayerFactions(MOB mob, Room R);

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
@@ -39,13 +38,14 @@ import java.util.regex.*;
 */
 public class EnglishParser extends StdLibrary implements EnglishParsing
 {
-	public String ID(){return "EnglishParser";}
+	@Override public String ID(){return "EnglishParser";}
 	private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
 	public static boolean[] PUNCTUATION_TABLE=null;
 	public final static char[] ALL_CHRS="ALL".toCharArray();
 	public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
 	public final static List<Environmental> empty=new ReadOnlyVector<Environmental>(1);
-	
+
+	@Override
 	public String toEnglishStringList(final String[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -64,6 +64,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return s.toString();
 	}
 
+	@Override
 	public String toEnglishStringList(final List<? extends Object> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -82,6 +83,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return s.toString();
 	}
 
+	@Override
 	public boolean isAnArticle(String s)
 	{
 		s=s.toLowerCase();
@@ -91,6 +93,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return false;
 	}
 
+	@Override
 	public String makePlural(String str)
 	{
 		if((str==null)||(str.length()==0))
@@ -109,6 +112,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return str.substring(0,str.length()-1)+(uppercase?"VES":"ves");
 		return str+(uppercase?"S":"s");
 	}
+	@Override
 	public String cleanArticles(String s)
 	{
 		String lowStr=s.toLowerCase();
@@ -118,6 +122,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return s;
 	}
 
+	@Override
 	public String properIndefiniteArticle(String str)
 	{
 		int i=0;
@@ -171,6 +176,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return "";
 	}
 
+	@Override
 	public String getFirstWord(final String str)
 	{
 	  int i=0;
@@ -225,6 +231,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return str;
 	}
 
+	@Override
 	public String startWithAorAn(final String str)
 	{
 		if((str==null)||(str.length()==0)) return str;
@@ -235,9 +242,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return str;
 	}
 
+	@Override
 	public String insertUnColoredAdjective(String str, String adjective)
 	{
-		if(str.length()==0) 
+		if(str.length()==0)
 			return str;
 		str=CMStrings.removeColors(str.trim());
 		final String uppStr=str.toUpperCase();
@@ -251,6 +259,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
 	}
 
+	@Override
 	public CMObject findCommand(MOB mob, List<String> commands)
 	{
 		if((mob==null)
@@ -378,6 +387,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public boolean evokedBy(Ability thisAbility, String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
@@ -396,6 +406,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return thisAbility.Name();
 	}
 
+	@Override
 	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
@@ -410,6 +421,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return false;
 	}
 
+	@Override
 	public String getAnEvokeWord(MOB mob, String word)
 	{
 		if(mob==null) return null;
@@ -432,6 +444,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public Ability getToEvoke(MOB mob, List<String> commands)
 	{
 		String evokeWord=commands.get(0).toUpperCase();
@@ -540,6 +553,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return evokableAbility;
 	}
 
+	@Override
 	public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining)
 	{
 		commands=new Vector<String>(commands);
@@ -558,6 +572,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
 	}
+	@Override
 	public void evoke(MOB mob, Vector<String> commands)
 	{
 		Ability evokableAbility=getToEvoke(mob,commands);
@@ -598,7 +613,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return PUNCTUATION_TABLE;
 	}
-	
+
+	@Override
 	public String stripPunctuation(String str)
 	{
 		if((str==null)||(str.length()==0)) return str;
@@ -622,13 +638,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		return new String(str2,0,s);
 	}
-	
+
 	private boolean isPunctuation(byte b)
 	{
 		if((b<0)||(b>255)) return false;
 		return PUNCTUATION_TABLE[b];
 	}
-	
+
 	public boolean equalsPunctuationless(char[] strC, char[] str2C)
 	{
 		if((strC.length==0)&&(str2C.length==0)) return true;
@@ -664,7 +680,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public boolean containsString(final String toSrchStr, final String srchStr)
 	{
 		if((toSrchStr==null)||(srchStr==null)) return false;
@@ -678,7 +695,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(java.util.Arrays.equals(srchC,ALL_CHRS)) return true;
 		if(java.util.Arrays.equals(srchC,toSrchC)) return true;
 		if(equalsPunctuationless(srchC,toSrchC)) return true;
-		
+
 		boolean topOnly=false;
 		if((srchC.length>1)&&(srchC[0]=='$'))
 		{
@@ -729,7 +746,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 				switch(srchC[x])
 				{
-				case '^': 
+				case '^':
 				  x++;
 				  if(tos<srchC.length)
 					  switch(srchC[x])
@@ -787,6 +804,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return found;
 	}
 
+	@Override
 	public String bumpDotNumber(String srchStr)
 	{
 		FetchFlags flags=fetchFlags(srchStr);
@@ -798,8 +816,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return (flags.occurrance+1)+"."+flags.srchStr;
 	}
 
-	public int getContextNumber(ItemCollection cont, Environmental E){ return getContextNumber(toCollection(cont),E);}
-	public int getContextNumber(Environmental[] list, Environmental E){ return getContextNumber(new XVector<Environmental>(list),E);}
+	@Override public int getContextNumber(ItemCollection cont, Environmental E){ return getContextNumber(toCollection(cont),E);}
+	@Override public int getContextNumber(Environmental[] list, Environmental E){ return getContextNumber(new XVector<Environmental>(list),E);}
+	@Override
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return 0;
@@ -824,9 +843,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			list.add(i.nextElement());
 		return list;
 	}
-	
-	public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
-	public int getContextSameNumber(Environmental[] list, Environmental E){ return getContextSameNumber(new XVector<Environmental>(list),E);}
+
+	@Override public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
+	@Override public int getContextSameNumber(Environmental[] list, Environmental E){ return getContextSameNumber(new XVector<Environmental>(list),E);}
+	@Override
 	public int getContextSameNumber(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return 0;
@@ -844,8 +864,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		return -1;
 	}
-	public String getContextName(ItemCollection cont, Environmental E){ return getContextName(toCollection(cont),E);}
-	public String getContextName(Environmental[] list, Environmental E){ return getContextName(new XVector<Environmental>(list),E);}
+	@Override public String getContextName(ItemCollection cont, Environmental E){ return getContextName(toCollection(cont),E);}
+	@Override public String getContextName(Environmental[] list, Environmental E){ return getContextName(new XVector<Environmental>(list),E);}
+	@Override
 	public String getContextName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
@@ -855,8 +876,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
-	public String getContextSameName(ItemCollection cont, Environmental E){ return getContextSameName(toCollection(cont),E);}
-	public String getContextSameName(Environmental[] list, Environmental E){ return getContextSameName(new XVector<Environmental>(list),E);}
+	@Override public String getContextSameName(ItemCollection cont, Environmental E){ return getContextSameName(toCollection(cont),E);}
+	@Override public String getContextSameName(Environmental[] list, Environmental E){ return getContextSameName(new XVector<Environmental>(list),E);}
+	@Override
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E)
 	{
 		if(list==null) return E.name();
@@ -866,6 +888,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
+	@Override
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
 		if(commands.size()==0)
@@ -917,6 +940,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return shopkeeper;
 	}
 
+	@Override
 	public List<Item> fetchItemList(Environmental from,
 									MOB mob,
 									Item container,
@@ -958,7 +982,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			&&(!V.contains(item)))
 			{
 				V.add((Item)item);
-				if(((Item)item).amWearingAt(Item.IN_INVENTORY))
+				if(((Item)item).amWearingAt(Wearable.IN_INVENTORY))
 					wornOnly=false;
 				else
 					unwornOnly=false;
@@ -966,7 +990,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(item==null) break;
 			addendumStr="."+(++addendum);
 		}
-		
+
 		if(wornOnly && (V.size()>0))
 		{
 			Vector<Item> V2=new Vector<Item>();
@@ -1017,6 +1041,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return V;
 	}
 
+	@Override
 	public long numPossibleGold(Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1068,6 +1093,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return 1;
 		return 0;
 	}
+	@Override
 	public String numPossibleGoldCurrency(Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1100,6 +1126,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return CMLib.beanCounter().getCurrency(mine);
 	}
 
+	@Override
 	public long getMillisMultiplierByName(String timeName)
 	{
 		timeName=timeName.toLowerCase();
@@ -1124,6 +1151,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return -1;
 	}
 
+	@Override
 	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1152,6 +1180,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return 0;
 	}
 
+	@Override
 	public String matchAnyCurrencySet(String itemID)
 	{
 		List<String> V=CMLib.beanCounter().getAllCurrencies();
@@ -1171,6 +1200,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public double matchAnyDenomination(String currency, String itemID)
 	{
 		MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
@@ -1192,6 +1222,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return 0.0;
 	}
 
+	@Override
 	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1239,6 +1270,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public Item bestPossibleGold(MOB mob, Container container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1308,6 +1340,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly)
 	{
 		Vector<Container> V=new Vector<Container>();
@@ -1383,6 +1416,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return V;
 	}
 
+	@Override
 	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter)
 	{
 		if(commands.size()==1)
@@ -1390,7 +1424,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		Room R=(mob==null)?null:mob.location();
 		if(R==null) return null;
-		
+
 		int fromDex=-1;
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>=1;i--)
@@ -1398,7 +1432,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{ fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
-		
+
 		Environmental E=R.fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if(E==null)
 			for(int i=0;i<R.numItems();i++)
@@ -1426,6 +1460,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public String returnTime(long millis, long ticks)
 	{
 		String avg="";
@@ -1446,6 +1481,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
 	}
 
+	@Override
 	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
 	{
 		double b=0;
@@ -1466,7 +1502,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return new Object[]{myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination))};
 	}
-	
+
+	@Override
 	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly)
 	{
 		int maxToGive=Integer.MAX_VALUE;
@@ -1536,7 +1573,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return maxToGive;
 	}
-	
+
 	protected class FetchFlags
 	{
 		public String srchStr;
@@ -1545,7 +1582,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		public FetchFlags(String ss, int oc, boolean af)
 		{ srchStr=ss; occurrance=oc; allFlag=af;}
 	}
-	
+
 	public FetchFlags fetchFlags(String srchStr)
 	{
 		if(srchStr.length()==0) return null;
@@ -1595,11 +1632,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				return srchStr.substring(1);
 		}
 		else
-		if(srchStr.endsWith("$")) 
+		if(srchStr.endsWith("$"))
 			return srchStr.substring(0,srchStr.length()-1);
 		return srchStr;
 	}
-	
+
+	@Override
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		FetchFlags flags=fetchFlags(srchStr);
@@ -1654,13 +1692,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		Vector<Environmental> matches=new Vector<Environmental>(1);
 		if(list.size()==0) return matches;
 		FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return matches;
-		
+
 		srchStr=flags.srchStr;
 		int myOccurrance=flags.occurrance;
 		boolean allFlag=flags.allFlag;
@@ -1713,6 +1752,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return matches;
 	}
 
+	@Override
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
@@ -1767,6 +1807,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
@@ -1833,6 +1874,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	@Override
 	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		Vector<Item> matches=new Vector<Item>(1);
@@ -1895,6 +1937,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return matches;
 	}
 
+	@Override
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;

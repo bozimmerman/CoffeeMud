@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public interface LanguageLibrary extends CMLibrary
 	public List<List<String>> preCommandParser(List<String> CMDS);
 	public String preItemParser(String item);
 	public String failedItemParser(String item);
-	
+
 	public String[][] ISO_LANG_CODES = {
 		{"AA","Afar"},
 		{"AB","Abkhazian"},

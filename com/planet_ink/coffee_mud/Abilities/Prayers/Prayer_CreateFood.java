@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CreateFood extends Prayer
 {
-	public String ID() { return "Prayer_CreateFood"; }
-	public String name(){ return "Create Food";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Prayer_CreateFood"; }
+	@Override public String name(){ return "Create Food";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

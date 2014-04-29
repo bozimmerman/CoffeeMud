@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_RogueLimb extends Spell
 {
-	public String ID() { return "Spell_RogueLimb"; }
-	public String name(){return "Rogue Limb";}
-	public String displayText(){return "(Rogue Limb)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_RogueLimb"; }
+	@Override public String name(){return "Rogue Limb";}
+	@Override public String displayText(){return "(Rogue Limb)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public MOB rogueLimb=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((rogueLimb!=null)
@@ -69,6 +70,7 @@ public class Spell_RogueLimb extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -91,6 +93,7 @@ public class Spell_RogueLimb extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)
@@ -104,6 +107,7 @@ public class Spell_RogueLimb extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

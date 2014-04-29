@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 */
 public class StdShipThruster extends StdCompFuelConsumer implements ShipComponent.ShipEngine
 {
-	public String ID(){	return "StdShipThruster";}
-	
+	@Override public String ID(){	return "StdShipThruster";}
+
 	protected float 	installedFactor	= 1.0F;
 	protected int		maxThrust		= 1000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
-	
+
 	public StdShipThruster()
 	{
 		super();
@@ -56,6 +56,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setCapacity(basePhyStats.weight()+10000);
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdShipThruster)) return false;
@@ -70,22 +71,23 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	@Override public int getThrust(){return thrust;}
 	@Override public void setThrust(int current){thrust=current;}
 	@Override public long getSpecificImpulse() { return specificImpulse; }
-	@Override 
-	public void setSpecificImpulse(long amt) 
-	{ 
+	@Override
+	public void setSpecificImpulse(long amt)
+	{
 		if(amt > 0)
-			specificImpulse = amt; 
+			specificImpulse = amt;
 	}
-	
+
 	@Override public TechType getTechType() { return TechType.SHIP_ENGINE; }
 	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
-	
+
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
-	
+
 
 	public static boolean reportError(ShipEngine me, Software controlI, MOB mob, String literalMessage, String controlMessage)
 	{
@@ -101,7 +103,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		}
 		return false;
 	}
-	
+
 	public static boolean executeThrust(ShipEngine me, String circuitKey, MOB mob, Software controlI, ShipEngine.ThrustPort portDir, final int amount)
 	{
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
@@ -115,7 +117,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
-		
+
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
 		int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
@@ -147,7 +149,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		}
 		return false;
 	}
-	
+
 	public static boolean executeCommand(ShipEngine me, String circuitKey, CMMsg msg)
 	{
 		final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
@@ -163,10 +165,10 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			return executeThrust(me, circuitKey, mob, controlI, (ShipEngine.ThrustPort)parms[0],((Integer)parms[1]).intValue());
 		return reportError(me, controlI, mob, me.name(mob)+" refused to respond.","Failure: "+me.name(mob)+": control command failure.");
 	}
-	
+
 	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
 	{
-		
+
 		if(msg.amITarget(me))
 		{
 			switch(msg.targetMinor())

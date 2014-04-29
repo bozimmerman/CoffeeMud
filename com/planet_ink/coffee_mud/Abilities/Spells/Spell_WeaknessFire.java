@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WeaknessFire extends Spell
 {
-	public String ID() { return "Spell_WeaknessFire"; }
-	public String name(){return "Weakness to Fire";}
-	public String displayText(){return "(Weakness to Fire)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_WeaknessFire"; }
+	@Override public String name(){return "Weakness to Fire";}
+	@Override public String displayText(){return "(Weakness to Fire)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -62,6 +63,7 @@ public class Spell_WeaknessFire extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -102,6 +104,7 @@ public class Spell_WeaknessFire extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -115,11 +118,13 @@ public class Spell_WeaknessFire extends Spell
 
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_FIRE,affectedStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

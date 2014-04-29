@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DivineFavor extends Prayer
 {
-	public String ID() { return "Prayer_DivineFavor"; }
-	public String name(){ return "Divine Favor";}
-	public String displayText(){ return "(Divine Favor)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Prayer_DivineFavor"; }
+	@Override public String name(){ return "Divine Favor";}
+	@Override public String displayText(){ return "(Divine Favor)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected boolean struckDownToday=false;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Prayer_DivineFavor extends Prayer
 			mob.tell("Your fall out of divine favor.");
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -75,7 +77,8 @@ public class Prayer_DivineFavor extends Prayer
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -97,7 +100,8 @@ public class Prayer_DivineFavor extends Prayer
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;

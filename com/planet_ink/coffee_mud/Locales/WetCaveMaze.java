@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class WetCaveMaze extends StdMaze
 {
-	public String ID(){return "WetCaveMaze";}
+	@Override public String ID(){return "WetCaveMaze";}
 	public WetCaveMaze()
 	{
 		super();
@@ -43,9 +43,9 @@ public class WetCaveMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	public String getGridChildLocaleID(){return "WetCaveRoom";}
-	public int maxRange(){return 5;}
-	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override public String getGridChildLocaleID(){return "WetCaveRoom";}
+	@Override public int maxRange(){return 5;}
+	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

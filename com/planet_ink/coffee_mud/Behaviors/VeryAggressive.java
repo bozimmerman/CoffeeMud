@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class VeryAggressive extends Aggressive
 {
-	public String ID(){return "VeryAggressive";}
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	@Override public String ID(){return "VeryAggressive";}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 
 	public VeryAggressive()
 	{
@@ -45,20 +45,23 @@ public class VeryAggressive extends Aggressive
 		tickDown = 0;
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().trim().length()>0)
 			return "surprising aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
 			return "surprising aggressiveness";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return CMLib.masking().maskCheck(getParms(),M,false);
@@ -131,6 +134,7 @@ public class VeryAggressive extends Aggressive
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

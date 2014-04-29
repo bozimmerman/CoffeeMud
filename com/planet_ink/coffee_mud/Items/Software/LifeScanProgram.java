@@ -25,7 +25,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,13 +42,13 @@ import java.util.*;
 */
 public class LifeScanProgram extends GenSoftware
 {
-	public String ID(){	return "LifeScanProgram";}
-	
+	@Override public String ID(){	return "LifeScanProgram";}
+
 	protected final static short AUTO_TICKDOWN=4;
-	
+
 	protected boolean activated=false;
 	protected short activatedTickdown=AUTO_TICKDOWN;
-	
+
 	public LifeScanProgram()
 	{
 		super();
@@ -59,21 +59,21 @@ public class LifeScanProgram extends GenSoftware
 		basePhyStats().setWeight(1); // the higher the weight, the wider the scan
 		recoverPhyStats();
 	}
-	
+
 	@Override public String getParentMenu() { return ""; }
 	@Override public String getInternalName() { return "";}
-	
+
 	public boolean isAlive(MOB M)
 	{
 		// there you have it, the definition of "life" -- is biological, and can reproduce
 		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace())));
 	}
-	
+
 	public CMMsg getScanMsg(Room R)
 	{
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
 	}
-	
+
 	public void getDirDesc(String dirBuilder, StringBuilder str, boolean useShipDirs)
 	{
 		int numDone=0;
@@ -124,7 +124,7 @@ public class LifeScanProgram extends GenSoftware
 			numDone++;
 		}
 	}
-	
+
 	public int getScanMsg(Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
 	{
 		if((R==null)||(roomsDone.contains(R))) return 0;
@@ -219,7 +219,7 @@ public class LifeScanProgram extends GenSoftware
 		}
 		return numFound;
 	}
-	
+
 	public String getScanMsg()
 	{
 		final Room R=CMLib.map().roomLocation(this);
@@ -234,56 +234,56 @@ public class LifeScanProgram extends GenSoftware
 			return "No life signs detected.";
 		return str.toString().toLowerCase();
 	}
-	
-	@Override 
-	public boolean isActivationString(String word) 
-	{ 
-		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
-	}
-	
-	@Override 
-	public boolean isDeActivationString(String word) 
-	{ 
-		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
-	}
-	
-	@Override 
-	public boolean isCommandString(String word, boolean isActive) 
-	{ 
+
+	@Override
+	public boolean isActivationString(String word)
+	{
 		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
-	@Override 
-	public String getActivationMenu() 
-	{ 
-		return super.getActivationMenu(); 
+	@Override
+	public boolean isDeActivationString(String word)
+	{
+		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
-	
-	@Override 
+
+	@Override
+	public boolean isCommandString(String word, boolean isActive)
+	{
+		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
+	}
+
+	@Override
+	public String getActivationMenu()
+	{
+		return super.getActivationMenu();
+	}
+
+	@Override
 	public boolean checkActivate(MOB mob, String message)
 	{
 		return super.checkActivate(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkDeactivate(MOB mob, String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkTyping(MOB mob, String message)
 	{
 		return super.checkTyping(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkPowerCurrent(int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
-	
-	@Override 
+
+	@Override
 	public void onActivate(MOB mob, String message)
 	{
 		super.onActivate(mob, message);
@@ -294,8 +294,8 @@ public class LifeScanProgram extends GenSoftware
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
-	
-	@Override 
+
+	@Override
 	public void onDeactivate(MOB mob, String message)
 	{
 		super.onDeactivate(mob, message);
@@ -303,8 +303,8 @@ public class LifeScanProgram extends GenSoftware
 			super.addScreenMessage("Life scanning deactivated.");
 		this.activated=false;
 	}
-	
-	@Override 
+
+	@Override
 	public void onTyping(MOB mob, String message)
 	{
 		super.onTyping(mob, message);
@@ -312,12 +312,12 @@ public class LifeScanProgram extends GenSoftware
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
-	
-	@Override 
+
+	@Override
 	public void onPowerCurrent(int value)
 	{
 		super.onPowerCurrent(value);
-		if((value != 0)&&(activated)&&(--activatedTickdown>=0)) // means there was power to give, 2 means is active menu, which doesn't apply 
+		if((value != 0)&&(activated)&&(--activatedTickdown>=0)) // means there was power to give, 2 means is active menu, which doesn't apply
 		{
 			String scan=getScanMsg();
 			if(scan.length()>0)

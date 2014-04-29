@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class IndoorShallowWater extends ShallowWater implements Drink
 {
-	public String ID(){return "IndoorShallowWater";}
+	@Override public String ID(){return "IndoorShallowWater";}
 	public IndoorShallowWater()
 	{
 		super();
@@ -43,8 +43,8 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	protected int baseThirst(){return 0;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
+	@Override protected int baseThirst(){return 0;}
 
-	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

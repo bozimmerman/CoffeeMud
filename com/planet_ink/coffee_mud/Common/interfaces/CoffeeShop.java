@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Iterator;
 import java.util.List;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,15 @@ import java.util.List;
  * A CoffeeShop is an object for storing the inventory of a shopkeeper, banker,
  * auctionhouse, merchant, or other object that implements the ShopKeeper interface
  * for the purpose of selling goods and services.
- * 
+ *
  * ShopKeepers maintain two types of inventory, the base inventory, and the stock
  * inventory. The stock or store inventory is the list of items the shopkeeper
- * currently has for sale, the amounts, base prices, etc. 
+ * currently has for sale, the amounts, base prices, etc.
  * The base inventory is used only for shopkeepers who only buy things like
  * they originally had in stock, and so the base inventory is always populated with
  * a single copy of the original store inventory, to be used as a base of comparison
  * for situations where the stock is empty, but someone is wanting to sell.
- * 
+ *
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
@@ -62,7 +62,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return whether the item, or one just like it, is in the base inventory
 	 */
 	public boolean inEnumerableInventory(Environmental thisThang);
-	
+
 	/**
 	 * Adds a new item to the store inventory.  Use this method when an item is sold
 	 * to the store, as pricing and other information will have to be derived.
@@ -71,7 +71,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the core store inventory item added
 	 */
 	public Environmental addStoreInventory(Environmental thisThang);
-	
+
 	/**
 	 * Returns the number of items in the stores base inventory.  Only really useful
 	 * for historical reasons, or if the shop sells inventory only.
@@ -80,7 +80,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the number of items in the base inventory
 	 */
 	public int enumerableStockSize();
-	
+
 	/**
 	 * Returns the number of items this shop currently has for sale.  Does not
 	 * take number of duplicates into account.  For that call totalStockSizeIncludingDuplicates
@@ -88,19 +88,19 @@ public interface CoffeeShop extends CMCommon
 	 * @return the number of items for sale.
 	 */
 	public int totalStockSize();
-	
+
 	/**
 	 * Destroys all the items in this shop.
 	 */
 	public void destroyStoreInventory();
-	
+
 	/**
 	 * Returns a Vector of all the Environmental objects this shop has for sale.
 	 * Will only return one of each item, even if multiple are available.
 	 * @return a Vector of objects for sale.
 	 */
 	public Iterator<Environmental> getStoreInventory();
-	
+
 	/**
 	 * Returns a Vector of all the Environmental objects this shop has for sale
 	 * which match the given search string.
@@ -109,7 +109,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return a Vector of objects for sale.
 	 */
 	public Iterator<Environmental> getStoreInventory(String srchStr);
-	
+
 	/**
 	 * Returns a Vector of all the Environmental objects this shop has in its base
 	 * inventory.  Only useful for historical reasons, or if the shop sells inventory
@@ -119,32 +119,32 @@ public interface CoffeeShop extends CMCommon
 	 * @return a Vector of objects in base inventory
 	 */
 	public Iterator<Environmental> getEnumerableInventory();
-	
+
 	/**
 	 * Clears both the base and stock/store inventories.
 	 */
 	public void emptyAllShelves();
-	
+
 	/**
 	 * Adds a new item to the store inventory so the shopkeeper can sell it.  All items
-	 * added go cumulatively into the store inventory, and one copy is kept in the 
+	 * added go cumulatively into the store inventory, and one copy is kept in the
 	 * base inventory for historical reasons.  The method is called when multiple items
 	 * need to be added, or if the price is available.  This method is usually used to
 	 * build an original shop inventory.
-	 * @param thisThang the item/mob/ability to sell 
+	 * @param thisThang the item/mob/ability to sell
 	 * @param number the number of items to sell
 	 * @param price the price of the item (in base currency) or -1 to have it determined
 	 * @return the actual object stored in the inventory
 	 */
 	public Environmental addStoreInventory(Environmental thisThang, int number, int price);
-	
+
 	/**
 	 * Total weight, in pounds, of all items in the store inventory, taking number in
 	 * stock into account.
 	 * @return the total weight in pounds
 	 */
 	public int totalStockWeight();
-	
+
 	/**
 	 * The number of items in the store inventory, taking number in stock into account.
 	 * Call this method to see how crowded the shop really is, as opposed to totalStockSize.
@@ -152,7 +152,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the total number of all items in stock
 	 */
 	public int totalStockSizeIncludingDuplicates();
-	
+
 	/**
 	 * Removes all items like the given item from the base and store inventory.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
@@ -169,7 +169,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return whether the item is available
 	 */
 	public boolean doIHaveThisInStock(String name, MOB mob);
-	
+
 	/**
 	 * Returns the base stock price (not the final price by any means) that the shop
 	 * will use as a foundation for determining the given items price.  -1 would mean
@@ -180,7 +180,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the stock price of the item given.
 	 */
 	public int stockPrice(Environmental likeThis);
-	
+
 	/**
 	 * Returns the number of items like the one given that the shopkeeper presently
 	 * has in stock and available for sale.
@@ -189,7 +189,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the number currently in stock.
 	 */
 	public int numberInStock(Environmental likeThis);
-	
+
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
@@ -198,7 +198,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the available item, if found
 	 */
 	public Environmental getStock(String name, MOB mob);
-	
+
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
 	 * If one is found, it copies the item, removes one from the available stock, and
@@ -209,7 +209,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the available item, if found
 	 */
 	public Environmental removeStock(String name, MOB mob);
-	
+
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
 	 * If one is found, it copies the item, removes one from the available stock, and
@@ -221,7 +221,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return the available items, if found, as a Vector of Environmental objects
 	 */
 	public List<Environmental> removeSellableProduct(String named, MOB mob);
-	
+
 	/**
 	 * Generates an XML document of all available shop inventory, prices, and availability.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
@@ -229,7 +229,7 @@ public interface CoffeeShop extends CMCommon
 	 * @return an XML document.
 	 */
 	public String makeXML();
-	
+
 	/**
 	 * Repopulates this shop inventory from a given xml document, restoring store inventory,
 	 * base inventory, prices, and availability.
@@ -237,7 +237,7 @@ public interface CoffeeShop extends CMCommon
 	 * @param text the xml document to restore from
 	 */
 	public void buildShopFromXML(String text);
-	
+
 	/**
 	 * A method for quickly making wholesale changes to a shopkeepers inventory.
 	 * getStoreInventory should be called to get the list of items.  The items can
@@ -246,26 +246,26 @@ public interface CoffeeShop extends CMCommon
 	 * @param shopItems the items for inventory
 	 */
 	public void resubmitInventory(List<Environmental> shopItems);
-	
+
 	/**
 	 * Initializes this shop object with its host ShopKeeper
 	 * @param SK the shopkeeper that hosts this object
 	 * @return always this
 	 */
 	public CoffeeShop build(ShopKeeper SK);
-	
+
 	/**
 	 * Returns the shopKeeper that is hosting this shop
 	 * @return the shopKeeper that is hosting this shop
 	 */
 	public ShopKeeper shopKeeper();
-	
+
 	/**
 	 * Returns whether the whatIsSold code applies to the shopkeeper hosting this shop.
 	 * @return whether the whatIsSold code applies to the shopkeeper hosting this shop.
 	 */
 	public boolean isSold(int code);
-	
+
 	/**
 	 * Class for representing a shelf product, holding
 	 * an item prototype, the number in stock, and the

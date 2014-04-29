@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_AlternateReality extends Spell
 {
-	public String ID() { return "Spell_AlternateReality"; }
-	public String name(){return "Alternate Reality";}
-	public String displayText(){return "(Alternate Reality)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public String ID() { return "Spell_AlternateReality"; }
+	@Override public String name(){return "Alternate Reality";}
+	@Override public String displayText(){return "(Alternate Reality)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -53,6 +54,7 @@ public class Spell_AlternateReality extends Spell
 			mob.tell("Your reality returns to normal.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -67,6 +69,7 @@ public class Spell_AlternateReality extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
@@ -87,6 +90,7 @@ public class Spell_AlternateReality extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget);

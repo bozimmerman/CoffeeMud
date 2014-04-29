@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_Explosive extends StdBomb
 {
-	public String ID() { return "Bomb_Explosive"; }
-	public String name(){ return "explosive bomb";}
-	protected int trapLevel(){return 10;}
-	public String requiresToSet(){return "a pound of coal";}
+	@Override public String ID() { return "Bomb_Explosive"; }
+	@Override public String name(){ return "explosive bomb";}
+	@Override protected int trapLevel(){return 10;}
+	@Override public String requiresToSet(){return "a pound of coal";}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COAL));
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -57,6 +59,7 @@ public class Bomb_Explosive extends StdBomb
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if(target.location()!=null)

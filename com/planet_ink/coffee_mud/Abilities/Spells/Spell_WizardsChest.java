@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WizardsChest extends Spell
 {
-	public String ID() { return "Spell_WizardsChest"; }
-	public String name(){return "Wizards Chest";}
-	public String displayText(){return "(Wizard Chest)";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_WizardsChest"; }
+	@Override public String name(){return "Wizards Chest";}
+	@Override public String displayText(){return "(Wizard Chest)";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -56,7 +57,7 @@ public class Spell_WizardsChest extends Spell
 		||(msg.source()==invoker())
 		||((invoker()!=null)&&(invoker().Name().equals(text()))))
 			return true;
-		
+
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
@@ -77,7 +78,8 @@ public class Spell_WizardsChest extends Spell
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==affected)
@@ -93,6 +95,7 @@ public class Spell_WizardsChest extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -109,7 +112,7 @@ public class Spell_WizardsChest extends Spell
 			mob.tell("You can only enchant the locks on open containers with lids.");
 			return false;
 		}
-		
+
 		if(!((Container)target).isOpen())
 		{
 			mob.tell(target.name(mob)+" must be opened before this magic will work.");

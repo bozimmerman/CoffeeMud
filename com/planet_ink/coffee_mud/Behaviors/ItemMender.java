@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class ItemMender extends StdBehavior
 {
-	public String ID(){return "ItemMender";}
+	@Override public String ID(){return "ItemMender";}
 
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "item mending for a price";
 	}
 
@@ -60,6 +61,7 @@ public class ItemMender extends StdBehavior
 		}
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -77,8 +79,9 @@ public class ItemMender extends StdBehavior
 			}
 		}
 	}
-	
-	
+
+
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -125,6 +128,7 @@ public class ItemMender extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

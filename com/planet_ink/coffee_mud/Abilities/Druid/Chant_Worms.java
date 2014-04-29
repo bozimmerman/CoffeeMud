@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Worms extends Chant implements DiseaseAffect
 {
-	public String ID() { return "Chant_Worms"; }
-	public String name(){ return "Worms";}
-	public String displayText(){return "(Worms)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int abilityCode(){return 0;}
-	public int spreadBitmap() { return 0; }
-	public int difficultyLevel(){return 1;}
-	
+	@Override public String ID() { return "Chant_Worms"; }
+	@Override public String name(){ return "Worms";}
+	@Override public String displayText(){return "(Worms)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int abilityCode(){return 0;}
+	@Override public int spreadBitmap() { return 0; }
+	@Override public int difficultyLevel(){return 1;}
+
 	int plagueDown=5;
-	
+
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Internally infested by numerous worm-like parasites.";
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -72,6 +73,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -80,6 +82,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -98,6 +101,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

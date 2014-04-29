@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,19 @@ import java.util.*;
 */
 public class Song_Seeing extends Song
 {
-	public String ID() { return "Song_Seeing"; }
-	public String name(){ return "Seeing";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	
-	
+	@Override public String ID() { return "Song_Seeing"; }
+	@Override public String name(){ return "Seeing";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.adjustedLevel(invoker(),0)+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -71,6 +73,7 @@ public class Song_Seeing extends Song
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

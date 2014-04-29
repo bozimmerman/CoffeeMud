@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Antidote extends StdAbility
 {
-	public String ID() { return "Antidote"; }
-	public String name(){ return "An Antidote";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public String ID() { return "Antidote"; }
+	@Override public String name(){ return "An Antidote";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected boolean processing=false;
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
@@ -61,6 +61,7 @@ public class Antidote extends StdAbility
 		return offenders;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return;
@@ -102,6 +103,7 @@ public class Antidote extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

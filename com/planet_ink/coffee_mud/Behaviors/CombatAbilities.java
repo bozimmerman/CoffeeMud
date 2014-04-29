@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CombatAbilities extends StdBehavior
 {
-	public String ID(){return "CombatAbilities";}
+	@Override public String ID(){return "CombatAbilities";}
 
 	public int				combatMode	= 0;
 	public Map<MOB,int[]>	aggro		= null;
@@ -52,7 +52,7 @@ public class CombatAbilities extends StdBehavior
 	protected StringBuffer	record		= null;
 	protected int			physicalDamageTaken=0;
 	protected InternalWeaponSet weaponSet	= new InternalWeaponSet();
-	
+
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
 	public final static int COMBAT_OFFENSIVE=2;
@@ -67,7 +67,7 @@ public class CombatAbilities extends StdBehavior
 		"MIXEDDEFENSIVE",
 		"ONLYALWAYS"
 	};
-	
+
 	private static class InternalWeaponSet
 	{
 		public Item wand=null;
@@ -75,15 +75,16 @@ public class CombatAbilities extends StdBehavior
 		public Item weapon=null;
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "skillful ability using";
 	}
 
 	protected void makeClass(MOB mob, String theParms, String defaultClassName)
 	{
 		CharClass C=null;
-		if(theParms.trim().length()==0) 
+		if(theParms.trim().length()==0)
 		{
 			C=CMClass.findCharClass(defaultClassName);
 			if((mob.baseCharStats().getCurrentClass()!=C)&&(C!=null)&&(C.availabilityCode()!=0))
@@ -101,7 +102,7 @@ public class CombatAbilities extends StdBehavior
 			if((C!=null)&&(C.availabilityCode()!=0))
 				classes.addElement(C);
 		}
-		if(classes.size()==0) 
+		if(classes.size()==0)
 		{
 			C=CMClass.findCharClass(defaultClassName);
 			if((mob.baseCharStats().getCurrentClass()!=C)&&(C!=null)&&(C.availabilityCode()!=0))
@@ -145,7 +146,7 @@ public class CombatAbilities extends StdBehavior
 			if(A!=null)
 			{
 				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
-				if(A.proficiency()<proficiency)	
+				if(A.proficiency()<proficiency)
 					A.setProficiency(proficiency);
 				oldAbilities.add(A);
 			}
@@ -179,7 +180,7 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 	}
-	
+
 	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move)
 	{
 		Ability A=mob.fetchEffect("Prop_CombatAdjuster");
@@ -246,7 +247,7 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 	}
-	
+
 	public void adjustAggro(MOB hostM, MOB attackerM, int amt)
 	{
 		if(aggro==null) aggro=new Hashtable<MOB,int[]>();
@@ -286,13 +287,14 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
 		{
 			MOB mob=(MOB)host;
-			if(mob.isInCombat()) 
+			if(mob.isInCombat())
 			{
 				MOB victim=mob.getVictim();
 				if(victim==null){}else
@@ -348,7 +350,8 @@ public class CombatAbilities extends StdBehavior
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
@@ -407,7 +410,7 @@ public class CombatAbilities extends StdBehavior
 		Ability tryA=null;
 		// now find a skill to use
 		Ability A=null;
-		
+
 
 		MOB target = null;
 		int victimQuality=Ability.QUALITY_INDIFFERENT;
@@ -419,7 +422,7 @@ public class CombatAbilities extends StdBehavior
 				A=mob.fetchAbility(skillsAlways.get(CMLib.dice().roll(1,skillsAlways.size(),-1)));
 			else
 				A=mob.fetchRandomAbility();
-			
+
 			if((A==null)
 			||(A.isAutoInvoked())
 			||(A.triggerStrings()==null)
@@ -427,7 +430,7 @@ public class CombatAbilities extends StdBehavior
 			||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
 			||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
 				continue;
-			
+
 			victimQuality=(victim!=null)?A.castingQuality(mob,victim):Ability.QUALITY_INDIFFERENT;
 			selfQuality=A.castingQuality(mob,mob);
 			leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
@@ -522,7 +525,7 @@ public class CombatAbilities extends StdBehavior
 				   ||(mob.curState().getHitPoints()<tryA.usageCost(mob,false)[2]))
 				 	   throw new CMException("Not enough hp");
 			}
-			
+
 			if(proficient)
 				tryA.setProficiency(100);
 			else
@@ -555,16 +558,17 @@ public class CombatAbilities extends StdBehavior
 			{
 				if(lastSpell!=null)
 					lastSpell="!"+tryA.ID();
-				if(record!=null) 
+				if(record!=null)
 					record.append("!");
 			}
-			if(record!=null) 
+			if(record!=null)
 				record.append(tryA.ID()).append("; ");
 			return skillUsed?tryA:null;
 		}
 		return null;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -577,7 +581,7 @@ public class CombatAbilities extends StdBehavior
 		final MOB mob=(MOB)ticking;
 
 		if(!mob.isInCombat())
-		{ 
+		{
 			if(aggro!=null)
 			{
 				synchronized(aggro)
@@ -587,7 +591,7 @@ public class CombatAbilities extends StdBehavior
 			}
 			if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)<=0))
 			{
-				if(!canActAtAll(mob)) 
+				if(!canActAtAll(mob))
 					return true;
 				preCastDown=preCastSet;
 				if(!isRightCombatAbilities(mob))
@@ -602,10 +606,10 @@ public class CombatAbilities extends StdBehavior
 		}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
-		
-		if(!canActAtAll(mob)) 
+
+		if(!canActAtAll(mob))
 			return true;
-		
+
 		// insures we only try this once!
 		if(!isRightCombatAbilities(mob))
 			return true;
@@ -613,20 +617,20 @@ public class CombatAbilities extends StdBehavior
 		final Room R=mob.location();
 		if((lastSpell!=null)&&(lastSpell.length()>0))
 			lastSpell="";
-		
+
 		if(!wandUseCheck[0])
 		{
 			wandUseCheck[0]=true;
 			Ability wandUse=mob.fetchAbility("Skill_WandUse");
 			wandUseCheck[1]=false;
 			if(wandUse!=null)
-			{ 
+			{
 				wandUseCheck[1]=true;
-				wandUse.setProficiency(100); 
+				wandUse.setProficiency(100);
 				wandUse.setInvoker(mob);
 			}
 		}
-		
+
 		boolean rebuildSet=false;
 		final int rtt=mob.rangeToTarget();
 		if((weaponSet.weapon==null)||(weaponSet.weapon.owner()!=mob)
@@ -703,7 +707,7 @@ public class CombatAbilities extends StdBehavior
 				chkDown=5;
 			}
 		}
-		
+
 		// next deal with aggro changes
 		if(aggro!=null)
 		{
@@ -740,16 +744,16 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 		if(victim==null) return true;
-		
+
 		final MOB leader=mob.amFollowing();
-		
+
 		boolean skillUsed=false;
 		try
 		{
 			skillUsed=useSkill(mob, victim, leader)!=null;
 		}
 		catch(CMException cme) { return true;}
-		
+
 		Ability A=null;
 		// if a skill use failed, take a stab at wanding
 		if((!skillUsed)
@@ -795,9 +799,10 @@ public class CombatAbilities extends StdBehavior
 		}
 		return true;
 	}
-	
-	
+
+
 	protected static String[] CODES=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(CombatAbilities.CODES==null)
@@ -817,6 +822,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		return CODES;
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		String[] CODES=getStatCodes();
@@ -824,6 +830,7 @@ public class CombatAbilities extends StdBehavior
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		int x=getCodeNum(code);
@@ -843,6 +850,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		int x=getCodeNum(code);

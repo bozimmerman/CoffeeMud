@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Tell extends StdCommand
 	public Tell(){}
 
 	private final String[] access={"TELL","T"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -46,14 +47,14 @@ public class Tell extends StdCommand
 			mob.tell("You have QUIET mode on.  You must turn it off first.");
 			return false;
 		}
-		
+
 		if(commands.size()<3)
 		{
 			mob.tell("Tell whom what?");
 			return false;
 		}
 		commands.removeElementAt(0);
-		
+
 		if(((String)commands.firstElement()).equalsIgnoreCase("last")
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
@@ -81,7 +82,7 @@ public class Tell extends StdCommand
 			}
 			return false;
 		}
-		
+
 		MOB targetM=null;
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
 		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
@@ -114,14 +115,14 @@ public class Tell extends StdCommand
 			mob.tell("That person doesn't appear to be online.");
 			return false;
 		}
-		
+
 		if(CMath.bset(targetM.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell("That person can not hear you.");
 			return false;
 		}
-		
-		
+
+
 		Session ts=targetM.session();
 		try
 		{
@@ -132,7 +133,7 @@ public class Tell extends StdCommand
 		{
 			if(ts!=null) ts.snoopSuspension(-1);
 		}
-		
+
 		if((targetM.session()!=null)&&(targetM.session().isAfk()))
 		{
 			mob.tell(targetM.session().getAfkMessage());
@@ -140,8 +141,8 @@ public class Tell extends StdCommand
 		return false;
 	}
 	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

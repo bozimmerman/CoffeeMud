@@ -20,7 +20,7 @@ import java.util.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,43 +36,43 @@ import java.net.SocketException;
    limitations under the License.
 */
 /**
- * A Session object is the key interface between the internet user 
+ * A Session object is the key interface between the internet user
  * and their player MOB.  In fact, the presence of an attached session
  * object to a MOB is the only difference between an NPC MOB and a player MOB.
  * This object handles input, output, and related processes.
  */
 public interface Session extends CMCommon, Modifiable, CMRunnable
 {
-	
+
 	/**
-	 * Negotiates various telnet options (or attempts to), and 
+	 * Negotiates various telnet options (or attempts to), and
 	 * prints the introTextStr to the user.
 	 * @param s the socket the user connected from
 	 * @param groupName the name of the thread group the session goes to
 	 * @param introTextStr introductory text string (Hello!)
 	 */
 	public void initializeSession(Socket s, String groupName, String introTextStr);
-	
+
 	/**
 	 * Returns the group name to which this session belongs
 	 * @return the thread group name
 	 */
 	public String getGroupName();
-	
+
 	/**
 	 * Sets the group name to which this session belongs
 	 * @param group the thread group name
 	 */
 	public void setGroupName(String group);
-	
+
 	/**
-	 * Returns a list of standard/foreground telnet coded strings 
-	 * indexed by coffeemud color code.  May be from the standard list, 
+	 * Returns a list of standard/foreground telnet coded strings
+	 * indexed by coffeemud color code.  May be from the standard list,
 	 * or read from player records for a customized list.
 	 * @return telnet coded color strings.
 	 */
 	public String[] getColorCodes();
-	
+
 	/**
 	 * Low level text output method.
 	 * Implements such features as snoops, spam-stacking, page
@@ -82,7 +82,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param noCache true to disable line caching, false otherwise
 	 */
 	public void onlyPrint(String msg, boolean noCache);
-	
+
 	/**
 	 * Low level text output method.
 	 * Implements such features as snoops, spam-stacking.
@@ -91,16 +91,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void onlyPrint(String msg);
-	
+
 	/**
 	 * Lowest level user-output method.  Does nothing
 	 * but send the string to the user, period.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawCharsOut(char[])
 	 * @param msg the string to send to the user
 	 */
-	
+
 	public void rawOut(String msg);
-	
+
 	/**
 	 * Low level line-output method.  Sets the
 	 * prompt flag after write, and inserts
@@ -111,7 +111,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void rawPrintln(String msg);
-	
+
 	/**
 	 * Low level line-output method.  Sets the
 	 * prompt flag after write, and inserts
@@ -121,7 +121,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void rawPrint(String msg);
-	
+
 	/**
 	 * Higher-level line output method.  Does full
 	 * filtering of special characters and codes.
@@ -129,7 +129,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void stdPrint(String msg);
-	
+
 	/**
 	 * Higher-level line output method.  Does full
 	 * filtering of special characters and codes
@@ -144,7 +144,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 						 Environmental Target,
 						 Environmental Tool,
 						 String msg);
-	
+
 	/**
 	 * Higher-level line output method.  Does full
 	 * filtering of special characters and codes.
@@ -152,7 +152,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void stdPrintln(String msg);
-	
+
 	/**
 	 * Higher-level line output method.  Does full
 	 * filtering of special characters and codes
@@ -167,32 +167,32 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 						   Environmental Target,
 						   Environmental Tool,
 						   String msg);
-	
+
 	/**
 	 * Lowest level user-output method.  Does nothing
 	 * but send the string to the user, period.
 	 * @param c string (as char array) to send out to the user
 	 */
 	public void rawCharsOut(char[] c);
-	
+
 	/**
-	 * Checks whether this session is currently over its 
-	 * time limit trying to write data to its socket. 
+	 * Checks whether this session is currently over its
+	 * time limit trying to write data to its socket.
 	 * For some reason this happens, and this method
 	 * detects it.
 	 * @return true if something bas happened, false otherwise
 	 */
 	public boolean isLockedUpWriting();
-	
+
 	/**
 	 * Returns true if this session is merely a placeholder,
-	 * and does not represent an actual user connection.  
+	 * and does not represent an actual user connection.
 	 * Will ensure that the system continues to treat the
 	 * user as a mob.
 	 * @return true if this session is not a connection
 	 */
 	public boolean isFake();
-	
+
 	/**
 	 * Returns whether this session is engaged in a login/account
 	 * menu transaction.  If a loginsession is passed it, it will
@@ -202,7 +202,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if it is pending, false otherwise
 	 */
 	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -212,7 +212,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void print(String msg);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -221,7 +221,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void promptPrint(String msg);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes
@@ -237,7 +237,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 					  Environmental Target,
 					  Environmental Tool,
 					  String msg);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -247,7 +247,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void println(String msg);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes
@@ -264,7 +264,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 						Environmental Target,
 						Environmental Tool,
 						String msg);
-	
+
 	/**
 	 * Notifies this session to output the users prompt
 	 * again once it has reached a suitable lapse in
@@ -272,7 +272,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param truefalse true to send another prompt, false otherwise
 	 */
 	public void setPromptFlag(boolean truefalse);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -282,7 +282,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void wraplessPrintln(String msg);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -291,7 +291,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void wraplessPrint(String msg);
-	
+
 	/**
 	 * Lower-Medium-level text output method.  Does only the
 	 * parsing of color codes, no word wrapping, no codes.
@@ -301,7 +301,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param noCache true to disable line caching, false otherwise
 	 */
 	public void colorOnlyPrintln(String msg, boolean noCache);
-	
+
 	/**
 	 * Lower-Medium-level text output method.  Does only the
 	 * parsing of color codes, no word wrapping, no codes.
@@ -310,7 +310,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param noCache true to disable line caching, false otherwise
 	 */
 	public void colorOnlyPrint(String msg, boolean noCache);
-	
+
 	/**
 	 * Lower-Medium-level text output method.  Does only the
 	 * parsing of color codes, no word wrapping, no codes.
@@ -319,7 +319,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void colorOnlyPrintln(String msg);
-	
+
 	/**
 	 * Lower-Medium-level text output method.  Does only the
 	 * parsing of color codes, no word wrapping, no codes.
@@ -327,7 +327,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param msg the string to send to the user
 	 */
 	public void colorOnlyPrint(String msg);
-	
+
 	/**
 	 * Waits the given milliseconds for a key to be pressed, after which
 	 * it returns that key, or \0 if nothing pressed.
@@ -335,7 +335,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return the key pressed, or \0
 	 */
 	public char hotkey(long maxWait);
-	
+
 	/**
 	 * Prompts the user to enter a string, and then returns what
 	 * the enter.  Does not time out, but may throw an exception
@@ -350,7 +350,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String prompt(String Message, String Default)
 		throws IOException;
-	
+
 	/**
 	 * Puts the session into an input state, returning immediately.  The
 	 * given callback will be made when the ENTER key has been hit, and
@@ -360,7 +360,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param callBack the callback to modify and make when done
 	 */
 	public void prompt(InputCallback callBack);
-	
+
 	/**
 	 * Prompts the user to enter a string, and then returns what
 	 * the enter.  Possibly times out, and may throw an exception
@@ -376,7 +376,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String prompt(String Message, String Default, long maxTime)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter a string, and then returns what
 	 * the enter.  Does not time out, but may throw an exception
@@ -390,7 +390,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String prompt(String Message)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter a string, and then returns what
 	 * the enter.  Possibly times out, and may throw an exception
@@ -405,7 +405,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String prompt(final String Message, long maxTime)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter Y or N, and returns what they
 	 * enter.  Will not time out, but may throw an exception on
@@ -418,7 +418,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public boolean confirm(final String Message, final String Default)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter Y or N, and returns what they
 	 * enter. Possibly times out, and may throw an exception
@@ -436,7 +436,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Prompts the user to enter one character responses from a set of
 	 * valid choices.  Repeats the prompt if the user does not enter
-	 * a valid choice.  ENTER is a valid choice for Default. Does not time out, 
+	 * a valid choice.  ENTER is a valid choice for Default. Does not time out,
 	 * but may throw an exception on disconnnect.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String, long)
 	 * @param Message the prompt message to display to the user
@@ -447,11 +447,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String choose(final String Message, final String Choices, final String Default)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter one character responses from a set of
 	 * valid choices.  Repeats the prompt if the user does not enter
-	 * a valid choice.  ENTER is a valid choice for Default. Does not time out, 
+	 * a valid choice.  ENTER is a valid choice for Default. Does not time out,
 	 * but may throw an exception on disconnnect.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String, long)
 	 * @param Message the prompt message to display to the user
@@ -464,11 +464,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter one character responses from a set of
 	 * valid choices.  Repeats the prompt if the user does not enter
-	 * a valid choice.  ENTER is a valid choice for Default.   May time out, 
+	 * a valid choice.  ENTER is a valid choice for Default.   May time out,
 	 * and may throw an exception on disconnnect.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String)
 	 * @param Message the prompt message to display to the user
@@ -480,9 +480,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String choose(final String Message, final String Choices, final String Default, long maxTime)
 		throws IOException;
-	
+
 	/**
-	 * Notifies this session that the given session is snooping it.  
+	 * Notifies this session that the given session is snooping it.
 	 * This session will manage said snooping.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setBeingSnoopedBy(Session, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isBeingSnoopedBy(Session)
@@ -491,7 +491,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param onOff true to turn on snooping, false otherwise
 	 */
 	public void setBeingSnoopedBy(Session session, boolean onOff);
-	
+
 	/**
 	 * Checks to see if the given session is snooping on this one.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setBeingSnoopedBy(Session, boolean)
@@ -501,7 +501,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if the given session is snooping on me, false otherwise
 	 */
 	public boolean isBeingSnoopedBy(Session S);
-	
+
 	/**
 	 * Increments or decrements the snoop suspension counter
 	 * by the given amount.  Only when the counter is 0 does
@@ -513,7 +513,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return the current value of the snoop suspension counter after the change
 	 */
 	public int snoopSuspension(int change);
-	
+
 	/**
 	 * Force the current player to logoff, end the session, and/or kill the thread.
 	 * @param removeMOB true to remove the mob from the game
@@ -522,7 +522,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isStopped()
 	 */
 	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread);
-	
+
 	/**
 	 * Returns whether this session is done, or slated to be done.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logout(boolean)
@@ -530,14 +530,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if this session needs to go, false otherwise
 	 */
 	public boolean isStopped();
-	
+
 	/**
 	 * Allows the user to select a different character, taking them back to the login
 	 * prompt, or to the account character listing screen, whichever is appropriate.
 	 * @param removeMOB true to remove the mob from the game
 	 */
 	public void logout(boolean removeMOB);
-	
+
 	/**
 	 * Returns whether this mob/session is currently Away From Keyboard
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
@@ -545,7 +545,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if they are AFK, false otherwise
 	 */
 	public boolean isAfk();
-	
+
 	/**
 	 * Sets whether this mob/session is currently Away From Keyboard
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isAfk()
@@ -553,7 +553,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param truefalse true if they are AFK, false otherwise
 	 */
 	public void setAfkFlag(boolean truefalse);
-	
+
 	/**
 	 * Returns the reason given by the user that they are AFK.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
@@ -561,7 +561,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return  the reason given by the user that they are AFK.
 	 */
 	public String getAfkMessage();
-	
+
 	/**
 	 * Returns the reason given by the user that they are AFK.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
@@ -569,7 +569,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param str the reason given by the user that they are AFK.
 	 */
 	public void setAFKMessage(String str);
-	
+
 	/**
 	 * Blocks the current thread until the user attached to this session
 	 * hits ENTER, returning the characters they enter.  Completely filtered input.
@@ -579,186 +579,186 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public String blockingIn(long timeoutMillis)
 		throws IOException;
-	
+
 	/**
 	 * Blocks for a short amount of time, returning an input
-	 * string only if the user happens to have hit enter. 
+	 * string only if the user happens to have hit enter.
 	 * @return a string entered by the user
 	 * @throws IOException exceptions thrown, typically a timeout
 	 */
 	public String readlineContinue()
 		throws IOException, SocketException;
-	
+
 	/**
 	 * Returns a pre-parsed, pre-filtered Vector of strings
-	 * representing the last command entered by the user 
+	 * representing the last command entered by the user
 	 * through this session.
 	 * @return a vector of strings
 	 */
 	public List<String> getPreviousCMD();
-	
+
 	/**
 	 * Returns the player MOB attached to this session object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setMob(MOB)
 	 * @return  the player MOB attached to this session object.
 	 */
 	public MOB mob();
-	
+
 	/**
 	 * Sets the player MOB attached to this session object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#mob()
 	 * @param newmob the player MOB attached to this session object.
 	 */
 	public void setMob(MOB newmob);
-	
+
 	/**
 	 * Sets the player acount attached to this session object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#mob()
 	 * @param account the player account attached to this session object.
 	 */
 	public void setAccount(PlayerAccount account);
-	
+
 	/**
 	 * Returns the current color code.
 	 * @return the current color code.
 	 */
 	public ColorState getCurrentColor();
-	
+
 	/**
 	 * Sets the current color code.
 	 * @param newcolor the color to change it to
 	 */
 	public void setCurrentColor(final ColorState newcolor);
-	
+
 	/**
 	 * Returns the previous current color code.
 	 * @return the previous current color code.
 	 */
 	public ColorState getLastColor();
-	
+
 	/**
 	 * Returns the previous current color code.
 	 * @param newColor the color to change it to
 	 */
 	public void setLastColor(final ColorState newColor);
-	
+
 	/**
-	 * Gets the column number for engine word-wrapping. 
+	 * Gets the column number for engine word-wrapping.
 	 * 0 Means disabled.
-	 * 
+	 *
 	 * @return the wrap column
 	 */
 	public int getWrap();
-	
+
 	/**
 	 * Gets the current telnet clients ip address.
-	 * 
+	 *
 	 * @return the ip address
 	 */
 	public String getAddress();
-	
+
 	/**
 	 * Gets the tick/thread status of this session object.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus
 	 * @return the tick status
 	 */
 	public SessionStatus getStatus();
-	
+
 	/**
 	 * Sets the tick/thread status of this session object.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus
 	 * @return the tick status
 	 */
 	public void setStatus(SessionStatus newStatus);
-	
+
 	/**
 	 * Returns whether this session is waiting for input
-	 * 
+	 *
 	 * @return true if it is, false otherwise
 	 */
 	public boolean isWaitingForInput();
-	
+
 	/**
 	 * Gets the total milliseconds consumed by this session objects thread.
-	 * 
+	 *
 	 * @return the total milliseconds consumed
 	 */
 	public long getTotalMillis();
-	
+
 	/**
 	 * Gets the total number of ticks consumed by this session object thread.
-	 * 
+	 *
 	 * @return the total ticks consumed
 	 */
 	public long getTotalTicks();
-	
+
 	/**
 	 * Gets the number of milliseconds since a user entry was registered by this session
-	 * 
+	 *
 	 * @see Session#setIdleTimers()
 	 * @return the idle milliseconds passed
 	 */
 	public long getIdleMillis();
-	
+
 	/**
 	 * Resets the internal idle timers.
 	 * @see Session#getIdleMillis()
 	 */
 	public void setIdleTimers();
-	
+
 	/**
 	 * Gets the milliseconds elapsed since this user came online.
-	 * 
+	 *
 	 * @return the milliseconds online
 	 */
 	public long getMillisOnline();
-	
+
 	/**
 	 * Gets the milliseconds timestamp since this user last registered a pk fight.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastPKFight()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastNPCFight()
 	 * @return the last pk fight timestamp
 	 */
 	public long getLastPKFight();
-	
+
 	/**
 	 * Sets now as the milliseconds timestamp since this user last registered a pk fight.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastPKFight()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastNPCFight()
 	 */
 	public void setLastPKFight();
-	
+
 	/**
 	 * Gets the milliseconds timestamp since this user last registered a npc fight.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastPKFight()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastNPCFight()
 	 * @return the last npc fight timestamp
 	 */
 	public long getLastNPCFight();
-	
+
 	/**
 	 * Sets now as the milliseconds timestamp since this user last registered a npc fight.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastPKFight()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastNPCFight()
 	 */
 	public void setLastNPCFight();
-	
+
 	/**
 	 * Returns the last time in milliseconds that this session began its input loop.
 	 * Is typically only held up by executing a user command, so it is an accurate
 	 * gauge of a locked up user command.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setInputLoopTime()
-	 * 
+	 *
 	 * @return the last time in milliseconds that this session began its input loop
 	 */
 	public long getInputLoopTime();
-	
+
 	/**
 	 * Sets the last time in milliseconds that this session began its input loop.
 	 * Is typically only held up by executing a user command, so it is an accurate
@@ -766,76 +766,76 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getInputLoopTime()
 	 */
 	public void setInputLoopTime();
-	
+
 	/**
-	 * Whether this session is currently actively interacting with the user in 
+	 * Whether this session is currently actively interacting with the user in
 	 * some way -- whether this session currently has "thread time".
 	 * @return true if its active and running, false otherwise
 	 */
 	public boolean isRunning();
-	
+
 	/**
 	 * Returns a Vector of the last several message strings received by this user.
 	 * All are already previously filtered and parsed and ready to display.
-	 * 
+	 *
 	 * @return a vector of string message strings
 	 */
 	public List<String> getLastMsgs();
-	
+
 	/**
 	 * Gets the terminal type the user has
 	 * @return the terminal type
 	 */
 	public String getTerminalType();
-	
+
 	/**
 	 * Sets a server telnet mode flag.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getServerTelnetMode(int)
 	 * @param telnetCode the telnet code
 	 * @param onOff true to turn on, false to turn off the flag
 	 */
 	public void setServerTelnetMode(int telnetCode, boolean onOff);
-	
+
 	/**
 	 * Gets a server telnet mode flag.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
 	 * @param telnetCode the telnet code
-	 * 
+	 *
 	 * @return true, if server telnet mode is on, false otherwise
 	 */
 	public boolean getServerTelnetMode(int telnetCode);
-	
+
 	/**
 	 * Sets a client telnet mode flag.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getClientTelnetMode(int)
-	 * 
+	 *
 	 * @param telnetCode the telnet code
 	 * @param onOff true to turn on, false to turn off the flag
 	 */
 	public void setClientTelnetMode(int telnetCode, boolean onOff);
-	
+
 	/**
 	 * Gets a client telnet mode flag.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
-	 * 
+	 *
 	 * @param telnetCode the telnet code
-	 * 
+	 *
 	 * @return true, if client telnet mode is on, false otherwise
 	 */
 	public boolean getClientTelnetMode(int telnetCode);
-	
+
 	/**
 	 * Change telnet mode by sending the appropriate command to the clients client.
 	 * A response received later will trigger mode changed.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
@@ -843,36 +843,36 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param onOff true to turn on, false to turn off the flag
 	 */
 	public void changeTelnetMode(int telnetCode, boolean onOff);
-	
+
 	/**
 	 * Change telnet mode by negotiating the command to the clients client.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
 	 * @param telnetCode the telnet code
 	 */
 	public void negotiateTelnetMode(int telnetCode);
-	
+
 	/**
 	 * Initializes a telnet mode between this session and the connected client by negotiating
 	 * certain fundamental flags, like ANSI, MXP, and MSP.  It will use a bitmap of MOB flags
 	 * passed in as a guide.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getBitmap()
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#ATT_MXP
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#changeTelnetMode(int, boolean)
 	 * @param mobbitmap the mobbitmap the bitmap of mob flags to use as a guide in negotiation
 	 */
 	public void initTelnetMode(int mobbitmap);
-	
+
 	/**
 	 * Returns true if the given max tag will be accepted by the client.
 	 * @param tag the tag to check
 	 * @return true if allowed, false otherwise
 	 */
 	public boolean isAllowedMxp(String tag);
-	
+
 	/**
 	 * Potentially sends the GMCP event of the given name with the given json
 	 * doc.
@@ -880,13 +880,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param json the json doc, like {"blah":"BLAH"}
 	 */
 	public void sendGMCPEvent(final String eventName, final String json);
-	
+
 	/**
 	 * Send this session fake input as if the user had typed it in.
 	 * @param input text to send.
 	 */
 	public void setFakeInput(String input);
-	
+
 	/** TELNET CODE: transmit binary */
 	public static final int TELNET_BINARY=0;
 	/** TELNET CODE: echo */
@@ -947,7 +947,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_IAC=255;
 	/** Array String-friendly descriptions of the various telnet codes.  Indexed by code id 0-255*/
 	public static final String[] TELNET_DESCS=
-	{ 
+	{
 		"BINARY","ECHO","2","SUPRESS GO AHEAD","4","5","6","7","8","9", //0-9
 		"10","11","12","13","14","15","16","17","LOGOUT","19", //10-19
 		"20","21","22","23","TERMTYPE","25","26","27","28","29", //20-29
@@ -975,15 +975,15 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"SE","NOP","","","","","AYT","EC","","GA", //240-249
 		"SB","","","ANSI","","" 			 //250-255
 	};
-	
+
 	/* The charset recognized by MSDP is unknown, so assume std ascii */
-	public final static String MSDP_CHARSET = "US-ASCII"; 
-	
+	public final static String MSDP_CHARSET = "US-ASCII";
+
 	/** How to start a GMCP subnegotiation */
 	public final static byte[] TELNETBYTES_GMCP_HEAD=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
 	/** How to end a telnet subnegotiation */
 	public final static byte[] TELNETBYTES_END_SB=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
-	
+
 	/**
 	 * The internal class to managing asynchronous user input.
 	 * This class supports three types of input: open text (PROMPT),
@@ -1000,7 +1000,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 *
 		 */
 		public static enum Type { CONFIRM, PROMPT, CHOOSE }
-		
+
 		private final Type			type;
 		private final String		defaultInput;
 		private final String		choicesStr;
@@ -1009,7 +1009,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		protected volatile String	input		= "";
 		protected volatile boolean	confirmed	= false;
 		protected volatile boolean	waiting		= true;
-		
+
 		/**
 		 * Full constructor.  Receives the Type of processing, a default input for
 		 * when the user just hits ENTER, a list of one-character choices (if CHOOSE Type
@@ -1040,10 +1040,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			this.waiting=true;
 			this.defaultInput=defaultInput;
 		}
-		
+
 		/**
 		 * Constructor.  Receives the Type of processing, a default input for
-		 * when the user just hits ENTER,  and an amount of time, in ms, for 
+		 * when the user just hits ENTER,  and an amount of time, in ms, for
 		 * the user to be given before timeout and the timedOut() method is called.
 		 * @param type the type of processing
 		 * @param defaultInput default input value
@@ -1053,9 +1053,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		{
 			this(type, defaultInput, "", timeoutMs);
 		}
-		
+
 		/**
-		 * Constructor.  Receives the Type of processing, and an amount of time, in ms, 
+		 * Constructor.  Receives the Type of processing, and an amount of time, in ms,
 		 * for the user to be given before timeout and the timedOut() method is called.
 		 * @param type the type of processing
 		 * @param timeoutMs time, in ms, before the user is kicked
@@ -1064,7 +1064,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		{
 			this(type, "", timeoutMs);
 		}
-		
+
 		/**
 		 * Constructor.  Receives the Type of processing.
 		 * @param type the type of processing
@@ -1073,7 +1073,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		{
 			this(type, 0);
 		}
-		
+
 		/**
 		 * Constructor.  Receives the Type of processing, a default input for
 		 * when the user just hits ENTER.
@@ -1097,7 +1097,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 				waiting=false;
 			return isTimedOut;
 		}
-		
+
 		/**
 		 * Forces user-input into this class, potentially changing its user
 		 * input waiting state.  If the input is invalid for CONFIRM or CHOOSE,
@@ -1149,7 +1149,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			}
 			waiting=false;
 		}
-		
+
 		/**
 		 * Returns true if this class is currently waiting
 		 * for user input.
@@ -1159,9 +1159,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		{
 			return waiting;
 		}
-		
+
 		/**
-		 * This method allows reuse of a given InputCallback.  
+		 * This method allows reuse of a given InputCallback.
 		 * It will re-start the timeout period, and flag
 		 * the callback for requiring more input.
 		 * @return this
@@ -1175,7 +1175,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			confirmed=false;
 			return this;
 		}
-	
+
 		/**
 		 * This method is called by InputCallback before user
 		 * input is requested.  If a CHOOSE or CONFIRM type is
@@ -1200,7 +1200,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 */
 		public abstract void callBack();
 	}
-	
+
 	public abstract class TickingCallback extends InputCallback
 	{
 		protected volatile int counter=0;
@@ -1216,8 +1216,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		/**
 		 * TimeOutCallback has no prompt
 		 */
-		public void showPrompt() {}
-		public void callBack() {}
+		@Override public void showPrompt() {}
+		@Override public void callBack() {}
+		@Override
 		public void setInput(String input)
 		{
 			super.setInput(input);
@@ -1225,17 +1226,18 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			input="";
 			waiting=true;
 		}
+		@Override
 		public void timedOut()
 		{
 			timeout=System.currentTimeMillis()+timeoutMs;
 			waiting=true;
-			if(!tick(counter++)) 
+			if(!tick(counter++))
 			{
 				timeout=System.currentTimeMillis()-1;
 				waiting=false;
 			}
 		}
-		
+
 		/**
 		 * This method id called every ticker ms with an incremented
 		 * counter.  This is also where you control the process.
@@ -1285,7 +1287,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_LINEMODE_SLC_AYT=5;
 	/** Some sort of TELNET protocol constant related to LINEMODE -- I've no idea what it does */
 	public static final int TELNET_LINEMODE_SLC_EOR=6;
-	
+
 	/** For MSDP protocol, denotes variable start*/
 	public static final char MSDP_VAR			= 1;
 	/** For MSDP protocol, denotes value start*/
@@ -1298,9 +1300,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final char MSDP_ARRAY_OPEN	= 5;
 	/** For MSDP protocol, denotes array done*/
 	public static final char MSDP_ARRAY_CLOSE	= 6;
-	
 
-	/** 
+
+	/**
 	 * The status of the session, from opening handshake, to final goodbyes
 	 * @author BZ
 	 */

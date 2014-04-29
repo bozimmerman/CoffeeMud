@@ -132,7 +132,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -142,7 +142,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -152,7 +152,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -162,7 +162,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -172,7 +172,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -182,7 +182,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -205,7 +205,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((t==null ? pair.first==null : t.equals(pair.first))) 
+			if((t==null ? pair.first==null : t.equals(pair.first)))
 			{
 				i.remove();
 				return true;
@@ -219,7 +219,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((k==null ? pair.second==null : k.equals(pair.second))) 
+			if((k==null ? pair.second==null : k.equals(pair.second)))
 			{
 				i.remove();
 				return true;
@@ -233,7 +233,7 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((l==null ? pair.third==null : l.equals(pair.third))) 
+			if((l==null ? pair.third==null : l.equals(pair.third)))
 			{
 				i.remove();
 				return true;

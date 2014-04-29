@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 
 public class Druid_ShapeShift2 extends Druid_ShapeShift
 {
-	public String ID() { return "Druid_ShapeShift2"; }
-	public String name(){ return "Second Totem";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String[] triggerStrings(){return empty;}
+	@Override public String ID() { return "Druid_ShapeShift2"; }
+	@Override public String name(){ return "Second Totem";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String[] triggerStrings(){return empty;}
 
 
 }

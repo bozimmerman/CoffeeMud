@@ -22,20 +22,22 @@ public class ReverseEnumeration<K> implements Enumeration<K>
 {
 	private int index;
 	private final List<K> set;
-	public ReverseEnumeration(List<K> eset) 
+	public ReverseEnumeration(List<K> eset)
 	{
 		set=eset;
 		index=set.size();
 		hasMoreElements();
 	}
-	
-	public boolean hasMoreElements() 
-	{ 
+
+	@Override
+	public boolean hasMoreElements()
+	{
 		while(index>set.size()) index--;
 		return (index>0);
 	}
-	
-	public K nextElement() 
+
+	@Override
+	public K nextElement()
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();

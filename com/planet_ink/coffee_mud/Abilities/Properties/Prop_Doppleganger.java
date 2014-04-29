@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class Prop_Doppleganger extends Property
 {
-	public String ID() { return "Prop_Doppleganger"; }
-	public String name(){ return "Doppleganger";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_Doppleganger"; }
+	@Override public String name(){ return "Doppleganger";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	//protected boolean lastLevelChangers=true;
 	protected Physical lastOwner=null;
 	private int maxLevel=Integer.MAX_VALUE;
@@ -47,11 +47,13 @@ public class Prop_Doppleganger extends Property
 	protected boolean matchPlayersOnly=false;
 	protected boolean matchPlayersFollowersOnly=false;
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Level Changer";	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -75,6 +77,7 @@ public class Prop_Doppleganger extends Property
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof Item)
@@ -102,7 +105,7 @@ public class Prop_Doppleganger extends Property
 	{
 		if((mob==affected)||(mob==null)) return false;
 		if(mob.fetchEffect(ID())!=null) return false;
-		if(mob.isMonster()) 
+		if(mob.isMonster())
 		{
 			if(matchPlayersFollowersOnly)
 			{
@@ -111,7 +114,7 @@ public class Prop_Doppleganger extends Property
 			}
 			return (!matchPlayersOnly);
 		}
-		
+
 		if((!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDMOBS))
 		&&(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDROOMS))
 		&&(!CMLib.flags().isUnattackable(mob)))
@@ -119,6 +122,7 @@ public class Prop_Doppleganger extends Property
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Charm extends Spell
 {
-	public String ID() { return "Spell_Charm"; }
-	public String name(){return "Charm";}
-	public String displayText(){return "(Charmed)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public long flags(){return Ability.FLAG_CHARMING;}
+	@Override public String ID() { return "Spell_Charm"; }
+	@Override public String name(){return "Charm";}
+	@Override public String displayText(){return "(Charmed)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public long flags(){return Ability.FLAG_CHARMING;}
 
 	protected MOB charmer=null;
 	protected MOB getCharmer()
@@ -60,6 +60,7 @@ public class Spell_Charm extends Spell
 		return charmer;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -72,7 +73,8 @@ public class Spell_Charm extends Spell
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -118,6 +120,7 @@ public class Spell_Charm extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
@@ -136,6 +139,7 @@ public class Spell_Charm extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -147,7 +151,7 @@ public class Spell_Charm extends Spell
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			
+
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
@@ -166,6 +170,7 @@ public class Spell_Charm extends Spell
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -182,7 +187,8 @@ public class Spell_Charm extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

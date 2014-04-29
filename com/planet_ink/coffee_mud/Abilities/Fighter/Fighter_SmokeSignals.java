@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_SmokeSignals extends FighterSkill
 {
-	public String ID() { return "Fighter_SmokeSignals"; }
-	public String name(){ return "Smoke Signals";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String ID() { return "Fighter_SmokeSignals"; }
+	@Override public String name(){ return "Smoke Signals";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -83,6 +84,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		return fire;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.isInCombat()))

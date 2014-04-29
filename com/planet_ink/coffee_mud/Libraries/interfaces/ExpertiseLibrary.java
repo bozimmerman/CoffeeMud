@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,9 +61,10 @@ public interface ExpertiseLibrary extends CMLibrary
 		private MaskingLibrary.CompiledZapperMask compiledListMask=null;
 		public ExpertiseDefinition parent=null;
 		private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
-		
-		public String name() 
-		{ 
+
+		@Override
+		public String name()
+		{
 			return name;
 		}
 		public int getMinimumLevel()
@@ -114,7 +115,7 @@ public interface ExpertiseLibrary extends CMLibrary
 			compiledListMask=null;
 		}
 		public void addFinalMask(String mask)
-		{ 
+		{
 			if((mask==null)||(mask.length()==0)) return;
 			if(uncompiledFinalMask==null)
 				uncompiledFinalMask=mask;
@@ -123,7 +124,7 @@ public interface ExpertiseLibrary extends CMLibrary
 			compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
 			CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
 		}
-		
+
 		private List<SkillCost> costs=new LinkedList<SkillCost>();
 		public void addCost(CostType type, Double value)
 		{
@@ -149,21 +150,21 @@ public interface ExpertiseLibrary extends CMLibrary
 			for(SkillCost cost : costs)
 				cost.spendSkillCost(mob);
 		}
-		public int compareTo(CMObject o) { return (o==this)?0:1; }
-		public String ID() { return ID; }
-		public CMObject newInstance() { return this; }
-		public CMObject copyOf() { return this; }
-		public void initializeClass() {}
+		@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+		@Override public String ID() { return ID; }
+		@Override public CMObject newInstance() { return this; }
+		@Override public CMObject copyOf() { return this; }
+		@Override public void initializeClass() {}
 		public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	}
-	
+
 	/** Enumeration of the types of costs of gaining this ability */
 	public enum    CostType
 	{
-		TRAIN, 
-		PRACTICE, 
-		XP, 
-		GOLD, 
+		TRAIN,
+		PRACTICE,
+		XP,
+		GOLD,
 		QP;
 	}
 
@@ -175,14 +176,14 @@ public interface ExpertiseLibrary extends CMLibrary
 	{
 		public final CostType type;
 		public final String costDefinition;
-		
+
 		public SkillCostDefinition(final CostType type, final String costDefinition)
 		{
 			this.type=type;
 			this.costDefinition=costDefinition;
 		}
 	}
-	
+
 	/**
 	 * Class for the cost of a skill, or similar things perhaps
 	 * @author Bo Zimmerman
@@ -197,12 +198,12 @@ public interface ExpertiseLibrary extends CMLibrary
 			this.value=value;
 			this.costType=costType;
 		}
-		
+
 		/**
-		 * Returns a simple description of the Type of 
+		 * Returns a simple description of the Type of
 		 * this cost.  A MOB and sample value is required for
 		 * money currencies.
-		 * @param mob MOB, for GOLD type currency eval 
+		 * @param mob MOB, for GOLD type currency eval
 		 * @return the type of currency
 		 */
 		public String costType(final MOB mob)
@@ -218,7 +219,7 @@ public interface ExpertiseLibrary extends CMLibrary
 			}
 			return ofWhat;
 		}
-		
+
 		public String requirements(final MOB mob)
 		{
 			switch(costType)
@@ -236,7 +237,7 @@ public interface ExpertiseLibrary extends CMLibrary
 								   :CMLib.english().makePlural(costType.name().toLowerCase()));
 			}
 		}
-		
+
 		/**
 		 * Returns whether the given mob meets the given cost requirements.
 		 * @param student the student to check

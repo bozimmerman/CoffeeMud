@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,21 @@ import java.util.*;
 */
 public class Jelly extends Unique
 {
-	public String ID(){	return "Jelly"; }
-	public String name(){ return "Jelly"; }
-	public int shortestMale(){return 24;}
-	public int shortestFemale(){return 20;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 200;}
-	public int weightVariance(){return 200;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Slime";}
-	public boolean fertile(){return true;}
+	@Override public String ID(){	return "Jelly"; }
+	@Override public String name(){ return "Jelly"; }
+	@Override public int shortestMale(){return 24;}
+	@Override public int shortestFemale(){return 20;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 200;}
+	@Override public int weightVariance(){return 200;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Slime";}
+	@Override public boolean fertile(){return true;}
 
-	public String arriveStr() { return "sloshes in"; }
-	public String leaveStr() { return "sloshes"; }
-	
+	@Override public String arriveStr() { return "sloshes in"; }
+	@Override public String leaveStr() { return "sloshes"; }
+
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -62,6 +63,7 @@ public class Jelly extends Unique
 		return naturalWeapon;
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -74,6 +76,7 @@ public class Jelly extends Unique
 		}
 		return resources;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -82,7 +85,7 @@ public class Jelly extends Unique
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" puddle";
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}

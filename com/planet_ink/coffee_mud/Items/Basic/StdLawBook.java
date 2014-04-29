@@ -18,7 +18,7 @@ import java.util.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.io.IOException;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdLawBook extends StdItem
 {
-	public String ID(){	return "StdLawBook";}
+	@Override public String ID(){	return "StdLawBook";}
 	public StdLawBook()
 	{
 		super();
@@ -50,6 +50,7 @@ public class StdLawBook extends StdItem
 
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -62,6 +63,7 @@ public class StdLawBook extends StdItem
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -81,7 +83,7 @@ public class StdLawBook extends StdItem
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
-				
+
 				Area A2=CMLib.law().getLegalObject(A);
 				Law theLaw=B.legalInfo(A2);
 				if(theLaw==null)
@@ -268,7 +270,7 @@ public class StdLawBook extends StdItem
 			String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
 			int x=CMath.s_int(s);
 			if(x==0) return oldLaw;
-			oldLaw=oldLaw.clone(); 
+			oldLaw=oldLaw.clone();
 			switch(x)
 			{
 			case 1:
@@ -584,7 +586,7 @@ public class StdLawBook extends StdItem
 					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
-						if(newValue!=null) 
+						if(newValue!=null)
 							theLaw.otherBits().set(x-1,newValue);
 						else
 						{
@@ -681,7 +683,7 @@ public class StdLawBook extends StdItem
 					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
-						if(newValue!=null) 
+						if(newValue!=null)
 							theLaw.bannedBits().set(x-1,newValue);
 						else
 						{
@@ -736,7 +738,7 @@ public class StdLawBook extends StdItem
 					&&(CMLib.flags().getAbilityType(key)<0)
 					&&(CMLib.flags().getAbilityDomain(key)<0))
 				||(set==null)
-				||(set.length<Law.BIT_NUMBITS)) 
+				||(set.length<Law.BIT_NUMBITS))
 					continue;
 				filteredTable.put(key.toUpperCase(),set);
 			}
@@ -856,7 +858,7 @@ public class StdLawBook extends StdItem
 			{
 				room=V.get(0);
 				if(V.size()>1) item=CMParms.combine(V,1);
-				if(room.equalsIgnoreCase("*")) 
+				if(room.equalsIgnoreCase("*"))
 					str.append("Any (*)");
 				else
 				{
@@ -1362,11 +1364,11 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doOfficersAndJudges(Area A, 
+	public void doOfficersAndJudges(Area A,
 									LegalBehavior B,
 									Area legalO,
-									Law theLaw, 
-									MOB mob, 
+									Law theLaw,
+									MOB mob,
 									boolean allowedToModify)
 		throws IOException
 	{

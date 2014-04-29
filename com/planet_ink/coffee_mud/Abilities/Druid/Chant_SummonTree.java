@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonTree extends Chant_SummonPlants
 {
-	public String ID() { return "Chant_SummonTree"; }
-	public String name(){ return "Summon Tree";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonTree"; }
+	@Override public String name(){ return "Summon Tree";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected int material=0;
 	protected int oldMaterial=-1;
 
+	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		int code=material&RawMaterial.RESOURCE_MASK;
@@ -78,6 +79,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		return newItem;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -99,6 +101,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(PlantsLocation!=null)&&(oldMaterial>=0))
@@ -106,6 +109,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

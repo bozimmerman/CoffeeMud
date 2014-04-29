@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,22 +35,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Purify extends Prayer
 {
-	public String ID() { return "Prayer_Purify"; }
-	public String name(){ return "Purify";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public String ID() { return "Prayer_Purify"; }
+	@Override public String name(){ return "Purify";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 
+	@Override
 	public void affectPhyStats(Physical affecting, PhyStats stats)
 	{
 		if((affecting instanceof Decayable)&&(((Decayable)affecting).decayTime()>0))
 			((Decayable)affecting).setDecayTime(0);
 		super.affectPhyStats(affecting,stats);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);

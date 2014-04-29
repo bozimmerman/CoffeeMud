@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 /**
  * A climate represents the entire weather pattern of an area
- * It does most of the mundane things related to weather 
+ * It does most of the mundane things related to weather
  * changes based on season, area, and other factors.
  */
 public interface Climate extends Tickable, CMCommon
@@ -116,7 +116,7 @@ public interface Climate extends Tickable, CMCommon
 	 */
 	public boolean canSeeTheSun(Room room);
 	/**
-	 * Returns a readable string describing the 
+	 * Returns a readable string describing the
 	 * weather conditions in the given area, assuming
 	 * this climate is the correct one.
 	 * @param A the area to evaluate
@@ -191,5 +191,5 @@ public interface Climate extends Tickable, CMCommon
 	/**  descriptive strings for the Climate.WEATHER_* constants, ordered by their value. @see Climate */
 	public final static String[] WEATHER_DESCS=
 	{ "CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"};
-	
+
 }

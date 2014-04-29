@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Play_LoveSong extends Play
 {
-	public String ID() { return "Play_LoveSong"; }
-	public String name(){ return "Love Song";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return "a "+name();}
+	@Override public String ID() { return "Play_LoveSong"; }
+	@Override public String name(){ return "Love Song";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return "a "+name();}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -99,6 +100,7 @@ public class Play_LoveSong extends Play
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -108,7 +110,8 @@ public class Play_LoveSong extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

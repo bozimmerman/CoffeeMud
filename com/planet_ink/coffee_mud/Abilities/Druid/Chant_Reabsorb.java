@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Reabsorb extends Chant
 {
-	public String ID() { return "Chant_Reabsorb"; }
-	public String name(){return "Reabsorb";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	protected int canAffectCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_Reabsorb"; }
+	@Override public String name(){return "Reabsorb";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -68,13 +69,14 @@ public class Chant_Reabsorb extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
-	
+
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
-		
+
 		List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<V.size();v++)
 		{

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WellDressed extends Spell
 {
-	public String ID() { return "Spell_WellDressed"; }
-	public String name(){return "Well Dressed";}
-	public String displayText(){return "(Well Dressed)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+	@Override public String ID() { return "Spell_WellDressed"; }
+	@Override public String name(){return "Well Dressed";}
+	@Override public String displayText(){return "(Well Dressed)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 	protected int dressCode=1;
-	
-	private static final String[] triggerStrings = {"CAST"};
-	public String[] triggerStrings(){return triggerStrings;}
 
+	private static final String[] triggerStrings = {"CAST"};
+	@Override public String[] triggerStrings(){return triggerStrings;}
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -53,14 +54,16 @@ public class Spell_WellDressed extends Spell
 	}
 
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		if(CMath.isInteger(newText)) dressCode=CMath.s_int(newText);
 	}
-	
-	public String text(){return ""+dressCode;}
-	
+
+	@Override public String text(){return ""+dressCode;}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -75,6 +78,7 @@ public class Spell_WellDressed extends Spell
 		*/
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -89,6 +93,7 @@ public class Spell_WellDressed extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int newDressCode=1;

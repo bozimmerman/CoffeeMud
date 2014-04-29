@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,10 +37,10 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FileMgr extends StdWebMacro
 {
-	public String name() { return "FileMgr"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "FileMgr"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
-	
+
 	public boolean matches(String s1, String s2)
 	{
 		if(s1.length()==0) return true;
@@ -57,7 +57,7 @@ public class FileMgr extends StdWebMacro
 			return s2.toUpperCase().startsWith(s1.toUpperCase().substring(0,s1.length()-1));
 		return s1.equalsIgnoreCase(s2);
 	}
-	
+
 	public void compileFilenamesList(CMFile F, String regex, Vector V)
 	{
 		if((!F.canRead())||(!F.isDirectory())) return;
@@ -85,8 +85,9 @@ public class FileMgr extends StdWebMacro
 				V.addElement(files.elementAt(f));
 		}
 	}
-	
-	
+
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -105,7 +106,7 @@ public class FileMgr extends StdWebMacro
 			if((filePath.length()>2)&&(!filePath.endsWith("/")))
 				filePath+="/";
 			String prefix="";
-			if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
+			if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH"))
 			{
 				if(filePath.startsWith("//")||filePath.startsWith("::"))
 					filePath=filePath.substring(2);
@@ -132,7 +133,7 @@ public class FileMgr extends StdWebMacro
 			{
 				String s=httpReq.getUrlParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
-				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
+				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH"))
 				{
 					StringBuilder returnMsg=new StringBuilder("");
 					/*
@@ -190,7 +191,7 @@ public class FileMgr extends StdWebMacro
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
 				String s=parms.get("STR");
-				if((s==null)||(s.length()==0)) 
+				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
 				Vector compiledList=new Vector();
 				compileFilenamesList(F, s, compiledList);
@@ -212,7 +213,7 @@ public class FileMgr extends StdWebMacro
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
 				String s=parms.get("STR");
-				if((s==null)||(s.length()==0)) 
+				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
 				Vector fileList=new Vector();
 				compileFilenamesList(F,"", fileList);

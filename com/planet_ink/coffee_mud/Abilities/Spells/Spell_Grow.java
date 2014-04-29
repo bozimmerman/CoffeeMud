@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Grow extends Spell
 {
-	public String ID() { return "Spell_Grow"; }
-	public String name(){return "Grow";}
-	public String displayText(){return "(Grow)";}
-	protected int canTargetCode(){return CAN_MOBS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	
+	@Override public String ID() { return "Spell_Grow"; }
+	@Override public String name(){return "Grow";}
+	@Override public String displayText(){return "(Grow)";}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
 	protected int getOldWeight()
 	{
 		if(!CMath.isInteger(text()))
@@ -54,6 +54,7 @@ public class Spell_Grow extends Spell
 		return CMath.s_int(text());
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -63,7 +64,8 @@ public class Spell_Grow extends Spell
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -71,6 +73,7 @@ public class Spell_Grow extends Spell
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker().phyStats().level()+(2*getXLEVELLevel(invoker())))/5));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affected instanceof MOB)
@@ -87,6 +90,7 @@ public class Spell_Grow extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -117,7 +121,7 @@ public class Spell_Grow extends Spell
 					double aff=1.0 + CMath.mul(0.1,(target.phyStats().level()));
 					aff=aff*aff;
 					beneficialAffect(mob,target,asLevel,0);
-				
+
 					A=target.fetchEffect(ID());
 					if(A!=null)
 					{

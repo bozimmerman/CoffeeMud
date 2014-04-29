@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,23 +37,24 @@ import java.util.*;
 */
 public class DefaultManufacturer implements Manufacturer
 {
-	public String ID(){return "DefaultManufacturer";}
+	@Override public String ID(){return "DefaultManufacturer";}
 	protected String 	name			= "ACME";
 	protected byte 		maxTechLevelDiff= 10;
 	protected byte 		minTechLevelDiff= 0;
 	protected double	efficiency		= 1.0;
 	protected double	reliability		= 1.0;
 	protected String	rawItemMask		= "";
-	
+
 	protected Set<TechType> types		= new HashSet<TechType>();
-	
+
 	protected MaskingLibrary.CompiledZapperMask compiledItemMask = null;
-	
-	public String name() { return name;}
-	
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override public String name() { return name;}
+
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -65,57 +66,68 @@ public class DefaultManufacturer implements Manufacturer
 			return newInstance();
 		}
 	}
-	
+
+	@Override
 	public byte getMaxTechLevelDiff()
 	{
 		return maxTechLevelDiff;
 	}
 
+	@Override
 	public void setMaxTechLevelDiff(byte max)
 	{
 		this.maxTechLevelDiff = max;
 	}
-	
+
+	@Override
 	public byte getMinTechLevelDiff()
 	{
 		return minTechLevelDiff;
 	}
 
+	@Override
 	public void setMinTechLevelDiff(byte min)
 	{
 		this.minTechLevelDiff = min;
 	}
-	
+
+	@Override
 	public void setName(String name)
 	{
 		this.name=name;
 	}
 
+	@Override
 	public double getEfficiencyPct()
 	{
 		return efficiency;
 	}
 
+	@Override
 	public void setEfficiencyPct(double pct)
 	{
 		efficiency=CMath.div(Math.round(pct*100),100.0);
 	}
-	
+
+	@Override
 	public double getReliabilityPct()
 	{
 		return reliability;
 	}
-	
-	
+
+
+	@Override
 	public void setReliabilityPct(double pct)
 	{
 		reliability=CMath.div(Math.round(pct*100),100.0);
 	}
 
+	@Override
 	public String getItemMaskStr()
 	{
 		return rawItemMask;
 	}
+	@Override
 	public void setItemMask(String newMask)
 	{
 		if((newMask==null)||(newMask.trim().length()==0))
@@ -130,10 +142,11 @@ public class DefaultManufacturer implements Manufacturer
 			compiledItemMask=CMLib.masking().getPreCompiledMask(rawItemMask);
 		}
 	}
-	
+
+	@Override
 	public boolean isManufactureredType(Technical T)
 	{
-		if(T==null) 
+		if(T==null)
 			return false;
 		if(types.contains(TechType.ANY))
 			return true;
@@ -142,12 +155,14 @@ public class DefaultManufacturer implements Manufacturer
 				return true;
 		return false;
 	}
-	
+
+	@Override
 	public String getManufactureredTypesList()
 	{
 		return CMParms.toStringList(types);
 	}
-	
+
+	@Override
 	public void setManufactureredTypesList(String list)
 	{
 		Set<TechType> newTypes=new HashSet<TechType>();
@@ -159,12 +174,14 @@ public class DefaultManufacturer implements Manufacturer
 		}
 		this.types=newTypes;
 	}
-	
+
+	@Override
 	public MaskingLibrary.CompiledZapperMask getItemMask()
 	{
 		return compiledItemMask;
 	}
-	
+
+	@Override
 	public String getXml()
 	{
 		StringBuilder xml=new StringBuilder("");
@@ -177,7 +194,8 @@ public class DefaultManufacturer implements Manufacturer
 		xml.append("<RELIABILITY>"+reliability+"</RELIABILITY>");
 		return xml.toString();
 	}
-	
+
+	@Override
 	public void setXml(String xml)
 	{
 		List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);

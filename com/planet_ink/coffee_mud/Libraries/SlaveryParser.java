@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,10 +37,11 @@ import java.util.*;
 
 public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 {
-	public String ID(){return "SlaveryParser";}
-	public boolean tick(Tickable ticking, int tickID) { return true; }
+	@Override public String ID(){return "SlaveryParser";}
+	@Override public boolean tick(Tickable ticking, int tickID) { return true; }
 	public Object[] fpmap=null;
-	
+
+	@Override
 	public List<Map<String,String>> findMatch(MOB mob, List<String> prereq)
 	{
 		List<Map<String,String>> possibilities=new Vector<Map<String,String>>();
@@ -70,8 +71,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			while((!reject)&&(ci<chk.length)&&(ri<req.length))
 			{
 				if(chk[ci].equals(req[ri]))
-				{ 
-					ci++; ri++; 
+				{
+					ci++; ri++;
 					reject=false;
 				}
 				else
@@ -163,6 +164,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		return possibilities;
 	}
 
+	@Override
 	public String cleanWord(String s)
 	{
 		String chars=".,;!?'";
@@ -177,6 +179,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		return s;
 	}
 
+	@Override
 	public geasSteps processRequest(MOB you, MOB me, String req)
 	{
 		Vector<String> REQ=CMParms.parse(req.toLowerCase().trim());

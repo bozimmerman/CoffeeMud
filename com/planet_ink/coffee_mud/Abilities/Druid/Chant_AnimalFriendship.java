@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_AnimalFriendship extends Chant
 {
-	public String ID() { return "Chant_AnimalFriendship"; }
-	public String name(){ return "Animal Friendship";}
-	public String displayText(){return "(Animal Friendship)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_AnimalFriendship"; }
+	@Override public String name(){ return "Animal Friendship";}
+	@Override public String displayText(){return "(Animal Friendship)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
@@ -67,6 +68,7 @@ public class Chant_AnimalFriendship extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -81,6 +83,7 @@ public class Chant_AnimalFriendship extends Chant
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

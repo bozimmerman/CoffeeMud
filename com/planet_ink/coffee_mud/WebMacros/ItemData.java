@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ItemData extends StdWebMacro
 {
-	public String name() { return "ItemData"; }
+	@Override public String name() { return "ItemData"; }
 
 	private static final String[] okparms={
 	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -62,13 +62,14 @@ public class ItemData extends StdWebMacro
 	  "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
 	  "CATALIVE","CATAMASK","BITE","MAXUSES","ISELECTRONIC",
 	  "CATACAT"};
-	
+
 	public ItemData()
 	{
 		super();
 
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -1010,7 +1011,7 @@ public class ItemData extends StdWebMacro
 		}
 		return "";
 	}
-	
+
 	public static StringBuffer readableSpells(SpellHolder P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");

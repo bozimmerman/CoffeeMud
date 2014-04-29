@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CallUndead extends Prayer
 {
-	public String ID() { return "Prayer_CallUndead"; }
-	public String name(){return "Call Undead";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Prayer_CallUndead"; }
+	@Override public String name(){return "Call Undead";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room oldRoom=null;
@@ -59,13 +60,13 @@ public class Prayer_CallUndead extends Prayer
 		{
 			MOB M=(MOB)i.next();
 			if((M!=mob)&&(M.location()!=mob.location())&&(M.location()!=null))
-			{ 
+			{
 				allHere=false;
 				if((CMLib.flags().canAccess(mob,M.location()))
 				&&(!CMLib.flags().isTracking(M)))
 				{
 					target=M;
-					oldRoom=M.location(); 
+					oldRoom=M.location();
 					break;
 				}
 			}
@@ -87,7 +88,7 @@ public class Prayer_CallUndead extends Prayer
 
 		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
-		
+
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?");

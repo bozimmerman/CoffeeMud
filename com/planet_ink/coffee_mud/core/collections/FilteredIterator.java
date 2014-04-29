@@ -24,13 +24,13 @@ public class FilteredIterator<K> implements Iterator<K>
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredIterator(Iterator<K> eset, Filterer<K> fil) 
+	public FilteredIterator(Iterator<K> eset, Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
-	
-	public void setFilterer(Filterer<K> fil) 
+
+	public void setFilterer(Filterer<K> fil)
 	{
 		filterer=fil;
 	}
@@ -46,7 +46,7 @@ public class FilteredIterator<K> implements Iterator<K>
 			nextElement = null;
 		}
 	}
-	
+
 	private void initialize()
 	{
 		if(!initialized)
@@ -55,15 +55,17 @@ public class FilteredIterator<K> implements Iterator<K>
 			initialized=true;
 		}
 	}
-	
-	public boolean hasNext() 
-	{ 
+
+	@Override
+	public boolean hasNext()
+	{
 		if(!initialized)
 			initialize();
 		return nextElement!=null;
 	}
-	
-	public K next() 
+
+	@Override
+	public K next()
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
@@ -72,6 +74,7 @@ public class FilteredIterator<K> implements Iterator<K>
 		return element;
 	}
 
+	@Override
 	public void remove()
 	{
 		throw new NoSuchElementException();

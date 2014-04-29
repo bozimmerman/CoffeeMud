@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -35,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AreaData extends StdWebMacro
 {
-	public String name() { return "AreaData"; }
+	@Override public String name() { return "AreaData"; }
 
 
 	public static StringBuffer behaves(PhysicalAgent E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
@@ -119,7 +120,7 @@ public class AreaData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public static StringBuffer affects(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -194,6 +195,7 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -256,9 +258,9 @@ public class AreaData extends StdWebMacro
 						}
 					}
 					str.append("<OPTION VALUE=-1 "+((climate<0)?"SELECTED":"")+">Inherited");
-					for(int i=1;i<Area.NUM_CLIMATES;i++)
+					for(int i=1;i<Places.NUM_CLIMATES;i++)
 					{
-						String climstr=Area.CLIMATE_DESCS[i];
+						String climstr=Places.CLIMATE_DESCS[i];
 						int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
 						if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");
@@ -633,7 +635,7 @@ public class AreaData extends StdWebMacro
 				if(A instanceof AutoGenArea)
 				{
 					AutoGenArea AG=(AutoGenArea)A;
-					
+
 					if(parms.containsKey("AGAUTOVAR"))
 					{
 						String value=httpReq.getUrlParameter("AGAUTOVAR");

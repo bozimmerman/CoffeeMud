@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,12 @@ public class Qualify  extends Skills
 	public Qualify(){}
 
 	private final String[] access={"QUALIFY","QUAL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
-											  MOB ableM, 
-											  int ofType, 
-											  int ofDomain, 
+											  MOB ableM,
+											  int ofType,
+											  int ofDomain,
 											  String prefix,
 											  boolean shortOnly)
 	{
@@ -126,6 +126,7 @@ public class Qualify  extends Skills
 		return msg;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -285,7 +286,7 @@ public class Qualify  extends Skills
 				}
 			}
 		}
-		
+
 		if(mob!=null)
 		{
 			if(msg.length()==0)
@@ -307,14 +308,14 @@ public class Qualify  extends Skills
 					msg.append("\n\r^HYou may learn ^w"+limits.nonCraftingSkills+"^H more non-crafting common skills.^N");
 				mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 				mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
-				if(classesFound) 
+				if(classesFound)
 					mob.tell("\n\rUse the TRAIN command to train for a new class.");
 			}
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

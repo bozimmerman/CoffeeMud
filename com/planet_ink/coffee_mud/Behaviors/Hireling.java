@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Hireling extends StdBehavior
 {
-	public String ID(){return "Hireling";}
+	@Override public String ID(){return "Hireling";}
 
 	protected Hashtable partials=new Hashtable();
 	protected String workingFor="";
@@ -46,8 +46,9 @@ public class Hireling extends StdBehavior
 	protected int minutes=30;
 	protected String zapperMask=null;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "availability for hiring";
 	}
 
@@ -62,7 +63,7 @@ public class Hireling extends StdBehavior
 				price=CMath.s_long(s);
 		}
 	}
-	
+
 	public void setMinutes(String s)
 	{
 		minutes=30;
@@ -74,7 +75,8 @@ public class Hireling extends StdBehavior
 				minutes=(int)CMath.s_long(s);
 		}
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -140,6 +142,7 @@ public class Hireling extends StdBehavior
 			observer.getStartRoom().bringMobHere(observer,false);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -199,6 +202,7 @@ public class Hireling extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		MOB source=msg.source();
@@ -238,6 +242,7 @@ public class Hireling extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -254,7 +259,7 @@ public class Hireling extends StdBehavior
 		&&(!msg.amISource(observer))
 		&&(!msg.source().isMonster()))
 		{
-			final String upperSrcMsg=msg.sourceMessage() == null ? "" : msg.sourceMessage().toUpperCase(); 
+			final String upperSrcMsg=msg.sourceMessage() == null ? "" : msg.sourceMessage().toUpperCase();
 			if(((upperSrcMsg.indexOf(" HIRE")>0)
 				||(upperSrcMsg.indexOf("'HIRE")>0)
 				||(upperSrcMsg.indexOf("WORK")>0)

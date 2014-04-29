@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WallOfStone extends Spell
 {
-	public String ID() { return "Spell_WallOfStone"; }
-	public String name(){return "Wall of Stone";}
-	public String displayText(){return "(Wall of Stone)";}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 1;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_WallOfStone"; }
+	@Override public String name(){return "Wall of Stone";}
+	@Override public String displayText(){return "(Wall of Stone)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 1;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	protected int amountRemaining=0;
 	protected Item theWall=null;
 	protected String deathNotice="";
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
@@ -85,6 +86,7 @@ public class Spell_WallOfStone extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		super.unInvoke();
@@ -104,6 +106,7 @@ public class Spell_WallOfStone extends Spell
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -117,6 +120,7 @@ public class Spell_WallOfStone extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))

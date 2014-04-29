@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenRecipe extends GenReadable implements Recipe
 {
-	public String ID(){	return "GenRecipe";}
+	@Override public String ID(){	return "GenRecipe";}
 	protected String commonSkillID="";
 	protected String[] recipeLines=new String[0];
 	protected String replaceName = null;
@@ -52,6 +52,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		recoverPhyStats();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget( this ) && (msg.targetMinor()==CMMsg.TYP_READ) && (super.readableText().length()==0) && (recipeLines.length>0))
@@ -74,7 +75,7 @@ public class GenRecipe extends GenReadable implements Recipe
 					Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
 					String components = C.getDecodedComponentsDescription( msg.source(), V );
 					String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
-					
+
 					str.append( name).append(", level "+nameAndLevel.second);
 					if(CMath.s_int(components)>0)
 						str.append( ", which requires "+components+" standard components.\n\r");
@@ -87,10 +88,11 @@ public class GenRecipe extends GenReadable implements Recipe
 		super.executeMsg( myHost, msg );
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
+	@Override
 	public void recoverPhyStats()
 	{
-		CMLib.flags().setReadable(this,true); 
+		CMLib.flags().setReadable(this,true);
 		super.recoverPhyStats();
 		if(this.getTotalRecipePages()==1)
 		{
@@ -124,19 +126,21 @@ public class GenRecipe extends GenReadable implements Recipe
 				phyStats().setName(replaceName);
 		}
 	}
-	public String getCommonSkillID(){return commonSkillID;}
-	public void setCommonSkillID(String ID){commonSkillID=ID;}
-	public String[] getRecipeCodeLines(){return recipeLines;}
+	@Override public String getCommonSkillID(){return commonSkillID;}
+	@Override public void setCommonSkillID(String ID){commonSkillID=ID;}
+	@Override public String[] getRecipeCodeLines(){return recipeLines;}
+	@Override
 	public void setRecipeCodeLines(String[] lines)
 	{
 		recipeLines=lines;
 		setReadableText("");
 		replaceName = null;
 	}
-	public int getTotalRecipePages() { return super.usesRemaining(); }
-	public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
-	
+	@Override public int getTotalRecipePages() { return super.usesRemaining(); }
+	@Override public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
+
 	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -144,7 +148,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+getCommonSkillID();
-		case 1: 
+		case 1:
 			{
 				StringBuilder str=new StringBuilder("");
 				for(String s : recipeLines)
@@ -158,6 +162,7 @@ public class GenRecipe extends GenReadable implements Recipe
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -173,6 +178,7 @@ public class GenRecipe extends GenReadable implements Recipe
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -180,6 +186,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -193,6 +200,7 @@ public class GenRecipe extends GenReadable implements Recipe
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenRecipe)) return false;

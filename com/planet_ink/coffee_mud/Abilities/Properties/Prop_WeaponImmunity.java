@@ -34,24 +34,27 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_WeaponImmunity"; }
-	public String name(){ return "Weapon Immunity";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_WeaponImmunity"; }
+	@Override public String name(){ return "Weapon Immunity";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Hashtable flags=new Hashtable();
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
-	
-	public long flags(){return Ability.FLAG_IMMUNER;}
 
+	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+
+	@Override
 	public String accountForYourself()
 	{
 		String id="Weapon Immunities for the wearer: "+text();
 		return id;
 	}
+	@Override
 	public void setMiscText(String newValue)
 	{
 		super.setMiscText(newValue);
@@ -76,6 +79,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

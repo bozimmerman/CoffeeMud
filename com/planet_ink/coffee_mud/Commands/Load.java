@@ -39,8 +39,8 @@ public class Load extends StdCommand
 	public Load(){}
 
 	private final String[] access={"LOAD"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public final String[] combine(final String[] set1, final CMClass.CMObjectType[] set2)
 	{
 		final String[] fset=new String[set1.length+set2.length];
@@ -50,7 +50,7 @@ public class Load extends StdCommand
 			fset[set1.length+x]=set2[x].toString();
 		return fset;
 	}
-	
+
 	public final String ARCHON_LIST[]=combine(new String[]{"RESOURCE","FACTION"},CMClass.CMObjectType.values());
 
 	public final Ammunition getNextAmmunition(String type, List<Ammunition> ammos)
@@ -60,7 +60,8 @@ public class Load extends StdCommand
 				return ammo;
 		return null;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -192,7 +193,7 @@ public class Load extends StdCommand
 							Log.errOut("Load",e.getMessage());
 						}
 						ByteArrayOutputStream bout=new ByteArrayOutputStream();
-						PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout)); 
+						PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
 						if(CO==null)
 						{
 							mob.tell("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud.");
@@ -213,13 +214,13 @@ public class Load extends StdCommand
 						}
 						name=name.substring(0,name.length()-5)+".class";
 					}
-					
+
 					String unloadClassName=name;
 					if(unloadClassName.toUpperCase().endsWith(".CLASS"))
 						unloadClassName=unloadClassName.substring(0,unloadClassName.length()-6);
 					unloadClassName=unloadClassName.replace('\\','.');
 					unloadClassName=unloadClassName.replace('/','.');
-					
+
 					if(what.equalsIgnoreCase("CLASS"))
 					{
 						Object O=CMClass.getObjectOrPrototype(unloadClassName);
@@ -237,7 +238,7 @@ public class Load extends StdCommand
 						Object O=CMClass.getObjectOrPrototype(unloadClassName);
 						if((O instanceof CMObject)
 						&&(name.toUpperCase().endsWith(".CLASS"))
-						&&(CMClass.delClass(whatType,(CMObject)O))) 
+						&&(CMClass.delClass(whatType,(CMObject)O)))
 							mob.tell(unloadClassName+" was unloaded.");
 						if(CMClass.loadClass(whatType,name,false))
 						{
@@ -259,9 +260,9 @@ public class Load extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 }

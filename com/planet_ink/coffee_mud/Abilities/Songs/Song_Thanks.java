@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Thanks extends Song
 {
-	public String ID() { return "Song_Thanks"; }
-	public String name(){ return "Thanks";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override public String ID() { return "Song_Thanks"; }
+	@Override public String name(){ return "Thanks";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -52,7 +53,8 @@ public class Song_Thanks extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -115,6 +117,7 @@ public class Song_Thanks extends Song
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -148,15 +151,15 @@ public class Song_Thanks extends Song
 					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 					Song newOne=(Song)this.copyOf();
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
-	
+
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

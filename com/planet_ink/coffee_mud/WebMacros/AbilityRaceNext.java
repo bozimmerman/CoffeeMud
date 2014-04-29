@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,9 @@ import java.util.*;
 */
 public class AbilityRaceNext extends StdWebMacro
 {
-	public String name() { return "AbilityRaceNext"; }
+	@Override public String name() { return "AbilityRaceNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -43,7 +44,7 @@ public class AbilityRaceNext extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
@@ -53,7 +54,7 @@ public class AbilityRaceNext extends StdWebMacro
 		String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
-		
+
 		String lastID="";
 		String raceID=httpReq.getUrlParameter("RACE");
 		Race R=null;

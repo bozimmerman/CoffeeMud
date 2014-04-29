@@ -37,12 +37,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Bury extends Chant
 {
-	public String ID() { return "Chant_Bury"; }
-	public String name(){ return "Earthfeed";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Chant_Bury"; }
+	@Override public String name(){ return "Earthfeed";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
 	public static Item getBody(Room R)
 	{
@@ -59,6 +59,7 @@ public class Chant_Bury extends Chant
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)

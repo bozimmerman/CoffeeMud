@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 
-public interface Wearable extends Environmental 
+public interface Wearable extends Environmental
 {
 	/** a constant used in the Locale item search classes to filter on only items being worn */
 	public static final Filterer<Environmental> FILTER_WORNONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj) 
+		public boolean passesFilter(Environmental obj)
 		{
 			if(obj instanceof Item) return !((Item)obj).amWearingAt(IN_INVENTORY);
 			return false;
@@ -53,7 +53,7 @@ public interface Wearable extends Environmental
 	public static final Filterer<Environmental> FILTER_UNWORNONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj) 
+		public boolean passesFilter(Environmental obj)
 		{
 			if(obj instanceof Item) return ((Item)obj).amWearingAt(IN_INVENTORY);
 			return false;
@@ -63,12 +63,12 @@ public interface Wearable extends Environmental
 	@SuppressWarnings("unchecked")
 	public static final Filterer<Environmental> FILTER_ANY=Filterer.ANYTHING;
 
-	/** 
+	/**
 	 * Can test where, if anywhere, an item is being worn.  The value may be 0 to see if the item
 	 * is not being worn (since 0 means inventory) or a combination of 1 or more of the worn codes
 	 * listed in the Item interface.
 	 * @see Item
-	 * @param wornCode either 0, or one or more worn codes 
+	 * @param wornCode either 0, or one or more worn codes
 	 * @return whether this item is being worn on the wornCode location
 	 */
 	public boolean amWearingAt(long wornCode);
@@ -113,8 +113,8 @@ public interface Wearable extends Environmental
 	public boolean wearIfPossible(MOB mob);
 	/**
 	 * Using the canWear method, this method will put the item into a state of being worn
-	 * on the given location only if it is practical for the given mob or player to wear 
-	 * this Item at the given location. The mob or player must have the item in his or her 
+	 * on the given location only if it is practical for the given mob or player to wear
+	 * this Item at the given location. The mob or player must have the item in his or her
 	 * inventory first.
 	 * @param mob the player or mob to put this item  on.
 	 * @param wearCode the bitmap wear code for the location to attempt
@@ -126,11 +126,11 @@ public interface Wearable extends Environmental
 	 * the given mob to wear it -- for instance, even if an item is already being worn where
 	 * this item wants to be worn, or if the player has no such limbs to wear this item.  None
 	 * of that matter to this method.  The item must be in the mobs inventory first.
-	 * @param mob the player or mob 
+	 * @param mob the player or mob
 	 */
 	public void wearEvenIfImpossible(MOB mob);
 	/**
-	 * This method is similar to the wearEvenIfImpossible method method above, except that 
+	 * This method is similar to the wearEvenIfImpossible method method above, except that
 	 * it does not inspect this item for allowed wearable locations, but always puts the
 	 * item on the wear location represented by the given wornCode bitmap.  This bitmap
 	 * is made up of constants from the Item interface.
@@ -194,14 +194,14 @@ public interface Wearable extends Environmental
 	/**
 	 * Flag which determines whether the rawProperLocationBitmap represents the fact that
 	 * it is worn on ALL locations (value of true) or worn on any of the locations.
-	 * @see Wearable#rawProperLocationBitmap()  
+	 * @see Wearable#rawProperLocationBitmap()
 	 * @return whether this item is worn on all locations or any of the locations
 	 */
 	public boolean rawLogicalAnd();
 	/**
 	 * Sets flag which determines whether the rawProperLocationBitmap represents the fact that
 	 * it is worn on ALL locations (value of true) or worn on any of the locations.
-	 * @see Wearable#rawProperLocationBitmap()  
+	 * @see Wearable#rawProperLocationBitmap()
 	 * @param newAnd whether this item is worn on all locations or any of the locations
 	 */
 	public void setRawLogicalAnd(boolean newAnd);
@@ -212,8 +212,8 @@ public interface Wearable extends Environmental
 	 * @return whether this item is allowed to be worn on the same place as the param
 	 */
 	public boolean compareProperLocations(Item toThis);
-	
-	
+
+
 	/** worn code constant, representing  being unworn altogether */
 	public static final long IN_INVENTORY=0;
 	/** worn code constant, worn on the head */
@@ -258,7 +258,7 @@ public interface Wearable extends Environmental
 	public static final long WORN_BACK=524288;
 	/** highest possible worn code value*/
 	public static final long HIGHEST_WORN_CODE=1152921504606846976L;
-	
+
 	/**
 	 * An array representing all of the  worn location bitmaps, except INVENTORY.  The
 	 * array has worn location constants in the order in which they are presented to
@@ -286,10 +286,10 @@ public interface Wearable extends Environmental
 		WORN_WIELD,
 		WORN_HELD,
 	};
-	
+
 	/**
 	 * An array representing the armor protective strength of the worn location bitmaps, in the same order as their
-	 * numeric value. 
+	 * numeric value.
 	 */
 	public static final double[] DEFAULT_WORN_WEIGHTS={
 		0.0, //inventory
@@ -314,10 +314,10 @@ public interface Wearable extends Environmental
 		0.01, //ON_MOUTH
 		1.0  //ON_BACK
 	};
-	
+
 	/**
 	 * An array representing the relative weight of items made for each of the several worn locations, in
-	 * the same order as their numeric value. These weights are broken, in turn, into values for cloth,  
+	 * the same order as their numeric value. These weights are broken, in turn, into values for cloth,
 	 * leather, and metal armors respectively.
 	 */
 	public static final double[][] DEFAULT_WORN_WEIGHT_POINTS={ // cloth, leather, metal
@@ -343,7 +343,7 @@ public interface Wearable extends Environmental
 		{0.1,    0.2,    0.25},//ON_MOUTH
 		{1.0,    2.0,    3.0}  //ON_BACK
 	};
-	
+
 	/**
 	 * An array naming each of the worn location constants, in the order of their numeric value.
 	 */
@@ -370,7 +370,7 @@ public interface Wearable extends Environmental
 		"mouth",
 		"back"
 	};
-	
+
 	/** An array containing all of the worn codes,in the order of their numeric value. */
 	public static final long[] DEFAULT_WORN_CODES={
 		IN_INVENTORY,
@@ -395,8 +395,8 @@ public interface Wearable extends Environmental
 		WORN_MOUTH,
 		WORN_BACK,
 	};
-	
-	/** 
+
+	/**
 	 * A Chart, indexed by WORN_CODE, showing the other parts dependent on that one.
 	 */
 	public final static long[] DEFAULT_WORN_DEPENDENCYGRID={
@@ -422,7 +422,7 @@ public interface Wearable extends Environmental
 		-1,
 		-1,
 	};
-	
+
 	//WORN_HEAD|WORN_NECK|WORN_TORSO|WORN_ARMS|WORN_LEFT_WRIST|WORN_RIGHT_WRIST|WORN_LEFT_FINGER|WORN_RIGHT_FINGER|WORN_FEET|WORN_HELD|WORN_WIELD|WORN_HANDS|WORN_WAIST|WORN_LEGS|WORN_EYES|WORN_EARS|WORN_MOUTH|WORN_BACK
 	/**
 	 * Global location stat code data collector
@@ -441,12 +441,12 @@ public interface Wearable extends Environmental
 				String[][] addExtra = CMProps.instance().getStrsStarting("ADDWEARLOC_");
 				String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEWEARLOC_");
 				for(int i=0;i<Wearable.DEFAULT_WORN_CODES.length;i++)
-					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i], 
+					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i],
 						DEFAULT_WORN_WEIGHTS[i], CMParms.indexOf(DEFAULT_WORN_ORDER,DEFAULT_WORN_CODES[i]),
 						DEFAULT_WORN_WEIGHT_POINTS[i][0], DEFAULT_WORN_WEIGHT_POINTS[i][1], DEFAULT_WORN_WEIGHT_POINTS[i][2]);
 				// now, stupid as it is, I have to fix the worn orders
 				allCodesInOrder=Arrays.copyOf(Wearable.DEFAULT_WORN_ORDER, Wearable.DEFAULT_WORN_ORDER.length);
-				
+
 				for(int i=0;i<addExtra.length+repExtra.length;i++)
 				{
 					String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
@@ -481,7 +481,7 @@ public interface Wearable extends Environmental
 					for(int s=0;s<subLocs.size();s++)
 					{
 						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.get(s).toLowerCase());
-						if(idx>=0) 
+						if(idx>=0)
 							dependencyMask|=DEFAULT_WORN_CODES[idx];
 						else
 							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+subLocs.get(s).toLowerCase());
@@ -507,17 +507,17 @@ public interface Wearable extends Environmental
 			if(c==null) c=new CODES();
 			return c;
 		}
-		public static void reset() { 
+		public static void reset() {
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
 		}
 		private static CODES[] insts=new CODES[256];
-		
+
 		private long[] allCodes = new long[0];
 		private long[] allCodesInOrder=new long[0];
 		private long[] dependencyMasks = new long[0];
 		private double[][] wornWeightPoints = new double[0][0];
-		private double[] armorWeights =  new double[0]; 
+		private double[] armorWeights =  new double[0];
 		private String[] descs = new String[0];
 		private String[] updescs = new String[0];
 		/**
@@ -530,7 +530,7 @@ public interface Wearable extends Environmental
 		 * @return total number of codes 0 - this-1
 		 */
 		public int total() { return allCodes.length;}
-		
+
 		/**
 		 * Returns an array of the numeric codes for all locations
 		 * @return an array of the numeric codes for all locations
@@ -539,7 +539,7 @@ public interface Wearable extends Environmental
 		/**
 		 * Returns an array of the numeric codes for all locations
 		 * @return an array of the numeric codes for all locations
-		 */ 
+		 */
 		public long[] all_ordered() { return allCodesInOrder;}
 		/**
 		 * Returns an array of the numeric codes for all locations
@@ -549,7 +549,7 @@ public interface Wearable extends Environmental
 		/**
 		 * Returns an array of the numeric codes for all locations
 		 * @return an array of the numeric codes for all locations
-		 */ 
+		 */
 		public long[] all() { return allCodes;}
 		/**
 		 * Returns an the numeric codes of the indexes locations code
@@ -568,7 +568,7 @@ public interface Wearable extends Environmental
 		 * @return the index of the names locations, or -1
 		 */
 		public static int FINDDEX_ignoreCase(String rsc) { return c().findDex_ignoreCase(rsc);}
-		
+
 		/**
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
@@ -585,7 +585,7 @@ public interface Wearable extends Environmental
 		 * @return the index of the names locations, or -1
 		 */
 		public static long FIND_ignoreCase(String rsc) { return c().find_ignoreCase(rsc);}
-		
+
 		/**
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
@@ -602,7 +602,7 @@ public interface Wearable extends Environmental
 		 * @return the index of the names locations, or -1
 		 */
 		public static int FINDDEX_endsWith(String rsc) { return c().findDex_endsWith(rsc);}
-		
+
 		/**
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
@@ -619,7 +619,7 @@ public interface Wearable extends Environmental
 		 * @return the index of the names locations, or -1
 		 */
 		public static long FIND_endsWith(String rsc) { return c().find_endsWith(rsc);}
-		
+
 		/**
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
@@ -632,14 +632,14 @@ public interface Wearable extends Environmental
 			return -1;
 		}
 		/**
-		 * Returns a comma-delimited list of location names 
+		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.
 		 * @param wornCode
 		 * @return the list of names
 		 */
 		public static String LISTED_CODES(long wornCode) { return c().listedCodes(wornCode);}
 		/**
-		 * Returns a comma-delimited list of location names 
+		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.
 		 * @param wornCode
 		 * @return the list of names
@@ -656,7 +656,7 @@ public interface Wearable extends Environmental
 			if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
 			return buff;
 		}
-		
+
 		/**
 		 * Returns whether the code is valid
 		 * @return whether the code is valid
@@ -726,7 +726,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(long code) { 
+		public String name(long code) {
 			int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return descs[x];
@@ -737,7 +737,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String nameup(long code) { 
+		public String nameup(long code) {
 			int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return updescs[x];
@@ -754,17 +754,17 @@ public interface Wearable extends Environmental
 		 */
 		public long[] dependency_masks() { return dependencyMasks;}
 		/**
-		 * Returns an array representing the relative weight of items made for 
-		 * each of the several worn locations, in the same order as their numeric 
-		 * value. These weights are broken, in turn, into values for cloth,  
+		 * Returns an array representing the relative weight of items made for
+		 * each of the several worn locations, in the same order as their numeric
+		 * value. These weights are broken, in turn, into values for cloth,
 		 * leather, and metal armors respectively.
 		 * @return the doule double array
 		 */
 		public static double[][] MATERIAL_WEIGHT_POINTS() { return c().wornWeightPoints;}
 		/**
-		 * Returns an array representing the relative weight of items made for 
-		 * each of the several worn locations, in the same order as their numeric 
-		 * value. These weights are broken, in turn, into values for cloth,  
+		 * Returns an array representing the relative weight of items made for
+		 * each of the several worn locations, in the same order as their numeric
+		 * value. These weights are broken, in turn, into values for cloth,
 		 * leather, and metal armors respectively.
 		 * @return the doule double array
 		 */
@@ -779,8 +779,8 @@ public interface Wearable extends Environmental
 		 * @return an array of the protective strength of each location
 		 */
 		public double[] location_strength_points() { return armorWeights;}
-		
-		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder, 
+
+		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder,
 									 double clothWeight, double leatherWeight, double metalWeight)
 		{
 			if(allCodes.length>61) return;
@@ -802,7 +802,7 @@ public interface Wearable extends Environmental
 			wornWeightPoints[wornWeightPoints.length-1]=newRow;
 			insertInOrder(newCode,wornOrder);
 		}
-		
+
 		private void insertInOrder(long newCode, int wornOrder)
 		{
 			if(wornOrder<0) return;
@@ -819,8 +819,8 @@ public interface Wearable extends Environmental
 				newCodesInOrder[l]=V.elementAt(l).longValue();
 			allCodesInOrder=newCodesInOrder;
 		}
-		
-		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder, 
+
+		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder,
 										  double clothWeight, double leatherWeight, double metalWeight)
 		{
 			if(codeIndex<=0) return;

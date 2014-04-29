@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_ShapeShift extends StdAbility
 {
-	public String ID() { return "Druid_ShapeShift"; }
-	public String name(){ return "Shape Shift";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Druid_ShapeShift"; }
+	@Override public String name(){ return "Shape Shift";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"SHAPESHIFT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
 	public int myRaceCode=-1;
 	public int myRaceLevel=-1;
 	public Race newRace=null;
 	public String raceName="";
 
+	@Override
 	public String displayText()
 	{
 		if((myRaceCode<0)||(newRace==null))
@@ -88,6 +89,7 @@ public class Druid_ShapeShift extends StdAbility
 								   "Monkey form",
 								   "Bovine form"};
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		if(newText.length()>0)
@@ -95,6 +97,7 @@ public class Druid_ShapeShift extends StdAbility
 		super.setMiscText(newText);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -114,6 +117,7 @@ public class Druid_ShapeShift extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -127,6 +131,7 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -145,7 +150,7 @@ public class Druid_ShapeShift extends StdAbility
 		if(qualClassLevel<0) classLevel=30;
 		return classLevel;
 	}
-	
+
 	public void setRaceName(MOB mob)
 	{
 		int classLevel=getClassLevel(mob);
@@ -169,7 +174,7 @@ public class Druid_ShapeShift extends StdAbility
 		else
 			return 4;
 	}
-	
+
 	public int getRaceLevel(MOB mob)
 	{
 		return getRaceLevel(getClassLevel(mob));
@@ -182,7 +187,7 @@ public class Druid_ShapeShift extends StdAbility
 			return maxLevel;
 		return myRaceLevel;
 	}
-	
+
 	public int getRaceCode()
 	{
 		if((myRaceCode<0)||
@@ -211,6 +216,7 @@ public class Druid_ShapeShift extends StdAbility
 		return false;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -231,6 +237,7 @@ public class Druid_ShapeShift extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
@@ -298,7 +305,7 @@ public class Druid_ShapeShift extends StdAbility
 
 		if(myRaceCode<0)
 			return false;
-		
+
 		String parm=CMParms.combine(commands,0);
 		if(parm.length()>0)
 		{

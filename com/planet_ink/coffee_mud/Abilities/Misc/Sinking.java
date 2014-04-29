@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Sinking extends StdAbility
 {
-	public String ID() { return "Sinking"; }
-	public String name(){ return "Sinking";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Sinking"; }
+	@Override public String name(){ return "Sinking";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected boolean isTreading=false;
 	public Room room=null;
 	protected int sinkTickDown=1;
@@ -86,6 +86,7 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -104,6 +105,7 @@ public class Sinking extends StdAbility
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -120,6 +122,7 @@ public class Sinking extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -134,7 +137,7 @@ public class Sinking extends StdAbility
 		if((--sinkTickDown)>0)
 			return true;
 		sinkTickDown=1;
-		
+
 		int direction=Directions.DOWN;
 		String addStr="down";
 		if(reversed())
@@ -155,7 +158,7 @@ public class Sinking extends StdAbility
 			||(mob.phyStats().weight()<1)
 			||(!canSinkFrom(R,direction)))
 				return stopSinking(mob);
-			
+
 			Ability A=mob.fetchAbility("Skill_Swim");
 			if(((direction==Directions.DOWN)&&(A!=null))
 			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
@@ -197,9 +200,9 @@ public class Sinking extends StdAbility
 				unInvoke();
 				return false;
 			}
-			
+
 			final Item ultContainerI=item.ultimateContainer(null);
-			
+
 			if(CMLib.flags().isInFlight(ultContainerI)
 			||(CMLib.flags().isWaterWorthy(ultContainerI))
 			||(item.container()!=null)
@@ -231,6 +234,7 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -241,6 +245,7 @@ public class Sinking extends StdAbility
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
 
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		if(P instanceof Room)
@@ -249,6 +254,7 @@ public class Sinking extends StdAbility
 			super.setAffectedOne(P);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto) return false;

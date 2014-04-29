@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 */
 public class GenCompEnviroSystem extends GenElecCompItem
 {
-	public String ID(){	return "GenCompEnviroSystem";}
+	@Override public String ID(){	return "GenCompEnviroSystem";}
 
 	protected final static int ENVIRO_TICKS=7;
 	protected int tickDown=ENVIRO_TICKS;
-	
+
 	protected int airResource=RawMaterial.RESOURCE_AIR;
-	
+
 	public GenCompEnviroSystem()
 	{
 		super();
@@ -49,9 +49,9 @@ public class GenCompEnviroSystem extends GenElecCompItem
 		setDisplayText("a generic environment system sits here.");
 		setDescription("");
 	}
-	
+
 	@Override public TechType getTechType() { return TechType.SHIP_ENVIRO_CONTROL; }
-	
+
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -75,7 +75,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 						{
 							final SpaceShip ship=(SpaceShip)obj;
 							final Area A=ship.getShipArea();
-							double pct= Math.min(super.getInstalledFactor(),1.0) 
+							double pct= Math.min(super.getInstalledFactor(),1.0)
 									  * Math.min(super.getFinalManufacturer().getReliabilityPct(),1.0);
 							if(subjectToWearAndTear())
 								pct=pct*CMath.div(usesRemaining(),100);

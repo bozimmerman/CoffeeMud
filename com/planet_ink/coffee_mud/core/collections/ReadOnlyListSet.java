@@ -15,11 +15,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlyListSet<K> implements Set<K> 
+public class ReadOnlyListSet<K> implements Set<K>
 {
 	private final Object[] array;
 	private final Set<K> set;
-	
+
 	public ReadOnlyListSet()
 	{
 		set=new TreeSet<K>();
@@ -82,8 +82,7 @@ public class ReadOnlyListSet<K> implements Set<K>
 				}
 				return null;
 			}
-			@Override
-			public void remove() { throw new java.lang.IllegalArgumentException(); }
+			@Override public void remove() { throw new java.lang.IllegalArgumentException(); }
 		});
 	}
 	@Override

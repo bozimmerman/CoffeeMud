@@ -20,7 +20,7 @@ import java.util.Vector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,17 +51,17 @@ public interface LocationRoom extends Room
 	 * @return Coordinates of the place
 	 */
 	public long[] coordinates();
-	
+
 	/**
-	 * Returns the direction from the core of the planet to the 
+	 * Returns the direction from the core of the planet to the
 	 * location of this place on its surface.  Distance from core
 	 * is always the radius of the planet.
 	 * @return direction to this place from planets core.
 	 */
 	public double[] getDirectionFromCore();
-	
+
 	/**
-	 * Sets the direction from the core of the planet to the 
+	 * Sets the direction from the core of the planet to the
 	 * location of this place on its surface.  Distance from core
 	 * is always the radius of the planet.
 	 * @param dir direction to this place from planets core.

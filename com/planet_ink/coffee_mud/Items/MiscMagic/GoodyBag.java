@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 {
-	public String ID(){	return "GoodyBag";}
+	@Override public String ID(){	return "GoodyBag";}
 	boolean alreadyFilled=false;
 	public GoodyBag()
 	{
@@ -62,6 +62,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 	{
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((!alreadyFilled)&&(owner()!=null))

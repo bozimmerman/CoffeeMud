@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenReflectionShield extends GenPersonalShield
 {
-	public String ID(){	return "GenReflectionShield";}
+	@Override public String ID(){	return "GenReflectionShield";}
 
 	public GenReflectionShield()
 	{
@@ -43,24 +43,24 @@ public class GenReflectionShield extends GenPersonalShield
 		setDisplayText("a reflection shield generator sits here.");
 		setDescription("The reflection shield generator is worn about the body and activated to use. It protects against laser type weapons. ");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
+	protected String fieldOnStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"A reflecting field of energy surrounds <O-NAME>.":
-			"A reflecting field of energy surrounds <T-NAME>."; 
+			"A reflecting field of energy surrounds <T-NAME>.";
 	}
-	
+
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"The reflecting field around <O-NAME> flickers and dies out.":
-			"The reflecting field around <T-NAME> flickers and dies out."; 
+			"The reflecting field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(mob.location()!=null)
@@ -81,14 +81,14 @@ public class GenReflectionShield extends GenPersonalShield
 		}
 		return false;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(!activated())
 			return false;
-		if((msg.tool() instanceof Electronics) 
-		&& (msg.tool() instanceof Weapon) 
+		if((msg.tool() instanceof Electronics)
+		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
 		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_LASERING))
 		{

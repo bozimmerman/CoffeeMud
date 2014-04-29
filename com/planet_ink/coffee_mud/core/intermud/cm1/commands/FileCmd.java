@@ -25,7 +25,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,15 +42,15 @@ import java.util.concurrent.atomic.*;
 */
 public class FileCmd extends CM1Command
 {
-	public String getCommandWord(){ return "FILE";}
-	
-	public FileCmd(RequestHandler req, String parameters) 
+	@Override public String getCommandWord(){ return "FILE";}
+
+	public FileCmd(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
-	
+
 	@Override
-	public void run() 
+	public void run()
 	{
 		try
 		{
@@ -241,14 +241,16 @@ public class FileCmd extends CM1Command
 			req.close();
 		}
 	}
-	
+
+	@Override
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
 		if(user == null)
 			return false;
 		return CMSecurity.hasAccessibleDir(user,null);
 	}
-	
+
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdClanCard extends StdClanItem
 {
-	public String ID(){ return "StdClanCard";}
+	@Override public String ID(){ return "StdClanCard";}
 
 	public StdClanCard()
 	{
@@ -51,6 +51,7 @@ public class StdClanCard extends StdClanItem
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.target()==owner())
@@ -80,11 +81,12 @@ public class StdClanCard extends StdClanItem
 				}
 				return false;
 			}
-			
+
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -115,7 +117,7 @@ public class StdClanCard extends StdClanItem
 					}
 				}
 			}
-			
+
 		}
 		return true;
 	}

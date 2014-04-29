@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderClasses 
+public class GrinderClasses
 {
 	public String name() { return "GrinderClasses"; }
 
@@ -77,7 +77,7 @@ public class GrinderClasses
 	public static String modifyCharClass(HTTPRequest httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
 	{
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -128,10 +128,10 @@ public class GrinderClasses
 			C.setStat("NAME"+l, (String)DV.elementAt(l,2));
 			C.setStat("NAMELEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
 		}
-			
+
 		old=httpReq.getUrlParameter("");
 		C.setStat("",(old==null)?"":old);
-		
+
 		old=httpReq.getUrlParameter("BASE");
 		C.setStat("BASE",(old==null)?"BASECLASS":old);
 		old=httpReq.getUrlParameter("HITPOINTSFORMULA");

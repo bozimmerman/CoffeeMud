@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 public class Skill_Dirt extends StdSkill
 {
 	boolean doneTicking=false;
-	public String ID() { return "Skill_Dirt"; }
-	public String name(){ return "Dirt";}
-	public String displayText(){ return "(Dirt in your eyes)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_Dirt"; }
+	@Override public String name(){ return "Dirt";}
+	@Override public String displayText(){ return "(Dirt in your eyes)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"DIRT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Skill_Dirt extends StdSkill
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -67,6 +69,7 @@ public class Skill_Dirt extends StdSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -79,6 +82,7 @@ public class Skill_Dirt extends StdSkill
 			mob.tell("You can see again!");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -100,7 +104,7 @@ public class Skill_Dirt extends StdSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 	public boolean hereOK(MOB mob)
 	{
 		Room R=mob.location();
@@ -122,7 +126,8 @@ public class Skill_Dirt extends StdSkill
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -148,7 +153,7 @@ public class Skill_Dirt extends StdSkill
 			mob.tell(target.name(mob)+" has no eyes, and would not be affected.");
 			return false;
 		}
-		
+
 		if(CMLib.flags().isSleeping(target))
 		{
 			CMLib.commands().forceStandardCommand(target, "Wake", new XVector("Wake"));
@@ -159,7 +164,7 @@ public class Skill_Dirt extends StdSkill
 				return false;
 			}
 		}
-		
+
 		if((!auto)&&CMLib.flags().isFlying(mob))
 		{
 			mob.tell("You are too far from the ground to kick dirt.");

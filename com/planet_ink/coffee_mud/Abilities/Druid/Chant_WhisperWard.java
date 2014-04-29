@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,31 +36,33 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WhisperWard extends Chant implements Trap
 {
-	public String ID() { return "Chant_WhisperWard"; }
-	public String name(){ return "Whisperward";}
-	public String displayText(){return "(Whisperward)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Chant_WhisperWard"; }
+	@Override public String name(){ return "Whisperward";}
+	@Override public String displayText(){return "(Whisperward)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	Room myRoomContainer=null;
 	int myTrigger=CMMsg.TYP_ENTER;
 	boolean waitingForLook=false;
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector();}
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector();}
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
 
-	public boolean disabled(){return false;}
-	public boolean sprung(){return false;}
-	public void disable(){unInvoke();}
+	@Override public boolean disabled(){return false;}
+	@Override public boolean sprung(){return false;}
+	@Override public void disable(){unInvoke();}
+	@Override
 	public void spring(MOB M)
 	{
 		doMyThing();
@@ -73,6 +75,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		unInvoke();
 		return;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -123,6 +126,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

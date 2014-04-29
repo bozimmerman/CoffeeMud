@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RaceCatNext extends StdWebMacro
 {
-	public String name() { return "RaceCatNext"; }
+	@Override public String name() { return "RaceCatNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("RACECAT");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("RACECAT");
 			return "";
 		}

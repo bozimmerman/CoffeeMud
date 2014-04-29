@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SweetScent extends Chant
 {
-	public String ID() { return "Chant_SweetScent"; }
-	public String name(){ return "Sweet Scent";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Chant_SweetScent"; }
+	@Override public String name(){ return "Sweet Scent";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -99,6 +100,7 @@ public class Chant_SweetScent extends Chant
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -107,6 +109,7 @@ public class Chant_SweetScent extends Chant
 		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely intoxicating!");
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(

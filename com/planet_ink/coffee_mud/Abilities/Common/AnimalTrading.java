@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AnimalTrading extends CommonSkill
 {
-	public String ID() { return "AnimalTrading"; }
-	public String name(){ return "Animal Trading";}
+	@Override public String ID() { return "AnimalTrading"; }
+	@Override public String name(){ return "Animal Trading";}
 	private static final String[] triggerStrings = {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 	protected Vector recentlyTraded=new Vector();
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

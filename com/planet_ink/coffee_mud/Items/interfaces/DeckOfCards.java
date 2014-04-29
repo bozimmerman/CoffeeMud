@@ -55,5 +55,6 @@ public interface DeckOfCards extends HandOfCards
 	// this method adds to the base functionality found
 	// in HandOfCards.java by ensuring that all cards
 	// added to the deck are added face down.
+	@Override
 	public boolean addCard(PlayingCard card);
 }

@@ -39,17 +39,18 @@ public class ClanAccept extends StdCommand
 	public ClanAccept(){}
 
 	private final String[] access={"CLANACCEPT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
 		String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
-		
+
 		Clan C=null;
 		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
-			
+
 		if(C==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
@@ -135,8 +136,8 @@ public class ClanAccept extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

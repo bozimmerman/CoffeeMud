@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Song_Mute extends Song
 {
-	public String ID() { return "Song_Mute"; }
-	public String name(){ return "Muting";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Mute"; }
+	@Override public String name(){ return "Muting";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

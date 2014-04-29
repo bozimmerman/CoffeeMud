@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_WindSnatcher extends Chant
 {
-	public String ID() { return "Chant_WindSnatcher"; }
-	public String name(){ return "Wind Snatcher";}
-	public String displayText(){ return "(Wind Snatcher)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public String ID() { return "Chant_WindSnatcher"; }
+	@Override public String name(){ return "Wind Snatcher";}
+	@Override public String displayText(){ return "(Wind Snatcher)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 
 
 	public String[] windSpells={
@@ -59,6 +59,7 @@ public class Chant_WindSnatcher extends Chant
 				return true;
 		return false;
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -72,6 +73,7 @@ public class Chant_WindSnatcher extends Chant
 			mob.tell("Your wind snatcher fades away.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -92,6 +94,7 @@ public class Chant_WindSnatcher extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -108,6 +111,7 @@ public class Chant_WindSnatcher extends Chant
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

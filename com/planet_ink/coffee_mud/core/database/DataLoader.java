@@ -137,7 +137,7 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public List<PlayerData> DBReadKey(String section, String keyMask)
 	{
 		DBConnection D=null;
@@ -246,7 +246,7 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public List<PlayerData> DBRead(String section)
 	{
 		DBConnection D=null;
@@ -317,7 +317,7 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public void DBReCreate(String name, String section, String key, String xml)
 	{
 		synchronized(("RECREATE"+key).intern())
@@ -347,13 +347,13 @@ public class DataLoader
 			}
 		}
 	}
-	
+
 	public void DBUpdate(String key, String xml)
 	{
 		key = DB.injectionClean(key);
 		DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPKEY='"+key+"'", xml);
 	}
-	
+
 	public void DBDelete(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -397,7 +397,7 @@ public class DataLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public void DBDelete(String playerID, String section, String key)
 	{
 
@@ -422,7 +422,7 @@ public class DataLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public void DBDelete(String section)
 	{
 		section = DB.injectionClean(section);
@@ -431,7 +431,7 @@ public class DataLoader
 		if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'")>0)
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
-	
+
 	public void DBCreate(String playerID, String section, String key, String data)
 	{
 		playerID = DB.injectionClean(playerID);
@@ -448,10 +448,10 @@ public class DataLoader
 		 +"'"+section+"',"
 		 +"'"+key+"',"
 		 +"?"
-		 +")", 
+		 +")",
 		 data+" ");
 	}
-	
+
 	public void DBReadArtifacts()
 	{
 		List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");

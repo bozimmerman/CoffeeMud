@@ -26,10 +26,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FieryRoom
 	extends ActiveTicker {
+	@Override
 	public String ID()
 	{
 		return "FieryRoom"; }
 
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ROOMS; }
@@ -45,18 +47,20 @@ public class FieryRoom
 
 	private String[] FireTexts = {"The fire here crackles and burns."};
 
-	public FieryRoom() 
+	public FieryRoom()
 	{
 		super();
 		minTicks = 5; maxTicks = 10; chance = 100;
 		tickReset();
 	}
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "on fire";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -83,34 +87,35 @@ public class FieryRoom
 		FireTexts = newFireTexts;
 	}
 
-	public boolean tick(Tickable ticking, int tickID) 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking, tickID);
 		// on every tick, we may do damage OR eq handling.
 		if (!(ticking instanceof Room))
 			return super.tick(ticking, tickID);
-		
+
 		Room room = (Room) ticking;
 		if (canAct(ticking, tickID))
 		{
 			if ( (directDamage > 0) || (eqChance > 0))
 			{
 				// for each inhab, do directDamage to them.
-				for (int i = 0; i < room.numInhabitants(); i++) 
+				for (int i = 0; i < room.numInhabitants(); i++)
 				{
 					MOB inhab = room.fetchInhabitant(i);
 					if(inhab==null) continue;
-					if (inhab.isMonster()) 
+					if (inhab.isMonster())
 					{
 						boolean reallyAffect = true;
 						if (noNpc)
 						{
 							reallyAffect = false;
 							Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
-							for (Iterator e = group.iterator(); e.hasNext(); ) 
+							for (Iterator e = group.iterator(); e.hasNext(); )
 							{
 								MOB follower = (MOB) e.next();
-								if (! (follower.isMonster())) 
+								if (! (follower.isMonster()))
 								{
 									reallyAffect = true;
 									break;
@@ -124,10 +129,10 @@ public class FieryRoom
 								eqRoast(inhab);
 						}
 					}
-					else 
+					else
 					{
 						if((!CMSecurity.isAllowed(inhab,inhab.location(),CMSecurity.SecFlag.ORDER))
-						&&(!CMSecurity.isAllowed(inhab,inhab.location(),CMSecurity.SecFlag.CMDROOMS))) 
+						&&(!CMSecurity.isAllowed(inhab,inhab.location(),CMSecurity.SecFlag.CMDROOMS)))
 						{
 							dealDamage(inhab);
 							if (CMLib.dice().rollPercentage() > eqChance)
@@ -145,9 +150,9 @@ public class FieryRoom
 				room.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
 			}
 		}
-		if (!noStop) 
+		if (!noStop)
 		{
-			if(burnTicks==0) 
+			if(burnTicks==0)
 			{
 				// NOSTOP is false.  This means the room gets set
 				// to the torched text and the behavior goes away.
@@ -161,7 +166,7 @@ public class FieryRoom
 		return super.tick(ticking, tickID);
 	}
 
-	private void dealDamage(MOB mob) 
+	private void dealDamage(MOB mob)
 	{
 		MOB M=CMLib.map().getFactoryMOB(mob.location());
 		M.setName("fire");
@@ -170,7 +175,7 @@ public class FieryRoom
 		M.destroy();
 	}
 
-	private void eqRoast(MOB mob) 
+	private void eqRoast(MOB mob)
 	{
 		Item target = getSomething(mob);
 		if (target != null)
@@ -210,15 +215,15 @@ public class FieryRoom
 		}
 	}
 
-	private static void roastRoom(Room which) 
+	private static void roastRoom(Room which)
 	{
 		MOB mob=CMLib.map().getFactoryMOB(which);
 		mob.setName("fire");
-		for(int i=0;i<which.numItems();i++) 
+		for(int i=0;i<which.numItems();i++)
 		{
 			Item target=which.getItem(i);
 			Ability burn = CMClass.getAbility("Burning");
-			if((burn != null)&&(CMLib.dice().rollPercentage()>60)) 
+			if((burn != null)&&(CMLib.dice().rollPercentage()>60))
 			{
 				which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
 				burn.invoke(mob,target,true,0);

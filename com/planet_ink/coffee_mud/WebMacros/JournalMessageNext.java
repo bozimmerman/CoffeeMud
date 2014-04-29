@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,29 +35,30 @@ import java.util.*;
 */
 public class JournalMessageNext extends StdWebMacro
 {
-	public String name() { return "JournalMessageNext"; }
-	
+	@Override public String name() { return "JournalMessageNext"; }
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getUrlParameter("JOURNAL");
-		if(journalName==null) 
+		if(journalName==null)
 			return " @break@";
-		
+
 		if(CMLib.journals().isArchonJournalName(journalName))
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 				return " @break@";
 		}
-		
+
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
-		if(srch!=null) 
+		if(srch!=null)
 			srch=srch.toLowerCase();
 		String last=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinal=CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null)
 			{
 				httpReq.removeUrlParameter("JOURNALMESSAGE");

@@ -36,7 +36,7 @@ limitations under the License.
  * They are constructed from HTTPStatus and then tossed up the chain where,
  * as an OutputGenerator, they can be used to generate their own full buffer
  * output for transmission to the client.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -51,10 +51,10 @@ public class HTTPException extends Exception
 	private final Logger				debugLogger;
 	private final MiniWebConfig			config;
 	private final static String			EOLN		 = HTTPIOHandler.EOLN;
-	
+
 	/**
 	 * Construct with body -- a strange case for now
-	 * @param status HTTPStatus object 
+	 * @param status HTTPStatus object
 	 * @param body the html body
 	 */
 	public HTTPException(HTTPStatus status, String body)
@@ -117,7 +117,7 @@ public class HTTPException extends Exception
 	{
 		return errorHeaders;
 	}
-	
+
 	/**
 	 * Like all HTTPIOHandlers, this class generates its own output buffer.
 	 * The buffer generated here is typically sent straight to the socket.
@@ -136,7 +136,7 @@ public class HTTPException extends Exception
 		str.append(HTTPIOHandler.CONN_HEADER);
 		str.append(HTTPHeader.getKeepAliveHeader());
 		str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
-		
+
 		DataBuffers finalBody=null;
 		if((body.length()==0)
 		&&(status.isAnError())
@@ -190,7 +190,7 @@ public class HTTPException extends Exception
 		finalBody.insertTop(str.toString().getBytes(), 0);
 		return finalBody;
 	}
-	
+
 	/**
 	 * Simple cache to save memory and garbage collection time
 	 */

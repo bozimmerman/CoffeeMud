@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqEntry extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqEntry"; }
-	public String name(){ return "All Room/Exit Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqEntry"; }
+	@Override public String name(){ return "All Room/Exit Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private String maskS="";
 	private String message="";
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		noFollow=false;
@@ -82,7 +84,8 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 		}
 		super.setMiscText(txt);
 	}
-	
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(maskS);
@@ -97,6 +100,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			return true;
 		return CMLib.masking().maskCheck(maskS,mob,false);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(msg.target()!=null))

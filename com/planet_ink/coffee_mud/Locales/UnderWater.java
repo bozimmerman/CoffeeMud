@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class UnderWater extends StdRoom implements Drink
 {
-	public String ID(){return "UnderWater";}
+	@Override public String ID(){return "UnderWater";}
 	public UnderWater()
 	{
 		super();
@@ -46,11 +46,12 @@ public class UnderWater extends StdRoom implements Drink
 		climask=Places.CLIMASK_WET;
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	protected int baseThirst(){return 0;}
-	public long decayTime(){return 0;}
-	public void setDecayTime(long time){}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	@Override protected int baseThirst(){return 0;}
+	@Override public long decayTime(){return 0;}
+	@Override public void setDecayTime(long time){}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -98,7 +99,7 @@ public class UnderWater extends StdRoom implements Drink
 			if(full)
 				mob.tell("You have drunk all you can.");
 		}
-		
+
 		CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
 
 		if(CMLib.flags().isSleeping(room))
@@ -204,6 +205,7 @@ public class UnderWater extends StdRoom implements Drink
 		}
 		return 0;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
@@ -213,23 +215,24 @@ public class UnderWater extends StdRoom implements Drink
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
 
-	public int thirstQuenched(){return 500;}
-	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	public void setLiquidType(int newLiquidType){}
-	public void setThirstQuenched(int amount){}
-	public void setLiquidHeld(int amount){}
-	public void setLiquidRemaining(int amount){}
-	public boolean disappearsAfterDrinking(){return false;}
-	public boolean containsDrink(){return true;}
-	public int amountTakenToFillMe(Drink theSource){return 0;}
+	@Override public int thirstQuenched(){return 500;}
+	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
+	@Override public void setLiquidType(int newLiquidType){}
+	@Override public void setThirstQuenched(int amount){}
+	@Override public void setLiquidHeld(int amount){}
+	@Override public void setLiquidRemaining(int amount){}
+	@Override public boolean disappearsAfterDrinking(){return false;}
+	@Override public boolean containsDrink(){return true;}
+	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_SEAWEED),
 		Integer.valueOf(RawMaterial.RESOURCE_FISH),
@@ -241,5 +244,5 @@ public class UnderWater extends StdRoom implements Drink
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

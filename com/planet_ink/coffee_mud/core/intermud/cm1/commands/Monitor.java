@@ -26,7 +26,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,13 +43,14 @@ import java.util.concurrent.atomic.*;
 */
 public class Monitor extends Listen
 {
-	public String getCommandWord(){ return "MONITOR";}
-	
-	public Monitor(RequestHandler req, String parameters) 
+	@Override public String getCommandWord(){ return "MONITOR";}
+
+	public Monitor(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
-	
+
+	@Override
 	protected void sendMsg(Listener listener, String msg) throws IOException
 	{
 		synchronized(listener)
@@ -57,7 +58,8 @@ public class Monitor extends Listen
 			listener.msgs.add(listener.channelName+": "+msg);
 		}
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try

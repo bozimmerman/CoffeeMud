@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenContainer extends StdContainer
 {
-	public String ID(){	return "GenContainer";}
+	@Override public String ID(){	return "GenContainer";}
 	protected String readableText = "";
 	public GenContainer()
 	{
@@ -49,23 +49,27 @@ public class GenContainer extends StdContainer
 		recoverPhyStats();
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -73,6 +77,7 @@ public class GenContainer extends StdContainer
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLASS","HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -87,6 +92,7 @@ public class GenContainer extends StdContainer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -103,6 +109,7 @@ public class GenContainer extends StdContainer
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -110,6 +117,7 @@ public class GenContainer extends StdContainer
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -123,6 +131,7 @@ public class GenContainer extends StdContainer
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenContainer)) return false;

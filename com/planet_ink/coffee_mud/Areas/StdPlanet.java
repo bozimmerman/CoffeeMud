@@ -35,13 +35,13 @@ import java.util.*;
 */
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
-	public String ID(){	return "StdPlanet";}
+	@Override public String ID(){	return "StdPlanet";}
 
 	protected static double[]	emptyDirection	= new double[2];
-	
+
 	protected long[]	coordinates	= new long[3];
 	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
-	
+
 	public StdPlanet()
 	{
 		super();
@@ -72,16 +72,17 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	@Override public void setKnownTarget(SpaceObject O){}
 	@Override public SpaceObject knownSource(){return null;}
 	@Override public void setKnownSource(SpaceObject O){}
-	
-	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;} 
-	
+
+	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;}
+
 	@Override
-	public BoundedCube getBounds() 
+	public BoundedCube getBounds()
 	{
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
-	
+
 	private final static String[] MYCODES={"COORDS","RADIUS"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getLocCodeNum(code))
@@ -91,6 +92,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		default: return super.getStat(code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getLocCodeNum(code))
@@ -107,8 +109,9 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		return -1;
 	}
 	private static String[] codes=null;
-	public String[] getStatCodes() 
-	{ 
+	@Override
+	public String[] getStatCodes()
+	{
 		return (codes != null) ? codes : (codes =  CMProps.getStatCodesList(CMParms.appendToArray(super.getStatCodes(), MYCODES),this));
 	}
 }

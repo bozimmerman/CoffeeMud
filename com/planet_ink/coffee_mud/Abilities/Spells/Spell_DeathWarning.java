@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_DeathWarning extends Spell
 {
-	public String ID() { return "Spell_DeathWarning"; }
-	public String name(){return "Death Warning";}
-	public String displayText(){return "(Death Warning)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_DeathWarning"; }
+	@Override public String name(){return "Death Warning";}
+	@Override public String displayText(){return "(Death Warning)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	protected Vector commands=new XVector("FLEE");
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -56,6 +57,7 @@ public class Spell_DeathWarning extends Spell
 				mob.tell(mob,null,null,"<S-YOUPOSS> death warning magic fades.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -82,6 +84,7 @@ public class Spell_DeathWarning extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -103,7 +106,7 @@ public class Spell_DeathWarning extends Spell
 				return false;
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

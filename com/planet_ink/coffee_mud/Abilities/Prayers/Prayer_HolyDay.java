@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HolyDay extends Prayer
 {
-	public String ID() { return "Prayer_HolyDay"; }
-	public String name(){ return "Holy Day";}
-	public String displayText(){ return "(Holy Day)";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Prayer_HolyDay"; }
+	@Override public String name(){ return "Holy Day";}
+	@Override public String displayText(){ return "(Holy Day)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected String godName="the gods";
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +68,7 @@ public class Prayer_HolyDay extends Prayer
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.tool() instanceof Ability)
@@ -96,7 +98,7 @@ public class Prayer_HolyDay extends Prayer
 		&&(CMLib.clans().findConquerableClan(msg.source())!=null))
 		{
 			LegalBehavior B=null;
-			if(msg.source().location()!=null) 
+			if(msg.source().location()!=null)
 				B=CMLib.law().getLegalBehavior(msg.source().location());
 			if((B!=null)&&(B.controlPoints()>0))
 			{
@@ -107,6 +109,7 @@ public class Prayer_HolyDay extends Prayer
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Area)))
@@ -117,7 +120,8 @@ public class Prayer_HolyDay extends Prayer
 
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -127,7 +131,8 @@ public class Prayer_HolyDay extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Area target=mob.location().getArea();

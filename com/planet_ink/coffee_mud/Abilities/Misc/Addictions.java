@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,27 +38,28 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Addictions extends StdAbility
 {
-	public String ID() { return "Addictions"; }
-	public String name(){ return "Addictions";}
+	@Override public String ID() { return "Addictions"; }
+	@Override public String name(){ return "Addictions";}
 	private long lastFix=System.currentTimeMillis();
-	public String displayText(){ return craving()?"(Addiction to "+text()+")":"";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String displayText(){ return craving()?"(Addiction to "+text()+")":"";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	private Item puffCredit=null;
 	private final static long CRAVE_TIME=TimeManager.MILI_HOUR;
 	private final static long WITHDRAW_TIME=TimeManager.MILI_DAY;
-	
+
 	private boolean craving(){return (System.currentTimeMillis()-lastFix)>CRAVE_TIME;}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((craving())
 		&&(CMLib.dice().rollPercentage()<=((System.currentTimeMillis()-lastFix)/TimeManager.MILI_HOUR))
 		&&(ticking instanceof MOB))
@@ -86,11 +87,12 @@ public class Addictions extends StdAbility
 			case 6: ((MOB)ticking).tell("You NEED some "+text()+", NOW!"); break;
 			case 7: ((MOB)ticking).tell("Some "+text()+" would be lovely."); break;
 			}
-			
+
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -106,7 +108,8 @@ public class Addictions extends StdAbility
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -131,14 +134,15 @@ public class Addictions extends StdAbility
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=givenTarget;
-		
+
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);

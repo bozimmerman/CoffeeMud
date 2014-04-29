@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Basse extends Dance
 {
-	public String ID() { return "Dance_Basse"; }
-	public String name(){ return "Basse";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Basse"; }
+	@Override public String name(){ return "Basse";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
@@ -63,7 +64,8 @@ public class Dance_Basse extends Dance
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)

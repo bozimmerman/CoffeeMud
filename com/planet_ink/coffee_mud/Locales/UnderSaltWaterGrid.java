@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class UnderSaltWaterGrid extends UnderWaterGrid
 {
-	public String ID(){return "UnderSaltWaterGrid";}
+	@Override public String ID(){return "UnderSaltWaterGrid";}
 	public UnderSaltWaterGrid()
 	{
 		super();
@@ -47,11 +47,11 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 		climask=Places.CLIMASK_WET;
 		atmosphere=RawMaterial.RESOURCE_SALTWATER;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	protected int baseThirst(){return 0;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	@Override protected int baseThirst(){return 0;}
 
 
-	public String getGridChildLocaleID(){return "UnderSaltWater";}
+	@Override public String getGridChildLocaleID(){return "UnderSaltWater";}
 
-	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 }

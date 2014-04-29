@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,32 +34,34 @@ import java.util.*;
 */
 public class Animal extends StdRace
 {
-	public String ID(){	return "Animal"; }
-	public String name(){ return "Animal"; }
-	public int shortestMale(){return 6;}
-	public int shortestFemale(){return 6;}
-	public int heightVariance(){return 3;}
-	public int lightestWeight(){return 10;}
-	public int weightVariance(){return 20;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Animal";}
+	@Override public String ID(){	return "Animal"; }
+	@Override public String name(){ return "Animal"; }
+	@Override public int shortestMale(){return 6;}
+	@Override public int shortestFemale(){return 6;}
+	@Override public int heightVariance(){return 3;}
+	@Override public int lightestWeight(){return 10;}
+	@Override public int weightVariance(){return 20;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Animal";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -72,6 +74,7 @@ public class Animal extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

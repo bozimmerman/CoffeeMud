@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_Leeches extends Disease
 {
-	public String ID() { return "Disease_Leeches"; }
-	public String name(){ return "Leeches";}
-	public String displayText(){ return "(Leeches)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Leeches"; }
+	@Override public String name(){ return "Leeches";}
+	@Override public String displayText(){ return "(Leeches)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 35;}
-	protected int DISEASE_DELAY(){return 7;}
-	protected String DISEASE_DONE(){return "The leeches get full and fall off.";}
-	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> cringe(s) from the leeches.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 35;}
+	@Override protected int DISEASE_DELAY(){return 7;}
+	@Override protected String DISEASE_DONE(){return "The leeches get full and fall off.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> cringe(s) from the leeches.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 0;}
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";
 
@@ -67,6 +67,7 @@ public class Disease_Leeches extends Disease
 		return offenders;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -93,6 +94,7 @@ public class Disease_Leeches extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
@@ -100,6 +102,7 @@ public class Disease_Leeches extends Disease
 		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
 			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 	}
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;
@@ -108,7 +111,7 @@ public class Disease_Leeches extends Disease
 			hp=Integer.MAX_VALUE;
 			thename=affected.Name();
 		}
-		if(affected.curState().getHitPoints()<hp) 
+		if(affected.curState().getHitPoints()<hp)
 			hp=affected.curState().getHitPoints();
 		affectableState.setHitPoints(hp);
 	}

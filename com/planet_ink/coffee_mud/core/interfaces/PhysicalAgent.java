@@ -22,12 +22,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * A Physical object capable of initiating an effect on the world.
 * (Even if it is normally passive)
 * @see com.planet_ink.coffee_mud.core.interfaces.Physical
 * @see com.planet_ink.coffee_mud.core.interfaces.Behavable
-* 
+*
 * @author Bo Zimmerman
 *
 */

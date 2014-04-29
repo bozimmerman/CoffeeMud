@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ import java.util.*;
 */
 public class ClanGovernmentData extends StdWebMacro
 {
-	public String name() { return "ClanGovernmentData"; }
+	@Override public String name() { return "ClanGovernmentData"; }
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -67,7 +68,7 @@ public class ClanGovernmentData extends StdWebMacro
 					}
 			}
 			StringBuffer str=new StringBuffer("");
-			
+
 			// ******************************************************************************************
 			// do govt positions FIRST!
 			// ******************************************************************************************
@@ -122,12 +123,12 @@ public class ClanGovernmentData extends StdWebMacro
 				posDex++;
 				posDexStr=Integer.toString(posDex);
 			}
-			
+
 			String cmpos=httpReq.getUrlParameter("GOVTPOSITION");
 			ClanPosition gPos = null;
 			if((cmpos!=null)&&(cmpos.length()>0)&&(CMath.s_int(cmpos)>=0)&&(CMath.s_int(cmpos)<posList.size()))
 				gPos=posList.get(CMath.s_int(cmpos));
-			
+
 			if((gPos!=null)&&parms.containsKey("GPOSID_"+cmpos))
 				str.append(gPos.getID()+", ");
 			if((gPos!=null)&&parms.containsKey("GPOSROLEID_"+cmpos))
@@ -157,7 +158,7 @@ public class ClanGovernmentData extends StdWebMacro
 			if(parms.containsKey("GPOSPOWERLIST"))
 				for(Clan.Function func : Clan.Function.values())
 					str.append("<OPTION VALUE=\""+func.toString()+"\">"+func.toString());
-			
+
 			if(parms.containsKey("NEXTPOSITIONID"))
 			{
 				for(int i=0;i<posList.size()+10;i++)
@@ -167,7 +168,7 @@ public class ClanGovernmentData extends StdWebMacro
 						break;
 					}
 			}
-			
+
 			// iterators
 				if(parms.containsKey("POSITIONSTART"))
 				{
@@ -193,7 +194,7 @@ public class ClanGovernmentData extends StdWebMacro
 						return "<!--EMPTY-->";
 					return " @break@";
 				}
-			
+
 			if(parms.containsKey("NAME"))
 			{
 				String old=httpReq.getUrlParameter("NAME");

@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ItemGenerator extends ActiveTicker
 {
-	public String ID(){return "ItemGenerator";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override public String ID(){return "ItemGenerator";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	protected static volatile Tickable[] builerTick=new Tickable[1];
 
 	protected Vector maintained=new Vector();
@@ -48,9 +48,10 @@ public class ItemGenerator extends ActiveTicker
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "item generating";
 	}
 
@@ -61,6 +62,7 @@ public class ItemGenerator extends ActiveTicker
 		public int maxValue=0;
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
@@ -173,19 +175,20 @@ public class ItemGenerator extends ActiveTicker
 
 	protected class ItemGenerationTicker implements Tickable
 	{
-		public String ID(){return "ItemGenerationTicker";}
-		public String name(){return "ItemGenerationTicker";}
-		public CMObject newInstance(){return this;}
-		public void initializeClass(){}
-		public CMObject copyOf(){return this;}
-		public int compareTo(CMObject o){return (o==this)?1:0;}
+		@Override public String ID(){return "ItemGenerationTicker";}
+		@Override public String name(){return "ItemGenerationTicker";}
+		@Override public CMObject newInstance(){return this;}
+		@Override public void initializeClass(){}
+		@Override public CMObject copyOf(){return this;}
+		@Override public int compareTo(CMObject o){return (o==this)?1:0;}
 		private int tickStatus=0;
-		public int getTickStatus(){return tickStatus;}
+		@Override public int getTickStatus(){return tickStatus;}
+		@Override
 		public boolean tick(Tickable host, int tickID)
 		{
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 			if(allItems!=null) return false;
-			allItems=new Vector<Item>(); 
+			allItems=new Vector<Item>();
 
 			List<ItemCraftor> skills=new Vector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -262,6 +265,7 @@ public class ItemGenerator extends ActiveTicker
 		return items;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -277,7 +281,7 @@ public class ItemGenerator extends ActiveTicker
 			try
 			{
 				I=(Item)maintained.elementAt(i);
-				if(!isStillMaintained(E,SK,I)) 
+				if(!isStillMaintained(E,SK,I))
 					maintained.removeElement(I);
 			}
 			catch(Exception e){	}

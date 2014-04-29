@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DrunkenStupor extends Prayer
 {
-	public String ID() { return "Prayer_DrunkenStupor"; }
-	public String name(){ return "Drunken Stupor";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_INTOXICATING;}
-	public String displayText(){ return "(Drunken Stupor)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prayer_DrunkenStupor"; }
+	@Override public String name(){ return "Drunken Stupor";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_INTOXICATING;}
+	@Override public String displayText(){ return "(Drunken Stupor)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Ability inebriation=null;
 
 	protected Ability getInebriation()
@@ -58,6 +58,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		return inebriation;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -68,12 +69,14 @@ public class Prayer_DrunkenStupor extends Prayer
 	}
 
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-3));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -86,6 +89,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		Ability A=getInebriation();
@@ -94,6 +98,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -117,6 +122,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -129,6 +135,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

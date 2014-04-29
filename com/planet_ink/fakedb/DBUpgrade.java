@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.*;
 import java.sql.*;
 
-/* 
+/*
    Copyright 2003-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ public class DBUpgrade
 	static PrintStream out=System.out;
 	static boolean debug=false;
 	static BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
-	
+
 	private static void pl(String str)
 	{
 		if(out!=null) out.println(str);
@@ -33,7 +33,7 @@ public class DBUpgrade
 	{
 		if(out!=null) out.print(str);
 	}
-	
+
 	public static String getStringFieldValue(final String field, int oldIndex, List<String> row)
 	{
 		if(field.startsWith("#"))
@@ -51,12 +51,12 @@ public class DBUpgrade
 				return "''";
 		}
 	}
-	
+
 	private static long s_long(String str)
 	{
 		try { return Long.valueOf(str).longValue(); } catch(Exception e){ return 0;}
 	}
-	
+
 	public static Object getFieldValue(final String field, int oldIndex, List<String> row)
 	{
 		if(field.startsWith("#"))
@@ -74,7 +74,7 @@ public class DBUpgrade
 				return "";
 		}
 	}
-	
+
 	public static int[] getMatrix(List<String> ofields, List<String> nfields)
 	{
 		int[] matrix=new int[nfields.size()];
@@ -89,7 +89,7 @@ public class DBUpgrade
 		}
 		return matrix;
 	}
-	
+
 	public static void main(String a[]) throws IOException
 	{
 		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
@@ -297,7 +297,7 @@ public class DBUpgrade
 			pl("But it doesn't look like the old schema changed at all! Oh well, on we go...");
 		pl("");
 		pl("");
-		/////////////////////////////////////////////////////////////////////////////	
+		/////////////////////////////////////////////////////////////////////////////
 		/////// Source Database information
 		/////////////////////////////////////////////////////////////////////////////
 		String answer="";
@@ -341,7 +341,7 @@ public class DBUpgrade
 			}
 			secondTime=true;
 		}
-			
+
 		String sservice="";
 		if(answer.equals("Y"))
 		{
@@ -378,7 +378,7 @@ public class DBUpgrade
 			}
 			// where is it?
 		}
-		
+
 		pl("");
 		pl("");
 		tested=false;
@@ -431,7 +431,7 @@ public class DBUpgrade
 				pl(ce.getMessage());
 			}
 		}
-		/////////////////////////////////////////////////////////////////////////////	
+		/////////////////////////////////////////////////////////////////////////////
 		/////// Destination DB info
 		/////////////////////////////////////////////////////////////////////////////
 		pl("");
@@ -479,7 +479,7 @@ public class DBUpgrade
 			}
 			secondTime=true;
 		}
-			
+
 		pl("");
 		pl("");
 		String dservice="";
@@ -518,7 +518,7 @@ public class DBUpgrade
 			}
 			// where is it?
 		}
-		
+
 		tested=false;
 		String dlogin="";
 		String dpassword="";
@@ -606,7 +606,7 @@ public class DBUpgrade
 				pl(ce.getMessage());
 			}
 		}
-		/////////////////////////////////////////////////////////////////////////////	
+		/////////////////////////////////////////////////////////////////////////////
 		/////// Start sucking data
 		/////////////////////////////////////////////////////////////////////////////
 		pl("");
@@ -694,7 +694,7 @@ public class DBUpgrade
 		pl(" ");
 		pl(" ");
 		p("OK! Writing destination tables: ");
-		
+
 		try
 		{
 			Class.forName(dclass);
@@ -712,7 +712,7 @@ public class DBUpgrade
 					continue;
 				}
 				int[] matrix=getMatrix(ofields,nfields);
-				
+
 				for(int r=0;r<rows.size();r++)
 				{
 					List row=(List)rows.get(r);

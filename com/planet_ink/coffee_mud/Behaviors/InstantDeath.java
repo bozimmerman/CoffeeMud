@@ -37,8 +37,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class InstantDeath extends ActiveTicker
 {
-	public String ID(){return "InstantDeath";}
-	public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
+	@Override public String ID(){return "InstantDeath";}
+	@Override public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
 	protected CompiledZapperMask mask=null;
 
 	public InstantDeath()
@@ -48,6 +48,7 @@ public class InstantDeath extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -56,11 +57,12 @@ public class InstantDeath extends ActiveTicker
 		if((maskStr!=null)&&(maskStr.trim().length()>0))
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
-	
+
 	boolean activated=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "instant killing";
 	}
 
@@ -85,6 +87,7 @@ public class InstantDeath extends ActiveTicker
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -129,6 +132,7 @@ public class InstantDeath extends ActiveTicker
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

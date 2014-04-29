@@ -36,7 +36,7 @@ import java.util.*;
 public class AutoAffects extends StdCommand
 {
 	private final String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public String getAutoAffects(MOB viewerMOB, Physical P)
 	{
@@ -62,6 +62,7 @@ public class AutoAffects extends StdCommand
 		return msg.toString();
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -112,7 +113,7 @@ public class AutoAffects extends StdCommand
 					}
 					return false;
 				}
-				
+
 			}
 			if(S==mob.session())
 				S.colorOnlyPrint(" \n\r^!Your auto-invoked skills are:^?");
@@ -124,7 +125,7 @@ public class AutoAffects extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
 }
-	
+

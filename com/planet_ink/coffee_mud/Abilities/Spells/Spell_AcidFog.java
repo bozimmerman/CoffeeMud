@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_AcidFog extends Spell
 {
-	public String ID() { return "Spell_AcidFog"; }
-	public String name(){ return "Acid Fog";}
-	public String displayText(){ return "(Acid Fog)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int minRange(){return 2;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public String ID() { return "Spell_AcidFog"; }
+	@Override public String name(){ return "Acid Fog";}
+	@Override public String displayText(){ return "(Acid Fog)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int minRange(){return 2;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	Room castingLocation=null;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_EARTHBASED;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_EARTHBASED;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -67,6 +68,7 @@ public class Spell_AcidFog extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -83,6 +85,7 @@ public class Spell_AcidFog extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

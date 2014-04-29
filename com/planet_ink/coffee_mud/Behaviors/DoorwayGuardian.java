@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class DoorwayGuardian extends StdBehavior
 {
-	public String ID(){return "DoorwayGuardian";}
+	@Override public String ID(){return "DoorwayGuardian";}
 
 	private boolean nosneak=false;
 	private boolean always=false;
@@ -43,11 +43,13 @@ public class DoorwayGuardian extends StdBehavior
 	private String message=DEFAULT_MESSAGE;
 	Vector<Integer> dirs=new Vector<Integer>();
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "doorway guarding";
 	}
-	
+
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -81,7 +83,7 @@ public class DoorwayGuardian extends StdBehavior
 			else
 			{
 				int dir=Directions.getGoodDirectionCode(s);
-				if(dir>=0) 
+				if(dir>=0)
 				{
 					dirs.addElement(Integer.valueOf(dir));
 					V.removeElementAt(v);
@@ -91,7 +93,7 @@ public class DoorwayGuardian extends StdBehavior
 		if(V.size()>0)
 			mask=CMParms.combineWithQuotes(V,0);
 	}
-	
+
 	public Exit[] getParmExits(MOB monster)
 	{
 		if(monster==null) return null;
@@ -121,6 +123,7 @@ public class DoorwayGuardian extends StdBehavior
 	}
 
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(!super.okMessage(oking,msg)) return false;
@@ -130,7 +133,7 @@ public class DoorwayGuardian extends StdBehavior
 			if(!canActAtAll(oking)) return true;
 		}
 		else
-		if(!canFreelyBehaveNormal(oking)) 
+		if(!canFreelyBehaveNormal(oking))
 			return true;
 		MOB monster=(MOB)oking;
 		if((mob.location()==monster.location())

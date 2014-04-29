@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,22 +36,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
-	public String ID() { return "Prayer_Contagion"; }
-	public String displayText(){ return "(Contagion)";}
-	public String name(){ return "Contagion";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int difficultyLevel(){return 0;}
+	@Override public String ID() { return "Prayer_Contagion"; }
+	@Override public String displayText(){ return "(Contagion)";}
+	@Override public String name(){ return "Contagion";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int difficultyLevel(){return 0;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return ""; // not really a health condition, more of a mystical one
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(affected==null) return;
@@ -65,8 +66,9 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		super.unInvoke();
 	}
 
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -106,6 +108,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

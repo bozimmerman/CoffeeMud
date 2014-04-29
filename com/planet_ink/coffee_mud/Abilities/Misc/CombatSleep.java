@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class CombatSleep extends StdAbility implements HealthCondition
 {
-	public String ID() { return "CombatSleep"; }
-	public String name(){return "Combat Sleep";}
-	public String displayText(){ return "(Asleep)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "CombatSleep"; }
+	@Override public String name(){return "Combat Sleep";}
+	@Override public String displayText(){ return "(Asleep)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"COMBATSLEEP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Unconsciousness.";
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -74,6 +75,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -85,6 +87,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -101,6 +104,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -114,6 +118,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -153,7 +158,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) unconscious!!");
 				}
 				target.makePeace();
-				if(mob.getVictim()==target) 
+				if(mob.getVictim()==target)
 					mob.makePeace();
 			}
 		}

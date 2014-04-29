@@ -49,7 +49,7 @@ public class CrossRefTreeMap<T, K>
 	final int 					maxTsInMap2;
 	@SuppressWarnings("rawtypes")
 	private static final Set empty=new TreeSet();
-	
+
 	public CrossRefTreeMap(int maxFirstForEachSecond, int maxSecondForEachFirst)
 	{
 		if(maxSecondForEachFirst<=0) maxSecondForEachFirst=1;
@@ -57,12 +57,12 @@ public class CrossRefTreeMap<T, K>
 		maxKsInMap1=maxSecondForEachFirst;
 		maxTsInMap2=maxFirstForEachSecond;
 	}
-	
+
 	public boolean containsFirst(T t)
 	{
 		return map1.containsKey(t);
 	}
-	
+
 	public boolean containsSecond(K k)
 	{
 		return map2.containsKey(k);
@@ -76,7 +76,7 @@ public class CrossRefTreeMap<T, K>
 			return empty;
 		return kSet;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Set<T> getSecond(K k)
 	{
@@ -85,7 +85,7 @@ public class CrossRefTreeMap<T, K>
 			return empty;
 		return tSet;
 	}
-	
+
 	public synchronized void remove(T t, K k)
 	{
 		final TreeSet<K> tKs=map1.get(t);
@@ -117,7 +117,7 @@ public class CrossRefTreeMap<T, K>
 			}
 		}
 	}
-	
+
 	public synchronized void removeFirst(T t)
 	{
 		final TreeSet<K> tKs=map1.get(t);
@@ -140,7 +140,7 @@ public class CrossRefTreeMap<T, K>
 			map1.remove(t);
 		}
 	}
-	
+
 	public synchronized void removeSecond(K k)
 	{
 		final TreeSet<T> kTs=map2.get(k);
@@ -163,7 +163,7 @@ public class CrossRefTreeMap<T, K>
 			map2.remove(k);
 		}
 	}
-	
+
 	public synchronized void change(T t, K k)
 	{
 		TreeSet<K> tKs=map1.get(t);
@@ -189,11 +189,11 @@ public class CrossRefTreeMap<T, K>
 		if(!tKs.contains(k))
 			tKs.add(k);
 	}
-	
+
 	public synchronized void clear()
 	{
 		map1.clear();
 		map2.clear();
 	}
-	
+
 }

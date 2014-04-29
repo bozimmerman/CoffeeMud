@@ -37,14 +37,15 @@ import java.util.*;
 
 public class Paladin_Purity extends PaladinSkill
 {
-	public String ID() { return "Paladin_Purity"; }
-	public String name(){ return "Paladin`s Purity";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public String ID() { return "Paladin_Purity"; }
+	@Override public String name(){ return "Paladin`s Purity";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Purity()
 	{
 		super();
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

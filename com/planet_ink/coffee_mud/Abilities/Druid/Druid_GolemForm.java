@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_GolemForm extends StdAbility
 {
-	public String ID() { return "Druid_GolemForm"; }
-	public String name(){ return "Golem Form";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Druid_GolemForm"; }
+	@Override public String name(){ return "Golem Form";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"GOLEMFORM"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 
 	public Race newRace=null;
 	public String raceName="";
 	public int raceLevel=0;
 
+	@Override
 	public String displayText()
 	{
 		if(newRace==null)
@@ -75,6 +76,7 @@ public class Druid_GolemForm extends StdAbility
 	"MetalGolem"
 	};
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -123,6 +125,7 @@ public class Druid_GolemForm extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -130,6 +133,7 @@ public class Druid_GolemForm extends StdAbility
 	}
 
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -154,6 +158,7 @@ public class Druid_GolemForm extends StdAbility
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -210,6 +215,7 @@ public class Druid_GolemForm extends StdAbility
 		return false;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -224,6 +230,7 @@ public class Druid_GolemForm extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)

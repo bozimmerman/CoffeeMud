@@ -30,7 +30,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.siplet.applet.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,15 +47,15 @@ import com.planet_ink.siplet.applet.*;
 */
 public class SipletInterface extends StdWebMacro
 {
-	public String name() { return "SipletInterface"; }
+	@Override public String name() { return "SipletInterface"; }
 
-	public boolean isAWebPath(){return true;}
-	
+	@Override public boolean isAWebPath(){return true;}
+
 	public static final LinkedList<String> removables		 = new LinkedList<String>();
 	public static final Object 			   sipletConnectSync = new Object();
 	public static volatile boolean 		   initialized		 = false;
-	public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>(); 
-	
+	public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>();
+
 	private class SipletSession
 	{
 		public long 		lastTouched = System.currentTimeMillis();
@@ -63,7 +63,7 @@ public class SipletInterface extends StdWebMacro
 		public String   	response	= "";
 		public SipletSession(Siplet sip) { siplet=sip;}
 	}
-	
+
 	private class PipeSocket extends Socket
 	{
 		private boolean 			isClosed = false;
@@ -82,19 +82,22 @@ public class SipletInterface extends StdWebMacro
 				pipeLocal=friendPipe;
 			}
 		}
-		public void shutdownInput() throws IOException  
-		{ 
-			inStream.close(); 
-			isClosed=true; 
+		@Override
+		public void shutdownInput() throws IOException
+		{
+			inStream.close();
+			isClosed=true;
 		}
-		public void shutdownOutput() throws IOException 
-		{ 
-			outStream.close(); 
-			isClosed=true; 
+		@Override
+		public void shutdownOutput() throws IOException
+		{
+			outStream.close();
+			isClosed=true;
 		}
-		public boolean isConnected() { return !isClosed; }
-		public boolean isClosed() { return isClosed; }
-		public synchronized void close() throws IOException 
+		@Override public boolean isConnected() { return !isClosed; }
+		@Override public boolean isClosed() { return isClosed; }
+		@Override
+		public synchronized void close() throws IOException
 		{
 			inStream.close();
 			outStream.close();
@@ -105,11 +108,12 @@ public class SipletInterface extends StdWebMacro
 			}
 			isClosed = true;
 		}
-		public InputStream getInputStream() throws IOException { return inStream; }
-		public OutputStream getOutputStream() throws IOException { return outStream; }
-		public InetAddress getInetAddress() { return addr; }
+		@Override public InputStream getInputStream() throws IOException { return inStream; }
+		@Override public OutputStream getOutputStream() throws IOException { return outStream; }
+		@Override public InetAddress getInetAddress() { return addr; }
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -120,9 +124,10 @@ public class SipletInterface extends StdWebMacro
 			CMLib.threads().startTickDown(new Tickable()
 			{
 				private int tickStatus=Tickable.STATUS_NOT;
-				public int getTickStatus() { return tickStatus;}
-				public String name() { return "SipletInterface";}
-				public boolean tick(Tickable ticking, int tickID) 
+				@Override public int getTickStatus() { return tickStatus;}
+				@Override public String name() { return "SipletInterface";}
+				@Override
+				public boolean tick(Tickable ticking, int tickID)
 				{
 					tickStatus=Tickable.STATUS_ALIVE;
 					synchronized(siplets)
@@ -146,14 +151,14 @@ public class SipletInterface extends StdWebMacro
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}
-				public String ID() { return "SipletInterface";}
-				public CMObject copyOf() { return this;}
-				public void initializeClass() {}
-				public CMObject newInstance() { return this;}
-				public int compareTo(CMObject o) { return o==this?0:1;}
+				@Override public String ID() { return "SipletInterface";}
+				@Override public CMObject copyOf() { return this;}
+				@Override public void initializeClass() {}
+				@Override public CMObject newInstance() { return this;}
+				@Override public int compareTo(CMObject o) { return o==this?0:1;}
 			}, Tickable.TICKID_MISCELLANEOUS, 10);
 		}
-		
+
 		if(httpReq.isUrlParameter("CONNECT"))
 		{
 			String url=httpReq.getUrlParameter("URL");

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class StdContainer extends StdItem implements Container
 {
-	public String ID(){	return "StdContainer";}
+	@Override public String ID(){	return "StdContainer";}
 	protected boolean isLocked=false;
 	protected boolean hasALock=false;
 	protected boolean isOpen=true;
@@ -55,15 +55,18 @@ public class StdContainer extends StdItem implements Container
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 
+	@Override
 	public int capacity()
 	{
 		return capacity;
 	}
+	@Override
 	public void setCapacity(int newValue)
 	{
 		capacity=newValue;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -326,6 +329,7 @@ public class StdContainer extends StdItem implements Container
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
@@ -335,7 +339,8 @@ public class StdContainer extends StdItem implements Container
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -409,10 +414,11 @@ public class StdContainer extends StdItem implements Container
 		super.executeMsg(myHost,msg);
 	}
 
-	public long containTypes(){return containType;}
+	@Override public long containTypes(){return containType;}
 
-	public void setContainTypes(long containTypes){containType=containTypes;}
+	@Override public void setContainTypes(long containTypes){containType=containTypes;}
 
+	@Override
 	public boolean canContain(Environmental E)
 	{
 		if (!(E instanceof Item)) return false;
@@ -511,11 +517,12 @@ public class StdContainer extends StdItem implements Container
 
 
 
-	public boolean isLocked(){return isLocked;}
-	public boolean hasALock(){return hasALock;}
-	public boolean isOpen(){return isOpen;}
-	public boolean hasALid(){return hasALid;}
+	@Override public boolean isLocked(){return isLocked;}
+	@Override public boolean hasALock(){return hasALock;}
+	@Override public boolean isOpen(){return isOpen;}
+	@Override public boolean hasALid(){return hasALid;}
 
+	@Override
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked)
 	{
 		hasALid=newHasALid;
@@ -524,19 +531,23 @@ public class StdContainer extends StdItem implements Container
 		isLocked=newIsLocked;
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		miscText=newMiscText;
 		if(!isGeneric()) setKeyName(miscText);
 	}
+	@Override
 	public String keyName()
 	{
 		return miscText;
 	}
+	@Override
 	public void setKeyName(String newKeyName)
 	{
 		miscText=newKeyName;
 	}
+	@Override
 	public void emptyPlease(boolean flatten)
 	{
 		final ItemPossessor C=owner();
@@ -562,6 +573,7 @@ public class StdContainer extends StdItem implements Container
 			}
 		}
 	}
+	@Override
 	public boolean isInside(Item I)
 	{
 		if(I.container()==null) return false;
@@ -569,13 +581,13 @@ public class StdContainer extends StdItem implements Container
 		if(I.container()==I) return false;
 		return isInside(I.container());
 	}
-	
+
 	@Override
 	public int numberOfItems()
 	{
 		return getContents().size()+1;
 	}
-	
+
 	@Override
 	public int recursiveWeight()
 	{
@@ -604,7 +616,8 @@ public class StdContainer extends StdItem implements Container
 		}
 		return weight;
 	}
-	
+
+	@Override
 	public ReadOnlyList<Item> getContents()
 	{
 		List<Item> V=new Vector<Item>();

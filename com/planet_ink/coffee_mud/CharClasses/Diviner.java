@@ -32,17 +32,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Diviner extends SpecialistMage
 {
-	public String ID(){return "Diviner";}
-	public String name(){return "Diviner";}
-	public int domain(){return Ability.DOMAIN_DIVINATION;}
-	public int opposed(){return Ability.DOMAIN_ILLUSION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Diviner";}
+	@Override public String name(){return "Diviner";}
+	@Override public int domain(){return Ability.DOMAIN_DIVINATION;}
+	@Override public int opposed(){return Ability.DOMAIN_ILLUSION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Spellcraft",false);
-		
-		
+
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SolveMaze",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_GroupStatus",25,true);

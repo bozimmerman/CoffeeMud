@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,24 @@ import java.util.*;
 
 public class Disease_HeatExhaustion extends Disease
 {
-	public String ID() { return "Disease_HeatExhaustion"; }
-	public String name(){ return "Heat Exhaustion";}
-	public String displayText(){ return "(Heat Exhaustion)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 1;}
+	@Override public String ID() { return "Disease_HeatExhaustion"; }
+	@Override public String name(){ return "Heat Exhaustion";}
+	@Override public String displayText(){ return "(Heat Exhaustion)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 1;}
 
-	protected int DISEASE_TICKS(){return 300;}
-	protected int DISEASE_DELAY(){return 3;}
-	protected String DISEASE_DONE(){return "Your head stops spinning.";}
-	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> overcome by the heat.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 300;}
+	@Override protected int DISEASE_DELAY(){return 3;}
+	@Override protected String DISEASE_DONE(){return "Your head stops spinning.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> overcome by the heat.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
 	protected Room theRoom=null;
 	protected int changeDown=300;
-	
+
 	public Room room(Room R)
 	{
 		if((theRoom==null)
@@ -62,7 +62,8 @@ public class Disease_HeatExhaustion extends Disease
 		if(R==theRoom) theRoom=null;
 		return theRoom;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -84,7 +85,8 @@ public class Disease_HeatExhaustion extends Disease
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -123,7 +125,7 @@ public class Disease_HeatExhaustion extends Disease
 						break;
 					}
 			}
-			
+
 		}
 		if((--changeDown)<=0)
 		{

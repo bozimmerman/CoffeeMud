@@ -34,26 +34,29 @@ import java.util.*;
 */
 public class Prop_AddDamage extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_AddDamage"; }
-	public String name(){ return "Additional Damage";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_AddDamage"; }
+	@Override public String name(){ return "Additional Damage";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	int weaponType=Weapon.TYPE_NATURAL;
 	int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
 	double pctDamage=0.0;
 	int bonusDamage=0;
 	volatile boolean norecurse=false;
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_HITTING_WITH;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		String id="Does extra damage of the following amount and types: "+text();
 		return id;
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -135,6 +138,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		return dmg;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,22 +36,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Track extends StdAbility
 {
-	public String ID() { return "Ranger_Track"; }
-	public String name(){ return "Track";}
+	@Override public String ID() { return "Ranger_Track"; }
+	@Override public String name(){ return "Track";}
 
 	protected String displayText="(Tracking)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String displayText(){ return displayText;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"TRACK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -105,12 +106,14 @@ public class Ranger_Track extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -126,6 +129,7 @@ public class Ranger_Track extends StdAbility
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))

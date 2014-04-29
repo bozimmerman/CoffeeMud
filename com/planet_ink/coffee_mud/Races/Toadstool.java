@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,27 @@ import java.util.*;
 */
 public class Toadstool extends StdRace
 {
-	public String ID(){	return "Toadstool"; }
-	public String name(){ return "Toadstool"; }
-	public int shortestMale(){return 1;}
-	public int shortestFemale(){return 1;}
-	public int heightVariance(){return 1;}
-	public int lightestWeight(){return 1;}
-	public int weightVariance(){return 1;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Vegetation";}
-	public int availabilityCode(){return 0;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "Toadstool"; }
+	@Override public String name(){ return "Toadstool"; }
+	@Override public int shortestMale(){return 1;}
+	@Override public int shortestFemale(){return 1;}
+	@Override public int heightVariance(){return 1;}
+	@Override public int lightestWeight(){return 1;}
+	@Override public int weightVariance(){return 1;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Vegetation";}
+	@Override public int availabilityCode(){return 0;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -66,6 +67,7 @@ public class Toadstool extends StdRace
 		affectableStats.setDamage(0);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -73,6 +75,7 @@ public class Toadstool extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -86,11 +89,13 @@ public class Toadstool extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return super.makeMobName('N', Race.AGE_MATURE);
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -118,6 +123,7 @@ public class Toadstool extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_GrowOak extends Chant_SummonPlants
 {
-	public String ID() { return "Chant_GrowOak"; }
-	public String name(){ return "Grow Oak";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return Ability.COST_ALL;}
+	@Override public String ID() { return "Chant_GrowOak"; }
+	@Override public String name(){ return "Grow Oak";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	protected int hpRemaining=0;
 	protected int lastHp=-1;
 
+	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		int material=RawMaterial.RESOURCE_OAK;
@@ -74,6 +75,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		return newItem;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -119,6 +121,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=Druid_MyPlants.myPlantRooms(mob);

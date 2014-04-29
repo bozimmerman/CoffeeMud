@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Root extends Chant
 {
-	public String ID() { return "Chant_Root"; }
-	public String name(){return "Root";}
-	public String displayText(){return "(Rooted)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Root"; }
+	@Override public String name(){return "Root";}
+	@Override public String displayText(){return "(Rooted)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	protected boolean uprooted=false;
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,6 +58,7 @@ public class Chant_Root extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> roots are pulled up.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -95,6 +97,7 @@ public class Chant_Root extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -108,6 +111,7 @@ public class Chant_Root extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class MagicFreeRoom extends StdRoom
 {
-	public String ID(){return "MagicFreeRoom";}
+	@Override public String ID(){return "MagicFreeRoom";}
 	public MagicFreeRoom()
 	{
 		super();
@@ -43,5 +43,5 @@ public class MagicFreeRoom extends StdRoom
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 }

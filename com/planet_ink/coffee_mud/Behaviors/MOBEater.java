@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MOBEater extends ActiveTicker
 {
-	public String ID(){return "MOBEater";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
+	@Override public String ID(){return "MOBEater";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
 	protected Room Stomach = null;
 	protected int digestDown=4;
 	protected Room lastKnownLocation=null;
 	protected int chanceToEat = 5;
 	protected int pctAcidHp = 50;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "creature eating";
 	}
 
@@ -56,12 +57,14 @@ public class MOBEater extends ActiveTicker
 		tickReset();
 	}
 
-	public void setParms(String parms) 
+	@Override
+	public void setParms(String parms)
 	{
 		super.setParms(parms);
 		pctAcidHp=CMParms.getParmInt(parms,"acidpct",50);
 	}
 
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		if(Stomach==null)
@@ -115,6 +118,7 @@ public class MOBEater extends ActiveTicker
 		lastKnownLocation=null;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -137,6 +141,7 @@ public class MOBEater extends ActiveTicker
 			trySwallowWhole(mob);
 		return true;
 	}
+	@Override
 	public void executeMsg(Environmental mob, CMMsg msg)
 	{
 		if((mob instanceof MOB)

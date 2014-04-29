@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class WoodRoomThinGrid extends StdThinGrid
 {
-	public String ID(){return "WoodRoomThinGrid";}
+	@Override public String ID(){return "WoodRoomThinGrid";}
 	public WoodRoomThinGrid()
 	{
 		super();
@@ -43,13 +43,14 @@ public class WoodRoomThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new WoodRoomGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "WoodRoom";}
+	@Override public String getGridChildLocaleID(){return "WoodRoom";}
 }

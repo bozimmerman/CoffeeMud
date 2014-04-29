@@ -108,6 +108,7 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	 * @see Behavior#isSavable()
 	 * @param truefalse whether this behavior can be saved as part of its host.
 	 */
+	@Override
 	public void setSavable(boolean truefalse);
 
 	/**
@@ -140,12 +141,12 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	public long flags();
 
 	/**
-	 * Returns a string describing what this behavior does.  Mostly for 
+	 * Returns a string describing what this behavior does.  Mostly for
 	 * thought and behavior reading systems.
 	 * @return a string describing what this behavior does.
 	 */
 	public String accountForYourself();
-	
+
 	/**
 	 * Returns the result of a very specific test, namely whether this
 	 * behavior would be the direct cause of a malicious act against

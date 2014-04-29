@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_CarefulStep extends ThiefSkill
 {
-	public String ID() { return "Thief_CarefulStep"; }
-	public String name(){ return "Careful Step";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
-	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_CarefulStep"; }
+	@Override public String name(){ return "Careful Step";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
+	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
 
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		if(secondsElapsed==0)
@@ -64,7 +65,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				mob.tell("Not while you are fighting!");
 				return false;
 			}
-	
+
 			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
 				mob.tell("Step where?");
@@ -78,6 +79,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);

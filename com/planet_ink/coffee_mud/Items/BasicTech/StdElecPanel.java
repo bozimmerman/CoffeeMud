@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 */
 public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
-	public String ID(){	return "StdElecPanel";}
-	
+	@Override public String ID(){	return "StdElecPanel";}
+
 	protected volatile int powerNeeds=0;
-	
+
 	public StdElecPanel()
 	{
 		super();
@@ -50,20 +50,22 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		this.activated=true;
 		this.recoverPhyStats();
 	}
-	
+
 	@Override public TechType getTechType() { return TechType.SHIP_PANEL; }
 
 	protected TechType panelType=TechType.ANY;
-	public TechType panelType(){return panelType;}
-	public void setPanelType(TechType type){panelType=type;}
+	@Override public TechType panelType(){return panelType;}
+	@Override public void setPanelType(TechType type){panelType=type;}
 	@Override public int powerNeeds(){return powerNeeds; }
 
+	@Override
 	public String displayText()
 	{
 		if(isOpen())
 			return name()+" is opened here.";
 		return "";
 	}
+	@Override
 	public boolean canContain(Environmental E)
 	{
 		if(!super.canContain(E)) return false;
@@ -72,7 +74,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return true;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override @SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -114,7 +116,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))

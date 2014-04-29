@@ -32,8 +32,8 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * The basic interface for all skills, spells, chants, prayers, 
- * and properties. Abilities are listed in a MOBs abilities 
+ * The basic interface for all skills, spells, chants, prayers,
+ * and properties. Abilities are listed in a MOBs abilities
  * list, and may be listed on *any* Environmental objects effects
  * list.  Often the same class files act in both capacities.
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
@@ -46,10 +46,10 @@ public interface Ability extends Environmental
 	public static final int TICKS_FOREVER=Integer.MAX_VALUE-1000;
 	/** Constant shortcut for setting the ticks remaining on the skill to basically be almost endless. */
 	public static final int TICKS_ALMOST_FOREVER=Integer.MAX_VALUE/2;
-	
+
 	/**
-	 * Returns a bitmap describing the general 
-	 * classification of the skill (spell, skill, 
+	 * Returns a bitmap describing the general
+	 * classification of the skill (spell, skill,
 	 * chant, or property, etc) and its domain.  It
 	 * is made up of the ACODE_* constants the Ability
 	 * interface, and optionally the DOMAIN_* constants
@@ -71,25 +71,25 @@ public interface Ability extends Environmental
 	 * @return Ability.QUALITY_* constant classification
 	 */
 	public int abstractQuality();
-	
+
 	/**
 	 * Identical to abstractQuality() method, but returns
 	 * a quality based on how the skill or spell behaves
 	 * as a spell effect on a weapon or on armor.  This
 	 * helps decide whether this skill is appropriate in
-	 * those roles.  These constants are defined in the 
+	 * those roles.  These constants are defined in the
 	 * Ability interface and called QUALITY_*
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()
 	 * @see Ability
 	 * @return Ability.QUALITY_* constant classification
 	 */
 	public int enchantQuality();
-	
+
 	/**
 	 * Serves a purpose similar to that of the Ability
 	 * abstractQuality() method, but it determines a more
 	 * exact quality based on a given invoker, target, and
-	 * assumes an imminent use of the skill.  For this 
+	 * assumes an imminent use of the skill.  For this
 	 * reason, the QUALITY_OK_* constants should be avoided
 	 * in favor of the other Ability.QUALITY_* constants.
 	 * @see Ability
@@ -108,7 +108,7 @@ public interface Ability extends Environmental
 	 * @return FLAG_* constant based bitmap
 	 */
 	public long flags();
-	
+
 	/**
 	 * Always returns the mob that invoked or initiated the
 	 * skill or effect.
@@ -117,7 +117,7 @@ public interface Ability extends Environmental
 	 * @return the invoker mob
 	 */
 	public MOB invoker();
-	
+
 	/**
 	 * Sets or changes the mob that invoked or initated the
 	 * skill or effect.
@@ -137,7 +137,7 @@ public interface Ability extends Environmental
 	 * @return the room, mob, or item being affected
 	 */
 	public Physical affecting();
-	
+
 	/**
 	 * Sets a reference to the room, item, mob, or exit
 	 * that is currently being affected by this skill. Does
@@ -151,7 +151,7 @@ public interface Ability extends Environmental
 
 	/**
 	 * Returns whether this skills triggerStrings should be
-	 * places in the master list of commands, unlike 
+	 * places in the master list of commands, unlike
 	 * properties or other hidden skills.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#triggerStrings()
 	 * @return whether to add the triggerString to the commands list
@@ -164,7 +164,7 @@ public interface Ability extends Environmental
 	 * @return a pair, with the number of the cost type, and the cost type
 	 */
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob);
-	
+
 	/**
 	 * A set of the command strings the user types to access
 	 * this command when it is listed as a skill ability.
@@ -175,7 +175,7 @@ public interface Ability extends Environmental
 
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this skill. A value of 0.0 means invoke 
+	 * activate this skill. A value of 0.0 means invoke
 	 * instantly.  This method only applies when the invoker
 	 * is not in combat.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#combatCastingTime(MOB, List)
@@ -185,10 +185,10 @@ public interface Ability extends Environmental
 	 * @return the number of player free actions required to do this
 	 */
 	public double castingTime(final MOB mob, final List<String> commands);
-	
+
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this skill. A value of 0.0 means invoke 
+	 * activate this skill. A value of 0.0 means invoke
 	 * instantly.  This method only applies when the invoker
 	 * is in combat.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#castingTime(MOB, List)
@@ -198,10 +198,10 @@ public interface Ability extends Environmental
 	 * @return the number of player free actions required to do this
 	 */
 	public double combatCastingTime(final MOB mob, final List<String> commands);
-	
+
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this skill. A value of 0.0 means invoke 
+	 * activate this skill. A value of 0.0 means invoke
 	 * instantly.  This method should return the correct time depending
 	 * on the nature of the skill, and whether the user is in combat.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#castingTime(MOB, List)
@@ -229,13 +229,13 @@ public interface Ability extends Environmental
 	 * @return whether the skill should be allowed to invoke.  false cancels altogether.
 	 */
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
-	
+
 	/**
-	 * This method is called when a player or the system invokes this skill,  
+	 * This method is called when a player or the system invokes this skill,
 	 * casts this spell, etc.
 	 * Calls the more complete invoke method without an empty command strings vector
 	 * unless target is non-null, in which case the vector will contain the name
-	 * of the target. 
+	 * of the target.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param target null, unless being auto-invoked. Represents an override target.
@@ -244,13 +244,13 @@ public interface Ability extends Environmental
 	 * @return whether the skill successfully invoked.
 	 */
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel);
-	
+
 	/**
-	 * This method is called when a player or the system invokes this skill,  
+	 * This method is called when a player or the system invokes this skill,
 	 * casts this spell, etc.
 	 * Calls the more complete invoke method without an empty command strings vector
 	 * unless target is non-null, in which case the vector will contain the name
-	 * of the target. 
+	 * of the target.
 	 * @param mob the player or mob invoking the skill
 	 * @param commands the parameters entered for the skill (minus trigger word)
 	 * @param target null, unless being auto-invoked. Represents an override target.
@@ -266,9 +266,9 @@ public interface Ability extends Environmental
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canBeUninvoked()
 	 */
 	public void unInvoke();
-	
+
 	/**
-	 * This method is used to modify the behavior of the affectPhyStats, 
+	 * This method is used to modify the behavior of the affectPhyStats,
 	 * affectCharStats, and affectCharState methods.  If this returns true,
 	 * then those methods will be called only on the owner/mob of the item
 	 * currently being affected by this skill.  If false, those methods
@@ -277,7 +277,7 @@ public interface Ability extends Environmental
 	 * @return whether this skill affects a mob owner of an item
 	 */
 	public boolean bubbleAffect();
-	
+
 	/**
 	 * Whether this skill is allowed to be uninvoked.  If it returns false,
 	 * then it behaves as a permanent property of the object it is affecting.
@@ -286,7 +286,7 @@ public interface Ability extends Environmental
 	 * @return whether this skill can be uninvoked.
 	 */
 	public boolean canBeUninvoked();
-	
+
 	/**
 	 * Designates that this skill should never be uninvoked.  Designates that
 	 * this skill is a permanent property of the object it is affecting.
@@ -299,7 +299,7 @@ public interface Ability extends Environmental
 	/**
 	 * If this ability has been added as as temporary effect, like
 	 * sleep, or trip, or other typical spells, calling this
-	 * method will make it so thatit will not do so on its own for a 
+	 * method will make it so thatit will not do so on its own for a
 	 * long long time.  This method does not make it UNinvokable, but
 	 * only makes it last a long time.
 	 */
@@ -309,7 +309,7 @@ public interface Ability extends Environmental
 	 * An autoinvocating ability is an ability which affects the
 	 * mob just by having learned the ability.  Dodge is an example of this.
 	 * This method is called to initiate this, and is called whenever
-	 * a mob gains this skill as a new Ability.  This method will 
+	 * a mob gains this skill as a new Ability.  This method will
 	 * add the ability to the mob as an effect.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#isAutoInvoked()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#isNowAnAutoEffect()
@@ -317,7 +317,7 @@ public interface Ability extends Environmental
 	 * @return whether the ability autoinvoked correctly
 	 */
 	public boolean autoInvocation(MOB mob);
-	
+
 	/**
 	 * An autoinvocating ability is an ability which affects the
 	 * mob just by having learned the ability.  Dodge is an example of this.
@@ -326,7 +326,7 @@ public interface Ability extends Environmental
 	 * @return whether this is an autoinvoking skill
 	 */
 	public boolean isAutoInvoked();
-	
+
 	/**
 	 * An autoinvocating ability is an ability which affects the
 	 * mob just by having learned the ability.  Dodge is an example of this.
@@ -335,15 +335,15 @@ public interface Ability extends Environmental
 	 * @return whether this skill is currently an autoinvoked effect
 	 */
 	public boolean isNowAnAutoEffect();
-	
+
 	/**
-	 * Returns an integer array telling the system how much mana, 
+	 * Returns an integer array telling the system how much mana,
 	 * movement, or hit points are required to invoke this skill.
 	 * Use the Ability.USAGEINDEX_* constants to index the array.
-	 * A value of 0-1000 is an absolute cost.  A value of 
-	 * Ability.COST_ALL means to use all of the mana, movement, 
-	 * hit points.  A value of Ability.COST_PCT and up 
-	 * represents a percentage of the cost. 
+	 * A value of 0-1000 is an absolute cost.  A value of
+	 * Ability.COST_ALL means to use all of the mana, movement,
+	 * hit points.  A value of Ability.COST_PCT and up
+	 * represents a percentage of the cost.
 	 * The values in this method MUST be accompanied by properly
 	 * set usageType() bitmap.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType()
@@ -353,7 +353,7 @@ public interface Ability extends Environmental
 	 * @return an array of costs, indexed by Ability.USAGEINDEX_*
 	 */
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride);
-	
+
 	/**
 	 * Returns a bitmap made up of constants defined by
 	 * Ability.USAGE_*.  It lets the system know which of the
@@ -372,7 +372,7 @@ public interface Ability extends Environmental
 	 * @return the current optional numeric value or enhancement
 	 */
 	public int abilityCode();
-	
+
 	/**
 	 * Sets an optional numeric value whose purpose is
 	 * entirely contextual.  For many skills, this reflects
@@ -380,7 +380,7 @@ public interface Ability extends Environmental
 	 * @param newCode the optional numeric value or enhancement
 	 */
 	public void setAbilityCode(int newCode);
-	
+
 	/**
 	 * Any external files which may be required to make this ability work
 	 * files returned by this method should not be base distrib files!
@@ -400,7 +400,7 @@ public interface Ability extends Environmental
 	 * @return whether the teacher can teach the skill to the student
 	 */
 	public boolean canBeTaughtBy(MOB teacher, MOB student);
-	
+
 	/**
 	 * Returns whether the given teacher mob is able and allowed to practice
 	 * this skill with the given student *and* whether the student is able
@@ -412,7 +412,7 @@ public interface Ability extends Environmental
 	 * @return whether the teacher and student are capable of practicing together
 	 */
 	public boolean canBePracticedBy(MOB teacher, MOB student);
-	
+
 	/**
 	 * Returns whether the given student mob is able and allowed to learn
 	 * this skill from the given teacher.  Error messages should be directed
@@ -425,7 +425,7 @@ public interface Ability extends Environmental
 	 * @return whether the student can learn the skill from the teacher
 	 */
 	public boolean canBeLearnedBy(MOB teacher, MOB student);
-	
+
 	/**
 	 * Teaches this skill to the student mob, presumably from the teacher mob.
 	 * This method assumes that both the teacher and student are authorized.
@@ -436,7 +436,7 @@ public interface Ability extends Environmental
 	 * @param student the learner of this skill
 	 */
 	public void teach(MOB teacher, MOB student);
-	
+
 	/**
 	 * Causes the student to practice this skill, presumably with the teacher mob.
 	 * This method assumes that both the teacher and student are authorized.
@@ -446,7 +446,7 @@ public interface Ability extends Environmental
 	 * @param student the practicer of this skill
 	 */
 	public void practice(MOB teacher, MOB student);
-	
+
 	/**
 	 * Returns a string describing the requirements and qualifications that
 	 * are required to learn this skill.
@@ -473,22 +473,22 @@ public interface Ability extends Environmental
 	 * @return whether E is a valid object to have this as a property/effect
 	 */
 	public boolean canAffect(Physical P);
-	
+
 	/**
 	 * Returns whether, when used as a skill, this ability can target itself
 	 * at an object of the given type.  This method derives its answer from the protected
-	 * integer method canTargetCode(), and requires one of the Ability.CAN_* 
+	 * integer method canTargetCode(), and requires one of the Ability.CAN_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#canTargetCode()
 	 * @param can_code a bitmap of one or more Ability.CAN_* constants
 	 * @return whether the object type is a valid target
 	 */
 	public boolean canTarget(int can_code);
-	
+
 	/**
 	 * Returns whether, when used as a property/effect, this ability can affect
 	 * the given type of object.  This method derives its answer from the protected
-	 * integer method canAffectCode(), and requires one of the Ability.CAN_* 
+	 * integer method canAffectCode(), and requires one of the Ability.CAN_*
 	 * constants.
 	 * @see Ability
 	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#canAffectCode()
@@ -508,14 +508,14 @@ public interface Ability extends Environmental
 	/**
 	 * Returns whether there are any Faction reasons why the given
 	 * mob should not use this skill.  Used primarily for alignment
-	 * checks of Prayers.  
+	 * checks of Prayers.
 	 * @see com.planet_ink.coffee_mud.Abilities.Prayers.Prayer
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction
 	 * @param mob the mob whose factions to check
 	 * @return whether there are any faction reasons not to cast this.
 	 */
 	public boolean appropriateToMyFactions(MOB mob);
-	
+
 	/**
 	 * This method calculates the strength level of this skill for the
 	 * given mob, and taking into account the given override-level (asLevel).
@@ -531,7 +531,7 @@ public interface Ability extends Environmental
 
 	/**
 	 * Adds this Ability object as an effect on the given affected target, and
-	 * sets it to unInvoke after the given number of ticks.  This method 
+	 * sets it to unInvoke after the given number of ticks.  This method
 	 * intelligently determines whether the target is already going to provide
 	 * tick events to the Ability (like a mob) or whether the system should
 	 * create a tick event for this ability (like on rooms or items).
@@ -551,7 +551,7 @@ public interface Ability extends Environmental
 	 * @return the proficiency from 0-100
 	 */
 	public int proficiency();
-	
+
 	/**
 	 * Sets a number from 0-100 representing the percent of proficiency
 	 * the mob or player who has this instance in their Abilities list has in
@@ -562,7 +562,7 @@ public interface Ability extends Environmental
 	 * @param newProficiency the proficiency from 0-100
 	 */
 	public void setProficiency(int newProficiency);
-	
+
 	/**
 	 * Returns whether the given mob passes their proficiency check in this skill
 	 * at this time.  Will accept a numeric adjustment, positive or negative, to
@@ -575,7 +575,7 @@ public interface Ability extends Environmental
 	 * @return whether the mob passes their proficiency check
 	 */
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto);
-	
+
 	/**
 	 * This method should, occassionally, add to the proficiency the given mob
 	 * has in this skill.  There are no guarentees about how often this method
@@ -588,7 +588,7 @@ public interface Ability extends Environmental
 	 * @param adjustment up or down to the chance of becoming more proficient
 	 */
 	public void helpProficiency(MOB mob, int adjustment);
-	
+
 	/** usageType() constant meaning that the skill is free @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType()*/
 	public final static int USAGE_NADA=0;
 	/** usageType() constant meaning that the skill costs mana @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType()*/
@@ -599,7 +599,7 @@ public interface Ability extends Environmental
 	public final static int USAGE_HITPOINTS=4;
 	/** constant descriptions for the USAGE_* values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageType() */
 	public final static String[] USAGE_DESCS={"MANA","MOVEMENT","HITPOINTS"};
-	
+
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int CACHEINDEX_NORMAL=0;
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
@@ -608,12 +608,12 @@ public interface Ability extends Environmental
 	public final static int CACHEINDEX_EXPERTISE=2;
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int CACHEINDEX_TOTAL=3;
-	
+
 	/** Constant for overrideMana to denote that the skill uses all of a players mana @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int COST_ALL=Integer.MAX_VALUE;
 	/** Constant for overrideMana to denote that the skill uses a % of a players mana @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int COST_PCT=Integer.MAX_VALUE-100;
-	
+
 	/** index into usageCost(MOB,boolean) array for the amount of mana this skill costs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_MANA=0;
 	/** index into usageCost(MOB,boolean) array for the amount of moves this skill costs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
@@ -845,7 +845,7 @@ public interface Ability extends Environmental
 		"Racial Knowing","Artmaking","Anatomy","Armor Using",
 		"Shield Using","Crimemaking","Legalizing","Fitness"
 	};
-	
+
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */
 	public static final String[] RANGE_CHOICES={"MELEE","CLOSE","SHORT","MEDIUM","LONG","LONGER","LONGERSTILL","VERYLONG","EXTREMELYLONG","INFINITE"};
 
@@ -905,7 +905,7 @@ public interface Ability extends Environmental
 	public static final long FLAG_POTENTIALLY_DEADLY=67108864L;
 	/** constant mask for the flags() method designating that the thing with this ability might kill you @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_AGGROFYING=134217728L;
-	
+
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
 		"BINDING",

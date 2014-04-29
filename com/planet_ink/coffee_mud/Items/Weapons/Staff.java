@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Staff extends StdWeapon implements Wand
 {
-	public String ID(){    return "Staff";}
+	@Override public String ID(){    return "Staff";}
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public Staff()
@@ -61,15 +61,17 @@ public class Staff extends StdWeapon implements Wand
 		setUsesRemaining(0);
 	}
 
-	public int maxUses(){return Integer.MAX_VALUE;}
-	public void setMaxUses(int newMaxUses){}
-	
+	@Override public int maxUses(){return Integer.MAX_VALUE;}
+	@Override public void setMaxUses(int newMaxUses){}
+
+	@Override
 	public String magicWord()
 	{
 		return secretWord;
 	}
 
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		miscText="";
@@ -77,22 +79,26 @@ public class Staff extends StdWeapon implements Wand
 			miscText=theSpell.ID();
 		secretWord=StdWand.getWandWord(miscText);
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		secretWord=StdWand.getWandWord(newText);
 	}
 
+	@Override
 	public Ability getSpell()
 	{
 		return CMClass.getAbility(text());
 	}
+	@Override
 	public int value()
 	{
 		if(usesRemaining()<=0)
 			return 0;
 		return super.value();
 	}
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
@@ -102,16 +108,19 @@ public class Staff extends StdWeapon implements Wand
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
+	@Override
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
+	@Override
 	public boolean checkWave(MOB mob, String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

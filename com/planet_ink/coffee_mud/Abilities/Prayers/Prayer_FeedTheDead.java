@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_FeedTheDead extends Prayer
 {
-	public String ID() { return "Prayer_FeedTheDead"; }
-	public String name(){ return "Feed The Dead";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
+	@Override public String ID() { return "Prayer_FeedTheDead"; }
+	@Override public String name(){ return "Feed The Dead";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int amount=100;

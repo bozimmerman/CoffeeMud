@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,12 @@ import java.util.*;
 */
 public class StdCompFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
 {
-	public String ID(){	return "StdCompFuelConsumer";}
-	
+	@Override public String ID(){	return "StdCompFuelConsumer";}
+
 	protected int[] generatedFuelTypes;
 	protected int   ticksPerFuelConsume = 10;
 	protected volatile int fuelTickDown	= 0;
-	
+
 	public StdCompFuelConsumer()
 	{
 		super();
@@ -52,30 +52,26 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setConsumedFuelType(new int[]{RawMaterial.RESOURCE_DEUTERIUM});
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdCompFuelConsumer)) return false;
 		return super.sameAs(E);
 	}
-	
+
 	protected boolean willConsumeFuelIdle() { return true; }
-	
+
+	@Override public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
+	@Override public void setContainTypes(long containTypes){containType=CONTAIN_RAWMATERIALS;}
+	@Override public int getTicksPerFuelConsume() { return ticksPerFuelConsume; }
+	@Override public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
+	@Override public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
 	@Override
-	public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
-	@Override
-	public void setContainTypes(long containTypes){containType=CONTAIN_RAWMATERIALS;}
-	@Override
-	public int getTicksPerFuelConsume() { return ticksPerFuelConsume; }
-	@Override
-	public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
-	@Override
-	public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
-	@Override
-	public void setConsumedFuelType(int[] resources) { 
+	public void setConsumedFuelType(int[] resources) {
 		generatedFuelTypes = resources;
 	}
 	@Override
-	public int getFuelRemaining() 
+	public int getFuelRemaining()
 	{
 		int amt=0;
 		for(Item I : getFuel())
@@ -88,7 +84,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	{
 		return capacity();
 	}
-	
+
 	@Override
 	public boolean canContain(Environmental E)
 	{
@@ -97,7 +93,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 			return CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)E).material());
 		return false;
 	}
-	
+
 	protected void engineShutdown()
 	{
 		MOB deity=CMLib.map().deity();
@@ -121,6 +117,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 		fuelCache=null;
 	}
 
+	@Override
 	public boolean consumeFuel(int amount)
 	{
 		List<Item> fuel=getFuel();
@@ -139,7 +136,8 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 			engineShutdown();
 		return amount>0;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);

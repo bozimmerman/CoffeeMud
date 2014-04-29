@@ -26,10 +26,10 @@ limitations under the License.
 public class ReadOnlyMultiList<K> implements List<K>
 {
 	private final List<List<K>> lists=new Vector<List<K>>();
-	
-	public ReadOnlyMultiList(List<K>[] esets) 
+
+	public ReadOnlyMultiList(List<K>[] esets)
 	{
-		if((esets==null)||(esets.length==0)) 
+		if((esets==null)||(esets.length==0))
 			return;
 		for(List<K> I : esets)
 			lists.add(I);
@@ -37,16 +37,16 @@ public class ReadOnlyMultiList<K> implements List<K>
 
 	public ReadOnlyMultiList()
 	{
-		
+
 	}
-	
+
 	public void addList(List<K> eset)
 	{
 		lists.add(eset);
 	}
 
 	@Override
-	public int size() { 
+	public int size() {
 		int size = 0;
 		for(List<K> l : lists)
 			size+=l.size();
@@ -54,7 +54,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public boolean isEmpty() { 
+	public boolean isEmpty() {
 		return size()==0;
 	}
 
@@ -67,8 +67,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 		return false;
 	}
 
-	@Override
-	public Iterator<K> iterator() { return new ReadOnlyIterator<K>(new MultiIterator<K>(lists));}
+	@Override public Iterator<K> iterator() { return new ReadOnlyIterator<K>(new MultiIterator<K>(lists));}
 
 	@Override
 	public Object[] toArray()
@@ -113,11 +112,9 @@ public class ReadOnlyMultiList<K> implements List<K>
 		return a;
 	}
 
-	@Override
-	public boolean add(K e) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean add(K e) { throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public boolean remove(Object o) {throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean remove(Object o) {throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
 	public boolean containsAll(Collection<?> c)
@@ -128,17 +125,13 @@ public class ReadOnlyMultiList<K> implements List<K>
 		return false;
 	}
 
-	@Override
-	public boolean addAll(Collection<? extends K> c)  {throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean addAll(Collection<? extends K> c)  {throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public boolean addAll(int index, Collection<? extends K> c) {throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean addAll(int index, Collection<? extends K> c) {throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public boolean removeAll(Collection<?> c) {throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean removeAll(Collection<?> c) {throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public boolean retainAll(Collection<?> c) {throw new java.lang.UnsupportedOperationException(); }
+	@Override public boolean retainAll(Collection<?> c) {throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
 	public void clear()
@@ -158,14 +151,11 @@ public class ReadOnlyMultiList<K> implements List<K>
 		throw new java.lang.IndexOutOfBoundsException();
 	}
 
-	@Override
-	public K set(int index, K element) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public K set(int index, K element) { throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public void add(int index, K element) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public void add(int index, K element) { throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public K remove(int index) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public K remove(int index) { throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
 	public int indexOf(Object o)
@@ -194,12 +184,9 @@ public class ReadOnlyMultiList<K> implements List<K>
 		return -1;
 	}
 
-	@Override
-	public ListIterator<K> listIterator() { throw new java.lang.UnsupportedOperationException(); }
+	@Override public ListIterator<K> listIterator() { throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public ListIterator<K> listIterator(int index) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public ListIterator<K> listIterator(int index) { throw new java.lang.UnsupportedOperationException(); }
 
-	@Override
-	public List<K> subList(int fromIndex, int toIndex) { throw new java.lang.UnsupportedOperationException(); }
+	@Override public List<K> subList(int fromIndex, int toIndex) { throw new java.lang.UnsupportedOperationException(); }
 }

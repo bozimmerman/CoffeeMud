@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class OutFit extends StdCommand
 	public OutFit(){}
 
 	private final String[] access={"OUTFIT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
 	{
@@ -51,6 +52,7 @@ public class OutFit extends StdCommand
 			mob.tell("You invoke a plea for mystical outfitting and await the answer.");
 		return true;
 	}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -71,15 +73,17 @@ public class OutFit extends StdCommand
 		mob.recoverPhyStats();
 		return false;
 	}
+	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),25.0));
 	}
+	@Override
 	public double actionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),25.0));
 	}
-	public boolean canBeOrdered(){return false;}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

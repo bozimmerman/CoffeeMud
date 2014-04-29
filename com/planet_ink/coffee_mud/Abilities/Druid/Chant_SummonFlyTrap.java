@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonFlyTrap extends Chant
 {
-	public String ID() { return "Chant_SummonFlyTrap"; }
-	public String name(){ return "Summon FlyTrap";}
-	public String displayText(){return "(Summon FlyTrap)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Chant_SummonFlyTrap"; }
+	@Override public String name(){ return "Summon FlyTrap";}
+	@Override public String displayText(){return "(Summon FlyTrap)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -81,6 +82,7 @@ public class Chant_SummonFlyTrap extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -94,6 +96,7 @@ public class Chant_SummonFlyTrap extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -111,12 +114,13 @@ public class Chant_SummonFlyTrap extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				if(!mob.isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 			}
 		}
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)

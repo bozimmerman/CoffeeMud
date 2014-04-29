@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_SenseGood extends Prayer
 {
-	public String ID() { return "Prayer_SenseGood"; }
-	public String name(){ return "Sense Good";}
-	public String displayText(){ return "(Sense Good)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_SenseGood"; }
+	@Override public String name(){ return "Sense Good";}
+	@Override public String displayText(){ return "(Sense Good)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -53,6 +54,7 @@ public class Prayer_SenseGood extends Prayer
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_GOOD);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +69,7 @@ public class Prayer_SenseGood extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The glowing blue fades from <S-YOUPOSS> eyes.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

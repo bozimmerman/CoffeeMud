@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_CaveIn extends Chant
 {
-	public String ID() { return "Chant_CaveIn"; }
-	public String name(){ return "Cave-In";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}
+	@Override public String ID() { return "Chant_CaveIn"; }
+	@Override public String name(){ return "Cave-In";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}
 	public int amountRemaining=0;
-	public long flags(){return Ability.FLAG_PARALYZING;}
+	@Override public long flags(){return Ability.FLAG_PARALYZING;}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Exit)
@@ -77,6 +78,7 @@ public class Chant_CaveIn extends Chant
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -87,6 +89,7 @@ public class Chant_CaveIn extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +101,8 @@ public class Chant_CaveIn extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=null;

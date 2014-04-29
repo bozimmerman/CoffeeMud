@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Brainwash extends Spell
 {
-	public String ID() { return "Spell_Brainwash"; }
-	public String name(){return "Brainwash";}
-	public String displayText(){return "(brainwashed)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Brainwash"; }
+	@Override public String name(){return "Brainwash";}
+	@Override public String displayText(){return "(brainwashed)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public Vector limbsToRemove=new Vector();
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.amISource((MOB)affected))
@@ -84,7 +85,8 @@ public class Spell_Brainwash extends Spell
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -99,7 +101,8 @@ public class Spell_Brainwash extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String message="";
@@ -127,7 +130,7 @@ public class Spell_Brainwash extends Spell
 				mob.tell(target.name(mob)+" doesn't have much to wash.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

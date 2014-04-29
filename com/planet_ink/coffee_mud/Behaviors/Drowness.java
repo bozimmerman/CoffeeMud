@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class Drowness extends StdBehavior
 {
-	public String ID(){return "Drowness";}
+	@Override public String ID(){return "Drowness";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "drowly";
 	}
 
@@ -52,6 +53,7 @@ public class Drowness extends StdBehavior
 	public static final int FIGHTER_SKILL = 128;
 	public static final int CHECK_STATUS = 129;
 
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
@@ -332,6 +334,7 @@ public class Drowness extends StdBehavior
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(oking==null) return super.okMessage(oking,msg);
@@ -352,6 +355,7 @@ public class Drowness extends StdBehavior
 		return retval;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticking!=null)

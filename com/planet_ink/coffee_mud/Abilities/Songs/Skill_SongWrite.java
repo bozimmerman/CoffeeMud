@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_SongWrite extends BardSkill
 {
-	public String ID() { return "Skill_SongWrite"; }
-	public String name(){ return "Song Write";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_SongWrite"; }
+	@Override public String name(){ return "Song Write";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SONGWRITE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -95,7 +96,7 @@ public class Skill_SongWrite extends BardSkill
 			mob.tell("You aren't powerful enough to write any more magic onto "+scroll.name()+".");
 			return false;
 		}
-		
+
 		List<Ability> spells=scroll.getSpells();
 		for(Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))

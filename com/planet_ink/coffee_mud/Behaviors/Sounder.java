@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Sounder extends StdBehavior
 {
-	public String ID(){return "Sounder";}
+	@Override public String ID(){return "Sounder";}
 	protected int minTicks=23;
 	protected int maxTicks=23;
 	protected int tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
-	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
+	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 	protected int[] triggers=null;
 	protected String[] strings=null;
 	protected static int UNDER_MASK=1023;
@@ -55,8 +55,9 @@ public class Sounder extends StdBehavior
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "triggered emoting";
 	}
 
@@ -64,6 +65,7 @@ public class Sounder extends StdBehavior
 	{
 		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	}
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -392,6 +394,7 @@ public class Sounder extends StdBehavior
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -413,6 +416,7 @@ public class Sounder extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		// this will work because, for items, behaviors

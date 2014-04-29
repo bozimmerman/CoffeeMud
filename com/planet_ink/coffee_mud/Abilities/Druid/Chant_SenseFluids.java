@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,15 @@ import java.util.*;
 
 public class Chant_SenseFluids extends Chant_SensePlants
 {
-	public String ID() { return "Chant_SenseFluids"; }
-	public String name(){ return "Sense Fluids";}
-	public String displayText(){return "(Sensing Fluids)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "fluids";}
+	@Override public String ID() { return "Chant_SenseFluids"; }
+	@Override public String name(){ return "Sense Fluids";}
+	@Override public String displayText(){return "(Sensing Fluids)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override protected String word(){return "fluids";}
 
 	private int[] myMats={RawMaterial.MATERIAL_LIQUID};
-	protected int[] okMaterials(){	return myMats;}
-	protected int[] okResources(){	return null;}
+	@Override protected int[] okMaterials(){	return myMats;}
+	@Override protected int[] okResources(){	return null;}
 }

@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraFear extends Prayer
 {
-	public String ID() { return "Prayer_AuraFear"; }
-	public String name(){ return "Aura of Fear";}
-	public String displayText(){ return "(Fear Aura)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_AuraFear"; }
+	@Override public String name(){ return "Aura of Fear";}
+	@Override public String displayText(){ return "(Fear Aura)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	private int ratingTickDown=4;
 
 	public Prayer_AuraFear()
@@ -54,6 +54,7 @@ public class Prayer_AuraFear extends Prayer
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -66,6 +67,7 @@ public class Prayer_AuraFear extends Prayer
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The fearful aura around "+E.name()+" fades.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected==null)
@@ -154,7 +156,8 @@ public class Prayer_AuraFear extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

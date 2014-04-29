@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class CMColor extends StdLibrary implements ColorLibrary
 {
-	public String ID(){return "CMColor";}
-	
+	@Override public String ID(){return "CMColor";}
+
 	public String[] clookup=null;
 	public String[] htlookup=null;
-	
+
+	@Override
 	public int translateSingleCMCodeToANSIOffSet(String code)
 	{
 		if(code.length()==0) return -1;
@@ -51,7 +52,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				i++;
 		return 3;
 	}
-	
+
 	public String translateCMCodeToFGNumber(String code)
 	{
 		if(code.length()==0) return code;
@@ -65,7 +66,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				bold=1;
 		return bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
 	}
-	
+
+	@Override
 	public String translateCMCodeToANSI(String code)
 	{
 		if(code.length()==0) return code;
@@ -82,7 +84,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			finalColor = "\033["+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
 		return finalColor;
 	}
-	
+
+	@Override
 	public String translateANSItoCMCode(String code)
 	{
 		if(code.length()==0) return code;
@@ -109,14 +112,15 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		else
 			return "^W";
 	}
-	
+
+	@Override
 	public String mixHTMLCodes(String code1, String code2)
 	{
 		String html=null;
 		if((code1==null)||(code1.length()==0))
 			html=code2;
 		else
-		if((code2==null)||(code2.length()==0)) 
+		if((code2==null)||(code2.length()==0))
 			html=code1;
 		else
 		if(code1.startsWith(" ")&&(code2.startsWith("<FONT")))
@@ -136,7 +140,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			return "<FONT"+html;
 		return html;
 	}
-	
+
+	@Override
 	public String mixColorCodes(String code1, String code2)
 	{
 		if((code1==null)||(code1.length()==0)) return code2;
@@ -146,7 +151,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		if(code2.startsWith("\033["))code2=code2.substring("\033[".length());
 		return code1.substring(0,code1.length()-1)+";"+code2;
 	}
-	
+
+	@Override
 	public CMMsg fixSourceFightColor(CMMsg msg)
 	{
 		if(msg.sourceMessage()!=null)
@@ -155,13 +161,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"^F","^e"));
 		return msg;
 	}
-	
+
+	@Override
 	public String[] standardHTMLlookups()
 	{
 		if(htlookup==null)
 		{
 			htlookup=new String[256];
-			
+
 			htlookup['!']=HTTAG_BOLD;   	 // bold
 			htlookup['_']=HTTAG_UNDERLINE;   // underline
 			htlookup['*']=HTTAG_BLINK;  	 // blink
@@ -174,7 +181,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			htlookup['&']="&";  			 // mxp escape
 			for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
 				htlookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLHTTAGS[i];
-			
+
 			// default color settings:
 			htlookup[COLORCODE_HIGHLIGHT]=HTTAG_LIGHTCYAN;
 			htlookup[COLORCODE_YOU_FIGHT]=HTTAG_LIGHTPURPLE;
@@ -260,8 +267,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		}
 		return htlookup;
 	}
-	
-	public void clearLookups(){clookup=null;}
+
+	@Override public void clearLookups(){clookup=null;}
+	@Override
 	public String[] standardColorLookups()
 	{
 		if(clookup==null)
@@ -282,7 +290,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup[ColorLibrary.COLORCODE_BANSI256]=null;  			  // ** special background 256 color code
 			for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
 				clookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLCOLORS[i];
-			
+
 			// default color settings:
 			clookup[COLORCODE_NORMAL]=COLOR_GREY;
 			clookup[COLORCODE_HIGHLIGHT]=COLOR_LIGHTCYAN;
@@ -361,8 +369,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 					}
 				}
 			}
-			
-				
+
+
 
 			for(int i=0;i<clookup.length;i++)
 			{

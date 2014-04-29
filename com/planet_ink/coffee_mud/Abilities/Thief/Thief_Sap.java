@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Sap extends ThiefSkill implements HealthCondition
 {
-	public String ID() { return "Thief_Sap"; }
-	public String name(){ return "Sap";}
-	public String displayText(){ return "(Knocked out)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_Sap"; }
+	@Override public String name(){ return "Sap";}
+	@Override public String displayText(){ return "(Knocked out)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"SAP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Unconscious";
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -78,6 +79,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -88,6 +90,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -109,6 +112,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -125,6 +129,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

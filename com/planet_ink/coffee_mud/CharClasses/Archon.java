@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Archon extends StdCharClass
 {
-	public String ID(){return "Archon";}
-	public String name(){return "Archon";}
-	public String baseClass(){return ID();}
-	public boolean leveless(){return true;}
+	@Override public String ID(){return "Archon";}
+	@Override public String name(){return "Archon";}
+	@Override public String baseClass(){return ID();}
+	@Override public boolean leveless(){return true;}
 
 	public Archon()
 	{
@@ -46,6 +46,7 @@ public class Archon extends StdCharClass
 		for(int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -56,7 +57,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AstroEngineering",100,"",true,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",100,"",true,true);
@@ -75,9 +76,10 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 	}
 
-	public int availabilityCode(){return 0;}
+	@Override public int availabilityCode(){return 0;}
 
-	public String getStatQualDesc(){return "Must be granted by another Archon.";}
+	@Override public String getStatQualDesc(){return "Must be granted by another Archon.";}
+	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
@@ -86,7 +88,8 @@ public class Archon extends StdCharClass
 	}
 
 	public static final String[] ARCHON_IMMUNITIES={"Spell_Scry","Thief_Listen","Spell_Claireaudience","Spell_Clairevoyance"};
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.tool() != null)
@@ -103,7 +106,8 @@ public class Archon extends StdCharClass
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -115,6 +119,7 @@ public class Archon extends StdCharClass
 		return outfitChoices;
 	}
 
+	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 
 	{
@@ -124,10 +129,11 @@ public class Archon extends StdCharClass
 			grantAbilities(mob,true);
 	}
 
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		boolean allowed=CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS);
-		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false))) 
+		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false)))
 		{
 			List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
 			if(!oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))

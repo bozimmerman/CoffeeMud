@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.Map.Entry;
 */
 public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
-	public String ID(){return "CoffeeUtensils";}
-	
+	@Override public String ID(){return "CoffeeUtensils";}
+
 	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> lootPolicy = null;
 	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 	private int lastLootPolicyHash=0;
-	
+
+	@Override
 	public String niceCommaList(List<?> V, boolean andTOrF)
 	{
 		String id="";
@@ -70,6 +71,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return id;
 	}
 
+	@Override
 	public String getFormattedDate(Environmental E)
 	{
 		String date=CMStrings.padRight("Unknown",11);
@@ -82,6 +84,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return date;
 	}
 
+	@Override
 	public void outfit(MOB mob, List<Item> items)
 	{
 		if((mob==null)||(items==null)||(items.size()==0))
@@ -104,6 +107,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
+	@Override
 	public Trap makeADeprecatedTrap(Physical unlockThis)
 	{
 		Trap theTrap=null;
@@ -166,12 +170,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 
+	@Override
 	public void setTrapped(Physical myThang, boolean isTrapped)
 	{
 		Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
+	@Override
 	public void setTrapped(Physical myThang, Trap theTrap, boolean isTrapped)
 	{
 		for(int a=0;a<myThang.numEffects();a++)
@@ -185,6 +191,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			myThang.addEffect(theTrap);
 	}
 
+	@Override
 	public Trap fetchMyTrap(Physical myThang)
 	{
 		if(myThang==null) return null;
@@ -196,6 +203,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return null;
 	}
+	@Override
 	public boolean reachableItem(MOB mob, Environmental E)
 	{
 		if((E==null)||(!(E instanceof Item)))
@@ -212,6 +220,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return false;
 	}
 
+	@Override
 	public double memoryUse ( Environmental E, int number )
 	{
 		double s=-1.0;
@@ -237,6 +246,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return s;
 	}
 
+	@Override
 	public Language getLanguageSpoken(Physical P)
 	{
 		Ability A=null;
@@ -248,7 +258,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return null;
 	}
-	
+
+	@Override
 	public void extinguish(MOB source, Physical target, boolean mundane)
 	{
 		if(target instanceof Room)
@@ -295,6 +306,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
+	@Override
 	public void roomAffectFully(CMMsg msg, Room room, int dirCode)
 	{
 		room.send(msg.source(),msg);
@@ -319,7 +331,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			pair.executeMsg(msg.source(),altMsg);
 		}
 	}
-	
+
+	@Override
 	public int disenchantItem(Item target)
 	{
 		int level=target.basePhyStats().level();
@@ -368,6 +381,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return -999;
 	}
 
+	@Override
 	public boolean disInvokeEffects(Environmental E)
 	{
 		if(E==null) return false;
@@ -390,6 +404,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return !E.amDestroyed();
 	}
 
+	@Override
 	public int processVariableEquipment(MOB mob)
 	{
 		int newLastTickedDateTime=0;
@@ -507,6 +522,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return newLastTickedDateTime;
 	}
 
+	@Override
 	public void recursiveDropMOB(MOB mob,
 								 Room room,
 								 Item thisContainer,
@@ -514,7 +530,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
-		
+
 		if(CMLib.flags().isHidden(thisContainer))
 			thisContainer.basePhyStats().setDisposition(thisContainer.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
 		mob.delItem(thisContainer);
@@ -544,8 +560,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}while(!nothingDone);
 	}
-	
-	
+
+
+	@Override
 	public MOB getMobPossessingAnother(MOB mob)
 	{
 		if(mob==null) return null;
@@ -558,8 +575,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return null;
 	}
-	
-	
+
+
+	@Override
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel)
 	{
 		if((((I instanceof Armor)||(I instanceof Shield)))
@@ -637,7 +655,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;
@@ -654,8 +673,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return true;
 	}
-	
-	
+
+
+	@Override
 	public List<DeadBody> getDeadBodies(Environmental E)
 	{
 		if(E instanceof DeadBody)
@@ -670,11 +690,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return new Vector<DeadBody>();
 	}
-	
-	
+
+
 	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)
 	{
-		if((mob==null)||(!mob.isMonster())) 
+		if((mob==null)||(!mob.isMonster()))
 			return noLootPolicy;
 		final String lootPolicyStr=CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY);
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
@@ -717,7 +737,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return lootPolicy;
 	}
-	
+
+	@Override
 	public void confirmWearability(MOB mob)
 	{
 		if(mob==null) return;
@@ -777,6 +798,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		mob.recoverMaxState();
 	}
 
+	@Override
 	public Item isRuinedLoot(MOB mob, Item I)
 	{
 		if(I==null) return null;
@@ -817,27 +839,27 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case RawMaterial.MATERIAL_VEGETATION:
 				case RawMaterial.MATERIAL_FLESH:
 				case RawMaterial.MATERIAL_PAPER:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is torn and ruined beyond repair."; 
+					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is torn and ruined beyond repair.";
 					break;
 				case RawMaterial.MATERIAL_METAL:
 				case RawMaterial.MATERIAL_MITHRIL:
 				case RawMaterial.MATERIAL_WOODEN:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is battered and ruined beyond repair."; 
+					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is battered and ruined beyond repair.";
 					break;
 				case RawMaterial.MATERIAL_GLASS:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is shattered and ruined beyond repair."; 
+					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is shattered and ruined beyond repair.";
 					break;
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_PRECIOUS:
 				case RawMaterial.MATERIAL_SYNTHETIC:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is cracked and ruined beyond repair."; 
+					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is cracked and ruined beyond repair.";
 					break;
 				case RawMaterial.MATERIAL_UNKNOWN:
 				case RawMaterial.MATERIAL_ENERGY:
 				case RawMaterial.MATERIAL_GAS:
 				case RawMaterial.MATERIAL_LIQUID:
 				default:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is ruined beyond repair."; 
+					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is ruined beyond repair.";
 					break;
 			}
 			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
@@ -851,7 +873,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return I;
 	}
-	
+
+	@Override
 	public void reloadCharClasses(CharClass oldC)
 	{
 		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
@@ -892,7 +915,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 	}
-	
+
+	@Override
 	public void swapRaces(Race newR, Race oldR)
 	{
 		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
@@ -917,14 +941,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel)
 	{
 		MOB rejuvedMOB=CMLib.players().getPlayer(body.mobName());
-		
+
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell("You are being resurrected.");
-		
+
 		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().isStopped()))
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
@@ -1000,7 +1025,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			corpseRoom.show(tellMob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
 		return false;
 	}
-	
+
+	@Override
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange)
 	{
 		long[][] finalSet = new long[endOfRange - startOfRange + 1][];
@@ -1050,7 +1076,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return finalSet;
 	}
-	
+
+	@Override
 	public String builtPrompt(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("\n\r");

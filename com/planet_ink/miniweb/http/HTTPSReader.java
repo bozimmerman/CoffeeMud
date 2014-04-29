@@ -51,7 +51,7 @@ public class HTTPSReader extends HTTPReader
 	private final ByteBuffer appSizedBuf;			// When user app outgoing buffer is too large, a small bug breaks it into pieces
 	private boolean		 	 handshakeComplete	= false; // set to true when handshaking is completed
 
-	
+
 	/**
 	 * Constructor takes the server managing this request, and the channel to read from and write to,
 	 * and the sslcontext
@@ -72,7 +72,7 @@ public class HTTPSReader extends HTTPReader
 		sslIncomingBuffer=ByteBuffer.allocate(netBufferMax);
 		sslOutgoingBuffer=ByteBuffer.allocate(netBufferMax);
 	}
-	
+
 	/**
 	 * Constructor takes the server managing this request, and the channel to read from and write to.
 	 * It will generate a generic, useless, ssl context
@@ -86,15 +86,16 @@ public class HTTPSReader extends HTTPReader
 	}
 
 	/**
-	 * Returns a descriptive string for whether this is 
+	 * Returns a descriptive string for whether this is
 	 * an ssl or http reader
 	 * @return
 	 */
+	@Override
 	protected String getReaderType()
 	{
 		return "https";
 	}
-	
+
 	/**
 	 * Inspired by: http://docs.oracle.com/javase/1.5.0/docs/guide/security/jsse/samples/sslengine/SSLEngineSimpleDemo.java
 	 * @param config  configuration for ssl context
@@ -117,13 +118,13 @@ public class HTTPSReader extends HTTPReader
 			KeyStore keyStore = KeyStore.getInstance(config.getSslKeystoreType());
 			FileManager mgr=config.getFileManager();
 			keyStore.load(mgr.getFileStream(mgr.createFileFromPath(config.getSslKeystorePath())), passphrase);
-	
+
 			KeyManagerFactory kmf = KeyManagerFactory.getInstance(config.getSslKeyManagerEncoding());
 			kmf.init(keyStore, passphrase);
-	
+
 			TrustManagerFactory tmf = TrustManagerFactory.getInstance(config.getSslKeyManagerEncoding());
 			tmf.init(keyStore);
-	
+
 			SSLContext mySSLContext = SSLContext.getInstance("SSLv3");
 			mySSLContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new SecureRandom());
 			return mySSLContext;
@@ -134,7 +135,7 @@ public class HTTPSReader extends HTTPReader
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the local channel into the given buffer, returning
 	 * the number of bytes read.  This code is parsed out here so that it
@@ -143,6 +144,7 @@ public class HTTPSReader extends HTTPReader
 	 * @return the number of bytes read (decoded)
 	 * @throws IOException
 	 */
+	@Override
 	protected int readBytesFromClient(ByteBuffer buffer) throws IOException
 	{
 		try
@@ -163,7 +165,7 @@ public class HTTPSReader extends HTTPReader
 				case NEED_TASK:
 				{
 					Runnable runnable;
-					while ((runnable = sslEngine.getDelegatedTask()) != null) 
+					while ((runnable = sslEngine.getDelegatedTask()) != null)
 					{
 						runnable.run();
 					}
@@ -172,7 +174,7 @@ public class HTTPSReader extends HTTPReader
 				}
 				case NEED_UNWRAP:
 					bytesRead= chan.read(sslIncomingBuffer);
-					if(sslIncomingBuffer.position()<=0) 
+					if(sslIncomingBuffer.position()<=0)
 						return buffer.position();
 					sslIncomingBuffer.flip();
 					result = sslEngine.unwrap(sslIncomingBuffer, buffer);
@@ -207,7 +209,7 @@ public class HTTPSReader extends HTTPReader
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the given buffer into the local channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
@@ -215,6 +217,7 @@ public class HTTPSReader extends HTTPReader
 	 * @param buffers source buffer for the data write
 	 * @throws IOException
 	 */
+	@Override
 	public void writeBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		while(buffers.hasNext())
@@ -240,10 +243,11 @@ public class HTTPSReader extends HTTPReader
 		}
 		buffers.close();
 	}
-	
+
 	/**
 	 * Closes the IO channel and marks this handler as closed
 	 */
+	@Override
 	protected void closeChannels()
 	{
 		try

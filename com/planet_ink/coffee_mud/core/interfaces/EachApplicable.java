@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");

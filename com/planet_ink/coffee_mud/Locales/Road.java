@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Road extends StdRoom
 {
-	public String ID(){return "Road";}
+	@Override public String ID(){return "Road";}
 	public Road()
 	{
 		super();
@@ -43,7 +43,7 @@ public class Road extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_STONE),
@@ -53,5 +53,5 @@ public class Road extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Road.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,29 +35,32 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqTattoo extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqTattoo"; }
-	public String name(){ return "Tattoo Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_ReqTattoo"; }
+	@Override public String name(){ return "Tattoo Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	private String themsg="";
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
 	}
-	
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
-	public String text(){ return themsg+";"+super.text();}
+	@Override public String text(){ return themsg+";"+super.text();}
+	@Override
 	public void setMiscText(String newText)
 	{
 		themsg="";
 		int x=newText.indexOf(';');
-		if(x<0) 
+		if(x<0)
 			super.setMiscText(newText);
 		else
 		if(newText.substring(0,x).indexOf('+')>=0)
@@ -71,7 +74,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			super.setMiscText(newText.substring(x+1));
 		}
 	}
-	
+
 	public Vector getMask(boolean[] flags)
 	{
 		Vector<String> V=CMParms.parse(miscText.toUpperCase());
@@ -99,7 +102,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		}
 		return V;
 	}
-	
+
 	public boolean passesMuster(Vector mask, boolean[] flags, MOB mob)
 	{
 		if(mob==null) return false;
@@ -132,11 +135,11 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 				case 0: // +NONE -- HAS/LACKS ALL
 					if(c=='-')
 					{
-						if(found) 
+						if(found)
 							return false;
 					}
 					else
-					if(!found) 
+					if(!found)
 						return false;
 					break;
 				case 1: // +ALL -- LACKS ANY
@@ -167,7 +170,8 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		if(allFlag>0) return true; // all were missing, so its all good.
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -178,7 +182,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			||((msg.target() instanceof Item)&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_SIT))))
 			{
-				boolean[] flags=new boolean[2]; 
+				boolean[] flags=new boolean[2];
 				Vector V=getMask(flags);
 				HashSet H=new HashSet();
 				if(flags[0])

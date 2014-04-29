@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Delirium extends Spell
 {
-	public String ID() { return "Spell_Delirium"; }
-	public String name(){return "Delirium";}
-	public String displayText(){return "(Delirium)";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Spell_Delirium"; }
+	@Override public String name(){return "Delirium";}
+	@Override public String displayText(){return "(Delirium)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	int amountRemaining=0;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	protected Environmental getRandomOtherName(Environmental likeThisOne)
 	{
@@ -168,6 +168,7 @@ public class Spell_Delirium extends Spell
 		return str.trim();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -183,6 +184,7 @@ public class Spell_Delirium extends Spell
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -208,6 +210,7 @@ public class Spell_Delirium extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -220,6 +223,7 @@ public class Spell_Delirium extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit less delirious.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -232,7 +236,8 @@ public class Spell_Delirium extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

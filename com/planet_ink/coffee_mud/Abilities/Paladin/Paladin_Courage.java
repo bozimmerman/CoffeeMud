@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_Courage extends PaladinSkill
 {
-	public String ID() { return "Paladin_Courage"; }
-	public String name(){ return "Paladin`s Courage";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public String ID() { return "Paladin_Courage"; }
+	@Override public String name(){ return "Paladin`s Courage";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Courage()
 	{
 		super();
 		paladinsGroup=new Vector();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

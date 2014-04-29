@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_TimeStop extends Spell
 {
-	public String ID() { return "Spell_TimeStop"; }
-	public String name(){return "Time Stop";}
-	public String displayText(){return "(Time is Stopped)";}
-	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return 100;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Spell_TimeStop"; }
+	@Override public String name(){return "Time Stop";}
+	@Override public String displayText(){return "(Time is Stopped)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int overrideMana(){return 100;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	protected Vector fixed=new Vector();
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		fixed=new Vector();
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -91,6 +93,7 @@ public class Spell_TimeStop extends Spell
 		}
 		super.unInvoke();
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -130,6 +133,7 @@ public class Spell_TimeStop extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

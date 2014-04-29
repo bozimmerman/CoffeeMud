@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_FireBreathing extends BardSkill
 {
-	public String ID() { return "Skill_FireBreathing"; }
-	public String name(){ return "Fire Breathing";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Skill_FireBreathing"; }
+	@Override public String name(){ return "Fire Breathing";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	private static final String[] triggerStrings = {"FIREBREATHING","FIREBREATH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 0;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 0;}
 
 	public Item getFireSource(MOB mob)
 	{
@@ -57,7 +57,8 @@ public class Skill_FireBreathing extends BardSkill
 		}
 		return null;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -67,7 +68,8 @@ public class Skill_FireBreathing extends BardSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

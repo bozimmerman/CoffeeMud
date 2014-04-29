@@ -36,28 +36,30 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_FrostBite extends Disease
 {
-	public String ID() { return "Disease_FrostBite"; }
-	public String name(){ return "Frost Bite";}
+	@Override public String ID() { return "Disease_FrostBite"; }
+	@Override public String name(){ return "Frost Bite";}
 	private String where="feet";
-	public String displayText(){ return "(Frost bitten "+where+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 1;}
+	@Override public String displayText(){ return "(Frost bitten "+where+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 1;}
 	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
-	protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY ) / 2);}
-	protected int DISEASE_DELAY(){return 50;}
+	@Override protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY ) / 2);}
+	@Override protected int DISEASE_DELAY(){return 50;}
+	@Override
 	protected String DISEASE_DONE()
 	{
 		if(tickDown>0)
 			return "Your frost bite heals.";
 		return "Your frost bite has cost you dearly.";
 	}
-	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(tickDown<=0))
@@ -79,6 +81,7 @@ public class Disease_FrostBite extends Disease
 			super.unInvoke();
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -99,6 +102,7 @@ public class Disease_FrostBite extends Disease
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		where=null;

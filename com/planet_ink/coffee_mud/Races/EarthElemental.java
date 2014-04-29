@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,30 +34,31 @@ import java.util.*;
 */
 public class EarthElemental extends StdRace
 {
-	public String ID(){	return "EarthElemental"; }
-	public String name(){ return "Earth Elemental"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 400;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Earth Elemental";}
-	public boolean fertile(){return false;}
-	public boolean uncharmable(){return true;}
-	protected boolean destroyBodyAfterUse(){return true;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "EarthElemental"; }
+	@Override public String name(){ return "Earth Elemental"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 400;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Earth Elemental";}
+	@Override public boolean fertile(){return false;}
+	@Override public boolean uncharmable(){return true;}
+	@Override protected boolean destroyBodyAfterUse(){return true;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -65,14 +66,17 @@ public class EarthElemental extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return makeMobName('N',Race.AGE_MATURE);
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -109,6 +113,7 @@ public class EarthElemental extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

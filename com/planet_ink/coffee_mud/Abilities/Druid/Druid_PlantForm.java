@@ -37,18 +37,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_PlantForm extends StdAbility
 {
-	public String ID() { return "Druid_PlantForm"; }
-	public String name(){ return "Plant Form";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Druid_PlantForm"; }
+	@Override public String name(){ return "Plant Form";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"PLANTFORM"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
 	public Race newRace=null;
 	public String raceName="";
 
+	@Override
 	public String displayText()
 	{
 		if(newRace==null)
@@ -72,6 +73,7 @@ public class Druid_PlantForm extends StdAbility
 	"Shambler"
 	};
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
@@ -96,6 +98,7 @@ public class Druid_PlantForm extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -108,6 +111,7 @@ public class Druid_PlantForm extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -121,6 +125,7 @@ public class Druid_PlantForm extends StdAbility
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -161,6 +166,7 @@ public class Druid_PlantForm extends StdAbility
 		return shapes[getRaceLevel(classLevel)];
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -202,6 +208,7 @@ public class Druid_PlantForm extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)

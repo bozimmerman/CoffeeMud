@@ -22,7 +22,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,8 @@ import java.util.*;
 */
 public class StdProgram extends StdItem implements Software
 {
-	public String ID(){	return "StdProgram";}
-	
+	@Override public String ID(){	return "StdProgram";}
+
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";
 
@@ -56,22 +56,23 @@ public class StdProgram extends StdItem implements Software
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
-	
-	public void setCircuitKey(String key) {}
 
-	public int techLevel() { return phyStats().ability();}
-	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	
-	public String getParentMenu() { return ""; }
-	public String getInternalName() { return "";}
-	
-	public boolean isActivationString(String word) { return false; }
-	public boolean isDeActivationString(String word) { return false; }
-	public boolean isCommandString(String word, boolean isActive) { return false; }
+	@Override public void setCircuitKey(String key) {}
+
+	@Override public int techLevel() { return phyStats().ability();}
+	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
+
+	@Override public String getParentMenu() { return ""; }
+	@Override public String getInternalName() { return "";}
+
+	@Override public boolean isActivationString(String word) { return false; }
+	@Override public boolean isDeActivationString(String word) { return false; }
+	@Override public boolean isCommandString(String word, boolean isActive) { return false; }
 	@Override public TechType getTechType() { return TechType.PERSONAL_SOFTWARE; }
 
-	public String getActivationMenu() { return ""; }
-	
+	@Override public String getActivationMenu() { return ""; }
+
+	@Override
 	public String getCurrentScreenDisplay()
 	{
 		return currentScreen;
@@ -81,17 +82,19 @@ public class StdProgram extends StdItem implements Software
 	{
 		this.currentScreen=msg;
 	}
-	
-	public String getScreenMessage() 
+
+	@Override
+	public String getScreenMessage()
 	{
 		synchronized(nextMsg)
 		{
 			final String msg=nextMsg.toString();
 			nextMsg.setLength(0);
-			return msg; 
+			return msg;
 		}
 	}
-	
+
+	@Override
 	public void addScreenMessage(String msg)
 	{
 		synchronized(nextMsg)
@@ -99,45 +102,46 @@ public class StdProgram extends StdItem implements Software
 			nextMsg.append(msg).append("\n\r");
 		}
 	}
-	
+
 	protected void forceUpMenu()
 	{
 		if((container() instanceof Electronics.Computer)&&(((Electronics.Computer)container()).getActiveMenu().equals(getInternalName())))
 			((Electronics.Computer)container()).setActiveMenu(getParentMenu());
 	}
-	
+
 	protected void forceNewMessageScan()
 	{
 		if(container() instanceof Electronics.Computer)
 			((Electronics.Computer)container()).forceReadersSeeNew();
 	}
-	
+
 	protected void forceNewMenuRead()
 	{
 		if(container() instanceof Electronics.Computer)
 			((Electronics.Computer)container()).forceReadersMenu();
 	}
-	
+
 	public boolean checkActivate(MOB mob, String message)
 	{
 		return true;
 	}
-	
+
 	public boolean checkDeactivate(MOB mob, String message)
 	{
 		return true;
 	}
-	
+
 	public boolean checkTyping(MOB mob, String message)
 	{
 		return true;
 	}
-	
+
 	public boolean checkPowerCurrent(int value)
 	{
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -167,24 +171,25 @@ public class StdProgram extends StdItem implements Software
 
 	public void onActivate(MOB mob, String message)
 	{
-		
+
 	}
-	
+
 	public void onDeactivate(MOB mob, String message)
 	{
-		
+
 	}
-	
+
 	public void onTyping(MOB mob, String message)
 	{
-		
+
 	}
-	
+
 	public void onPowerCurrent(int value)
 	{
-		
+
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))

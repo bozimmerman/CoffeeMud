@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Boomerang extends Spell
 {
-	public String ID() { return "Spell_Boomerang"; }
-	public String name(){return "Returning";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_Boomerang"; }
+	@Override public String name(){return "Returning";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	protected MOB owner=null;
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -55,7 +56,7 @@ public class Spell_Boomerang extends Spell
 		}
 		return true;
 	}
-	
+
 	public MOB getOwner(Item I)
 	{
 		if(owner==null)
@@ -70,6 +71,7 @@ public class Spell_Boomerang extends Spell
 		return owner;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof Item)
@@ -96,7 +98,8 @@ public class Spell_Boomerang extends Spell
 		}
 		return (tickID!=Tickable.TICKID_ITEM_BOUNCEBACK);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -124,8 +127,9 @@ public class Spell_Boomerang extends Spell
 				CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK, 1);
 		}
 	}
-	
+
 	// this fixes a damn PUT bug
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats stats)
 	{
 		super.affectPhyStats(affectedEnv, stats);
@@ -141,6 +145,7 @@ public class Spell_Boomerang extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

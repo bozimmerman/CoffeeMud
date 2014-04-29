@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Telepathy extends Spell
 {
-	public String ID() { return "Spell_Telepathy"; }
-	public String name(){return "Telepathy";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_Telepathy"; }
+	@Override public String name(){return "Telepathy";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -101,7 +102,7 @@ public class Spell_Telepathy extends Spell
 				else
 				if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10)
 					adjective+="slow thinking, ";
-				
+
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)>=18)
 					adjective+="incredibly wise, ";
 				else
@@ -119,7 +120,7 @@ public class Spell_Telepathy extends Spell
 				else
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)<10)
 					adjective+="unwise, ";
-				
+
 				mob.tell(target.Name()+" is a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+".");
 				if(thoughts.length()==0)
 					mob.tell("You don't detect any other thoughts.");

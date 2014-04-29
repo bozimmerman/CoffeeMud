@@ -24,12 +24,12 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 {
 	private static final long serialVersionUID = -4174213459327144771L;
 	private volatile LinkedList<K> L;
-	
+
 	public SLinkedList()
 	{
 		L=new LinkedList<K>();
 	}
-	
+
 	public SLinkedList(K[] E)
 	{
 		L=new LinkedList<K>();
@@ -37,7 +37,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 			for(K o : E)
 				L.add(o);
 	}
-	
+
 	public SLinkedList(Enumeration<K> E)
 	{
 		L=new LinkedList<K>();
@@ -45,7 +45,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 			for(;E.hasMoreElements();)
 				L.add(E.nextElement());
 	}
-	
+
 	public SLinkedList(Iterator<K> E)
 	{
 		L=new LinkedList<K>();
@@ -53,7 +53,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 			for(;E.hasNext();)
 				L.add(E.next());
 	}
-	
+
 	public SLinkedList(Set<K> E)
 	{
 		L=new LinkedList<K>();
@@ -61,49 +61,49 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 			for(K o : E)
 				add(o);
 	}
-	
+
 	public synchronized void addAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				L.add(E.nextElement());
 	}
-	
+
 	public synchronized void addAll(K[] E)
 	{
 		if(E!=null)
 			for(K e : E)
 				L.add(e);
 	}
-	
+
 	public synchronized void addAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				L.add(E.next());
 	}
-	
+
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				L.remove(E.nextElement());
 	}
-	
+
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				L.remove(E.next());
 	}
-	
+
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
 			for(K o : E)
 				L.remove(o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized LinkedList<K> toLinkedList()
 	{
@@ -173,7 +173,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SLinkedList<K> copyOf() 
+	public synchronized SLinkedList<K> copyOf()
 	{
 		SLinkedList<K> SL=new SLinkedList<K>();
 		SL.L=(LinkedList<K>)L.clone();

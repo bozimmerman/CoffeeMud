@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,8 @@ public class Duel extends StdCommand
 	public Duel(){}
 
 	private final String[] access={"DUEL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -50,7 +51,7 @@ public class Duel extends StdCommand
 			mob.tell("Duel whom?");
 			return false;
 		}
-		
+
 		String whomToKill=CMParms.combine(commands,1);
 		target=mob.location().fetchInhabitant(whomToKill);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -58,7 +59,7 @@ public class Duel extends StdCommand
 			mob.tell("I don't see '"+whomToKill+"' here.");
 			return false;
 		}
-		
+
 		if(mob==target)
 			mob.tell("You may not duel yourself.");
 		else
@@ -128,9 +129,9 @@ public class Duel extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

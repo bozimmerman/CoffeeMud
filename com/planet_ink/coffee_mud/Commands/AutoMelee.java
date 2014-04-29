@@ -39,7 +39,8 @@ public class AutoMelee extends StdCommand
 	public AutoMelee(){}
 
 	private final String[] access={"AUTOMELEE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -59,7 +60,7 @@ public class AutoMelee extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
 }
 

@@ -49,12 +49,13 @@ public class MWFileManager implements FileManager
 	{
 		return new BufferedInputStream(new FileInputStream(file));
 	}
+	@Override
 	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException
 	{
 		return new RandomAccessFile(file,"r");
 	}
 	@Override
-	public byte[] readFile(File file) throws IOException, FileNotFoundException 
+	public byte[] readFile(File file) throws IOException, FileNotFoundException
 	{
 		BufferedInputStream bs = null;
 		byte[] fileBuf = new byte[(int)file.length()];
@@ -76,7 +77,7 @@ public class MWFileManager implements FileManager
 	{
 		return true;
 	}
-	
+
 	@Override
 	public boolean allowedToReadData(File file)
 	{

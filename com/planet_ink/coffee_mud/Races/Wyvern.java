@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,37 +34,38 @@ import java.util.*;
 */
 public class Wyvern extends StdRace
 {
-	public String ID(){	return "Wyvern"; }
-	public String name(){ return "Wyvern"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 58;}
-	public int heightVariance(){return 40;}
-	public int lightestWeight(){return 1500;}
-	public int weightVariance(){return 500;}
-	public long forbiddenWornBits(){return Wearable.WORN_HELD|Wearable.WORN_WIELD|Wearable.WORN_WAIST;}
-	public String racialCategory(){return "Reptile";}
+	@Override public String ID(){	return "Wyvern"; }
+	@Override public String name(){ return "Wyvern"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 58;}
+	@Override public int heightVariance(){return 40;}
+	@Override public int lightestWeight(){return 1500;}
+	@Override public int weightVariance(){return 500;}
+	@Override public long forbiddenWornBits(){return Wearable.WORN_HELD|Wearable.WORN_WIELD|Wearable.WORN_WAIST;}
+	@Override public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={50};
-	protected String[] culturalAbilityNames(){return culturalAbilityNames;}
-	protected int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override protected String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override protected int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -72,6 +73,7 @@ public class Wyvern extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,10);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -84,6 +86,7 @@ public class Wyvern extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -96,7 +99,8 @@ public class Wyvern extends StdRace
 				return super.makeMobName(gender, age);
 		}
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -127,6 +131,7 @@ public class Wyvern extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

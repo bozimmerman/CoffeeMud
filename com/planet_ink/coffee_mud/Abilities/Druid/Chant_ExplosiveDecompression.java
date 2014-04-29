@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_ExplosiveDecompression extends Chant
 {
-	public String ID() { return "Chant_ExplosiveDecompression"; }
-	public String name(){ return "Explosive Decompression";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public boolean bubbleAffect(){return true;}
+	@Override public String ID() { return "Chant_ExplosiveDecompression"; }
+	@Override public String name(){ return "Explosive Decompression";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public boolean bubbleAffect(){return true;}
 
+	@Override
 	public void affectPhyStats(Physical affecting, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
@@ -52,6 +53,7 @@ public class Chant_ExplosiveDecompression extends Chant
 			stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -61,7 +63,8 @@ public class Chant_ExplosiveDecompression extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

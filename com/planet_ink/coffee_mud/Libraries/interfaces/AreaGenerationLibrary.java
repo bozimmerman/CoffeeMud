@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,14 +47,14 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException;
 	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
 	public XMLLibrary.XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	
+
 	public static interface LayoutManager
 	{
 		public String name();
 		public List<LayoutNode> generate(int num, int dir);
 	}
-	
-	public static interface LayoutNode 
+
+	public static interface LayoutNode
 	{
 		public void crossLink(LayoutNode to);
 		public void delLink(LayoutNode linkNode);
@@ -76,7 +76,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public Room room();
 		public void setRoom(Room room);
 	}
-	
+
 	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT}
 	public enum LayoutTypes { surround, leaf, street, square, interior }
 	public enum LayoutFlags { corner, gate, intersection, tee, offleaf }

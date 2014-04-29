@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class Prayer_SenseSkills extends Prayer_SenseProfessions
 {
-	public String ID() { return "Prayer_SenseSkills"; }
-	public String name(){ return "Sense Skills";}
-	protected int senseWhat() { return ACODE_SKILL; }
-	protected String senseWhatStr() { return "skills"; }
+	@Override public String ID() { return "Prayer_SenseSkills"; }
+	@Override public String name(){ return "Sense Skills";}
+	@Override protected int senseWhat() { return ACODE_SKILL; }
+	@Override protected String senseWhatStr() { return "skills"; }
 }

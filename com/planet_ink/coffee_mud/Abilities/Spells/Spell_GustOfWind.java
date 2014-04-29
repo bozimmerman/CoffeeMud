@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_GustOfWind extends Spell
 {
-	public String ID() { return "Spell_GustOfWind"; }
-	public String name(){return "Gust of Wind";}
-	public String displayText(){return "(Blown Down)";}
-	public int maxRange(){return adjustedMaxInvokerRange(4);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Spell_GustOfWind"; }
+	@Override public String name(){return "Gust of Wind";}
+	@Override public String displayText(){return "(Blown Down)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	public boolean doneTicking=false;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -52,6 +53,7 @@ public class Spell_GustOfWind extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -66,6 +68,7 @@ public class Spell_GustOfWind extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -86,6 +89,7 @@ public class Spell_GustOfWind extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=CMLib.map().roomLocation(givenTarget);

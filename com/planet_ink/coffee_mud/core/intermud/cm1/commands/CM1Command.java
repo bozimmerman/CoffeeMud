@@ -24,7 +24,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,19 +46,19 @@ public abstract class CM1Command implements Runnable, Cloneable
 	protected final RequestHandler req;
 
 	public CM1Command()
-	{ 
-		super(); 
-		req=null; 
-		parameters=""; 
+	{
+		super();
+		req=null;
+		parameters="";
 	}
-	
+
 	public CM1Command(final RequestHandler req, final String parameters)
 	{
 		super();
 		this.parameters = parameters;
 		this.req=req;
 	}
-	
+
 	public static CM1Command newInstance(Class<? extends CM1Command> cls, RequestHandler req, String parms)
 	{
 		try
@@ -73,7 +73,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 			return null;
 		}
 	}
-	
+
 	public PhysicalAgent getTarget(String parameters)
 	{
 		if(parameters.equalsIgnoreCase("USER"))
@@ -108,7 +108,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 			P=R.fetchFromRoomFavorMOBs(null,who);
 		return P;
 	}
-	
+
 	public abstract String getCommandWord();
 	public abstract boolean passesSecurityCheck(MOB user, PhysicalAgent target);
 	public abstract String getHelp(MOB user, PhysicalAgent target, String rest);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DeityData extends StdWebMacro
 {
-	public String name() { return "DeityData"; }
+	@Override public String name() { return "DeityData"; }
 
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
@@ -49,7 +49,8 @@ public class DeityData extends StdWebMacro
 		httpReq.getRequestObjects().put("DEITYDATAFOR-"+deityName.toUpperCase().trim(),folData);
 		return folData;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -156,7 +157,7 @@ public class DeityData extends StdWebMacro
 					if(parms.containsKey("CLERICSINTRIG"))
 						str.append(D.getClericSinDesc()+", ");
 				}
-				
+
 				if(D.numPowers()>0)
 				if(parms.containsKey("POWERTRIG"))
 					str.append(D.getClericPowerupDesc()+", ");

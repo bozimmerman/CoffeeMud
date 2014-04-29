@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GlassBlowing extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "GlassBlowing"; }
-	public String name(){ return "Glass Blowing";}
+	@Override public String ID() { return "GlassBlowing"; }
+	@Override public String name(){ return "Glass Blowing";}
 	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "_GLASS|SAND";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "_GLASS|SAND";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 	   +"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
@@ -58,6 +59,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -73,15 +75,17 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "glassblowing.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "glassblowing.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -114,8 +118,9 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -123,7 +128,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			return false;
 		if(I.material()!=RawMaterial.RESOURCE_GLASS)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof Rideable)
 		{
@@ -170,6 +175,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -183,17 +189,19 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		fireRequired=true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -284,13 +292,13 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"glassblow list\" for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		bundling=misctype.equalsIgnoreCase("BUNDLE");

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SleepGas extends StdTrap
 {
-	public String ID() { return "Trap_SleepGas"; }
-	public String name(){ return "sleep gas";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 7;}
-	public String requiresToSet(){return "some slumberall poison";}
+	@Override public String ID() { return "Trap_SleepGas"; }
+	@Override public String name(){ return "sleep gas";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 7;}
+	@Override public String requiresToSet(){return "some slumberall poison";}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -74,6 +74,7 @@ public class Trap_SleepGas extends StdTrap
 		return null;
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -84,6 +85,7 @@ public class Trap_SleepGas extends StdTrap
 		V.addElement(I);
 		return V;
 	}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -98,6 +100,7 @@ public class Trap_SleepGas extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -110,6 +113,7 @@ public class Trap_SleepGas extends StdTrap
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

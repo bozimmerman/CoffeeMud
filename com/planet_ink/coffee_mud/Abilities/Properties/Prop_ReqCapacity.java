@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class Prop_ReqCapacity extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqCapacity"; }
-	public String name(){ return "Capacity Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqCapacity"; }
+	@Override public String name(){ return "Capacity Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
 	public int peopleCap=Integer.MAX_VALUE;
 	public int playerCap=Integer.MAX_VALUE;
@@ -46,14 +46,16 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	public boolean indoorOnly=false;
 	public boolean containersOk=false;
 
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
-	public int triggerMask() 
-	{ 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		return "Person limit: "+((peopleCap==Integer.MAX_VALUE)?"None":(""+peopleCap))
@@ -63,6 +65,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		super.setMiscText(txt);
@@ -88,7 +91,8 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			containersOk=CMParms.getParmBool(txt,"droponly",containersOk)||CMParms.getParmBool(txt,"containersok",containersOk);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)
@@ -110,7 +114,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 					msg.source().tell("No more players can fit in there.");
 					return false;
 				}
-				if(msg.source().isMonster() 
+				if(msg.source().isMonster()
 				&& (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
 				{
 					msg.source().tell("No more MOBs can fit in there.");
@@ -141,10 +145,10 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						int rawResources=0;
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I=R.getItem(i); 
-							if(I instanceof RawMaterial) 
+							Item I=R.getItem(i);
+							if(I instanceof RawMaterial)
 								rawResources++;
-							if((I!=null)&&(I.container()==null)) 
+							if((I!=null)&&(I.container()==null))
 								soFar++;
 						}
 						if(soFar>=itemCap)

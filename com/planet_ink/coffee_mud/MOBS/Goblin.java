@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class Goblin extends StdMOB
 {
-	public String ID(){return "Goblin";}
+	@Override public String ID(){return "Goblin";}
 	Random randomizer = new Random(System.currentTimeMillis());
 	int birthType=0;
 
@@ -55,6 +55,7 @@ public class Goblin extends StdMOB
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -69,7 +70,7 @@ public class Goblin extends StdMOB
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
-		
+
 		if (goblinType < 0)
 			goblinType *= -1;
 

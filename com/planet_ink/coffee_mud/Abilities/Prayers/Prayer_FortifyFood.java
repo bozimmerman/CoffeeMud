@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_FortifyFood extends Prayer
 {
-	public String ID() { return "Prayer_FortifyFood"; }
-	public String name(){ return "Nourishing Food";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_FortifyFood"; }
+	@Override public String name(){ return "Nourishing Food";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

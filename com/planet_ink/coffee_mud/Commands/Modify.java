@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class Modify extends StdCommand
 	public Modify(){}
 
 	private final String[] access={"MODIFY","MOD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void items(MOB mob, Vector commands)
 		throws IOException
@@ -214,7 +214,7 @@ public class Modify extends StdCommand
 		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID, ?] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
-	
+
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -295,7 +295,7 @@ public class Modify extends StdCommand
 					CMLib.database().DBUpdateRoom(mob.location());
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
-			
+
 			if(reid)
 			{
 				Room R=mob.location();
@@ -414,8 +414,8 @@ public class Modify extends StdCommand
 			CMLib.genEd().modifyAccount(mob,theAccount);
 		}
 		else
-		if(commands.size()<3) 
-		{ 
+		if(commands.size()<3)
+		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ACCOUNT ([NAME])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
@@ -559,19 +559,19 @@ public class Modify extends StdCommand
 					switch(Character.toUpperCase(restStr.charAt(i)))
 					{
 					case 'R':
-						newClimate=newClimate|Area.CLIMASK_WET;
+						newClimate=newClimate|Places.CLIMASK_WET;
 						break;
 					case 'H':
-						newClimate=newClimate|Area.CLIMASK_HOT;
+						newClimate=newClimate|Places.CLIMASK_HOT;
 						break;
 					case 'C':
-						newClimate=newClimate|Area.CLIMASK_COLD;
+						newClimate=newClimate|Places.CLIMASK_COLD;
 						break;
 					case 'W':
-						newClimate=newClimate|Area.CLIMASK_WINDY;
+						newClimate=newClimate|Places.CLIMASK_WINDY;
 						break;
 					case 'D':
-						newClimate=newClimate|Area.CLIMASK_WINDY;
+						newClimate=newClimate|Places.CLIMASK_WINDY;
 						break;
 					case 'N':
 						// do nothing
@@ -807,7 +807,7 @@ public class Modify extends StdCommand
 						break;
 					}
 					}
-					
+
 					if((showFlag<-900)||(cmdDex>=0)){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
 					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -856,7 +856,7 @@ public class Modify extends StdCommand
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thisExit.name()+" shake(s) under the transforming power.");
 		baseRoom.getArea().fillInAreaRoom(baseRoom);
 	}
-	
+
 	public void exits(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -880,7 +880,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		
+
 		Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
@@ -898,7 +898,7 @@ public class Modify extends StdCommand
 			updateChangedExit(mob,mob.location(),thisExit,copyExit);
 			return;
 		}
-		
+
 		if(commands.size()<5)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
@@ -981,7 +981,7 @@ public class Modify extends StdCommand
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
-		}    
+		}
 		String classD=CMParms.combine(commands,3);
 		Ability A=CMClass.getAbility(classD);
 		if(A==null)
@@ -1047,7 +1047,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-	
+
 		String classID=CMParms.combine(commands,2);
 		Ability A=CMClass.getAbility(classID);
 		if(A==null)
@@ -1091,7 +1091,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-	
+
 		String classID=CMParms.combine(commands,2);
 		Ability A=CMClass.getAbility(classID);
 		if(A==null)
@@ -1125,7 +1125,7 @@ public class Modify extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
-	
+
 	public boolean craftSkills(MOB mob, Vector commands)
 	throws IOException
 	{
@@ -1135,7 +1135,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-	
+
 		String classID=CMParms.combine(commands,2);
 		Ability A=CMClass.getAbility(classID);
 		if(A==null)
@@ -1169,7 +1169,7 @@ public class Modify extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
 		return true;
 	}
-	
+
 	public void components(MOB mob, Vector commands)
 	throws IOException
 	{
@@ -1206,7 +1206,7 @@ public class Modify extends StdCommand
 		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
 	}
-	
+
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1225,10 +1225,10 @@ public class Modify extends StdCommand
 			stuff=CMParms.combine(commands,3).toUpperCase().trim();
 		if(stuff.startsWith("<")||stuff.startsWith(">")||(stuff.startsWith("T-")))
 			stuff="TNAME";
-		if(stuff.equals("TNAME")) 
+		if(stuff.equals("TNAME"))
 			stuff="<T-NAME>";
 		String oldStuff=stuff;
-		if(stuff.equals("NONE")) 
+		if(stuff.equals("NONE"))
 			stuff="";
 		Social S=CMLib.socials().fetchSocial((name+" "+stuff).trim(),false);
 		if(S==null)
@@ -1317,7 +1317,7 @@ public class Modify extends StdCommand
 					if((A!=null)&&(A.isNowAnAutoEffect()))
 						A.setProficiency(prof);
 				}
-				mob.tell("All of "+M.Name()+"'s skill proficiencies set to "+prof);	
+				mob.tell("All of "+M.Name()+"'s skill proficiencies set to "+prof);
 				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiencies.");
 			}
 			else
@@ -1336,7 +1336,7 @@ public class Modify extends StdCommand
 				Ability eA=M.fetchEffect(A.ID());
 				if((eA!=null)&&(eA.isNowAnAutoEffect()))
 					eA.setProficiency(prof);
-				mob.tell(M.Name()+"'s skill proficiency in "+A.ID()+" set to "+prof);	
+				mob.tell(M.Name()+"'s skill proficiency in "+A.ID()+" set to "+prof);
 				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiency in "+A.ID()+".");
 			}
 			else
@@ -1366,7 +1366,7 @@ public class Modify extends StdCommand
 		copyMOB.setLocation(null);
 		copyMOB.destroy();
 	}
-	
+
 	public void manufacturer(MOB mob, Vector commands) throws IOException
 	{
 		if(commands.size()<3)
@@ -1377,7 +1377,7 @@ public class Modify extends StdCommand
 		}
 
 		String manufacturerID=CMParms.combine(commands,2);
-		
+
 		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
@@ -1495,7 +1495,8 @@ public class Modify extends StdCommand
 		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -1714,7 +1715,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.startsWith("JSCRIPT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS)) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS))
 				return errorOut(mob);
 			if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
 			{
@@ -1796,7 +1797,7 @@ public class Modify extends StdCommand
 			if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))
 			&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NEWS)))
 				return errorOut(mob);
-			
+
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			Item I=CMClass.getItem("StdJournal");
 			I.setName("SYSTEM_NEWS");
@@ -1987,7 +1988,7 @@ public class Modify extends StdCommand
 				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord);
 			if((thang!=null)&&(thang instanceof Item))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) 
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
 					return errorOut(mob);
 				Item copyItem=(Item)thang.copyOf();
 				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
@@ -2006,7 +2007,7 @@ public class Modify extends StdCommand
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) 
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS))
 					return errorOut(mob);
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
@@ -2065,7 +2066,7 @@ public class Modify extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
+
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
 }

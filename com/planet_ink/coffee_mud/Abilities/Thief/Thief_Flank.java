@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Flank extends ThiefSkill
 {
-	public String ID() { return "Thief_Flank"; }
-	public String name(){ return "Flank";}
-	public String displayText(){ return "(Flanking)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public String ID() { return "Thief_Flank"; }
+	@Override public String name(){ return "Flank";}
+	@Override public String displayText(){ return "(Flanking)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	private static final String[] triggerStrings = {"FLANK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB target=null;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Thief_Flank extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50+(10*xlvl));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
@@ -73,6 +75,7 @@ public class Thief_Flank extends ThiefSkill
 			unInvoke();
 		return true;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
@@ -90,6 +93,7 @@ public class Thief_Flank extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -100,6 +104,7 @@ public class Thief_Flank extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

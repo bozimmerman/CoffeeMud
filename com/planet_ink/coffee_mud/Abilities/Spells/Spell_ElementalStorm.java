@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ElementalStorm extends Spell
 {
-	public String ID() { return "Spell_ElementalStorm"; }
-	public String name(){return "Elemental Storm";}
-	public String displayText(){return "";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_ElementalStorm"; }
+	@Override public String name(){return "Elemental Storm";}
+	@Override public String displayText(){return "";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

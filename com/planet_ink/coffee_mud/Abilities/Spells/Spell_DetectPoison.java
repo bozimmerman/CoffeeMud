@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_DetectPoison extends Spell
 {
-	public String ID() { return "Spell_DetectPoison"; }
-	public String name(){ return "Detect Poison";}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_DetectPoison"; }
+	@Override public String name(){ return "Detect Poison";}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -66,6 +66,7 @@ public class Spell_DetectPoison extends Spell
 		return offenders;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -78,7 +79,8 @@ public class Spell_DetectPoison extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

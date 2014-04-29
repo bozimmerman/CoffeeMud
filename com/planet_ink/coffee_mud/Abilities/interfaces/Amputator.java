@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,8 +43,8 @@ public interface Amputator extends Ability
 	 * Returns a fully-qualified list of those parts of the given object which
 	 * have not yet gone missing from it.  This would be a string set denoting the names
 	 * of the specific parts not yet missing.
-	 * @param P the object to scrutinize 
-	 * @return the set of the name of the remaining pieces. 
+	 * @param P the object to scrutinize
+	 * @return the set of the name of the remaining pieces.
 	 */
 	public List<String> remainingLimbNameSet(Physical P);
 	/**

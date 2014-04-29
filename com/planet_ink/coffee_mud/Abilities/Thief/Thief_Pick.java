@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +36,28 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Pick extends ThiefSkill
 {
-	public String ID() { return "Thief_Pick"; }
-	public String name(){ return "Pick Locks";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Pick"; }
+	@Override public String name(){ return "Pick Locks";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PICK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 	public int code=0;
 	public Vector lastDone=new Vector();
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int[] dirCode=new int[]{-1};
 		Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);
 		if(unlockThis==null) return false;
-		
+
 		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).hasALock()))
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
 		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))

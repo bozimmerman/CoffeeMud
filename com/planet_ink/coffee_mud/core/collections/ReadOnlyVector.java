@@ -26,56 +26,56 @@ public final class ReadOnlyVector<T> extends Vector<T>
 	  {
 		  super();
 	  }
-	  
+
 	  public ReadOnlyVector(List<T> E)
 	  {
 		  if(E!=null)
 			  super.addAll(E);
 	  }
-	  
+
 	  public ReadOnlyVector(T[] E)
 	  {
 		  if(E!=null)
 			  for(T o : E)
 				  super.add(o);
 	  }
-	  
+
 	  public ReadOnlyVector(T E)
 	  {
 		  if(E!=null)
 			  super.add(E);
 	  }
-	  
+
 	  public ReadOnlyVector(Enumeration<T> E)
 	  {
 		  if(E!=null)
 			  for(;E.hasMoreElements();)
 				  super.add(E.nextElement());
 	  }
-	  
+
 	  public ReadOnlyVector(Iterator<T> E)
 	  {
 		  if(E!=null)
 			  for(;E.hasNext();)
 				  super.add(E.next());
 	  }
-	  
+
 	  public ReadOnlyVector(Set<T> E)
 	  {
 			for(T o : E)
 				super.add(o);
 	  }
-	  
+
 	  public ReadOnlyVector(int size)
 	  {
 		  super(size);
 	  }
-	  
+
 	@Override
-	public synchronized boolean add(T t) 
+	public synchronized boolean add(T t)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 	@Override
 	public synchronized void addElement(T t)
@@ -91,13 +91,13 @@ public final class ReadOnlyVector<T> extends Vector<T>
 	public synchronized boolean removeElement(Object obj)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 	@Override
 	public boolean remove(Object o)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 	@Override
 	public void add(int index, T element)
@@ -119,7 +119,7 @@ public final class ReadOnlyVector<T> extends Vector<T>
 	public synchronized boolean removeAll(Collection<?> c)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 	@Override
 	public synchronized void insertElementAt(T obj, int index)
@@ -130,12 +130,12 @@ public final class ReadOnlyVector<T> extends Vector<T>
 	public synchronized boolean addAll(Collection<? extends T> c)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 	@Override
 	public synchronized boolean addAll(int index, Collection<? extends T> c)
 	{
 		Log.errOut("ReadOnlyVector",new UnsupportedOperationException());
-		return false; 
+		return false;
 	}
 }

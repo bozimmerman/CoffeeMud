@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Lockjaw extends Disease
 {
-	public String ID() { return "Disease_Lockjaw"; }
-	public String name(){ return "Lockjaw";}
-	public String displayText(){ return "(Lockjaw)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 2;}
+	@Override public String ID() { return "Disease_Lockjaw"; }
+	@Override public String name(){ return "Lockjaw";}
+	@Override public String displayText(){ return "(Lockjaw)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 2;}
 
-	protected int DISEASE_TICKS(){return 9999999;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
-	protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override protected int DISEASE_TICKS(){return 9999999;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
+	@Override protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -69,6 +70,7 @@ public class Disease_Lockjaw extends Disease
 		}
 		return true;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -90,6 +92,7 @@ public class Disease_Lockjaw extends Disease
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected==null) return;

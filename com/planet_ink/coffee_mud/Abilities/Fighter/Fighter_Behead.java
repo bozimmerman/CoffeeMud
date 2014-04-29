@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Fighter_Behead extends FighterSkill
 {
-	public String ID() { return "Fighter_Behead"; }
-	public String name(){ return "Behead";}
+	@Override public String ID() { return "Fighter_Behead"; }
+	@Override public String name(){ return "Behead";}
 	private static final String[] triggerStrings = {"BEHEAD"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null)&&(target instanceof MOB))
@@ -76,7 +77,8 @@ public class Fighter_Behead extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget);
@@ -87,7 +89,7 @@ public class Fighter_Behead extends FighterSkill
 			mob.tell(target.name(mob)+" has no head!");
 			return false;
 		}
-		
+
 		LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
 		List<LegalWarrant> warrants=new Vector();
@@ -98,7 +100,7 @@ public class Fighter_Behead extends FighterSkill
 			mob.tell("You are not allowed to behead "+target.Name()+" at this time.");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if((!auto)&&(!CMSecurity.isASysOp(mob)))

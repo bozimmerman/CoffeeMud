@@ -48,6 +48,7 @@ public class ListenThread extends Thread {
 		start();
 	}
 
+	@Override
 	public void run()
 	{
 		while( listen!=null && !listen.isClosed() )
@@ -88,7 +89,7 @@ public class ListenThread extends Thread {
 		}
 		catch(Exception e){}
 	}
-	
+
 	public Socket nextSocket()
 	{
 		Socket client;

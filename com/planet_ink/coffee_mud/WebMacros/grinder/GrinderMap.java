@@ -72,6 +72,7 @@ public class GrinderMap extends GrinderFlatMap
 		super(A,xyxy);
 	}
 
+	@Override
 	public void rePlaceRooms()
 	{
 		if(areaMap==null)
@@ -82,6 +83,7 @@ public class GrinderMap extends GrinderFlatMap
 		rebuildGrid();
 	}
 
+	@Override
 	public void rebuildGrid()
 	{
 		if (areaMap == null) return;
@@ -153,6 +155,7 @@ public class GrinderMap extends GrinderFlatMap
 		return null;
 	}
 
+	@Override
 	public GrinderRoom getRoom(String ID)
 	{
 		if ( (hashRooms != null) && (hashRooms.containsKey(ID)))
@@ -240,6 +243,7 @@ public class GrinderMap extends GrinderFlatMap
 		}
 	}
 
+	@Override
 	public void placeRooms()
 	{
 		if (areaMap == null)
@@ -321,6 +325,7 @@ public class GrinderMap extends GrinderFlatMap
 					   " room(s) were not placed.");
 	}
 
+	@Override
 	public StringBuffer getHTMLTable(HTTPRequest httpReq)
 	{
 		StringBuffer buf = new StringBuffer("");
@@ -457,12 +462,14 @@ public class GrinderMap extends GrinderFlatMap
 		return buf;
 	}
 
+	@Override
 	public StringBuffer getHTMLMap(HTTPRequest httpReq)
 	{
 		return getHTMLMap(httpReq, 4);
 	}
 
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
+	@Override
 	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
 	{
 		StringBuffer buf = new StringBuffer("");
@@ -530,6 +537,7 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 
+	@Override
 	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
 	{
 		switch (d)

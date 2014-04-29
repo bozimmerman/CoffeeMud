@@ -24,9 +24,9 @@ limitations under the License.
 
 public class TreeLayout extends AbstractLayout
 {
-	public String name(){return "TREE";}
+	@Override public String name(){return "TREE";}
 	int originalDirection=Directions.NORTH;
-	
+
 	private class TreeStem
 	{
 		public LayoutNode currNode = null;
@@ -39,9 +39,9 @@ public class TreeLayout extends AbstractLayout
 			currNode = new DefaultLayoutNode(coord);
 		}
 		private long[] getCoord(long[] curr, int dir) { return lSet.makeNextCoord(curr,dir);}
-		
-		private int[] getTurns(int dir) 
-		{ 
+
+		private int[] getTurns(int dir)
+		{
 			switch(dir)
 			{
 			case Directions.NORTH:
@@ -57,8 +57,8 @@ public class TreeLayout extends AbstractLayout
 			}
 			return null;
 		}
-		
-		public TreeStem nextNode() 
+
+		public TreeStem nextNode()
 		{
 			long[] nextCoord = getCoord(currNode.coord(),dir);
 			TreeStem stem = new TreeStem(nextCoord,dir,lSet);
@@ -72,7 +72,7 @@ public class TreeLayout extends AbstractLayout
 		{
 			to.flagRun(AbstractLayout.getRunDirection(getDirection(from,to)));
 		}
-		
+
 		public TreeStem firstBranch()
 		{
 			int[] turns = getTurns(dir);
@@ -97,12 +97,13 @@ public class TreeLayout extends AbstractLayout
 			return newStem;
 		}
 	}
-	
-	public List<LayoutNode> generate(int num, int dir) 
+
+	@Override
+	public List<LayoutNode> generate(int num, int dir)
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		Vector<TreeStem> progress = new Vector<TreeStem>();
-		
+
 		long[] rootCoord = new long[]{0,0};
 		LayoutSet lSet = new LayoutSet(set,num);
 		originalDirection=dir;
@@ -112,7 +113,7 @@ public class TreeLayout extends AbstractLayout
 		root.currNode.flag(LayoutFlags.gate);
 		root.currNode.flagGateExit(dir);
 		root.currNode.flagRun(AbstractLayout.getRunDirection(dir));
-		
+
 		while(lSet.spaceAvailable())
 		{
 			Vector<TreeStem> newOnes = new Vector<TreeStem>();

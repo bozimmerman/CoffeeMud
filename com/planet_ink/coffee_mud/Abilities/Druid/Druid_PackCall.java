@@ -38,17 +38,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_PackCall extends StdAbility
 {
-	public String ID() { return "Druid_PackCall"; }
-	public String name(){ return "Pack Call";}
-	public String displayText(){return "(Pack Call)";}
+	@Override public String ID() { return "Druid_PackCall"; }
+	@Override public String name(){ return "Pack Call";}
+	@Override public String displayText(){return "(Pack Call)";}
 	private static final String[] triggerStrings = {"PACKCALL"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -68,6 +69,7 @@ public class Druid_PackCall extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -81,6 +83,7 @@ public class Druid_PackCall extends StdAbility
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -94,6 +97,7 @@ public class Druid_PackCall extends StdAbility
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -111,10 +115,10 @@ public class Druid_PackCall extends StdAbility
 			{
 				if(!(((MOB)target).isInCombat()))
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 				if(!Druid_ShapeShift.isShapeShifted((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 				if(((MOB)target).totalFollowers()>=((MOB)target).maxFollowers())
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -122,6 +126,7 @@ public class Druid_PackCall extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)

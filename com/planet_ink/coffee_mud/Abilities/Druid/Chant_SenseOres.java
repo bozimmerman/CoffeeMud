@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 
 public class Chant_SenseOres extends Chant_SensePlants
 {
-	public String ID() { return "Chant_SenseOres"; }
-	public String name(){ return "Sense Ores";}
-	public String displayText(){return "(Sensing Ores)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "ores";}
+	@Override public String ID() { return "Chant_SenseOres"; }
+	@Override public String name(){ return "Sense Ores";}
+	@Override public String displayText(){return "(Sensing Ores)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override protected String word(){return "ores";}
 
 	private int[] myMats={RawMaterial.MATERIAL_ROCK,
 						  RawMaterial.MATERIAL_METAL};
-	protected int[] okMaterials(){	return myMats;}
-	protected int[] okResources(){	return null;}
+	@Override protected int[] okMaterials(){	return myMats;}
+	@Override protected int[] okResources(){	return null;}
 }

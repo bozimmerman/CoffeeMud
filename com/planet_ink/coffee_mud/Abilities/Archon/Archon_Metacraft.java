@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Archon_Metacraft extends ArchonSkill
 {
-	public String ID() { return "Archon_Metacraft"; }
-	public String name(){ return "Metacrafting";}
+	@Override public String ID() { return "Archon_Metacraft"; }
+	@Override public String name(){ return "Metacrafting";}
 	private static final String[] triggerStrings = {"METACRAFT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+
 	public static List<Ability> craftingSkills=new Vector<Ability>();
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(craftingSkills.size()==0)
@@ -62,12 +63,12 @@ public class Archon_Metacraft extends ArchonSkill
 					Ability A=(Ability)V.elementAt(i);
 					int ii=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if(ii<lowest)
-					{ 
-						lowest=ii; 
+					{
+						lowest=ii;
 						lowestA=A;
 					}
 				}
-				if(lowestA==null) 
+				if(lowestA==null)
 					lowestA=(Ability)V.firstElement();
 				if(lowestA!=null)
 				{
@@ -179,7 +180,7 @@ public class Archon_Metacraft extends ArchonSkill
 			mob.tell("'"+recipe+"' can not be made with any of the known crafting skills.");
 			return false;
 		}
-		
+
 		boolean success=false;
 		StringBuffer xml = new StringBuffer("<ITEMS>");
 		HashSet files = new HashSet();
@@ -196,7 +197,7 @@ public class Archon_Metacraft extends ArchonSkill
 						V=skill.craftAllItemSets(material,false);
 					else
 						V=skill.craftAllItemSets(false);
-					
+
 					if(V!=null)
 						for(ItemCraftor.ItemKeyPair L: V)
 						{

@@ -27,7 +27,7 @@ limitations under the License.
  */
 public interface ItemPossessor extends PhysicalAgent, ItemCollection
 {
-	
+
 	/**
 	 * Adds a new item to its possessor, with an expiration code.
 	 * Duplicates will not be permitted.
@@ -35,7 +35,7 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 	 * @param item the item to add
 	 */
 	public void addItem(Item item, Expire expire);
-	
+
 	/**
 	 * Intelligently removes an item from its current location and
 	 * moves it to this possessor, managing any container contents,
@@ -44,11 +44,11 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 	 * Duplicates will not be permitted.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire
 	 * @param container the item to add
-	 * @param expire the expiration code 
+	 * @param expire the expiration code
 	 * @param moveFlags any flags related to the move
 	 */
 	public void moveItemTo(Item container, Expire expire, Move... moveFlags);
-	
+
 	/**
 	 * Intelligently removes an item from its current location and
 	 * moves it to this possessor, managing any container contents.
@@ -65,7 +65,7 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 
 	/** constant for the moveItemTo methods to denote flags are being given -- normal operation */
 	public enum Move { Followers}
-	
+
 	/** constant for the findItem/findItems method denoting special modifying flags on the search */
-	public enum Find { WornOnly, UnwornOnly, AddCoins, RespectLocation} 
+	public enum Find { WornOnly, UnwornOnly, AddCoins, RespectLocation}
 }

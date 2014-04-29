@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 */
 public class Spell_MajManaShield extends Spell_ManaShield
 {
-	public String ID() { return "Spell_MajManaShield"; }
-	public String name(){return "Major Mana Shield";}
-	public String displayText(){return "(Major Mana Shield)";}
-	protected double protection(){return 0.75;}
-	protected String adjective(){return " a powerful";}
+	@Override public String ID() { return "Spell_MajManaShield"; }
+	@Override public String name(){return "Major Mana Shield";}
+	@Override public String displayText(){return "(Major Mana Shield)";}
+	@Override protected double protection(){return 0.75;}
+	@Override protected String adjective(){return " a powerful";}
 
 }

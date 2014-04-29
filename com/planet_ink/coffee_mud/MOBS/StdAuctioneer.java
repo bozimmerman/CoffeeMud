@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdAuctioneer extends StdMOB implements Auctioneer
 {
-	public String ID(){return "StdAuctioneer";}
+	@Override public String ID(){return "StdAuctioneer";}
 
 	public StdAuctioneer()
 	{
@@ -66,6 +66,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	public AuctionData lastMsgData=null;
 	protected static final Hashtable lastCheckTimes=new Hashtable();
 
+	@Override
 	public CoffeeShop getShop()
 	{
 		CoffeeShop shop=((CoffeeShop)CMClass.getCommon("AuctionCoffeeShop")).build(this);
@@ -73,35 +74,36 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return shop;
 	}
 
-	public String auctionHouse(){return text();}
-	public void setAuctionHouse(String name){setMiscText(name);}
+	@Override public String auctionHouse(){return text();}
+	@Override public void setAuctionHouse(String name){setMiscText(name);}
 
 	protected double timedListingPrice=-1.0;
-	public double timedListingPrice(){return timedListingPrice;}
-	public void setTimedListingPrice(double d){timedListingPrice=d;}
+	@Override public double timedListingPrice(){return timedListingPrice;}
+	@Override public void setTimedListingPrice(double d){timedListingPrice=d;}
 
 	protected double timedListingPct=-1.0;
-	public double timedListingPct(){return timedListingPct;}
-	public void setTimedListingPct(double d){timedListingPct=d;}
+	@Override public double timedListingPct(){return timedListingPct;}
+	@Override public void setTimedListingPct(double d){timedListingPct=d;}
 
 	protected double timedFinalCutPct=-1.0;
-	public double timedFinalCutPct(){return timedFinalCutPct;}
-	public void setTimedFinalCutPct(double d){timedFinalCutPct=d;}
+	@Override public double timedFinalCutPct(){return timedFinalCutPct;}
+	@Override public void setTimedFinalCutPct(double d){timedFinalCutPct=d;}
 
 	protected int maxTimedAuctionDays=-1;
-	public int maxTimedAuctionDays(){return maxTimedAuctionDays;}
-	public void setMaxTimedAuctionDays(int d){maxTimedAuctionDays=d;}
+	@Override public int maxTimedAuctionDays(){return maxTimedAuctionDays;}
+	@Override public void setMaxTimedAuctionDays(int d){maxTimedAuctionDays=d;}
 
 	protected int minTimedAuctionDays=-1;
-	public int minTimedAuctionDays(){return minTimedAuctionDays;}
-	public void setMinTimedAuctionDays(int d){minTimedAuctionDays=d;}
+	@Override public int minTimedAuctionDays(){return minTimedAuctionDays;}
+	@Override public void setMinTimedAuctionDays(int d){minTimedAuctionDays=d;}
 
-	public long getWhatIsSoldMask(){ return DEAL_AUCTIONEER;}
-	public boolean isSold(int mask){return mask==ShopKeeper.DEAL_AUCTIONEER;}
-	public void setWhatIsSoldMask(long newSellCode){ }
-	public void addSoldType(int mask){}
+	@Override public long getWhatIsSoldMask(){ return DEAL_AUCTIONEER;}
+	@Override public boolean isSold(int mask){return mask==ShopKeeper.DEAL_AUCTIONEER;}
+	@Override public void setWhatIsSoldMask(long newSellCode){ }
+	@Override public void addSoldType(int mask){}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -185,6 +187,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -432,6 +435,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -629,8 +633,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			super.executeMsg(myHost,msg);
 	}
 
-	public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
-	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
+	@Override public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
+	@Override public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
 	protected Area getStartArea()
 	{
 		Area A=CMLib.map().getStartArea(this);
@@ -639,52 +643,58 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return A;
 	}
 
+	@Override
 	public String finalPrejudiceFactors()
 	{
 		if(prejudiceFactors().length()>0) return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
-	public String prejudiceFactors(){return CMStrings.bytesToStr(miscText);}
-	public void setPrejudiceFactors(String factors){miscText=factors;}
+	@Override public String prejudiceFactors(){return CMStrings.bytesToStr(miscText);}
+	@Override public void setPrejudiceFactors(String factors){miscText=factors;}
 
+	@Override
 	public String finalIgnoreMask()
 	{
 		if(ignoreMask().length()>0) return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
-	public String ignoreMask(){return "";}
-	public void setIgnoreMask(String factors){}
+	@Override public String ignoreMask(){return "";}
+	@Override public void setIgnoreMask(String factors){}
 
+	@Override
 	public String[] finalItemPricingAdjustments()
 	{
 		if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
 	}
-	public String[] itemPricingAdjustments(){ return new String[0];}
-	public void setItemPricingAdjustments(String[] factors){}
+	@Override public String[] itemPricingAdjustments(){ return new String[0];}
+	@Override public void setItemPricingAdjustments(String[] factors){}
 
+	@Override
 	public String finalBudget()
 	{
 		if(budget().length()>0) return budget();
 		return getStartArea().finalBudget();
 	}
-	public String budget(){return "";}
-	public void setBudget(String factors){}
+	@Override public String budget(){return "";}
+	@Override public void setBudget(String factors){}
 
+	@Override
 	public String finalDevalueRate()
 	{
 		if(devalueRate().length()>0) return devalueRate();
 		return getStartArea().finalDevalueRate();
 	}
-	public String devalueRate(){return "";}
-	public void setDevalueRate(String factors){}
+	@Override public String devalueRate(){return "";}
+	@Override public void setDevalueRate(String factors){}
 
+	@Override
 	public int finalInvResetRate()
 	{
 		if(invResetRate()!=0) return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
-	public int invResetRate(){return 0;}
-	public void setInvResetRate(int ticks){}
+	@Override public int invResetRate(){return 0;}
+	@Override public void setInvResetRate(int ticks){}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdFood extends StdItem implements Food
 {
-	public String ID(){	return "StdFood";}
+	@Override public String ID(){	return "StdFood";}
 	protected int amountOfNourishment=500;
 	protected int nourishmentPerBite=0;
 	protected long decayTime=0;
@@ -53,27 +53,32 @@ public class StdFood extends StdItem implements Food
 
 
 
+	@Override
 	public int nourishment()
 	{
 		return amountOfNourishment;
 	}
+	@Override
 	public void setNourishment(int amount)
 	{
 		amountOfNourishment=amount;
 	}
 
+	@Override
 	public int bite()
 	{
 		return nourishmentPerBite;
 	}
+	@Override
 	public void setBite(int amount)
 	{
 		nourishmentPerBite=amount;
 	}
 
-	public long decayTime(){return decayTime;}
-	public void setDecayTime(long time){decayTime=time;}
-	
+	@Override public long decayTime(){return decayTime;}
+	@Override public void setDecayTime(long time){decayTime=time;}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -101,6 +106,7 @@ public class StdFood extends StdItem implements Food
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

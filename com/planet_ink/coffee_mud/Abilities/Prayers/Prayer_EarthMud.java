@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_EarthMud extends Prayer
 {
-	public String ID() { return "Prayer_EarthMud"; }
-	public String name(){return "Earth to Mud";}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_EarthMud"; }
+	@Override public String name(){return "Earth to Mud";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
@@ -51,12 +52,14 @@ public class Prayer_EarthMud extends Prayer
 		super.unInvoke();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -73,6 +76,7 @@ public class Prayer_EarthMud extends Prayer
 
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -92,7 +96,8 @@ public class Prayer_EarthMud extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

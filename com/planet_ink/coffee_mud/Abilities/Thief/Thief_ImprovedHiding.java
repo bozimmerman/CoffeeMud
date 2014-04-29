@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,15 @@ import java.util.*;
 */
 public class Thief_ImprovedHiding extends ThiefSkill
 {
-	public String ID() { return "Thief_ImprovedHiding"; }
-	public String name(){ return "Improved Hiding";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Thief_ImprovedHiding"; }
+	@Override public String name(){ return "Improved Hiding";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	public boolean active=false;
 
 	public void improve(MOB mob, boolean yesorno)
@@ -57,6 +57,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -72,6 +73,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

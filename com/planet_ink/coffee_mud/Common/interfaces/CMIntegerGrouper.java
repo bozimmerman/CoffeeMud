@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,51 +32,51 @@ import java.util.*;
 */
 /**
  * This class represents an efficient representation of a group
- * of room numbers with optional xy grid coords.  It maintains 
- * a compact list by ordering the digits and then tagging the 
+ * of room numbers with optional xy grid coords.  It maintains
+ * a compact list by ordering the digits and then tagging the
  * groups without missing members.
  */
 public interface CMIntegerGrouper extends CMCommon
 {
-	/** 
+	/**
 	 * This set of integers as a savable string.
 	 * @return this group as a string.
 	 */
 	public String text();
-	
-	/** 
+
+	/**
 	 * Return a random coded room number from this set.
 	 * @return the random room number as coded long
 	 */
 	public long random();
-	
-	/** 
+
+	/**
 	 * Return all raw room numbers, with grid locales
 	 * encoded.
 	 * @return all of the room numbers
 	 */
 	public long[] allRoomNums();
-	
-	/** 
+
+	/**
 	 * Return all primary raw room numbers.
 	 * @return all of the room numbers
 	 */
 	public int[] allPrimaryRoomNums();
-	
-	/** 
+
+	/**
 	 * Return all packed grid room numbers, with grid locales
 	 * encoded.
 	 * @return all of the packed grid room numbers
 	 */
 	public long[] packedGridRoomNums();
-	
-	/** 
+
+	/**
 	 * Return all packed grid room numbers, with grid locales
 	 * encoded.
 	 * @return all of the packed grid room numbers
 	 */
 	public int[] packedRoomNums();
-	
+
 	/**
 	 * Creates a nice storage of integers from a
 	 * saved string.

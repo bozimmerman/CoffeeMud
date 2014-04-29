@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_AnimateWeapon extends Spell
 {
-	public String ID() { return "Spell_AnimateWeapon"; }
-	public String name(){return "Animate Weapon";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public int overrideMana(){return 100;}
+	@Override public String ID() { return "Spell_AnimateWeapon"; }
+	@Override public String name(){return "Animate Weapon";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int overrideMana(){return 100;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -88,6 +89,7 @@ public class Spell_AnimateWeapon extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((!super.okMessage(myHost,msg))
@@ -110,6 +112,7 @@ public class Spell_AnimateWeapon extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)
@@ -120,12 +123,14 @@ public class Spell_AnimateWeapon extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

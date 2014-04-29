@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Shutdown extends StdCommand implements Tickable
 	public Shutdown(){}
 
 	private final String[] access={"SHUTDOWN"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 	protected MOB shuttingDownMob=null;
 	protected long shuttingDownNextAnnounce=0;
 	protected long shuttingDownCompletes=0;
@@ -57,6 +57,7 @@ public class Shutdown extends StdCommand implements Tickable
 		  S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" will be "+(keepItDown?"shutting down":"restarting")+tm+"^.^?\n\r");
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -85,8 +86,8 @@ public class Shutdown extends StdCommand implements Tickable
 			}
 			else
 			if((s.equalsIgnoreCase("IN"))&&(i==commands.size()-3))
-			{ 
-				noPrompt=true; 
+			{
+				noPrompt=true;
 				commands.removeElementAt(i);
 				long wait=CMath.s_int((String)commands.get(i));
 				commands.removeElementAt(i);
@@ -117,18 +118,19 @@ public class Shutdown extends StdCommand implements Tickable
 		shuttingDownMob=null;
 		this.externalCommand=externalCommand;
 		this.keepItDown=keepItDown;
-		
+
 		startShutdown(mob);
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SHUTDOWN);}
-	
+
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SHUTDOWN);}
+
 	public void startShutdown(final MOB mob)
 	{
 		new Thread(Thread.currentThread().getThreadGroup(),"Shutdown"+Thread.currentThread().getThreadGroup().getName().charAt(0))
 		{
+			@Override
 			public void run()
 			{
 				for(Session S : CMLib.sessions().allIterable())
@@ -145,10 +147,11 @@ public class Shutdown extends StdCommand implements Tickable
 			}
 		}.start();
 	}
-	
-	public int getTickStatus() { return Tickable.STATUS_ALIVE;}
-	public String name() { return super.ID(); }
-	public boolean tick(Tickable ticking, int tickID) 
+
+	@Override public int getTickStatus() { return Tickable.STATUS_ALIVE;}
+	@Override public String name() { return super.ID(); }
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		final MOB mob=shuttingDownMob;
 		if(mob==null) return false;

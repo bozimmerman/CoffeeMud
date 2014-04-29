@@ -11,9 +11,9 @@ public class MiniJSON
 	private enum ObjectParseState { INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT }
 	private enum NumberParseState { INITIAL, NEEDN0DIGIT, HAVEDIGIT , NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT }
 	private enum ArrayParseState { INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT }
-	
+
 	public static final Object NULL = new Object();
-	
+
 	public static class MJSONException extends Exception
 	{
 		private static final long serialVersionUID = -2651922052891126260L;
@@ -27,7 +27,7 @@ public class MiniJSON
 			super(string, e);
 		}
 	}
-	
+
 	public static String toJSONString(final String str)
 	{
 		StringBuilder strBldr=new StringBuilder("");
@@ -54,14 +54,14 @@ public class MiniJSON
 	public static class JSONObject extends TreeMap<String,Object>
 	{
 		private static final long serialVersionUID = 8390676973120915175L;
-		
+
 		private Object getCheckedObject(String key) throws MJSONException
 		{
 			if(!containsKey(key))
 				throw new MJSONException("Key '"+key+"' not found");
 			return get(key);
 		}
-		
+
 		public JSONObject getCheckedJSONObject(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -69,7 +69,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not a JSON object");
 			return (JSONObject)o;
 		}
-		
+
 		public Object[] getCheckedArray(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -77,7 +77,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not an array");
 			return (Object[])o;
 		}
-		
+
 		public String getCheckedString(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -85,7 +85,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not a String");
 			return (String)o;
 		}
-		
+
 		public Long getCheckedLong(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -93,7 +93,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not a long");
 			return (Long)o;
 		}
-		
+
 		public Double getCheckedDouble(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -101,7 +101,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not a double");
 			return (Double)o;
 		}
-		
+
 		public Boolean getCheckedBoolean(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -109,7 +109,7 @@ public class MiniJSON
 				throw new MJSONException("Key '"+key+"' is not a boolean");
 			return (Boolean)o;
 		}
-		
+
 		public double getCheckedNumber(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
@@ -119,13 +119,13 @@ public class MiniJSON
 				return ((Long)o).doubleValue();
 			throw new MJSONException("Key '"+key+"' is not a number");
 		}
-		
+
 		public boolean isCheckedNULL(String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			return o == NULL;
 		}
-		
+
 		public void appendJSONString(final StringBuilder str, Object obj)
 		{
 			if(obj instanceof String)
@@ -156,7 +156,8 @@ public class MiniJSON
 				str.append(obj.toString());
 			}
 		}
-		
+
+		@Override
 		public String toString()
 		{
 			StringBuilder str = new StringBuilder("");
@@ -175,9 +176,9 @@ public class MiniJSON
 			str.append("}");
 			return str.toString();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Parse either an Long, or Double object from the doc buffer
 	 * @param doc the full JSON document
@@ -206,7 +207,7 @@ public class MiniJSON
 				else
 					throw new MJSONException("Expected digit at "+index[0]);
 				break;
-			case NEEDN0DIGIT: 
+			case NEEDN0DIGIT:
 				if(c=='0')
 					throw new MJSONException("Expected digit at "+index[0]);
 				else
@@ -230,7 +231,7 @@ public class MiniJSON
 					return Long.valueOf(new String(doc,numStart,index[0]-numStart+1));
 				}
 				break;
-			case NEEDDOT: 
+			case NEEDDOT:
 				if(c=='.')
 					state=NumberParseState.NEEDDOTDIGIT;
 				else
@@ -239,13 +240,13 @@ public class MiniJSON
 					return Long.valueOf(new String(doc,numStart,index[0]-numStart+1));
 				}
 				break;
-			case NEEDDOTDIGIT: 
+			case NEEDDOTDIGIT:
 				if(Character.isDigit(c))
 					state=NumberParseState.HAVEDOTDIGIT;
 				else
 					throw new MJSONException("Expected digit at "+index[0]);
 				break;
-			case HAVEDOTDIGIT: 
+			case HAVEDOTDIGIT:
 				if(Character.isDigit(c))
 					state=NumberParseState.HAVEDOTDIGIT;
 				else
@@ -278,7 +279,7 @@ public class MiniJSON
 		}
 		throw new MJSONException("Unexpected end of number at"+index[0]);
 	}
-	
+
 	private byte getByteFromHex(char[] doc, int index) throws MJSONException
 	{
 		final char c = doc[index];
@@ -290,7 +291,7 @@ public class MiniJSON
 			return (byte)(10 + (c-'A'));
 		throw new MJSONException("Illegal hex digit at "+index);
 	}
-	
+
 	private String parseString(char[] doc, int[] index) throws MJSONException
 	{
 		StringBuilder str=new StringBuilder("");
@@ -397,7 +398,7 @@ public class MiniJSON
 		}
 		throw new MJSONException("Expected ] at "+index[0]);
 	}
-	
+
 	private Object parseElement(char[] doc, int[] index) throws MJSONException
 	{
 		switch(doc[index[0]])
@@ -436,7 +437,7 @@ public class MiniJSON
 			throw new MJSONException("Unknown character at "+index[0]);
 		}
 	}
-	
+
 	private JSONObject parseObject(char[] doc, int[] index) throws MJSONException
 	{
 		JSONObject map = new JSONObject();
@@ -492,7 +493,7 @@ public class MiniJSON
 		}
 		throw new MJSONException("Expected } at "+index[0]);
 	}
-	
+
 	public JSONObject parseObject(String doc) throws MJSONException
 	{
 		try

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class Prop_NoTelling extends Property
 {
-	public String ID() { return "Prop_NoTelling"; }
-	public String name(){ return "Tel Neutralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_NoTelling"; }
+	@Override public String name(){ return "Tel Neutralizing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
+	@Override
 	public String accountForYourself()
 	{ return "No Telling Field";	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

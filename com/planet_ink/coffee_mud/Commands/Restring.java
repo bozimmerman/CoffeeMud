@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,15 @@ public class Restring extends StdCommand
 	public Restring(){}
 
 	private final String[] access={"RESTRING"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)
 	{
 		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -125,13 +126,14 @@ public class Restring extends StdCommand
 			mob.tell("'"+allWord+"' can not be restrung.");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override
 	public boolean securityCheck(MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP)
 			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESTRING);
 	}
 
-	
+
 }

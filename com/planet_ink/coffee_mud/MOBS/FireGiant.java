@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class FireGiant extends StdMOB
 {
-	public String ID(){return "FireGiant";}
+	@Override public String ID(){return "FireGiant";}
 	public FireGiant()
 	{
 		super();
@@ -69,6 +69,7 @@ public class FireGiant extends StdMOB
 		recoverCharStats();
 	}
 
+	@Override
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();

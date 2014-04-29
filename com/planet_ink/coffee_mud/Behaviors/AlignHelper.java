@@ -35,13 +35,15 @@ import java.util.*;
 */
 public class AlignHelper extends StdBehavior
 {
-	public String ID(){return "AlignHelper";}
+	@Override public String ID(){return "AlignHelper";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "same-aligned protecting";
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_PredictWeather extends Spell
 {
-	public String ID() { return "Spell_PredictWeather"; }
-	public String name(){return "Forecast Weather";}
-	public String displayText(){return "(Forecast Weather)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Spell_PredictWeather"; }
+	@Override public String name(){return "Forecast Weather";}
+	@Override public String displayText(){return "(Forecast Weather)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	String lastPrediction="";
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -57,6 +58,7 @@ public class Spell_PredictWeather extends Spell
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer sensitive to the weather.");
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -78,6 +80,7 @@ public class Spell_PredictWeather extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

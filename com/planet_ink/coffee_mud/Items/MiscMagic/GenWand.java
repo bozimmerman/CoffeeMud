@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenWand extends StdWand
 {
-	public String ID(){	return "GenWand";}
+	@Override public String ID(){	return "GenWand";}
 	protected String readableText="";
-	
+
 	public GenWand()
 	{
 		super();
@@ -53,8 +53,9 @@ public class GenWand extends StdWand
 		recoverPhyStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		readableText="";
@@ -62,23 +63,26 @@ public class GenWand extends StdWand
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
 	}
+	@Override
 	public Ability getSpell()
 	{
 		return CMClass.getAbility(readableText);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
 
 	protected int maxUses=Integer.MAX_VALUE;
-	public int maxUses(){return maxUses;}
-	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
-	
+	@Override public int maxUses(){return maxUses;}
+	@Override public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -86,12 +90,14 @@ public class GenWand extends StdWand
 		recoverPhyStats();
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -99,12 +105,14 @@ public class GenWand extends StdWand
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenWand)) return false;

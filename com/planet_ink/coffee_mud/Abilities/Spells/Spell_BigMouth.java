@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_BigMouth extends Spell
 {
-	public String ID() { return "Spell_BigMouth"; }
-	public String name(){return "Big Mouth";}
-	public String displayText(){return "(Big Mouth)";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+	@Override public String ID() { return "Spell_BigMouth"; }
+	@Override public String name(){return "Big Mouth";}
+	@Override public String displayText(){return "(Big Mouth)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -97,7 +98,7 @@ public class Spell_BigMouth extends Spell
 						  msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
 						  CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
 						  msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
-				
+
 			}
 			else
 			{
@@ -108,6 +109,7 @@ public class Spell_BigMouth extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -210,6 +212,7 @@ public class Spell_BigMouth extends Spell
 			lastKnownLocation().recoverRoomStats();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -247,6 +250,7 @@ public class Spell_BigMouth extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -273,6 +277,7 @@ public class Spell_BigMouth extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

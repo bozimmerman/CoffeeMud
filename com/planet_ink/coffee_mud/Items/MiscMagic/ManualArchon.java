@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 {
-	public String ID(){    return "ManualArchon";}
+	@Override public String ID(){    return "ManualArchon";}
 	public ManualArchon()
 	{
 		super();
@@ -51,6 +51,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 		recoverPhyStats();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
@@ -58,6 +59,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

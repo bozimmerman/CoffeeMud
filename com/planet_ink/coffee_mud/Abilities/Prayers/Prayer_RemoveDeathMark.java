@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_RemoveDeathMark"; }
-	public String name(){ return "Remove Death Mark";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_RemoveDeathMark"; }
+	@Override public String name(){ return "Remove Death Mark";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		return (item.fetchEffect("Thief_Mark")!=null)||(item.fetchEffect("Thief_ContractHit")!=null);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -61,7 +63,8 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

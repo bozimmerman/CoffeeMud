@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_AnimateItem extends Spell
 {
-	public String ID() { return "Spell_AnimateItem"; }
-	public String name(){return "Animate Item";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_AnimateItem"; }
+	@Override public String name(){return "Animate Item";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

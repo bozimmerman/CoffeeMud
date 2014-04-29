@@ -38,7 +38,7 @@ limitations under the License.
 public class HTTPForwarder implements HTTPIOHandler, Runnable
 {
 	private static final AtomicLong 	idCounter		 = new AtomicLong(0);
-	
+
 	private final HTTPReader	clientReader;
 	private final SocketChannel	webServerChannel;
 	private volatile boolean	closeMe				=false;
@@ -46,13 +46,13 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final long			startTime;		   			  // the initial start time of the request, for overall age calculation
 	private volatile long		idleTime 	 	 	= 0;	  // the last time this handler went idle
 	private final boolean		isDebugging;			  	  // true if the log debug channel is on -- an optomization
-	private ByteBuffer			responseBuffer; 
+	private ByteBuffer			responseBuffer;
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
 	private final MiniWebConfig config;
 	private final MiniWebServer server;
-	
+
 	private final LinkedList<DataBuffers>writeables	= new LinkedList<DataBuffers>();
-	
+
 	public HTTPForwarder(HTTPReader clientReader, MiniWebServer server, SocketChannel webServerChannel)
 	{
 		this.server=server;
@@ -74,7 +74,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	{
 		return name;
 	}
-	
+
 	@Override
 	/**
 	 * Whenever bytes are received on the remote web channel, they are flushed out and
@@ -106,8 +106,8 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				}
 				handleWrites();
 				if((!closeMe) // if eof is reached, close this channel and mark it for deletion by the web server
-				&& ((bytesRead < 0) 
-					|| (!webServerChannel.isConnected()) 
+				&& ((bytesRead < 0)
+					|| (!webServerChannel.isConnected())
 					|| (!webServerChannel.isOpen())))
 				{
 					closeChannels();
@@ -175,6 +175,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	 * @return the number of bytes written
 	 * @throws IOException
 	 */
+	@Override
 	public int writeBlockingBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		synchronized(webServerChannel)
@@ -186,7 +187,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				while(buffer.remaining()>0)
 				{
 					int bytesOut=webServerChannel.write(buffer);
-					if(bytesOut>=0) 
+					if(bytesOut>=0)
 						bytesWritten+=bytesOut;
 					if(buffer.remaining()>0)
 					{
@@ -197,13 +198,14 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			return bytesWritten;
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the given buffer into the forwarding channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
 	 * @param buffers source buffer for the data write
 	 * @throws IOException
 	 */
+	@Override
 	public void writeBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		writeables.addLast(buffers);
@@ -240,7 +242,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			}
 		}
 	}
-	
+
 	@Override
 	/**
 	 * Returns true if this handler is either closed, or needs to be

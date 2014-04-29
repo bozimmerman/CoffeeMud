@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,7 +82,7 @@ public class GrinderAccounts
 				for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
 					flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
 				A.setStat("FLAGS",flags.toString());
-				if(err.length()>0) 
+				if(err.length()>0)
 					return err;
 				else
 				if(!newName.equalsIgnoreCase(A.getAccountName()))

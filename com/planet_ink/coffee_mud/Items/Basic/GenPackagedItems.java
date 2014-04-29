@@ -19,7 +19,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GenPackagedItems extends GenItem implements PackagedItems
 {
-	public String ID(){ return "GenPackagedItems";}
+	@Override public String ID(){ return "GenPackagedItems";}
 	public GenPackagedItems()
 	{
 		super();
@@ -50,19 +50,20 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		setMaterial(RawMaterial.RESOURCE_MEAT);
 		recoverPhyStats();
 	}
-	protected boolean abilityImbuesMagic(){return false;}
-	public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s)";}
-	public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s) sit here.";}
-	public int numberOfItemsInPackage(){return basePhyStats().ability();}
-	public void setNumberOfItemsInPackage(int number){basePhyStats().setAbility(number);phyStats().setAbility(number);}
+	@Override protected boolean abilityImbuesMagic(){return false;}
+	@Override public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s)";}
+	@Override public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s) sit here.";}
+	@Override public int numberOfItemsInPackage(){return basePhyStats().ability();}
+	@Override public void setNumberOfItemsInPackage(int number){basePhyStats().setAbility(number);phyStats().setAbility(number);}
 	protected byte[]	readableText=null;
-	public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
-	public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
+	@Override public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override
 	public boolean packageMe(Item I, int number)
 	{
 		if((I==null)
 		||(!CMLib.utensils().disInvokeEffects(I))
-		||(I.amDestroyed())) 
+		||(I.amDestroyed()))
 			return false;
 		name=CMLib.english().cleanArticles(I.Name());
 		displayText="";
@@ -82,7 +83,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		recoverPhyStats();
 		return true;
 	}
-	
+
+	@Override
 	public boolean isPackagable(List<Item> V)
 	{
 		if(V==null) return false;
@@ -96,7 +98,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		}
 		return true;
 	}
-	
+
+	@Override
 	public Item getItem()
 	{
 		if(packageText().length()==0) return null;
@@ -124,6 +127,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		return (Item)newOne;
 	}
 
+	@Override
 	public List<Item> unPackage(int number)
 	{
 		Vector V=new Vector();
@@ -149,10 +153,12 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		recoverPhyStats();
 		return V;
 	}
+	@Override
 	public String packageText()
-	{ 
+	{
 		return CMLib.xml().restoreAngleBrackets(readableText());
 	}
+	@Override
 	public void setPackageText(String text)
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));

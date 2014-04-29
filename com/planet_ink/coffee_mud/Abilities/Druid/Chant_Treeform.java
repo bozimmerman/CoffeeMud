@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Treeform extends Chant
 {
-	public String ID() { return "Chant_Treeform"; }
-	public String name(){ return "Treeform";}
-	public String displayText(){return "(Treeform)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_Treeform"; }
+	@Override public String name(){ return "Treeform";}
+	@Override public String displayText(){return "(Treeform)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -115,6 +116,7 @@ public class Chant_Treeform extends Chant
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -131,6 +133,7 @@ public class Chant_Treeform extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -165,6 +168,7 @@ public class Chant_Treeform extends Chant
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 public class Fighter_ShieldBlock extends FighterSkill
 {
 	public int hits=0;
-	public String ID() { return "Fighter_ShieldBlock"; }
-	public String name(){ return "Shield Block";}
-	public String displayText(){return "";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	@Override public String ID() { return "Fighter_ShieldBlock"; }
+	@Override public String name(){ return "Shield Block";}
+	@Override public String displayText(){return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	protected volatile int amountOfShieldArmor=-1;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -73,7 +74,8 @@ public class Fighter_ShieldBlock extends FighterSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -87,6 +89,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 			amountOfShieldArmor=-1;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -107,7 +110,8 @@ public class Fighter_ShieldBlock extends FighterSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
@@ -116,7 +120,8 @@ public class Fighter_ShieldBlock extends FighterSkill
 			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(amountOfShieldArmor,CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
 		}
 	}
-	
+
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		amountOfShieldArmor=-1;

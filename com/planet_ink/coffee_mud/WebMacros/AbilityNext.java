@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AbilityNext extends StdWebMacro
 {
-	public String name() { return "AbilityNext"; }
+	@Override public String name() { return "AbilityNext"; }
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
@@ -61,19 +62,19 @@ public class AbilityNext extends StdWebMacro
 				if(V.contains(Ability.FLAG_DESCS[i]))
 					flags=flags|(CMath.pow(2,i));
 		}
-		
+
 		String lastID="";
 		String className=httpReq.getUrlParameter("CLASS");
 		boolean genericOnly =parms.containsKey("GENERIC");
 		boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
 		boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
 		String levelName=httpReq.getUrlParameter("LEVEL");
-		boolean notFlag =parms.containsKey("NOT"); 
+		boolean notFlag =parms.containsKey("NOT");
 		boolean allFlag =parms.containsKey("ALL");
 		boolean domainFlag=parms.containsKey("DOMAIN");
 		String domain=parms.get("DOMAIN");
-		
-		
+
+
 		final Enumeration<Ability> a;
 		if(!parms.containsKey("SORTEDBYNAME"))
 			a=CMClass.abilities();
@@ -112,7 +113,7 @@ public class AbilityNext extends StdWebMacro
 					   &&(((ItemCraftor)A).parametersFile().length()>0)
 					   &&(((ItemCraftor)A).parametersFormat()!=null)
 					   &&(((ItemCraftor)A).parametersFormat().length()>0));
-			
+
 			if((className!=null)&&(className.length()>0))
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,27 @@ import java.util.*;
 */
 public class Centipede extends StdRace
 {
-	public String ID(){	return "Centipede"; }
-	public String name(){ return "Centipede"; }
-	public int shortestMale(){return 1;}
-	public int shortestFemale(){return 1;}
-	public int heightVariance(){return 0;}
-	public int lightestWeight(){return 1;}
-	public int weightVariance(){return 0;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_TORSO);}
-	public String racialCategory(){return "Insect";}
+	@Override public String ID(){	return "Centipede"; }
+	@Override public String name(){ return "Centipede"; }
+	@Override public int shortestMale(){return 1;}
+	@Override public int shortestFemale(){return 1;}
+	@Override public int heightVariance(){return 0;}
+	@Override public int lightestWeight(){return 1;}
+	@Override public int weightVariance(){return 0;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_TORSO);}
+	@Override public String racialCategory(){return "Insect";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,99,99,0 ,0 ,1 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,1,1,1,1,2,2};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -61,6 +62,7 @@ public class Centipede extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -68,14 +70,17 @@ public class Centipede extends StdRace
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -88,6 +93,7 @@ public class Centipede extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -97,11 +103,12 @@ public class Centipede extends StdRace
 				return name().toLowerCase()+" larva";
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" pupa";
-			default : 
+			default :
 				return name().toLowerCase();
 		}
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

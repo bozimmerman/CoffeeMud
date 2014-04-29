@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_UnholyArmament extends Prayer
 {
-	public String ID() { return "Prayer_UnholyArmament"; }
-	public String name(){ return "Unholy Armament";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_UnholyArmament"; }
+	@Override public String name(){ return "Unholy Armament";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overridemana(){return Ability.COST_ALL;}
 	public static final long[] checkOrder={
 		Wearable.WORN_WIELD,
@@ -58,6 +58,7 @@ public class Prayer_UnholyArmament extends Prayer
 		Wearable.WORN_HELD,
 	};
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -75,11 +76,11 @@ public class Prayer_UnholyArmament extends Prayer
 		while(i<checkOrder.length)
 		{
 			if(mob.freeWearPositions(checkOrder[i],(short)0,(short)0)<=0)
-			{ 
+			{
 				i++;
 				continue;
 			}
-			pos=checkOrder[i]; 
+			pos=checkOrder[i];
 			if(pos<0)
 			{
 				if(mob.getWorshipCharID().length()>0)

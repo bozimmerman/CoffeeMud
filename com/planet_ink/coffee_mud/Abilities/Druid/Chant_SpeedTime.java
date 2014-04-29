@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SpeedTime extends Chant
 {
-	public String ID() { return "Chant_SpeedTime"; }
-	public String name(){ return "Speed Time";}
-	public String displayText(){return "(Speed Time)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return 100;}
+	@Override public String ID() { return "Chant_SpeedTime"; }
+	@Override public String name(){ return "Speed Time";}
+	@Override public String displayText(){return "(Speed Time)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int overrideMana(){return 100;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

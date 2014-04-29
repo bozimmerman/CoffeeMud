@@ -33,20 +33,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLanguage extends StdLanguage 
+public class GenLanguage extends StdLanguage
 {
 	public String ID = "GenLanguage";
-	public String ID() { return ID;}
-	public String Name(){return name();}
-	public String name(){ return (String)V(ID,V_NAME);}
-	
+	@Override public String ID() { return ID;}
+	@Override public String Name(){return name();}
+	@Override public String name(){ return (String)V(ID,V_NAME);}
+
 	private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
 	private static final int V_NAME=0;//S
 	private static final int V_WSETS=1;//L<S[]>
 	private static final int V_HSETS=2;//H<S,S>
 	private static final int V_HELP=3;//S
 	private static final int NUM_VS=4;//S
-	
+
 	private static final Object[] makeEmpty()
 	{
 		Object[] O=new Object[NUM_VS];
@@ -56,7 +56,7 @@ public class GenLanguage extends StdLanguage
 		O[V_HELP]="<ABILITY>This language is not yet documented.";
 		return O;
 	}
-	
+
 	private static final Object V(String ID, int varNum)
 	{
 		if(vars.containsKey(ID)) return vars.get(ID)[varNum];
@@ -64,7 +64,7 @@ public class GenLanguage extends StdLanguage
 		vars.put(ID,O);
 		return O[varNum];
 	}
-	
+
 	private static final void SV(String ID,int varNum,Object O)
 	{
 		if(vars.containsKey(ID))
@@ -76,24 +76,27 @@ public class GenLanguage extends StdLanguage
 			O2[varNum]=O;
 		}
 	}
-	
+
 	public GenLanguage()
 	{
 		super();
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<String[]> translationVector(String language)
 	{
 		return (List<String[]>)V(ID,V_WSETS);
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, String> translationHash(String language)
 	{
 		return (Map<String,String>)V(ID,V_HSETS);
 	}
 
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -109,14 +112,15 @@ public class GenLanguage extends StdLanguage
 		return new GenLanguage();
 	}
 
+	@Override
 	protected void cloneFix(Ability E)
 	{
 	}
 
-	public boolean isGeneric(){return true;}
-	
+	@Override public boolean isGeneric(){return true;}
+
 	// lots of work to be done here
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
 										 "NAME",//2S
@@ -124,14 +128,16 @@ public class GenLanguage extends StdLanguage
 										 "HASHEDWORDS",//2S
 										 "HELP",//27I
 										};
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public String getStat(String code)
 	{
@@ -172,7 +178,8 @@ public class GenLanguage extends StdLanguage
 		}
 		return "";
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public void setStat(String code, String val)
 	{
@@ -230,7 +237,8 @@ public class GenLanguage extends StdLanguage
 			break;
 		}
 	}
-	
+
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenLanguage)) return false;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class Prop_OpenPassword extends Property
 {
-	public String ID() { return "Prop_OpenPassword"; }
-	public String name(){ return "Opening Password";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_OpenPassword"; }
+	@Override public String name(){ return "Opening Password";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 
+	@Override
 	public String accountForYourself()
 	{ return "";	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)

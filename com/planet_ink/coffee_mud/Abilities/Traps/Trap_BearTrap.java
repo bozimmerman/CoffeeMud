@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_BearTrap extends StdTrap
 {
-	public String ID() { return "Trap_BearTrap"; }
-	public String name(){ return "bear trap";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 16;}
-	public String requiresToSet(){return "30 pounds of metal";}
-	public int baseRejuvTime(int level){ return 35;}
+	@Override public String ID() { return "Trap_BearTrap"; }
+	@Override public String name(){ return "bear trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 16;}
+	@Override public String requiresToSet(){return "30 pounds of metal";}
+	@Override public int baseRejuvTime(int level){ return 35;}
 
 	protected int amountRemaining=250;
 	protected MOB trapped=null;
 
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -58,6 +59,7 @@ public class Trap_BearTrap extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -65,6 +67,7 @@ public class Trap_BearTrap extends StdTrap
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -82,6 +85,7 @@ public class Trap_BearTrap extends StdTrap
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((sprung)
@@ -114,6 +118,7 @@ public class Trap_BearTrap extends StdTrap
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		trapped=null;

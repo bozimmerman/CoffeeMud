@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class StdBanker extends StdShopKeeper implements Banker
 {
-	public String ID(){return "StdBanker";}
+	@Override public String ID(){return "StdBanker";}
 
 	protected double coinInterest=-0.008;
 	protected double itemInterest=-0.001;
@@ -67,7 +67,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverCharStats();
 	}
 
-	public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override
 	public void setWhatIsSoldMask(long newSellCode)
 	{
 		super.setWhatIsSoldMask(newSellCode);
@@ -77,9 +78,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 			whatIsSoldMask=ShopKeeper.DEAL_CLANBANKER;
 	}
 
-	public String bankChain(){return text();}
-	public void setBankChain(String name){setMiscText(name);}
+	@Override public String bankChain(){return text();}
+	@Override public void setBankChain(String name){setMiscText(name);}
 
+	@Override
 	public void addDepositInventory(String depositorName, Item thisThang)
 	{
 		String name=thisThang.ID();
@@ -111,6 +113,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return null;
 	}
 
+	@Override
 	public boolean delDepositInventory(String depositorName, Item thisThang)
 	{
 		List<PlayerData> V=getRawPDDepositInventory(depositorName);
@@ -137,14 +140,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return found;
 	}
+	@Override
 	public void delAllDeposits(String depositorName)
 	{
 		CMLib.database().DBDeleteData(depositorName,bankChain());
 	}
+	@Override
 	public int numberDeposited(String depositorName)
 	{
 		return getRawPDDepositInventory(depositorName).size();
 	}
+	@Override
 	public List<Item> getDepositedItems(String depositorName)
 	{
 		if((depositorName==null)||(depositorName.length()==0)) return new Vector<Item>();
@@ -158,10 +164,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return mine;
 	}
+	@Override
 	public List<PlayerData> getRawPDDepositInventory(String depositorName)
 	{
 		return CMLib.database().DBReadData(depositorName,bankChain());
 	}
+	@Override
 	public List<String> getAccountNames()
 	{
 		List<PlayerData> V=CMLib.database().DBReadData(bankChain());
@@ -185,6 +193,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		CMLib.beanCounter().bankLedger(bankChain(),depositorName,date+": "+msg);
 	}
 
+	@Override
 	public Item findDepositInventory(String depositorName, String likeThis)
 	{
 		List<PlayerData> V=getRawPDDepositInventory(depositorName);
@@ -214,12 +223,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 				*location().getArea().getTimeObj().getDaysInMonth();
 	}
 
-	public void setCoinInterest(double interest){coinInterest=interest;}
-	public void setItemInterest(double interest){itemInterest=interest;}
-	public double getCoinInterest(){return coinInterest;}
-	public double getItemInterest(){return itemInterest;}
-	public void setLoanInterest(double interest){loanInterest=interest;}
-	public double getLoanInterest(){return loanInterest;}
+	@Override public void setCoinInterest(double interest){coinInterest=interest;}
+	@Override public void setItemInterest(double interest){itemInterest=interest;}
+	@Override public double getCoinInterest(){return coinInterest;}
+	@Override public double getItemInterest(){return itemInterest;}
+	@Override public void setLoanInterest(double interest){loanInterest=interest;}
+	@Override public double getLoanInterest(){return loanInterest;}
+	@Override
 	public MoneyLibrary.DebtItem getDebtInfo(String depositorName)
 	{
 		Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
@@ -230,6 +240,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return null;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -372,6 +383,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return true;
 	}
 
+	@Override
 	public double getBalance(String depositorName)
 	{
 		Item old=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
@@ -380,6 +392,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return 0;
 	}
 
+	@Override
 	public double totalItemsWorth(String depositorName)
 	{
 		List<Item> V=getDepositedItems(depositorName);
@@ -393,6 +406,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return min;
 	}
 
+	@Override
 	public String getBankClientName(MOB mob, Clan.Function func, boolean checked)
 	{
 		if(isSold(ShopKeeper.DEAL_CLANBANKER))
@@ -417,7 +431,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return mob.Name();
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -706,6 +721,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

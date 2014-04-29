@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogItemNext extends StdWebMacro
 {
-	public String name() { return "CatalogItemNext"; }
-	public boolean isAdminMacro()   {return true;}
+	@Override public String name() { return "CatalogItemNext"; }
+	@Override public boolean isAdminMacro()   {return true;}
 	static final String[] DATA={
 								"CATALOG_ITEM_NAME",
 								"CATALOG_ITEM_USAGE",
@@ -76,7 +76,8 @@ public class CatalogItemNext extends StdWebMacro
 		}
 		return "";
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -99,7 +100,7 @@ public class CatalogItemNext extends StdWebMacro
 		else
 			optionalColumn=optCol.trim().toUpperCase();
 		if(parms.containsKey("RESET"))
-		{   
+		{
 			if(last!=null) httpReq.removeUrlParameter("ITEM");
 			for(int d=0;d<DATA.length;d++)
 				httpReq.removeUrlParameter(DATA[d]);
@@ -126,11 +127,12 @@ public class CatalogItemNext extends StdWebMacro
 					Object[] sortifiable=new Object[names.length];
 					for(int s=0;s<names.length;s++)
 						sortifiable[s]=new Object[]{
-							names[s], 
-							CMLib.catalog().getCatalogItem(names[s]), 
+							names[s],
+							CMLib.catalog().getCatalogItem(names[s]),
 							CMLib.catalog().getCatalogItemData(names[s])};
 					Arrays.sort(sortifiable,new Comparator()
 					{
+						@Override
 						public int compare(Object o1, Object o2)
 						{
 							Object[] O1=(Object[])o1;

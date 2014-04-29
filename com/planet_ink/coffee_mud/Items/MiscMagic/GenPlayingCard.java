@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,26 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPlayingCard extends StdPlayingCard
 {
-	public String ID(){	return "GenPlayingCard";}
+	@Override public String ID(){	return "GenPlayingCard";}
 	protected String readableText="";
-	
+
 	public GenPlayingCard()
 	{
 		super();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){ readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){ readableText=text;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -59,12 +61,14 @@ public class GenPlayingCard extends StdPlayingCard
 		recoverPhyStats();
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -72,12 +76,14 @@ public class GenPlayingCard extends StdPlayingCard
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenWand)) return false;

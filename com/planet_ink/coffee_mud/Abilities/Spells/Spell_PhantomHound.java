@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_PhantomHound extends Spell
 {
-	public String ID() { return "Spell_PhantomHound"; }
-	public String name(){return "Phantom Hound";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_PhantomHound"; }
+	@Override public String name(){return "Phantom Hound";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected MOB victim=null;
 	protected int pointsLeft=0;
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -104,6 +105,7 @@ public class Spell_PhantomHound extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -117,6 +119,7 @@ public class Spell_PhantomHound extends Spell
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -128,6 +131,7 @@ public class Spell_PhantomHound extends Spell
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -147,6 +151,7 @@ public class Spell_PhantomHound extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

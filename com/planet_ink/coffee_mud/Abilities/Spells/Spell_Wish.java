@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Wish extends Spell
 {
-	public String ID() { return "Spell_Wish"; }
-	public String name(){return "Wish";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_NOORDERING;}
+	@Override public String ID() { return "Spell_Wish"; }
+	@Override public String name(){return "Wish";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overridemana(){return Ability.COST_ALL;}
 
 	protected Physical maybeAdd(MOB mob, Physical E, Vector foundAll, Physical foundThang)
@@ -102,13 +102,14 @@ public class Spell_Wish extends Spell
 		else
 			mob.tell("Your wish drains "+(expLoss)+" experience points.");
 	}
-	
+
 	public void age(MOB mob)
 	{
 		Ability A=CMClass.getAbility("Chant_SpeedAging");
 		if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
@@ -299,7 +300,7 @@ public class Spell_Wish extends Spell
 					Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
 					if(experienceRequired>mob.getExpPrevLevel())
-						
+
 					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
@@ -353,7 +354,7 @@ public class Spell_Wish extends Spell
 			if((target instanceof ArchonOnly)
 			||(target instanceof ClanItem))
 				target=null;
-			
+
 			if((target!=null)
 			&&(target!=mob)
 			&&(target instanceof MOB)
@@ -489,9 +490,9 @@ public class Spell_Wish extends Spell
 			while(i<redundantStarts2.length)
 			{
 				if(locationWish.startsWith(" "+redundantStarts2[i]+" "))
-				{	
-					validStart=true; 
-					locationWish=locationWish.substring(1+redundantStarts2[i].length()); 
+				{
+					validStart=true;
+					locationWish=locationWish.substring(1+redundantStarts2[i].length());
 					i=-1;
 				}
 				i++;
@@ -500,8 +501,8 @@ public class Spell_Wish extends Spell
 			while(i<redundantEnds2.length)
 			{
 				if(locationWish.endsWith(" "+redundantEnds2[i]+" "))
-				{	
-					locationWish=locationWish.substring(0,locationWish.length()-(1+redundantEnds2[i].length())); 
+				{
+					locationWish=locationWish.substring(0,locationWish.length()-(1+redundantEnds2[i].length()));
 					i=-1;
 				}
 				i++;
@@ -650,7 +651,7 @@ public class Spell_Wish extends Spell
 					amount=CMath.s_int(wsh.substring(x).trim());
 				if((amount*4)>mob.getExperience())
 					amount=mob.getExperience()/4;
-				
+
 				CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
 				mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);

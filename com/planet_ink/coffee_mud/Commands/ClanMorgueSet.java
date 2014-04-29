@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,22 +38,23 @@ public class ClanMorgueSet extends StdCommand
 	public ClanMorgueSet(){}
 
 	private final String[] access={"CLANMORGUESET"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
-		
+
 		Clan C=null;
 		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
-			
+
 		if(C==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.MORGUE)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
-		
+
 		Room R=mob.location();
 		if(skipChecks)
 		{
@@ -101,8 +102,8 @@ public class ClanMorgueSet extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

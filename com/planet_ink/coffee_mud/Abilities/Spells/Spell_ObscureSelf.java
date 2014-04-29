@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ObscureSelf extends Spell
 {
-	public String ID() { return "Spell_ObscureSelf"; }
-	public String name(){return "Obscure Self";}
-	public String displayText(){return "(Obscure Self)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public String ID() { return "Spell_ObscureSelf"; }
+	@Override public String name(){return "Obscure Self";}
+	@Override public String displayText(){return "(Obscure Self)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	private final static String[][] stuff={
 		{"<S-NAME>","<T-NAME>","someone"},
 		{"<S-HIS-HER>","<T-HIS-HER>","his or her"},
@@ -53,6 +53,7 @@ public class Spell_ObscureSelf extends Spell
 	};
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -136,6 +137,7 @@ public class Spell_ObscureSelf extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -149,6 +151,7 @@ public class Spell_ObscureSelf extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) a bit less obscure.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

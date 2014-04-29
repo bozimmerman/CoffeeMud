@@ -49,7 +49,7 @@ import java.util.Vector;
  */
 @SuppressWarnings("rawtypes")
 public class TellPacket extends Packet {
-	
+
 	/**
 	 * The display name for the person sending the tell.
 	 */
@@ -64,7 +64,7 @@ public class TellPacket extends Packet {
 		super();
 		type = Packet.TELL;
 	}
-	
+
 	/**
 	 * Constructs a tell package based on an I3 mud mode vector.
 	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.packets.InvalidPacketException thrown if the incoming packet is bad
@@ -107,6 +107,7 @@ public class TellPacket extends Packet {
 	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.packets.InvalidPacketException thrown if this packet was not properly constructed
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet#send
 	 */
+	@Override
 	public void send() throws InvalidPacketException {
 		if( message == null || sender_visible_name == null )
 		{
@@ -123,6 +124,7 @@ public class TellPacket extends Packet {
 	 * Intermud 3</A> documentation.
 	 * @return the mud mode string for this packet
 	 */
+	@Override
 	public String toString()
 	{
 		return "({\"tell\",5,\"" + I3Server.getMudName() +

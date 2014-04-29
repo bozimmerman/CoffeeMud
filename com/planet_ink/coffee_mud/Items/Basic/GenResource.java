@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GenResource extends GenItem implements RawMaterial
 {
-	public String ID(){	return "GenResource";}
+	@Override public String ID(){	return "GenResource";}
 	public GenResource()
 	{
 		super();
@@ -48,8 +48,8 @@ public class GenResource extends GenItem implements RawMaterial
 	}
 
 	protected String domainSource=null;
-	public String domainSource(){return domainSource;}
-	public void setDomainSource(String src){domainSource=src;}
-	public boolean rebundle(){return CMLib.materials().rebundle(this);}
-	public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+	@Override public String domainSource(){return domainSource;}
+	@Override public void setDomainSource(String src){domainSource=src;}
+	@Override public boolean rebundle(){return CMLib.materials().rebundle(this);}
+	@Override public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
 }

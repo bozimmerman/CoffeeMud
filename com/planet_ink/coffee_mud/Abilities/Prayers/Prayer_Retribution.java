@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 
 public class Prayer_Retribution extends Prayer_BladeBarrier
 {
-	public String ID() { return "Prayer_Retribution"; }
-	public String name(){ return "Retribution";}
-	public String displayText(){ return "(Retribution)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
-	
-	protected String startStr() { return "The power of retribution fills <T-NAME>!^?"; }
-	
-	protected void doDamage(MOB srcM, MOB targetM, int damage) 
+	@Override public String ID() { return "Prayer_Retribution"; }
+	@Override public String name(){ return "Retribution";}
+	@Override public String displayText(){ return "(Retribution)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
+
+	@Override protected String startStr() { return "The power of retribution fills <T-NAME>!^?"; }
+
+	@Override
+	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{
 		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_ELECTRIC|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_STRIKING,"A bolt of retribution from <S-NAME> <DAMAGE> <T-NAME>.");
 	}

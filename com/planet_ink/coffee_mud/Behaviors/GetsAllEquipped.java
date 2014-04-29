@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GetsAllEquipped extends ActiveTicker
 {
-	public String ID(){return "GetsAllEquipped";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "GetsAllEquipped";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public GetsAllEquipped()
 	{
 		super();
@@ -46,11 +46,13 @@ public class GetsAllEquipped extends ActiveTicker
 
 	protected boolean DoneEquipping=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "equipping";
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -60,6 +62,7 @@ public class GetsAllEquipped extends ActiveTicker
 			DoneEquipping=false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

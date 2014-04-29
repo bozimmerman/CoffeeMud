@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class IndoorUnderWater extends StdRoom implements Drink
 {
-	public String ID(){return "IndoorUnderWater";}
+	@Override public String ID(){return "IndoorUnderWater";}
 	public IndoorUnderWater()
 	{
 		super();
@@ -45,11 +45,12 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		recoverPhyStats();
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	protected int baseThirst(){return 0;}
-	public long decayTime(){return 0;}
-	public void setDecayTime(long time){}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
+	@Override protected int baseThirst(){return 0;}
+	@Override public long decayTime(){return 0;}
+	@Override public void setDecayTime(long time){}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -57,6 +58,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
@@ -67,21 +69,22 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	public boolean disappearsAfterDrinking(){return false;}
-	public int thirstQuenched(){return 500;}
-	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	public void setLiquidType(int newLiquidType){}
-	public void setThirstQuenched(int amount){}
-	public void setLiquidHeld(int amount){}
-	public void setLiquidRemaining(int amount){}
-	public int amountTakenToFillMe(Drink theSource){return 0;}
-	public boolean containsDrink(){return true;}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public boolean disappearsAfterDrinking(){return false;}
+	@Override public int thirstQuenched(){return 500;}
+	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
+	@Override public void setLiquidType(int newLiquidType){}
+	@Override public void setThirstQuenched(int amount){}
+	@Override public void setLiquidHeld(int amount){}
+	@Override public void setLiquidRemaining(int amount){}
+	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
+	@Override public boolean containsDrink(){return true;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

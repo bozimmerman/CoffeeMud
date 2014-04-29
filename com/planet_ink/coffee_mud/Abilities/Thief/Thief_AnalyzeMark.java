@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,16 @@ import java.util.*;
 */
 public class Thief_AnalyzeMark extends ThiefSkill
 {
-	public String ID() { return "Thief_AnalyzeMark"; }
-	public String name(){ return "Analyze Mark";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
+	@Override public String ID() { return "Thief_AnalyzeMark"; }
+	@Override public String name(){ return "Analyze Mark";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	public MOB getMark(MOB mob)
 	{
@@ -59,6 +59,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 		return -1;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

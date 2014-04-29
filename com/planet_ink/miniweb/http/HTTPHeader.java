@@ -55,9 +55,9 @@ public enum HTTPHeader
 	;
 	public static final String		 		KEEP_ALIVE_FMT	= "timeout=%d, max=%d";
 	private static String					keepAliveHeader =KEEP_ALIVE_FMT;
-	
+
 	private static final String EOLN = HTTPIOHandler.EOLN;
-	
+
 	private String name;
 	private String defaultValue;
 	private String keyName;
@@ -71,11 +71,12 @@ public enum HTTPHeader
 	{
 		this(name,"");
 	}
-	
+
 	/**
 	 * Return the right and good outputtable name of this header
 	 * @return the disaplayable name
 	 */
+	@Override
 	public String toString()
 	{
 		return name;

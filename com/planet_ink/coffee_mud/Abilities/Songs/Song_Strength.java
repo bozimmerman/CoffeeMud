@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Strength extends Song
 {
-	public String ID() { return "Song_Strength"; }
-	public String name(){ return "Strength";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Strength"; }
+	@Override public String name(){ return "Strength";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected int amount=0;
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -54,6 +55,7 @@ public class Song_Strength extends Song
 			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+amount+super.getXLEVELLevel(invoker()));
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -66,7 +68,8 @@ public class Song_Strength extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));

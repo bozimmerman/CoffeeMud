@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MetalMold extends Chant
 {
-	public String ID() { return "Chant_MetalMold"; }
-	public String name(){return "Metal Mold";}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_MetalMold"; }
+	@Override public String name(){return "Metal Mold";}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	private Item findMobTargetItem(MOB mobTarget) 
+	private Item findMobTargetItem(MOB mobTarget)
 	{
 		Vector goodPossibilities=new Vector();
 		Vector possibilities=new Vector();
@@ -64,7 +64,8 @@ public class Chant_MetalMold extends Chant
 			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 		return null;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -78,6 +79,7 @@ public class Chant_MetalMold extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
@@ -128,7 +130,7 @@ public class Chant_MetalMold extends Chant
 			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens.");
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> chant(s) for mold, but nothing happens.");
-		
+
 
 
 		// return whether it worked

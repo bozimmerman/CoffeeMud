@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Earthquake extends Chant
 {
-	public String ID() { return "Chant_Earthquake"; }
-	public String name(){ return "Quake";}
-	public String displayText(){return "(Quaking)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_Earthquake"; }
+	@Override public String name(){ return "Quake";}
+	@Override public String displayText(){return "(Quaking)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	protected boolean oncePerRd=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{ oncePerRd=false; return super.tick(ticking,tickID);}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +60,7 @@ public class Chant_Earthquake extends Chant
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -79,6 +82,7 @@ public class Chant_Earthquake extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -103,6 +107,7 @@ public class Chant_Earthquake extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -116,7 +121,8 @@ public class Chant_Earthquake extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

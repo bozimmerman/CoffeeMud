@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_IllusionaryForest extends Chant
 {
-	public String ID() { return "Chant_IllusionaryForest"; }
-	public String name(){ return "Illusionary Forest";}
-	public String displayText(){return "(Illusionary Fores)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public String ID() { return "Chant_IllusionaryForest"; }
+	@Override public String name(){ return "Illusionary Forest";}
+	@Override public String displayText(){return "(Illusionary Fores)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	Room newRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,7 +58,8 @@ public class Chant_IllusionaryForest extends Chant
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -67,7 +69,8 @@ public class Chant_IllusionaryForest extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -139,6 +142,7 @@ public class Chant_IllusionaryForest extends Chant
 		return newRoom;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

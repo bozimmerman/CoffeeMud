@@ -24,7 +24,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,8 +41,8 @@ import java.util.*;
 */
 public class GenSoftware extends StdProgram
 {
-	public String ID(){	return "GenSoftware";}
-	
+	@Override public String ID(){	return "GenSoftware";}
+
 	protected String readableText="";
 
 	public GenSoftware()
@@ -52,16 +52,18 @@ public class GenSoftware extends StdProgram
 		setDisplayText("a minidisk sits here.");
 		setDescription("It appears to be a tricorder minidisk software program.");
 	}
-	
-	public boolean isGeneric(){return true;}
 
+	@Override public boolean isGeneric(){return true;}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -69,12 +71,14 @@ public class GenSoftware extends StdProgram
 		recoverPhyStats();
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -82,12 +86,14 @@ public class GenSoftware extends StdProgram
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenSoftware)) return false;

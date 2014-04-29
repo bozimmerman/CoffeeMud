@@ -38,10 +38,10 @@ public class MWHTMLConverter implements HTTPOutputConverter
 		for(Macro m : Macro.values())
 			macros.put(m.toString().toLowerCase(), m);
 	}
-	
-	
+
+
 	/**
-	 * Standard method for converting an intput buffer for writing to 
+	 * Standard method for converting an intput buffer for writing to
 	 * the client.   The position and limit of the bytebuffer must
 	 * already be set for reading the content.
 	 * Call generateOutput() to get the new output.
@@ -51,6 +51,7 @@ public class MWHTMLConverter implements HTTPOutputConverter
 	 * @param buffer the input buffer
 	 * @throws HTTPException
 	 */
+	@Override
 	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException
 	{
 		final int oldPosition=buffer.position();
@@ -67,8 +68,8 @@ public class MWHTMLConverter implements HTTPOutputConverter
 				else
 				{
 					final Macro m = macros.get(macro.toString().toLowerCase());
-					try 
-					{ 
+					try
+					{
 						if(m != null)
 						{
 							switch(m)
@@ -87,12 +88,12 @@ public class MWHTMLConverter implements HTTPOutputConverter
 								break;
 							case WEBSERVERPORT:
 								if(request != null)
-									out.write((""+request.getClientPort()).getBytes()); 
+									out.write((""+request.getClientPort()).getBytes());
 								break;
 							}
 						}
 						else
-							out.write(("@"+macro.toString()+"@").getBytes()); 
+							out.write(("@"+macro.toString()+"@").getBytes());
 					}
 					catch(Exception e){}
 					state=-1;

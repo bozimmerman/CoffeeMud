@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_DiviningEye extends Spell
 {
-	public String ID() { return "Spell_DiviningEye"; }
-	public String name(){return "Divining Eye";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	
+	@Override public String ID() { return "Spell_DiviningEye"; }
+	@Override public String name(){return "Divining Eye";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -50,14 +51,14 @@ public class Spell_DiviningEye extends Spell
 			mob.tell("You must specify a divining spell and any parameters for it.");
 			return false;
 		}
-		
+
 		Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
 			mob.tell("This spell requires an active prying eye.");
 			return false;
 		}
-		
+
 		String commandStr=CMParms.combine(commands);
 		commands.insertElementAt("CAST",0);
 		Ability A=CMLib.english().getToEvoke(mob, commands);
@@ -72,7 +73,7 @@ public class Spell_DiviningEye extends Spell
 			mob.tell("'"+A.name()+"' is not a diviner spell you know.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

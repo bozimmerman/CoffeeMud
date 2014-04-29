@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.Commands.Inventory.InventoryList;
 
 import java.util.*;
 
-/* 
+/*
 	Written by Robert Little - The Looking Glass
    Copyright 2000-2005 Bo Zimmerman
 
@@ -30,7 +30,7 @@ public class Wealth extends Inventory
 	public Wealth(){}
 
 	private final String[] access={"WEALTH"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 
 	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
@@ -45,7 +45,7 @@ public class Wealth extends Inventory
 	}
 
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@Override @SuppressWarnings({"unchecked","rawtypes"})
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -63,5 +63,5 @@ public class Wealth extends Inventory
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

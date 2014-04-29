@@ -54,63 +54,63 @@ public class CMLib
 	public static final CMLib initialize(){ return new CMLib(); }
 	public static final CMLib l(final char c){return libs[c];}
 	public static final CMLib instance(){return l();}
-	
+
 	private final CMLibrary[] 	libraries=new CMLibrary[Library.values().length];
 	private final boolean[]		registered=new boolean[Library.values().length];
 
 	public static enum Library
 	{
-		DATABASE(DatabaseEngine.class), 
-		THREADS(ThreadEngine.class), 
-		INTERMUD(I3Interface.class), 
-		WEBMACS(WebMacroLibrary.class), 
-		LISTER(ListingLibrary.class), 
-		MONEY(MoneyLibrary.class), 
+		DATABASE(DatabaseEngine.class),
+		THREADS(ThreadEngine.class),
+		INTERMUD(I3Interface.class),
+		WEBMACS(WebMacroLibrary.class),
+		LISTER(ListingLibrary.class),
+		MONEY(MoneyLibrary.class),
 		SHOPS(ShoppingLibrary.class),
-		COMBAT(CombatLibrary.class), 
-		HELP(HelpLibrary.class), 
-		TRACKING(TrackingLibrary.class), 
-		MASKING(MaskingLibrary.class), 
-		CHANNELS(ChannelsLibrary.class), 
-		COMMANDS(CommonCommands.class), 
+		COMBAT(CombatLibrary.class),
+		HELP(HelpLibrary.class),
+		TRACKING(TrackingLibrary.class),
+		MASKING(MaskingLibrary.class),
+		CHANNELS(ChannelsLibrary.class),
+		COMMANDS(CommonCommands.class),
 		ENGLISH(EnglishParsing.class),
-		SLAVERY(SlaveryLibrary.class), 
-		JOURNALS(JournalsLibrary.class), 
-		FLAGS(CMFlagLibrary.class), 
-		OBJBUILDERS(GenericBuilder.class), 
-		SESSIONS(SessionsList.class), 
-		TELNET(TelnetFilter.class), 
-		XML(XMLLibrary.class), 
-		SOCIALS(SocialsList.class), 
-		UTENSILS(CMMiscUtils.class), 
-		STATS(StatisticsLibrary.class), 
-		MAP(WorldMap.class), 
-		QUEST(QuestManager.class), 
-		ABLEMAP(AbilityMapper.class), 
-		ENCODER(TextEncoders.class), 
+		SLAVERY(SlaveryLibrary.class),
+		JOURNALS(JournalsLibrary.class),
+		FLAGS(CMFlagLibrary.class),
+		OBJBUILDERS(GenericBuilder.class),
+		SESSIONS(SessionsList.class),
+		TELNET(TelnetFilter.class),
+		XML(XMLLibrary.class),
+		SOCIALS(SocialsList.class),
+		UTENSILS(CMMiscUtils.class),
+		STATS(StatisticsLibrary.class),
+		MAP(WorldMap.class),
+		QUEST(QuestManager.class),
+		ABLEMAP(AbilityMapper.class),
+		ENCODER(TextEncoders.class),
 		SMTP(SMTPLibrary.class),
-		DICE(DiceLibrary.class), 
-		FACTIONS(FactionManager.class), 
-		CLANS(ClanManager.class), 
-		POLLS(PollManager.class), 
-		TIME(TimeManager.class), 
-		COLOR(ColorLibrary.class), 
-		LOGIN(CharCreationLibrary.class), 
-		TIMS(ItemBalanceLibrary.class), 
+		DICE(DiceLibrary.class),
+		FACTIONS(FactionManager.class),
+		CLANS(ClanManager.class),
+		POLLS(PollManager.class),
+		TIME(TimeManager.class),
+		COLOR(ColorLibrary.class),
+		LOGIN(CharCreationLibrary.class),
+		TIMS(ItemBalanceLibrary.class),
 		LEVELS(ExpLevelLibrary.class),
-		EXPERTISES(ExpertiseLibrary.class), 
-		MATERIALS(MaterialLibrary.class), 
-		LEGAL(LegalLibrary.class), 
-		LANGUAGE(LanguageLibrary.class), 
-		CATALOG(CatalogLibrary.class), 
-		PLAYERS(PlayerLibrary.class), 
+		EXPERTISES(ExpertiseLibrary.class),
+		MATERIALS(MaterialLibrary.class),
+		LEGAL(LegalLibrary.class),
+		LANGUAGE(LanguageLibrary.class),
+		CATALOG(CatalogLibrary.class),
+		PLAYERS(PlayerLibrary.class),
 		TITLES(AutoTitlesLibrary.class),
-		ABLEPARMS(AbilityParameters.class), 
-		GENEDITOR(GenericEditor.class), 
-		AREAGEN(AreaGenerationLibrary.class), 
-		TECH(TechLibrary.class), 
+		ABLEPARMS(AbilityParameters.class),
+		GENEDITOR(GenericEditor.class),
+		AREAGEN(AreaGenerationLibrary.class),
+		TECH(TechLibrary.class),
 		PROTOCOL(ProtocolLibrary.class);
-		
+
 		public final Class<?> ancestor;
 		private Library(Class<?> ancestorC1)
 		{
@@ -126,7 +126,7 @@ public class CMLib
 	public static final Directions directions(){return Directions.instance();}
 	public static final Log log(){return Log.instance();}
 	public static final List<MudHost> hosts(){return mudThreads;}
-	
+
 	public static final MudHost mud(int port)
 	{
 		if(mudThreads.size()==0)
@@ -209,7 +209,7 @@ public class CMLib
 		for(Library lbry : Library.values())
 			if(CMClass.checkAncestry(O.getClass(),lbry.ancestor))
 				return lbry;
-		
+
 		return null;
 	}
 
@@ -233,7 +233,7 @@ public class CMLib
 			l().registered[code]=true;
 		}
 	}
-	
+
 	public static final void killThread(final Thread t, final long sleepTime, final int attempts)
 	{
 		if(t==null) return;
@@ -241,7 +241,7 @@ public class CMLib
 			throw new java.lang.ThreadDeath();
 		try
 		{
-			
+
 			boolean stillAlive=false;
 			if(t instanceof CMFactoryThread)
 			{
@@ -269,28 +269,28 @@ public class CMLib
 			}
 			try
 			{
-				if(stillAlive) 
-				{ 
+				if(stillAlive)
+				{
 					java.lang.StackTraceElement[] s=t.getStackTrace();
 					StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
 					for(int i=0;i<s.length;i++)
 						dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
 					Log.errOut(dump.toString());
-				} 
+				}
 			}
 			catch(java.lang.ThreadDeath td) {}
 		}
 		catch(Throwable th){}
 
 	}
-	
+
 	public static final boolean s_sleep(final long millis)
 	{
 		try{ Thread.sleep(millis); } catch(java.lang.InterruptedException ex) { return false;}
 		return true;
 	}
 
-	public static final void propertiesLoaded() 
+	public static final void propertiesLoaded()
 	{
 		final CMLib lib=l();
 		for(Library lbry : Library.values())
@@ -307,8 +307,8 @@ public class CMLib
 		RawMaterial.CODES.reset();
 		Wearable.CODES.reset();
 	}
-	
-	public static final void activateLibraries() 
+
+	public static final void activateLibraries()
 	{
 		final CMLib lib=l();
 		for(Library lbry : Library.values())
@@ -326,15 +326,15 @@ public class CMLib
 				lib.libraries[lbry.ordinal()].activate();
 		}
 	}
-	
-	public final static CMLibrary library(final char tcode, final Library lcode) 
+
+	public final static CMLibrary library(final char tcode, final Library lcode)
 	{
 		if(libs[tcode]!=null)
 			return libs[tcode].libraries[lcode.ordinal()];
 		return null;
 	}
-	
-	public final static Enumeration<CMLibrary> libraries(final Library code) 
+
+	public final static Enumeration<CMLibrary> libraries(final Library code)
 	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
 		for(int l=0;l<libs.length;l++)
@@ -344,13 +344,13 @@ public class CMLib
 				V.addElement(libs[l].libraries[code.ordinal()]);
 		return V.elements();
 	}
-	
+
 	public static final void registerLibraries(final Enumeration<CMLibrary> e)
 	{
 		for(;e.hasMoreElements();)
 			registerLibrary(e.nextElement());
 	}
-	
+
 	public static final int countRegistered()
 	{
 		int x=0;

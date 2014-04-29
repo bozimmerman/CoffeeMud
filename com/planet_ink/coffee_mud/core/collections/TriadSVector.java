@@ -17,7 +17,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>> 
+public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 {
 	private static final long serialVersionUID = -9175373358893311411L;
 	public final Triad.FirstConverter<T,K,L> getFirstConverter()
@@ -132,7 +132,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -142,7 +142,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -152,7 +152,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=0;i<size();i++)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -162,7 +162,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -172,7 +172,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -182,7 +182,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -205,7 +205,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			triad=i.next();
-			if((t==null ? triad.first==null : t.equals(triad.first))) 
+			if((t==null ? triad.first==null : t.equals(triad.first)))
 				return super.remove(triad);
 		}
 		return false;
@@ -216,7 +216,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			triad=i.next();
-			if((k==null ? triad.second==null : k.equals(triad.second))) 
+			if((k==null ? triad.second==null : k.equals(triad.second)))
 				return super.remove(triad);
 		}
 		return false;
@@ -227,7 +227,7 @@ public final class TriadSVector<T,K,L> extends SVector<Triad<T,K,L>>
 		for(final Iterator<Triad<T,K,L>> i=iterator();i.hasNext();)
 		{
 			triad=i.next();
-			if((l==null ? triad.third==null : l.equals(triad.third))) 
+			if((l==null ? triad.third==null : l.equals(triad.third)))
 				return super.remove(triad);
 		}
 		return false;

@@ -38,18 +38,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Ranger_WoodlandCreep extends StdAbility
 {
-	public String ID() { return "Ranger_WoodlandCreep"; }
-	public String name(){ return "Woodland Creep";}
-	public String displayText(){ return "(Creeping through foliage)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Ranger_WoodlandCreep"; }
+	@Override public String name(){ return "Woodland Creep";}
+	@Override public String displayText(){ return "(Creeping through foliage)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"WCREEP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int bonus=0;
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -57,12 +58,14 @@ public class Ranger_WoodlandCreep extends StdAbility
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setSpeed(0.5);
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+25+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -89,6 +92,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 		return;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

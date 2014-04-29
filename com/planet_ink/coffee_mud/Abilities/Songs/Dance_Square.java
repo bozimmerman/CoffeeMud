@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dance_Square extends Dance
 {
-	public String ID() { return "Dance_Square"; }
-	public String name(){ return "Square";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardDanceInvoke(){return true;}
-	protected String danceOf(){return name()+" Dance";}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Dance_Square"; }
+	@Override public String name(){ return "Square";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean skipStandardDanceInvoke(){return true;}
+	@Override protected String danceOf(){return name()+" Dance";}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -52,7 +53,8 @@ public class Dance_Square extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amISource(invoker())
@@ -85,6 +87,7 @@ public class Dance_Square extends Dance
 
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -117,18 +120,18 @@ public class Dance_Square extends Dance
 					invoker=mob;
 					Dance newOne=(Dance)this.copyOf();
 					newOne.invokerManaCost=-1;
-	
+
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB follower=R.fetchInhabitant(i);
 						Room R2=follower.location();
-	
+
 						// malicious dances must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if((!friends.contains(follower))&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((CMLib.flags().canBeSeenBy(invoker,follower)
 							&&(follower.fetchEffect(this.ID())==null)))
 						{

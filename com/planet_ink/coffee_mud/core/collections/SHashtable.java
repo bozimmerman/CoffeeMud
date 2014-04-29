@@ -37,7 +37,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 			for(K o : H.keySet())
 				put(o,H.get(o));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public SHashtable(Object[][] H)
 	{
@@ -47,13 +47,13 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 			for(Object[] o : H)
 				this.H.put((K) o[0],(F) o[1]);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized Hashtable<K,F> toHashtable()
 	{
 		return (Hashtable<K,F>)H.clone();
 	}
-	public synchronized Vector<String> toStringVector(String divider) 
+	public synchronized Vector<String> toStringVector(String divider)
 	{
 		Vector<String> V=new Vector<String>(size());
 		for(Object S : keySet())
@@ -67,7 +67,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 			}
 		return V;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void clear()
@@ -77,7 +77,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SHashtable<K,F> copyOf() 
+	public synchronized SHashtable<K,F> copyOf()
 	{
 		SHashtable<K,F> SH=new SHashtable<K,F>();
 		SH.H=(Hashtable<K,F>)H.clone();

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,11 @@ import java.util.*;
 */
 public class ClimbableExit extends StdExit
 {
-	public String ID(){	return "ClimbableExit";}
-	public String Name(){ return "a sheer surface";}
-	public String displayText(){ return "a sheer surface";}
-	public String description(){ return "Looks like you'll have to climb it.";}
-	
+	@Override public String ID(){	return "ClimbableExit";}
+	@Override public String Name(){ return "a sheer surface";}
+	@Override public String displayText(){ return "a sheer surface";}
+	@Override public String description(){ return "Looks like you'll have to climb it.";}
+
 	public ClimbableExit()
 	{
 		super();

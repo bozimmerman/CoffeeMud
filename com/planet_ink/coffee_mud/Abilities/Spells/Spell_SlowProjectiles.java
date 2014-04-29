@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SlowProjectiles extends Spell
 {
-	public String ID() { return "Spell_SlowProjectiles"; }
-	public String name(){return "Slow Projectiles";}
-	public String displayText(){return "(Slow Projectiles)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_SlowProjectiles"; }
+	@Override public String name(){return "Slow Projectiles";}
+	@Override public String displayText(){return "(Slow Projectiles)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -66,6 +67,7 @@ public class Spell_SlowProjectiles extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

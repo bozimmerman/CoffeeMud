@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,11 +38,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
-	public String ID() { return "Chant_MassFungalGrowth"; }
-	public String name(){ return "Mass Fungal Growth";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Chant_MassFungalGrowth"; }
+	@Override public String name(){ return "Mass Fungal Growth";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

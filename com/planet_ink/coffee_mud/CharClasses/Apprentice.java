@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Apprentice extends StdCharClass
 {
-	public String ID(){return "Apprentice";}
-	public String name(){return "Apprentice";}
-	public String baseClass(){return "Commoner";}
-	public int getBonusPracLevel(){return 5;}
-	public int getBonusAttackLevel(){return -1;}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 10;}
-	public int getTrainsFirstLevel(){return 6;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/9)+(1*(1?4))"; }
-	public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	public int getLevelCap(){ return 1;}
-	public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
+	@Override public String ID(){return "Apprentice";}
+	@Override public String name(){return "Apprentice";}
+	@Override public String baseClass(){return "Commoner";}
+	@Override public int getBonusPracLevel(){return 5;}
+	@Override public int getBonusAttackLevel(){return -1;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int getLevelsPerBonusDamage(){ return 10;}
+	@Override public int getTrainsFirstLevel(){return 6;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/9)+(1*(1?4))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
+	@Override public int getLevelCap(){ return 1;}
+	@Override public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected HashSet currentApprentices=new HashSet();
 
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -65,8 +66,9 @@ public class Apprentice extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -88,15 +90,16 @@ public class Apprentice extends StdCharClass
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(5)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(5))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -107,6 +110,6 @@ public class Apprentice extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
-	public String getOtherBonusDesc(){return "Gains lots of xp for training to a new class.";}
+
+	@Override public String getOtherBonusDesc(){return "Gains lots of xp for training to a new class.";}
 }

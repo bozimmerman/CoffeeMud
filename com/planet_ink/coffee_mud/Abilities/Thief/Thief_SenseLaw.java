@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_SenseLaw extends ThiefSkill
 {
-	public String ID() { return "Thief_SenseLaw"; }
-	public String name(){ return "Sense Law";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Thief_SenseLaw"; }
+	@Override public String name(){ return "Sense Law";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	public static final Vector empty=new ReadOnlyVector();
 	protected Room oldroom=null;
 	protected String lastReport="";
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
@@ -68,7 +68,8 @@ public class Thief_SenseLaw extends ThiefSkill
 	{
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -114,6 +115,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

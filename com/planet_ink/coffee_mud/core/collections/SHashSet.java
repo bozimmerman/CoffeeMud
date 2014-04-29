@@ -26,12 +26,12 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	{
 		T=new HashSet<K>();
 	}
-	
+
 	public SHashSet(int x)
 	{
 		T=new HashSet<K>(x);
 	}
-	
+
 	public SHashSet(List<K> V)
 	{
 		T=new HashSet<K>();
@@ -39,7 +39,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 			for(K o : V)
 				T.add(o);
 	}
-	
+
 	public SHashSet(K[] V)
 	{
 		T=new HashSet<K>();
@@ -47,7 +47,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 			for(K o : V)
 				T.add(o);
 	}
-	
+
 	public SHashSet(Enumeration<K> V)
 	{
 		T=new HashSet<K>();
@@ -55,7 +55,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 			for(;V.hasMoreElements();)
 				T.add(V.nextElement());
 	}
-	
+
 	public SHashSet(Iterator<K> V)
 	{
 		T=new HashSet<K>();
@@ -63,7 +63,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 			for(;V.hasNext();)
 				T.add(V.next());
 	}
-	
+
 	public SHashSet(Set<K> E)
 	{
 		T=new HashSet<K>();
@@ -71,42 +71,42 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 			for(K o : E)
 				T.add(o);
 	}
-	
+
 	public synchronized void addAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.add(E.nextElement());
 	}
-	
+
 	public synchronized void addAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.add(E.next());
 	}
-	
+
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.remove(E.nextElement());
 	}
-	
+
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.remove(E.next());
 	}
-	
+
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
 			for(K o : E)
 				T.remove(o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized HashSet<K> toHashSet()
 	{
@@ -145,7 +145,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		T.clear();
 	}
 	@SuppressWarnings("unchecked")
-	public synchronized SHashSet<K> copyOf() 
+	public synchronized SHashSet<K> copyOf()
 	{
 		SHashSet<K> TS=new SHashSet<K>();
 		TS.T=(HashSet<K>)T.clone();

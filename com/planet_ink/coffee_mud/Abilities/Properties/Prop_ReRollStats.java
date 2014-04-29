@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,25 +35,28 @@ import java.util.*;
 */
 public class Prop_ReRollStats extends Property
 {
-	public String ID() { return "Prop_ReRollStats"; }
-	public String name(){ return "Re Roll Stats";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_ReRollStats"; }
+	@Override public String name(){ return "Re Roll Stats";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int bonusPointsPerStat=0;
 	protected boolean reRollFlag=true;
 	protected boolean rePickClass=false;
 
+	@Override
 	public String accountForYourself()
 	{
 		return "Will cause a player to re-roll their stats.";
 	}
-	
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		bonusPointsPerStat=CMParms.getParmInt(newMiscText, "BONUSPOINTS", 0);
 		rePickClass=CMParms.getParmBool(newMiscText, "PICKCLASS", false);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -69,6 +72,7 @@ public class Prop_ReRollStats extends Property
 				final Ability me=this;
 				CMLib.threads().executeRunnable(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						try

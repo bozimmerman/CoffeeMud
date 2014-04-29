@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_GodLight extends Prayer
 {
-	public String ID() { return "Prayer_GodLight"; }
-	public String name(){ return "Godlight";}
-	public String displayText(){return "(Godlight)";}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Prayer_GodLight"; }
+	@Override public String name(){ return "Godlight";}
+	@Override public String displayText(){return "(Godlight)";}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Prayer_GodLight extends Prayer
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -69,6 +71,7 @@ public class Prayer_GodLight extends Prayer
 	}
 
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -88,7 +91,8 @@ public class Prayer_GodLight extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -110,7 +114,7 @@ public class Prayer_GodLight extends Prayer
 			mob.tell("This place already has the god light.");
 			return false;
 		}
-		
+
 		if((target instanceof MOB)
 		&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
 		{

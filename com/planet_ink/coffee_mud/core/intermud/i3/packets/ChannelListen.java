@@ -37,7 +37,7 @@ import java.util.Vector;
 public class ChannelListen extends Packet  {
 	public String channel = null;
 	public String onoff="0";
-	
+
 	public ChannelListen()
 	{
 		super();
@@ -57,7 +57,7 @@ public class ChannelListen extends Packet  {
 		}
 	}
 
-	
+
 	public ChannelListen(int t, String chan, String setonoff)
 	{
 		super();
@@ -66,6 +66,7 @@ public class ChannelListen extends Packet  {
 		onoff=setonoff;
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( channel == null  )
 		{
@@ -74,6 +75,7 @@ public class ChannelListen extends Packet  {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		NameServer n = Intermud.getNameServer();

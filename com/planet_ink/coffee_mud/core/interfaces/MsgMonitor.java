@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface MsgMonitor
 {
-	/** 
+	/**
 	 * The general message event monitor for the object.  The messages
 	 * have already been through an approval process, so this method is
 	 * called only to see the final execution of the meaning of the

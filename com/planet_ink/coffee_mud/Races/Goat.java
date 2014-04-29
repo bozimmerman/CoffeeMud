@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,27 @@ import java.util.*;
 */
 public class Goat extends StdRace
 {
-	public String ID(){	return "Goat"; }
-	public String name(){ return "Goat"; }
-	public int shortestMale(){return 36;}
-	public int shortestFemale(){return 36;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 50;}
-	public int weightVariance(){return 60;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Ovine";}
+	@Override public String ID(){	return "Goat"; }
+	@Override public String name(){ return "Goat"; }
+	@Override public int shortestMale(){return 36;}
+	@Override public int shortestFemale(){return 36;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 50;}
+	@Override public int weightVariance(){return 60;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Ovine";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -61,6 +62,7 @@ public class Goat extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -73,6 +75,7 @@ public class Goat extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -102,6 +105,7 @@ public class Goat extends StdRace
 				}
 		}
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -138,6 +142,7 @@ public class Goat extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -158,6 +163,7 @@ public class Goat extends StdRace
 		}
 		return resources;
 	}
+	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		DeadBody body=super.getCorpseContainer(mob,room);

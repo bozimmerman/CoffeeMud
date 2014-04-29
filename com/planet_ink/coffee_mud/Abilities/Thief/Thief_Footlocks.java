@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Footlocks extends ThiefSkill
 {
-	public String ID() { return "Thief_Footlocks"; }
-	public String name(){ return "Footlocks";}
-	public String displayText(){ return "(Footlocked)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Thief_Footlocks"; }
+	@Override public String name(){ return "Footlocks";}
+	@Override public String displayText(){ return "(Footlocked)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"FOOTLOCK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;
 	public Item footlock=null;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
@@ -66,6 +67,7 @@ public class Thief_Footlocks extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -87,6 +89,7 @@ public class Thief_Footlocks extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -105,6 +108,7 @@ public class Thief_Footlocks extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -142,10 +146,10 @@ public class Thief_Footlocks extends ThiefSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		
+
 		if(cloth!=null) CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),-1,null);
 		if(wood!=null) CMLib.materials().destroyResourcesValue(mob,2,wood.material(),-1,null);
-		
+
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,8 @@ public class Inventory extends StdCommand
 	public Inventory(){}
 
 	private final String[] access={"INVENTORY","INV","I"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public static class InventoryList
 	{
 		public boolean foundAndSeen=false;
@@ -46,7 +46,7 @@ public class Inventory extends StdCommand
 		public Vector<Item> viewItems=new Vector<Item>();
 		public Hashtable<String,Vector<Coins>> moneyItems=new Hashtable<String,Vector<Coins>>();
 	}
-	
+
 	public static InventoryList fetchInventory(MOB seer, MOB mob)
 	{
 		InventoryList lst = new InventoryList();
@@ -116,7 +116,7 @@ public class Inventory extends StdCommand
 		}
 		return msg.toString();
 	}
-	
+
 	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
 		StringBuilder msg=new StringBuilder("");
@@ -159,13 +159,14 @@ public class Inventory extends StdCommand
 				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
 			if(list.foundButUnseen)
 				msg.append("(stuff you can't see right now)");
-				
+
 			msg.append(getShowableMoney(list));
 		}
 		return msg;
 	}
 
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -182,8 +183,8 @@ public class Inventory extends StdCommand
 			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

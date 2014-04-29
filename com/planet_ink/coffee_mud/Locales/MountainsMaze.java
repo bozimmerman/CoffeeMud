@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class MountainsMaze extends StdMaze
 {
-	public String ID(){return "MountainsMaze";}
+	@Override public String ID(){return "MountainsMaze";}
 	public MountainsMaze()
 	{
 		super();
 		basePhyStats.setWeight(5);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 
-	public String getGridChildLocaleID(){return "Mountains";}
-	public List<Integer> resourceChoices(){return Mountains.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Mountains";}
+	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

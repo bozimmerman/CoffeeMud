@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_MuddyGrounds extends Chant
 {
-	public String ID() { return "Chant_MuddyGrounds"; }
-	public String name(){return "Muddy Grounds";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Chant_MuddyGrounds"; }
+	@Override public String name(){return "Muddy Grounds";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
@@ -50,12 +51,14 @@ public class Chant_MuddyGrounds extends Chant
 		super.unInvoke();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -71,7 +74,8 @@ public class Chant_MuddyGrounds extends Chant
 		return super.tick(ticking,tickID);
 
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -91,7 +95,8 @@ public class Chant_MuddyGrounds extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,18 @@ import java.util.*;
 public class Undead_ColdTouch extends StdAbility
 {
 	int coldDown=3;
-	public String ID() { return "Undead_ColdTouch"; }
-	public String name(){ return "Cold Touch";}
-	public String displayText(){ return "(Cold and Weakened)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Undead_ColdTouch"; }
+	@Override public String name(){ return "Cold Touch";}
+	@Override public String displayText(){ return "(Cold and Weakened)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"COLDTOUCH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -56,6 +57,7 @@ public class Undead_ColdTouch extends StdAbility
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,3);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -67,6 +69,7 @@ public class Undead_ColdTouch extends StdAbility
 			mob.tell("The chill is lifted.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))

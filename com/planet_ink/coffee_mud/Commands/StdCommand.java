@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +36,7 @@ public class StdCommand implements Command
 {
 	public StdCommand(){}
 	protected String ID=null;
+	@Override
 	public String ID()
 	{
 		if(ID==null)
@@ -46,11 +47,12 @@ public class StdCommand implements Command
 		}
 		return ID;
 	}
-	public String name() { return ID();}
-	
+	@Override public String name() { return ID();}
+
 	private String[] access=null;
-	public String[] getAccessWords(){return access;}
-	public void initializeClass(){}
+	@Override public String[] getAccessWords(){return access;}
+	@Override public void initializeClass(){}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -58,12 +60,14 @@ public class StdCommand implements Command
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}
+	@Override
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException
 	{
 		return true;
 	}
 
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		// fake it!
@@ -73,7 +77,7 @@ public class StdCommand implements Command
 			commands.add(o.toString());
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
-	
+
 	public boolean checkArguments(Class[][] fmt, Object... args)
 	{
 		for(int f=0;f<fmt.length;f++)
@@ -81,7 +85,7 @@ public class StdCommand implements Command
 			Class[] ff=fmt[f];
 			if(ff.length==args.length)
 			{
-				boolean check=true; 
+				boolean check=true;
 				for(int i=0;i<ff.length;i++)
 				{
 					if((args[i]!=null)
@@ -110,25 +114,29 @@ public class StdCommand implements Command
 		Log.errOut(ID(),str.toString());
 		return false;
 	}
-	
+
+	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getActionCost(ID(), 0.0);
 	}
+	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCombatActionCost(ID(), 0.0);
 	}
+	@Override
 	public double checkedActionsCost(final MOB mob, final List<String> cmds)
 	{
 		if(mob!=null)
 			return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
 		return actionsCost(mob,cmds);
 	}
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return true;}
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}
-	public CMObject newInstance(){return this;}
+	@Override public CMObject newInstance(){return this;}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -141,15 +149,15 @@ public class StdCommand implements Command
 			return this;
 		}
 	}
-	
+
 	protected final static Filterer<Environmental> noCoinFilter=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj) 
+		public boolean passesFilter(Environmental obj)
 		{
 			return !(obj instanceof Coins);
 		}
 	};
-	
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

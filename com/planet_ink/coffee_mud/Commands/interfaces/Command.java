@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.List;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ public interface Command extends CMObject
 	public String[] getAccessWords();
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this command. A value of 0.0 means perform 
+	 * activate this command. A value of 0.0 means perform
 	 * instantly.  This method only applies when the user
 	 * is not in combat.
 	 * @see Command#combatActionsCost(MOB, List)
@@ -59,7 +59,7 @@ public interface Command extends CMObject
 	public double actionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this command. A value of 0.0 means perform 
+	 * activate this command. A value of 0.0 means perform
 	 * instantly.  This method only applies when the user
 	 * is fighting in combat.
 	 * @see Command#actionsCost(MOB, List)
@@ -71,7 +71,7 @@ public interface Command extends CMObject
 	public double combatActionsCost(final MOB mob, final List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
-	 * activate this command. A value of 0.0 means perform 
+	 * activate this command. A value of 0.0 means perform
 	 * instantly.  This method only should check whether the
 	 * user is in combat and return a proper value.
 	 * @see Command#combatActionsCost(MOB, List)
@@ -99,7 +99,7 @@ public interface Command extends CMObject
 	 * set of strings, starting with the access word that triggered the
 	 * command.  Some commands have custom APIs however, that allow almost
 	 * anything to be in the commands list, or even for the commands to be null.
-	 * This method is not allowed to be called until the player or mob has 
+	 * This method is not allowed to be called until the player or mob has
 	 * satisfied the actionsCost requirements and the securityCheck
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, List)
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
@@ -127,7 +127,7 @@ public interface Command extends CMObject
 	 */
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException;
-	
+
 	/**
 	 * This method is used for making "insider" calls to the command.  It's parameters
 	 * and implementation can follow any rules you like.  The engine will sometimes
@@ -140,7 +140,7 @@ public interface Command extends CMObject
 	 */
 	public Object executeInternal(MOB mob, int metaFlags, Object... args)
 		throws java.io.IOException;
-	
+
 	/** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
 	public static final int METAFLAG_MPFORCED=1;
 	/** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/

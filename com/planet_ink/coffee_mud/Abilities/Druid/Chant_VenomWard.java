@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_VenomWard extends Chant
 {
-	public String ID() { return "Chant_VenomWard"; }
-	public String name(){ return "Venom Ward";}
-	public String displayText(){return "(Venom Ward)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Chant_VenomWard"; }
+	@Override public String name(){ return "Venom Ward";}
+	@Override public String displayText(){return "(Venom Ward)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,12 +57,14 @@ public class Chant_VenomWard extends Chant
 
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

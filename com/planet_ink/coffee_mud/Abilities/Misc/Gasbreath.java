@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,10 +31,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Gasbreath extends Dragonbreath
 {
-	public String ID() { return "Gasbreath"; }
-	public String name(){ return "Gasbreath";}
-	public String text(){return "gas";}
-	public void setMiscText(String newText){super.setMiscText(text());}
+	@Override public String ID() { return "Gasbreath"; }
+	@Override public String name(){ return "Gasbreath";}
+	@Override public String text(){return "gas";}
+	@Override public void setMiscText(String newText){super.setMiscText(text());}
 	private static final String[] triggerStrings = {"GASBREATH"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 }

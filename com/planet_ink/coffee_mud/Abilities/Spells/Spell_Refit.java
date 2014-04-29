@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Refit extends Spell
 {
-	public String ID() { return "Spell_Refit"; }
-	public String name(){return "Refit";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Refit"; }
+	@Override public String name(){return "Refit";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);

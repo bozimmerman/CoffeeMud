@@ -33,9 +33,9 @@ import java.util.*;
 */
 public class Prop_Tattoo extends Property
 {
-	public String ID() { return "Prop_Tattoo"; }
-	public String name(){ return "A Tattoo";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_Tattoo"; }
+	@Override public String name(){ return "A Tattoo";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 
 	public static List<String> getTattoos(MOB mob)
 	{
@@ -52,6 +52,7 @@ public class Prop_Tattoo extends Property
 		return tattos;
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		if(affected instanceof MOB)

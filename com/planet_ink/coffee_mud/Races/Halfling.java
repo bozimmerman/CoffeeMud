@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,35 +35,37 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Halfling extends StdRace
 {
-	public String ID(){	return "Halfling"; }
-	public String name(){ return "Halfling"; }
-	public int shortestMale(){return 40;}
-	public int shortestFemale(){return 36;}
-	public int heightVariance(){return 6;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Halfling";}
+	@Override public String ID(){	return "Halfling"; }
+	@Override public String name(){ return "Halfling"; }
+	@Override public int shortestMale(){return 40;}
+	@Override public int shortestFemale(){return 36;}
+	@Override public int heightVariance(){return 6;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Halfling";}
 	private String[]culturalAbilityNames={"Elvish","Cooking"};
 	private int[]culturalAbilityProficiencies={25,75};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,4,20,50,75,100,110,120};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -74,7 +76,8 @@ public class Halfling extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+10);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)+10);
 	}
-	
+
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -98,10 +101,12 @@ public class Halfling extends StdRace
 		}
 		return outfitChoices;
 	}
-	
+
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -138,6 +143,7 @@ public class Halfling extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

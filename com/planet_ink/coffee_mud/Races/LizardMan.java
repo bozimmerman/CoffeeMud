@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,42 +34,46 @@ import java.util.*;
 */
 public class LizardMan extends StdRace
 {
-	public String ID(){	return "LizardMan"; }
-	public String name(){ return "Lizard Man"; }
-	public int shortestMale(){return 72;}
-	public int shortestFemale(){return 66;}
-	public int heightVariance(){return 3;}
-	public int lightestWeight(){return 200;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Lizard Man";}
+	@Override public String ID(){	return "LizardMan"; }
+	@Override public String name(){ return "Lizard Man"; }
+	@Override public int shortestMale(){return 72;}
+	@Override public int shortestFemale(){return 66;}
+	@Override public int heightVariance(){return 3;}
+	@Override public int lightestWeight(){return 200;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Lizard Man";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={75};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,3,14,30,45,60,62,64};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,6);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "ambles in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "runs";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -82,6 +86,7 @@ public class LizardMan extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -118,6 +123,7 @@ public class LizardMan extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 
 public class Poison_Liquor extends Poison_Alcohol
 {
-	public String ID() { return "Poison_Liquor"; }
-	public String name(){ return "Liquor";}
+	@Override public String ID() { return "Poison_Liquor"; }
+	@Override public String name(){ return "Liquor";}
 	private static final String[] triggerStrings = {"LIQUORUP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_POISON;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_POISON;}
 
-	protected int alchoholContribution(){return 2;}
-	protected int level(){return 2;}
-	
+	@Override protected int alchoholContribution(){return 2;}
+	@Override protected int level(){return 2;}
+
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=null;

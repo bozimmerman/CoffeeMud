@@ -35,28 +35,29 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
-	public String ID() { return "Thief_DeathTrap"; }
-	public String name(){ return "Death Trap";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_DeathTrap"; }
+	@Override public String name(){ return "Death Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"DEATHTRAP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
 	protected boolean sprung=false;
 
-	public boolean disabled(){return false;}
-	public void disable(){ unInvoke();}
-	public boolean sprung(){return false;}
+	@Override public boolean disabled(){return false;}
+	@Override public void disable(){ unInvoke();}
+	@Override public boolean sprung(){return false;}
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -64,6 +65,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -74,12 +76,14 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return T;
 	}
 
+	@Override
 	public void spring(MOB M)
 	{
 		if((!sprung)&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),M,null);
 	}
 
+	@Override
 	public MOB invoker()
 	{
 		if(super.miscText.length()==0)
@@ -95,6 +99,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -110,6 +115,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -128,6 +134,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -138,6 +145,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room trapThis=mob.location();

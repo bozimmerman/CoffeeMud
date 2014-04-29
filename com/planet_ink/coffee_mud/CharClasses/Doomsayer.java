@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Doomsayer extends Cleric
 {
-	public String ID(){return "Doomsayer";}
-	public String name(){return "Doomsayer";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
+	@Override public String ID(){return "Doomsayer";}
+	@Override public String name(){return "Doomsayer";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 1000;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 1000;}
 
 	public Doomsayer()
 	{
@@ -50,6 +50,7 @@ public class Doomsayer extends Cleric
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -142,20 +143,21 @@ public class Doomsayer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Stoning",0,"",false,true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "Receives 1 pt damage reduction/level from fire attacks.";}
-	public String getOtherLimitsDesc(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
+	@Override public String getOtherBonusDesc(){return "Receives 1 pt damage reduction/level from fire attacks.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -181,6 +183,7 @@ public class Doomsayer extends Cleric
 		return true;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -191,5 +194,5 @@ public class Doomsayer extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

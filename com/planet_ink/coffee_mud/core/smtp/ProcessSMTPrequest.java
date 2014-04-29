@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import java.io.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,8 +44,8 @@ public class ProcessSMTPrequest implements Runnable
 	private final static String S_250 = "250 OK";
 	private final static long IDLE_TIMEOUT=10000;
 	private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
-	
-	
+
+
 	private Socket  		 sock;
 	private SMTPserver  	 server=null;
 	private StringBuffer	 data=null;
@@ -62,7 +62,7 @@ public class ProcessSMTPrequest implements Runnable
 		server = a_Server;
 		sock = a_sock;
 	}
-	
+
 	public String validLocalAccount(String s, boolean checkFROMcase)
 	{
 		int x=s.indexOf('@');
@@ -128,7 +128,7 @@ public class ProcessSMTPrequest implements Runnable
 		}
 		return null;
 	}
-	
+
 	public void cleanHtml(String journal, StringBuilder finalData)
 	{
 		if(journal!= null)
@@ -143,7 +143,8 @@ public class ProcessSMTPrequest implements Runnable
 		else
 			CMStrings.convertHtmlToText(finalData);
 	}
-	
+
+	@Override
 	public void run()
 	{
 		BufferedReader sin = null;
@@ -192,7 +193,7 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					if(c==65535)
 					{
-						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
+						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar;
 						if(ellapsed > IDLE_TIMEOUT)
 						{
 							quitFlag=true;
@@ -202,7 +203,7 @@ public class ProcessSMTPrequest implements Runnable
 						else
 							break;
 					}
-					if(sock.isClosed()) 
+					if(sock.isClosed())
 					{
 						if(debug) Log.debugOut(runnableName,"Internal: Noticed socket close.");
 						quitFlag=true;
@@ -210,7 +211,7 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					timeSinceLastChar=System.currentTimeMillis();
 					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
-					{    
+					{
 						cmdQueue.add(input.substring(0,input.length()-1));
 						input.setLength(0);
 						continue;
@@ -244,7 +245,7 @@ public class ProcessSMTPrequest implements Runnable
 						parm=s.substring(cmdindex+1);
 					}
 					if(debug) Log.debugOut(runnableName,"Input: "+cmd+" "+parm);
-					
+
 					if((dataMode)&&(s.equals(".")))
 					{
 						if(debug) Log.debugOut(runnableName,"End of data reached.");
@@ -263,12 +264,12 @@ public class ProcessSMTPrequest implements Runnable
 							String subject=null;
 							String boundry=null;
 							Map<Character,StringBuilder> dataBlocks=new Hashtable<Character,StringBuilder>();
-							
-							// -1=waitForHeaderDone, 
-							// 0=waitForFirstHeaderDone, 
-							// 1=waitForBoundry, 
+
+							// -1=waitForHeaderDone,
+							// 0=waitForFirstHeaderDone,
+							// 1=waitForBoundry,
 							// 2=waitForContentTypeConfirmation
-							int boundryState=-1; 
+							int boundryState=-1;
 							try
 							{
 								BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
@@ -278,7 +279,7 @@ public class ProcessSMTPrequest implements Runnable
 									if(s2==null) break;
 									String s2u=s2.toUpperCase();
 									if(debug) Log.debugOut(runnableName,"Header State="+boundryState+", "+s2);
-									
+
 									if((startBuffering)&&(boundry!=null)&&(s2.indexOf(boundry)>=0))
 									{
 										if(debug) Log.debugOut(runnableName,"Multipart boundary "+boundry+" completed.");
@@ -421,7 +422,7 @@ public class ProcessSMTPrequest implements Runnable
 								}
 							}
 							catch(IOException e){}
-								
+
 							if((replyData!=null)&&(new String(replyData).startsWith("250")))
 							{
 								if((finalData.length()==0)&&(!startBuffering))
@@ -429,7 +430,7 @@ public class ProcessSMTPrequest implements Runnable
 									finalData=new StringBuilder(data.toString());
 									if(subject==null) subject="";
 								}
-								
+
 								if(dataBlocks.containsKey(Character.valueOf('h')))
 								{
 									bodyType='h';
@@ -444,7 +445,7 @@ public class ProcessSMTPrequest implements Runnable
 										finalData=dataBlocks.get(Character.valueOf(bodyType));
 									}
 								}
-								
+
 								if(subject!=null)
 								{
 									if(subject.toUpperCase().startsWith("MOTD")
@@ -454,7 +455,7 @@ public class ProcessSMTPrequest implements Runnable
 										if((fromM==null)||(!CMSecurity.isAllowedAnywhere(fromM,CMSecurity.SecFlag.JOURNALS)))
 											subject=subject.substring(4);
 									}
-									
+
 									for(int i=0;i<to.size();i++)
 									{
 										String journal=server.getAnEmailJournal(to.elementAt(i));
@@ -505,13 +506,13 @@ public class ProcessSMTPrequest implements Runnable
 													}
 												}
 											}
-											   
+
 											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
 											StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
-											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
-													CMLib.coffeeFilter().simpleInFilter(new StringBuilder(subject)).toString(), 
+											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey,
+													CMLib.coffeeFilter().simpleInFilter(new StringBuilder(subject)).toString(),
 													CMLib.coffeeFilter().simpleInFilter(finalData).toString());
 										}
 										else
@@ -711,7 +712,7 @@ public class ProcessSMTPrequest implements Runnable
 					{
 						if((domain!=null)&&(parm.trim().length()==0))
 							replyData=("503 "+sock.getLocalAddress().getHostName()+" Duplicate HELO/EHLO"+cr).getBytes();
-						else	
+						else
 						if(parm.trim().length()==0)
 							replyData=("501 "+cmd+" requires domain address"+cr).getBytes();
 						else
@@ -927,7 +928,7 @@ public class ProcessSMTPrequest implements Runnable
 													}
 												}
 											}
-											
+
 											if(!jerror)
 											{
 												replyData=("250 OK "+name+cr).getBytes();
@@ -953,8 +954,8 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					else
 						replyData=lastReplyData;//("500 Command Unrecognized: \""+cmd+"\""+cr).getBytes();
-					
-					
+
+
 					if ((replyData != null))
 					{
 						respQueue.add(replyData);
@@ -998,7 +999,7 @@ public class ProcessSMTPrequest implements Runnable
 					msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
 			Log.errOut(runnableName,"Exception: " + msg.toString() );
 		}
-		
+
 		try
 		{
 			if (sout != null)

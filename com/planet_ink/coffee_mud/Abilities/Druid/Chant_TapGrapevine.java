@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_TapGrapevine extends Chant
 {
-	public String ID() { return "Chant_TapGrapevine"; }
-	public String name(){ return "Tap Grapevine";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_TapGrapevine"; }
+	@Override public String name(){ return "Tap Grapevine";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected List<Ability> myChants=new Vector();
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -57,6 +58,7 @@ public class Chant_TapGrapevine extends Chant
 			invoker.executeMsg(invoker,msg);
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		Chant_TapGrapevine obj=(Chant_TapGrapevine)super.copyOf();
@@ -64,7 +66,8 @@ public class Chant_TapGrapevine extends Chant
 		obj.myChants.addAll(myChants);
 		return obj;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(myChants!=null))
@@ -102,6 +105,7 @@ public class Chant_TapGrapevine extends Chant
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_Grapevine")!=null))

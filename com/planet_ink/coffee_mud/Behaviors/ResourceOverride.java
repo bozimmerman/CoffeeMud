@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 */
 public class ResourceOverride extends ActiveTicker
 {
-	public String ID(){return "ResourceOverride";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override public String ID(){return "ResourceOverride";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	private List<Integer>	rscs		= new Vector<Integer>();
 	private Set<Integer>	roomTypes	= new TreeSet<Integer>();
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "resource overriding";
 	}
-	
+
+	@Override
 	public void setParms(String newStr)
 	{
 		super.setParms(newStr);
@@ -93,6 +95,7 @@ public class ResourceOverride extends ActiveTicker
 			}
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

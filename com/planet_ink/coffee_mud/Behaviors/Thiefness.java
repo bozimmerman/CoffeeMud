@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thiefness extends CombatAbilities
 {
-	public String ID(){return "Thiefness";}
-	public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
+	@Override public String ID(){return "Thiefness";}
+	@Override public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickDown=0;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "thiefliness";
 	}
 
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
@@ -60,6 +62,7 @@ public class Thiefness extends CombatAbilities
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

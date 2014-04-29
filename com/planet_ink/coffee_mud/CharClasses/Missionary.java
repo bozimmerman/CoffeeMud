@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Missionary extends Cleric
 {
-	public String ID(){return "Missionary";}
-	public String name(){return "Missionary";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
+	@Override public String ID(){return "Missionary";}
+	@Override public String name(){return "Missionary";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Missionary()
 	{
@@ -49,6 +49,7 @@ public class Missionary extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -136,8 +137,9 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Sermon",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -147,17 +149,18 @@ public class Missionary extends Cleric
 					+(affectableStats.getClassLevel(this)));
 	}
 
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
-	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
+	@Override public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
+	@Override public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -183,6 +186,7 @@ public class Missionary extends Cleric
 		return true;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -193,5 +197,5 @@ public class Missionary extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

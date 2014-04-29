@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,9 @@ import java.util.*;
 public class Top extends StdCommand
 {
 	private final String[] access={"TOP"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
 	{
 		boolean doPlayers=true;
@@ -57,8 +58,8 @@ public class Top extends StdCommand
 				return true;
 			}
 		}
-		
-		
+
+
 		List<Pair<String,Integer>> set1;
 		List<Pair<String,Integer>> set2;
 		List<Pair<String,Integer>> set3;
@@ -116,7 +117,8 @@ public class Top extends StdCommand
 			mob.session().print(str.toString());
 		return false;
 	}
-	
+
+	@Override
 	public boolean canBeOrdered()
 	{
 		return true;

@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class RaceHelper extends StdBehavior
 {
-	public String ID(){return "RaceHelper";}
+	@Override public String ID(){return "RaceHelper";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "same-race protecting";
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -20,7 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * A place where people might be, can be either abstract (like an area),
 * or concrete (like a Room)
 * @author Bo Zimmerman
@@ -30,7 +30,7 @@ public interface Places extends PhysicalAgent
 {
 	/** a constant code for {@link Places#getAtmosphereCode()} that denotes that the atmo is inherited from a parent */
 	public final static int ATMOSPHERE_INHERIT = -1;
-	
+
 	/**
 	 * Returns the resource (or -1) that represents the atmosphere of this area.
 	 * Since most rooms inherit their atmosphere from the area, this is important.
@@ -40,7 +40,7 @@ public interface Places extends PhysicalAgent
 	 * @return the RawMaterial resource, or -1
 	 */
 	public int getAtmosphereCode();
-	
+
 	/**
 	 * Returns the resource (or -1) that represents the atmosphere of this area.
 	 * Since most rooms inherit their atmosphere from the area, this is important.
@@ -50,7 +50,7 @@ public interface Places extends PhysicalAgent
 	 * @return the RawMaterial resource, or -1
 	 */
 	public int getAtmosphere();
-	
+
 	/**
 	 * Sets the resource (or -1) that represents the atmosphere of this area.
 	 * Since most rooms inherit their atmosphere from the area, this is important.
@@ -60,7 +60,7 @@ public interface Places extends PhysicalAgent
 	 * @return the RawMaterial resource, or -1
 	 */
 	public void setAtmosphere(int resourceCode);
-	
+
 	/**
 	 * Returns a bitmap of climate flags for this area which will be used to influence
 	 * the weather for the area in addition to season and other factors.
@@ -75,16 +75,16 @@ public interface Places extends PhysicalAgent
 	 * @param newClimateType a CLIMASK bitmap
 	 */
 	public void setClimateType(int newClimateType);
-	
+
 	/**
-	 * Returns a bitmap of the climate for this place.  If the climate is CLIMASK_INHERIT, 
+	 * Returns a bitmap of the climate for this place.  If the climate is CLIMASK_INHERIT,
 	 * then it will look to parent objects, such as areas, and parent areas, until it
 	 * eventually finds a non-inherit, or returns CLIMASK_NORMAL;
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_COLD
 	 * @return a derived climate
 	 */
 	public int getClimateType();
-	
+
 
 	/**	Bitmap climate flag meaning that the area has inherited weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int CLIMASK_INHERIT = -1;
@@ -100,8 +100,8 @@ public interface Places extends PhysicalAgent
 	public final static int CLIMASK_HOT=8;
 	/**	Bitmap climate flag meaning that the area has dry weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int CLIMASK_DRY=16;
-	/**	Indexed description of the CLIMASK_ bitmap constants in all possible combinations.  
-	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_NORMAL 
+	/**	Indexed description of the CLIMASK_ bitmap constants in all possible combinations.
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_NORMAL
 	 */
 	public final static String[] CLIMATE_DESCS={"NORMAL","WET","COLD","WINDY","HOT","DRY"};
 	/**	Number of CLIMASK_ constants.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */

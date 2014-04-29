@@ -18,7 +18,7 @@ import java.util.Vector;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,9 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Disease_Obesity extends Disease
 {
-	public String ID() { return "Disease_Obesity"; }
-	public String name(){ return "Obesity";}
+	@Override public String ID() { return "Disease_Obesity"; }
+	@Override public String name(){ return "Obesity";}
+	@Override
 	public String displayText()
 	{
 		int amount=amountOfFat();
@@ -53,54 +54,58 @@ public class Disease_Obesity extends Disease
 		else
 			return "(Morbid obesity)";
 	}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 10;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 10;}
 
-	protected int DISEASE_TICKS(){return 999999;}
-	protected int DISEASE_DELAY(){return 50;}
-	protected String DISEASE_DONE(){return "You've become fit and trim!";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
-	public boolean canBeUninvoked(){canBeUninvoked=!(amountOfFat()>0);return super.canBeUninvoked();}
+	@Override protected int DISEASE_TICKS(){return 999999;}
+	@Override protected int DISEASE_DELAY(){return 50;}
+	@Override protected String DISEASE_DONE(){return "You've become fit and trim!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
+	@Override public boolean canBeUninvoked(){canBeUninvoked=!(amountOfFat()>0);return super.canBeUninvoked();}
 	protected long lastLoss=-1;
 	protected int fatAmount=-1;
-	
+
 	protected int amountOfFat()
 	{
-		if((fatAmount<0)&&(CMath.isNumber(text()))) 
+		if((fatAmount<0)&&(CMath.isNumber(text())))
 			fatAmount=CMath.s_int(text());
 		if(fatAmount<0) fatAmount=0;
 		if(fatAmount>=0) return fatAmount;
 		return 1;
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		fatAmount=-1;
 	}
-	
+
 	private void setFatAmountChange(int change)
 	{
 		setMiscText(""+(amountOfFat()+change));
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
-		affectableStats.setStat(CharStats.STAT_WEIGHTADJ, 
+		affectableStats.setStat(CharStats.STAT_WEIGHTADJ,
 			affectableStats.getStat(CharStats.STAT_WEIGHTADJ)
 			+(int)Math.round(CMath.mul(affectedMob.basePhyStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 	}
-	
+
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -108,7 +113,8 @@ public class Disease_Obesity extends Disease
 		affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(CMath.s_int(text()),100.0))));
 		if((affectableState.getMovement()<20)&&(oldMovement>20)) affectableState.setMovement(20);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking==affected)&&(tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
@@ -133,7 +139,8 @@ public class Disease_Obesity extends Disease
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -171,7 +178,8 @@ public class Disease_Obesity extends Disease
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

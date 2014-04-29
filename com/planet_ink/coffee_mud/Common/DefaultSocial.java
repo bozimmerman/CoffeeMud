@@ -19,7 +19,7 @@ import java.util.*;
 
 
 // requires nothing to load
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,36 +47,38 @@ public class DefaultSocial implements Social
 	protected int othersCode=CMMsg.MSG_OK_ACTION;
 	protected int targetCode=CMMsg.MSG_OK_ACTION;
 
-	public String ID() { return "DefaultSocial"; }
-	public String name(){ return Social_name;}
-	public String Name(){return name();}
+	@Override public String ID() { return "DefaultSocial"; }
+	@Override public String name(){ return Social_name;}
+	@Override public String Name(){return name();}
+	@Override
 	public String baseName()
 	{
 		int x=name().indexOf(' ');
 		if(x<0) return name();
 		return name().substring(0,x);
 	}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public void setName(String newName){Social_name=newName;}
-	public String You_see(){return You_see;}
-	public String Third_party_sees(){return Third_party_sees;}
-	public String Target_sees(){return Target_sees;}
-	public String See_when_no_target(){return See_when_no_target;}
-	public int sourceCode(){return sourceCode;}
-	public int othersCode(){return othersCode;}
-	public int targetCode(){return targetCode;}
-	public void setYou_see(String str){You_see=str;}
-	public void setThird_party_sees(String str){Third_party_sees=str;}
-	public void setTarget_sees(String str){Target_sees=str;}
-	public void setSee_when_no_target(String str){See_when_no_target=str;}
-	public void setSourceCode(int code){sourceCode=code;}
-	public void setOthersCode(int code){othersCode=code;}
-	public void setTargetCode(int code){targetCode=code;}
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
-	public String MSPfile(){return MSPfile;}
-	public void setMSPfile(String newFile){MSPfile=newFile;}
-	public long expirationDate(){return 0;}
-	public void setExpirationDate(long time){}
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public void setName(String newName){Social_name=newName;}
+	@Override public String You_see(){return You_see;}
+	@Override public String Third_party_sees(){return Third_party_sees;}
+	@Override public String Target_sees(){return Target_sees;}
+	@Override public String See_when_no_target(){return See_when_no_target;}
+	@Override public int sourceCode(){return sourceCode;}
+	@Override public int othersCode(){return othersCode;}
+	@Override public int targetCode(){return targetCode;}
+	@Override public void setYou_see(String str){You_see=str;}
+	@Override public void setThird_party_sees(String str){Third_party_sees=str;}
+	@Override public void setTarget_sees(String str){Target_sees=str;}
+	@Override public void setSee_when_no_target(String str){See_when_no_target=str;}
+	@Override public void setSourceCode(int code){sourceCode=code;}
+	@Override public void setOthersCode(int code){othersCode=code;}
+	@Override public void setTargetCode(int code){targetCode=code;}
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public String MSPfile(){return MSPfile;}
+	@Override public void setMSPfile(String newFile){MSPfile=newFile;}
+	@Override public long expirationDate(){return 0;}
+	@Override public void setExpirationDate(long time){}
+	@Override
 	public boolean targetable(Environmental E)
 	{
 		if(E==null)
@@ -99,6 +101,7 @@ public class DefaultSocial implements Social
 		return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob,
 						  Vector commands,
 						  Physical target,
@@ -125,22 +128,22 @@ public class DefaultSocial implements Social
 		}
 
 		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
-		
+
 		String You_see=You_see();
-		if((You_see!=null)&&(You_see.trim().length()==0)) 
+		if((You_see!=null)&&(You_see.trim().length()==0))
 			You_see=null;
-		
+
 		String Third_party_sees=Third_party_sees();
-		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) 
+		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0))
 			Third_party_sees=null;
-		
+
 		String Target_sees=Target_sees();
 		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
-		
+
 		String See_when_no_target=See_when_no_target();
-		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0))
 			See_when_no_target=null;
-		
+
 		if(((targetE==null)&&(targetable(null)))||((targetE!=null)&&(!targetable(targetE))))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
@@ -182,6 +185,7 @@ public class DefaultSocial implements Social
 		return true;
 	}
 
+	@Override
 	public CMMsg makeChannelMsg(MOB mob,
 								int channelInt,
 								String channelName,
@@ -195,6 +199,7 @@ public class DefaultSocial implements Social
 		String end=makeTarget?"":"^</CHANNEL^>^N^.";
 		return makeMessage(mob,str,end,CMMsg.MASK_CHANNEL,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),commands,channelName,makeTarget);
 	}
+	@Override
 	public CMMsg makeMessage(MOB mob,
 							 String str,
 							 String end,
@@ -247,13 +252,13 @@ public class DefaultSocial implements Social
 
 		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
 		if(end.length()==0) mspFile="";
-		
+
 		int targetCode=fullCode;
 		int otherCode=fullCode;
 		int srcCode=srcMask|sourceCode();
-		
+
 		String You_see=You_see();
-		if((You_see!=null)&&(You_see.trim().length()==0)) 
+		if((You_see!=null)&&(You_see.trim().length()==0))
 		{
 			You_see=null;
 			srcCode=CMMsg.NO_EFFECT;
@@ -261,31 +266,31 @@ public class DefaultSocial implements Social
 		else
 			You_see=str+You_see+end+mspFile;
 
-		
+
 		String Third_party_sees=Third_party_sees();
-		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) 
+		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0))
 		{
 			Third_party_sees=null;
 			otherCode=CMMsg.NO_EFFECT;
 		}
 		else
 			Third_party_sees=str+Third_party_sees+end+mspFile;
-		
+
 		String Target_sees=Target_sees();
-		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) 
+		if((Target_sees!=null)&&(Target_sees.trim().length()==0))
 		{
 			Target_sees=null;
 			targetCode=CMMsg.NO_EFFECT;
 		}
 		else
 			Target_sees=str+Target_sees+end+mspFile;
-		
+
 		String See_when_no_target=See_when_no_target();
-		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0))
 			See_when_no_target=null;
 		else
 			See_when_no_target=str+See_when_no_target+end;
-		
+
 		CMMsg msg=null;
 		if(((target==null)&&(targetable(null)))||((target!=null)&&(!targetable(target))))
 			msg=CMClass.getMsg(mob,null,this,srcCode,See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
@@ -297,30 +302,31 @@ public class DefaultSocial implements Social
 		return msg;
 	}
 
-	public String description(){return "";}
-	public void setDescription(String str){}
-	public String displayText(){return "";}
-	public void setDisplayText(String str){}
+	@Override public String description(){return "";}
+	@Override public void setDescription(String str){}
+	@Override public String displayText(){return "";}
+	@Override public void setDisplayText(String str){}
 
-	public CMObject newInstance() { return new DefaultSocial();}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public CMObject newInstance() { return new DefaultSocial();}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	protected boolean amDestroyed=false;
-	public void destroy(){amDestroyed=true;}
-	public boolean amDestroyed(){return amDestroyed;}
-	public boolean isSavable(){return true;}
-	public void setSavable(boolean truefalse){}
+	@Override public void destroy(){amDestroyed=true;}
+	@Override public boolean amDestroyed(){return amDestroyed;}
+	@Override public boolean isSavable(){return true;}
+	@Override public void setSavable(boolean truefalse){}
 
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME"};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -330,6 +336,7 @@ public class DefaultSocial implements Social
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -338,6 +345,7 @@ public class DefaultSocial implements Social
 		case 1: setName(val); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof Social)) return false;
@@ -369,6 +377,7 @@ public class DefaultSocial implements Social
 	}
 	protected void cloneFix(Social E){}
 
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -383,21 +392,21 @@ public class DefaultSocial implements Social
 			return this.newInstance();
 		}
 	}
-	public void setMiscText(String newMiscText){}
-	public String text(){return "";}
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override public void setMiscText(String newMiscText){}
+	@Override public String text(){return "";}
+	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)	{}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
-	public void executeMsg(final Environmental myHost, final CMMsg msg){}
-	public boolean okMessage(final Environmental myHost, final CMMsg msg){	return true;}
-	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
-	public int maxRange(){return Integer.MAX_VALUE;}
-	public int minRange(){return 0;}
+	@Override public void affectPhyStats(Physical affected, PhyStats affectableStats)	{}
+	@Override public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
+	@Override public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
+	@Override public void executeMsg(final Environmental myHost, final CMMsg msg){}
+	@Override public boolean okMessage(final Environmental myHost, final CMMsg msg){	return true;}
+	@Override public boolean tick(Tickable ticking, int tickID)	{ return true;	}
+	@Override public int maxRange(){return Integer.MAX_VALUE;}
+	@Override public int minRange(){return 0;}
 
-	public String image(){return "";}
-	public String rawImage(){return "";}
-	public void setImage(String newImage){}
-	public boolean isGeneric(){return false;}
+	@Override public String image(){return "";}
+	@Override public String rawImage(){return "";}
+	@Override public void setImage(String newImage){}
+	@Override public boolean isGeneric(){return false;}
 }

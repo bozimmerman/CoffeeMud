@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenCompBattery extends StdCompBattery implements Electronics.PowerSource
 {
-	public String ID(){	return "GenCompBattery";}
+	@Override public String ID(){	return "GenCompBattery";}
 
 	public GenCompBattery()
 	{
@@ -50,14 +50,16 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}
-	
-	public boolean isGeneric(){return true;}
 
+	@Override public boolean isGeneric(){return true;}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -66,6 +68,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -81,6 +84,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -92,12 +96,13 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 		case 1: activate(CMath.s_bool(val)); break;
 		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 3: setManufacturerName(val); break;
-		case 4: setInstalledFactor(CMath.s_float(val)); break; 
+		case 4: setInstalledFactor(CMath.s_float(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -105,6 +110,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -118,6 +124,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCompBattery)) return false;

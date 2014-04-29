@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,17 @@ import java.util.*;
 */
 public class DefaultClimate implements Climate
 {
-	public String ID(){return "DefaultClimate";}
-	public String name(){return "Climate Object";}
+	@Override public String ID(){return "DefaultClimate";}
+	@Override public String name(){return "Climate Object";}
 	protected int tickStatus=Tickable.STATUS_NOT;
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 	protected int currentWeather=WEATHER_CLEAR;
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
-	public void initializeClass(){}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
+	@Override public void initializeClass(){}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -55,17 +56,20 @@ public class DefaultClimate implements Climate
 			return new DefaultClimate();
 		}
 	}
+	@Override
 	public int nextWeatherType(Room room)
 	{
 		if(room==null) return nextWeather;
 		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
+	@Override
 	public String nextWeatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room)) return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription(room.getArea());
 	}
+	@Override
 	public String getNextWeatherDescription(Area A)
 	{
 		return theWeatherDescription(A,nextWeather);
@@ -138,20 +142,23 @@ public class DefaultClimate implements Climate
 	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,
 	};
 
-	public void setNextWeatherType(int weatherCode){nextWeather=weatherCode;}
-	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
+	@Override public void setNextWeatherType(int weatherCode){nextWeather=weatherCode;}
+	@Override public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
+	@Override
 	public int weatherType(Room room)
 	{
 		if(room==null) return currentWeather;
 		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}
+	@Override
 	public String weatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room))
 			return CMProps.getListFileValue(CMProps.ListFile.WEATHER_NONE, 0);
 		return getWeatherDescription(room.getArea());
 	}
+	@Override
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
 		if(canSeeTheStars(room)) return true;
@@ -161,6 +168,7 @@ public class DefaultClimate implements Climate
 				return true;
 		return false;
 	}
+	@Override
 	public boolean canSeeTheStars(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT)
@@ -183,6 +191,7 @@ public class DefaultClimate implements Climate
 		}
 	}
 
+	@Override
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
@@ -213,6 +222,7 @@ public class DefaultClimate implements Climate
 		return "";
 	}
 
+	@Override
 	public void forceWeatherTick(Area A)
 	{
 		weatherTicker=1;
@@ -242,19 +252,19 @@ public class DefaultClimate implements Climate
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
 			final int derivedClimate=A.getClimateType();
-			if((derivedClimate&Area.CLIMASK_COLD)>0)
+			if((derivedClimate&Places.CLIMASK_COLD)>0)
 				seasonal=addMaskAndReturn(seasonal,cold);
 
-			if((derivedClimate&Area.CLIMASK_HOT)>0)
+			if((derivedClimate&Places.CLIMASK_HOT)>0)
 				seasonal=addMaskAndReturn(seasonal,hot);
 
-			if((derivedClimate&Area.CLIMASK_DRY)>0)
+			if((derivedClimate&Places.CLIMASK_DRY)>0)
 				seasonal=addMaskAndReturn(seasonal,dry);
 
-			if((derivedClimate&Area.CLIMASK_WET)>0)
+			if((derivedClimate&Places.CLIMASK_WET)>0)
 				seasonal=addMaskAndReturn(seasonal,wet);
 
-			if((derivedClimate&Area.CLIMASK_WINDY)>0)
+			if((derivedClimate&Places.CLIMASK_WINDY)>0)
 				seasonal=addMaskAndReturn(seasonal,windy);
 
 			// reset the weather ticker!
@@ -369,6 +379,7 @@ public class DefaultClimate implements Climate
 			}
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticking instanceof Area)
@@ -380,7 +391,7 @@ public class DefaultClimate implements Climate
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
-	
+
 	protected String theWeatherDescription(Area A, int weather)
 	{
 		StringBuffer desc=new StringBuffer("");
@@ -391,21 +402,21 @@ public class DefaultClimate implements Climate
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
 		final int derivedClimate=A.getClimateType();
-		if(((derivedClimate&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER))
+		if(((derivedClimate&Places.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER))
 			prefix=CMProps.getListFileValue(listFileEnum, 2);
 		else
-		if(((derivedClimate&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.SUMMER))
+		if(((derivedClimate&Places.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.SUMMER))
 			prefix=CMProps.getListFileValue(listFileEnum, 3);
 		else
-		if((derivedClimate&Area.CLIMASK_WET)>0)
+		if((derivedClimate&Places.CLIMASK_WET)>0)
 			prefix=CMProps.getListFileValue(listFileEnum, 1);
 		else
-		if((derivedClimate&Area.CLIMASK_DRY)>0)
+		if((derivedClimate&Places.CLIMASK_DRY)>0)
 			prefix=CMProps.getListFileValue(listFileEnum, 4);
 		else
 			prefix=CMProps.getListFileValue(listFileEnum, 0);
 		final String suffix;
-		if((derivedClimate&Area.CLIMASK_WINDY)>0)
+		if((derivedClimate&Places.CLIMASK_WINDY)>0)
 			suffix=CMProps.getListFileValue(listFileEnum, 5);
 		else
 			suffix=CMProps.getListFileValue(listFileEnum, 6);
@@ -429,11 +440,13 @@ public class DefaultClimate implements Climate
 		return "^J"+desc.toString()+"^?";
 	}
 
+	@Override
 	public String getWeatherDescription(Area A)
 	{
 		return theWeatherDescription(A,currentWeather);
 	}
 
+	@Override
 	public int adjustWaterConsumption(int base, MOB mob, Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
@@ -460,6 +473,7 @@ public class DefaultClimate implements Climate
 		return base;
 	}
 
+	@Override
 	public int adjustMovement(int base, MOB mob, Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
@@ -477,5 +491,5 @@ public class DefaultClimate implements Climate
 		}
 		return base;
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

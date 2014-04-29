@@ -21,8 +21,8 @@ public class EmptyEnumeration<K> implements Enumeration<K>
 {
 	@SuppressWarnings("rawtypes")
 	public static final Enumeration INSTANCE=new EmptyEnumeration();
-	
+
 	public EmptyEnumeration(){}
-	public boolean hasMoreElements(){ return false;}
-	public K nextElement(){ throw new NoSuchElementException(); }
+	@Override public boolean hasMoreElements(){ return false;}
+	@Override public K nextElement(){ throw new NoSuchElementException(); }
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_IceSheet extends Spell
 {
-	public String ID() { return "Spell_IceSheet"; }
-	public String name(){return "Ice Sheet";}
-	public String displayText(){return "(Ice Sheet spell)";}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_IceSheet"; }
+	@Override public String name(){return "Ice Sheet";}
+	@Override public String displayText(){return "(Ice Sheet spell)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,6 +58,7 @@ public class Spell_IceSheet extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -92,6 +94,7 @@ public class Spell_IceSheet extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -105,7 +108,8 @@ public class Spell_IceSheet extends Spell
 			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
 		}
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -114,6 +118,7 @@ public class Spell_IceSheet extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

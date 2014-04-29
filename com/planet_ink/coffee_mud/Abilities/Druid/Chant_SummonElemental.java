@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonElemental extends Chant
 {
-	public String ID() { return "Chant_SummonElemental"; }
-	public String name(){ return "Summon Elemental";}
-	public String displayText(){return "(Summon Elemental)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Chant_SummonElemental"; }
+	@Override public String name(){ return "Summon Elemental";}
+	@Override public String displayText(){return "(Summon Elemental)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -67,6 +68,7 @@ public class Chant_SummonElemental extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,6 +82,7 @@ public class Chant_SummonElemental extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -94,6 +97,7 @@ public class Chant_SummonElemental extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))

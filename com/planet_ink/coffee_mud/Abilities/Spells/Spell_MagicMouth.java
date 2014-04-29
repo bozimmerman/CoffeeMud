@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_MagicMouth extends Spell
 {
-	public String ID() { return "Spell_MagicMouth"; }
-	public String name(){return "Magic Mouth";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_MagicMouth"; }
+	@Override public String name(){return "Magic Mouth";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room myRoomContainer=null;
 	int myTrigger=CMMsg.TYP_ENTER;
@@ -54,6 +54,7 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -110,6 +111,7 @@ public class Spell_MagicMouth extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

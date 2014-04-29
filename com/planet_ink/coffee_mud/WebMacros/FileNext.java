@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FileNext extends StdWebMacro
 {
-	public String name() { return "FileNext"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "FileNext"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
 	public String trimSlash(String path)
 	{
@@ -47,7 +47,8 @@ public class FileNext extends StdWebMacro
 			path=path.substring(0,path.length()-1);
 		return path;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -57,7 +58,7 @@ public class FileNext extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("FILE");
 			return "";
 		}

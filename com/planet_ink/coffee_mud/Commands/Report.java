@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Report extends Skills
 	public Report(){}
 
 	private final String[] access={"REPORT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -65,7 +66,7 @@ public class Report extends Skills
 			StringBuffer say=new StringBuffer("");
 			if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
-				
+
 				StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
 				Command C=CMClass.getCommand("Affect");
 				if(C!=null) aff.append(C.executeInternal(mob,metaFlags,mob).toString());
@@ -84,7 +85,7 @@ public class Report extends Skills
 			}
 			if(s.equalsIgnoreCase("ALL"))
 			{
-				
+
 				Vector V=new Vector();
 				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
@@ -125,8 +126,8 @@ public class Report extends Skills
 			else
 			if("TECH SKILLS".startsWith(s))
 				say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
-			
-			
+
+
 			if(say.length()==0)
 				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.");
 			else
@@ -134,9 +135,9 @@ public class Report extends Skills
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Physical;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,39 +44,41 @@ public class FakeSession implements Session
 	protected ByteArrayOutputStream bout=null;
 	protected MOB mob = null;
 	protected Vector<String> inputV = new Vector<String>();
-	
+
 	public boolean tick(Tickable ticking, int tickID){return false;}
-	public String ID(){return "FakeSession";}
-	public String name() { return ID();}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new FakeSession();}}
-	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String ID(){return "FakeSession";}
+	@Override public String name() { return ID();}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new FakeSession();}}
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public long getTickStatus(){return 0;}
+	@Override
 	public void initializeSession(Socket s, String groupName, String introTextStr)
 	{
 		if(introTextStr.equalsIgnoreCase("MEMORY"))
 			bout=new ByteArrayOutputStream();
 		else
-			theFile = new CMFile(introTextStr,null,CMFile.FLAG_LOGERRORS); 
+			theFile = new CMFile(introTextStr,null,CMFile.FLAG_LOGERRORS);
 	}
-	public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
-	public void setGroupName(String group) {}
-	public boolean isLockedUpWriting(){return false;}
-	public void initializeClass(){}
-	public void run(){}
-	public boolean isRunning() { return false;}
-	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj){return false;}
-	public void logout(boolean b1){}
-	public String getTerminalType(){ return "Fake";}
-	public void negotiateTelnetMode(int code){}
-	public boolean isAllowedMxp(String tag) { return false; }
-	public boolean isFake() { return true;}
-	public void setIdleTimers(){}
-	public void sendGMCPEvent(final String eventName, final String json){}
-	public void setFakeInput(String input){ inputV.add(input); }
-	
-	public String[] getColorCodes(){return new String[255];}
-	
+	@Override public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
+	@Override public void setGroupName(String group) {}
+	@Override public boolean isLockedUpWriting(){return false;}
+	@Override public void initializeClass(){}
+	@Override public void run(){}
+	@Override public boolean isRunning() { return false;}
+	@Override public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj){return false;}
+	@Override public void logout(boolean b1){}
+	@Override public String getTerminalType(){ return "Fake";}
+	@Override public void negotiateTelnetMode(int code){}
+	@Override public boolean isAllowedMxp(String tag) { return false; }
+	@Override public boolean isFake() { return true;}
+	@Override public void setIdleTimers(){}
+	@Override public void sendGMCPEvent(final String eventName, final String json){}
+	@Override public void setFakeInput(String input){ inputV.add(input); }
+
+	@Override public String[] getColorCodes(){return new String[255];}
+
+	@Override
 	public void onlyPrint(String msg, boolean noCache)
 	{
 		if(theFile != null)
@@ -101,54 +103,58 @@ public class FakeSession implements Session
 			}
 		}
 	}
-	public void onlyPrint(String msg){ onlyPrint(msg,false); }
-	public void rawOut(String msg){ onlyPrint(msg,false); }
-	public void rawPrintln(String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void onlyPrint(String msg){ onlyPrint(msg,false); }
+	@Override public void rawOut(String msg){ onlyPrint(msg,false); }
+	@Override public void rawPrintln(String msg){ onlyPrint(msg+"\n",false); }
 	public void rawPrintln(String msg, int pageBreak){ onlyPrint(msg+"\n",false); }
-	public void rawPrint(String msg){ onlyPrint(msg,false); }
+	@Override public void rawPrint(String msg){ onlyPrint(msg,false); }
 	public void rawPrint(String msg, int pageBreak){ onlyPrint(msg,false); }
-	public void stdPrint(String msg){ onlyPrint(msg,false); }
-	public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-	public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
-	public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
-	public void rawCharsOut(char[] c){ onlyPrint(new String(c),false); }
-	public void print(String msg){ onlyPrint(msg,false); }
-	public void promptPrint(String msg) { onlyPrint(msg,false); }
-	public void print(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-	public void println(String msg){ onlyPrint(msg+"\n",false); }
-	public void println(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
-	public void wraplessPrintln(String msg){ onlyPrint(msg+"\n",false); }
-	public void wraplessPrint(String msg){ onlyPrint(msg,false); }
-	public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg+"\n",false); }
-	public void colorOnlyPrint(String msg, boolean noCache){ onlyPrint(msg,false); }
-	public void colorOnlyPrintln(String msg){ onlyPrint(msg+"\n",false); }
-	public void colorOnlyPrint(String msg){ onlyPrint(msg,false); }
-	public void setPromptFlag(boolean truefalse){}
-	
-	public char hotkey(long maxWait) {return ' ';}
-	public String prompt(String Message, String Default) { 
+	@Override public void stdPrint(String msg){ onlyPrint(msg,false); }
+	@Override public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+	@Override public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void rawCharsOut(char[] c){ onlyPrint(new String(c),false); }
+	@Override public void print(String msg){ onlyPrint(msg,false); }
+	@Override public void promptPrint(String msg) { onlyPrint(msg,false); }
+	@Override public void print(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+	@Override public void println(String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void println(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void wraplessPrintln(String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void wraplessPrint(String msg){ onlyPrint(msg,false); }
+	@Override public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg+"\n",false); }
+	@Override public void colorOnlyPrint(String msg, boolean noCache){ onlyPrint(msg,false); }
+	@Override public void colorOnlyPrintln(String msg){ onlyPrint(msg+"\n",false); }
+	@Override public void colorOnlyPrint(String msg){ onlyPrint(msg,false); }
+	@Override public void setPromptFlag(boolean truefalse){}
+
+	@Override public char hotkey(long maxWait) {return ' ';}
+	@Override
+	public String prompt(String Message, String Default) {
 		onlyPrint(Message,false);
 		String msg  = readlineContinue();
 		if(msg.length()==0) return Default;
 		return msg;
 	}
+	@Override
 	public void prompt(InputCallback callBack)
 	{
 		callBack.showPrompt();
 		callBack.setInput(readlineContinue());
 		callBack.callBack();
 	}
-	public String prompt(String Message, String Default, long maxTime) { return prompt(Message,Default);}
-	public String prompt(String Message) { return prompt(Message,"");}
-	public String prompt(String Message, long maxTime) { return prompt(Message,"");}
+	@Override public String prompt(String Message, String Default, long maxTime) { return prompt(Message,Default);}
+	@Override public String prompt(String Message) { return prompt(Message,"");}
+	@Override public String prompt(String Message, long maxTime) { return prompt(Message,"");}
+	@Override
 	public boolean confirm(String Message, String Default)
 	{
 		if(Default.toUpperCase().startsWith("T")) Default="Y";
 		String YN=choose(Message,"YN",Default,0);
 		return(YN.equals("Y"))?true:false;
 	}
-	public boolean confirm(String Message, String Default, long maxTime) { return confirm(Message,Default,0);}
-	public String choose(String Message, String Choices, String Default) { 
+	@Override public boolean confirm(String Message, String Default, long maxTime) { return confirm(Message,Default,0);}
+	@Override
+	public String choose(String Message, String Choices, String Default) {
 		onlyPrint(Message,false);
 		String msg  = readlineContinue();
 		if(msg.length()==0) return Default;
@@ -156,10 +162,12 @@ public class FakeSession implements Session
 			return msg.toUpperCase().trim();
 		return Default;
 	}
+	@Override
 	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
 	throws IOException { return choose(Message,Choices,Default);}
-	public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
-	public String blockingIn(long timeoutMillis) { return readlineContinue();}
+	@Override public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
+	@Override public String blockingIn(long timeoutMillis) { return readlineContinue();}
+	@Override
 	public String readlineContinue()
 	{
 		synchronized(inputV)
@@ -170,64 +178,65 @@ public class FakeSession implements Session
 			return input;
 		}
 	}
-	
-	public void setBeingSnoopedBy(Session session, boolean onOff){}
-	public boolean isBeingSnoopedBy(Session S){return S==this;}
-	public int snoopSuspension(int x){return 0;}
-	
+
+	@Override public void setBeingSnoopedBy(Session session, boolean onOff){}
+	@Override public boolean isBeingSnoopedBy(Session S){return S==this;}
+	@Override public int snoopSuspension(int x){return 0;}
+
 	@SuppressWarnings("rawtypes")
 	public void cmdExit(MOB mob, Vector commands) throws Exception {}
-	public void stopSession(boolean t1, boolean t2, boolean t3){}
-	public boolean isStopped(){return false;}
-	
-	public boolean isAfk(){return false;}
-	public void setAfkFlag(boolean truefalse){}
+	@Override public void stopSession(boolean t1, boolean t2, boolean t3){}
+	@Override public boolean isStopped(){return false;}
+
+	@Override public boolean isAfk(){return false;}
+	@Override public void setAfkFlag(boolean truefalse){}
+	@Override
 	public String getAfkMessage()
 	{
 		if(bout!=null)
 			return new String(bout.toByteArray());
 		return "";
 	}
-	public void setAFKMessage(String str){}
-	
-	public List<String> getPreviousCMD() { return inputV;}
-	public MOB mob() { return mob;}
-	public void setMob(MOB newmob){ mob=newmob;}
-	public void setAccount(PlayerAccount account){}
-	
+	@Override public void setAFKMessage(String str){}
+
+	@Override public List<String> getPreviousCMD() { return inputV;}
+	@Override public MOB mob() { return mob;}
+	@Override public void setMob(MOB newmob){ mob=newmob;}
+	@Override public void setAccount(PlayerAccount account){}
+
 	public int convertEscape(final StringBuffer str, final int index) { return index+1;}
-	public void setCurrentColor(ColorState newcolor){}
-	public void setLastColor(ColorState newColor){}
-	public ColorState getCurrentColor(){return ColorLibrary.COLORSTATE_NORMAL;}
-	public ColorState getLastColor(){return ColorLibrary.COLORSTATE_NORMAL;}
-	public int getWrap(){return 80;}
-	
-	public String getAddress(){return "";}
-	public SessionStatus getStatus(){return SessionStatus.MAINLOOP;}
-	public void setStatus(SessionStatus newStatus){}
-	public boolean isWaitingForInput() { return false; }
-	public long getTotalMillis(){return 0;}
-	public long getTotalTicks(){return 0;}
-	public long getIdleMillis(){return 0;}
-	public long getMillisOnline(){return 0;}
-	public long getLastPKFight(){return 0;}
-	public void setLastPKFight(){}
-	public long getLastNPCFight(){return 0;}
-	public void setLastNPCFight(){}
-	public long getInputLoopTime(){return 0;}
-	public void setInputLoopTime(){}
-	public List<String> getLastMsgs(){return new Vector<String>();}
-	
-	public void setServerTelnetMode(int telnetCode, boolean onOff){}
-	public boolean getServerTelnetMode(int telnetCode){return false;}
-	public void setClientTelnetMode(int telnetCode, boolean onOff){}
-	public boolean getClientTelnetMode(int telnetCode){return false;}
-	public void changeTelnetMode(int telnetCode, boolean onOff){}
-	public void initTelnetMode(int mobbitmap){}
-	public int getSaveStatIndex() { return 0;}
-	public String getStat(String code) { return null;}
-	public String[] getStatCodes() { return new String[0];}
-	public boolean isStat(String code) { return false;}
-	public void setStat(String code, String val){}
-	public long activeTimeMillis() { return 0;}
+	@Override public void setCurrentColor(ColorState newcolor){}
+	@Override public void setLastColor(ColorState newColor){}
+	@Override public ColorState getCurrentColor(){return ColorLibrary.COLORSTATE_NORMAL;}
+	@Override public ColorState getLastColor(){return ColorLibrary.COLORSTATE_NORMAL;}
+	@Override public int getWrap(){return 80;}
+
+	@Override public String getAddress(){return "";}
+	@Override public SessionStatus getStatus(){return SessionStatus.MAINLOOP;}
+	@Override public void setStatus(SessionStatus newStatus){}
+	@Override public boolean isWaitingForInput() { return false; }
+	@Override public long getTotalMillis(){return 0;}
+	@Override public long getTotalTicks(){return 0;}
+	@Override public long getIdleMillis(){return 0;}
+	@Override public long getMillisOnline(){return 0;}
+	@Override public long getLastPKFight(){return 0;}
+	@Override public void setLastPKFight(){}
+	@Override public long getLastNPCFight(){return 0;}
+	@Override public void setLastNPCFight(){}
+	@Override public long getInputLoopTime(){return 0;}
+	@Override public void setInputLoopTime(){}
+	@Override public List<String> getLastMsgs(){return new Vector<String>();}
+
+	@Override public void setServerTelnetMode(int telnetCode, boolean onOff){}
+	@Override public boolean getServerTelnetMode(int telnetCode){return false;}
+	@Override public void setClientTelnetMode(int telnetCode, boolean onOff){}
+	@Override public boolean getClientTelnetMode(int telnetCode){return false;}
+	@Override public void changeTelnetMode(int telnetCode, boolean onOff){}
+	@Override public void initTelnetMode(int mobbitmap){}
+	@Override public int getSaveStatIndex() { return 0;}
+	@Override public String getStat(String code) { return null;}
+	@Override public String[] getStatCodes() { return new String[0];}
+	@Override public boolean isStat(String code) { return false;}
+	@Override public void setStat(String code, String val){}
+	@Override public long activeTimeMillis() { return 0;}
 }

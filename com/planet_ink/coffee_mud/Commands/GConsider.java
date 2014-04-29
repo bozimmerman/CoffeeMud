@@ -37,7 +37,7 @@ public class GConsider extends StdCommand
 	public GConsider(){}
 
 	private final String[] access={"GCONSIDER","GCOS","GCO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)
 	{
@@ -72,6 +72,7 @@ public class GConsider extends StdCommand
 	}
 
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -156,9 +157,9 @@ public class GConsider extends StdCommand
 			return false;
 		}
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
 
 }

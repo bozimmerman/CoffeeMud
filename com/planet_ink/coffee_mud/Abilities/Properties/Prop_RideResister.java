@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,17 @@ import java.util.*;
 */
 public class Prop_RideResister extends Prop_HaveResister
 {
-	public String ID() { return "Prop_RideResister"; }
-	public String name(){ return "Resistance due to riding";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_RideResister"; }
+	@Override public String name(){ return "Resistance due to riding";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Those mounted gain resistances: "+describeResistance(text());}
 
-	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
 
+	@Override
 	public boolean canResist(Environmental E)
 	{
 		if((affected instanceof Rideable)

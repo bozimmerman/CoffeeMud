@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Repulsion extends Spell
 {
-	public String ID() { return "Spell_Repulsion"; }
-	public String name(){return "Repulsion";}
-	public String displayText(){return "(Repulsion)";}
-	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public String ID() { return "Spell_Repulsion"; }
+	@Override public String name(){return "Repulsion";}
+	@Override public String displayText(){return "(Repulsion)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
 	public int amountRemaining=0;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -72,6 +73,7 @@ public class Spell_Repulsion extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID == Tickable.TICKID_MOB)
@@ -87,7 +89,8 @@ public class Spell_Repulsion extends Spell
 		}
 		return super.tick(ticking, tickID);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -103,6 +106,7 @@ public class Spell_Repulsion extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

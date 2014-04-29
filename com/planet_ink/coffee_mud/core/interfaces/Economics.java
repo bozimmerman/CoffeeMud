@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,22 +73,22 @@ public interface Economics extends Environmental
 	 * @param factors the string describing price prejudicing
 	 */
 	public void setItemPricingAdjustments(String[] factors);
-	/** 
+	/**
 	 * Returns the mask used to determine if a customer is ignored by the ShopKeeper.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @return the mask used 
+	 * @return the mask used
 	 */
 	public String finalIgnoreMask();
-	/** 
+	/**
 	 * Returns the mask used to determine if a customer is ignored by the ShopKeeper.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @return the mask used 
+	 * @return the mask used
 	 */
 	public String ignoreMask();
-	/** 
+	/**
 	 * Sets the mask used to determine if a customer is ignored by the ShopKeeper.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @param factors the mask to use 
+	 * @param factors the mask to use
 	 */
 	public void setIgnoreMask(String factors);
 	/**
@@ -140,23 +140,23 @@ public interface Economics extends Environmental
 	 */
 	public void setDevalueRate(String factors);
 	/**
-	 * Returns the number of ticks between totally resetting this ShopKeepers 
+	 * Returns the number of ticks between totally resetting this ShopKeepers
 	 * inventory back to what it was.
-	 * 
+	 *
 	 * @return the number of ticks between total resets of inventory
 	 */
 	public int finalInvResetRate();
 	/**
-	 * Returns the number of ticks between totally resetting this ShopKeepers 
+	 * Returns the number of ticks between totally resetting this ShopKeepers
 	 * inventory back to what it was.
-	 * 
+	 *
 	 * @return the number of ticks between total resets of inventory
 	 */
 	public int invResetRate();
 	/**
-	 * Sets the number of ticks between totally resetting this ShopKeepers 
+	 * Sets the number of ticks between totally resetting this ShopKeepers
 	 * inventory back to what it was.
-	 * 
+	 *
 	 * @param ticks the number of ticks between total resets of inventory
 	 */
 	public void setInvResetRate(int ticks);

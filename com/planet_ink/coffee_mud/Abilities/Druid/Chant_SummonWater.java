@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonWater extends Chant
 {
-	public String ID() { return "Chant_SummonWater"; }
-	public String name(){ return "Summon Water";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonWater"; }
+	@Override public String name(){ return "Summon Water";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Room SpringLocation=null;
 	protected Item littleSpring=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(SpringLocation==null)
@@ -64,6 +65,7 @@ public class Chant_SummonWater extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

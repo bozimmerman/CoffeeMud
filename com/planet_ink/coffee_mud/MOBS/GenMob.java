@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenMob extends StdMOB
 {
-	public String ID(){return "GenMob";}
+	@Override public String ID(){return "GenMob";}
 	public GenMob()
 	{
 		super();
@@ -50,8 +50,9 @@ public class GenMob extends StdMOB
 		recoverCharStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -61,17 +62,20 @@ public class GenMob extends StdMOB
 		return super.text();
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -79,12 +83,14 @@ public class GenMob extends StdMOB
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENMOBCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMob)) return false;

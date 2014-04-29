@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class ActiveTicker extends StdBehavior
 {
-	public String ID(){return "ActiveTicker";}
-	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
+	@Override public String ID(){return "ActiveTicker";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 
 	protected int minTicks=10;
 	protected int maxTicks=30;
@@ -48,6 +48,7 @@ public class ActiveTicker extends StdBehavior
 		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		parms=newParms;
@@ -65,7 +66,7 @@ public class ActiveTicker extends StdBehavior
 		rebuilt.append(" chance="+chance);
 		return rebuilt.toString();
 	}
-	
+
 	public String getParmsNoTicks()
 	{
 		String parms=getParms();

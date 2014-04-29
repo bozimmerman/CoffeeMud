@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class DesertMaze extends StdMaze
 {
-	public String ID(){return "DesertMaze";}
+	@Override public String ID(){return "DesertMaze";}
 	public DesertMaze()
 	{
 		super();
@@ -43,9 +43,9 @@ public class DesertMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	protected int baseThirst(){return 4;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	@Override protected int baseThirst(){return 4;}
 
-	public String getGridChildLocaleID(){return "Desert";}
-	public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Desert";}
+	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

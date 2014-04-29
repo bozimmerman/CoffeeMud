@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,18 @@ import java.util.*;
 */
 public class Monk extends StdCharClass
 {
-	public String ID(){return "Monk";}
-	public String name(){return "Monk";}
-	public String baseClass(){return "Fighter";}
-	public int getBonusPracLevel(){return -1;}
-	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 20;}
-	public int getPracsFirstLevel(){return 3;}
-	public int getTrainsFirstLevel(){return 4;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?7))"; }
-	public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	@Override public String ID(){return "Monk";}
+	@Override public String name(){return "Monk";}
+	@Override public String baseClass(){return "Fighter";}
+	@Override public int getBonusPracLevel(){return -1;}
+	@Override public int getBonusAttackLevel(){return 1;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getLevelsPerBonusDamage(){ return 20;}
+	@Override public int getPracsFirstLevel(){return 3;}
+	@Override public int getTrainsFirstLevel(){return 4;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?7))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 
 	public Monk()
 	{
@@ -54,6 +54,7 @@ public class Monk extends StdCharClass
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -75,102 +76,105 @@ public class Monk extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_Kick",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_MonkeyPunch",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Hide",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Climb",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_ArmorTweaking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Disarm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false,CMParms.parseSemicolons("Fighter_MonkeyPunch",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BackHand",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_BodyToss",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_PressurePoints",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false,CMParms.parseSemicolons("Fighter_AxKick",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
-		
+
 /**/		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Detection",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_SideKick",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_BodyShield",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CircleParry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_KiStrike",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_AttackHalf",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Tumble",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Snatch",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Endurance",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Gouge",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_CircleTrip",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Listen",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	private final String[] raceRequiredList=new String[]{
 			"Human","Humanoid","Elf","Goblinoid"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public boolean anyWeapons(final MOB mob)
 	{
 		return (mob.fetchWieldedItem()!=null) || (mob.fetchHeldItem()!=null);
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 	}
-	
+
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -193,6 +197,7 @@ public class Monk extends StdCharClass
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -203,7 +208,8 @@ public class Monk extends StdCharClass
 			affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 			+(affectableStats.getClassLevel(this)*2));
 	}
-	
+
+	@Override
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 		super.level(mob, newAbilityIDs);
@@ -212,6 +218,7 @@ public class Monk extends StdCharClass
 		mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -232,6 +239,7 @@ public class Monk extends StdCharClass
 		}
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		return null;

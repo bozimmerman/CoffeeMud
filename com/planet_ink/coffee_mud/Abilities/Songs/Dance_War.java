@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_War extends Dance
 {
-	public String ID() { return "Dance_War"; }
-	public String name(){ return "War";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_War"; }
+	@Override public String name(){ return "War";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -51,6 +52,7 @@ public class Dance_War extends Dance
 		mob.curState().setMana(0);
 		return true;
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +62,7 @@ public class Dance_War extends Dance
 		affectableStats.setArmor(affectableStats.armor()-(bonus*2));
 		affectableStats.setDamage(affectableStats.damage()+(bonus/3));
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

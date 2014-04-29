@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,9 @@ import java.util.*;
 */
 public class AccountNext extends StdWebMacro
 {
-	public String name() { return "AccountNext"; }
+	@Override public String name() { return "AccountNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -43,7 +44,7 @@ public class AccountNext extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("ACCOUNT");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("ACCOUNT");
 			return "";
 		}

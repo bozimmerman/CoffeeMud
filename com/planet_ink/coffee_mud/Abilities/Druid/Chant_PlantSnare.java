@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,22 +36,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_PlantSnare extends Chant
 {
-	public String ID() { return "Chant_PlantSnare"; }
-	public String name(){ return "Plant Snare";}
-	public String displayText(){return "(Snared)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_PlantSnare"; }
+	@Override public String name(){ return "Plant Snare";}
+	@Override public String displayText(){return "(Snared)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	public int amountRemaining=0;
-	public long flags(){return Ability.FLAG_BINDING;}
+	@Override public long flags(){return Ability.FLAG_BINDING;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -80,6 +82,7 @@ public class Chant_PlantSnare extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -95,7 +98,8 @@ public class Chant_PlantSnare extends Chant
 			CMLib.commands().postStand(mob,true);
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -118,7 +122,8 @@ public class Chant_PlantSnare extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -148,7 +153,7 @@ public class Chant_PlantSnare extends Chant
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		
+
 		if(success)
 		{
 			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?"))

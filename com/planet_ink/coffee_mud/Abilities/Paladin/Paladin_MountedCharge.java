@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_MountedCharge extends StdAbility
 {
-	public String ID() { return "Paladin_MountedCharge"; }
-	public String name(){ return "Mounted Charge";}
+	@Override public String ID() { return "Paladin_MountedCharge"; }
+	@Override public String name(){ return "Mounted Charge";}
 	private static final String[] triggerStrings = {"MOUNTEDCHARGE","MCHARGE"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int minRange(){return 1;}
-	public int maxRange(){return 99;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int minRange(){return 1;}
+	@Override public int maxRange(){return 99;}
 	public boolean done=false;
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -59,6 +60,7 @@ public class Paladin_MountedCharge extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -66,6 +68,7 @@ public class Paladin_MountedCharge extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -75,6 +78,7 @@ public class Paladin_MountedCharge extends StdAbility
 		affectableStats.setDamage(affectableStats.damage()+xlvl);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -86,7 +90,8 @@ public class Paladin_MountedCharge extends StdAbility
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean notInCombat=!mob.isInCombat();

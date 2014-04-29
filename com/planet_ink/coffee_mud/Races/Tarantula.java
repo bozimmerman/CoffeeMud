@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,40 +34,42 @@ import java.util.*;
 */
 public class Tarantula extends StdRace
 {
-	public String ID(){	return "Tarantula"; }
-	public String name(){ return "Tarantula"; }
-	public int shortestMale(){return 2;}
-	public int shortestFemale(){return 2;}
-	public int heightVariance(){return 0;}
-	public int lightestWeight(){return 1;}
-	public int weightVariance(){return 0;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Arachnid";}
+	@Override public String ID(){	return "Tarantula"; }
+	@Override public String name(){ return "Tarantula"; }
+	@Override public int shortestMale(){return 2;}
+	@Override public int shortestFemale(){return 2;}
+	@Override public int heightVariance(){return 0;}
+	@Override public int lightestWeight(){return 1;}
+	@Override public int weightVariance(){return 0;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Arachnid";}
 	private String[]racialAbilityNames={"Poison_Venom"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={25};
 	private boolean[]racialAbilityQuals={false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,1,1,1,1,2,2};
-	public int[] getAgingChart(){return agingChart;}
-		
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -76,14 +78,17 @@ public class Tarantula extends StdRace
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -92,10 +97,11 @@ public class Tarantula extends StdRace
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return "baby "+name().toLowerCase();
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -108,6 +114,7 @@ public class Tarantula extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

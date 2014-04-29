@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenDrink extends StdDrink
 {
-	public String ID(){    return "GenDrink";}
+	@Override public String ID(){    return "GenDrink";}
 	protected String	readableText="";
 	public GenDrink()
 	{
@@ -55,12 +55,14 @@ public class GenDrink extends StdDrink
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
@@ -68,18 +70,21 @@ public class GenDrink extends StdDrink
 		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_FRESHWATER;
 		return CMath.s_int(readableText);
 	}
-	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
+	@Override public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
 
+	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -88,6 +93,7 @@ public class GenDrink extends StdDrink
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -105,6 +111,7 @@ public class GenDrink extends StdDrink
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -128,6 +135,7 @@ public class GenDrink extends StdDrink
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -135,6 +143,7 @@ public class GenDrink extends StdDrink
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -148,6 +157,7 @@ public class GenDrink extends StdDrink
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenDrink)) return false;

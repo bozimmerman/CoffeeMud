@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,18 +37,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_AtemiStrike extends MonkSkill
 {
-	public String ID() { return "Fighter_AtemiStrike"; }
-	public String name(){ return "Atemi Strike";}
-	public String displayText(){return "(Atemi Strike)";}
+	@Override public String ID() { return "Fighter_AtemiStrike"; }
+	@Override public String name(){ return "Atemi Strike";}
+	@Override public String displayText(){return "(Atemi Strike)";}
 	private static final String[] triggerStrings = {"ATEMI"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0; }
-	protected int overrideMana(){return 100; }
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0; }
+	@Override protected int overrideMana(){return 100; }
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -65,6 +66,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -84,6 +86,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 		}
 		return super.castingQuality(mob,target);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

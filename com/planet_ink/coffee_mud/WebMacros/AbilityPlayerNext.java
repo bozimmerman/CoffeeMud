@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityPlayerNext extends StdWebMacro
 {
-	public String name() { return "AbilityPlayerNext"; }
+	@Override public String name() { return "AbilityPlayerNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -44,7 +45,7 @@ public class AbilityPlayerNext extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
@@ -54,7 +55,7 @@ public class AbilityPlayerNext extends StdWebMacro
 		String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
-		
+
 		String lastID="";
 		String playerName=httpReq.getUrlParameter("PLAYER");
 		MOB M=null;
@@ -86,7 +87,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			String className=httpReq.getUrlParameter("CLASS");
-			
+
 			if((className!=null)&&(className.length()>0))
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
@@ -129,7 +130,7 @@ public class AbilityPlayerNext extends StdWebMacro
 						okToShow=false;
 				}
 			}
-			if(parms.containsKey("NOT")) 
+			if(parms.containsKey("NOT"))
 				okToShow=!okToShow;
 			if(okToShow)
 			{

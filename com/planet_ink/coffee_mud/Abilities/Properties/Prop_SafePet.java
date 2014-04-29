@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,21 +34,24 @@ import java.util.*;
 */
 public class Prop_SafePet extends Property
 {
-	public String ID() { return "Prop_SafePet"; }
-	public String name(){ return "Unattackable Pets";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_SafePet"; }
+	@Override public String name(){ return "Unattackable Pets";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected boolean disabled=false;
 	protected String displayMessage="Awww, leave <T-NAME> alone.";
-	
+
+	@Override
 	public String accountForYourself()
 	{ return "Unattackable";	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNATTACKABLE);
 	}
-	
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -58,7 +61,8 @@ public class Prop_SafePet extends Property
 			displayMessage=newDisplayMsg.trim();
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)

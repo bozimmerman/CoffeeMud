@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface MsgListener
 {
-	/** 
+	/**
 	 * The general message event handler for the object.  Messages passed herein
 	 * may not necessarily be FOR this object, or from it, but will almost
 	 * always represent events happening in the same room.  The messages
@@ -53,10 +53,10 @@ public interface MsgListener
 	 * The general message event previewer for the object.  Messages passed herein
 	 * are in a pending state, and may be safely modified or rejected without fear
 	 * that they might be in the middle of being executed.  Messages passed herein
-	 * may not necessarily be FOR or FROM this object, but will almost always  
+	 * may not necessarily be FOR or FROM this object, but will almost always
 	 * represent events which want to happen in the same rom.  This method should
 	 * always always return true UNLESS this message needs to be canceled, in which
-	 * case it is necessary to tell the mob initiating the event (CMMsg.source()) 
+	 * case it is necessary to tell the mob initiating the event (CMMsg.source())
 	 * why it is being cancelled.  Every game event goes through these methods.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()

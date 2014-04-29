@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,12 @@ import java.util.*;
 public interface ProtocolLibrary extends CMLibrary
 {
 	public String msp(final String soundName, final int priority);
-	
+
 	public String[] mxpImagePath(String fileName);
 	public String mxpImage(final Environmental E, final String parms);
 	public String mxpImage(final Environmental E, final String parms, final String pre, final String post);
 	public String getDefaultMXPImage(final Object O);
-	
+
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables);
 	public byte[] pingMsdp(final Session session, final Map<Object,Object> reportables);
 

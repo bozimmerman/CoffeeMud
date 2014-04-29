@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Wave extends Prayer
 {
-	public String ID() { return "Prayer_Wave"; }
-	public String name(){ return "Wave";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "(Waved)";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prayer_Wave"; }
+	@Override public String name(){ return "Wave";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String displayText(){ return "(Waved)";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -78,7 +79,7 @@ public class Prayer_Wave extends Prayer
 
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
 		for(Iterator e=h.iterator();e.hasNext();)
@@ -93,7 +94,7 @@ public class Prayer_Wave extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					final Room R=target.location();
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");
 					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{

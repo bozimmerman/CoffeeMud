@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DesecrateLand extends Prayer
 {
-	public String ID() { return "Prayer_DesecrateLand"; }
-	public String name(){return "Desecrate Land";}
-	public String displayText(){return "(Desecrate Land)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_DesecrateLand"; }
+	@Override public String name(){return "Desecrate Land";}
+	@Override public String displayText(){return "(Desecrate Land)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -63,6 +64,7 @@ public class Prayer_DesecrateLand extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();

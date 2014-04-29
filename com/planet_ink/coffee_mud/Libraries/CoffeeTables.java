@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 {
-	public String ID(){return "CoffeeTables";}
+	@Override public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
-	
+
+	@Override
 	public void update()
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
@@ -44,7 +45,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		if(todays!=null)
 			CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
 	}
-	
+
+	@Override
 	public void bump(CMObject E, int type)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -115,8 +117,9 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		}
 		todays.bumpVal(E,type);
 	}
-	
-	public boolean activate() 
+
+	@Override
+	public boolean activate()
 	{
 		if(serviceClient==null)
 		{
@@ -125,8 +128,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		}
 		return true;
 	}
-	
-	@Override public boolean tick(Tickable ticking, int tickID) 
+
+	@Override public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
@@ -156,8 +159,9 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		}
 		return true;
 	}
-	
-	public boolean shutdown() 
+
+	@Override
+	public boolean shutdown()
 	{
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{

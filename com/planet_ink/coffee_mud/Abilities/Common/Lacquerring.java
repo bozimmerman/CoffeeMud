@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Lacquerring extends CommonSkill
 {
-	public String ID() { return "Lacquerring"; }
-	public String name(){ return "Lacquering";}
+	@Override public String ID() { return "Lacquerring"; }
+	@Override public String name(){ return "Lacquering";}
 	private static final String[] triggerStrings = {"LACQUERING","LACQUER"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 
 	protected Item found=null;
 	protected String writing="";
@@ -90,6 +90,7 @@ public class Lacquerring extends CommonSkill
 		return CMParms.combine(V,0);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -124,6 +125,7 @@ public class Lacquerring extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

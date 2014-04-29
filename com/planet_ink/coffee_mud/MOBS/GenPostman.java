@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPostman extends StdPostman
 {
-	public String ID(){return "GenPostman";}
+	@Override public String ID(){return "GenPostman";}
 	private String PrejudiceFactors="";
 	private String postalChain="main";
 	private String IgnoreMask="";
@@ -47,8 +47,9 @@ public class GenPostman extends StdPostman
 		setDisplayText("A generic postman stands here.");
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -58,13 +59,14 @@ public class GenPostman extends StdPostman
 		return super.text();
 	}
 
-	public String prejudiceFactors(){return PrejudiceFactors;}
-	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	public String ignoreMask(){return IgnoreMask;}
-	public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	public String postalChain(){return postalChain;}
-	public void setPostalChain(String name){postalChain=name;}
+	@Override public String prejudiceFactors(){return PrejudiceFactors;}
+	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+	@Override public String ignoreMask(){return IgnoreMask;}
+	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
+	@Override public String postalChain(){return postalChain;}
+	@Override public void setPostalChain(String name){postalChain=name;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -75,6 +77,7 @@ public class GenPostman extends StdPostman
 									 "POSTCHAIN","POSTMIN","POSTLBS",
 									 "POSTHOLD","POSTNEW","POSTHELD",
 									 "IGNOREMASK","PRICEMASKS"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -95,6 +98,7 @@ public class GenPostman extends StdPostman
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -117,6 +121,7 @@ public class GenPostman extends StdPostman
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -124,6 +129,7 @@ public class GenPostman extends StdPostman
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -137,6 +143,7 @@ public class GenPostman extends StdPostman
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPostman)) return false;

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,15 +33,16 @@ import java.util.*;
 */
 public class Trap_Darkfall extends StdTrap
 {
-	public String ID() { return "Trap_Darkfall"; }
-	public String name(){ return "darkfall";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 2;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_Darkfall"; }
+	@Override public String name(){ return "darkfall";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 2;}
+	@Override public String requiresToSet(){return "";}
 
-	public int baseRejuvTime(int level){return 20;}
+	@Override public int baseRejuvTime(int level){return 20;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -54,6 +55,7 @@ public class Trap_Darkfall extends StdTrap
 			disabled=false;
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

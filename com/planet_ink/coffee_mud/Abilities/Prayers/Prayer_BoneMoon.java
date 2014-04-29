@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_BoneMoon extends Prayer
 {
-	public String ID() { return "Prayer_BoneMoon"; }
-	public String name(){ return "Bone Moon";}
-	public String displayText(){ return "(Bone Moon)";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_MOONALTERING;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_BoneMoon"; }
+	@Override public String name(){ return "Bone Moon";}
+	@Override public String displayText(){ return "(Bone Moon)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_MOONALTERING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int level=1;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Prayer_BoneMoon extends Prayer
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -88,7 +90,8 @@ public class Prayer_BoneMoon extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-   public int castingQuality(MOB mob, Physical target)
+   @Override
+public int castingQuality(MOB mob, Physical target)
    {
 		if(mob!=null)
 		{
@@ -108,7 +111,8 @@ public class Prayer_BoneMoon extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-   
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

@@ -20,7 +20,7 @@ limitations under the License.
 
 /**
  * Static enum of the supported mime types and a mapping mechanism.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -231,7 +231,7 @@ public enum MIMEType
 	private final String type;
 	private final String ext;
 	private final String[] parts;
-	
+
 	private MIMEType(String ext, String type)
 	{
 		this.ext=ext;
@@ -250,9 +250,9 @@ public enum MIMEType
 	{
 		return type;
 	}
-	
+
 	// below here are static mime-type utility functions
-	
+
 	private static final Hashtable<String,MIMEType> hashedTypes;
 	static
 	{
@@ -260,7 +260,7 @@ public enum MIMEType
 		for(MIMEType type : MIMEType.values())
 			hashedTypes.put(type.getExt(), type);
 	}
-	
+
 	/**
 	 * Finds an appropriate mime type given the file path.
 	 * It will extract the extension, if any, to find it.
@@ -279,7 +279,7 @@ public enum MIMEType
 			return hashedTypes.get(extension);
 		return MIMEType.DEFAULT;
 	}
-	
+
 	/**
 	 * Returns true if the received content-type map matches this MIMEType.
 	 * @param mask a mime-type mask sent as part of a request

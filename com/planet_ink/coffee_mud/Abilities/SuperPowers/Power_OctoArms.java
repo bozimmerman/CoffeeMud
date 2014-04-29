@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,17 @@ import java.util.*;
 
 public class Power_OctoArms extends SuperPower
 {
-	public String ID() { return "Power_OctoArms"; }
-	public String name(){ return "Octo-Arms";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected  int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Power_OctoArms"; }
+	@Override public String name(){ return "Octo-Arms";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected  int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	protected Weapon naturalWeapon=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -77,7 +78,8 @@ public class Power_OctoArms extends SuperPower
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -94,7 +96,8 @@ public class Power_OctoArms extends SuperPower
 			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage());
 		return true;
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

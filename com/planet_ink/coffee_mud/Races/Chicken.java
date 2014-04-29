@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,25 +35,26 @@ import java.util.*;
 */
 public class Chicken extends StdRace
 {
-	public String ID(){	return "Chicken"; }
-	public String name(){ return "Chicken"; }
-	public int shortestMale(){return 13;}
-	public int shortestFemale(){return 13;}
-	public int heightVariance(){return 6;}
-	public int lightestWeight(){return 20;}
-	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Avian";}
+	@Override public String ID(){	return "Chicken"; }
+	@Override public String name(){ return "Chicken"; }
+	@Override public int shortestMale(){return 13;}
+	@Override public int shortestFemale(){return 13;}
+	@Override public int heightVariance(){return 6;}
+	@Override public int lightestWeight(){return 20;}
+	@Override public int weightVariance(){return 5;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Avian";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 
 	{
@@ -62,14 +63,17 @@ public class Chicken extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,4);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "walks in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "walks";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -83,6 +87,7 @@ public class Chicken extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -114,11 +119,12 @@ public class Chicken extends StdRace
 				case 'F': case 'f': return "old hen";
 				default: return super.makeMobName(gender, age);
 				}
-			default : 
+			default :
 				return super.makeMobName(gender, age);
 		}
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -155,7 +161,8 @@ public class Chicken extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -190,7 +197,8 @@ public class Chicken extends StdRace
 		}
 		return true;
 	}
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

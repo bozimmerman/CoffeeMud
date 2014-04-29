@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,43 +35,45 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Dryad extends StdRace
 {
-	public String ID(){	return "Dryad"; }
-	public String name(){ return "Dryad"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 59;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 90;}
-	public int weightVariance(){return 90;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Fairy-kin";}
+	@Override public String ID(){	return "Dryad"; }
+	@Override public String name(){ return "Dryad"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 59;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 90;}
+	@Override public int weightVariance(){return 90;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Fairy-kin";}
 	private String[]culturalAbilityNames={"Fey"};
 	private int[]culturalAbilityProficiencies={50};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"Chant_GrowOak","Druid_PlantForm"};
 	private int[]racialAbilityLevels={1, 10};
 	private int[]racialAbilityProficiencies={100, 60};
 	private boolean[]racialAbilityQuals={false,false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -79,6 +81,7 @@ public class Dryad extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+5);
 		affectableStats.setStat(CharStats.STAT_GENDER,'F');
 	}
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -105,15 +108,17 @@ public class Dryad extends StdRace
 			p1.setDescription("Obviously fine craftmenship, with delicate folds and intricate designs.  It looks very alluring!");
 			p1.text();
 			outfitChoices.add(p1);
-			
+
 			Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -150,6 +155,7 @@ public class Dryad extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

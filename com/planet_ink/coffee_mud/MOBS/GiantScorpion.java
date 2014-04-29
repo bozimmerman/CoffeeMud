@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GiantScorpion extends StdMOB
 {
-	public String ID(){return "GiantScorpion";}
+	@Override public String ID(){return "GiantScorpion";}
 	public int stingDown=5;
 
 	public GiantScorpion()
@@ -73,6 +73,7 @@ public class GiantScorpion extends StdMOB
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		// ===== are we in combat?

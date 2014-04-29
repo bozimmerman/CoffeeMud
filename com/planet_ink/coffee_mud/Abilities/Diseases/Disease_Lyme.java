@@ -34,23 +34,24 @@ import java.util.*;
 
 public class Disease_Lyme extends Disease
 {
-	public String ID() { return "Disease_Lyme"; }
-	public String name(){ return "Lyme Disease";}
-	public String displayText(){ return "(Lyme Disease)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Lyme"; }
+	@Override public String name(){ return "Lyme Disease";}
+	@Override public String displayText(){ return "(Lyme Disease)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
-	protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
-	public int difficultyLevel(){return 5;}
+	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
+	@Override public int difficultyLevel(){return 5;}
 	int days=0;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -75,6 +76,7 @@ public class Disease_Lyme extends Disease
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -97,7 +99,7 @@ public class Disease_Lyme extends Disease
 				A=CMClass.getAbility("Disease_Arthritis");
 			else
 				A=CMClass.getAbility("Disease_Fever");
-			if(A!=null) 
+			if(A!=null)
 			{
 				A.invoke(diseaser,mob,true,0);
 				A=mob.fetchEffect(A.ID());

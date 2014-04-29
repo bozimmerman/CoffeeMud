@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CureFatigue extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_CureFatigue"; }
-	public String name(){ return "Cure Fatigue";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
+	@Override public String ID() { return "Prayer_CureFatigue"; }
+	@Override public String name(){ return "Cure Fatigue";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof MOB)
 				&&(((((MOB)item).curState()).getFatigue()>0)
 						||((((MOB)item).curState()).getMovement()<(((MOB)item).maxState()).getMovement()));
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -61,7 +63,8 @@ public class Prayer_CureFatigue extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

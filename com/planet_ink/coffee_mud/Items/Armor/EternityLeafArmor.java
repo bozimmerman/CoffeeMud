@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class EternityLeafArmor extends StdArmor
 {
-	public String ID(){	return "EternityLeafArmor";}
+	@Override public String ID(){	return "EternityLeafArmor";}
 	public EternityLeafArmor()
 	{
 		super();
@@ -51,6 +51,7 @@ public class EternityLeafArmor extends StdArmor
 		material=RawMaterial.RESOURCE_SEAWEED;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Mercy extends Song
 {
-	public String ID() { return "Song_Mercy"; }
-	public String name(){ return "Mercy";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Mercy"; }
+	@Override public String name(){ return "Mercy";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	protected Room lastRoom=null;
 	protected int count=3;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -61,6 +62,7 @@ public class Song_Mercy extends Song
 			count--;
 		return true;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=(MOB)affected;
@@ -88,6 +90,7 @@ public class Song_Mercy extends Song
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		count=3;

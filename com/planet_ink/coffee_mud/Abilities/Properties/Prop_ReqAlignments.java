@@ -35,20 +35,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqAlignments extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqAlignments"; }
-	public String name(){ return "Alignment Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqAlignments"; }
+	@Override public String name(){ return "Alignment Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		noFollow=false;
@@ -85,6 +87,7 @@ public class Prop_ReqAlignments extends Property implements TriggeredAffect
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

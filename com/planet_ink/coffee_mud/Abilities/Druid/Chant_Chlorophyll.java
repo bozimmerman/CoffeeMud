@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_Chlorophyll extends Chant
 {
-	public String ID() { return "Chant_Chlorophyll"; }
-	public String name(){return "Chlorophyll";}
-	public String displayText(){return "(Chlorophyll)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Chlorophyll"; }
+	@Override public String name(){return "Chlorophyll";}
+	@Override public String displayText(){return "(Chlorophyll)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,6 +58,7 @@ public class Chant_Chlorophyll extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> skin returns to a normal color.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -79,6 +81,7 @@ public class Chant_Chlorophyll extends Chant
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -92,6 +95,7 @@ public class Chant_Chlorophyll extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class Prop_NoPurge extends Property
 {
-	public String ID() { return "Prop_NoPurge"; }
-	public String name(){ return "Prevents automatic purging";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_NoPurge"; }
+	@Override public String name(){ return "Prevents automatic purging";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -68,6 +69,7 @@ public class Prop_NoPurge extends Property
 				((Item)affected).setExpirationDate(0);
 		}
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

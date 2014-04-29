@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Dexterity extends Song
 {
-	public String ID() { return "Song_Dexterity"; }
-	public String name(){ return "Dexterity";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String ID() { return "Song_Dexterity"; }
+	@Override public String name(){ return "Dexterity";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int amount=0;
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -51,6 +52,7 @@ public class Song_Dexterity extends Song
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(amount+super.getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -63,7 +65,8 @@ public class Song_Dexterity extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));

@@ -37,20 +37,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Merchant extends CommonSkill implements ShopKeeper
 {
-	public String ID() { return "Merchant"; }
-	public String name(){ return "Marketeering";}
+	@Override public String ID() { return "Merchant"; }
+	@Override public String name(){ return "Marketeering";}
 	private static final String[] triggerStrings = {"MARKET"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int overrideMana(){return 5;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int overrideMana(){return 5;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 
 	protected CoffeeShop shop=((CoffeeShop)CMClass.getCommon("DefaultCoffeeShop")).build(this);
-	public CoffeeShop getShop(){return shop;}
+	@Override public CoffeeShop getShop(){return shop;}
 
 	public Merchant()
 	{
@@ -59,18 +59,20 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		isAutoInvoked();
 	}
+	@Override
 	public String text()
 	{
 		return shop.makeXML();
 	}
 	private String budget="100000";
-	public String budget(){return budget;}
-	public void setBudget(String factors){budget=factors;}
+	@Override public String budget(){return budget;}
+	@Override public void setBudget(String factors){budget=factors;}
 	private String devalueRate="";
-	public String devalueRate(){return devalueRate;}
-	public void setDevalueRate(String factors){devalueRate=factors;}
-	public int invResetRate(){return 0;}
-	public void setInvResetRate(int ticks){}
+	@Override public String devalueRate(){return devalueRate;}
+	@Override public void setDevalueRate(String factors){devalueRate=factors;}
+	@Override public int invResetRate(){return 0;}
+	@Override public void setInvResetRate(int ticks){}
+	@Override
 	public void setMiscText(String text)
 	{
 		synchronized(this)
@@ -79,6 +81,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
 		if(E instanceof MOB)
@@ -86,6 +89,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	private long whatIsSoldMask=ShopKeeper.DEAL_ANYTHING;
+	@Override
 	public boolean isSold(int mask)
 	{
 		if(mask==0) return whatIsSoldMask==0;
@@ -93,6 +97,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return true;
 		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
 	}
+	@Override
 	public void addSoldType(int mask)
 	{
 		if(mask==0)
@@ -101,7 +106,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if((whatIsSoldMask>0)&&(whatIsSoldMask<256))
 				whatIsSoldMask=(CMath.pow(2,whatIsSoldMask-1)<<8);
-			
+
 			for(int c=0;c<ShopKeeper.DEAL_CONFLICTS.length;c++)
 				for(int c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
 					if(ShopKeeper.DEAL_CONFLICTS[c][c1]==mask)
@@ -112,26 +117,27 @@ public class Merchant extends CommonSkill implements ShopKeeper
 								addSoldType(-ShopKeeper.DEAL_CONFLICTS[c][c1]);
 						break;
 					}
-			
+
 			if(mask>0)
 				whatIsSoldMask|=(CMath.pow(2,mask-1)<<8);
 			else
 				whatIsSoldMask=CMath.unsetb(whatIsSoldMask,(CMath.pow(2,(-mask)-1)<<8));
 		}
 	}
-	public long getWhatIsSoldMask(){return whatIsSoldMask;}
-	public void setWhatIsSoldMask(long newSellCode){whatIsSoldMask=newSellCode;}
-	public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
-	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
+	@Override public long getWhatIsSoldMask(){return whatIsSoldMask;}
+	@Override public void setWhatIsSoldMask(long newSellCode){whatIsSoldMask=newSellCode;}
+	@Override public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
+	@Override public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
 	private String prejudice="";
-	public String prejudiceFactors(){return prejudice;}
-	public void setPrejudiceFactors(String factors){prejudice=factors;}
+	@Override public String prejudiceFactors(){return prejudice;}
+	@Override public void setPrejudiceFactors(String factors){prejudice=factors;}
 	private String ignore="";
-	public String ignoreMask(){return ignore;}
-	public void setIgnoreMask(String factors){ignore=factors;}
+	@Override public String ignoreMask(){return ignore;}
+	@Override public void setIgnoreMask(String factors){ignore=factors;}
 	private MOB staticMOB=null;
 	private String[] pricingAdjustments=new String[0];
-	public String[] itemPricingAdjustments(){ return pricingAdjustments;}
+	@Override public String[] itemPricingAdjustments(){ return pricingAdjustments;}
+	@Override
 	public void setItemPricingAdjustments(String[] factors)
 	{
 		if((!(affected instanceof MOB))||(!((MOB)affected).isMonster()))
@@ -145,24 +151,28 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
+	@Override
 	public int finalInvResetRate()
 	{
 		if((invResetRate()!=0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
+	@Override
 	public String finalPrejudiceFactors()
 	{
 		if((prejudiceFactors().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
+	@Override
 	public String finalIgnoreMask()
 	{
 		if((ignoreMask().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
+	@Override
 	public String[] finalItemPricingAdjustments()
 	{
 		if(((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
@@ -170,12 +180,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
 	}
+	@Override
 	public String finalBudget()
 	{
 		if((budget().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return budget();
 		return getStartArea().finalBudget();
 	}
+	@Override
 	public String finalDevalueRate()
 	{
 		if((devalueRate().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
@@ -183,13 +195,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return getStartArea().finalDevalueRate();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked())) // override all normal common skill behavior!!
 			return false;
 		return true;
 	}
-	
+
 	public MOB deriveMerchant(MOB roomHelper)
 	{
 		if(affected ==null) return null;
@@ -225,6 +238,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return staticMOB;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB merchantM=deriveMerchant(msg.source());
@@ -339,6 +353,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB merchantM=deriveMerchant(msg.source());
@@ -373,7 +388,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((msg.tool() instanceof Physical)
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-					
+
 					CMLib.commands().postSay(merchantM,msg.source(),"" +
 							"Interested in "+msg.tool().name()+
 							"? Here is some information for you:\n\rLevel "+
@@ -457,6 +472,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -589,6 +605,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return true;
 	}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob instanceof ShopKeeper) return false;

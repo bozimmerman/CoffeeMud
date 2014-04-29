@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ public interface LandTitle extends PrivateProperty
 	 * @param landID the roomID or the Area  name of the property for sale
 	 */
 	public void setLandPropertyID(String landID);
-	
+
 	/**
 	 * Checks for changes in the content or condition of the rooms represented
 	 * by this title and saves the changes to the database, if necessary.
@@ -65,7 +65,7 @@ public interface LandTitle extends PrivateProperty
 	 * @see LandTitle#updateLot(List)
 	 */
 	public void updateTitle();
-	
+
 	/**
 	 * The complete set of room objects represented by this title
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -108,7 +108,7 @@ public interface LandTitle extends PrivateProperty
 	 * @return amount the back  taxes owed
 	 */
 	public int backTaxes();
-	
+
 	/**
 	 * Returns whether this title allows property to be expanded through masonry or construction.
 	 * @return true if expansion is OK, false otherwise

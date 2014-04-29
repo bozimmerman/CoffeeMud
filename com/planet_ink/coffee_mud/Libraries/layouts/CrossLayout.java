@@ -22,9 +22,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class CrossLayout extends AbstractLayout 
+public class CrossLayout extends AbstractLayout
 {
-	public String name() { return "CROSS";}
+	@Override public String name() { return "CROSS";}
 
 	public void addRoom(LayoutSet lSet, LayoutNode n2, int dir)
 	{
@@ -39,7 +39,8 @@ public class CrossLayout extends AbstractLayout
 			}
 		}
 	}
-	
+
+	@Override
 	public List<LayoutNode> generate(int num, int dir)
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
@@ -82,7 +83,7 @@ public class CrossLayout extends AbstractLayout
 			{
 				addRoom(lSet,n2,Directions.EAST);
 				addRoom(lSet,n2,Directions.WEST);
-			} 
+			}
 			else
 			{
 				addRoom(lSet,n2,Directions.NORTH);

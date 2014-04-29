@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Druid_KnowPlants extends StdAbility
 {
-	public String ID() { return "Druid_KnowPlants"; }
-	public String name(){ return "Know Plants";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Druid_KnowPlants"; }
+	@Override public String name(){ return "Know Plants";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	private static final String[] triggerStrings = {"KNOWPLANT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 
 	public static boolean isPlant(Item I)
 	{
@@ -60,6 +60,7 @@ public class Druid_KnowPlants extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);

@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Block extends CM1Command
 {
-	public String getCommandWord(){ return "BLOCK";}
+	@Override public String getCommandWord(){ return "BLOCK";}
 	public Block(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try
@@ -60,7 +61,8 @@ public class Block extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: BLOCK: Changes the end-of-line for user input, returning a new end-of-line string.";

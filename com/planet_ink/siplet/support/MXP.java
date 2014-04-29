@@ -497,9 +497,9 @@ public class MXP
 			if(tagDebug){System.out.println("/TAG/ENDENTITY="+E.name()+"/CLOSE="+close); System.out.flush();}
 			if(close.length()>0)
 				buf.insert(oldI,close+">");
-			if(tagDebug) 
+			if(tagDebug)
 			{
-				if (!E.needsText()) 
+				if (!E.needsText())
 				{
 					if(tagDebugLong)
 						System.out.println("/TAG>"+substr(buf,0,buf.length()));

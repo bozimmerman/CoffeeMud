@@ -38,19 +38,21 @@ public class SIterator<K> implements Iterator<K>
 		}
 		catch(final Exception e)
 		{
-			
+
 		}
 		o=null;
 	}
+	@Override
 	public boolean hasNext()
-	{ 
+	{
 		return o!=null;
 	}
+	@Override
 	public K next()
-	{ 
-		final K o2=o; 
-		nextUp(); 
-		return o2; 
+	{
+		final K o2=o;
+		nextUp();
+		return o2;
 	}
-	public void remove() { throw new java.lang.IllegalArgumentException(); }
+	@Override public void remove() { throw new java.lang.IllegalArgumentException(); }
 }

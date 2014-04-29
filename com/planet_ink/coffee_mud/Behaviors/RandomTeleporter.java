@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RandomTeleporter extends ActiveTicker
 {
-	public String ID(){return "RandomTeleporter";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags(){return Behavior.FLAG_MOBILITY;}
+	@Override public String ID(){return "RandomTeleporter";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
 	protected Vector restrictedLocales=null;
 	protected boolean nowander=false;
 
@@ -49,8 +49,9 @@ public class RandomTeleporter extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random teleporting";
 	}
 
@@ -64,6 +65,7 @@ public class RandomTeleporter extends ActiveTicker
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -127,6 +129,7 @@ public class RandomTeleporter extends ActiveTicker
 			restrictedLocales=null;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

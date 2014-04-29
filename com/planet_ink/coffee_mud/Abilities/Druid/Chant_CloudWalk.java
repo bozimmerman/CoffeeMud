@@ -20,7 +20,7 @@ import java.util.Vector;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,14 +39,15 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_CloudWalk extends Chant
 {
-	public String ID() { return "Chant_CloudWalk"; }
-	public String name(){ return "Cloud Walk";}
-	public String displayText(){return "(Cloud Walk)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_CloudWalk"; }
+	@Override public String name(){ return "Cloud Walk";}
+	@Override public String displayText(){return "(Cloud Walk)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -61,6 +62,7 @@ public class Chant_CloudWalk extends Chant
 
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -68,6 +70,7 @@ public class Chant_CloudWalk extends Chant
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -101,6 +104,7 @@ public class Chant_CloudWalk extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

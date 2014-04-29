@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class Skill_Prayercraft extends Skill_Songcraft
 {
-	public String ID() { return "Skill_Prayercraft"; }
-	public String name(){ return "Prayercraft";}
-	public int craftType(){return Ability.ACODE_PRAYER;}
+	@Override public String ID() { return "Skill_Prayercraft"; }
+	@Override public String name(){ return "Prayercraft";}
+	@Override public int craftType(){return Ability.ACODE_PRAYER;}
 }

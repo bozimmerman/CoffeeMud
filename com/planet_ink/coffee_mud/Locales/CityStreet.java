@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class CityStreet extends StdRoom
 {
-	public String ID(){return "CityStreet";}
+	@Override public String ID(){return "CityStreet";}
 	public CityStreet()
 	{
 		super();
@@ -42,5 +42,5 @@ public class CityStreet extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
 }

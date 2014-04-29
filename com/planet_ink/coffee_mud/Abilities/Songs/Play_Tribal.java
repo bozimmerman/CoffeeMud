@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 */
 public class Play_Tribal extends Play
 {
-	public String ID() { return "Play_Tribal"; }
-	public String name(){ return "Tribal";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return name()+" Music";}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Play_Tribal"; }
+	@Override public String name(){ return "Tribal";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return name()+" Music";}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -51,7 +52,8 @@ public class Play_Tribal extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

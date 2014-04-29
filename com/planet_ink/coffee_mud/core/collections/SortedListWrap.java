@@ -28,7 +28,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public synchronized boolean add(T arg0) 
+	public synchronized boolean add(T arg0)
 	{
 		if(arg0==null) return false;
 		if(list.size()==0)
@@ -149,7 +149,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@Override
 	public boolean isEmpty()
 	{
-		return list.isEmpty(); 
+		return list.isEmpty();
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	public synchronized boolean remove(Object arg0)
 	{
 		final int index=indexOf(arg0);
-		if(index >= 0) 
+		if(index >= 0)
 			return remove(index)==arg0;
 		return false;
 	}

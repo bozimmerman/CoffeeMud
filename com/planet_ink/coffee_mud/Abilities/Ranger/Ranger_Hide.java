@@ -38,18 +38,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Hide extends StdAbility
 {
-	public String ID() { return "Ranger_Hide"; }
-	public String name(){ return "Woodland Hide";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Ranger_Hide"; }
+	@Override public String name(){ return "Woodland Hide";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"WHIDE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int bonus=0;
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -77,6 +78,7 @@ public class Ranger_Hide extends StdAbility
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -84,6 +86,7 @@ public class Ranger_Hide extends StdAbility
 		if(CMLib.flags().isSneaking(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -120,7 +123,8 @@ public class Ranger_Hide extends StdAbility
 		}
 		return highestMOB;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

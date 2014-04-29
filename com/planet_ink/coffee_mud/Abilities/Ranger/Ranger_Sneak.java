@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Sneak extends StdAbility
 {
-	public String ID() { return "Ranger_Sneak"; }
-	public String name(){ return "Woodland Sneak";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Ranger_Sneak"; }
+	@Override public String name(){ return "Woodland Sneak";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"WSNEAK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	public int getMOBLevel(MOB meMOB)
 	{
@@ -75,7 +75,8 @@ public class Ranger_Sneak extends StdAbility
 		}
 		return highestMOB;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);

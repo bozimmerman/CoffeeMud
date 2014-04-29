@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class Sword extends StdWeapon
 {
-	public String ID(){	return "Sword";}
+	@Override public String ID(){	return "Sword";}
 	public Sword()
 	{
 		super();
@@ -54,6 +54,7 @@ public class Sword extends StdWeapon
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!ID().equals("Sword"))
@@ -75,7 +76,7 @@ public class Sword extends StdWeapon
 			case 3:	 return new Scimitar();
 			case 4:	 return new Claymore();
 			case 5:	 return new Shortsword();
-			default: 
+			default:
 				try
 				{
 					return this.getClass().newInstance();

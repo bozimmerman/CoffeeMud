@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,34 +44,34 @@ public interface CoffeeTableRow extends CMCommon
 	 * @return the start time in millis
 	 */
 	public long startTime();
-	
+
 	/**
 	 * The end time, in millis since 1970, for this row of data
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#setEndTime(long)
 	 * @return the end time in millis
 	 */
 	public long endTime();
-	
+
 	/**
 	 * Sets the start time, in millis since 1970, for this row of data
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#startTime()
 	 * @param time the start time in millis
 	 */
 	public void setStartTime(long time);
-	
+
 	/**
 	 * Sets the end time, in millis since 1970, for this row of data
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#endTime()
 	 * @param time the end time in millis
 	 */
 	public void setEndTime(long time);
-	
+
 	/**
 	 * Returns the highest number of players online during this period.
 	 * @return the highest number of players online
 	 */
 	public long highestOnline();
-	
+
 	/**
 	 * Returns the cumulative number online during this period per poll.
 	 * Used to calulate the avg online for the period.
@@ -79,7 +79,7 @@ public interface CoffeeTableRow extends CMCommon
 	 * @return the cumulative number online during this period per poll
 	 */
 	public long numberOnlineTotal();
-	
+
 	/**
 	 * Returns the number of times the number of players online has been
 	 * polled during this period.
@@ -87,14 +87,14 @@ public interface CoffeeTableRow extends CMCommon
 	 * @return number of times the number of players online has been polled
 	 */
 	public long numberOnlineCounter();
-	
+
 	/**
 	 * Returns an XML document representing all the information in this object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#populate(long, long, String)
 	 * @return an xml document
 	 */
 	public String data();
-	
+
 	/**
 	 * Populates this object from an xml document containing relevant statistics.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#data()
@@ -103,7 +103,7 @@ public interface CoffeeTableRow extends CMCommon
 	 * @param data the statistics and data for this row, as xml
 	 */
 	public void populate(long start, long end, String data);
-	
+
 	/**
 	 * Finds a named statistic of the given name, and increments the value
 	 * of that long statistic by 1.  Requires the event being recorded.
@@ -112,9 +112,9 @@ public interface CoffeeTableRow extends CMCommon
 	 * @param type the type of event to tabulate
 	 */
 	public void bumpVal(String s, int type);
-	
+
 	/**
-	 * Gathers relevant information about the given Environmental object 
+	 * Gathers relevant information about the given Environmental object
 	 * (usually MOB or Ability) and adds to the relevant statistics.
 	 * Requires the Environmental object to query, and the event being
 	 * recorded.
@@ -123,7 +123,7 @@ public interface CoffeeTableRow extends CMCommon
 	 * @param type the type of event to tabulate
 	 */
 	public void bumpVal(CMObject E, int type);
-	
+
 	/**
 	 * Simple method that replaces a strings spaces with _
 	 * characters, and makes the string uppercase.
@@ -131,8 +131,8 @@ public interface CoffeeTableRow extends CMCommon
 	 * @return the changed string
 	 */
 	public String tagFix(String s);
-	
-	/** 
+
+	/**
 	 * Loops through adding all the event stats for the given code string
 	 * together
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeTableRow#STAT_TOTAL
@@ -167,7 +167,7 @@ public interface CoffeeTableRow extends CMCommon
 	public final int STAT_SKILLUSE=11;
 	/** a constant index of the total number of enumerated statistical events*/
 	public final int STAT_TOTAL=12;
-	
+
 	/** a constant index into statistics for a quest failed start*/
 	public final int STAT_QUESTFAILEDSTART=1;
 	/** a constant index into statistics for a times start*/
@@ -186,7 +186,7 @@ public interface CoffeeTableRow extends CMCommon
 	public final int STAT_QUESTDROPPED=8;
 	/** a constant index into statistics for a manual start*/
 	public final int STAT_QUESTSTARTATTEMPT=9;
-	
+
 	/** a constant index into statistics for a num players online poll event*/
 	public final int STAT_SPECIAL_NUMONLINE=1000;
 }

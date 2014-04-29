@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class QuestTracker extends StdBehavior
 {
-	public String ID(){return "QuestTracker";}
+	@Override public String ID(){return "QuestTracker";}
 
 	public Vector questObjects=new Vector();
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Disguise extends BardSkill
 {
-	public String ID() { return "Skill_Disguise"; }
-	public String name(){ return "Disguise";}
+	@Override public String ID() { return "Skill_Disguise"; }
+	@Override public String name(){ return "Disguise";}
+	@Override
 	public String description()
 	{
 		StringBuffer ret=new StringBuffer("");
@@ -47,13 +48,13 @@ public class Skill_Disguise extends BardSkill
 				ret.append(whats[i]+" ");
 		return ret.toString();
 	}
-	public String displayText(){ return "(In Disguise)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String displayText(){ return "(In Disguise)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"DISGUISE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
 	protected final static String[] whats={
 		//0!	 1! 	 2!    3!     4!	   5!     6!	  7!		  8!
@@ -61,12 +62,14 @@ public class Skill_Disguise extends BardSkill
 	protected final static int[] levels={2,10,4,14,6,8,0,18,12};
 	protected String[] values=new String[whats.length];
 
+	@Override
 	protected void cloneFix(Ability E)
 	{
 		values=new String[whats.length];
 		for(int i=0;i<values.length;i++)
 			values[i]=null;
 	}
+	@Override
 	public void affectPhyStats(Physical myHost, PhyStats affectableStats)
 	{
 		if(values[5]!=null)
@@ -79,6 +82,7 @@ public class Skill_Disguise extends BardSkill
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 	}
 
+	@Override
 	public void affectCharStats(MOB myHost, CharStats affectableStats)
 	{
 		if(values[3]!=null)
@@ -93,6 +97,7 @@ public class Skill_Disguise extends BardSkill
 			affectableStats.setStat(CharStats.STAT_AGE,CMath.s_int(values[8]));
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -117,6 +122,7 @@ public class Skill_Disguise extends BardSkill
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -147,6 +153,7 @@ public class Skill_Disguise extends BardSkill
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!ID().equals("Skill_Disguise"))

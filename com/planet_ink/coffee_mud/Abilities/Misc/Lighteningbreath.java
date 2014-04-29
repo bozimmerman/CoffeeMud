@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,9 +31,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Lighteningbreath extends Dragonbreath
 {
-	public String ID() { return "Lighteningbreath"; }
-	public String name(){ return "Lightningbreath";}
-	public String text(){return "lightning";}
+	@Override public String ID() { return "Lighteningbreath"; }
+	@Override public String name(){ return "Lightningbreath";}
+	@Override public String text(){return "lightning";}
 	private static final String[] triggerStrings = {"LIGHTNINGBREATH"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 }

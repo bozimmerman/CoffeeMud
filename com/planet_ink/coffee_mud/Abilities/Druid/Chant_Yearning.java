@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Yearning extends Chant
 {
-	public String ID() { return "Chant_Yearning"; }
-	public String name(){ return "Yearning";}
-	public String displayText(){return "(Sexual Yearnings)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_Yearning"; }
+	@Override public String name(){ return "Yearning";}
+	@Override public String displayText(){return "(Sexual Yearnings)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -52,6 +53,7 @@ public class Chant_Yearning extends Chant
 		affectableStats.setStat(CharStats.STAT_WISDOM,wis);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -65,6 +67,7 @@ public class Chant_Yearning extends Chant
 			mob.tell("Your yearning subsides.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -84,7 +87,8 @@ public class Chant_Yearning extends Chant
 		&&(((MOB)msg.target()).fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
 			unInvoke();
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		 if(mob!=null)
@@ -95,6 +99,7 @@ public class Chant_Yearning extends Chant
 		 return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

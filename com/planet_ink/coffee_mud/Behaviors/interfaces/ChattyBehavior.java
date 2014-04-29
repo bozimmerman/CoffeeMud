@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,16 +45,16 @@ public interface ChattyBehavior extends Behavior
 	 * @return the last thing said.
 	 */
 	public String getLastThingSaid();
-	
+
 	/**
 	 * Returns the last MOB object spoken to.
 	 * @return the last MOB object spoken to.
 	 */
 	public MOB getLastRespondedTo();
-	
+
 	/**
 	 * A response object representing something the chatty-one will
-	 * definitely be saying soon. 
+	 * definitely be saying soon.
 	 * @author bzimmerman
 	 */
 	@SuppressWarnings("rawtypes")
@@ -113,6 +113,6 @@ public interface ChattyBehavior extends Behavior
 		public ChattyEntry[] entries = null;
 		public ChattyGroup(String[] names, MaskingLibrary.CompiledZapperMask[] masks)
 		{ groupNames=names; groupMasks=masks;}
-		public ChattyGroup clone(){ try{return (ChattyGroup)super.clone();}catch(Exception e){return this;}}
+		@Override public ChattyGroup clone(){ try{return (ChattyGroup)super.clone();}catch(Exception e){return this;}}
 	}
 }

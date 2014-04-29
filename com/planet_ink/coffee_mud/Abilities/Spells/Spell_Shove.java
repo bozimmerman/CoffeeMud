@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Shove extends Spell
 {
-	public String ID() { return "Spell_Shove"; }
-	public String name(){return "Shove";}
-	public String displayText(){return "(Shoved Down)";}
-	public int maxRange(){return adjustedMaxInvokerRange(4);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Tickable.TICKID_MOB;}
+	@Override public String ID() { return "Spell_Shove"; }
+	@Override public String name(){return "Shove";}
+	@Override public String displayText(){return "(Shoved Down)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Tickable.TICKID_MOB;}
 	public boolean doneTicking=false;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int dir=-1;

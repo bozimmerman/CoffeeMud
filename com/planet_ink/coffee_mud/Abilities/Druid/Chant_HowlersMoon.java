@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_HowlersMoon extends Chant
 {
-	public String ID() { return "Chant_HowlersMoon"; }
-	public String name(){ return "Howlers Moon";}
-	public String displayText(){return "(Howlers Moon)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	@Override public String ID() { return "Chant_HowlersMoon"; }
+	@Override public String name(){ return "Howlers Moon";}
+	@Override public String displayText(){return "(Howlers Moon)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 	protected int ticksTicked=0;
 	protected int fromDir=-1;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -71,6 +72,7 @@ public class Chant_HowlersMoon extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -156,7 +158,8 @@ public class Chant_HowlersMoon extends Chant
 		}
 		return choices;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -180,8 +183,9 @@ public class Chant_HowlersMoon extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
 
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

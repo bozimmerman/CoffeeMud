@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,11 +32,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Evoker extends SpecialistMage
 {
-	public String ID(){return "Evoker";}
-	public String name(){return "Evoker";}
-	public int domain(){return Ability.DOMAIN_EVOCATION;}
-	public int opposed(){return Ability.DOMAIN_ALTERATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Evoker";}
+	@Override public String name(){return "Evoker";}
+	@Override public int domain(){return Ability.DOMAIN_EVOCATION;}
+	@Override public int opposed(){return Ability.DOMAIN_ALTERATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();

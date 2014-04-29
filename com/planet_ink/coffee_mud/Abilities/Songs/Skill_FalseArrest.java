@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_FalseArrest extends BardSkill
 {
-	public String ID() { return "Skill_FalseArrest"; }
-	public String name(){ return "False Arrest";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_FalseArrest"; }
+	@Override public String name(){ return "False Arrest";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FALSEARREST"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int overrideMana(){return 50;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int overrideMana(){return 50;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -103,7 +104,7 @@ public class Skill_FalseArrest extends BardSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		
+
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)

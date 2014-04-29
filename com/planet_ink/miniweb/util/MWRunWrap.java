@@ -27,24 +27,24 @@ public class MWRunWrap
 	private final Runnable runnable;
 	private final Thread   thread;
 	private final long 	   startTime;
-	
+
 	public MWRunWrap(Runnable runnable, Thread thread)
 	{
 		this.runnable=runnable;
 		this.thread=thread;
 		startTime=System.currentTimeMillis();
 	}
-	
+
 	public Runnable getRunnable()
 	{
 		return runnable;
 	}
-	
+
 	public Thread getThread()
 	{
 		return thread;
 	}
-	
+
 	/**
 	 * Returns the number of milliseconds this runnable
 	 * has been running.

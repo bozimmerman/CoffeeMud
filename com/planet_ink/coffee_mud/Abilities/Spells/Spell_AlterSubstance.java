@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_AlterSubstance extends Spell
 {
-	public String ID() { return "Spell_AlterSubstance"; }
-	public String name(){return "Alter Substance";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_AlterSubstance"; }
+	@Override public String name(){return "Alter Substance";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public String newName="";
 	public int oldMaterial=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -51,6 +52,7 @@ public class Spell_AlterSubstance extends Spell
 			affectableStats.setName(newName);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof Item))
@@ -66,6 +68,7 @@ public class Spell_AlterSubstance extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String material="";

@@ -12,36 +12,36 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 	private final Str<T> stringer;
-	
+
 	public static interface Str<T>
 	{
 		public String toString(T t);
 	}
-	
+
 	public SortedStrSVector(Str<T> stringer, int size)
 	{
 		super(size);
 		this.stringer=stringer;
 	}
-	
+
 	public SortedStrSVector(Str<T> stringer)
 	{
 		super();
 		this.stringer=stringer;
 	}
-	
+
 	private int compareTo(T arg0, String arg1)
 	{
 		return stringer.toString(arg0).compareToIgnoreCase(arg1);
 	}
-	
+
 	private int compareTo(T arg0, T arg1)
 	{
 		return stringer.toString(arg0).compareToIgnoreCase(stringer.toString(arg1));
 	}
-	
+
 	@Override
-	public synchronized boolean add(T arg0) 
+	public synchronized boolean add(T arg0)
 	{
 		if(arg0==null) return false;
 		if(size()==0)
@@ -129,7 +129,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 			this.add(arg0);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized int indexOf(Object arg0)
@@ -151,7 +151,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 					end=mid-1;
 				else
 					start=mid+1;
-	
+
 			}
 		}
 		else
@@ -168,13 +168,14 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 					end=mid-1;
 				else
 					start=mid+1;
-	
+
 			}
 		}
 		return -1;
 	}
 
-	public synchronized T find(String arg0) 
+	@Override
+	public synchronized T find(String arg0)
 	{
 		if(arg0==null) return null;
 		if(size()==0) return null;
@@ -194,8 +195,9 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		}
 		return null;
 	}
-	
-	public synchronized T find(T arg0) 
+
+	@Override
+	public synchronized T find(T arg0)
 	{
 		if(arg0==null) return null;
 		if(size()==0) return null;
@@ -216,7 +218,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		}
 		return null;
 	}
-	
+
 	@Override
 	public synchronized int lastIndexOf(Object arg0)
 	{
@@ -227,7 +229,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	public synchronized boolean remove(Object arg0)
 	{
 		final int index=indexOf(arg0);
-		if(index >= 0) 
+		if(index >= 0)
 			return remove(index)==arg0;
 		return false;
 	}

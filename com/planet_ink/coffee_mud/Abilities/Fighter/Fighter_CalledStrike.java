@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_CalledStrike extends FighterSkill
 {
-	public String ID() { return "Fighter_CalledStrike"; }
-	public String name(){ return "Called Strike";}
+	@Override public String ID() { return "Fighter_CalledStrike"; }
+	@Override public String name(){ return "Called Strike";}
 	private static final String[] triggerStrings = {"CALLEDSTRIKE"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String displayText(){return "";}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String displayText(){return "";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	protected String gone="";
 	protected MOB target=null;
 	protected int hpReq=9;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-100);
@@ -71,6 +72,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
@@ -120,7 +122,8 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -130,7 +133,8 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob,false)) return false;

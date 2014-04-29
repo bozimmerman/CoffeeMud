@@ -4,7 +4,7 @@ import java.applet.*;
 import java.util.*;
 import java.net.*;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,13 @@ public class MSPplayer extends Thread
 	public boolean orderedStopped=false;
 	public String tag="soundplayer";
 	private Object applet=null;
-	
+
 	public MSPplayer(Object theApplet)
 	{
 		super();
 		applet=theApplet;
 	}
-	
+
 	public String stopPlaying(String playerName, boolean useExternal)
 	{
 		if(playing)
@@ -54,7 +54,8 @@ public class MSPplayer extends Thread
 		}
 		return "";
 	}
-	
+
+	@Override
 	public void run()
 	{
 		playing=true;
@@ -99,5 +100,5 @@ public class MSPplayer extends Thread
 			return "";
 		}
 	}
-	
+
 }

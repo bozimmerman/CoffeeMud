@@ -37,17 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Distilling extends Cooking
 {
-	public String ID() { return "Distilling"; }
-	public String name(){ return "Distilling";}
+	@Override public String ID() { return "Distilling"; }
+	@Override public String name(){ return "Distilling";}
 	private static final String[] triggerStrings = {"DISTILLING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "distill";}
-	public String cookWord(){return "distilling";}
-	public boolean honorHerbs(){return false;}
-	public String supportedResourceString(){return "MISC";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String cookWordShort(){return "distill";}
+	@Override public String cookWord(){return "distilling";}
+	@Override public boolean honorHerbs(){return false;}
+	@Override public String supportedResourceString(){return "MISC";}
 
-	public String parametersFile(){ return "liquors.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "liquors.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public Distilling()
 	{
@@ -57,6 +57,7 @@ public class Distilling extends Cooking
 		defaultDrinkSound = "hotspring.wav";
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -73,6 +74,7 @@ public class Distilling extends Cooking
 		return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(buildingI==null))

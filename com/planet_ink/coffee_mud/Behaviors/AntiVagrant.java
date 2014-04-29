@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class AntiVagrant extends ActiveTicker
 {
-	public String ID(){return "AntiVagrant";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "AntiVagrant";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected int speakDown=3;
 	protected MOB target=null;
 	protected boolean kickout=false;
@@ -48,11 +48,13 @@ public class AntiVagrant extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "vagrant disliking";
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		kickout=parms.toUpperCase().indexOf("KICK")>=0;
@@ -109,6 +111,7 @@ public class AntiVagrant extends ActiveTicker
 	}
 
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		// believe it or not, this is for arrest behavior.
@@ -119,6 +122,7 @@ public class AntiVagrant extends ActiveTicker
 			speakDown=3;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

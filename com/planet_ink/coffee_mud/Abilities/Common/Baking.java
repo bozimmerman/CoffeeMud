@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,16 @@ import java.util.*;
 */
 public class Baking extends Cooking
 {
-	public String ID() { return "Baking"; }
-	public String name(){ return "Baking";}
+	@Override public String ID() { return "Baking"; }
+	@Override public String name(){ return "Baking";}
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
-	public String supportedResourceString(){return "MISC";}
-	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "bake";}
-	public String cookWord(){return "baking";}
-	public boolean honorHerbs(){return false;}
-	public boolean requireLid(){return true;}
+	@Override public String supportedResourceString(){return "MISC";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String cookWordShort(){return "bake";}
+	@Override public String cookWord(){return "baking";}
+	@Override public boolean honorHerbs(){return false;}
+	@Override public boolean requireLid(){return true;}
 
-	public String parametersFile(){ return "bake.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "bake.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 }

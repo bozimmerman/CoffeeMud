@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Fidelity extends Prayer
 {
-	public String ID() { return "Prayer_Fidelity"; }
-	public String name(){ return "Fidelity";}
-	public String displayText(){return "(Fidelity)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_Fidelity"; }
+	@Override public String name(){ return "Fidelity";}
+	@Override public String displayText(){return "(Fidelity)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,6 +57,7 @@ public class Prayer_Fidelity extends Prayer
 			mob.tell("Your magical fidelity subsides.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -79,6 +81,7 @@ public class Prayer_Fidelity extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

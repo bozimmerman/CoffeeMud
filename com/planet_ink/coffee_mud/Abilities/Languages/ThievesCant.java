@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,8 +41,8 @@ import java.util.*;
 
 public class ThievesCant extends StdLanguage
 {
-	public String ID() { return "ThievesCant"; }
-	public String name(){ return "Thieves Cant";}
+	@Override public String ID() { return "ThievesCant"; }
+	@Override public String name(){ return "Thieves Cant";}
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public ThievesCant()
@@ -52,6 +52,7 @@ public class ThievesCant extends StdLanguage
 				CMLib.ableMapper().addCharAbilityMapping("Bard",10,ID(),false);}
 	}
 
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
@@ -73,6 +74,7 @@ public class ThievesCant extends StdLanguage
 		return wordLists;
 	}
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
@@ -257,7 +259,7 @@ public class ThievesCant extends StdLanguage
 		hashwords.put("JEWELS","booze");
 		hashwords.put("JEWELRY","fancy booze");
 		hashwords.put("LOOT","stuffing");
-		hashwords.put("MONEY","bits"); 
+		hashwords.put("MONEY","bits");
 		hashwords.put("NECKLACE","noose");
 		hashwords.put("RING","finger joint");
 		hashwords.put("RINGS","finger joints");

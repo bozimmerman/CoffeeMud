@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_KineticBubble extends Spell
 {
-	public String ID() { return "Spell_KineticBubble"; }
-	public String name(){return "Kinetic Bubble";}
-	public String displayText(){return "(Kinetic Bubble)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	@Override public String ID() { return "Spell_KineticBubble"; }
+	@Override public String name(){return "Kinetic Bubble";}
+	@Override public String displayText(){return "(Kinetic Bubble)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	protected int kickBack=0;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -56,6 +57,7 @@ public class Spell_KineticBubble extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -92,6 +94,7 @@ public class Spell_KineticBubble extends Spell
 		return;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

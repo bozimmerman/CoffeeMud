@@ -39,7 +39,8 @@ public class JRun extends StdCommand
 	public JRun(){}
 
 	private final String[] access={"JRUN"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -78,7 +79,7 @@ public class JRun extends StdCommand
 
 	protected static class JScriptWindow extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptWindow";}
+		@Override public String getClassName(){ return "JScriptWindow";}
 		static final long serialVersionUID=45;
 		MOB s=null;
 		Vector v=null;
@@ -97,9 +98,9 @@ public class JRun extends StdCommand
 	}
 
 
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 }

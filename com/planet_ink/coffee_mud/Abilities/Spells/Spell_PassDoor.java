@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_PassDoor extends Spell
 {
-	public String ID() { return "Spell_PassDoor"; }
-	public String name(){return "Pass Door";}
-	public String displayText(){return "(Pass Door)";}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Spell_PassDoor"; }
+	@Override public String name(){return "Pass Door";}
+	@Override public String displayText(){return "(Pass Door)";}
+	@Override protected int canTargetCode(){return 0;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
@@ -52,6 +53,7 @@ public class Spell_PassDoor extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -66,6 +68,7 @@ public class Spell_PassDoor extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

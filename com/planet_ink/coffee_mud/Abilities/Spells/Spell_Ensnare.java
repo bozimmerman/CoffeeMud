@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Ensnare extends Spell
 {
-	public String ID() { return "Spell_Ensnare"; }
-	public String name(){return "Ensnare";}
-	public String displayText(){return "(Ensnared)";}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 1;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_Ensnare"; }
+	@Override public String name(){return "Ensnare";}
+	@Override public String displayText(){return "(Ensnared)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 1;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public int amountRemaining=0;
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -75,11 +76,13 @@ public class Spell_Ensnare extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()&(~(PhyStats.IS_FLYING)));
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -92,6 +95,7 @@ public class Spell_Ensnare extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the ensnarement.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

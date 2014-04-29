@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Pin extends FighterSkill
 {
-	public String ID() { return "Fighter_Pin"; }
-	public String name(){ return "Pin";}
+	@Override public String ID() { return "Fighter_Pin"; }
+	@Override public String name(){ return "Pin";}
+	@Override
 	public String displayText()
 	{
 		if(affected==invoker)
@@ -45,22 +46,23 @@ public class Fighter_Pin extends FighterSkill
 		return "(Pinned)";
 	}
 	private static final String[] triggerStrings = {"PIN"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
-	public long flags(){return Ability.FLAG_BINDING;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
+	@Override public long flags(){return Ability.FLAG_BINDING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB pairedWith=null;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
-		
+
 		if((msg.sourceMinor() == CMMsg.TYP_DEATH)&&(pairedWith != null)&&(msg.amISource(pairedWith)))
 		{
 			unInvoke();
@@ -85,6 +87,7 @@ public class Fighter_Pin extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -96,6 +99,7 @@ public class Fighter_Pin extends FighterSkill
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -107,7 +111,8 @@ public class Fighter_Pin extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -142,6 +147,7 @@ public class Fighter_Pin extends FighterSkill
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

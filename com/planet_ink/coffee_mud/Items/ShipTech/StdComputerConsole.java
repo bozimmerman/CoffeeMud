@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer, Electronics.ElecPanel
 {
-	public String ID(){	return "StdComputerConsole";}
+	@Override public String ID(){	return "StdComputerConsole";}
 
 	protected volatile String circuitKey		= null;
 	protected float 		  installedFactor	= 1.0F;
@@ -49,7 +49,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	protected String 		  currentMenu		= "";
 	protected String		  manufacturer 		= "RANDOM";
 	protected Manufacturer	  cachedManufact	= null;
-	
+
 	public StdComputerConsole()
 	{
 		super();
@@ -87,7 +87,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
 	@Override public TechType getTechType() { return TechType.SHIP_COMPUTER; }
-	
+
 	@Override
 	public Manufacturer getFinalManufacturer()
 	{
@@ -99,33 +99,36 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		}
 		return cachedManufact;
 	}
-	
+
 	@Override public TechType panelType(){return TechType.SHIP_SOFTWARE;}
 	@Override public void setPanelType(TechType type){ }
-	
-	@Override 
+
+	@Override
 	public boolean canContain(Environmental E)
 	{
 		return (E instanceof Software) && (((Software)E).getTechType()==TechType.SHIP_SOFTWARE);
 	}
 
-	
+
 	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return((usesRemaining()<=1000)&&(usesRemaining()>=0));
 	}
 
+	@Override
 	public String putString(Rider R)
 	{
 		return "in";
 	}
-	
+
+	@Override
 	public String stateStringSubject(Rider R)
 	{
 		return "being used by";
 	}
 
+	@Override
 	public List<Software> getSoftware()
 	{
 		if((software==null)||(System.currentTimeMillis()>nextSoftwareCheck))
@@ -143,12 +146,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		}
 		return software;
 	}
-	
+
+	@Override
 	public void setReadableText(String text)
 	{
 		// important that this does nothing
 	}
-	
+
+	@Override
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder("");
@@ -189,10 +194,11 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				}
 			}
 		}
-		
+
 		return str.toString();
 	}
-	
+
+	@Override
 	public List<MOB> getCurrentReaders()
 	{
 		List<MOB> readers=new LinkedList<MOB>();
@@ -212,7 +218,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				readers.add((MOB)R);
 		return readers;
 	}
-	
+
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
@@ -477,7 +483,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			this.lastReader=null;
 		super.executeMsg(host,msg);
 	}
-	
+
 	@Override
 	public void forceReadersSeeNew()
 	{
@@ -499,7 +505,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 		}
 	}
-	
+
+	@Override
 	public void forceReadersMenu()
 	{
 		if(activated())
@@ -520,7 +527,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		}
 		super.destroy();
 	}
-	
+
 	@Override
 	public void setOwner(ItemPossessor owner)
 	{

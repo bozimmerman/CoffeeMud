@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.collections.STreeMap;
 import com.planet_ink.coffee_mud.core.collections.STreeSet;
 import com.planet_ink.coffee_mud.core.collections.UniqueEntryBlockingQueue;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class CMThreadPoolExecutor extends ThreadPoolExecutor 
+public class CMThreadPoolExecutor extends ThreadPoolExecutor
 {
 	protected Map<Runnable,Thread>	active = new HashMap<Runnable,Thread>();
 	protected long  				timeoutMillis;
@@ -55,11 +55,11 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
 	}
-	
+
 	public CMThreadPoolExecutor(String poolName,
 								int corePoolSize, int maximumPoolSize,
-								long keepAliveTime, TimeUnit unit, 
-								long timeoutMins, int queueSize) 
+								long keepAliveTime, TimeUnit unit,
+								long timeoutMins, int queueSize)
 	{
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new CMArrayBlockingQueue<Runnable>(queueSize));
 		((CMArrayBlockingQueue<Runnable>)this.getQueue()).executor=this;
@@ -77,8 +77,9 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		});
 	}
 
-	protected void beforeExecute(Thread t, Runnable r) 
-	{ 
+	@Override
+	protected void beforeExecute(Thread t, Runnable r)
+	{
 		synchronized(active)
 		{
 			if(t instanceof CMFactoryThread)
@@ -86,9 +87,10 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			active.put(r,t);
 		}
 	}
-	
-	protected void afterExecute(Runnable r, Throwable t) 
-	{ 
+
+	@Override
+	protected void afterExecute(Runnable r, Throwable t)
+	{
 		synchronized(active)
 		{
 			Thread th=active.get(r);
@@ -98,9 +100,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		}
 	}
 
-	@Override
-	public int getActiveCount() { return active.size(); }
-	
+	@Override public int getActiveCount() { return active.size(); }
+
 	public boolean isActive(Runnable r)
 	{
 		return active.containsKey(r);
@@ -111,6 +112,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		return active.containsKey(r) || getQueue().contains(r);
 	}
 
+	@Override
 	public void execute(Runnable r)
 	{
 		try
@@ -157,7 +159,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			rejectCount++;
 		}
 	}
-	
+
 	public Collection<CMRunnable> getTimeoutOutRuns(int maxToKill)
 	{
 		final LinkedList<CMRunnable> timedOut=new LinkedList<CMRunnable>();

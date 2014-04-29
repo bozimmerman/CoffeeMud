@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AreaTbl extends StdWebMacro
 {
-	public String name()	{return "AreaTbl";}
-	
+	@Override public String name()	{return "AreaTbl";}
+
 	protected static final int AT_MAX_COL = 3;
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		// have to check, otherwise we'll be stuffing a blank string into resources

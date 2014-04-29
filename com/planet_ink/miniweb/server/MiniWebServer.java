@@ -55,7 +55,7 @@ public class MiniWebServer extends Thread
 	public static final String	  POMVERSION		= "2.1";
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(Exception e){ VERSION=0.0;} }
-	
+
 	private volatile boolean	  shutdownRequested	= false; // notice of external shutdown request
 	private Selector			  servSelector 		= null;  // server io selector
 	private MWThreadExecutor 	  executor;					 // request handler thread pool
@@ -66,25 +66,25 @@ public class MiniWebServer extends Thread
 	private final LinkedList<HTTPIOHandler>  		handlers;			// list of connected channels.. managed by timeoutthread
 	private final Map<ServerSocketChannel, Boolean>	servChannels; 		// map of socket channels to an SSL boolean
 	private final LinkedList<Runnable>				registerOps;
-	
+
 	public MiniWebServer(String serverName, MiniWebConfig config)
 	{
 		super("mweb-"+serverName);
 		this.config=config;
 		this.serverName=serverName;
-		
+
 		// setup the thread pool
 		handlers = new LinkedList<HTTPIOHandler>();
 		executor = new MWThreadExecutor(serverName,
 										config,
-										config.getCoreThreadPoolSize(), config.getMaxThreadPoolSize(), config.getMaxThreadIdleMs(), 
+										config.getCoreThreadPoolSize(), config.getMaxThreadPoolSize(), config.getMaxThreadIdleMs(),
 										TimeUnit.MILLISECONDS, config.getMaxThreadTimeoutSecs(), config.getMaxThreadQueueSize());
 
 		servChannels = new HashMap<ServerSocketChannel, Boolean>();
 		registerOps = new LinkedList<Runnable>();
-		
+
 		setDaemon(true);
-		
+
 		// if we are going to be listening on ssl, generate a global ssl context to use
 		if((config.getHttpsListenPorts()==null)
 		||(config.getHttpsListenPorts().length==0))
@@ -101,7 +101,7 @@ public class MiniWebServer extends Thread
 	{
 		return Double.toString(VERSION);
 	}
-	
+
 	/**
 	 * Return list of threads that have timed out according to server settings.
 	 * @return a collection of runnables
@@ -131,7 +131,7 @@ public class MiniWebServer extends Thread
 		servChannels.put(servChan, isSSL);
 		config.getLogger().info("Started "+(isSSL.booleanValue()?"ssl ":"http ")+serverName+" on port "+listenPort);
 	}
-	
+
 	/**
 	 * Open the main web server listening sockets and
 	 * register a selector for accepting connections.
@@ -142,7 +142,7 @@ public class MiniWebServer extends Thread
 		servSelector = Selector.open();
 		boolean portOpen=false;
 		IOException lastException=null;
-		
+
 		for(int listenPort : config.getHttpListenPorts())
 		{
 			try
@@ -186,6 +186,7 @@ public class MiniWebServer extends Thread
 	{
 		timeoutThread=new Thread(Thread.currentThread().getThreadGroup(),getName()+"Timeout")
 		{
+			@Override
 			public void run()
 			{
 				try
@@ -207,9 +208,9 @@ public class MiniWebServer extends Thread
 		};
 		timeoutThread.start();
 	}
-	
+
 	/**
-	 * Handles a particular channel event from its given selectionkey. 
+	 * Handles a particular channel event from its given selectionkey.
 	 * So far, only accepted connections and readable keys are managed here.
 	 * @param key the channel event key
 	 * @throws IOException
@@ -220,7 +221,7 @@ public class MiniWebServer extends Thread
 		{
 			ServerSocketChannel server = (ServerSocketChannel) key.channel();
 			SocketChannel channel = server.accept();
-			if (channel != null) 
+			if (channel != null)
 			{
 				HTTPIOHandler handler;
 				if(servChannels.get(server).booleanValue())
@@ -236,7 +237,7 @@ public class MiniWebServer extends Thread
 			}
 		}
 		if(key.isReadable() // bytes were received on one of the channel .. so read!
-		|| (((key.interestOps() & SelectionKey.OP_WRITE)==SelectionKey.OP_WRITE) && key.isWritable())) 
+		|| (((key.interestOps() & SelectionKey.OP_WRITE)==SelectionKey.OP_WRITE) && key.isWritable()))
 		{
 			HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
 			//config.getLogger().finer("Read/Write: "+handler.getName());
@@ -253,7 +254,7 @@ public class MiniWebServer extends Thread
 			config.getLogger().finer("Rejected handler key for "+handler.getName());
 		}
 	}
-	
+
 	/**
 	 * Scan the list of active channel connections for any that are timed out,
 	 * or otherwise need to be removed from this list.  If found, do so, and
@@ -295,6 +296,7 @@ public class MiniWebServer extends Thread
 	 * or data to be read, which it then farms out to another thread.
 	 * This is repeats until something external requests it to shut down.
 	 */
+	@Override
 	public void run()
 	{
 		try
@@ -321,13 +323,13 @@ public class MiniWebServer extends Thread
 						registerOp.run();
 					}
 				}
-				if (n == 0) 
+				if (n == 0)
 				{
 					continue;
 				}
 
 				Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
-				while (it.hasNext()) 
+				while (it.hasNext())
 				{
 					SelectionKey key = it.next();
 					try
@@ -364,7 +366,7 @@ public class MiniWebServer extends Thread
 	 */
 	public void close()
 	{
-		
+
 		shutdownRequested=true;
 		executor.shutdown();
 		try
@@ -402,7 +404,7 @@ public class MiniWebServer extends Thread
 			handlers.clear();
 		}
 	}
-	
+
 	/**
 	 * Enqueue a new socket channel to be registered for read notifications.
 	 * Does not do the action at once, but will, soon.
@@ -438,7 +440,7 @@ public class MiniWebServer extends Thread
 		}
 	}
 
-	
+
 	/**
 	 * Enqueue a new socket channel to be registered for read notifications.
 	 * Does not do the action at once, but will, soon.
@@ -474,7 +476,7 @@ public class MiniWebServer extends Thread
 	{
 		return config;
 	}
-	
+
 	/**
 	 * Create, Initialize, load, and create a web server configuration based around the given
 	 * ini filename and the given java logger.
@@ -487,8 +489,8 @@ public class MiniWebServer extends Thread
 		final MiniWebConfig config=new MiniWebConfig();
 		return initConfig(config,log,iniInputStream);
 	}
-	
-	
+
+
 	/**
 	 * Initialize, load, and create a web server configuration based around the given
 	 * ini filename and the given java logger.
@@ -501,9 +503,9 @@ public class MiniWebServer extends Thread
 		config.setLogger(log);
 		final Properties props=new Properties();
 		props.load(iniInputStream);
-		
+
 		config.load(props);
-		
+
 		final MWServletManager servletsManager = new MWServletManager(config);
 		final MWSessionManager sessionsManager = new MWSessionManager(config);
 		final MWFileCache fileCacheManager = new MWFileCache(config,config.getFileManager());
@@ -514,14 +516,14 @@ public class MiniWebServer extends Thread
 		config.setFileCache(fileCacheManager);
 		config.setConverters(mimeConverterManager);
 		config.setFileGetter(fileGetter);
-		
+
 		HTTPHeader.setKeepAliveHeader(HTTPHeader.KEEP_ALIVE.makeLine(
-										String.format(HTTPHeader.KEEP_ALIVE_FMT, 
+										String.format(HTTPHeader.KEEP_ALIVE_FMT,
 										Integer.valueOf(config.getRequestMaxAliveSecs()),
 										Integer.valueOf(config.getRequestMaxPerConn()))));
 		return config;
 	}
-	
+
 	/**
 	 * Good olde main.  It does nothing but initialize logging, spawn a new web server
 	 * and then join its thread until it is gone.  I suppose I could just create the
@@ -530,7 +532,7 @@ public class MiniWebServer extends Thread
 	 */
 	public static void main(String[] args)
 	{
-		
+
 		Log.instance().configureLogFile("miniweb", 2);
 		String debug="OFF";
 		String iniFilename="mw.ini";
@@ -539,7 +541,7 @@ public class MiniWebServer extends Thread
 			if(arg.startsWith("BOOT="))
 				iniFilename=arg.substring(5);
 		}
-		
+
 		MiniWebConfig config;
 		try
 		{
@@ -551,9 +553,9 @@ public class MiniWebServer extends Thread
 			System.exit(-1);
 			return; // an unhit operation, but my ide is argueing with me over it.
 		}
-		
+
 		debug=config.getDebugFlag();
-		
+
 		for(String arg : args)
 		{
 			if(arg.equalsIgnoreCase("DEBUG"))
@@ -568,7 +570,7 @@ public class MiniWebServer extends Thread
 		Log.instance().configureLog(Log.Type.debug, debug);
 		Log.instance().configureLog(Log.Type.access, config.getAccessLogFlag());
 		config.getLogger().info("Starting "+NAME+" "+VERSION);
-		
+
 		final MiniWebServer server = new MiniWebServer("server", config);
 		config.setMiniWebServer(server);
 		final Thread t = new MWThread(config, server, NAME);

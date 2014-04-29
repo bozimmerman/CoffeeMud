@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class RoadThinGrid extends StdThinGrid
 {
-	public String ID(){return "RoadThinGrid";}
+	@Override public String ID(){return "RoadThinGrid";}
 	public RoadThinGrid()
 	{
 		super();
@@ -44,14 +44,15 @@ public class RoadThinGrid extends StdThinGrid
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new RoadGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "Road";}
-	public List<Integer> resourceChoices(){return Road.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Road";}
+	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
 }

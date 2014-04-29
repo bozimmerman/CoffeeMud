@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_EnchantWand extends Spell
 {
-	public String ID() { return "Spell_EnchantWand"; }
-	public String name(){return "Enchant Wand";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public long flags(){return Ability.FLAG_NOORDERING;}
+	@Override public String ID() { return "Spell_EnchantWand"; }
+	@Override public String name(){return "Enchant Wand";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -63,7 +64,7 @@ public class Spell_EnchantWand extends Spell
 			mob.tell(mob,target,null,"You can't enchant <T-NAME>.");
 			return false;
 		}
-		
+
 		commands.removeElementAt(commands.size()-1);
 		Wand wand=(Wand)target;
 
@@ -102,13 +103,13 @@ public class Spell_EnchantWand extends Spell
 			mob.tell("That spell is too powerful to enchant into wands.");
 			return false;
 		}
-		
+
 		if(wand.getSpell()!=null)
 		{
 			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");
 			return false;
 		}
-		
+
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{

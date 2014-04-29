@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Enslave extends StdSkill
 {
-	public String ID() { return "Skill_Enslave"; }
-	public String name(){ return "Enslave";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Enslave"; }
+	@Override public String name(){ return "Enslave";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ENSLAVE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String displayText(){ return "(Enslaved)";}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String displayText(){ return "(Enslaved)";}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+
 	protected String masterName="";
 	protected String oldLeige="";
 	protected List<Pair<Clan,Integer>> oldClans=null;
@@ -57,7 +57,8 @@ public class Skill_Enslave extends StdSkill
 	protected final static int SPEEDMAX=2;
 	protected int hungerTickDown=HUNGERTICKMAX;
 	protected Room lastRoom=null;
-	
+
+	@Override
 	public void setMiscText(String txt)
 	{
 		masterMOB=null;
@@ -80,7 +81,7 @@ public class Skill_Enslave extends StdSkill
 		}
 		return masterMOB;
 	}
-	
+
 	public void unMaster(MOB mob)
 	{
 		if((masterMOB!=null) && (mob!=null))
@@ -91,7 +92,8 @@ public class Skill_Enslave extends StdSkill
 				mob.setClan(p.first.clanID(),p.second.intValue());
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -208,6 +210,7 @@ public class Skill_Enslave extends StdSkill
 			mob.setFollowing(null);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -261,7 +264,7 @@ public class Skill_Enslave extends StdSkill
 						{ f=(Food)I; break;}
 					}
 					if(f==null)
-						CMLib.commands().postSay(mob,null,"I am hungry.",false,false);  
+						CMLib.commands().postSay(mob,null,"I am hungry.",false,false);
 					else
 					{
 						Command C=CMClass.getCommand("Eat");
@@ -321,6 +324,7 @@ public class Skill_Enslave extends StdSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=null;
@@ -331,6 +335,7 @@ public class Skill_Enslave extends StdSkill
 			unMaster(mob);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
@@ -352,7 +357,7 @@ public class Skill_Enslave extends StdSkill
 			mob.tell(target.name(mob)+" would be too stupid to understand your instructions!");
 			return false;
 		}
-		
+
 		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(target.name(mob)+" must be bound first.");

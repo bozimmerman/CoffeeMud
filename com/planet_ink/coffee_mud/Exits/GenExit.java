@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,9 +53,9 @@ public class GenExit extends StdExit implements Modifiable
 	protected int 		openDelayTicks=45;
 
 	protected String 	keyName="";
-	
-	
-	public String ID(){	return "GenExit";}
+
+
+	@Override public String ID(){	return "GenExit";}
 	public GenExit()
 	{
 		super();
@@ -77,12 +77,14 @@ public class GenExit extends StdExit implements Modifiable
 		openDelayTicks=45;
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -91,16 +93,17 @@ public class GenExit extends StdExit implements Modifiable
 		isLocked=doorDefaultsLocked;
 	}
 
-	public String Name(){ return name;}
-	public void setName(String newName){name=newName;}
-	public String displayText(){ return displayText;}
-	public void setDisplayText(String newDisplayText){ displayText=newDisplayText;}
-	public String description(){ return description;}
-	public void setDescription(String newDescription){ description=newDescription;}
-	public boolean hasADoor(){return hasADoor;}
-	public boolean hasALock(){return hasALock;}
-	public boolean defaultsLocked(){return doorDefaultsLocked;}
-	public boolean defaultsClosed(){return doorDefaultsClosed;}
+	@Override public String Name(){ return name;}
+	@Override public void setName(String newName){name=newName;}
+	@Override public String displayText(){ return displayText;}
+	@Override public void setDisplayText(String newDisplayText){ displayText=newDisplayText;}
+	@Override public String description(){ return description;}
+	@Override public void setDescription(String newDescription){ description=newDescription;}
+	@Override public boolean hasADoor(){return hasADoor;}
+	@Override public boolean hasALock(){return hasALock;}
+	@Override public boolean defaultsLocked(){return doorDefaultsLocked;}
+	@Override public boolean defaultsClosed(){return doorDefaultsClosed;}
+	@Override
 	public void setDoorsNLocks(boolean newHasADoor,
 								  boolean newIsOpen,
 								  boolean newDefaultsClosed,
@@ -116,12 +119,13 @@ public class GenExit extends StdExit implements Modifiable
 		doorDefaultsLocked=newDefaultsLocked;
 	}
 
-	public boolean isReadable(){ return isReadable;}
+	@Override public boolean isReadable(){ return isReadable;}
 
-	public String doorName(){return doorName;}
-	public String closeWord(){return closeName;}
-	public String openWord(){return openName;}
-	public String closedText(){return closedText;}
+	@Override public String doorName(){return doorName;}
+	@Override public String closeWord(){return closeName;}
+	@Override public String openWord(){return openName;}
+	@Override public String closedText(){return closedText;}
+	@Override
 	public void setExitParams(String newDoorName,
 							  String newCloseWord,
 							  String newOpenWord,
@@ -132,17 +136,18 @@ public class GenExit extends StdExit implements Modifiable
 		openName=newOpenWord;
 		closedText=newClosedText;
 	}
-	
-	public String readableText(){ return (isReadable?keyName:"");}
-	public void setReadable(boolean isTrue){isReadable=isTrue;}
-	public void setReadableText(String text) { keyName=temporaryDoorLink()+text; }
 
-	public String keyName()	{ return keyName; }
-	public void setKeyName(String newKeyName){keyName=temporaryDoorLink()+newKeyName;}
+	@Override public String readableText(){ return (isReadable?keyName:"");}
+	@Override public void setReadable(boolean isTrue){isReadable=isTrue;}
+	@Override public void setReadableText(String text) { keyName=temporaryDoorLink()+text; }
 
-	public int openDelayTicks()	{ return openDelayTicks;}
-	public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
-	
+	@Override public String keyName()	{ return keyName; }
+	@Override public void setKeyName(String newKeyName){keyName=temporaryDoorLink()+newKeyName;}
+
+	@Override public int openDelayTicks()	{ return openDelayTicks;}
+	@Override public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
+
+	@Override
 	public String temporaryDoorLink()
 	{
 		if(keyName.startsWith("{#"))
@@ -153,6 +158,7 @@ public class GenExit extends StdExit implements Modifiable
 		}
 		return "";
 	}
+	@Override
 	public void setTemporaryDoorLink(String link)
 	{
 		if(link.startsWith("{{#"))
@@ -168,22 +174,24 @@ public class GenExit extends StdExit implements Modifiable
 		if(link.length()>0)
 			keyName="{#"+link+"#}"+keyName;
 	}
-	
-	public int getSaveStatIndex(){return getStatCodes().length;}
+
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={
 		"CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
 		"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION",
 		"READABLETEXT","HASADOOR","DEFCLOSED","HASALOCK","DEFLOCKED",
 		"KEYNAME"
 	};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -207,6 +215,7 @@ public class GenExit extends StdExit implements Modifiable
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -250,6 +259,7 @@ public class GenExit extends StdExit implements Modifiable
 		case 15: setKeyName(val); break; // keyname
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenExit)) return false;

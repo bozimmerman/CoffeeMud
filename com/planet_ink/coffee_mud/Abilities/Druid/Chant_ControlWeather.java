@@ -18,7 +18,7 @@ import java.util.Vector;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,17 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_ControlWeather extends Chant
 {
-	public String ID() { return "Chant_ControlWeather"; }
-	public String name(){ return "Control Weather";}
-	protected int canAffectCode(){return Ability.CAN_AREAS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public String ID() { return "Chant_ControlWeather"; }
+	@Override public String name(){ return "Control Weather";}
+	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public int controlCode=0;
-	public int abilityCode(){return controlCode;}
-	public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	
+	@Override public int abilityCode(){return controlCode;}
+	@Override public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -74,6 +75,7 @@ public class Chant_ControlWeather extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

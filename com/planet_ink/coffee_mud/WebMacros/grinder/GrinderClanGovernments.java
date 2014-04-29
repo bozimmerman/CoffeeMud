@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,7 @@ public class GrinderClanGovernments
 						break;
 					}
 			}
-				
+
 			String str=null;
 			str=httpReq.getUrlParameter("NAME");
 			if(str!=null) G.setName(str);
@@ -120,7 +120,7 @@ public class GrinderClanGovernments
 					x++;
 				}
 			}
-			
+
 			List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;
@@ -170,7 +170,7 @@ public class GrinderClanGovernments
 			GrinderRaces.setDynAbilities(G,httpReq);
 			GrinderRaces.setDynEffects(G,httpReq);
 		}
-		
+
 		return "";
 	}
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,21 +34,22 @@ import java.util.*;
 
 public class Fighter_FieldTactics extends FighterSkill
 {
-	public String ID() { return "Fighter_FieldTactics"; }
-	public String name(){ return "Field Tactics";}
-	public String displayText(){ return hidden?"(Hidden)":"";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Fighter_FieldTactics"; }
+	@Override public String name(){ return "Field Tactics";}
+	@Override public String displayText(){ return hidden?"(Hidden)":"";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	private static final Integer[] landClasses = {Integer.valueOf(-1)};
 	public Integer[] landClasses(){return landClasses;}
 	protected boolean activated=false;
 	protected boolean hidden=false;
 	protected long sitTime=0;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -84,6 +85,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		return CMLib.flags().isSitting(mob)&&(mob.riding()==null);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -134,6 +136,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		return false;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SenseMetal extends Chant
 {
-	public String ID() { return "Chant_SenseMetal"; }
-	public String name(){return "Sense Metal";}
-	public String displayText(){return "(Sensing Metal)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_SenseMetal"; }
+	@Override public String name(){return "Sense Metal";}
+	@Override public String displayText(){return "(Sensing Metal)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -54,6 +55,7 @@ public class Chant_SenseMetal extends Chant
 			mob.tell("Your senses are no longer tuned to metals.");
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -66,11 +68,13 @@ public class Chant_SenseMetal extends Chant
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_METAL);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlyNavigableMap<K,V> implements NavigableMap<K,V> 
+public class ReadOnlyNavigableMap<K,V> implements NavigableMap<K,V>
 {
 	private NavigableMap<K,V> map;
 	public ReadOnlyNavigableMap(NavigableMap<K,V> s)

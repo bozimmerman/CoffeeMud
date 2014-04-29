@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,14 +33,15 @@ import java.util.*;
 */
 public class Trap_RatPit extends Trap_SnakePit
 {
-	public String ID() { return "Trap_RatPit"; }
-	public String name(){ return "rat pit";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 12;}
-	public String requiresToSet(){return "some caged rats";}
+	@Override public String ID() { return "Trap_RatPit"; }
+	@Override public String name(){ return "rat pit";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 12;}
+	@Override public String requiresToSet(){return "some caged rats";}
 
 
+	@Override
 	protected Item getCagedAnimal(MOB mob)
 	{
 		if(mob==null) return null;

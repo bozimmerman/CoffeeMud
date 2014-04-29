@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,9 +37,10 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unchecked")
 public class RandomAreaTemplates extends StdWebMacro
 {
-	public String name() { return "RandomAreaTemplates"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "RandomAreaTemplates"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

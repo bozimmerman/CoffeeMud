@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Torture extends Spell
 {
-	public String ID() { return "Spell_Torture"; }
-	public String name(){return "Torture";}
-	public String displayText(){return "(being tortured)";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public String ID() { return "Spell_Torture"; }
+	@Override public String name(){return "Torture";}
+	@Override public String displayText(){return "(being tortured)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -180,7 +181,7 @@ public class Spell_Torture extends Spell
 			}
 			break;
 		}
-		
+
 		switch(roll)
 		{
 		case 1:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
@@ -205,7 +206,8 @@ public class Spell_Torture extends Spell
 			"<S-NAME> cr(ys) in anticipation of pain!"); break;
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.amITarget(affected))
@@ -216,6 +218,7 @@ public class Spell_Torture extends Spell
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!text().equalsIgnoreCase("HITONLY"))
@@ -224,6 +227,7 @@ public class Spell_Torture extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

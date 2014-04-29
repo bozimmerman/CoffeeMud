@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdMaze extends StdGrid
 {
-	public String ID(){return "StdMaze";}
+	@Override public String ID(){return "StdMaze";}
 	public StdMaze()
 	{
 		super();
 	}
 
+	@Override
 	protected Room getGridRoom(int x, int y)
 	{
 		Room R=super.getGridRoom(x,y);
@@ -50,6 +51,7 @@ public class StdMaze extends StdGrid
 		}
 		return R;
 	}
+	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
 		Room dirRoom=rawDoors()[dirCode];
@@ -159,6 +161,7 @@ public class StdMaze extends StdGrid
 		mazify(visited,x,y);
 	}
 
+	@Override
 	public void buildGrid()
 	{
 		clearGrid(null);

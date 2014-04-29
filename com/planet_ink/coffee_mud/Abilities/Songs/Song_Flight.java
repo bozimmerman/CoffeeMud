@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Flight extends Song
 {
-	public String ID() { return "Song_Flight"; }
-	public String name(){ return "Flight";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Flight"; }
+	@Override public String name(){ return "Flight";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -55,6 +56,7 @@ public class Song_Flight extends Song
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -87,7 +89,7 @@ public class Song_Flight extends Song
 				{
 					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
@@ -96,7 +98,7 @@ public class Song_Flight extends Song
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

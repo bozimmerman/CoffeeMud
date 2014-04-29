@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Engraving extends CommonSkill
 {
-	public String ID() { return "Engraving"; }
-	public String name(){ return "Engraving";}
+	@Override public String ID() { return "Engraving"; }
+	@Override public String name(){ return "Engraving";}
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
 
 	protected Item found=null;
 	protected String writing="";
-	protected boolean canBeDoneSittingDown() { return true; }
-	
+	@Override protected boolean canBeDoneSittingDown() { return true; }
+
 	public Engraving()
 	{
 		super();
@@ -53,6 +53,7 @@ public class Engraving extends CommonSkill
 		verb="engraving";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -76,6 +77,7 @@ public class Engraving extends CommonSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -118,7 +120,7 @@ public class Engraving extends CommonSkill
 			commonTell(mob,"You must know how to write to engrave.");
 			return false;
 		}
-		
+
 		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)

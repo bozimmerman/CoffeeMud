@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class SwampThinGrid extends StdThinGrid
 {
-	public String ID(){return "SwampThinGrid";}
+	@Override public String ID(){return "SwampThinGrid";}
 	public SwampThinGrid()
 	{
 		super();
@@ -45,14 +45,15 @@ public class SwampThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new SwampGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "Swamp";}
-	public List<Integer> resourceChoices(){return Swamp.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Swamp";}
+	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }

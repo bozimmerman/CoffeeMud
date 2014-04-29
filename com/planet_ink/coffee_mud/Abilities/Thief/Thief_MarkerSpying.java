@@ -35,20 +35,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_MarkerSpying extends ThiefSkill
 {
-	public String ID() { return "Thief_MarkerSpying"; }
-	public String name(){ return "Marker Spying";}
+	@Override public String ID() { return "Thief_MarkerSpying"; }
+	@Override public String name(){ return "Marker Spying";}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"MARKERSPYING","MARKSPY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
 	public MOB getMark(MOB mob)
 	{
@@ -61,6 +61,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		return null;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(super.canBeUninvoked())
@@ -76,7 +77,8 @@ public class Thief_MarkerSpying extends ThiefSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -94,6 +96,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -104,6 +107,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getMark(mob);

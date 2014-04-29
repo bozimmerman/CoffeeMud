@@ -35,21 +35,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_ContractHit extends ThiefSkill
 {
-	public String ID() { return "Thief_ContractHit"; }
-	public String name(){ return "Contract Hit";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_ContractHit"; }
+	@Override public String name(){ return "Contract Hit";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"CONTRACTHIT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
-	public String displayText(){return "";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override public String displayText(){return "";}
 	protected boolean done=false;
 	protected boolean readyToHit=false;
 	protected boolean hitting=false;
 	protected Vector hitmen=new Vector();
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -62,6 +63,7 @@ public class Thief_ContractHit extends ThiefSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
@@ -145,6 +147,7 @@ public class Thief_ContractHit extends ThiefSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=invoker();
@@ -165,6 +168,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -180,7 +184,8 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

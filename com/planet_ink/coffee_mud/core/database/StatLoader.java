@@ -18,7 +18,7 @@ import java.sql.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,10 +66,10 @@ public class StatLoader
 		{
 			DB.DBDone(D);
 		}
-		// log comment 
+		// log comment
 		return T;
 	}
-	
+
 	public List<CoffeeTableRow> DBReadAfter(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
@@ -99,10 +99,10 @@ public class StatLoader
 		{
 			DB.DBDone(D);
 		}
-		// log comment 
+		// log comment
 		return rows;
 	}
-	
+
 	public void DBDelete(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))

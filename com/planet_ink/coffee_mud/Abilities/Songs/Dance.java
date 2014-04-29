@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Dance extends StdAbility
 {
-	public String ID() { return "Dance"; }
-	public String name(){ return "a Dance";}
-	public String displayText(){ return "("+danceOf()+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Dance"; }
+	@Override public String name(){ return "a Dance";}
+	@Override public String displayText(){ return "("+danceOf()+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DANCE","DA"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int invokerManaCost=-1;
 	protected long timeOut=0;
 	protected Vector commonRoomSet=null;
@@ -58,15 +58,17 @@ public class Dance extends StdAbility
 	protected String danceOf(){return name();}
 
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
-	
+
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		if(this.invoker()==affectedEnv)
 			affectableStats.addAmbiance("performing the "+danceOf().toLowerCase());
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-	
-	
+
+
+	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
 		int level=super.adjustedLevel(mob,asLevel);
@@ -76,6 +78,7 @@ public class Dance extends StdAbility
 		return level;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
@@ -112,13 +115,13 @@ public class Dance extends StdAbility
 			&&(CMLib.flags().canBeSeenBy(invoker(),mob)))
 				CMLib.combat().postAttack(mob,invoker(),mob.fetchWieldedItem());
 		}
-		
+
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
 			return undanceMe(mob,null);
-		
+
 		if(skipStandardDanceTick())
 			return true;
 
@@ -128,7 +131,7 @@ public class Dance extends StdAbility
 		||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			return undanceMe(mob,null);
-		
+
 		if(invokerManaCost<0) invokerManaCost=usageCost(invoker(),false)[1];
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
@@ -173,7 +176,7 @@ public class Dance extends StdAbility
 		{
 			Dance D=(Dance)A;
 			if(D.timeOut==0)
-				D.timeOut = System.currentTimeMillis() 
+				D.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
 			if(System.currentTimeMillis() >= D.timeOut)
 			{
@@ -207,7 +210,7 @@ public class Dance extends StdAbility
 			rooms.addElement(invoker().location());
 		return rooms;
 	}
-	
+
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
 		if(v<0) return -1;
@@ -231,7 +234,7 @@ public class Dance extends StdAbility
 		}
 		return dir;
 	}
-	
+
 	protected String getCorrectMsgString(Room R, String str, int v)
 	{
 		String msgStr=null;
@@ -247,7 +250,7 @@ public class Dance extends StdAbility
 		}
 		return msgStr;
 	}
-	
+
 	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
 	{
 		if(originRoom==R)
@@ -265,14 +268,15 @@ public class Dance extends StdAbility
 		if(h==null) return null;
 		if(R==originRoom)
 		{
-			if(!h.contains(mob)) 
+			if(!h.contains(mob))
 				h.add(mob);
 		}
 		else
 			h.remove(mob);
 		return h;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((invoker()!=null)
@@ -289,6 +293,7 @@ public class Dance extends StdAbility
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -303,6 +308,7 @@ public class Dance extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -353,18 +359,18 @@ public class Dance extends StdAbility
 					Dance newOne=(Dance)this.copyOf();
 					newOne.invoker=mob;
 					newOne.invokerManaCost=-1;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
 						Room R2=follower.location();
-	
+
 						// malicious dances must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

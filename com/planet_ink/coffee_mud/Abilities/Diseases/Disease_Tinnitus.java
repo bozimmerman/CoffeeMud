@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,25 @@ import java.util.*;
 
 public class Disease_Tinnitus extends Disease
 {
-	public String ID() { return "Disease_Tinnitus"; }
-	public String name(){ return "Tinnitus";}
-	public String displayText(){ return "(Tinnitus)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Tinnitus"; }
+	@Override public String name(){ return "Tinnitus";}
+	@Override public String displayText(){ return "(Tinnitus)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 100;}
-	protected int DISEASE_DELAY(){return 1;}
-	protected String DISEASE_DONE(){return "Your ears stop ringing.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
-	public int difficultyLevel(){return 4;}
+	@Override protected int DISEASE_TICKS(){return 100;}
+	@Override protected int DISEASE_DELAY(){return 1;}
+	@Override protected String DISEASE_DONE(){return "Your ears stop ringing.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
+	@Override public int difficultyLevel(){return 4;}
 
 	protected boolean ringing=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -72,6 +73,7 @@ public class Disease_Tinnitus extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((affected==null)||(!ringing)) return;

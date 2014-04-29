@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_FungalBloom extends Chant
 {
-	public String ID() { return "Chant_FungalBloom"; }
-	public String name(){ return "Fungal Bloom";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_FungalBloom"; }
+	@Override public String name(){ return "Fungal Bloom";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public Item getShroomHere(Room R)
 	{
@@ -56,7 +56,8 @@ public class Chant_FungalBloom extends Chant
 		}
 		return null;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -76,6 +77,7 @@ public class Chant_FungalBloom extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)

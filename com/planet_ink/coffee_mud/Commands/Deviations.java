@@ -40,9 +40,9 @@ public class Deviations extends StdCommand
 	public Deviations(){}
 
 	private final String[] access={"DEVIATIONS"};
-	public String[] getAccessWords(){return access;}
-	
-	public boolean canBeOrdered(){return true;}
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override public boolean canBeOrdered(){return true;}
 
 	protected String mobHeader(Faction useFaction)
 	{
@@ -86,7 +86,7 @@ public class Deviations extends StdCommand
 				return true;
 		return false;
 	}
-	
+
 	private void fillCheckDeviations(Room R, String type, Vector check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
@@ -150,7 +150,7 @@ public class Deviations extends StdCommand
 	}
 	protected String getDeviation(int val, int val2)
 	{
-		
+
 		if(val==val2) return "0%";
 		int oval=val2-val;
 		int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
@@ -176,7 +176,7 @@ public class Deviations extends StdCommand
 		{
 			Faction F=e.nextElement();
 			if(F.showInSpecialReported()) useFaction=F;
-				
+
 		}
 		String where=V.elementAt(1).toLowerCase();
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
@@ -284,7 +284,7 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.basePhyStats().speed()),
 												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
 				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
-				if(useFaction!=null) 
+				if(useFaction!=null)
 					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.numItems();j++)
@@ -302,6 +302,7 @@ public class Deviations extends StdCommand
 		return str;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -309,7 +310,8 @@ public class Deviations extends StdCommand
 		return false;
 	}
 
-	
+
+	@Override
 	public boolean securityCheck(MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Permanency extends Spell
 {
-	public String ID() { return "Spell_Permanency"; }
-	public String name(){return "Permanency";}
-	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Permanency"; }
+	@Override public String name(){return "Permanency";}
+	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

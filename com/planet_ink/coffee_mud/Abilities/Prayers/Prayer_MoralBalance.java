@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_MoralBalance extends Prayer
 {
-	public String ID() { return "Prayer_MoralBalance"; }
-	public String name(){ return "Moral Balance";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_MoralBalance"; }
+	@Override public String name(){ return "Moral Balance";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -49,7 +50,7 @@ public class Prayer_MoralBalance extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))

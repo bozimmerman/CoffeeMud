@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SpikePit extends Trap_RoomPit
 {
-	public String ID() { return "Trap_SpikePit"; }
-	public String name(){ return "spike pit";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 8;}
-	public String requiresToSet(){return "5 dagger-class weapons";}
+	@Override public String ID() { return "Trap_SpikePit"; }
+	@Override public String name(){ return "spike pit";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 8;}
+	@Override public String requiresToSet(){return "5 dagger-class weapons";}
 
 	public Vector daggerDamages=null;
 
@@ -57,6 +57,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return null;
 	}
 
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -73,6 +74,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -88,6 +90,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		}
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -102,6 +105,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return true;
 	}
 
+	@Override
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))

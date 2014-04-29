@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.File;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AddRandomFileFromDir extends StdWebMacro
 {
-	public String name() { return "AddRandomFileFromDir"; }
+	@Override public String name() { return "AddRandomFileFromDir"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -65,9 +66,9 @@ public class AddRandomFileFromDir extends StdWebMacro
 			else
 				Log.sysOut("AddRFDir","Directory error: "+filePath);
 		}
-		if(fileList.size()==0) 
+		if(fileList.size()==0)
 			return buf.toString();
-		
+
 		try
 		{
 			if(LINKONLY)

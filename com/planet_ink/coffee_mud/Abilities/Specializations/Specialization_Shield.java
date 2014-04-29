@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2014-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,14 @@ import java.util.*;
 */
 public class Specialization_Shield extends Specialization_Weapon
 {
-	public String ID() { return "Specialization_Shield"; }
-	public String name(){ return "Shield Specialization";}
+	@Override public String ID() { return "Specialization_Shield"; }
+	@Override public String name(){ return "Shield Specialization";}
 	public Specialization_Shield()
 	{
 		super();
 		weaponClass=Weapon.CLASS_BLUNT;
 	}
-	
+
 	@Override
 	protected int getDamageBonus(MOB mob, int dmgType)
 	{
@@ -52,17 +52,17 @@ public class Specialization_Shield extends Specialization_Weapon
 	{
 		return W instanceof Shield;
 	}
-	
+
 	@Override
 	protected boolean canDamage(MOB mob, Weapon W)
 	{
 		return W instanceof Shield;
 	}
-	
+
 	@Override
 	protected boolean isWearableItem(Item I)
 	{
 		return I instanceof Shield;
 	}
-	
+
 }

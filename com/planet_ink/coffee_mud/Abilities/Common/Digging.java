@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Digging extends GatheringSkill
 {
-	public String ID() { return "Digging"; }
-	public String name(){ return "Gem Digging";}
+	@Override public String ID() { return "Digging"; }
+	@Override public String name(){ return "Gem Digging";}
 	private static final String[] triggerStrings = {"GDIG","GDIGGING","GEMDIGGING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	protected boolean allowedWhileMounted(){return false;}
-	public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
+	@Override protected boolean allowedWhileMounted(){return false;}
+	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
 
 	protected Item found=null;
 	protected String foundShortName="";
@@ -56,8 +56,9 @@ public class Digging extends GatheringSkill
 	{
 		return getDuration(60,mob,level,15);
 	}
-	protected int baseYield() { return 1; }
-	
+	@Override protected int baseYield() { return 1; }
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -85,6 +86,7 @@ public class Digging extends GatheringSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -116,6 +118,7 @@ public class Digging extends GatheringSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -130,7 +133,7 @@ public class Digging extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		
+
 		verb="digging";
 		playSound="dig.wav";
 		found=null;
@@ -156,7 +159,7 @@ public class Digging extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		
+
 		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) digging for gems.");
 		if(mob.location().okMessage(mob,msg))

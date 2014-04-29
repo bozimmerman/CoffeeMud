@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_BladeBarrier extends Prayer
 {
-	public String ID() { return "Prayer_BladeBarrier"; }
-	public String name(){ return "Blade Barrier";}
-	public String displayText(){ return "(Blade Barrier)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_BladeBarrier"; }
+	@Override public String name(){ return "Blade Barrier";}
+	@Override public String displayText(){ return "(Blade Barrier)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 	protected long oncePerTickTime=0;
 
 	protected String startStr() { return "A barrier of blades begin to spin around <T-NAME>!^?"; }
-	
-	protected void doDamage(MOB srcM, MOB targetM, int damage) 
+
+	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{
 		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +68,7 @@ public class Prayer_BladeBarrier extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> "+name().toLowerCase()+" disappears.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -96,12 +98,14 @@ public class Prayer_BladeBarrier extends Prayer
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor()-1 - (adjustedLevel(invoker(),0)/10));
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

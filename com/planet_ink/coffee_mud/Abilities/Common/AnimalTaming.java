@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AnimalTaming extends CommonSkill
 {
-	public String ID() { return "AnimalTaming"; }
-	public String name(){ return "Animal Taming";}
+	@Override public String ID() { return "AnimalTaming"; }
+	@Override public String name(){ return "Animal Taming";}
 	private static final String[] triggerStrings = {"TAME","TAMING","ANIMALTAMING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected Physical taming=null;
 	protected boolean messedUp=false;
@@ -49,6 +49,7 @@ public class AnimalTaming extends CommonSkill
 		displayText="You are taming...";
 		verb="taming";
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -75,6 +76,7 @@ public class AnimalTaming extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -133,6 +135,7 @@ public class AnimalTaming extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

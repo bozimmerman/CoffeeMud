@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FireBuilding extends CommonSkill
 {
-	public String ID() { return "FireBuilding"; }
-	public String name(){ return "Fire Building";}
+	@Override public String ID() { return "FireBuilding"; }
+	@Override public String name(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	public Item lighting=null;
 	protected int durationOfBurn=0;
 	protected boolean failed=false;
 
-	protected boolean canBeDoneSittingDown() { return true; }
+	@Override protected boolean canBeDoneSittingDown() { return true; }
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -90,7 +91,7 @@ public class FireBuilding extends CommonSkill
 		}
 		return false;
 	}
-	
+
 	public Vector resourceHere(Room R, int material)
 	{
 		Vector here=new Vector();
@@ -107,7 +108,8 @@ public class FireBuilding extends CommonSkill
 		}
 		return here;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -163,7 +165,7 @@ public class FireBuilding extends CommonSkill
 		{
 			lighting=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 			if(lighting==null) return false;
-			
+
 			if((lighting.displayText().length()==0)
 			||(!CMLib.flags().isGettable(lighting)))
 			{
@@ -197,7 +199,7 @@ public class FireBuilding extends CommonSkill
 					return false;
 				}
 			}
-			durationOfBurn=CMLib.flags().burnStatus(lighting); 
+			durationOfBurn=CMLib.flags().burnStatus(lighting);
 			if(durationOfBurn<0)
 			{
 				commonTell(mob,"You need to cook that, if you can.");
@@ -251,7 +253,7 @@ public class FireBuilding extends CommonSkill
 			FireBuilding fireBuild = (FireBuilding)mob.fetchEffect(ID());
 			if(fireBuild!=null)
 				fireBuild.durationOfBurn = this.durationOfBurn;
-			
+
 		}
 		return true;
 	}

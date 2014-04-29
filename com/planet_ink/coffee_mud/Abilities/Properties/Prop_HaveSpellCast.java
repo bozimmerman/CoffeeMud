@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,20 @@ import java.util.*;
 */
 public class Prop_HaveSpellCast extends Prop_SpellAdder
 {
-	public String ID() { return "Prop_HaveSpellCast"; }
-	public String name(){ return "Casting spells when owned";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_HaveSpellCast"; }
+	@Override public String name(){ return "Casting spells when owned";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected Item myItem=null;
-	
-	public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
 
-	public long flags(){return Ability.FLAG_CASTER;}
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
 
+	@Override public long flags(){return Ability.FLAG_CASTER;}
+
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," on the owner.");}
 
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		if(P==null)
@@ -57,10 +59,12 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 		}
 		super.setAffectedOne(P);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{}
-	
+
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
@@ -73,7 +77,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
 			&&(((MOB)lastMOB).location()!=null))
 				removeMyAffectsFromLastMOB();
-			
+
 			if((lastMOB==null)
 			&&(myItem.owner() instanceof MOB)
 			&&(((MOB)myItem.owner()).location()!=null))

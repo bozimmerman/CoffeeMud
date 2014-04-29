@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ import java.util.Vector;
 public interface Banker extends ShopKeeper
 {
 	public final static double MIN_ITEM_BALANCE_DIVIDEND=10.0;
-	
+
 	public String getBankClientName(MOB mob, Clan.Function func, boolean checked);
 	public void addDepositInventory(String depositorName, Item thisThang);
 	public boolean delDepositInventory(String depositorName, Item thisThang);

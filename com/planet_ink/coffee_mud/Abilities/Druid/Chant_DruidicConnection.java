@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_DruidicConnection extends Chant
 {
-	public String ID() { return "Chant_DruidicConnection"; }
-	public String name(){ return "Druidic Connection";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_AREAS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_DruidicConnection"; }
+	@Override public String name(){ return "Druidic Connection";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_AREAS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected long lastTime=System.currentTimeMillis();
-	public boolean bubbleAffect(){return (affected instanceof Area);}
-	
+	@Override public boolean bubbleAffect(){return (affected instanceof Area);}
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -82,7 +83,8 @@ public class Chant_DruidicConnection extends Chant
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
@@ -98,7 +100,8 @@ public class Chant_DruidicConnection extends Chant
 			}
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
@@ -110,7 +113,7 @@ public class Chant_DruidicConnection extends Chant
 			{
 				Item I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,0);
 				int num=0;
-				while(I!=null) 
+				while(I!=null)
 					I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,++num);
 				for(int x=num-1;x>=0;x--)
 				{
@@ -125,7 +128,8 @@ public class Chant_DruidicConnection extends Chant
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location()==null)) return false;

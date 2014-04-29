@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class NastyAbilities extends ActiveTicker
 {
-	public String ID(){return "NastyAbilities";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "NastyAbilities";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected boolean fightok=false;
 
 	private List<Ability> mySkills=null;
 	private int numAllSkills=-1;
-	
+
 	public NastyAbilities()
 	{
 		super();
@@ -49,17 +49,20 @@ public class NastyAbilities extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random malicious skill using";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
 		fightok=newParms.toUpperCase().indexOf("FIGHTOK")>=0;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

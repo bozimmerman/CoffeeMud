@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Tailoring"; }
-	public String name(){ return "Tailoring";}
+	@Override public String ID() { return "Tailoring"; }
+	@Override public String name(){ return "Tailoring";}
 	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "CLOTH";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "CLOTH";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_TYPE||CODED_WEAR_LOCATION||RIDE_BASIS\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
@@ -62,6 +63,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -72,9 +74,10 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "tailor.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "tailor.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -127,6 +130,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	@Override
 	public double getItemWeightMultiplier(boolean bundling)
 	{
 		return bundling ? 1.0 : 0.5;
@@ -141,6 +145,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -148,7 +153,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(!masterCraftCheck(I))
 			return (isANativeItem(I.Name()));
@@ -170,22 +175,23 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(I instanceof Armor)
 		{
 			final long nonWearablePlaces=Wearable.WORN_FEET|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_EARS|Wearable.WORN_EYES;
-			if((I.rawProperLocationBitmap()&nonWearablePlaces)>0) 
+			if((I.rawProperLocationBitmap()&nonWearablePlaces)>0)
 				return (isANativeItem(I.Name()));
 			return true;
 		}
 		if(I instanceof Weapon)
 		{
-			if(I.basePhyStats().damage()!=0) 
+			if(I.basePhyStats().damage()!=0)
 				return false;
-			if(I.basePhyStats().attackAdjustment()!=0) 
+			if(I.basePhyStats().attackAdjustment()!=0)
 				return (isANativeItem(I.Name()));
 			return true;
 		}
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -198,16 +204,18 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -366,13 +374,13 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to knit a '"+recipeName+"'.  Try \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");

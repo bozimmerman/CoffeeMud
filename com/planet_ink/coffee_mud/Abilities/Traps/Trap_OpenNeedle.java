@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class Trap_OpenNeedle extends Trap_Open
 {
-	public String ID() { return "Trap_OpenNeedle"; }
-	public String name(){ return "Open Needle Trap";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapType(){return TRAP_NEEDLE;}
+	@Override public String ID() { return "Trap_OpenNeedle"; }
+	@Override public String name(){ return "Open Needle Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapType(){return TRAP_NEEDLE;}
 }

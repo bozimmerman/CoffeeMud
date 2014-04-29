@@ -38,11 +38,12 @@ import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public class Spell_CEqGas extends Spell_BaseClanEq {
-  public String ID() { return "Spell_CEqGas"; }
-  public String name(){return "ClanEnchant Gas";}
-  public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+@Override public String ID() { return "Spell_CEqGas"; }
+@Override public String name(){return "ClanEnchant Gas";}
+@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-  public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+  @Override
+public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
   {
 	type="Gas";
 	// All the work is done by the base model

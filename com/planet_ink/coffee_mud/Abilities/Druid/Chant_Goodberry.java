@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Goodberry extends Chant
 {
-	public String ID() { return "Chant_Goodberry"; }
-	public String name(){ return "Goodberry";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Chant_Goodberry"; }
+	@Override public String name(){ return "Goodberry";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 
 	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
 	{
@@ -76,6 +76,7 @@ public class Chant_Goodberry extends Chant
 
 	public boolean isBerry(Item I) { return CMParms.contains(RawMaterial.CODES.BERRIES(),I.material()); }
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityRecipeData extends StdWebMacro
 {
-	public String name() { return "AbilityRecipeData"; }
+	@Override public String name() { return "AbilityRecipeData"; }
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		
+
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -54,12 +55,12 @@ public class AbilityRecipeData extends StdWebMacro
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
-		
+
 		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
-		
+
 		String rownum=httpReq.getUrlParameter("ABILITYRECIPEROW");
-		
+
 		if(last.length()>0)
 		{
 			Ability A=CMClass.getAbility(last);
@@ -70,7 +71,7 @@ public class AbilityRecipeData extends StdWebMacro
 			&&(((ItemCraftor)A).parametersFormat()!=null)
 			&&(((ItemCraftor)A).parametersFormat().length()>0))
 			{
-				AbilityParameters.AbilityRecipeData recipeData = 
+				AbilityParameters.AbilityRecipeData recipeData =
 					(AbilityParameters.AbilityRecipeData)httpReq.getRequestObjects().get("ABILITYRECIPEDATA-"+last);
 				if(recipeData == null)
 				{
@@ -87,7 +88,7 @@ public class AbilityRecipeData extends StdWebMacro
 				String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 				String hsfont=(parms.containsKey("HFONT"))?("<FONT "+(parms.get("HFONT"))+">"):"";
 				String hefont=(parms.containsKey("HFONT"))?"</FONT>":"";
-				
+
 				if(parms.containsKey("SAVETOVFS"))
 				{
 					if(httpReq.isUrlParameter("SAVETOVFS"))
@@ -149,7 +150,7 @@ public class AbilityRecipeData extends StdWebMacro
 					for(int row=0;row<recipeData.dataRows().size();row++)
 					{
 						if(cfIndex>=0)
-						{   
+						{
 							DVector dataRow = recipeData.dataRows().elementAt(row);
 							classFieldEditor = CMLib.ableParms().getEditors().get(dataRow.elementAt(cfIndex,1));
 						}

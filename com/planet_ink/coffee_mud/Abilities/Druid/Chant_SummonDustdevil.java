@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonDustdevil extends Chant
 {
-	public String ID() { return "Chant_SummonDustdevil"; }
-	public String name(){ return "Summon Dustdevil";}
-	public String displayText(){return "(Summon Dustdevil)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Chant_SummonDustdevil"; }
+	@Override public String name(){ return "Summon Dustdevil";}
+	@Override public String displayText(){return "(Summon Dustdevil)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -103,6 +104,7 @@ public class Chant_SummonDustdevil extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -124,6 +126,7 @@ public class Chant_SummonDustdevil extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -149,6 +152,7 @@ public class Chant_SummonDustdevil extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -162,6 +166,7 @@ public class Chant_SummonDustdevil extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -176,12 +181,13 @@ public class Chant_SummonDustdevil extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				if(mob.isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 			}
 		}
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)

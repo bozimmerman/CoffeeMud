@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,25 @@ import java.util.*;
 
 public class Fighter_ImprovedShieldDefence extends FighterSkill
 {
-	public String ID() { return "Fighter_ImprovedShieldDefence"; }
-	public String name(){ return "Improved Shield Defence";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Fighter_ImprovedShieldDefence"; }
+	@Override public String name(){ return "Improved Shield Defence";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	protected volatile int amountOfShieldArmor=-1;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((!(affected instanceof MOB))||(amountOfShieldArmor<=0)) return;
 		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(amountOfShieldArmor,(CMath.div(proficiency()+(5.0*getXLEVELLevel(invoker())),100.0))))));
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -72,6 +74,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 			amountOfShieldArmor=-1;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -92,7 +95,8 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		amountOfShieldArmor=-1;

@@ -20,7 +20,7 @@ import java.util.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class Import extends StdCommand
 	public Import(){}
 
 	private final String[] access={"IMPORT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static final String[][] objDescs={
 		{"silver",""+RawMaterial.RESOURCE_STEEL},
@@ -299,7 +299,7 @@ public class Import extends StdCommand
 					lineAfter=V.get(3);
 					if(lineAfter.indexOf('~')<0)
 						return "";
-					if(lineAfter.endsWith("~")) 
+					if(lineAfter.endsWith("~"))
 						lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 					int x=lineAfter.indexOf('}');
 					if(x>0) lineAfter=lineAfter.substring(x+1).trim();
@@ -320,7 +320,7 @@ public class Import extends StdCommand
 			&&(areaName.charAt(40)==' '))
 				areaName=areaName.substring(21,41).trim();
 			else
-			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))			
+			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))
 			{
 				int x=areaName.indexOf('}',12);
 				if(x>12)
@@ -343,7 +343,7 @@ public class Import extends StdCommand
 		}
 		return CMStrings.removeColors(CMLib.coffeeFilter().safetyFilter(areaName));
 	}
-	
+
 	protected static Room getRoom(java.util.Map<String, Room> hashedRoomSet, String areaName, String calledThis)
 	{
 		if(calledThis.startsWith("#"))
@@ -373,7 +373,7 @@ public class Import extends StdCommand
 				return hashedRoomSet.get(key);
 		return null;
 	}
-	
+
 	protected static Room getRoom(java.util.Map<String, Room> areaHashedRoomSet, java.util.Map<String, Room> hashedRoomSet, String areaName, String calledThis)
 	{
 		Room R=null;
@@ -384,7 +384,7 @@ public class Import extends StdCommand
 		if(R!=null) return R;
 		return CMLib.map().getRoom(areaName+"#"+calledThis);
 	}
-	
+
 	protected static void processRoomRelinks(Vector reLinkTable, String areaName, Hashtable areaHashedRoomSet, Hashtable hashedRoomSet)
 	{
 		// try to re-link olde room links
@@ -417,7 +417,7 @@ public class Import extends StdCommand
 			}
 
 	}
-	
+
 	protected static boolean temporarilyDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
 		if((mob!=null)&&(CMLib.flags().isInTheGame(mob,true)&&(mob.location().getArea().Name().equalsIgnoreCase(areaName))))
@@ -466,7 +466,7 @@ public class Import extends StdCommand
 		}
 		return true;
 	}
-	
+
 	protected static String getAreaAuthor(List<String> V)
 	{
 		V=new XVector<String>(V);
@@ -520,7 +520,7 @@ public class Import extends StdCommand
 					&&(CMParms.parse(s).size()>0))
 						s=CMParms.parse(s).lastElement();
 					else
-					if(x>1) 
+					if(x>1)
 						s=s.substring(0,x).trim();
 					if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 						continue;
@@ -574,7 +574,7 @@ public class Import extends StdCommand
 				&&(CMParms.parse(s).size()>0))
 					s=CMParms.parse(s).lastElement();
 				else
-				if(x>1) 
+				if(x>1)
 					s=s.substring(0,x).trim();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
@@ -593,7 +593,7 @@ public class Import extends StdCommand
 				&&(CMParms.parse(s).size()>0))
 					s=CMParms.parse(s).lastElement();
 				else
-				if(x>1) 
+				if(x>1)
 					s=s.substring(0,x).trim();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
@@ -602,7 +602,7 @@ public class Import extends StdCommand
 		}
 		return "";
 	}
-	
+
 	protected static final String[][] colors={
 		{((char)27)+"ash"+((char)27),"^c"},
 		{((char)27)+"black"+((char)27),"^W"},
@@ -905,14 +905,14 @@ public class Import extends StdCommand
 			String data=(String)files.get(filename);
 			if(customBother.contains(filename))
 			   continue;
-	
+
 			if((!filename.startsWith("//"))&&(!filename.startsWith("::")))
 			{
 				if(!filename.startsWith("/"))
 					filename="/"+filename;
 				filename="::"+filename;
 			}
-			
+
 			if(new CMFile(filename,mob).exists())
 			{
 				if(noDelete)
@@ -925,7 +925,7 @@ public class Import extends StdCommand
 			Resources.saveFileResource(filename,mob,new StringBuffer(data));
 		}
 	}
-	
+
 	protected static void importCustomObjects(MOB mob, List<CMObject> custom, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
@@ -938,7 +938,7 @@ public class Import extends StdCommand
 				Race R=(Race)custom.get(c);
 				if(customBother.contains(R.ID()))
 				   continue;
-	
+
 				Race R2=CMClass.getRace(R.ID());
 				if(R2==null)
 				{
@@ -967,7 +967,7 @@ public class Import extends StdCommand
 				CharClass C=(CharClass)custom.get(c);
 				if(customBother.contains(C.ID()))
 				   continue;
-	
+
 				CharClass C2=CMClass.getCharClass(C.ID());
 				if(C2==null)
 				{
@@ -996,7 +996,7 @@ public class Import extends StdCommand
 				Ability A=(Ability)custom.get(c);
 				if(customBother.contains(A.ID()))
 				   continue;
-	
+
 				Ability A2=CMClass.getAbility(A.ID());
 				if(A2==null)
 				{
@@ -1026,7 +1026,7 @@ public class Import extends StdCommand
 				Manufacturer M=(Manufacturer)custom.get(c);
 				if(customBother.contains(M.name()))
 				   continue;
-	
+
 				Manufacturer eM=CMLib.tech().getManufacturer(M.name());
 				if(eM==null)
 				{
@@ -1048,7 +1048,7 @@ public class Import extends StdCommand
 			}
 		}
 	}
-	
+
 	protected static String getSpell(String word, int i)
 	{
 		if((word.trim().length()>0)&&((Character.isLetter(word.trim().charAt(0)))||(word.trim().startsWith("'"))||(word.trim().startsWith("`"))))
@@ -1778,13 +1778,13 @@ public class Import extends StdCommand
 			String s=buf.get(0).toUpperCase().trim();
 			if(s.startsWith("#")&&buf.get(0).startsWith(" "))
 				s=buf.get(0).toUpperCase();
-			
+
 			if((useThisOne==areaData)&&(s.length()==0))
 			{
 				buf.remove(0);
 				continue;
 			}
-			
+
 			boolean okString=true;
 			if(s.startsWith("#"))
 			{
@@ -1794,7 +1794,7 @@ public class Import extends StdCommand
 					wasUsingThisOne=mobData;
 					useThisOne=mobData;
 				}
-				
+
 				if((s.startsWith("AREA"))
 				||(s.startsWith("AUTHOR")))
 				{
@@ -2175,7 +2175,7 @@ public class Import extends StdCommand
 				continue;
 
 			String mobID=eatNextLine(objV);
-			
+
 			if(isBadID(mobID))
 			{
 				Log.errOut("IMPORT","Eating bad mob id "+mobID);
@@ -2492,7 +2492,7 @@ public class Import extends StdCommand
 				baseHP=baseHP-3;
 				baseHP=(baseHP/M.basePhyStats().level())-1;
 				M.basePhyStats().setAbility(baseHP);
-				
+
 				if(circleFormat)
 				{
 					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,2).trim()))
@@ -3284,7 +3284,7 @@ public class Import extends StdCommand
 			break;
 		}
 	}
-	
+
 	private static Item getItem(String OfThisID,
 								Session session,
 								String areaName,
@@ -3643,7 +3643,7 @@ public class Import extends StdCommand
 					 if((str4.length()>0)&&(!str4.equals("0")))
 					 {
 						 Room R=getRoom(areaRooms,doneRooms,areaName,str4);
-						 if(R!=null) 
+						 if(R!=null)
 							 I.setReadableText(R.roomID());
 						 else
 						 for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
@@ -3665,7 +3665,7 @@ public class Import extends StdCommand
 			case 99: I=CMClass.getBasicItem("GenCorpse"); break;
 			case -1: I=CMClass.getBasicItem("GenWallpaper"); break;
 			default:
-					I=CMClass.getBasicItem("GenItem"); 
+					I=CMClass.getBasicItem("GenItem");
 					break;
 			}
 
@@ -3805,7 +3805,7 @@ public class Import extends StdCommand
 						((Container)I).setCapacity(I.basePhyStats().weight()+10);
 				}
 			}
-			
+
 			if(CMath.isSet(extraFlag,0))
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_GLOWING);
 
@@ -4217,44 +4217,44 @@ public class Import extends StdCommand
 
 		if(CMath.isSet(codeBits,21)) // underwater room
 			R=changeRoomClass(R,"UnderWater");
-		
+
 		if(CMath.isSet(codeBits,3)) // indoors
 			R=changeRoomClass(R,"StoneRoom");
-		
+
 		if(CMath.isSet(codeBits,0)) // dark room
 			R.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
 
 		//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
 		// circlemud says this is a death trap -- well, homie dont play dat either
-		
+
 		if(CMath.isSet(codeBits,2)) // no mobs room
 			R.addNonUninvokableEffect(CMClass.getAbility("Prop_ReqNoMOB"));
-		
+
 		// 3 is a room type change, so above
 
 		if(circleFormat)
 		{
 			if(CMath.isSet(codeBits,4)) // circle says no violence
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_Peacemaker"));
-			
+
 			if(CMath.isSet(codeBits,5)) // circle says quiet
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
-			
+
 			//if(CMath.isSet(codeBits,6)) // circle says no tracking
-			
+
 			if(CMath.isSet(codeBits,7)) // circle says no magic
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_MagicFreedom"));
-			
+
 			if(CMath.isSet(codeBits,8)) // solitaire room
 			{
 				prop_RoomCapacity.setMiscText("1");
 				if(R.fetchEffect(prop_RoomCapacity.ID())==null)
 					R.addNonUninvokableEffect(prop_RoomCapacity);
 			}
-			
+
 			if(CMath.isSet(codeBits,9)) // no teleport in
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
-			
+
 			if(CMath.isSet(codeBits,10))
 			{
 				prop_RoomLevels.setMiscText("SYSOP");
@@ -4266,10 +4266,10 @@ public class Import extends StdCommand
 			// 13 is an atrium
 			// 14 is an olc
 			// 15 is an marked
-			
+
 			if(CMath.isSet(codeBits,16))
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
-			
+
 			if(CMath.isSet(codeBits,17))
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 
@@ -4296,7 +4296,7 @@ public class Import extends StdCommand
 		{
 			if(CMath.isSet(codeBits,4)) // no summon out room
 				R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
-			
+
 			if(CMath.isSet(codeBits,9)) // two people only room
 			{
 				prop_RoomCapacity.setMiscText("2");
@@ -4368,7 +4368,7 @@ public class Import extends StdCommand
 		}
 		return R;
 	}
-	
+
 	public static boolean isBadID(String id)
 	{
 		for(int i=0;i<id.length();i++)
@@ -4378,7 +4378,7 @@ public class Import extends StdCommand
 			}
 		return false;
 	}
-	
+
 	public static String socialFix(String str)
 	{
 
@@ -4395,6 +4395,7 @@ public class Import extends StdCommand
 		return str.trim();
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -4473,10 +4474,10 @@ public class Import extends StdCommand
 				}
 			}
 		}
-		
+
 		Vector mobData=new Vector(); // outside the for loop -- why?
 		Vector objectData=new Vector(); // outside the for loop -- why?
-		
+
 		multiArea=commands.size()>1;
 		HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
 		while(commands.size()>0)
@@ -4546,7 +4547,7 @@ public class Import extends StdCommand
 			int x=areaFileName.lastIndexOf('.');
 			final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
 			// read in the .are file
-			
+
 			if(ext.equalsIgnoreCase("zip"))
 			{
 				java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
@@ -4657,8 +4658,8 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import areas in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
 				}
-				
-				if(CF!=null) 
+
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -4734,7 +4735,7 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import area in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) 
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -4783,7 +4784,7 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import room in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) 
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -4833,7 +4834,7 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import mobs in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) 
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -4870,7 +4871,7 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import players in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) 
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -4883,11 +4884,11 @@ public class Import extends StdCommand
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().addPlayersAndAccountsFromXML(buf.toString(),accounts,mobs,session);
-				if(session!=null)	
+				if(session!=null)
 					session.rawPrintln("!");
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				
+
 				Vector names=null;
 				if(accounts.size()>0)
 				{
@@ -4997,7 +4998,7 @@ public class Import extends StdCommand
 					returnAnError(session,"You are not allowed to import items in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
 				}
-				if(CF!=null) 
+				if(CF!=null)
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
@@ -5215,7 +5216,7 @@ public class Import extends StdCommand
 		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
 		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
 			areaName=areaName.substring(areaAuthor.length()+1).trim();
-		if((areaName!=null)&&(areaName.endsWith("~"))) 
+		if((areaName!=null)&&(areaName.endsWith("~")))
 			areaName=areaName.substring(0,areaName.length()-1);
 
 		try
@@ -5310,7 +5311,7 @@ public class Import extends StdCommand
 				}
 				else
 					A.setAreaState(Area.State.FROZEN);
-				
+
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
 				if(isBadID(plainRoomID))
@@ -5320,9 +5321,9 @@ public class Import extends StdCommand
 					r--;
 					continue;
 				}
-				
+
 				R.setRoomID(plainRoomID);
-				
+
 				//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
 				//	Log.debugOut("IMPORT","Found: "+plainRoomID+" ("+areaName+")");
 
@@ -5340,9 +5341,9 @@ public class Import extends StdCommand
 					R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 					R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
 				}
-				if(R.expirationDate()!=0) 
+				if(R.expirationDate()!=0)
 					R.setExpirationDate(R.expirationDate()+(360000));
-				
+
 				String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
@@ -5353,7 +5354,7 @@ public class Import extends StdCommand
 					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
 					continue;
 				}
-				
+
 				R.setRoomID(areaName+R.roomID());
 				R.setArea(A);
 				long codeBits=getBitMask(codeLine,0);
@@ -5499,7 +5500,7 @@ public class Import extends StdCommand
 			}
 
 			//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT)) Log.debugOut("IMPORT","Pass 2: exits, mobs, object");
-			
+
 			// begin second pass through rooms
 			// handle exits, mobs, objects, etc.
 			for(int r=0;r<roomData.size();r++)
@@ -5565,7 +5566,7 @@ public class Import extends StdCommand
 						case 8: dirCode=Directions.SOUTHWEST; break;
 						case 9: dirCode=Directions.SOUTHEAST; break;
 						case 10: dirCode=Directions.GATE; break;
-						default: 
+						default:
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if(R.rawDoors()[d]==null)
 								{
@@ -6287,7 +6288,7 @@ public class Import extends StdCommand
 			if(session!=null) session.print("\n\rResets...");
 
 			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
-			
+
 			if(newRooms.size()==0)
 			{
 				if(session!=null) session.println("\nDone? No Room!\n\r");
@@ -6411,9 +6412,9 @@ public class Import extends StdCommand
 		if(session!=null) session.println("done!");
 		return true;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_IMPORT_GROUP);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_IMPORT_GROUP);}
+
+
 }

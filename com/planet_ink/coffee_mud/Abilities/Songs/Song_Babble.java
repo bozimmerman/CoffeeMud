@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Babble extends Song
 {
-	public String ID() { return "Song_Babble"; }
-	public String name(){ return "Babble";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Song_Babble"; }
+	@Override public String name(){ return "Babble";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected final static String consonants="bcdfghjklmnpqrstvwxz";
 	protected final static String vowels="aeiouy";
-	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
 
 	protected int numChars(String words)
 	{
@@ -83,6 +83,7 @@ public class Song_Babble extends Song
 		return w.toString();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -118,6 +119,7 @@ public class Song_Babble extends Song
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -127,7 +129,8 @@ public class Song_Babble extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -161,15 +164,15 @@ public class Song_Babble extends Song
 					Song newOne=(Song)this.copyOf();
 					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
-	
+
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

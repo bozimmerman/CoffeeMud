@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Struggle extends BardSkill
 {
-	public String ID() { return "Skill_Struggle"; }
-	public String name(){ return "Struggle";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Struggle"; }
+	@Override public String name(){ return "Struggle";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"STRUGGLE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public int usageType(){return USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public int usageType(){return USAGE_MANA;}
 
 
+	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -54,6 +55,7 @@ public class Skill_Struggle extends BardSkill
 			stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)+stats.getStat(CharStats.STAT_DEXTERITY)+mob.phyStats().level());
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -67,6 +69,7 @@ public class Skill_Struggle extends BardSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().isBound(mob))

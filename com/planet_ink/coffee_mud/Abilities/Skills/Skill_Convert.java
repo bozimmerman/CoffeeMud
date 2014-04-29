@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Convert extends StdSkill
 {
-	public String ID() { return "Skill_Convert"; }
-	public String name(){ return "Convert";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Convert"; }
+	@Override public String name(){ return "Convert";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CONVERT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
 	protected static PairVector<MOB,Long> convertStack=new PairVector<MOB,Long>();
-	public int overrideMana(){return 50;}
-	public String displayText(){return "";}
+	@Override public int overrideMana(){return 50;}
+	@Override public String displayText(){return "";}
 	protected String priorFaith="";
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -64,14 +65,16 @@ public class Skill_Convert extends StdSkill
 			mob.setWorshipCharID(priorFaith);
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((text().length()>0)&&(affected instanceof MOB)&&(!text().equals(((MOB)affected).getWorshipCharID())))
 			((MOB)affected).setWorshipCharID(text());
 		return super.tick(ticking,tickID);
 	}
-	
 
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -103,7 +106,7 @@ public class Skill_Convert extends StdSkill
 				return false;
 			}
 		}
-		if((CMLib.flags().isAnimalIntelligence(target)) 			   
+		if((CMLib.flags().isAnimalIntelligence(target))
 		||((target.isMonster())&&(target.phyStats().level()>mob.phyStats().level())))
 		{
 			mob.tell("You can't convert "+target.name(mob)+".");
@@ -171,7 +174,7 @@ public class Skill_Convert extends StdSkill
 			if(target.getMyDeity()!=null)
 			{
 				Ability A=target.fetchEffect(ID());
-				if(A!=null){ A.unInvoke(); target.delEffect(A);} 
+				if(A!=null){ A.unInvoke(); target.delEffect(A);}
 				CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,null);
 				if((mob.location().okMessage(mob,msg2))&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 				{
@@ -201,7 +204,7 @@ public class Skill_Convert extends StdSkill
 					Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
 					if(A!=null) A.priorFaith=target.getWorshipCharID();
 				}
-				
+
 			}
 		}
 		else
@@ -218,7 +221,8 @@ public class Skill_Convert extends StdSkill
 		// return whether it worked
 		return success;
 	}
-	
+
+	@Override
 	public void makeLongLasting()
 	{
 		tickDown=(int)(CMProps.getTicksPerMinute()*60*24*7);

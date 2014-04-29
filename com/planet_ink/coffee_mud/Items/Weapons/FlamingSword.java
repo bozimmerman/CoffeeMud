@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class FlamingSword extends Longsword
 {
-	public String ID(){	return "FlamingSword";}
+	@Override public String ID(){	return "FlamingSword";}
 	public FlamingSword()
 	{
 		super();
@@ -54,6 +54,7 @@ public class FlamingSword extends Longsword
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

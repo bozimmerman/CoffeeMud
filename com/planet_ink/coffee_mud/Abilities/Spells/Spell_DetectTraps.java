@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DetectTraps extends Spell
 {
-	public String ID() { return "Spell_DetectTraps"; }
-	public String name(){return "Detect Traps";}
-	public String displayText(){return "(Detecting Traps)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Spell_DetectTraps"; }
+	@Override public String name(){return "Detect Traps";}
+	@Override public String displayText(){return "(Detecting Traps)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -124,6 +125,7 @@ public class Spell_DetectTraps extends Spell
 		return msg.toString();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -149,6 +151,7 @@ public class Spell_DetectTraps extends Spell
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -161,7 +164,8 @@ public class Spell_DetectTraps extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

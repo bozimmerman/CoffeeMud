@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 {
-	public String ID(){    return "ArchonStaff";}
+	@Override public String ID(){    return "ArchonStaff";}
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
 
@@ -65,14 +65,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
 
-	public int maxUses(){return Integer.MAX_VALUE;}
-	public void setMaxUses(int newMaxUses){}
-	
+	@Override public int maxUses(){return Integer.MAX_VALUE;}
+	@Override public void setMaxUses(int newMaxUses){}
+
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -91,7 +93,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean checkWave(MOB mob, String message)
 	{
 		if(message==null)
@@ -104,7 +107,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 			}
 		return super.checkWave(mob, message);
 	}
-	
+
+	@Override
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
@@ -205,7 +209,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
 					Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
-					
+
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
@@ -247,6 +251,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
+	@Override
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		super.affectCharState(mob,affectableState);
@@ -259,6 +264,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -300,6 +306,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

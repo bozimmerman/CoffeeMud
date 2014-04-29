@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Bribe extends ThiefSkill
 {
-	public String ID() { return "Thief_Bribe"; }
-	public String name(){ return "Bribe";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Thief_Bribe"; }
+	@Override public String name(){ return "Bribe";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"BRIBE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	protected MOB lastChecked=null;
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

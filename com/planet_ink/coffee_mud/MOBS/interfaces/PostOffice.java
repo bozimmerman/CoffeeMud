@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public interface PostOffice extends ShopKeeper
 	public void setPostalChain(String name);
 	public String postalBranch(); // based on individual shopkeeper
 	public String findProperBranch(String name);
-	
+
 	public double minimumPostage();
 	public void setMinimumPostage(double d);
 	public double postagePerPound();
@@ -59,7 +59,7 @@ public interface PostOffice extends ShopKeeper
 	public void setFeeForNewBox(double d);
 	public int maxMudMonthsHeld();
 	public void setMaxMudMonthsHeld(int months);
-	
+
 	public static class MailPiece
 	{
 		public String from="";

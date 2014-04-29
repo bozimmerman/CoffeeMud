@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.Map;
    limitations under the License.
 */
 /**
- * A simple utility for making HTTP requests, which is 
+ * A simple utility for making HTTP requests, which is
  * implemented as a builder-type object.
  */
 public interface HttpClient extends Tickable, CMCommon
 {
 	/**
-	 * Reads the simple raw return content from a given url and returns it as a 
+	 * Reads the simple raw return content from a given url and returns it as a
 	 * byte array.  Good for getting files or web pages! Returns null if any
 	 * error occurs, including a 404, timeouts, or read failures.
 	 * @param urlStr the url to fetch
@@ -51,7 +51,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 */
 	public byte[] getRawUrl(final String urlStr, final int maxLength, final int readTimeout);
 	/**
-	 * Reads the simple raw return content from a given url and returns it as a 
+	 * Reads the simple raw return content from a given url and returns it as a
 	 * byte array.  Good for getting files or web pages! Returns null if any
 	 * error occurs, including a 404, timeouts, or read failures.
 	 * @param urlStr the url to fetch
@@ -60,7 +60,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 */
 	public byte[] getRawUrl(final String urlStr, String cookieStr);
 	/**
-	 * Reads the simple raw return content from a given url and returns it as a 
+	 * Reads the simple raw return content from a given url and returns it as a
 	 * byte array.  Good for getting files or web pages! Returns null if any
 	 * error occurs, including a 404, timeouts, or read failures.
 	 * @param urlStr the url to fetch
@@ -68,7 +68,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 */
 	public byte[] getRawUrl(final String urlStr);
 	/**
-	 * Reads the simple raw return content from a given url and returns it as a 
+	 * Reads the simple raw return content from a given url and returns it as a
 	 * byte array.  Good for getting files or web pages! Returns null if any
 	 * error occurs, including a 404, timeouts, or read failures.
 	 * @param urlStr the url to fetch
@@ -78,7 +78,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 * @return null or a completed byte array of the returned content
 	 */
 	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout);
-	
+
 	/**
 	 * Calls GET on the given url, waiting no more than a few seconds for connection,
 	 * and returns the headers from the response.
@@ -86,7 +86,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 * @return the map of headers
 	 */
 	public Map<String,List<String>> getHeaders(final String urlStr);
-	
+
 	/**
 	 * An http request builder method that sets the maximum number of
 	 * bytes that can be read by the request processor.
@@ -96,7 +96,7 @@ public interface HttpClient extends Tickable, CMCommon
 	public HttpClient maxReadBytes(int bytes);
 	/**
 	 * An http request builder method that sets the maximum number of
-	 * milliseconds that the reader will remain idle waiting for 
+	 * milliseconds that the reader will remain idle waiting for
 	 * a byte of data.
 	 * @param ms the maximum number of ms to wait, or 0 for unlimited
 	 * @return this
@@ -104,7 +104,7 @@ public interface HttpClient extends Tickable, CMCommon
 	public HttpClient readTimeout(int ms);
 	/**
 	 * An http request builder method that sets the maximum number of
-	 * milliseconds that the reader will remain idle waiting for 
+	 * milliseconds that the reader will remain idle waiting for
 	 * a connection to occur.
 	 * @param ms the maximum number of ms to wait, or 0 for unlimited
 	 * @return this
@@ -189,7 +189,7 @@ public interface HttpClient extends Tickable, CMCommon
 	 * in a finally block!
 	 */
 	public void finished();
-	
+
 	/**
 	 * HTTP Methods that are acceptable
 	 * @author BZ

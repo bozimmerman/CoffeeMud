@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Play_Retreat extends Play
 {
-	public String ID() { return "Play_Retreat"; }
-	public String name(){ return "Retreat";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected boolean persistantSong(){return false;}
-	protected String songOf(){return "a "+name();}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+	@Override public String ID() { return "Play_Retreat"; }
+	@Override public String name(){ return "Retreat";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected boolean persistantSong(){return false;}
+	@Override protected String songOf(){return "a "+name();}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 	int directionCode=-1;
 
+	@Override
 	protected void inpersistantAffect(MOB mob)
 	{
 		if(directionCode<0)
@@ -56,6 +57,7 @@ public class Play_Retreat extends Play
 		CMLib.tracking().walk(mob,directionCode,true,false);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -65,7 +67,8 @@ public class Play_Retreat extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

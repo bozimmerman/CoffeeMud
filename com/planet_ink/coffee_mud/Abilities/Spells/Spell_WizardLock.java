@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WizardLock extends Spell
 {
-	public String ID() { return "Spell_WizardLock"; }
-	public String name(){return "Wizard Lock";}
-	public String displayText(){return "(Wizard Locked)";}
-	protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_WizardLock"; }
+	@Override public String name(){return "Wizard Lock";}
+	@Override public String displayText(){return "(Wizard Locked)";}
+	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -60,7 +61,7 @@ public class Spell_WizardLock extends Spell
 			&&(CMLib.law().doesHavePriviledgesInThisDirection(mob,msg.source().location(),(Exit)msg.target()))
 			&&(text().toUpperCase().indexOf("MALICIOUS")<0)))
 				return true;
-		
+
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
@@ -82,6 +83,7 @@ public class Spell_WizardLock extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null))
@@ -102,6 +104,7 @@ public class Spell_WizardLock extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))

@@ -34,17 +34,17 @@ import java.util.*;
 */
 public class FoodPrep extends Cooking
 {
-	public String ID() { return "FoodPrep"; }
-	public String name(){ return "Food Prep";}
+	@Override public String ID() { return "FoodPrep"; }
+	@Override public String name(){ return "Food Prep";}
 	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "make";}
-	public String cookWord(){return "making";}
-	public boolean honorHerbs(){return false;}
-	public boolean requireFire(){return false;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String cookWordShort(){return "make";}
+	@Override public String cookWord(){return "making";}
+	@Override public boolean honorHerbs(){return false;}
+	@Override public boolean requireFire(){return false;}
 
-	public String parametersFile(){ return "foodprep.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "foodprep.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public FoodPrep()
 	{

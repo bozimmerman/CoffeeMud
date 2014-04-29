@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 */
 public class Shadow extends Spirit
 {
-	public String ID(){	return "Shadow"; }
-	public String name(){ return "Shadow"; }
-	public long forbiddenWornBits(){return 0;}
-	protected boolean destroyBodyAfterUse(){return true;}
+	@Override public String ID(){	return "Shadow"; }
+	@Override public String name(){ return "Shadow"; }
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override protected boolean destroyBodyAfterUse(){return true;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((CMLib.flags().isInDark(affected))

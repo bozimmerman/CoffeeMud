@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,8 @@ public class Kill extends StdCommand
 	public Kill(){}
 
 	private final String[] access={"KILL","K","ATTACK"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,7 +53,7 @@ public class Kill extends StdCommand
 			}
 			return false;
 		}
-		
+
 		MOB target=null;
 		if(commands.size()<2)
 		{
@@ -67,7 +68,7 @@ public class Kill extends StdCommand
 			else
 				target=mob.getVictim();
 		}
-		
+
 		boolean reallyKill=false;
 		String whomToKill=CMParms.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.KILLDEAD)&&(!mob.isMonster()))
@@ -89,7 +90,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 		}
-		
+
 		if(reallyKill)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
@@ -102,7 +103,7 @@ public class Kill extends StdCommand
 			}
 			return false;
 		}
-		
+
 		if(mob.isInCombat())
 		{
 			MOB oldVictim=mob.getVictim();
@@ -112,7 +113,7 @@ public class Kill extends StdCommand
 				mob.tell("^f^<FIGHT^>You are already fighting "+mob.getVictim().name()+".^</FIGHT^>^?");
 				return false;
 			}
-			
+
 			if((mob.location().okMessage(mob,CMClass.getMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
 			&&(oldVictim!=target))
 			{
@@ -132,7 +133,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 		}
-		
+
 		if((!mob.mayPhysicallyAttack(target)))
 			mob.tell("You are not allowed to attack "+target.name(mob)+".");
 		else
@@ -159,9 +160,9 @@ public class Kill extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

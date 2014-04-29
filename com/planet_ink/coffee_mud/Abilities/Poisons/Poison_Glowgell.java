@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,22 +35,25 @@ import java.util.*;
 
 public class Poison_Glowgell extends Poison
 {
-	public String ID() { return "Poison_Glowgell"; }
-	public String name(){ return "Glowgell";}
+	@Override public String ID() { return "Poison_Glowgell"; }
+	@Override public String name(){ return "Glowgell";}
+	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS
 										 |Ability.CAN_ITEMS
 										 |Ability.CAN_EXITS;}
-	protected int POISON_DAMAGE(){return 0;}
-	protected String POISON_DONE(){return "";}
-	protected String POISON_START(){return "^G<S-NAME> start(s) glowing!^?";}
-	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return 0;}
+	@Override protected String POISON_DONE(){return "";}
+	@Override protected String POISON_START(){return "^G<S-NAME> start(s) glowing!^?";}
+	@Override protected String POISON_AFFECT(){return "";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).";}
 
+	@Override
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		return false;
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

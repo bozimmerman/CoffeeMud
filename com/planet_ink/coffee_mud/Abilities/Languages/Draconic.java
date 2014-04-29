@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 
 public class Draconic extends StdLanguage
 {
-	public String ID() { return "Draconic"; }
-	public String name(){ return "Draconic";}
+	@Override public String ID() { return "Draconic"; }
+	@Override public String name(){ return "Draconic";}
 	public static List<String[]> wordLists=null;
 	public Draconic()
 	{
 		super();
 	}
 
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)

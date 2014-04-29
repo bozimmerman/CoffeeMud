@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,8 @@ public class Deactivate extends StdCommand
 	public Deactivate(){}
 
 	private final String[] access={"DEACTIVATE","DEACT","DEA","<"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -114,14 +115,14 @@ public class Deactivate extends StdCommand
 		{
 			mob.tell("You can't deactivate '"+E.name()+"'.");
 		}
-		
+
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_DEACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 }

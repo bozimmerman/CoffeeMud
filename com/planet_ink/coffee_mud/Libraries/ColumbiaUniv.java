@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 */
 public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
-	public String ID(){return "ColumbiaUniv";}
+	@Override public String ID(){return "ColumbiaUniv";}
 
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
@@ -45,6 +45,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
+	@Override
 	public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data)
 	{
 		ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
@@ -52,7 +53,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if(CMSecurity.isExpertiseDisabled(ID.toUpperCase())) return null;
 		if(CMSecurity.isExpertiseDisabled("*")) return null;
 		for(int i=1;i<ID.length();i++)
-			if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*")) 
+			if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*"))
 				return null;
 		def=new  ExpertiseLibrary.ExpertiseDefinition();
 		def.ID=ID.toUpperCase();
@@ -75,7 +76,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		baseEduSetLists.clear();
 		return def;
 	}
-	
+
+	@Override
 	public String getExpertiseHelp(String ID, boolean exact)
 	{
 		if(ID==null) return null;
@@ -93,18 +95,21 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
 	public void delDefinition(String ID)
 	{
 		completeEduMap.remove(ID);
 		baseEduSetLists.clear();
 	}
-	
+
+	@Override
 	public Enumeration<ExpertiseDefinition> definitions()
 	{
 		return completeEduMap.elements();
 	}
-	
+
+	@Override
 	public ExpertiseDefinition getDefinition(String ID)
 	{
 		if(ID!=null)
@@ -112,6 +117,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return null;
 	}
 
+	@Override
 	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
 	{
 		ExpertiseDefinition D=getDefinition(ID);
@@ -134,7 +140,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
 	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob)
 	{
 		ExpertiseDefinition D=null;
@@ -148,7 +155,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return V;
 	}
-	
+
+	@Override
 	public List<ExpertiseDefinition> myListableExpertises(MOB mob)
 	{
 		ExpertiseDefinition D=null;
@@ -161,12 +169,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return V;
 	}
-	
+
+	@Override
 	public int numExpertises()
 	{
 		return completeEduMap.size();
 	}
-	
+
 	private String expertMath(String s,int l)
 	{
 		int x=s.indexOf('{');
@@ -179,7 +188,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return s;
 	}
-	
+
+	@Override
 	public List<String> getStageCodes(String baseExpertiseCode)
 	{
 		String key=null;
@@ -206,11 +216,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return baseEduSetLists.get(baseExpertiseCode);
 	}
 
+	@Override
 	public int getStages(String baseExpertiseCode)
 	{
 		return getStageCodes(baseExpertiseCode).size();
 	}
 
+	@Override
 	public String getGuessedBaseExpertiseName(final String expertiseCode)
 	{
 		int lastBadChar=expertiseCode.length()-1;
@@ -221,17 +233,20 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return expertiseCode.substring(0,lastBadChar+1);
 		return expertiseCode;
 	}
-	
+
+	@Override
 	public List<String> getPeerStageCodes(final String expertiseCode)
 	{
 		return getStageCodes(getGuessedBaseExpertiseName(expertiseCode));
 	}
-	
+
+	@Override
 	public String getApplicableExpertise(String ID, int code)
 	{
 		return completeUsageMap[code].get(ID);
 	}
-	
+
+	@Override
 	public int getApplicableExpertiseLevel(String ID, int code, MOB mob)
 	{
 		Pair<String,Integer> e=mob.fetchExpertise(completeUsageMap[code].get(ID));
@@ -239,7 +254,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return e.getValue().intValue();
 		return 0;
 	}
-	
+
+	@Override
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
 	{
 		int levels=0;
@@ -257,7 +273,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		boolean didOne=false;
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
 		int x=row.indexOf('=');
-		if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+		if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
 		if(row.trim().toUpperCase().startsWith("DATA_"))
 		{
 			String lastID=ID;
@@ -352,7 +368,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		levels=CMath.s_int(parts.get(1));
 		flags.clear();
 		flags.addAll(CMParms.parseAny(parts.get(2).toUpperCase(),'|',true));
-		
+
 		skillMask=parts.get(3);
 		if(skillMask.length()==0)
 			return "Error: Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row;
@@ -405,7 +421,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					completeUsageMap[u].put(skillsToRegister.get(k),ID);
 		return addIfPossible?ID:null;
 	}
-	
+
+	@Override
 	public void recompileExpertises()
 	{
 		for(int u=0;u<completeUsageMap.length;u++)
@@ -424,7 +441,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				ID=WKID;
 		}
 	}
-	
+
 	protected Object parseLearnID(final String msg)
 	{
 		if(msg==null)
@@ -448,7 +465,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg)
 	{
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
@@ -456,7 +474,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			teacher.tell("You are refusing to teach right now.");
 			return false;
 		}
-		
+
 		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
@@ -502,7 +520,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					teacher.tell(student.name()+" already knows "+theExpertise.name);
 				return false;
 			}
-			
+
 			if(!myQualifiedExpertises(student).contains(theExpertise))
 			{
 				if(teacher.isMonster())
@@ -548,7 +566,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg)
 	{
 		Object learnThis=item;
@@ -575,7 +594,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}
 	}
-	
+
+	@Override
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj)
 	{
 		CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);

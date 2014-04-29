@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SenseDisease extends Prayer
 {
-	public String ID() { return "Prayer_SenseDisease"; }
-	public String name(){ return "Sense Disease";}
-	public String displayText(){ return "(Sense Disease)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_SenseDisease"; }
+	@Override public String name(){ return "Sense Disease";}
+	@Override public String displayText(){ return "(Sense Disease)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 	protected Room lastRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -148,6 +149,7 @@ public class Prayer_SenseDisease extends Prayer
 			mob.tell("You sense disease coming from "+dirs.substring(2)+", and "+last+".");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -164,6 +166,7 @@ public class Prayer_SenseDisease extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

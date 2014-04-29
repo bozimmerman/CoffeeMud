@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,28 @@ import java.util.*;
 
 public class Poison_Peppersauce extends Poison
 {
-	public String ID() { return "Poison_Peppersauce"; }
-	public String name(){ return "Peppersauce";}
+	@Override public String ID() { return "Poison_Peppersauce"; }
+	@Override public String name(){ return "Peppersauce";}
 	private static final String[] triggerStrings = {"POISONSAUCE"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
-	protected int POISON_DELAY(){return 1;}
-	protected String POISON_DONE(){return "Your eyes clear up.";}
-	protected String POISON_START(){return "^G<S-NAME> go(es) blind!^?";}
-	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return 0;}
+	@Override protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
+	@Override protected int POISON_DELAY(){return 1;}
+	@Override protected String POISON_DONE(){return "Your eyes clear up.";}
+	@Override protected String POISON_START(){return "^G<S-NAME> go(es) blind!^?";}
+	@Override protected String POISON_AFFECT(){return "";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return 0;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);

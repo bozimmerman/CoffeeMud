@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,10 +41,10 @@ public interface Technical
 	 * Standard technical item types
 	 * @author Bo Zimmerman
 	 */
-	public static enum TechType 
+	public static enum TechType
 	{
-		ANY("Any"), GIZMO("Gizmo"), 
-		PERSONAL_WEAPON("Personal Weapon"), PERSONAL_SENSOR("Portable Sensor"), 
+		ANY("Any"), GIZMO("Gizmo"),
+		PERSONAL_WEAPON("Personal Weapon"), PERSONAL_SENSOR("Portable Sensor"),
 		PERSONAL_SHIELD("Personal Shield"), PERSONAL_SOFTWARE("Micro Software"),
 		PERSONAL_TRACTOR("Personal Tractor"), PERSONAL_ATMOSUIT("Personal Atmosphere Suit"),
 		SHIP_SPACESHIP("Space Ship"),SHIP_PANEL("Ship Panel"),
@@ -64,13 +64,13 @@ public interface Technical
 			return this.friendlyName;
 		}
 	}
-	
+
 	public int techLevel();
 	public void setTechLevel(int level);
-	
+
 	public TechType getTechType();
-	
-	public static enum TechCommand 
+
+	public static enum TechCommand
 	{
 		THRUST(ShipEngine.ThrustPort.class, Integer.class),
 		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Long.class),
@@ -83,7 +83,7 @@ public interface Technical
 			this.parms=parms;
 		}
 		public Class<?>[] getParms() { return parms; }
-		
+
 		public String makeCommand(Object... parts)
 		{
 			if((parts==null)||(parts.length!=parms.length))
@@ -99,14 +99,14 @@ public interface Technical
 						str.append(" ").append(parts[i].toString());
 					break;
 				}
-				else 
+				else
 				if(!parms[i].isAssignableFrom(parts[i].getClass()))
 					 return "";
 				else
 					str.append(" ").append(parts[i].toString());
 			return str.toString();
 		}
-		
+
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Object[] confirmAndTranslate(String[] parts)
 		{
@@ -163,7 +163,7 @@ public interface Technical
 				}
 			return resp;
 		}
-		
+
 		public static TechCommand findCommand(String[] parts)
 		{
 			if(parts.length==0)

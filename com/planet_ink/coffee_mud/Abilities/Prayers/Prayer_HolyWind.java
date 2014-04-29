@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HolyWind extends Prayer
 {
-	public String ID() { return "Prayer_HolyWind"; }
-	public String name(){ return "Holy Wind";}
-	public String displayText(){return "(Blown Down)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int maxRange(){return adjustedMaxInvokerRange(4);}
+	@Override public String ID() { return "Prayer_HolyWind"; }
+	@Override public String name(){ return "Holy Wind";}
+	@Override public String displayText(){return "(Blown Down)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public boolean doneTicking=false;
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -54,6 +55,7 @@ public class Prayer_HolyWind extends Prayer
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -68,6 +70,7 @@ public class Prayer_HolyWind extends Prayer
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -92,6 +95,7 @@ public class Prayer_HolyWind extends Prayer
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

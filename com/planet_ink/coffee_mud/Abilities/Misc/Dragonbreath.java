@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dragonbreath extends StdAbility
 {
-	public String ID() { return "Dragonbreath"; }
-	public String name(){ return "Dragonbreath";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Dragonbreath"; }
+	@Override public String name(){ return "Dragonbreath";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAGONBREATH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},
@@ -60,6 +60,7 @@ public class Dragonbreath extends StdAbility
 		{"GOLD","g"},
 	};
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -164,7 +165,7 @@ public class Dragonbreath extends StdAbility
 		Room R=mob.location();
 		if((success)&&(R!=null))
 		{
-			
+
 			if(text().length()==0)
 				setMiscText("");
 			if(R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))

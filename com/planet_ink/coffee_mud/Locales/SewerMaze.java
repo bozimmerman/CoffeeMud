@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class SewerMaze extends StdMaze
 {
-	public String ID(){return "SewerMaze";}
+	@Override public String ID(){return "SewerMaze";}
 	public SewerMaze()
 	{
 		super();
@@ -45,8 +45,8 @@ public class SewerMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	public String getGridChildLocaleID(){return "SewerRoom";}
-	public List<Integer> resourceChoices(){return new Vector();}
+	@Override public String getGridChildLocaleID(){return "SewerRoom";}
+	@Override public List<Integer> resourceChoices(){return new Vector();}
 }

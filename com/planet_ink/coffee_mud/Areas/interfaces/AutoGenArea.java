@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,31 +29,31 @@ limitations under the License.
 public interface AutoGenArea extends Area
 {
 	/**
-	 * Get the path to the xml file to use to generate this areas rooms 
+	 * Get the path to the xml file to use to generate this areas rooms
 	 * @return the path
 	 */
 	public String getGeneratorXmlPath();
-	
+
 	/**
 	 * Set the path to the xml file to use to generate this areas rooms
 	 * @param path the resource path
 	 */
 	public void setGeneratorXmlPath(String path);
-	
+
 	/**
 	 * Get a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area
 	 * @return the variable mappings
 	 */
 	public Map<String,String> getAutoGenVariables();
-	
+
 	/**
 	 * Set a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area
 	 * @param vars the variable mappings
 	 */
 	public void setAutoGenVariables(Map<String,String> vars);
-	
+
 	/**
 	 * Set a miscellaneous, xml-specific set of other vars to set
 	 * when generating a new area. Format is VAR=VALUE VAR2="VALUE"

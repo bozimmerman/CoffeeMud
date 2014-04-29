@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,8 @@ public class Train extends StdCommand
 	public Train(){}
 
 	private final String[] access={"TRAIN","TR","TRA"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public static Vector getAllPossibleThingsToTrainFor()
 	{
 		Vector V=new Vector();
@@ -58,8 +58,9 @@ public class Train extends StdCommand
 		}
 		return V;
 	}
-	
-	
+
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -83,7 +84,7 @@ public class Train extends StdCommand
 		StringBuffer thingsToTrainFor=new StringBuffer("");
 		for(int i: CharStats.CODES.BASE())
 			thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
-		
+
 		int trainsRequired=1;
 		int abilityCode=mob.baseCharStats().getCode(abilityName);
 		int curStat=-1;
@@ -268,7 +269,7 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		
+
 		if(abilityCode<100)
 		{
 			int teachStat=teacher.charStats().getStat(abilityCode);
@@ -371,9 +372,9 @@ public class Train extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

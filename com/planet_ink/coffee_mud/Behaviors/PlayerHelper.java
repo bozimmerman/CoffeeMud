@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class PlayerHelper extends StdBehavior
 {
-	public String ID(){return "PlayerHelper";}
+	@Override public String ID(){return "PlayerHelper";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "protectiveness of heroes";
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

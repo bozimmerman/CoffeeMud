@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_Defend extends StdAbility
 {
-	public String ID() { return "Paladin_Defend"; }
-	public String name(){ return "All Defence";}
+	@Override public String ID() { return "Paladin_Defend"; }
+	@Override public String name(){ return "All Defence";}
 	private static final String[] triggerStrings = {"DEFENCE"};
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	public boolean fullRound=false;
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
@@ -68,6 +69,7 @@ public class Paladin_Defend extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,12 +82,14 @@ public class Paladin_Defend extends StdAbility
 			fullRound=false;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor() - 20 -(4*getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -115,6 +119,7 @@ public class Paladin_Defend extends StdAbility
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))

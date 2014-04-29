@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ public interface CharState extends CMCommon, Modifiable
 	public final static int STAT_TICKSTHIRSTY=6;
 	/** stat constant for number of other stat constants */
 	public final static int STAT_NUMSTATS=7;
-	
+
 	/** constant representing how many ticks between hunger/thirst messages*/
 	public final static int ANNOYANCE_DEFAULT_TICKS=60;
 	/** constant representing something*/
@@ -75,7 +75,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @return primary combat stats as displayable code string
 	 */
 	public String getCombatStats();
-	
+
    /**
 	 * Get the number of fatigue points for the player
 	 * @return number of fatigue points
@@ -104,7 +104,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @param newVal number of hit points
 	 */
 	public void setHitPoints(int newVal);
-	
+
 	/**
 	 * Used to bump and/or read the number of ticks
 	 * that this user has been consecutively thirsty
@@ -112,7 +112,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @return the ticks of thirstiness
 	 */
 	public int adjTicksThirsty(boolean bumpUp);
-	
+
 	/**
 	 * Used to bump and/or read the number of ticks
 	 * that this user has been consecutively hungry
@@ -120,7 +120,7 @@ public interface CharState extends CMCommon, Modifiable
 	 * @return the ticks of hungriness
 	 */
 	public int adjTicksHungry(boolean bumpUp);
-	
+
 	/**
 	 * Set the number of hit points, respecting boundaries. 0 is always lowest.
 	 * @param byThisMuch a positive or negative change in value
@@ -220,18 +220,18 @@ public interface CharState extends CMCommon, Modifiable
 	 * @param def the value to give to all
 	 */
 	public void setAllValues(int def);
-	
+
 	/**
 	 * Resets all the stats in this object to their factory defaults.
 	 */
 	public void reset();
-	
+
 	/**
 	 * Copies the internal data of this object into another of kind.
 	 * @param intoState another CharState object.
 	 */
 	public void copyInto(CharState intoState);
-	
+
 	/**
 	 * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
 	 * calling getStat on both objects and comparing the values.

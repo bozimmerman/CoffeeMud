@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Scribe extends Spell
 {
-	public String ID() { return "Spell_Scribe"; }
-	public String name(){return "Scribe";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_Scribe"; }
+	@Override public String name(){return "Scribe";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public long flags(){return Ability.FLAG_NOORDERING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -97,7 +98,7 @@ public class Spell_Scribe extends Spell
 			mob.tell("That spell is too powerful to scribe.");
 			return false;
 		}
-		
+
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=1;
 		if(scroll.getSpells().size()>numSpells)

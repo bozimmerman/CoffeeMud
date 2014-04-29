@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,17 +38,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_HuntEvil extends Prayer
 {
-	public String ID() { return "Prayer_HuntEvil"; }
-	public String name(){ return "Hunt Evil";}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
-	public String displayText(){return "(Hunting Evil)";}
+	@Override public String ID() { return "Prayer_HuntEvil"; }
+	@Override public String name(){ return "Hunt Evil";}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
+	@Override public String displayText(){return "(Hunting Evil)";}
 	protected String word(){return "evil";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -89,6 +90,7 @@ public class Prayer_HuntEvil extends Prayer
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -104,12 +106,13 @@ public class Prayer_HuntEvil extends Prayer
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-	
+
 	protected MOB gameHere(Room room)
 	{
 		if(room==null) return null;
@@ -122,6 +125,7 @@ public class Prayer_HuntEvil extends Prayer
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

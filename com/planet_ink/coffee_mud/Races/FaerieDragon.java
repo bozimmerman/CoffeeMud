@@ -35,38 +35,39 @@ limitations under the License.
 */
 public class FaerieDragon extends StdRace
 {
-	public String ID(){	return "Faerie Dragon"; }
-	public String name(){ return "Faerie Dragon"; }
-	public int shortestMale(){return 12;}
-	public int shortestFemale(){return 14;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 10;}
-	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return Wearable.WORN_WIELD|Wearable.WORN_WAIST|Wearable.WORN_BACK|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FEET|Wearable.WORN_HANDS;}
-	public String racialCategory(){return "Dragon";}
+	@Override public String ID(){	return "Faerie Dragon"; }
+	@Override public String name(){ return "Faerie Dragon"; }
+	@Override public int shortestMale(){return 12;}
+	@Override public int shortestFemale(){return 14;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 10;}
+	@Override public int weightVariance(){return 15;}
+	@Override public long forbiddenWornBits(){return Wearable.WORN_WIELD|Wearable.WORN_WAIST|Wearable.WORN_BACK|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FEET|Wearable.WORN_HANDS;}
+	@Override public String racialCategory(){return "Dragon";}
 	private String[]racialAbilityNames={"Spell_Invisibility","Spell_FaerieFire","WingFlying"};
 	private int[]racialAbilityLevels={5,5,1};
 	private int[]racialAbilityProficiencies={100,100,100};
 	private boolean[]racialAbilityQuals={false,false,false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={100};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -74,6 +75,7 @@ public class FaerieDragon extends StdRace
 		if(!CMLib.flags().isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -81,6 +83,7 @@ public class FaerieDragon extends StdRace
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+2);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -93,6 +96,7 @@ public class FaerieDragon extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -123,6 +127,7 @@ public class FaerieDragon extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

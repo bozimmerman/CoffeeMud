@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.text.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,22 +37,22 @@ public interface TimeManager extends CMLibrary
 {
 	/**
 	 * Returns the numeric representation of the month
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> month2MM("January");
 	 * @param monthName The month name
 	 * @return String The number of the month as a string
-	 */ 
+	 */
 	public String month2MM(String monthName);
 	/**
 	 * Return the name of the month, given a number
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String Mnth=getMonthName(m,GiveShort).charStats();
 	 * @param monthNum Month number to convert
 	 * @param giveShort Give abbreviation if true
 	 * @return String Month name
 	 */
 	public String getMonthName(int monthNum, boolean giveShort);
-	
+
 	/**
 	 * Returns whether the given string would parse to a valid
 	 * date.  If true is returned, the change of getting a valid
@@ -61,16 +61,16 @@ public interface TimeManager extends CMLibrary
 	 * @return true if its possibly valid, false definitely not
 	 */
 	public boolean isValidDateString(String dateTimeStr);
-	
+
 	/**
 	 * Converts a string of some form into a Calendar object.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> string2Millis(GetRes(Results,"StartDateTime"));
 	 * @param dateTimeStr The string to retrieve from
 	 * @return Calendar Calendar object
 	 */
 	public long string2Millis(String dateTimeStr);
-	
+
 	/**
 	 * Converts a string of some form into a Calendar object.
 	 *
@@ -79,55 +79,55 @@ public interface TimeManager extends CMLibrary
 	 * @return Calendar Calendar object
 	 */
 	public Calendar string2Date(String dateTimeStr);
-	
+
 	/**
 	 * Converts a number to two digits.
 	 * @param num the number
 	 * @return the number as two digits
 	 */
 	public String twoDigits(long num);
-	
+
 	/**
-	 * Returns the regular Hours given the hours in the 
+	 * Returns the regular Hours given the hours in the
 	 * international format (military time)
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> ConvertHour(GetIn(req, "ENDHR"))
 	 * @param hours24 Hours in military format
 	 * @return String Hours in regular format
 	 **/
 	public String convertHour(String hours24);
-	
+
 	/**
 	 * Returns the AMPM stamp given the international Hours portion the Time
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> getAMPM(GetIn(req, "ENDHR"))
 	 * @param TheHour Hours in military format
 	 * @return String AM or PM stamp
 	 **/
 	public String getAMPM(String TheHour);
-	
+
 	/**
 	 * Get the zone id given the timezone string
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> GetTheZoneID(MeetTZ.getRawOffset())+"\n";
 	 * @param theRawOffset The time zone's raw offset to convert
 	 * @return String The time zone ID
 	 */
 	public String getTheIntZoneID(int theRawOffset);
-	
+
 	/**
 	 *  Returns the time zone of the given ID
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> MEETZN = GetTheTimeZone(ID);
 	 * @param theID The ID of the abbreviated time zone.
 	 * @return String The time zone name
 	 */
 	public String getTheTimeZone(String theID);
-	
-	
+
+
 	/**
 	 * Returns the month for a given date
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ENDMM=date2MonthString(time,true);
 	 * @param time The time in miliseconds
 	 * @param shortName true to use shortened months
@@ -138,7 +138,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns time in HH:MMap format, unless the day is other
 	 * than today, in which case it prepends yy/m/d.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ENDMM=date2BriefString(time,true);
 	 * @param time The time in miliseconds
 	 * @return String The date string
@@ -147,24 +147,24 @@ public interface TimeManager extends CMLibrary
 
 	/**
 	 * Returns the month/day for a given date
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ENDMM=date2MonthDateString();
 	 * @param time The time in miliseconds
 	 * @param shortName true to use shortened months
 	 * @return String the month/day name
 	 **/
 	public String date2MonthDateString(long time, boolean shortName);
-	
+
 	/**
 	 * Return the time in HH:MM AP format.
 	 * @param time the time in millis
 	 * @return the time in format
 	 */
 	public String date2APTimeString(long time);
-	
+
 	/**
 	 * Returns the DD portion of a given date
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ENDDD=date2DayOfMonthString();
 	 * @param time The time in miliseconds
 	 * @return String The day
@@ -174,7 +174,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	* Returns the YYYY portion of a given date
 	* Returns the DD portion of a given date
-	* 
+	*
 	* <br><br><b>Usage:</b> String ENDYYYY=date2YYYYString();
 	 * @param time The time in miliseconds
 	* @return String The year
@@ -183,35 +183,35 @@ public interface TimeManager extends CMLibrary
 
 	/**
 	* Returns the Hours portion of a given Time
-	* 
+	*
 	* <br><br><b>Usage:</b> String ENDHR=date2HRString();
 	* @param time time used
 	* @return String The hour
 	**/
 	public String date2HRString(long time);
-	
+
 
 	/**
 	* Returns the Minutes portion of a given Time
-	* 
+	*
 	* <br><br><b>Usage:</b> String ENDMIN=date2MINString();
 	* @param time The time in miliseconds
 	* @return String The minutes
 	**/
 	public String date2MINString(long time);
-	
+
 	/**
 	 * format the date for an smtp message
-	 * 
+	 *
 	 * <br><br><b>Usage:</b>  smtpDateFormat(98374987234)
 	* @param time The time in miliseconds
 	* @return String The minutes
 	 */
-	 public String smtpDateFormat(long time); 
-	 
+	 public String smtpDateFormat(long time);
+
 	/**
 	 *  Returns the time zone of the server
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> MEETZN = T2ZoneString();
 	 * @param time The time in miliseconds
 	 * @return String The time zone
@@ -219,7 +219,7 @@ public interface TimeManager extends CMLibrary
 	public String date2ZoneString(long time);
 	/**
 	 * Returns the Minutes portion of a given Time
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
 	 * @param time The time in miliseconds
 	 * @return String AM or PM stamp
@@ -228,7 +228,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2String()
 	 * @param C The time in calendar
 	 * @return String Formatted date/time
@@ -237,7 +237,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2String(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date/time
@@ -248,7 +248,7 @@ public interface TimeManager extends CMLibrary
 	 * into a number of rl years, months, days,
 	 * hours, minutes, and seconds.  If in short form,
 	 * returns y, m, d, h, m, and s.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2EllapsedTime(time)
 	 * @param time The time in miliseconds
 	 * @param minUnit The smallest unit to round down to
@@ -256,15 +256,15 @@ public interface TimeManager extends CMLibrary
 	 * @return String Formatted ellapsed time
 	 */
 	public String date2EllapsedTime(long time, TimeUnit minUnit, boolean shortest);
-	
+
 	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
 	 * hours, minutes, and seconds.  If in short form,
-	 * returns y, m, d, h, m, and s.  This method 
+	 * returns y, m, d, h, m, and s.  This method
 	 * will automatically determine the smallest reasonable
 	 * unit of time to show.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2SmartEllapsedTime(time)
 	 * @param time The time in miliseconds
 	 * @param shortest true for short form, false otherwise
@@ -275,7 +275,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2SecondsString(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date/time
@@ -284,7 +284,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2DateString(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date
@@ -293,33 +293,33 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YY
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> date2Date2String(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date
 	 */
 	public String date2Date2String(long time);
-	
+
 	/**
 	 * Parses either a tick expression, or an
 	 * expression ending with the word minutes,
 	 * hours, seconds, days, mudhours, muddays,
-	 * mudweeks, mudmonths, or mudyears 
+	 * mudweeks, mudmonths, or mudyears
 	 * @param val the expression
 	 * @return the number of ticks represented by the string
 	 */
 	public int parseTickExpression(String val);
-	
+
 	/**
 	 * Parses whether a tick expression, or an
 	 * expression ending with the word minutes,
 	 * hours, seconds, days, mudhours, muddays,
-	 * mudweeks, mudmonths, or mudyears 
+	 * mudweeks, mudmonths, or mudyears
 	 * @param val the expression
 	 * @return whether a number of ticks is represented by the string
 	 */
 	public boolean isTickExpression(String val);
-	
+
 	/**
 	 * Returns the most local clock for the given object.
 	 * @param P an item, room, mob, whatever.
@@ -327,7 +327,7 @@ public interface TimeManager extends CMLibrary
 	 * @return the local clock
 	 */
 	public TimeClock localClock(Physical P);
-	
+
 	/**
 	 * Returns the mud wide global time clock
 	 * object as defined by the coffeemud.ini
@@ -341,12 +341,12 @@ public interface TimeManager extends CMLibrary
 	public final static String[] MONTHS={
 		"January","February","March","April","May","June","July","August","September","October","November","December"
 	};
-	
+
 	/** constant for the short names of the months in a rl year */
 	public final static String[] SHORTMONTHS={
 		"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 	};
-	
+
 	/** constant for the number of milliseconds in a second */
 	public final static long MILI_SECOND=1000;
 	/** constant for the number of milliseconds in a minute */

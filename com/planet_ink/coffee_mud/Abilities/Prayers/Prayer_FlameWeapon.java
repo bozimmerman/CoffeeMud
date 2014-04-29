@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_FlameWeapon extends Prayer
 {
-	public String ID() { return "Prayer_FlameWeapon"; }
-	public String name(){ return "Flame Weapon";}
-	public String displayText(){return "(Enflamed)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Prayer_FlameWeapon"; }
+	@Override public String name(){ return "Flame Weapon";}
+	@Override public String displayText(){return "(Enflamed)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 	protected boolean notAgain=false;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -57,10 +58,11 @@ public class Prayer_FlameWeapon extends Prayer
 			affectableStats.setAbility(affectableStats.ability()+1);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		
+
 		if((msg.source().location()!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
@@ -91,6 +93,7 @@ public class Prayer_FlameWeapon extends Prayer
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		Item destroyMe=null;
@@ -116,6 +119,7 @@ public class Prayer_FlameWeapon extends Prayer
 			destroyMe.destroy();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -126,7 +130,8 @@ public class Prayer_FlameWeapon extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -150,7 +155,7 @@ public class Prayer_FlameWeapon extends Prayer
 				return false;
 			}
 		}
-		
+
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name(mob)+" is already enflamed.");

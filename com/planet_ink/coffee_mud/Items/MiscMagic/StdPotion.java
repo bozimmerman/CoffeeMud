@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class StdPotion extends StdDrink implements Potion
 {
-	public String ID(){	return "StdPotion";}
+	@Override public String ID(){	return "StdPotion";}
 	public StdPotion()
 	{
 		super();
@@ -54,15 +54,17 @@ public class StdPotion extends StdDrink implements Potion
 		recoverPhyStats();
 	}
 
-	public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
-	public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
+	@Override public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override
 	public int value()
 	{
 		if(isDrunk())
 			return 0;
 		return super.value();
 	}
-	
+
+	@Override
 	public void setDrunk(boolean isTrue)
 	{
 		if(isTrue&&isDrunk()) return;
@@ -79,6 +81,7 @@ public class StdPotion extends StdDrink implements Potion
 		}
 	}
 
+	@Override
 	public void drinkIfAble(MOB owner, Physical drinkerTarget)
 	{
 		List<Ability> spells=getSpells();
@@ -107,10 +110,11 @@ public class StdPotion extends StdDrink implements Potion
 			}
 	}
 
+	@Override
 	public String getSpellList()
 	{ return miscText;}
-	public void setSpellList(String list){miscText=list;}
-	
+	@Override public void setSpellList(String list){miscText=list;}
+
 	public static List<Ability> getSpells(SpellHolder me)
 	{
 		int baseValue=200;
@@ -140,14 +144,16 @@ public class StdPotion extends StdDrink implements Potion
 		me.recoverPhyStats();
 		return theSpells;
 	}
-	
-	public List<Ability> getSpells(){ return getSpells(this);}
 
+	@Override public List<Ability> getSpells(){ return getSpells(this);}
+
+	@Override
 	public String secretIdentity()
 	{
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this))
@@ -162,6 +168,7 @@ public class StdPotion extends StdDrink implements Potion
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

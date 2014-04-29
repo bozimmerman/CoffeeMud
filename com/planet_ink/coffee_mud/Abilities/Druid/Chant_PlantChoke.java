@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_PlantChoke extends Chant
 {
-	public String ID() { return "Chant_PlantChoke"; }
-	public String name(){return "Plant Choke";}
-	public String displayText(){return "(Plant Choke)";}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public boolean bubbleAffect(){return true;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_PlantChoke"; }
+	@Override public String name(){return "Plant Choke";}
+	@Override public String displayText(){return "(Plant Choke)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean bubbleAffect(){return true;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public void unInvoke()
 	{
 		Item I=null;
@@ -67,6 +68,7 @@ public class Chant_PlantChoke extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Item I=null;
@@ -84,6 +86,7 @@ public class Chant_PlantChoke extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -101,6 +104,7 @@ public class Chant_PlantChoke extends Chant
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
@@ -109,6 +113,7 @@ public class Chant_PlantChoke extends Chant
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -124,7 +129,8 @@ public class Chant_PlantChoke extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

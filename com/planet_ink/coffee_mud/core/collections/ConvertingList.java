@@ -16,17 +16,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ConvertingList<L,K> implements List<K> 
+public class ConvertingList<L,K> implements List<K>
 {
 	private List<L> list;
 	Converter<L, K> converter;
-	
+
 	public ConvertingList(List<L> l, Converter<L, K> conv)
 	{
 		list=l;
 		converter=conv;
 	}
-	
+
 	@Override
 	public boolean add(K arg0)
 	{
@@ -103,7 +103,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0) 
+	public int lastIndexOf(Object arg0)
 	{
 		for(int x=size()-1;x>=0;x--)
 			if((arg0==null)?get(x)==null:arg0.equals(get(x)))
@@ -166,7 +166,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public Object[] toArray() 
+	public Object[] toArray()
 	{
 		Object[] obj=new Object[size()];
 		for(int x=0;x<size();x++)

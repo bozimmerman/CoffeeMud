@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_MagicItem extends Spell
 {
-	public String ID() { return "Spell_MagicItem"; }
-	public String name(){return "Magic Item";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public long flags(){return Ability.FLAG_NOORDERING;}
+	@Override public String ID() { return "Spell_MagicItem"; }
+	@Override public String name(){return "Magic Item";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -88,7 +89,7 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
-		
+
 		if((wandThis.ID().equals("Spell_Stoneskin"))
 		||(wandThis.ID().equals("Spell_MirrorImage"))
 		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
@@ -96,7 +97,7 @@ public class Spell_MagicItem extends Spell
 			mob.tell("That spell cannot be used to enchant anything.");
 			return false;
 		}
-		
+
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{

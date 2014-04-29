@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,8 @@ import java.util.*;
 public class Alias extends StdCommand
 {
 	private final String[] access={"ALIAS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -47,7 +48,7 @@ public class Alias extends StdCommand
 		final InputCallback IC[]=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { 
+			@Override public void showPrompt() {
 				StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
 				String[] aliasNames=pStats.getAliasNames();
 				for(int i=0;i<aliasNames.length;i++)
@@ -57,7 +58,7 @@ public class Alias extends StdCommand
 				session.promptPrint("Enter a selection: ");
 			}
 			@Override public void timedOut() { }
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
 				if(this.input.length()==0)
 					return;
@@ -71,7 +72,7 @@ public class Alias extends StdCommand
 					{
 						@Override public void showPrompt() { session.promptPrint("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
 						@Override public void timedOut() { }
-						@Override public void callBack() 
+						@Override public void callBack()
 						{
 							String check=this.input;
 							if(check.trim().length()==0)
@@ -96,7 +97,7 @@ public class Alias extends StdCommand
 					{
 						@Override public void showPrompt() { session.promptPrint("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
 						@Override public void timedOut() { }
-						@Override public void callBack() 
+						@Override public void callBack()
 						{
 							if(this.input.trim().length()==0)
 							{
@@ -140,7 +141,7 @@ public class Alias extends StdCommand
 		{
 			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.promptPrint(": "); }
 			@Override public void timedOut() { }
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
 				String value=this.input;
 				value=CMStrings.replaceAll(value,"<","");
@@ -162,9 +163,9 @@ public class Alias extends StdCommand
 			}
 		});
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

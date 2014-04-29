@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Demonshield extends Prayer
 {
-	public String ID() { return "Prayer_Demonshield"; }
-	public String name(){return "Demonshield";}
-	public String displayText(){return "(Demonshield)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Prayer_Demonshield"; }
+	@Override public String name(){return "Demonshield";}
+	@Override public String displayText(){return "(Demonshield)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 	final static String msgStr="The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!";
 	protected long oncePerTickTime=0;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,6 +61,7 @@ public class Prayer_Demonshield extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> demonic flame shield vanishes.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -103,6 +105,7 @@ public class Prayer_Demonshield extends Prayer
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -111,6 +114,7 @@ public class Prayer_Demonshield extends Prayer
 		affectableStats.setArmor(affectableStats.armor()-(1+(2*getXLEVELLevel(invoker()))));
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

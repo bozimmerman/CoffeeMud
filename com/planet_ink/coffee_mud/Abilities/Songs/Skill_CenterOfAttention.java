@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_CenterOfAttention extends BardSkill
 {
-	public String ID() { return "Skill_CenterOfAttention"; }
-	public String name(){ return "Center of Attention";}
-	public String displayText(){ return "(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_CenterOfAttention"; }
+	@Override public String name(){ return "Center of Attention";}
+	@Override public String displayText(){ return "(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"CENTEROFATTENTION"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected int getTicksBetweenCasts() { return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / 2); }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override protected int getTicksBetweenCasts() { return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / 2); }
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -57,7 +58,8 @@ public class Skill_CenterOfAttention extends BardSkill
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -98,10 +100,11 @@ public class Skill_CenterOfAttention extends BardSkill
 			}
 			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, "<S-NAME> "+verbStr+" "+targetStr+".");
 		}
-		
+
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -116,6 +119,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().isSitting(mob))
@@ -125,7 +129,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,12 @@ import java.util.*;
 */
 public class Play_Cymbals extends Play_Instrument
 {
-	public String ID() { return "Play_Cymbals"; }
-	public String name(){ return "Cymbals";}
-	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_CYMBALS;}
-	public String mimicSpell(){return "Spell_Knock";}
+	@Override public String ID() { return "Play_Cymbals"; }
+	@Override public String name(){ return "Cymbals";}
+	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_CYMBALS;}
+	@Override public String mimicSpell(){return "Spell_Knock";}
 	private static Ability theSpell=null;
+	@Override
 	protected Ability getSpell()
 	{
 		if(theSpell!=null) return theSpell;
@@ -46,6 +47,7 @@ public class Play_Cymbals extends Play_Instrument
 		return theSpell;
 	}
 
+	@Override
 	protected void inpersistantAffect(MOB mob)
 	{
 		if(getSpell()!=null)
@@ -107,5 +109,5 @@ public class Play_Cymbals extends Play_Instrument
 			}
 		}
 	}
-	protected int canAffectCode(){return 0;}
+	@Override protected int canAffectCode(){return 0;}
 }

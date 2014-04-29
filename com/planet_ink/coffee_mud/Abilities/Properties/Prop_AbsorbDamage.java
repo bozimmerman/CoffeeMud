@@ -33,21 +33,24 @@ import java.util.*;
 */
 public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_AbsorbDamage"; }
-	public String name(){ return "Absorb Damage";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_AbsorbDamage"; }
+	@Override public String name(){ return "Absorb Damage";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
+	@Override
 	public String accountForYourself()
 	{
 		String id="Absorbs damage of the following amount and types: "+text();
 		return id;
 	}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

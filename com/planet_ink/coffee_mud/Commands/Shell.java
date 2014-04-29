@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,8 @@ public class Shell extends StdCommand
 	public Shell(){}
 
 	private final String[] access={"SHELL","CMFS","."};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	protected static DVector pwds=new DVector(2);
 	protected String[][] SUB_CMDS={
 			{"$","DIRECTORY","LS"},
@@ -55,7 +55,7 @@ public class Shell extends StdCommand
 			{"~","MOVE","MV"},
 			{"?","COMPAREFILES","DIFF","CF"},
 	};
-	
+
 	protected final static String[] badTextExtensions={
 		".ZIP",".JPE",".JPG",".GIF",".CLASS",".WAV",".BMP",".JPEG",".GZ",".TGZ",".JAR"
 	};
@@ -93,7 +93,7 @@ public class Shell extends StdCommand
 			}
 		}
 	}
-	
+
 	private java.util.List<CMFile> sortDirsUp(CMFile[] files)
 	{
 		Vector<CMFile> dirs=new Vector<CMFile>();
@@ -124,12 +124,12 @@ public class Shell extends StdCommand
 			}
 			else
 				finalList.add(CF);
-				
+
 		}
 		finalList.addAll(dirs);
 		return finalList;
 	}
-	
+
 	private java.util.List<CMFile>  sortDirsDown(CMFile[] files)
 	{
 		Vector<CMFile> dirs=new Vector<CMFile>();
@@ -166,7 +166,7 @@ public class Shell extends StdCommand
 				dirs.addElement(F);
 		return dirs;
 	}
-	
+
 	public static final String incorporateBaseDir(String currentPath, String filename)
 	{
 		String starter="";
@@ -207,6 +207,7 @@ public class Shell extends StdCommand
 		return starter+filename;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -348,7 +349,7 @@ public class Shell extends StdCommand
 				{
 					if(dirs.length==1)
 					{
-						mob.tell("^xError: source can not be a directory!^N"); 
+						mob.tell("^xError: source can not be a directory!^N");
 						return false;
 					}
 					continue;
@@ -366,7 +367,7 @@ public class Shell extends StdCommand
 						else
 							name=srcPath;
 					}
-					if(target.length()>0) 
+					if(target.length()>0)
 						target=target+"/"+name;
 					else
 						target=name;
@@ -382,7 +383,7 @@ public class Shell extends StdCommand
 				else
 				if(dirs.length>1)
 				{
-					mob.tell("^xError: destination must be a directory!^N"); 
+					mob.tell("^xError: destination must be a directory!^N");
 					return false;
 				}
 				if(DF.mustOverwrite()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
@@ -683,7 +684,7 @@ public class Shell extends StdCommand
 				{
 					if(dirs.length==1)
 					{
-						mob.tell("^xError: source can not be a directory!^N"); 
+						mob.tell("^xError: source can not be a directory!^N");
 						return false;
 					}
 					continue;
@@ -701,7 +702,7 @@ public class Shell extends StdCommand
 						else
 							name=srcPath;
 					}
-					if(target.length()>0) 
+					if(target.length()>0)
 						target=target+"/"+name;
 					else
 						target=name;
@@ -717,7 +718,7 @@ public class Shell extends StdCommand
 				else
 				if(dirs.length>1)
 				{
-					mob.tell("^xError: destination must be a directory!^N"); 
+					mob.tell("^xError: destination must be a directory!^N");
 					return false;
 				}
 				if(DF.mustOverwrite() && (!opts.forceOverwrites)){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
@@ -828,10 +829,10 @@ public class Shell extends StdCommand
 		}
 		return true;
 	}
-	
+
 	public String desc(CMFile CF){ return (CF.isLocalFile()?"Local file ":"VFS file ")+"'/"+CF.getVFSPathAndName()+"'";}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.hasAccessibleDir(mob,null);}
-	
+
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.hasAccessibleDir(mob,null);}
+
 }

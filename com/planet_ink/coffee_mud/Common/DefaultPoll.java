@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class DefaultPoll implements Poll
 {
-	public String ID(){return "DefaultPoll";}
-	public String name() { return ID();}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
-	public void initializeClass(){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String ID(){return "DefaultPoll";}
+	@Override public String name() { return ID();}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+	@Override public void initializeClass(){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -61,37 +62,38 @@ public class DefaultPoll implements Poll
 	protected String 		   qualZapper="";
 	protected List<PollOption> options=new Vector<PollOption>();
 	protected List<PollResult> results=new SVector<PollResult>();
-	
-	public boolean loaded(){return loaded;}
-	public void setLoaded(boolean truefalse){ loaded=truefalse;}
-	
-	public String getName(){return name;}
-	public void setName(String newname){name=newname;}
-	
-	public String getSubject(){return subject;}
-	public void setSubject(String newsubject){subject=newsubject;}
-	
-	public String getDescription(){return description;}
-	public void setDescription(String newdescription){description=newdescription;}
-	
-	public String getAuthor(){return author;}
-	public void setAuthor(String newname){author=newname;}
-	
-	public long getFlags(){return bitmap;}
-	public void setFlags(long flag){bitmap=flag;}
-	
-	public String getQualZapper(){return qualZapper;}
-	public void setQualZapper(String newZap){qualZapper=newZap;}
-	
-	public long getExpiration(){return expiration;}
-	public void setExpiration(long time){expiration=time;}
-	
-	public List<PollOption> getOptions(){return options;}
-	public void setOptions(List<PollOption> V){ options=V;}
-	
-	public List<PollResult> getResults(){return results;}
-	public void setResults(List<PollResult> V){results=V;}
-	
+
+	@Override public boolean loaded(){return loaded;}
+	@Override public void setLoaded(boolean truefalse){ loaded=truefalse;}
+
+	@Override public String getName(){return name;}
+	@Override public void setName(String newname){name=newname;}
+
+	@Override public String getSubject(){return subject;}
+	@Override public void setSubject(String newsubject){subject=newsubject;}
+
+	@Override public String getDescription(){return description;}
+	@Override public void setDescription(String newdescription){description=newdescription;}
+
+	@Override public String getAuthor(){return author;}
+	@Override public void setAuthor(String newname){author=newname;}
+
+	@Override public long getFlags(){return bitmap;}
+	@Override public void setFlags(long flag){bitmap=flag;}
+
+	@Override public String getQualZapper(){return qualZapper;}
+	@Override public void setQualZapper(String newZap){qualZapper=newZap;}
+
+	@Override public long getExpiration(){return expiration;}
+	@Override public void setExpiration(long time){expiration=time;}
+
+	@Override public List<PollOption> getOptions(){return options;}
+	@Override public void setOptions(List<PollOption> V){ options=V;}
+
+	@Override public List<PollResult> getResults(){return results;}
+	@Override public void setResults(List<PollResult> V){results=V;}
+
+	@Override
 	public String getOptionsXML()
 	{
 		if(options.size()==0) return "<OPTIONS />";
@@ -104,10 +106,11 @@ public class DefaultPoll implements Poll
 			str.append(CMLib.xml().convertXMLtoTag("TEXT",CMLib.xml().parseOutAngleBrackets(PO.text)));
 			str.append("</OPTION>");
 		}
-		str.append("</OPTIONS>");   	 
+		str.append("</OPTIONS>");
 		return str.toString();
 	}
-	
+
+	@Override
 	public String getResultsXML()
 	{
 		if(results.size()==0) return "<RESULTS />";
@@ -125,7 +128,8 @@ public class DefaultPoll implements Poll
 		str.append("</RESULTS>");
 		return str.toString();
 	}
-	
+
+	@Override
 	public PollResult getMyVote(MOB mob)
 	{
 		if(mob==null) return null;
@@ -152,14 +156,16 @@ public class DefaultPoll implements Poll
 		}
 		return null;
 	}
-	
+
+	@Override
 	public void addVoteResult(PollResult R)
 	{
 		CMLib.polls().loadPollIfNecessary(this);
 		results.add(R);
 		CMLib.polls().updatePollResults(this);
 	}
-	
+
+	@Override
 	public boolean mayIVote(MOB mob)
 	{
 		if(mob==null) return false;
@@ -176,7 +182,8 @@ public class DefaultPoll implements Poll
 		if(getMyVote(mob)!=null) return false;
 		return true;
 	}
-	
+
+	@Override
 	public boolean mayISeeResults(MOB mob)
 	{
 		if(mob==null) return false;
@@ -189,7 +196,7 @@ public class DefaultPoll implements Poll
 		if((expiration>0)
 		&&(System.currentTimeMillis()<expiration))
 			return false;
-		if((getMyVote(mob)==null)&&(!CMath.bset(bitmap,FLAG_ABSTAIN))) 
+		if((getMyVote(mob)==null)&&(!CMath.bset(bitmap,FLAG_ABSTAIN)))
 			return false;
 		return true;
 	}

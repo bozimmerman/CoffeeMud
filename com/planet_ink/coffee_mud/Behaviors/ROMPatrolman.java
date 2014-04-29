@@ -35,11 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ROMPatrolman extends StdBehavior
 {
-	public String ID(){return "ROMPatrolman";}
+	@Override public String ID(){return "ROMPatrolman";}
 	int tickTock=0;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "gang member passifying";
 	}
 
@@ -131,6 +132,7 @@ public class ROMPatrolman extends StdBehavior
 			CMLib.combat().postAttack(observer,victim,weapon);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

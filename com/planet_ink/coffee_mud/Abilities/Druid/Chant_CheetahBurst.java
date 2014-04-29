@@ -36,12 +36,12 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_CheetahBurst extends Chant
 {
-	public String ID() { return "Chant_CheetahBurst"; }
-	public String name(){return "Cheetah Burst";}
-	public String displayText(){return "(Cheetah Burst)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_CheetahBurst"; }
+	@Override public String name(){return "Cheetah Burst";}
+	@Override public String displayText(){return "(Cheetah Burst)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	protected int cheetahTick=3;
 
 	public Chant_CheetahBurst()
@@ -50,6 +50,7 @@ public class Chant_CheetahBurst extends Chant
 		cheetahTick = 3;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Chant_CheetahBurst extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -70,6 +72,7 @@ public class Chant_CheetahBurst extends Chant
 			mob.tell("You begin to slow down to a normal speed.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -88,6 +91,7 @@ public class Chant_CheetahBurst extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

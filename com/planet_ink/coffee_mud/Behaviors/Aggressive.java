@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Aggressive extends StdBehavior
 {
-	public String ID(){return "Aggressive";}
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	@Override public String ID(){return "Aggressive";}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean wander=false;
@@ -47,27 +47,31 @@ public class Aggressive extends StdBehavior
 	protected Room lastRoom=null;
 	protected int lastRoomInhabCount=0;
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 			lastRoomInhabCount=-1;
 	}
-	
+
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return true;
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().trim().length()>0)
 			return "aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
 			return "aggressiveness";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -151,6 +155,7 @@ public class Aggressive extends StdBehavior
 		pickAFight((MOB)ticking,zapStr,mobKiller,misBehave,attackMsg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

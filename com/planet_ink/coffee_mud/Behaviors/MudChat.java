@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MudChat extends StdBehavior implements ChattyBehavior
 {
-	public String ID(){return "MudChat";}
+	@Override public String ID(){return "MudChat";}
 
 	//----------------------------------------------
 	// format: first group is general mob (no other
@@ -62,14 +62,16 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// on tick or more.
 	protected final static int RESPONSE_DELAY=2;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(lastThingSaid!=null)
 			return "chattiness \""+lastThingSaid+"\"";
 		else
 			return "chattiness";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		if(newParms.startsWith("+"))
@@ -96,8 +98,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		myChatGroup=null;
 	}
 
-	public String getLastThingSaid(){ return lastThingSaid;}
-	public MOB getLastRespondedTo(){return lastRespondedTo;}
+	@Override public String getLastThingSaid(){ return lastThingSaid;}
+	@Override public MOB getLastRespondedTo(){return lastRespondedTo;}
 
 	protected static ChattyGroup newChattyGroup(String name)
 	{
@@ -140,7 +142,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new MaskingLibrary.CompiledZapperMask[0]));
 	}
 
-	
+
 	protected static synchronized ChattyGroup[] getChatGroups(String parms)
 	{
 		unprotectedChatGroupLoad("chat.dat");
@@ -164,7 +166,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			return rsc;
 		}
 	}
-	
+
+	@Override
 	public List<String> externalFiles()
 	{
 		int x=parms.indexOf('=');
@@ -186,7 +189,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		ArrayList<ChattyEntry> currentChatEntries = new ArrayList<ChattyEntry>();
 		ChattyEntry currentChatEntry=null;
 		ArrayList<ChattyTestResponse> currentChatEntryResponses = new ArrayList<ChattyTestResponse>();
-		
+
 		ChattyGroup otherChatGroup;
 		chatGroups.add(currentChatGroup);
 		String str=nextLine(rsc);
@@ -352,7 +355,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
 		ChattyGroup chatGrp=getMyBaseChatGroup(forMe,chatGroups);
-		if((addedChatEntries==null)||(addedChatEntries.length==0)) 
+		if((addedChatEntries==null)||(addedChatEntries.length==0))
 			return chatGrp;
 		List<ChattyEntry> newEntries = new ArrayList<ChattyEntry>();
 		newEntries.addAll(Arrays.asList(addedChatEntries));
@@ -519,6 +522,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return response;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -581,7 +585,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				}
 			}
 			else // dont interrupt another mob
-			if((msg.sourceMinor()==CMMsg.TYP_SPEAK) 
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(mob.isMonster())  // this is another mob (not me) talking
 			&&(CMLib.flags().canBeHeardSpeakingBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster)))
@@ -617,8 +621,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						}
 						else
 						if(combat) continue;
-						
-						
+
+
 						if((expression.charAt(0)==c1)
 						&&(expression.charAt(expression.length()-1)==c2))
 						{
@@ -643,6 +647,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_FindMate extends Chant
 {
-	public String ID() { return "Chant_FindMate"; }
-	public String name(){ return "Find Mate";}
+	@Override public String ID() { return "Chant_FindMate"; }
+	@Override public String name(){ return "Find Mate";}
 	protected String displayText="(Tracking a mate)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public String displayText(){ return displayText;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -122,12 +123,14 @@ public class Chant_FindMate extends Chant
 	}
 
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -161,6 +164,7 @@ public class Chant_FindMate extends Chant
 		return false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

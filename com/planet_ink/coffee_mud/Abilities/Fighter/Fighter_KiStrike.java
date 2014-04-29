@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_KiStrike extends FighterSkill
 {
-	public String ID() { return "Fighter_KiStrike"; }
-	public String name(){ return "Ki Strike";}
-	public String displayText(){return "(Ki Strike)";}
+	@Override public String ID() { return "Fighter_KiStrike"; }
+	@Override public String name(){ return "Ki Strike";}
+	@Override public String displayText(){return "(Ki Strike)";}
 	private static final String[] triggerStrings = {"KISTRIKE","KI"};
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -67,6 +68,7 @@ public class Fighter_KiStrike extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

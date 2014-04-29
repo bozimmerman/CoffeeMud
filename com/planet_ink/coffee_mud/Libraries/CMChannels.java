@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,21 @@ import java.util.*;
 */
 public class CMChannels extends StdLibrary implements ChannelsLibrary
 {
-	public String ID(){return "CMChannels";}
+	@Override public String ID(){return "CMChannels";}
 	public final int QUEUE_SIZE=100;
-	
+
 	public String[] baseChannelNames=new String[0];
 	public List<CMChannel> channelList=new Vector<CMChannel>();
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
-	
+
+	@Override
 	public int getNumChannels()
 	{
 		return channelList.size();
 	}
-	
+
+	@Override
 	public CMChannel getChannel(int i)
 	{
 		if((i>=0)&&(i<channelList.size()))
@@ -56,18 +58,21 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return null;
 	}
 
+	@Override
 	public List<ChannelMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelList.size()))
 			return channelList.get(i).queue;
 		return emptyQueue;
 	}
-	
+
+	@Override
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
 	{ return mayReadThisChannel(sender,areaReq,M,i,false);}
+	@Override
 	public boolean mayReadThisChannel(MOB sender,
 									  boolean areaReq,
-									  MOB M, 
+									  MOB M,
 									  int i,
 									  boolean offlineOK)
 	{
@@ -91,7 +96,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				||(!CMLib.clans().findAnyClanRelations(M,sender,Clan.REL_ALLY))))
 				return false;
 		}
-		
+
 		if((!pstats.getIgnored().contains(sender.Name()))
 		&&(CMLib.masking().maskCheck(chan.mask,M,true))
 		&&((!areaReq)
@@ -103,12 +108,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return false;
 	}
 
+	@Override
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i)
 	{
-		if(ses==null) 
+		if(ses==null)
 			return false;
 		MOB M=ses.mob();
-		
+
 		if((sender==null)
 		||(M==null)
 		||(M.amDead())
@@ -131,7 +137,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				||(!CMLib.clans().findAnyClanRelations(M,sender,Clan.REL_ALLY))))
 				return false;
 		}
-		
+
 		Room R=M.location();
 		if((!ses.isStopped())
 		&&(R!=null)
@@ -144,14 +150,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
 	{
 		if(M==null) return false;
-		
+
 		if(i>=getNumChannels())
 			return false;
-		
+
 		CMChannel chan=getChannel(i);
 		if(chan==null) return false;
 		if((chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
@@ -165,6 +172,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return false;
 	}
 
+	@Override
 	public void channelQueUp(int i, CMMsg msg)
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
@@ -176,7 +184,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			q.add(new ChannelMsg(msg));
 		}
 	}
-	
+
+	@Override
 	public int getChannelIndex(String channelName)
 	{
 		channelName=channelName.toUpperCase();
@@ -186,6 +195,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return -1;
 	}
 
+	@Override
 	public int getChannelCodeNumber(String channelName)
 	{
 		channelName=channelName.toUpperCase();
@@ -195,6 +205,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return -1;
 	}
 
+	@Override
 	public String findChannelName(String channelName)
 	{
 		channelName=channelName.toUpperCase();
@@ -204,6 +215,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
+	@Override
 	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
 		List<String> channels=new Vector<String>();
@@ -212,7 +224,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				channels.add(channelList.get(c).name.toUpperCase());
 		return channels;
 	}
-	
+
+	@Override
 	public String getExtraChannelDesc(String channelName)
 	{
 		StringBuilder str=new StringBuilder("");
@@ -240,13 +253,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
 		channelList=new Vector<CMChannel>();
 	}
-	
+
+	@Override
 	public boolean shutdown()
 	{
 		clearChannels();
 		return true;
 	}
 
+	@Override
 	public List<CMChannel> getIMC2ChannelsList()
 	{
 		List<CMChannel> list=new Vector<CMChannel>();
@@ -257,6 +272,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return list;
 	}
 
+	@Override
 	public List<CMChannel> getI3ChannelsList()
 	{
 		List<CMChannel> list=new Vector<CMChannel>();
@@ -266,12 +282,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				list.add(channelList.get(i));
 		return list;
 	}
-	
+
+	@Override
 	public String[] getChannelNames()
 	{
 		return baseChannelNames;
 	}
-	
+
+	@Override
 	public List<Session> clearInvalidSnoopers(Session mySession, int channelCode)
 	{
 		List<Session> invalid=null;
@@ -290,9 +308,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				}
 			}
 		}
-		return invalid; 	   
+		return invalid;
 	}
-	
+
+	@Override
 	public void restoreInvalidSnoopers(Session mySession, List<Session> invalid)
 	{
 		if((mySession==null)||(invalid==null)) return;
@@ -330,7 +349,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			str.append(s).append(" ");
 		return str.toString().trim();
 	}
-	
+
+	@Override
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
 		clearChannels();
@@ -431,7 +451,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		return channelList.size();
 	}
-	
+
+	@Override
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender)
 	{
 		final MOB M=ses.mob();
@@ -459,14 +480,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		return didIt;
 	}
-	
+
+	@Override
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg)
 	{
 		int channelInt=getChannelIndex(channelName);
 		if(channelInt<0) return;
-		
+
 		final PlayerStats pStats=mob.playerStats();
-		
+
 		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
 		CMChannel chan=getChannel(channelInt);
 		Set<ChannelFlag> flags=chan.flags;
@@ -536,5 +558,5 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		||(CMLib.intermud().imc2online()&&(CMLib.intermud().isIMC2channel(channelName))))
 			CMLib.intermud().i3channel(mob,channelName,message);
 	}
-	
+
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class Skill_Chantcraft extends Skill_Songcraft
 {
-	public String ID() { return "Skill_Chantcraft"; }
-	public String name(){ return "Chantcraft";}
-	public int craftType(){return Ability.ACODE_CHANT;}
+	@Override public String ID() { return "Skill_Chantcraft"; }
+	@Override public String name(){ return "Chantcraft";}
+	@Override public int craftType(){return Ability.ACODE_CHANT;}
 }

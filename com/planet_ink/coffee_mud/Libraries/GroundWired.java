@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.atomic.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.*;
 */
 public class GroundWired extends StdLibrary implements TechLibrary
 {
-	public String ID(){return "GroundWired";}
+	@Override public String ID(){return "GroundWired";}
 
 	public Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
 
@@ -59,9 +59,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public int globalTechLevel = 0;
 	public long globalTechReachedOn=0;
-	
+
 	protected CMMsg powerMsg = null;
 
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -70,11 +71,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		globalTechReachedOn=CMath.s_long(Resources.getPropResource("TECH", "GLOBALREACHEDON"));
 	}
 
+	@Override
 	public int getGlobalTechLevel()
 	{
 		return globalTechLevel;
 	}
-	
+
+	@Override
 	public int getRandomGlobalTechLevel()
 	{
 		return  CMLib.dice().rollLow(1, 10, globalTechLevel-1);
@@ -87,6 +90,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		Resources.setPropResource("TECH", "GLOBALREACHEDON","0");
 	}
 
+	@Override
 	public void fixItemTechLevel(Electronics I)
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.TECHLEVEL)) && (I.getManufacturerName().equalsIgnoreCase("RANDOM")))
@@ -106,6 +110,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
+	@Override
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
 		final ItemPossessor possessor=(E==null)?null:E.owner();
@@ -117,7 +122,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				newKey=R.getArea().Name();
 				String registryNum=R.getArea().getBlurbFlag("REGISTRY");
-				if(registryNum!=null) 
+				if(registryNum!=null)
 					newKey+=registryNum;
 			}
 			else
@@ -147,6 +152,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return null;
 	}
 
+	@Override
 	public synchronized List<Electronics> getMakeRegisteredElectronics(String key)
 	{
 		LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
@@ -158,7 +164,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				list.add(e.get());
 		return list;
 	}
-	
+
+	@Override
 	public synchronized List<String> getMakeRegisteredKeys()
 	{
 		List<String> keys=new Vector<String>(sets.size());
@@ -166,6 +173,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return keys;
 	}
 
+	@Override
 	public synchronized void unregisterElectronics(final Electronics E, final String oldKey)
 	{
 		if((oldKey!=null)&&(E!=null))
@@ -187,7 +195,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			}
 		}
 	}
-	
+
+	@Override
 	public synchronized void unregisterAllElectronics(final String oldKey)
 	{
 		if(oldKey!=null)
@@ -197,10 +206,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				sets.remove(oldKey);
 		}
 	}
-	
-	public TickClient getServiceClient() { return serviceClient;}
-	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
-													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 
+
+	@Override public TickClient getServiceClient() { return serviceClient;}
+	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents
+													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
 
 	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>()
 	{
@@ -222,20 +231,22 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			return obj.get() instanceof Electronics.Computer;
 		}
 	};
-	
+
 	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>()
 	{
-		public Electronics.Computer convert(WeakReference<Electronics> obj) { return (Electronics.Computer)obj.get(); }
+		@Override public Electronics.Computer convert(WeakReference<Electronics> obj) { return (Electronics.Computer)obj.get(); }
 	};
-	
+
 	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>()
 	{
-		public Room convert(Electronics.Computer obj) 
-		{ 
-			return CMLib.map().roomLocation(obj); 
+		@Override
+		public Room convert(Electronics.Computer obj)
+		{
+			return CMLib.map().roomLocation(obj);
 		}
 	};
-	
+
+	@Override
 	public synchronized Iterator<Electronics.Computer> getComputers(String key)
 	{
 		LinkedList<WeakReference<Electronics>> oldSet=sets.get(key.toLowerCase());
@@ -243,7 +254,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			return emptyComputerIterator;
 		return new ConvertingIterator<WeakReference<Electronics>,Electronics.Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
 	}
-	
+
+	@Override
 	public synchronized Iterator<Room> getComputerRooms(String key)
 	{
 		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
@@ -258,7 +270,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			}
 		});
 	}
-	
+
 	protected CMMsg getPowerMsg(int powerAmt)
 	{
 		if(powerMsg==null)
@@ -273,7 +285,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		powerMsg.setValue(powerAmt);
 		return powerMsg;
 	}
-	
+
+	@Override
 	public boolean activate()
 	{
 		if(serviceClient==null)
@@ -283,7 +296,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return true;
 	}
-	
+
 	public void runSpace()
 	{
 		for(Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
@@ -314,11 +327,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						if((cO instanceof Area)
 						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
 						{
-							// gravity 
+							// gravity
 						}
 						// we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
-						// the nearby things. 
+						// the nearby things.
 						// this is important because this needs to do gravity also.
 						// do gravity first.
 						// when moving ships, collisions are better if you are looking
@@ -327,8 +340,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			}
 		}
 	}
-	
-	@Override public boolean tick(Tickable ticking, int tickID) 
+
+	@Override public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
@@ -353,8 +366,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return true;
 	}
-	
-	public boolean shutdown() 
+
+	@Override
+	public boolean shutdown()
 	{
 		sets.clear();
 		manufacturers.clear();
@@ -492,7 +506,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return areaLocation;
 	}
-	
+
+	@Override
 	public boolean isCurrentActive(final String key)
 	{
 		try
@@ -525,7 +540,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return true;
 	}
-	
+
 	protected void runElectricCurrent(final String key)
 	{
 		try
@@ -533,11 +548,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
 			final List<PowerSource> batteries = new LinkedList<PowerSource>();
 			final List<ElecPanel> panels = new LinkedList<ElecPanel>();
-			
+
 			Area A=fillCurrentLists(key,generators,batteries,panels);
 			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
 				return;
-			
+
 			processElectricCurrents(generators, batteries, panels);
 		}
 		catch(Exception e)
@@ -546,13 +561,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
+	@Override
 	public boolean seekBatteryPower(final ElecPanel E, final String key)
 	{
 		final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
 		final List<PowerSource> batteries = new LinkedList<PowerSource>();
 		final List<ElecPanel> panels = new LinkedList<ElecPanel>();
 		fillCurrentLists(key,generators,batteries,panels);
-		
+
 		PowerSource battery = null;
 		final Room locR=CMLib.map().roomLocation(E);
 		for(final PowerSource S : batteries)
@@ -609,7 +625,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			return false;
 		}
 	}
-	
+
 	protected void runElectricCurrents()
 	{
 		setThreadStatus(serviceClient,"pushing electric currents");
@@ -625,21 +641,24 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		setThreadStatus(serviceClient,"sleeping");
 	}
-	
+
+	@Override
 	public Manufacturer getDefaultManufacturer()
 	{
 		if(defaultManufacturer==null)
 			defaultManufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 		return defaultManufacturer;
 	}
-	
+
+	@Override
 	public void addManufacturer(Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
 		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
 		saveAllManufacturers();
 	}
-	
+
+	@Override
 	public void delManufacturer(Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
@@ -648,7 +667,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
 		saveAllManufacturers();
 	}
-	
+
+	@Override
 	public void updateManufacturer(Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
@@ -665,7 +685,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		saveAllManufacturers();
 	}
-	
+
+	@Override
 	public Manufacturer getManufacturer(String name)
 	{
 		if(name==null) return null;
@@ -673,7 +694,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			return null;
 		return manufacturers.get(name.toUpperCase().trim());
 	}
-	
+
+	@Override
 	public Manufacturer getManufacturerOf(Electronics E, String name)
 	{
 		if(name==null) return null;
@@ -700,9 +722,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return manufacturers.get(name.toUpperCase().trim());
 	}
-	
-	public Iterator<Manufacturer> manufacterers() 
-	{ 
+
+	@Override
+	public Iterator<Manufacturer> manufacterers()
+	{
 		return new ReadOnlyIterator<Manufacturer>(manufacturers.values().iterator());
 	}
 
@@ -710,7 +733,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		return "/resources/tech/manufacturers.xml";
 	}
-	
+
 	protected synchronized void saveAllManufacturers()
 	{
 		final String filename=getManufacturersFilename();

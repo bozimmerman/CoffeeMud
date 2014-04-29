@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,7 +63,7 @@ public class GrinderRooms
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
-		
+
 		// class!
 		String className=httpReq.getUrlParameter("CLASSES");
 		if((className==null)||(className.length()==0))
@@ -71,14 +71,14 @@ public class GrinderRooms
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-	
+
 			boolean singleMobMode=CMath.s_bool(httpReq.getUrlParameter("SINGLEMOB"));
 			String delMOB=singleMobMode?httpReq.getUrlParameter("DELMOB"):null;
-			
+
 			CMLib.map().resetRoom(R);
 			Room copyRoom=(Room)R.copyOf();
 			boolean skipImage=false;
-	
+
 			if(!className.equalsIgnoreCase(CMClass.classID(R)))
 			{
 				R=CMClass.getLocale(className);
@@ -105,18 +105,18 @@ public class GrinderRooms
 					skipImage=true;
 				}
 			}
-	
+
 			// name
 			String name=httpReq.getUrlParameter("NAME");
 			if((name==null)||(name.length()==0))
 				return "Please enter a name for this room.";
 			R.setDisplayText(name);
-	
+
 			// description
 			String desc=httpReq.getUrlParameter("DESCRIPTION");
 			if(desc==null)desc="";
 			R.setDescription(desc);
-			
+
 			// climate
 			/*
 			if(httpReq.isUrlParameter("CLIMATE"))
@@ -146,7 +146,7 @@ public class GrinderRooms
 			// atmosphere
 			//if(httpReq.isUrlParameter("ATMOSPHERE"))
 			//	R.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
-	
+
 			// image
 			if(!skipImage)
 			{
@@ -154,7 +154,7 @@ public class GrinderRooms
 				if(img==null)img="";
 				R.setImage(img);
 			}
-	
+
 			if(R instanceof GridLocale)
 			{
 				String x=httpReq.getUrlParameter("XGRID");
@@ -165,12 +165,12 @@ public class GrinderRooms
 				((GridLocale)R).setYGridSize(CMath.s_int(y));
 				((GridLocale)R).clearGrid(null);
 			}
-	
+
 			String error=GrinderAreas.doAffects(R,httpReq,parms);
 			if(error.length()>0) return error;
 			error=GrinderAreas.doBehavs(R,httpReq,parms);
 			if(error.length()>0) return error;
-	
+
 			// here's where you resolve items and mobs
 			Vector allmobs=new Vector();
 			int skip=0;
@@ -200,7 +200,7 @@ public class GrinderRooms
 					allitems.addElement(I);
 				oldR.delItem(I);
 			}
-	
+
 			if(httpReq.isUrlParameter("MOB1"))
 			{
 				for(int i=1;;i++)
@@ -212,7 +212,7 @@ public class GrinderRooms
 					if(RoomData.isAllNum(MATCHING))
 					{
 						MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
-						if(M!=null)	
+						if(M!=null)
 						{
 							if(MATCHING.equalsIgnoreCase(delMOB))
 								continue;
@@ -258,8 +258,8 @@ public class GrinderRooms
 			}
 			else
 				return "No MOB Data!";
-	
-	
+
+
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				Vector items=new Vector();
@@ -297,8 +297,8 @@ public class GrinderRooms
 			}
 			else
 				return "No Item Data!";
-	
-	
+
+
 			for(int i=0;i<allitems.size();i++)
 			{
 				Item I=(Item)allitems.elementAt(i);
@@ -317,7 +317,7 @@ public class GrinderRooms
 				if(!R.isInhabitant(M))
 					M.destroy();
 			}
-	
+
 			if(redoAllMyDamnRooms)
 			{
 				try
@@ -353,8 +353,8 @@ public class GrinderRooms
 			CMLib.database().DBUpdateItems(R);
 			R.startItemRejuv();
 			if(oldR!=R)
-			{ 
-				oldR.destroy(); 
+			{
+				oldR.destroy();
 				R.getArea().addProperRoom(R);
 			}
 			if(!copyRoom.sameAs(R))
@@ -453,7 +453,7 @@ public class GrinderRooms
 			if((Rxy.x>=0)&&(Rxy.y>=0))
 			{
 				Room R2=null;
-				
+
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					int[] xy=Directions.adjustXYByDirections(Rxy.x,Rxy.y,d);

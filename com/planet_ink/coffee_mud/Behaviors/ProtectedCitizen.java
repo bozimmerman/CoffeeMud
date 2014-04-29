@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ProtectedCitizen extends ActiveTicker
 {
-	public String ID(){return "ProtectedCitizen";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "ProtectedCitizen";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected static String zapper=null;
 	protected static String defcityguard="cityguard";
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
@@ -54,11 +54,13 @@ public class ProtectedCitizen extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "whiney citizen";
 	}
-	
+
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -194,6 +196,7 @@ public class ProtectedCitizen extends ActiveTicker
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

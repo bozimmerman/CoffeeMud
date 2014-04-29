@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,18 @@ import java.util.*;
 */
 public class Dance_Tango extends Dance
 {
-	public String ID() { return "Dance_Tango"; }
-	public String name(){ return "Tango";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Dance_Tango"; }
+	@Override public String name(){ return "Tango";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+10+getXLEVELLevel(invoker()));
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)

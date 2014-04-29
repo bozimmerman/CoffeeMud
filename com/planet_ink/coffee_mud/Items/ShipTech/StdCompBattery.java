@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource
 {
-	public String ID(){	return "StdBattery";}
+	@Override public String ID(){	return "StdBattery";}
 
 	public StdCompBattery()
 	{
@@ -51,22 +51,25 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}
-	
+
 	@Override public TechType getTechType() { return TechType.SHIP_POWER; }
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		if(CMath.isInteger(newText))
 			this.setPowerCapacity(CMath.s_int(newText));
 		super.setMiscText(newText);
 	}
-	
+
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCompBattery)) return false;
 		return super.sameAs(E);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -79,7 +82,7 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
 				return;
 			case CMMsg.TYP_POWERCURRENT:
-				if(activated() 
+				if(activated()
 				&& ((Math.random() > super.getInstalledFactor())
 					||(Math.random() > super.getFinalManufacturer().getReliabilityPct())
 					||((subjectToWearAndTear())&&(usesRemaining()<=100)&&(Math.random()>CMath.div(usesRemaining(), 100))))

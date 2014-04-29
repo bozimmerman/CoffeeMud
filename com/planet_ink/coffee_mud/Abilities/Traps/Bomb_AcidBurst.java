@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_AcidBurst extends StdBomb
 {
-	public String ID() { return "Bomb_AcidBurst"; }
-	public String name(){ return "acid burst bomb";}
-	protected int trapLevel(){return 20;}
-	public String requiresToSet(){return "some lemons";}
+	@Override public String ID() { return "Bomb_AcidBurst"; }
+	@Override public String name(){ return "acid burst bomb";}
+	@Override protected int trapLevel(){return 20;}
+	@Override public String requiresToSet(){return "some lemons";}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LEMONS));
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -57,6 +59,7 @@ public class Bomb_AcidBurst extends StdBomb
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if(target.location()!=null)

@@ -51,7 +51,7 @@ import org.mozilla.javascript.optimizer.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMClass extends ClassLoader
 {
-	protected static boolean debugging=false; 
+	protected static boolean debugging=false;
 	protected static volatile long lastUpdateTime=System.currentTimeMillis();
 	protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
 
@@ -67,7 +67,7 @@ public class CMClass extends ClassLoader
 		if(clss[c]==null) clss[c]=this;
 	}
 	public static final CMClass initialize(){ return new CMClass(); }
-	
+
 	/**
 	 * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
@@ -131,7 +131,7 @@ public class CMClass extends ClassLoader
 	COMMON("com.planet_ink.coffee_mud.Common.interfaces.CMCommon"),
 	/** stat constant for library type objects */
 	LIBRARY("com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary");
-	
+
 		public final String ancestorName; // in meters
 		CMObjectType(String ancestorName)
 		{
@@ -174,7 +174,7 @@ public class CMClass extends ClassLoader
 	protected XVector<CMLibrary>		 libraries=new XVector<CMLibrary>();
 	protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
 	protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
-   
+
 	protected static final LinkedList<CMMsg> MSGS_CACHE=new LinkedList<CMMsg>();
 	protected static final LinkedList<MOB>   MOB_CACHE=new LinkedList<MOB>();
 	protected static final int  			 MAX_MSGS=10000+((Runtime.getRuntime().maxMemory()==Integer.MAX_VALUE)?10000:(int)(Runtime.getRuntime().maxMemory()/10000));
@@ -188,8 +188,8 @@ public class CMClass extends ClassLoader
 	protected static final boolean KEEP_OBJECT_CACHE=false;
 
 	static
-	{ 
-		if(KEEP_OBJECT_CACHE) 
+	{
+		if(KEEP_OBJECT_CACHE)
 			for(int i=0;i<OBJECT_TOTAL;i++)
 				OBJECT_CACHE[i]=new WeakHashMap<CMObject,Object>();
 	}
@@ -246,12 +246,12 @@ public class CMClass extends ClassLoader
 	 */
 	public final static boolean exists(String className)
 	{
-		try 
+		try
 		{
 			Class.forName (className);
 			return true;
 		}
-		catch (ClassNotFoundException exception) 
+		catch (ClassNotFoundException exception)
 		{
 			return false;
 		}
@@ -432,7 +432,7 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
-	 * Returns the total number of template/prototypes of the given type stored by 
+	 * Returns the total number of template/prototypes of the given type stored by
 	 * this CMClass instance.
 	 * @see com.planet_ink.coffee_mud.core.CMClass.CMObjectType
 	 * @param type the type of object to count
@@ -681,13 +681,13 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
-	 * Fills the given list with the IDs of the various Item types, subject to the given filters 
+	 * Fills the given list with the IDs of the various Item types, subject to the given filters
 	 * @param namesList the list to populate with IDs
 	 * @param NonArchon true to not include Archon items
 	 * @param NonGeneric true to not include Gen items
 	 * @param NonStandard true to not include Standard items
 	 */
-	public static final void addAllItemClassNames(final List<String> namesList, final boolean NonArchon, 
+	public static final void addAllItemClassNames(final List<String> namesList, final boolean NonArchon,
 												  final boolean NonGeneric, final boolean NonStandard)
 	{
 		namesList.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
@@ -698,7 +698,7 @@ public class CMClass extends ClassLoader
 		namesList.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
 	}
 
-	private static List<String> getAllItemClassNames(final Enumeration<? extends Item> i, 
+	private static List<String> getAllItemClassNames(final Enumeration<? extends Item> i,
 													 final boolean NonArchon, final boolean NonGeneric, final boolean NonStandard)
 	{
 		final Vector<String> V=new Vector<String>();
@@ -715,7 +715,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a new instance of an item object of the given ID from your classloader
-	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively 
+	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively
 	 * @return a new instance of an item object of the given ID
 	 */
 	public static Item getItem(final String calledThis)
@@ -741,10 +741,10 @@ public class CMClass extends ClassLoader
 			myC.sampleItem= (Item)myC.items.firstElement().copyOf();
 		return myC.sampleItem;
 	}
-	
+
 	/**
 	 * Returns a reference to the prototype of an item object of the given ID from your classloader
-	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively 
+	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively
 	 * @return a reference to the prototype of an item object of the given ID
 	 */
 	public static final Item getItemPrototype(final String itemID)
@@ -763,7 +763,7 @@ public class CMClass extends ClassLoader
 	 * @return a reference to the prototype of an mob object of the given ID
 	 */
 	public static final MOB getMOBPrototype(final String mobID)
-	{ 
+	{
 		return (MOB)CMClass.getGlobal(c().MOBs,mobID);
 	}
 
@@ -796,7 +796,7 @@ public class CMClass extends ClassLoader
 	{
 		final CMClass myC=c();
 		Command C=myC.commandWords.get(word.trim().toUpperCase());
-		if((exactOnly)||(C!=null)) 
+		if((exactOnly)||(C!=null))
 			return C;
 		String upword=word.toUpperCase();
 		String key;
@@ -851,7 +851,7 @@ public class CMClass extends ClassLoader
 			((HashSet)set).remove(O);
 		else
 			return false;
-		if(set==c().commands) 
+		if(set==c().commands)
 			reloadCommandWords();
 		//if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		return true;
@@ -882,15 +882,15 @@ public class CMClass extends ClassLoader
 			((HashSet)set).add(O);
 		else
 			return false;
-		if(set==c().commands) 
+		if(set==c().commands)
 			reloadCommandWords();
-		if(set==c().libraries) 
+		if(set==c().libraries)
 			CMLib.registerLibraries(c().libraries.elements());
 		return true;
 	}
 
 	/**
-	 * Searches for a match to the given object type name, 
+	 * Searches for a match to the given object type name,
 	 * preferring exact, but accepting prefixes.
 	 * @param name the object type name to search for
 	 * @return the matching object type or NULL
@@ -902,7 +902,7 @@ public class CMClass extends ClassLoader
 			if(o.toString().equalsIgnoreCase(name))
 				return o;
 		}
-		final String upperName=name.toUpperCase(); 
+		final String upperName=name.toUpperCase();
 		for(CMObjectType o : CMObjectType.values())
 		{
 			if(o.toString().toUpperCase().startsWith(upperName))
@@ -917,8 +917,8 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
-	 * Searches for a match to the given object type name, 
-	 * preferring exact, but accepting prefixes. Returns 
+	 * Searches for a match to the given object type name,
+	 * preferring exact, but accepting prefixes. Returns
 	 * the ancestor java class type
 	 * @param code the object type name to search for
 	 * @return the matching object type interface/ancestor or NULL
@@ -994,7 +994,7 @@ public class CMClass extends ClassLoader
 		pathLess=pathLess.replace('\\','.');
 		return pathLess;
 	}
-	
+
 	protected static String makeFilePath(final String path)
 	{
 		final String upperPath=path.toUpperCase();
@@ -1004,14 +1004,14 @@ public class CMClass extends ClassLoader
 			return path.replace('.','/')+".class";
 		return path;
 	}
-	
+
 	/**
 	 * If the given class exists in the classloader, a new instance will be returned.
 	 * If it does not, it will be loaded, and then a new instance of it will be returned.
 	 * @param classType the type of class as a filter
-	 * @param path the path of some sort to get a new instance of 
+	 * @param path the path of some sort to get a new instance of
 	 * @param quiet true to not post errors to the log, false otherwise
-	 * @return a new instance of the given class 
+	 * @return a new instance of the given class
 	 */
 	public static final Object getLoadNewClassInstance(final CMObjectType classType, final String path, final boolean quiet)
 	{
@@ -1026,7 +1026,7 @@ public class CMClass extends ClassLoader
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,quiet))
 			return null;
-		if(V.size()==0) 
+		if(V.size()==0)
 			return null;
 		final Object o = V.firstElement();
 		try
@@ -1059,7 +1059,7 @@ public class CMClass extends ClassLoader
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
 			return false;
-		if(V.size()==0) 
+		if(V.size()==0)
 			return false;
 		return true;
 	}
@@ -1099,7 +1099,7 @@ public class CMClass extends ClassLoader
 		if(x>0)
 		{
 			shortThis=shortThis.substring(x+1);
-			try{	
+			try{
 				return classes.get(calledThis).newInstance();
 			}catch(Exception e){}
 		}
@@ -1134,7 +1134,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Does a search for a race of the given name, first checking
-	 * for identical matches, then case insensitive name matches. 
+	 * for identical matches, then case insensitive name matches.
 	 * @param calledThis the name or id
 	 * @return the race object
 	 */
@@ -1155,7 +1155,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Does a search for a Char Class of the given name, first checking
-	 * for identical matches, then case insensitive name matches. 
+	 * for identical matches, then case insensitive name matches.
 	 * @param calledThis the name or id
 	 * @return the Char Class object
 	 */
@@ -1217,7 +1217,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Searches for an Ability object using the given search term.
-	 * This "finder" matches the ID, and searches the name and display text. 
+	 * This "finder" matches the ID, and searches the name and display text.
 	 * @param calledThis the search term to use
 	 * @return the first ability found matching the search term
 	 */
@@ -1228,7 +1228,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Searches for an Ability object using the given search term and filters.
-	 * This "finder" matches the ID, and searches the name and display text. 
+	 * This "finder" matches the ID, and searches the name and display text.
 	 * @param calledThis the search term to use
 	 * @param ofClassDomain a class/domain filter, or -1 to skip
 	 * @param ofFlags an ability flag filter, or -1 to skip
@@ -1254,7 +1254,7 @@ public class CMClass extends ClassLoader
 						ableV.addElement(A);
 				}
 			}
-		} 
+		}
 		else
 			ableV = c().abilities;
 
@@ -1267,7 +1267,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Searches for a Behavior object using the given search term.
-	 * This "finder" matches the ID, and searches the name. 
+	 * This "finder" matches the ID, and searches the name.
 	 * @param calledThis the search term to use
 	 * @return the first behavior found matching the search term
 	 */
@@ -1283,7 +1283,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Searches for a Behavior object using the given search term and filters.
-	 * This "finder" matches the name only, no ID. 
+	 * This "finder" matches the name only, no ID.
 	 * @param calledThis the search term to use
 	 * @param exact true for whole string match, false otherwise
 	 * @return the first behavior found matching the search term
@@ -1310,7 +1310,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Searches for an Ability object using the given search term.
-	 * This "finder" matches the name only, no ID 
+	 * This "finder" matches the name only, no ID
 	 * @param calledThis the search term to use
 	 * @param exact true for whole string match, false otherwise
 	 * @return the first ability found matching the search term
@@ -1497,13 +1497,14 @@ public class CMClass extends ClassLoader
 	 * Given a list of CMObjects, this will sort them, by {@link CMObject#ID()}
 	 * @param V the list of objects to sort.
 	 */
-	public static final void sortCMObjectsByID(final List<CMObject> V) 
+	public static final void sortCMObjectsByID(final List<CMObject> V)
 	{
 		Collections.sort(V,new Comparator<CMObject>()
 		{
+			@Override
 			public int compare(CMObject o1, CMObject o2)
 			{
-				if(o1 == null) 
+				if(o1 == null)
 				{
 					if (o2 == null)
 						return 0;
@@ -1521,13 +1522,14 @@ public class CMClass extends ClassLoader
 	 * Given a list of environmentals, this will sort them by {@link Environmental#ID()}
 	 * @param V the list of environmentals
 	 */
-	public static final void sortEnvironmentalsByName(final List<Environmental> V) 
+	public static final void sortEnvironmentalsByName(final List<Environmental> V)
 	{
 		Collections.sort(V,new Comparator<Environmental>()
 		{
+			@Override
 			public int compare(Environmental o1, Environmental o2)
 			{
-				if(o1 == null) 
+				if(o1 == null)
 				{
 					if (o2 == null)
 						return 0;
@@ -1546,8 +1548,8 @@ public class CMClass extends ClassLoader
 	 * @param V the list of CMObjects to initialize.
 	 */
 	private final void initializeClassGroup(final List<? extends CMObject> V)
-	{ 
-		for(int v=0;v<V.size();v++) 
+	{
+		for(int v=0;v<V.size();v++)
 			((CMObject)V.get(v)).initializeClass();
 	}
 
@@ -1570,7 +1572,7 @@ public class CMClass extends ClassLoader
 		for(CMObjectType o : CMObjectType.values())
 			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe(o.toString())))
 			{
-				Object set = CMClass.getClassSet(o); 
+				Object set = CMClass.getClassSet(o);
 				if(set instanceof List)
 					initializeClassGroup((List)set);
 				else
@@ -1834,7 +1836,7 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
-	 * This strange method returns an environmentals name, 
+	 * This strange method returns an environmentals name,
 	 * plus a string of instance hex digits, which I guess make
 	 * the name more unique.
 	 * @param E the environmenal to make a unique name for
@@ -1882,7 +1884,7 @@ public class CMClass extends ClassLoader
 	 * @param C the class to get a directory for
 	 * @return the CMFile containing that class
 	 */
-	public static final CMFile getClassDir(final Class<?> C) 
+	public static final CMFile getClassDir(final Class<?> C)
 	{
 		final URL location = C.getProtectionDomain().getCodeSource().getLocation();
 		String loc;
@@ -1939,8 +1941,8 @@ public class CMClass extends ClassLoader
 	 // * will always want the class resolved before it is returned
 	 // * to them.
 	 // */
-	
-	
+
+
 	/**
 	 * Returns the ID() if the object is a CMObject, and otherwise
 	 * the simple class name, which is the class name after the final
@@ -1969,13 +1971,14 @@ public class CMClass extends ClassLoader
 	 * @return the class loaded
 	 * @throws ClassNotFoundException something went wrong
 	 */
-	public final Class<?> loadClass(final String className) throws ClassNotFoundException 
+	@Override
+	public final Class<?> loadClass(final String className) throws ClassNotFoundException
 	{
 		return (loadClass(className, true));
 	}
 
 	/**
-	 * Finishes loading the class into the underlying classloader by handing the byte data to 
+	 * Finishes loading the class into the underlying classloader by handing the byte data to
 	 * the classloader, after building a proper full class name.
 	 * @param className the class name
 	 * @param classData the byte data of the class to load
@@ -2032,6 +2035,7 @@ public class CMClass extends ClassLoader
 	 * @return the class loaded
 	 * @throws ClassNotFoundException something went wrong
 	 */
+	@Override
 	public synchronized final Class<?> loadClass(String className, final boolean resolveIt)
 		throws ClassNotFoundException
 	{
@@ -2131,7 +2135,7 @@ public class CMClass extends ClassLoader
 				if(mainClass==null) mainClass=C;
 			}
 			Context.exit();
-			if((debugging)&&(mainClass!=null)) 
+			if((debugging)&&(mainClass!=null))
 				Log.debugOut("CMClass","Loaded: "+mainClass.getName());
 			return mainClass;
 		}
@@ -2194,7 +2198,7 @@ public class CMClass extends ClassLoader
 				c.common=baseC.common;
 			else
 				c.common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),CMObjectType.COMMON.ancestorName);
-			if(c.common.size()==0) 
+			if(c.common.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("WEBMACROS")))
@@ -2439,7 +2443,7 @@ public class CMClass extends ClassLoader
 			{
 				Vector tempV;
 				c.tech=loadVectorListToObj(prefix+"Items/BasicTech/",page.getStr("TECH"),CMObjectType.TECH.ancestorName);
-				
+
 				tempV=loadVectorListToObj(prefix+"Items/ShipTech/",page.getStr("SHIPTECH"),CMObjectType.SHIPTECH.ancestorName);
 				if(tempV.size()>0) c.tech.addAll(tempV);
 				tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),CMObjectType.SOFTWARE.ancestorName);
@@ -2561,7 +2565,7 @@ public class CMClass extends ClassLoader
 	 */
 	protected static final class JScriptLib extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptLib";}
+		@Override public String getClassName(){ return "JScriptLib";}
 		static final long serialVersionUID=47;
 		public static String[] functions = {"toJavaString"};
 		public String toJavaString(Object O){return Context.toString(O);}
@@ -2661,7 +2665,7 @@ public class CMClass extends ClassLoader
 	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
 	 * @return the CMMsg Object
 	 */
-	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final int newTargetCode, 
+	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final int newTargetCode,
 									 final int newOthersCode, final String allMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,newTargetCode,newOthersCode,allMessage); return M;}
 	/**
@@ -2670,12 +2674,12 @@ public class CMClass extends ClassLoader
 	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
 	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
 	 * @param newSourceCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()} 
+	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
 	 * @param targetMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()}
 	 * @param othersMessage  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()}
 	 * @return the CMMsg Object
 	 */
-	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage, 
+	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage,
 									 final String targetMessage, final String othersMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,sourceMessage,newSourceCode,targetMessage,newSourceCode,othersMessage); return M;}
 	/**
@@ -2684,14 +2688,14 @@ public class CMClass extends ClassLoader
 	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
 	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
 	 * @param newSourceCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()} 
+	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
 	 * @param newTargetCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()}
 	 * @param targetMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()}
 	 * @param newOthersCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()}
 	 * @param othersMessage  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()}
 	 * @return the CMMsg Object
 	 */
-	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage, 
+	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage,
 									 final int newTargetCode, final String targetMessage, final int newOthersCode, final String othersMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
 
@@ -2734,12 +2738,12 @@ public class CMClass extends ClassLoader
 			return getMOB("StdFactoryMOB");
 		}
 	}
-	
+
 	/**
 	 * Unloads all the classes in this system.
 	 * Why, I do not know.
 	 */
-	public static final void shutdown() 
+	public static final void shutdown()
 	{
 		for(int c=0;c<clss.length;c++)
 			if(clss[c]!=null)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,18 @@ import java.util.*;
 */
 public class NoCombatAssist extends StdBehavior
 {
-	public String ID(){return "NoCombatAssist";}
+	@Override public String ID(){return "NoCombatAssist";}
 
 	int tickTocker=1;
 	int tickTock=0;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "unhelpful passiveness";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

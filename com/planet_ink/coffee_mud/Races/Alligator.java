@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,23 +31,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Alligator extends GreatLizard
 {
-	public String ID(){	return "Alligator"; }
-	public String name(){ return "Alligator"; }
+	@Override public String ID(){	return "Alligator"; }
+	@Override public String name(){ return "Alligator"; }
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -57,7 +59,7 @@ public class Alligator extends GreatLizard
 				return name().toLowerCase()+" hatchling";
 			case Race.AGE_CHILD:
 				return "young "+name().toLowerCase();
-			default : 
+			default :
 				return super.makeMobName(gender, age);
 		}
 	}

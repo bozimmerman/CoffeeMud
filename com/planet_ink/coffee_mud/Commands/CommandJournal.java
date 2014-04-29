@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,13 +40,14 @@ public class CommandJournal extends StdCommand
 	public CommandJournal(){}
 
 	public static String[] access=null;
+	@Override
 	public String[] getAccessWords()
 	{
 		if(access!=null) return access;
 		synchronized(this)
 		{
 			if(access!=null) return access;
-			
+
 			access=new String[CMLib.journals().getNumCommandJournals()];
 			int x=0;
 			for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -129,9 +130,9 @@ public class CommandJournal extends StdCommand
 		mob.tell("Message transferred.");
 		return true;
 	}
-	
+
 	public boolean review(MOB mob,
-						  String journalID, 
+						  String journalID,
 						  String journalWord,
 						  Vector commands,
 						  String security)
@@ -145,7 +146,7 @@ public class CommandJournal extends StdCommand
 		if((second.length()>0)&&(!CMath.isNumber(second)))
 			return false;
 		int count=CMath.s_int(second);
-			
+
 		Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
 			mob.tell("This feature has been disabled.");
@@ -158,7 +159,7 @@ public class CommandJournal extends StdCommand
 				mob.tell("There are no "+journalWord+" listed at this time.");
 			else
 			{
-				journalItem.setName(journalID); 					
+				journalItem.setName(journalID);
 				if(count>size)
 					mob.tell("Maximum count of "+journalWord+" is "+size+".");
 				else
@@ -179,7 +180,8 @@ public class CommandJournal extends StdCommand
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -247,12 +249,12 @@ public class CommandJournal extends StdCommand
 				mob.tell("What's the "+journal.NAME().toLowerCase()+"? Be Specific!");
 				return false;
 			}
-			
+
 		}
 		return true;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

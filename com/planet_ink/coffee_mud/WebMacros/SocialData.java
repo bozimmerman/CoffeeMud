@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class SocialData extends StdWebMacro
 {
-	public String name() { return "SocialData"; }
+	@Override public String name() { return "SocialData"; }
 	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
 	static String[] BFIELDS={"YOM","YONM","YOM","YTONM","YONM","YONM","YONM"};
-	
+
 	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS"};
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -74,7 +75,7 @@ public class SocialData extends StdWebMacro
 			CMFile lf=new CMFile("///resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "No local file.";
 			CMFile vf=new CMFile("::/resources/socials.txt",M);
-			if(vf.exists()) 
+			if(vf.exists())
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
 			vf=new CMFile("::/resources/socials.txt",M);
@@ -93,7 +94,7 @@ public class SocialData extends StdWebMacro
 			CMFile lf=new CMFile("::/resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "No vfs file.";
 			CMFile vf=new CMFile("///resources/socials.txt",M);
-			if(vf.exists()) 
+			if(vf.exists())
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
 			vf=new CMFile("///resources/socials.txt",M);
@@ -110,7 +111,7 @@ public class SocialData extends StdWebMacro
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			CMFile vf=new CMFile("::/resources/socials.txt",M);
-			if(vf.exists()) 
+			if(vf.exists())
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
 			CMLib.socials().unloadSocials();
@@ -121,18 +122,18 @@ public class SocialData extends StdWebMacro
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			CMFile vf=new CMFile("///resources/socials.txt",M);
-			if(vf.exists()) 
+			if(vf.exists())
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
 			CMLib.socials().unloadSocials();
 			return "Socials file removed from local file system.";
 		}
-				
+
 		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
-		
+
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -142,13 +143,13 @@ public class SocialData extends StdWebMacro
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
-		
+
 		if(parms.containsKey("EDIT"))
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)) return "[authentication error]";
-			
+
 			boolean create=false;
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
 			List<Social> OSV=null;
@@ -157,7 +158,7 @@ public class SocialData extends StdWebMacro
 			else
 				OSV=new XVector<Social>(SV);
 			SV=new Vector();
-			
+
 			String old=httpReq.getUrlParameter("TITLE");
 			if((old!=null)
 			&&(old.trim().length()>0)
@@ -168,7 +169,7 @@ public class SocialData extends StdWebMacro
 					return "[new social name already exists]";
 				last=old;
 			}
-			
+
 			Vector TYPES=new Vector();
 			Vector EXTNS=new Vector();
 			for(int b=0;b<BTYPES.length;b++)
@@ -192,15 +193,15 @@ public class SocialData extends StdWebMacro
 					}
 				}
 			}
-			
+
 			for(int t=0;t<TYPES.size();t++)
 			{
 				String TYPE=(String)TYPES.elementAt(t);
 				String EXTN=(String)EXTNS.elementAt(t);
-				
+
 				old=httpReq.getUrlParameter("IS"+TYPE);
 				if((old==null)||(!old.equalsIgnoreCase("on"))) continue;
-				
+
 				Social S=CMLib.socials().makeDefaultSocial(last,EXTN);
 				String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
 				for(int f=0;f<field.length();f++)
@@ -223,10 +224,10 @@ public class SocialData extends StdWebMacro
 					{
 						switch(field.charAt(f))
 						{
-							case 'Y': S.setSourceCode(CMath.s_int(old)); 
+							case 'Y': S.setSourceCode(CMath.s_int(old));
 									  break;
 							case 'O': S.setTargetCode(CMath.s_int(old));
-									  S.setOthersCode(CMath.s_int(old)); 
+									  S.setOthersCode(CMath.s_int(old));
 									  break;
 							case 'N': break;
 							case 'M': break;
@@ -239,10 +240,10 @@ public class SocialData extends StdWebMacro
 			if(OSV!=null)
 				for(int s=0;s<OSV.size();s++)
 					CMLib.socials().remove(OSV.get(s).Name());
-			
+
 			for(int s=0;s<SV.size();s++)
 				CMLib.socials().addSocial(SV.get(s));
-			
+
 			CMLib.socials().save(M);
 			if(create)
 			{
@@ -293,11 +294,11 @@ public class SocialData extends StdWebMacro
 				{
 					StringBuffer str=new StringBuffer("");
 					String old;
-					
+
 					if(parms.containsKey("TITLE"))
 					{
 						old=httpReq.getUrlParameter("TITLE");
-						if(old==null) 
+						if(old==null)
 							old=last;
 						str.append(old+", ");
 					}
@@ -344,7 +345,7 @@ public class SocialData extends StdWebMacro
 							}
 						}
 					}
-					
+
 					old=httpReq.getUrlParameter("DOADDXSOCIAL");
 					if((old!=null)
 					&&(old.equalsIgnoreCase("on"))
@@ -357,15 +358,15 @@ public class SocialData extends StdWebMacro
 						EXTNS.addElement(" "+TYPE);
 						httpReq.addFakeUrlParameter("IS"+TYPE,"on");
 					}
-					
+
 					int numxtras=TYPES.size()-BTYPES.length;
 					if(parms.containsKey("NUMEXTRAS"))
 						str.append(""+numxtras+", ");
 					if(parms.containsKey("GETEXTRA")
 					&&(CMath.s_int(parms.get("GETEXTRA"))<numxtras))
 						str.append(TYPES.elementAt(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
-					
-					
+
+
 					for(int t=0;t<TYPES.size();t++)
 					{
 						String TYPE=(String)TYPES.elementAt(t);
@@ -395,7 +396,7 @@ public class SocialData extends StdWebMacro
 								old=httpReq.getUrlParameter(fnam);
 								if(old==null)
 								{
-									if(S==null) 
+									if(S==null)
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{
@@ -413,7 +414,7 @@ public class SocialData extends StdWebMacro
 								old=httpReq.getUrlParameter(fnam+"C");
 								if(old==null)
 								{
-									if(S==null) 
+									if(S==null)
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{

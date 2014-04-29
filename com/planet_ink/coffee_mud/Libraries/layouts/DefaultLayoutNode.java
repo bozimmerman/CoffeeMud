@@ -35,7 +35,7 @@ public class DefaultLayoutNode implements LayoutNode
 	public Hashtable<Integer,LayoutNode> links = new Hashtable<Integer,LayoutNode>();
 	private Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
 	private HashSet<LayoutFlags> flags = new HashSet<LayoutFlags>();
-	
+
 	public DefaultLayoutNode(long[] coord)
 	{
 		this.coord = coord;
@@ -44,23 +44,26 @@ public class DefaultLayoutNode implements LayoutNode
 	{
 		this.coord = new long[]{x,y};
 	}
-	public Room room() { return associatedRoom;}
-	public void setRoom(Room room){associatedRoom=room;}
-	public long[] coord(){ return coord;}
-	public Hashtable<LayoutTags,String> tags(){ return tags;}
-	public Hashtable<Integer,LayoutNode> links() { return links;}
+	@Override public Room room() { return associatedRoom;}
+	@Override public void setRoom(Room room){associatedRoom=room;}
+	@Override public long[] coord(){ return coord;}
+	@Override public Hashtable<LayoutTags,String> tags(){ return tags;}
+	@Override public Hashtable<Integer,LayoutNode> links() { return links;}
+	@Override
 	public void crossLink(LayoutNode to)
 	{
 		links.put(Integer.valueOf(AbstractLayout.getDirection(this,to)),to);
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to,this)),this);
 	}
-	public boolean isFlagged(LayoutFlags flag) { return flags.contains(flag);}
+	@Override public boolean isFlagged(LayoutFlags flag) { return flags.contains(flag);}
+	@Override
 	public LayoutRuns getFlagRuns()
 	{
 		if(tags.containsKey(LayoutTags.NODERUN))
 			return LayoutRuns.valueOf(tags.get(LayoutTags.NODERUN));
 		return null;
 	}
+	@Override
 	public void delLink(LayoutNode linkNode)
 	{
 		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
@@ -70,8 +73,9 @@ public class DefaultLayoutNode implements LayoutNode
 				links.remove(key);
 		}
 	}
-	public LayoutNode getLink(int d) { return links.get(Integer.valueOf(d));}
-	
+	@Override public LayoutNode getLink(int d) { return links.get(Integer.valueOf(d));}
+
+	@Override
 	public boolean isStreetLike()
 	{
 		if(links.size()!=2) return false;
@@ -89,6 +93,7 @@ public class DefaultLayoutNode implements LayoutNode
 		}
 		return false;
 	}
+	@Override
 	public void deLink()
 	{
 		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
@@ -99,6 +104,7 @@ public class DefaultLayoutNode implements LayoutNode
 		}
 		links.clear();
 	}
+	@Override
 	public String toString()
 	{
 		String s= "("+coord[0]+","+coord[1]+") ->";
@@ -106,6 +112,7 @@ public class DefaultLayoutNode implements LayoutNode
 			s+= "("+n.coord()[0]+","+n.coord()[1]+"),  ";
 		return s;
 	}
+	@Override
 	public void flag(LayoutFlags flag)
 	{
 		String s=tags.get(LayoutTags.NODEFLAGS);
@@ -116,11 +123,13 @@ public class DefaultLayoutNode implements LayoutNode
 		if(s.indexOf(","+flag.toString()+",")<0)
 			tags.put(LayoutTags.NODEFLAGS,s+flag.toString()+",");
 	}
+	@Override
 	public void flagRun(LayoutRuns run)
 	{
 		tags.put(LayoutTags.NODERUN,run.toString());
 	}
-	public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get(LayoutTags.NODETYPE));}
+	@Override public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get(LayoutTags.NODETYPE));}
+	@Override
 	public void setExits(int[] dirs)
 	{
 		StringBuffer buf=new StringBuffer(",");
@@ -133,17 +142,20 @@ public class DefaultLayoutNode implements LayoutNode
 				}
 		tags.put(LayoutTags.NODEEXITS,buf.toString());
 	}
+	@Override
 	public void flagGateExit(int dir)
 	{
 		tags.put(LayoutTags.NODEGATEEXIT,Directions.getDirectionChar(dir).toLowerCase());
 	}
+	@Override
 	public void reType(LayoutTypes type)
 	{
 		tags.put(LayoutTags.NODETYPE,type.toString());
 	}
+	@Override
 	public String getColorRepresentation(int line)
 	{
-		
+
 		switch(line)
 		{
 			case 0:

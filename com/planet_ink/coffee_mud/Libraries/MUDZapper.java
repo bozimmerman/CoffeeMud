@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
-	public String ID(){return "MUDZapper";}
+	@Override public String ID(){return "MUDZapper";}
 	public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
 
 	protected MOB nonCrashingMOB=null;
@@ -62,7 +62,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return nonCrashingItem;
 	}
 
-	public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
+	@Override public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
 
 	protected volatile List<SavedClass> savedCharClasses = new Vector<SavedClass>(1);
 	protected volatile List<SavedRace> savedRaces = new Vector<SavedRace>(1);
@@ -87,7 +87,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		savedRaces=tempSavedRaces;
 		savedClassUpdateTime=CMClass.getLastClassUpdatedTime();
 	}
-	
+
 	public final List<SavedClass> charClasses()
 	{
 		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
@@ -100,15 +100,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			buildSavedClasses();
 		return savedRaces;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public CompiledZapperMask getPreCompiledMask(final String str)
 	{
 		Map<String,CompiledZapperMask> H=(Map<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
 		if(H==null)
-		{ 
-			H=new PrioritizingLimitedMap<String,CompiledZapperMask>(200, 10*60*1000, Long.MAX_VALUE, 50); 
-			Resources.submitResource("SYSTEM_HASHED_MASKS",H); 
+		{
+			H=new PrioritizingLimitedMap<String,CompiledZapperMask>(200, 10*60*1000, Long.MAX_VALUE, 50);
+			Resources.submitResource("SYSTEM_HASHED_MASKS",H);
 		}
 		final String lowerStr=(str==null)?"":str.toLowerCase().trim();
 		CompiledZapperMask V=H.get(lowerStr);
@@ -120,6 +121,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return V;
 	}
 
+	@Override
 	public Map<String,Integer> getMaskCodes()
 	{
 		if(zapCodes.size()==0)
@@ -313,6 +315,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return zapCodes;
 	}
 
+	@Override
 	public String maskHelp(final String CR, final String word)
 	{
 		String copy=rawMaskHelp();
@@ -520,7 +523,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				return i;
 		return -1;
 	}
-	
+
 	protected int levelMinHelp(final String lvl, final char c, final int minMinLevel, final boolean reversed)
 	{
 		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
@@ -585,7 +588,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	public String maskDesc(final String text){return maskDesc(text,false);}
+	@Override public String maskDesc(final String text){return maskDesc(text,false);}
 
 	public int countQuals(final List<String> V, final int v, final String startsWith)
 	{
@@ -600,12 +603,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return ct;
 	}
-	
+
 	public boolean multipleQuals(final List<String> V, final int v, final String startsWith)
 	{
 		return countQuals(V,v,startsWith)>1;
 	}
-	
+
+	@Override
 	public String maskDesc(final String text, final boolean skipFirstWord)
 	{
 		if(text.trim().length()==0) return "Anyone";
@@ -2104,6 +2108,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf.toString();
 	}
 
+	@Override
 	public boolean syntaxCheck(final String mask, final List<String> errorSink)
 	{
 		if(mask.trim().length()==0) return true;
@@ -2146,7 +2151,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		errorSink.add("No valid zapper codes found.");
 		return false;
 	}
-	
+
+	@Override
 	public List<String> getAbilityEduReqs(final String text)
 	{
 		final Vector<String> preReqs=new Vector<String>();
@@ -2231,6 +2237,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return preReqs;
 	}
 
+	@Override
 	public int minMaskLevel(final String text, final int minMinLevel)
 	{
 		int level=minMinLevel;
@@ -2328,6 +2335,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return level;
 	}
 
+	@Override
 	public CompiledZapperMask maskCompile(final String text)
 	{
 		final Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
@@ -2525,7 +2533,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 80: // +security
 				case 79: // -security
 				{
-					final String plusMinus=(entryType.intValue()==80)?"+":"-"; 
+					final String plusMinus=(entryType.intValue()==80)?"+":"-";
 					final Vector<CMSecurity.SecFlag> parms=new Vector<CMSecurity.SecFlag>();
 					for(int v2=v+1;v2<V.size();v2++)
 					{
@@ -2582,7 +2590,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 47: // +Faction
 				case 46: // -Faction
 				{
-					final String plusMinus=(entryType.intValue()==46)?"+":"-"; 
+					final String plusMinus=(entryType.intValue()==46)?"+":"-";
 					final Vector<Object> parms=new Vector<Object>();
 					for(int v2=v+1;v2<V.size();v2++)
 					{
@@ -3281,7 +3289,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return base;
 	}
 
-	public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
+	@Override public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
+	@Override
 	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual)
 	{
 		if(E==null) return true;
@@ -3293,7 +3302,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		final Item item=flags[0]?((E instanceof Item)?(Item)E:nonCrashingItem(mob)):null;
 		final Room room = flags[1]?((E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E)):null;
 		final Physical P = (E instanceof Physical)?(Physical)E:null;
-		if((mob==null)||(flags[0]&&(item==null))) 
+		if((mob==null)||(flags[0]&&(item==null)))
 			return false;
 		for(CompiledZapperMaskEntry entry : cset.entries)
 		{
@@ -3509,7 +3518,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					final String moodName;
 					final Ability A = mob.fetchEffect("Mood");
-					if((A!=null)&&(A.text().trim().length()>0)) 
+					if((A!=null)&&(A.text().trim().length()>0))
 						moodName=A.text().toUpperCase().trim();
 					else
 						moodName= "NORMAL";
@@ -3935,8 +3944,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						Faction.FRange FR=getRange((String)o);
 						if((FR!=null)&&(CMLib.factions().isFactionedThisWay(mob,FR)))
-						{ 
-							found=true; 
+						{
+							found=true;
 							break;
 						}
 					}
@@ -4330,7 +4339,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
-	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E){ return maskCheck(getPreCompiledMask(text),E);}
+	@Override public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E){ return maskCheck(getPreCompiledMask(text),E);}
+	@Override
 	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E)
 	{
 		if(E==null) return true;
@@ -4388,7 +4398,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			case 2: // -race
 			{
-				final Race R=CMClass.getRace(E.race); 
+				final Race R=CMClass.getRace(E.race);
 				if((R==null)||(!CMParms.contains(entry.parms,R.name())))
 					return false;
 				break;
@@ -4460,21 +4470,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break; // always true
 			case 12: // -racecat
 			{
-				final Race R=CMClass.getRace(E.race); 
+				final Race R=CMClass.getRace(E.race);
 				if((R==null)||(!CMParms.contains(entry.parms,R.racialCategory())))
 					return false;
 				break;
 			}
 			case 112: // +race
 			{
-				final Race R=CMClass.getRace(E.race); 
+				final Race R=CMClass.getRace(E.race);
 				if((R!=null)&&(CMParms.contains(entry.parms,R.name())))
 					return false;
 				break;
 			}
 			case 13: // +racecat
 			{
-				final Race R=CMClass.getRace(E.race); 
+				final Race R=CMClass.getRace(E.race);
 				if((R!=null)&&(CMParms.contains(entry.parms,R.racialCategory())))
 					return false;
 				break;
@@ -4654,7 +4664,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return true;
 	}
-	
+
+	@Override
 	public String[] separateMaskStrs(final String newText)
 	{
 		final String[] strs=new String[2];

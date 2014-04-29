@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,12 +38,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_FindPlant extends Chant
 {
-	public String ID() { return "Chant_FindPlant"; }
-	public String name(){ return "Find Plant";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public String displayText(){return "(Finding "+lookingFor+")";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public String ID() { return "Chant_FindPlant"; }
+	@Override public String name(){ return "Find Plant";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public String displayText(){return "(Finding "+lookingFor+")";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";
 	protected List<Room> theTrail=null;
 	protected int nextDirection=-2;
@@ -76,6 +76,7 @@ public class Chant_FindPlant extends Chant
 		return allResources;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -117,6 +118,7 @@ public class Chant_FindPlant extends Chant
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -141,12 +143,14 @@ public class Chant_FindPlant extends Chant
 		return "";
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

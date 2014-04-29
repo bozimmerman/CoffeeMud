@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenMirror extends GenItem
 {
-	public String ID(){	return "GenMirror";}
+	@Override public String ID(){	return "GenMirror";}
 	protected boolean oncePerRound=false;
 	public GenMirror()
 	{
@@ -48,11 +48,13 @@ public class GenMirror extends GenItem
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_GLASS);
 	}
+	@Override
 	public String description()
 	{
 		return "You see yourself in it!";
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Wearable.IN_INVENTORY)))

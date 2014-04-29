@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,16 +38,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Herbology extends CommonSkill
 {
-	public String ID() { return "Herbology"; }
-	public String name(){ return "Herbology";}
+	@Override public String ID() { return "Herbology"; }
+	@Override public String name(){ return "Herbology";}
 	private static final String[] triggerStrings = {"HERBOLOGY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 	public String parametersFormat(){ return "HERB_NAME";}
 
 	protected Item found=null;
 	protected boolean messedUp=false;
-	protected boolean canBeDoneSittingDown() { return true; }
+	@Override protected boolean canBeDoneSittingDown() { return true; }
 
 	public Herbology()
 	{
@@ -56,6 +56,7 @@ public class Herbology extends CommonSkill
 		verb="evaluating";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -71,13 +72,13 @@ public class Herbology extends CommonSkill
 					String herb=null;
 					while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
 						herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).trim().toLowerCase();
-					
+
 					if(found.rawSecretIdentity().length()>0)
-					{    
+					{
 						herb=found.rawSecretIdentity();
 						found.setSecretIdentity("");
 					}
-					
+
 					commonTell(mob,found.name()+" appears to be "+herb+".");
 					String name=found.Name();
 					name=name.substring(0,name.length()-5).trim();
@@ -95,6 +96,7 @@ public class Herbology extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

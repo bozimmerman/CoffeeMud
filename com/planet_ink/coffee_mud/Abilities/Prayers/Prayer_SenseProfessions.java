@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SenseProfessions extends Prayer
 {
-	public String ID() { return "Prayer_SenseProfessions"; }
-	public String name(){ return "Sense Professions";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_SenseProfessions"; }
+	@Override public String name(){ return "Sense Professions";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 	protected int senseWhat() { return ACODE_COMMON_SKILL; }
 	protected String senseWhatStr() { return "professions"; }
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -73,7 +74,7 @@ public class Prayer_SenseProfessions extends Prayer
 				for(Enumeration<Ability> a=target.allAbilities();a.hasMoreElements();)
 				{
 					Ability A=a.nextElement();
-					if((A!=null) 
+					if((A!=null)
 					&& ((A.classificationCode() & Ability.ALL_ACODES)==senseWhat()))
 						professionsV.addElement(A.name() + " ("+A.proficiency()+"%)");
 				}

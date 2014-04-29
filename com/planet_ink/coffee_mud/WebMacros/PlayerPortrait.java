@@ -20,7 +20,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,11 +37,12 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class PlayerPortrait extends StdWebMacro
 {
-	public String name() { return "PlayerPortrait"; }
+	@Override public String name() { return "PlayerPortrait"; }
 
-	public boolean isAWebPath(){return true;}
-	public boolean preferBinary(){return true;}
-	
+	@Override public boolean isAWebPath(){return true;}
+	@Override public boolean preferBinary(){return true;}
+
+	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		String foundFilename=httpReq.getUrlParameter("FILENAME");
@@ -49,7 +50,8 @@ public class PlayerPortrait extends StdWebMacro
 			return foundFilename;
 		return filename;
 	}
-	
+
+	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		String last=httpReq.getUrlParameter("PLAYER");
@@ -72,7 +74,8 @@ public class PlayerPortrait extends StdWebMacro
 		}
 		return img;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";

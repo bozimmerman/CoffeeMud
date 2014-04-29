@@ -37,21 +37,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid extends StdCharClass
 {
-	public String ID(){return "Druid";}
-	public String name(){return "Druid";}
-	public String baseClass(){return ID();}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
+	@Override public String ID(){return "Druid";}
+	@Override public String name(){return "Druid";}
+	@Override public String baseClass(){return ID();}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
+	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
 	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 	public static Hashtable animalChecking=new Hashtable();
 
 	public Druid()
@@ -59,6 +59,7 @@ public class Druid extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -199,9 +200,10 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -236,7 +238,7 @@ public class Druid extends StdCharClass
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{
-				if (!grantable.contains(A.ID())) 
+				if (!grantable.contains(A.ID()))
 					grantable.addElement(A.ID());
 			}
 		}
@@ -266,6 +268,7 @@ public class Druid extends StdCharClass
 	}
 
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -277,22 +280,23 @@ public class Druid extends StdCharClass
 					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
 			}
 	}
-	
-	
+
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Vegetation","Dwarf","Giant-kin",
 		"Goblinoid","HalfElf"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
+	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -316,7 +320,7 @@ public class Druid extends StdCharClass
 		}
 		return true;
 	}
-	
+
 	public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
 	{
 		if((msg.sourceMessage()==null)
@@ -340,7 +344,7 @@ public class Druid extends StdCharClass
 			}
 		}
 	}
-	
+
 	public static void doAnimalFreeingCheck(CharClass C, Environmental host, CMMsg msg)
 	{
 		if((msg.source()!=host)
@@ -381,13 +385,15 @@ public class Druid extends StdCharClass
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
-		Druid.doAnimalFollowerLevelingCheck(this,host,msg); 
+	{
+		super.executeMsg(host,msg);
+		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
 		Druid.doAnimalFreeingCheck(this,host,msg);
 	}
-	
+
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -401,6 +407,7 @@ public class Druid extends StdCharClass
 		return false;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -412,6 +419,7 @@ public class Druid extends StdCharClass
 		return outfitChoices;
 	}
 
+	@Override
 	public int classDurationModifier(MOB myChar,
 									 Ability skill,
 									 int duration)

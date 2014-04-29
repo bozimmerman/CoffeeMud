@@ -49,12 +49,13 @@ public class IMudPeer implements PersistentPeer
 	Object myobj=null;
 	boolean isRestoring=false;
 	String myID="";
-	
+
 	/**
 	 * Gets data about this peer from storage and gives it
 	 * back to the object for which this peer exists.
 	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if an error occurs during restore
 	 */
+	@Override
 	public void restore() throws PersistenceException
 	{
 		isRestoring=true;
@@ -64,7 +65,7 @@ public class IMudPeer implements PersistentPeer
 			{
 				CMFile F=new CMFile("resources/ppeer."+myID,null);
 				if(!F.exists()) return;
-				
+
 				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 				Object newobj;
 				newobj=in.readObject();
@@ -97,6 +98,7 @@ public class IMudPeer implements PersistentPeer
 	 * this method.
 	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if a problem occurs in saving
 	 */
+	@Override
 	public void save() throws PersistenceException
 	{
 		if(myobj instanceof Intermud)
@@ -129,18 +131,20 @@ public class IMudPeer implements PersistentPeer
 	 * @param ob the implementation of com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent that this is a peer for
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent
 	 */
+	@Override
 	public void setPersistent(Persistent ob)
 	{
 		myobj=ob;
 		myID=ob.getClass().getName().substring(ob.getClass().getName().lastIndexOf('.')+1);
 	}
-		
+
 
 	/**
 	 * An implementation uses this to tell its Persistent
 	 * that it is in the middle of restoring.
 	 * @return true if a restore operation is in progress
 	 */
+	@Override
 	public boolean isRestoring()
 	{return isRestoring;}
 }

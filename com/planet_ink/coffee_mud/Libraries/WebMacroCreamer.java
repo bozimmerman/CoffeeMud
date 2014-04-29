@@ -62,8 +62,8 @@ import org.mozilla.javascript.ScriptableObject;
 */
 public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, SimpleServlet
 {
-	public String ID(){return "WebMacroCreamer";}
-	
+	@Override public String ID(){return "WebMacroCreamer";}
+
 	@Override
 	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException {
 		if(request.getRequestObjects().get("SYSTEM_HTTP_STATUS")==null)
@@ -78,7 +78,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			if(mappedClan!=null)
 				request.addFakeUrlParameter("CLAN", mappedClan.clanID());
 		}
-		
+
 		try
 		{
 			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime,  new String[]{""}, new StringBuffer(new String(buffer.array()))).toString().getBytes());
@@ -130,13 +130,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			@Override public float getHttpVer() { return (float)1.1; }
 		},new Hashtable<String,Object>(), new long[]{System.currentTimeMillis()}, new String[]{""}, s);
 	}
-	
+
+	@Override
 	public String clearWebMacros(String s)
 	{
 		if(s.length()==0) return "";
 		return clearWebMacros(new StringBuffer(s));
 	}
-	
+
+	@Override
 	public String parseFoundMacro(StringBuffer s, int i, boolean lookOnly)
 	{
 		String foundMacro=null;
@@ -170,6 +172,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return foundMacro;
 	}
+	@Override
 	public String clearWebMacros(StringBuffer s)
 	{
 		if(s.length()==0) return "";
@@ -207,9 +210,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return s.toString();
 	}
-	
+
 	// OK - this parser is getting a bit ugly now;
 	//  I'm probably gonna replace it soon
+	@Override
 	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer s) throws HTTPRedirectException
 	{
 		String redirectTo = null;
@@ -347,7 +351,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							int l=foundMacro.length()+2;
 							String name=foundMacro.substring(7).trim().toUpperCase();
 							Object o=objects.get(name);
-							if(o!=null) 
+							if(o!=null)
 								s.replace(i,i+l,o.toString());
 							else
 								s.delete(i, i+l);
@@ -602,7 +606,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return null;
 	}
-	
+
 	protected String parseFoundMacro(StringBuffer s, int i, String[] lastFoundMacro, boolean lookOnly)
 	{
 		String foundMacro=null;
@@ -781,7 +785,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 	protected static class JScriptablePage extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptablePage";}
+		@Override public String getClassName(){ return "JScriptablePage";}
 		static final long serialVersionUID=43;
 		StringBuffer buf=new StringBuffer("");
 		public void write(Object O){buf.append( Context.toString(O));}
@@ -793,11 +797,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		public String toJavaString(Object O){return Context.toString(O);}
 	}
 
-	@Override
-	public void init() {}
+	@Override public void init() {}
 
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response) 
+	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
 	{
 		String[] url=request.getUrlPath().split("/");
 		if(url.length>0)
@@ -830,7 +833,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 							responseData=W.runMacro(request, "").getBytes();
 						response.getOutputStream().write(responseData);
-					} 
+					}
 					catch (HTTPServerException e)
 					{
 						try
@@ -838,16 +841,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
 						}
 						catch (HTTPException e1)	{ }
-					} 
+					}
 				}
 				catch (IOException e2)
-				{} 
+				{}
 			}
 		}
 	}
 
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response) { 
+	public void doPost(SimpleServletRequest request, SimpleServletResponse response) {
 		doGet(request,response);
 	}
 
@@ -856,6 +859,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	{
 	}
 
+	@Override
 	public boolean activate()
 	{
 		String flag=Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
@@ -869,6 +873,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return true;
 	}
+	@Override
 	public boolean shutdown()
 	{
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
@@ -879,16 +884,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return true;
 	}
 
-	public TickClient getServiceClient() { return serviceClient;}
-	
+	@Override public TickClient getServiceClient() { return serviceClient;}
+
 	@Override
-	public int getTickStatus() 
+	public int getTickStatus()
 	{
 		return tickStatus;
 	}
-	
+
 	protected YahooGroupSession yahooSession=null;
-	
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -970,7 +975,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				{
 				}
 			}
-			
+
 			yahooSession.numTotalTimes--;
 			yahooSession.numTimes=1;
 			String resp=copyYahooGroupMsg(yahooSession);
@@ -993,7 +998,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return true;
 	}
-	
+
 	private static class YahooGroupSession
 	{
 		protected HttpClient H=null;
@@ -1009,7 +1014,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		protected String password="";
 		protected int lastFailedNum=-1;
 	}
-	
+
 	public String copyYahooGroupMsg(YahooGroupSession sess)
 	{
 		while((--sess.numTimes)>=0)
@@ -1127,7 +1132,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			else
 			if(CMLib.login().isOkName(author,false))
 				author="_"+author;
-			
+
 			String parent="";
 			if(subject.toLowerCase().startsWith("[coffeemud]"))
 				subject=subject.substring(11).trim();
@@ -1141,7 +1146,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if(subj.toLowerCase().startsWith("[coffeemud]"))
 						subj=subj.substring(11).trim();
 				}
-				
+
 				Vector<JournalEntry> journalEntries=CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
 				if((journalEntries!=null)&&(journalEntries.size()>0))
 				{
@@ -1169,7 +1174,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if(J.subj.toLowerCase().trim().indexOf(subj.toLowerCase())>=0)
 							WIN=J;
 					}
-					
+
 					if(WIN!=null)
 						parent=WIN.key;
 				}
@@ -1205,8 +1210,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		return "Post "+sess.lastMsgNum+" submitted.";
 	}
-	
-	
+
+
 	protected String loginToYahooSession(YahooGroupSession sess) throws UnsupportedEncodingException
 	{
 		final String loginUrl="http://login.yahoo.com?login="+URLEncoder.encode(sess.user,"UTF8")+"&passwd="+URLEncoder.encode(sess.password,"UTF8");
@@ -1261,7 +1266,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			sess.lastMsgNum=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"));
 		return "";
 	}
-	
+
 	@Override
 	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal)
 	{
@@ -1274,7 +1279,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		sess.journal=journal;
 		sess.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
 		Arrays.sort(sess.skipList);
-		
+
 		try
 		{
 			String resp=this.loginToYahooSession(sess);

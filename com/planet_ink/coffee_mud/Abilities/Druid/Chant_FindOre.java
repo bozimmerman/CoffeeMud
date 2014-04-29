@@ -36,17 +36,17 @@ import java.util.*;
 
 public class Chant_FindOre extends Chant_FindPlant
 {
-	public String ID() { return "Chant_FindOre"; }
-	public String name(){ return "Find Ore";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public String displayText(){return "(Finding "+lookingFor+")";}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_FindOre"; }
+	@Override public String name(){ return "Find Ore";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public String displayText(){return "(Finding "+lookingFor+")";}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	private int[] myMats={RawMaterial.MATERIAL_ROCK, // mithril omitted
 						  RawMaterial.MATERIAL_METAL};
-	protected int[] okMaterials(){	return myMats;}
-	protected int[] okResources(){	return null;}
+	@Override protected int[] okMaterials(){	return myMats;}
+	@Override protected int[] okResources(){	return null;}
 
 	public Chant_FindOre()
 	{

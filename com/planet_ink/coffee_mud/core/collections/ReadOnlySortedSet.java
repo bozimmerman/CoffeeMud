@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlySortedSet<K> implements SortedSet<K> 
+public class ReadOnlySortedSet<K> implements SortedSet<K>
 {
 	private final SortedSet<K> set;
 	public ReadOnlySortedSet(SortedSet<K> s)

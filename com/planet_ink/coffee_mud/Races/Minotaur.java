@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,25 @@ import java.util.*;
 */
 public class Minotaur extends Cow
 {
-	public String ID(){	return "Minotaur"; }
-	public String name(){ return "Minotaur"; }
-	public int shortestMale(){return 65;}
-	public int shortestFemale(){return 64;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 450;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Wearable.WORN_HEAD;}
-	public String racialCategory(){return "Bovine";}
-	
+	@Override public String ID(){	return "Minotaur"; }
+	@Override public String name(){ return "Minotaur"; }
+	@Override public int shortestMale(){return 65;}
+	@Override public int shortestFemale(){return 64;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 450;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return Wearable.WORN_HEAD;}
+	@Override public String racialCategory(){return "Bovine";}
+
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
-	public int[] getAgingChart(){return agingChart;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -64,10 +65,12 @@ public class Minotaur extends Cow
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -87,7 +90,8 @@ public class Minotaur extends Cow
 				return super.makeMobName(gender, age);
 		}
 	}
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

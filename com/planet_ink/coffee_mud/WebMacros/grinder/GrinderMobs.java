@@ -104,7 +104,7 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) 
+					if(B==null)
 						return "Unknown Ability '"+aff+"'.";
 					else
 					{
@@ -179,7 +179,7 @@ public class GrinderMobs
 				{
 					boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) 
+					if(B==null)
 						return "Unknown Blessing '"+aff+"'.";
 					else
 						E.addBlessing(B,clericOnly);
@@ -208,7 +208,7 @@ public class GrinderMobs
 				{
 					int role=CMath.s_int(httpReq.getUrlParameter("CLANROLE"+num));
 					Clan C=CMLib.clans().getClan(aff);
-					if(C==null) 
+					if(C==null)
 						return "Unknown Clan '"+aff+"'.";
 					else
 						E.setClan(C.clanID(), role);
@@ -238,7 +238,7 @@ public class GrinderMobs
 				{
 					Ability B=CMClass.getAbility(aff);
 					boolean clericOnly=(httpReq.isUrlParameter("CUONLY"+num))&&(httpReq.getUrlParameter("CUONLY"+num)).equalsIgnoreCase("on");
-					if(B==null) 
+					if(B==null)
 						return "Unknown Curse '"+aff+"'.";
 					else
 						E.addCurse(B,clericOnly);
@@ -262,7 +262,7 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
-					if(def==null) 
+					if(def==null)
 						return "Unknown Expertise '"+aff+"'.";
 					else
 						E.addExpertise(def.ID);
@@ -351,7 +351,7 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) 
+					if(B==null)
 						return "Unknown Power '"+aff+"'.";
 					else
 						E.addPower(B);
@@ -792,7 +792,7 @@ public class GrinderMobs
 						if(MATCHING.startsWith("CATALOG-"))
 						{
 							Environmental O=RoomData.getMOBFromCatalog(MATCHING);
-							if(O==null) 
+							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
 								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
@@ -893,7 +893,7 @@ public class GrinderMobs
 					}
 					copyMOB=M;
 				}
-				else 
+				else
 				{
 					RoomData.contributeMOBs(new XVector(M));
 					MOB M2=RoomData.getReferenceMOB(M);

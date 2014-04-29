@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Plains extends StdRoom
 {
-	public String ID(){return "Plains";}
+	@Override public String ID(){return "Plains";}
 	public Plains()
 	{
 		super();
@@ -43,7 +43,7 @@ public class Plains extends StdRoom
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_WHEAT),
@@ -71,5 +71,5 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Plains.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

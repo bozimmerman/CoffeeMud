@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_EnterAdjuster"; }
-	public String name(){ return "Room entering adjuster";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_EnterAdjuster"; }
+	@Override public String name(){ return "Room entering adjuster";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY();
 	protected String[] parameters=new String[]{"",""};
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -58,12 +60,14 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
 	}
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return Prop_HaveAdjuster.fixAccoutingsWithMask("Affects those who enter: "+parameters[0],parameters[1]);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -103,7 +107,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 				Ability thisOne=(Ability)((Ability)theSpells.elementAt(i)).copyOf();
 				thisOne.invoke(mob,mob,true,0);
 			}
-			
+
 			mob.basePhyStats().setAbility(mob.basePhyStats().ability()+CMParms.getParmPlus(parameters[0],"abi"));
 			mob.basePhyStats().setArmor(mob.basePhyStats().armor()+CMParms.getParmPlus(parameters[0],"arm"));
 			mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+CMParms.getParmPlus(parameters[0],"att"));

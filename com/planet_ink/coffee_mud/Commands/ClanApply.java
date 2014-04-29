@@ -37,8 +37,9 @@ public class ClanApply extends StdCommand
 	public ClanApply(){}
 
 	private final String[] access={"CLANAPPLY"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -57,7 +58,7 @@ public class ClanApply extends StdCommand
 					mob.tell("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
 					return false;
 				}
-				
+
 				List<Pair<Clan,Integer>> oldList=CMLib.clans().getClansByCategory(mob, C.getCategory());
 				if(oldList.size()>=CMProps.getMaxClansThisCategory(C.getCategory()))
 				{
@@ -76,11 +77,11 @@ public class ClanApply extends StdCommand
 					mob.tell("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
 					return false;
 				}
-				
+
 				CharClass CC = CMClass.getCharClass(C.getClanClass());
 				if((CC!=null) && (mob.charStats().getClassLevel(CC)<0) && (!CC.qualifiesForThisClass(mob, false)))
 					return false;
-				
+
 				if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 				{
 					List<Clan.MemberRecord> members=C.getMemberList();
@@ -144,8 +145,8 @@ public class ClanApply extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

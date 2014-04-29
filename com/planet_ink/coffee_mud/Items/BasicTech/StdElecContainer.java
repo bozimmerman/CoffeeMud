@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class StdElecContainer extends StdContainer implements Electronics
 {
-	public String ID(){	return "StdElecContainer";}
+	@Override public String ID(){	return "StdElecContainer";}
 
 	protected long 			powerCapacity	= 100;
 	protected long 			power			= 100;
@@ -67,7 +67,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public TechType getTechType() { return TechType.GIZMO; }
 	@Override public void setManufacturerName(String name) { cachedManufact = null; if(name!=null) manufacturer=name; }
-	@Override 
+	@Override
 	public Manufacturer getFinalManufacturer()
 	{
 		if(cachedManufact==null)

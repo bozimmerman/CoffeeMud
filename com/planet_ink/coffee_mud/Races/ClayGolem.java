@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class ClayGolem extends StoneGolem
 {
-	public String ID(){	return "ClayGolem"; }
-	public String name(){ return "Clay Golem"; }
+	@Override public String ID(){	return "ClayGolem"; }
+	@Override public String name(){ return "Clay Golem"; }
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -52,5 +53,5 @@ public class ClayGolem extends StoneGolem
 		}
 		return resources;
 	}
-	
+
 }

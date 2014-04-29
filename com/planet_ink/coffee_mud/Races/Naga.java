@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,32 +34,34 @@ import java.util.*;
 */
 public class Naga extends Python
 {
-	public String ID(){	return "Naga"; }
-	public String name(){ return "Naga"; }
-	public int shortestMale(){return 59;}
-	public int shortestFemale(){return 59;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 80;}
-	public long forbiddenWornBits(){return Wearable.WORN_LEGS|Wearable.WORN_FEET;}
-	public String racialCategory(){return "Serpent";}
+	@Override public String ID(){	return "Naga"; }
+	@Override public String name(){ return "Naga"; }
+	@Override public int shortestMale(){return 59;}
+	@Override public int shortestFemale(){return 59;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 80;}
+	@Override public long forbiddenWornBits(){return Wearable.WORN_LEGS|Wearable.WORN_FEET;}
+	@Override public String racialCategory(){return "Serpent";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={100};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,0 ,0 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

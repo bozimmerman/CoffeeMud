@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class WandArchon extends StdWand implements ArchonOnly
 {
-	public String ID(){    return "WandArchon";}
+	@Override public String ID(){    return "WandArchon";}
 	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
 	public WandArchon()
 	{
@@ -51,18 +51,21 @@ public class WandArchon extends StdWand implements ArchonOnly
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
 
+	@Override
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		if(!amWearingAt(Wearable.IN_INVENTORY))
@@ -74,6 +77,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -127,7 +131,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean checkWave(MOB mob, String message)
 	{
 		if(message==null)
@@ -140,7 +145,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 			}
 		return super.checkWave(mob, message);
 	}
-	
+
+	@Override
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))

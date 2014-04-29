@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class JournalInfo extends StdWebMacro
 {
-	public String name() { return "JournalInfo"; }
+	@Override public String name() { return "JournalInfo"; }
 
 	public static JournalsLibrary.JournalEntry getEntry(List<JournalsLibrary.JournalEntry> msgs, String key)
 	{
@@ -63,7 +63,7 @@ public class JournalInfo extends StdWebMacro
 		}
 		if(page!=null)
 		{
-			if(page.length()==0) 
+			if(page.length()==0)
 				page="0";
 			else
 			{
@@ -75,7 +75,7 @@ public class JournalInfo extends StdWebMacro
 		if((dbsearch!=null)&&(dbsearch.length()>0))
 			parent=null;
 		else
-		if(parent==null) 
+		if(parent==null)
 			parent="";
 		String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
 		List<JournalsLibrary.JournalEntry> msgs=(List<JournalsLibrary.JournalEntry>)objs.get(httpkey);
@@ -90,9 +90,9 @@ public class JournalInfo extends StdWebMacro
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalsLibrary.JournalEntry>();
-				if((pageDate <= 0) 
-				&& (stats.stuckyKeys!=null) 
-				&& ((dbsearch==null)||(dbsearch.length()==0)) 
+				if((pageDate <= 0)
+				&& (stats.stuckyKeys!=null)
+				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
 					for(String stuckyKey : stats.stuckyKeys)
@@ -110,7 +110,7 @@ public class JournalInfo extends StdWebMacro
 		}
 		return msgs;
 	}
-	
+
 	public static void clearJournalCache(HTTPRequest httpReq, String journalName)
 	{
 		List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
@@ -118,7 +118,7 @@ public class JournalInfo extends StdWebMacro
 			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
 	}
-	
+
 	public static JournalsLibrary.JournalEntry getNextEntry(List<JournalsLibrary.JournalEntry> info, String key)
 	{
 		if(info==null)
@@ -137,31 +137,32 @@ public class JournalInfo extends StdWebMacro
 		}
 		return null;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getUrlParameter("JOURNAL");
-		if(journalName==null) 
+		if(journalName==null)
 			return " @break@";
-		
+
 		if(parms.containsKey("NOWTIMESTAMP"))
 			return ""+System.currentTimeMillis();
-		
+
 		if(parms.containsKey("JOURNALLIMIT"))
 			return ""+CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-		
+
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
-		
+
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
-		if(msgKey==null) 
+		if(msgKey==null)
 			return " @break@";
-		
+
 		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
-		
+
 		String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
 		JournalsLibrary.JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
@@ -186,12 +187,12 @@ public class JournalInfo extends StdWebMacro
 				entry= JournalInfo.getEntry(msgs,msgKey);
 			}
 		}
-		
+
 		if(entry==null)
 			entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 		if(parms.containsKey("ISMESSAGE"))
 			return String.valueOf(entry!=null);
-		if(entry==null)	
+		if(entry==null)
 			return " @break@";
 		if(cardinal!=null)
 			entry.cardinal=CMath.s_int(cardinal);
@@ -305,7 +306,7 @@ public class JournalInfo extends StdWebMacro
 				if(dateString.equals(yesterdayString))
 					return "Yesterday";
 				return dateString;
-				
+
 			}
 			else
 			if(parms.containsKey("TIMEUPDATED"))

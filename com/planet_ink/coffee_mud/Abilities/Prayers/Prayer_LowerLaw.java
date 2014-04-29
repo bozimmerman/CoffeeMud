@@ -37,15 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_LowerLaw extends Prayer
 {
-	public String ID() { return "Prayer_LowerLaw"; }
-	public String name(){ return "Lower Law";}
-	public String displayText(){ return "";}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public String ID() { return "Prayer_LowerLaw"; }
+	@Override public String name(){ return "Lower Law";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 
-	
+
 	public void possiblyAddLaw(Law L, Vector<String> V, String code)
 	{
 		if(L.basicCrimes().containsKey(code))
@@ -54,7 +54,8 @@ public class Prayer_LowerLaw extends Prayer
 			if(!V.contains(name)) V.add(name);
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

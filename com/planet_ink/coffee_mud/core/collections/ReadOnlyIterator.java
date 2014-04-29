@@ -22,7 +22,7 @@ public class ReadOnlyIterator<K> implements Iterator<K>
 	{
 		iter=i;
 	}
-	
+
 	@Override
 	public boolean hasNext()
 	{

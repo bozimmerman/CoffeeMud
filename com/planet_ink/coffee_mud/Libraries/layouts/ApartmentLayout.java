@@ -25,20 +25,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class ApartmentLayout extends AbstractLayout 
+public class ApartmentLayout extends AbstractLayout
 {
-	public String name() { return "APARTMENT";}
-	
+	@Override public String name() { return "APARTMENT";}
+
 	public void setRunFromDirection(LayoutNode node, int dir)
 	{
 		switch(dir)
 		{
-		case Directions.NORTH:case Directions.SOUTH: node.flagRun(LayoutRuns.ns); break; 
-		case Directions.EAST:case Directions.WEST: node.flagRun(LayoutRuns.ew); break; 
+		case Directions.NORTH:case Directions.SOUTH: node.flagRun(LayoutRuns.ns); break;
+		case Directions.EAST:case Directions.WEST: node.flagRun(LayoutRuns.ew); break;
 		}
 	}
-	
-	public java.util.List<LayoutNode> generate(int num, int dir) 
+
+	@Override
+	public java.util.List<LayoutNode> generate(int num, int dir)
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int hallwayLength=num/3;
@@ -48,7 +49,7 @@ public class ApartmentLayout extends AbstractLayout
 			hallwayLength = hallwayLength / 2;
 			numHallways *= 2;
 		}
-		
+
 		LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = null;
 		int hallwayDirection=dir;
@@ -81,20 +82,20 @@ public class ApartmentLayout extends AbstractLayout
 				lSet.use(nextNode,LayoutTypes.street);
 				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
-				
+
 				prevNode=nextNode;
 				nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 				lSet.use(nextNode,LayoutTypes.street);
 				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
-				
+
 				prevNode=nextNode;
 				nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 				lSet.use(nextNode,LayoutTypes.street);
 				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
 				nextNode.flag(LayoutFlags.tee);
-				
+
 				hallways.add(nextNode);
 				n=nextNode;
 			}
@@ -107,13 +108,13 @@ public class ApartmentLayout extends AbstractLayout
 					lSet.use(nextNode,LayoutTypes.street);
 					nextNode.crossLink(prevNode);
 					setRunFromDirection(nextNode,hallwayDirection);
-					
+
 					prevNode=nextNode; // this should stick
-					
+
 					nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 					lSet.use(nextNode,LayoutTypes.leaf);
 					nextNode.crossLink(prevNode);
-					
+
 					nextNode=lSet.makeNextNode(prevNode, Directions.getOpDirectionCode(sidewayDirection));
 					lSet.use(nextNode,LayoutTypes.leaf);
 					nextNode.crossLink(prevNode);

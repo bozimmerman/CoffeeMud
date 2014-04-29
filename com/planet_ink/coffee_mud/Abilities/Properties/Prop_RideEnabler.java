@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,22 +36,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_RideEnabler extends Prop_HaveEnabler
 {
-	public String ID() { return "Prop_RideEnabler"; }
-	public String name(){ return "Granting skills when ridden";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_RideEnabler"; }
+	@Override public String name(){ return "Granting skills when ridden";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	protected Vector lastRiders=new Vector();
-	
+
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Grants "," to those mounted.");}
 
-	public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
 
+	@Override
 	public void setMiscText(String newText)
-	{ 
+	{
 		super.setMiscText(newText);
 		lastRiders=new Vector();
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;

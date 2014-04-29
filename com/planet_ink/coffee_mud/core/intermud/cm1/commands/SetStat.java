@@ -24,7 +24,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,13 +41,14 @@ import java.util.concurrent.atomic.*;
 */
 public class SetStat extends GetStat
 {
-	public String getCommandWord(){ return "SETSTAT";}
-	
-	public SetStat(RequestHandler req, String parameters) 
+	@Override public String getCommandWord(){ return "SETSTAT";}
+
+	public SetStat(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
-	
+
+	@Override
 	public void run()
 	{
 		try
@@ -94,7 +95,7 @@ public class SetStat extends GetStat
 					firstValue=value.substring(0,x);
 					restValue=value.substring(x+1).trim();
 				}
-				
+
 				if((stat.length()>0)&&(!Character.isLetter(stat.charAt(0))))
 				{
 					adjuster=stat.charAt(0);
@@ -106,12 +107,12 @@ public class SetStat extends GetStat
 				req.sendMsg("[FAIL USAGE: SETSTAT "+type+" "+CMParms.toStringList(getStatCodes(P,mod))+"]");
 				return;
 			}
-			
+
 			if(mod instanceof Physical)
 				switch(CMParms.indexOf(PHYSSTATS, stat))
 				{
 					case -1: break;
-					case 0: 
+					case 0:
 					{
 						if(adjuster=='-')
 						{
@@ -152,7 +153,7 @@ public class SetStat extends GetStat
 				switch(CMParms.indexOf(PHYASTATS, stat))
 				{
 					case -1: break;
-					case 0: 
+					case 0:
 					{
 						if(adjuster=='-')
 						{
@@ -183,7 +184,7 @@ public class SetStat extends GetStat
 				switch(CMParms.indexOf(MOBASTATS, stat))
 				{
 					case -1: break;
-					case 0: 
+					case 0:
 					{
 						if(adjuster=='-')
 						{
@@ -210,7 +211,7 @@ public class SetStat extends GetStat
 						}
 						return;
 					}
-					case 1: 
+					case 1:
 					{
 						Faction F=CMLib.factions().getFaction(firstValue);
 						if(F==null)
@@ -240,7 +241,7 @@ public class SetStat extends GetStat
 						}
 						return;
 					}
-					case 2: 
+					case 2:
 					{
 						ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().findDefinition(firstValue, true);
 						if(def==null) def=CMLib.expertises().findDefinition(firstValue, false);
@@ -259,7 +260,7 @@ public class SetStat extends GetStat
 						}
 						return;
 					}
-					case 3: 
+					case 3:
 					{
 						if(adjuster=='-')
 						{
@@ -292,7 +293,7 @@ public class SetStat extends GetStat
 				switch(CMParms.indexOf(ITEMSTATS, stat))
 				{
 					case -1: break;
-					case 0: 
+					case 0:
 					{
 						if(adjuster=='-')
 						{
@@ -327,7 +328,7 @@ public class SetStat extends GetStat
 				switch(CMParms.indexOf(ROOMSTATS, stat))
 				{
 					case -1: break;
-					case 0: 
+					case 0:
 					{
 						if(adjuster=='-')
 						{
@@ -361,7 +362,7 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
-			
+
 			if(!UseGenBuilder(P,mod))
 				mod.setStat(stat, value);
 			else
@@ -374,7 +375,7 @@ public class SetStat extends GetStat
 						else
 						if(P instanceof Item)
 							CMLib.coffeeMaker().setGenItemStat((Item)P, stat, value);
-						
+
 			}
 			req.sendMsg("[OK]");
 		}

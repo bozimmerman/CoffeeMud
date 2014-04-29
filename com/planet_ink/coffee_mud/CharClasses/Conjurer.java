@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,24 +32,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Conjurer extends SpecialistMage
 {
-	public String ID(){return "Conjurer";}
-	public String name(){return "Conjurer";}
-	public int domain(){return Ability.DOMAIN_CONJURATION;}
-	public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
-		
+	@Override public String ID(){return "Conjurer";}
+	@Override public String name(){return "Conjurer";}
+	@Override public int domain(){return Ability.DOMAIN_CONJURATION;}
+	@Override public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_IronGrip");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_SummonMarker",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Scatter",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_WaterCannon",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_ChanneledMissiles",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_WordRecall",0,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FlamingSword",25,true);    
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FlamingSword",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_MarkerSummoning",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_AcidSpray",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_MarkerPortal",25,true);

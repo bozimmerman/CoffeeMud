@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_AutoBash extends FighterSkill
 {
-	public String ID() { return "Fighter_AutoBash"; }
-	public String name(){ return "AutoBash";}
-	public String displayText(){return "";}
+	@Override public String ID() { return "Fighter_AutoBash"; }
+	@Override public String name(){ return "AutoBash";}
+	@Override public String displayText(){return "";}
 	private static final String[] triggerStrings = {"AUTOBASH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	protected volatile int numberOfShields=-1;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -55,7 +56,7 @@ public class Fighter_AutoBash extends FighterSkill
 			return false;
 
 		MOB mob=(MOB)affected;
-		
+
 		if((numberOfShields<0)&&(tickID==Tickable.TICKID_MOB))
 		{
 			numberOfShields=0;
@@ -70,7 +71,7 @@ public class Fighter_AutoBash extends FighterSkill
 			}
 			mob.recoverPhyStats();
 		}
-		
+
 		for(int i=0;i<numberOfShields;i++)
 		{
 			if(mob.isInCombat()
@@ -86,7 +87,8 @@ public class Fighter_AutoBash extends FighterSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -100,6 +102,7 @@ public class Fighter_AutoBash extends FighterSkill
 			numberOfShields=-1;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
@@ -124,7 +127,8 @@ public class Fighter_AutoBash extends FighterSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s).");
 		return success;
 	}
-	
+
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		numberOfShields=-1;

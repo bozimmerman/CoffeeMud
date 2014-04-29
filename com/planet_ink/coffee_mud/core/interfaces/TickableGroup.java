@@ -48,52 +48,52 @@ public interface TickableGroup extends CMRunnable
 	 * @see Tickable
 	 * @see Tickable#tick(Tickable, int)
 	 * @return the TickClient object last accessed
-	 */ 
+	 */
 	public TickClient getLastTicked();
-	
+
 	/**
 	 * Returns the name of this group
 	 * @return the name
 	 */
 	public String getName();
-	
+
 	/**
 	 * Returns the amount of time, in ms, between calls to this group
 	 * @return the time between ticks
 	 */
 	public long getTickInterval();
-	
+
 	/**
 	 * Returns the next time, in ms, when this group should tick.
 	 * @return the next time, in ms, when this group should tick.
 	 */
 	public long getNextTickTime();
-	
+
 	/**
 	 * Orders this group to do any necessary cleanup before going away.
 	 */
 	public void shutdown();
-	
+
 	/**
 	 * Adds another ticking object to this group
 	 * @see TickClient
 	 * @param C the client to add
 	 */
 	public void addTicker(TickClient C);
-	
+
 	/**
 	 * Removes the given ticking object from this group
 	 * @see TickClient
 	 * @param C the client to remove
 	 */
 	public void delTicker(TickClient C);
-	
+
 	/**
 	 * Returns an iterator of all the ticking objects
 	 * @return an iterator of all the ticking objects
 	 */
 	public Iterator<TickClient> tickers();
-	
+
 	/**
 	 * Returns the number of ticking objects in this group
 	 * @return the number of ticking objects in this group
@@ -107,7 +107,7 @@ public interface TickableGroup extends CMRunnable
 	 * @return an iterator of all clients matching the given criteria
 	 */
 	public Iterator<TickClient> getTickSet(final Tickable T, final int tickID);
-	
+
 	/**
 	 * Returns an iterator of all the items of the given type in the given room.
 	 * @param itemTypes 0=mobs or items, 1=items, 2=mobs
@@ -124,7 +124,7 @@ public interface TickableGroup extends CMRunnable
 	 * @return true if its in here, false otherwise
 	 */
 	public boolean contains(final Tickable T, final int tickID);
-	
+
 	/**
 	 * Returns the tickclient at the given index from 0 to numTickers
 	 * @see TickableGroup#numTickers()
@@ -132,37 +132,37 @@ public interface TickableGroup extends CMRunnable
 	 * @return the tickclient, or null
 	 */
 	public TickClient fetchTickerByIndex(int i);
-	
+
 	/**
 	 * Returns the displayable status of this ticking object
 	 * @return the displayable status of this ticking object
 	 */
 	public String getStatus();
-	
+
 	/**
 	 * Returns the time, in ms, that this object last ticked.
 	 * @return the time, in ms, that this object last ticked.
 	 */
 	public long getLastStartTime();
-	
+
 	/**
 	 * Returns the time, in ms, that this object last stopped ticking.
 	 * @return the time, in ms, that this object last stopped ticking
 	 */
 	public long getLastStopTime();
-	
+
 	/**
 	 * Returns the number of ms that this object has ticked in total
 	 * @return the number of ms that this object has ticked in total
 	 */
 	public long getMilliTotal();
-	
+
 	/**
 	 * Returns the number of times that this object has ticked in total
 	 * @return the number of times that this object has ticked in total
 	 */
 	public long getTickTotal();
-	
+
 	/**
 	 * Returns whether this group is only permitted a single object
 	 * @return true if this group is only permitted a single object
@@ -174,14 +174,14 @@ public interface TickableGroup extends CMRunnable
 	 * @return true if this group currently is getting thread time
 	 */
 	public boolean isAwake();
-	
+
 	/**
 	 * Returns the name of the thread group that this ticking group
 	 * belongs to (and thus, under which it should run later)
 	 * @return the name of the thread group
 	 */
 	public String getThreadGroupName();
-	
+
 	/**
 	 * If this group is currently getting thread time, this will
 	 * return a reference to that thread object, or null otherwise.

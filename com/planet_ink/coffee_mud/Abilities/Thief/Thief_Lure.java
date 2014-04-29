@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,35 +35,37 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Lure extends ThiefSkill implements Trap
 {
-	public String ID() { return "Thief_Lure"; }
-	public String name(){ return "Lure";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Lure"; }
+	@Override public String name(){ return "Lure";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"LURE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public boolean disabled(){return false;}
-	public boolean sprung(){return false;}
-	public void disable(){ unInvoke();}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public void spring(MOB M){}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public boolean disabled(){return false;}
+	@Override public boolean sprung(){return false;}
+	@Override public void disable(){ unInvoke();}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public void spring(MOB M){}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{return null;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

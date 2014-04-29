@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,11 +40,11 @@ import java.util.*;
 */
 public class DefaultPlayerStats implements PlayerStats
 {
-	public String ID(){return "DefaultPlayerStats";}
-	public String name() { return ID();}
+	@Override public String ID(){return "DefaultPlayerStats";}
+	@Override public String name() { return ID();}
 	protected final static int TELL_STACK_MAX_SIZE=50;
 	protected final static int GTELL_STACK_MAX_SIZE=50;
-	
+
 	protected long			 hygiene		= 0;
 	protected int			 theme			= Area.THEME_FANTASY;
 	protected String[]		 xtraValues		= null;
@@ -83,17 +83,18 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
-	
+
 	protected Map<String,String>	alias	= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy	= new STreeMap<String,Integer>();
 
-	public DefaultPlayerStats() 
+	public DefaultPlayerStats()
 	{
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 		extItems=(ItemCollection)CMClass.getCommon("WeakItemCollection");
 	}
-	
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -105,9 +106,10 @@ public class DefaultPlayerStats implements PlayerStats
 			return new DefaultPlayerStats();
 		}
 	}
-	
-	public void initializeClass(){}
-	
+
+	@Override public void initializeClass(){}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -135,74 +137,86 @@ public class DefaultPlayerStats implements PlayerStats
 			return new DefaultPlayerStats();
 		}
 	}
-	
+
+	@Override
 	public String getLastIP()
 	{
 		return lastIP;
 	}
-	
+
+	@Override
 	public void setLastIP(String ip)
 	{
 		lastIP=ip;
 		if(account != null)
 			account.setLastIP(ip);
 	}
-	
+
+	@Override
 	public String getEmail()
 	{
 		if(account != null)
 			return account.getEmail();
-		if(email==null) 
-			return ""; 
+		if(email==null)
+			return "";
 		return email;
 	}
-	
+
+	@Override
 	public void setEmail(String newAdd)
 	{
 		email=newAdd;
 		if(account != null)
 			account.setEmail(newAdd);
 	}
-	
+
+	@Override
 	public int getTheme()
 	{
 		return theme;
 	}
-	
+
+	@Override
 	public void setTheme(int theme)
 	{
 		this.theme=theme;
 	}
-	
+
+	@Override
 	public long getLastUpdated()
 	{
 		return lastUpdated;
 	}
-	
+
+	@Override
 	public void setLastUpdated(long time)
 	{
 		lastUpdated=time;
 		if(account != null)
 			account.setLastUpdated(time);
 	}
-	
+
+	@Override
 	public long getLastDateTime()
 	{
 		return lLastDateTime;
 	}
-	
+
+	@Override
 	public void setLastDateTime(long C)
-	{ 
+	{
 		lLastDateTime=C;
 		if(account != null)
 			account.setLastDateTime(C);
 	}
-	
+
+	@Override
 	public String getPasswordStr()
 	{
 		return (account!=null)?account.getPasswordStr():password;
 	}
-	
+
+	@Override
 	public void setPassword(String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
@@ -213,7 +227,8 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			account.setPassword(password);
 	}
-	
+
+	@Override
 	public boolean matchesPassword(String checkPass)
 	{
 		if(account!=null)
@@ -222,103 +237,123 @@ public class DefaultPlayerStats implements PlayerStats
 			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
 		return checkPass.equalsIgnoreCase(password);
 	}
-	
+
+	@Override
 	public int getWrap()
 	{
 		return wrap;
 	}
-	
+
+	@Override
 	public void setWrap(int newWrap)
 	{
 		wrap=newWrap;
 	}
-	
+
+	@Override
 	public int getPageBreak()
 	{
 		return pageBreak;
 	}
-	
+
+	@Override
 	public void setPageBreak(int newBreak)
 	{
 		pageBreak=newBreak;
 	}
-	
+
+	@Override
 	public String getNotes()
 	{
 		return notes;
 	}
-	
+
+	@Override
 	public void setNotes(String newnotes)
 	{
 		notes=newnotes;
 	}
-	
+
+	@Override
 	public void setChannelMask(int newMask)
-	{ 
+	{
 		channelMask=newMask;
 	}
-	
+
+	@Override
 	public int getChannelMask()
-	{ 
+	{
 		return channelMask;
 	}
-	
+
+	@Override
 	public MOB getReplyToMOB()
-	{    
-		return replyTo;	
+	{
+		return replyTo;
 	}
-	
+
+	@Override
 	public int getReplyType()
-	{    
+	{
 		return replyType;
 	}
-	
+
+	@Override
 	public long getReplyToTime()
-	{	
-		return replyTime;    
+	{
+		return replyTime;
 	}
-	
+
+	@Override
 	public void setReplyTo(MOB mob, int replyType)
-	{    
+	{
 		replyTo=mob;
 		this.replyType=replyType;
 	}
-	
+
+	@Override
 	public void setPrompt(String newPrompt)
 	{
 		prompt=newPrompt;
 	}
-	
+
+	@Override
 	public String getColorStr()
 	{
 		return colorStr;
 	}
-	
+
+	@Override
 	public void setColorStr(String newColors)
 	{
 		colorStr=newColors;
 	}
-	
+
+	@Override
 	public String getAnnounceMessage()
 	{
 		return announceMsg;
 	}
-	
+
+	@Override
 	public void setAnnounceMessage(String msg)
 	{
 		announceMsg=msg;
 	}
-	
+
+	@Override
 	public String getSavedPose()
 	{
 		return savedPose;
 	}
-	
+
+	@Override
 	public void setSavedPose(String msg)
 	{
 		savedPose=msg;
 	}
-	
+
+	@Override
 	public String getPrompt()
 	{
 		if((prompt==null)||(prompt.length()==0))
@@ -330,17 +365,19 @@ public class DefaultPlayerStats implements PlayerStats
 		return prompt;
 	}
 
+	@Override
 	public boolean isIntroducedTo(String name)
 	{
 		return introductions.contains(name.toUpperCase().trim());
 	}
-	
+
+	@Override
 	public void introduceTo(String name)
 	{
 		if((!isIntroducedTo(name))&&(name.trim().length()>0))
 			introductions.add(name.toUpperCase().trim());
 	}
-	
+
 	public SHashSet<String> getHashFrom(String str)
 	{
 		SHashSet<String> h=new SHashSet<String>();
@@ -364,75 +401,86 @@ public class DefaultPlayerStats implements PlayerStats
 		return h;
 	}
 
+	@Override
 	public void addTellStack(String msg)
 	{
 		if(tellStack.size()>TELL_STACK_MAX_SIZE)
 			tellStack.remove(0);
 		tellStack.add(msg);
 	}
-	
+
+	@Override
 	public List<String> getTellStack()
 	{
 		return new ReadOnlyList<String>(tellStack);
 	}
-	
+
 	private RoomnumberSet roomSet()
 	{
 		if(visitedRoomSet==null)
 			visitedRoomSet=((RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet"));
 		return visitedRoomSet;
 	}
+	@Override
 	public void addGTellStack(String msg)
 	{
 		if(gtellStack.size()>GTELL_STACK_MAX_SIZE)
 			gtellStack.remove(0);
 		gtellStack.add(msg);
 	}
-	
+
+	@Override
 	public List<String> getGTellStack()
 	{
 		return new ReadOnlyList<String>(gtellStack);
 	}
-	
+
+	@Override
 	public Set<String> getFriends()
 	{
 		if(account != null)
 			return account.getFriends();
 		return friends;
 	}
+	@Override
 	public Set<String> getIgnored()
 	{
 		if(account != null)
 			return account.getIgnored();
 		return ignored;
 	}
-	
+
+	@Override
 	public String[] getAliasNames()
 	{
 		return alias.keySet().toArray(new String[0]);
 	}
-	
+
+	@Override
 	public String getAlias(String named)
 	{
 		if(alias.containsKey(named.toUpperCase().trim()))
 			return alias.get(named.toUpperCase().trim());
 		return "";
 	}
+	@Override
 	public void addAliasName(String named)
 	{
 		named=named.toUpperCase().trim();
 		if(getAlias(named).length()==0)
 			alias.put(named,"");
 	}
+	@Override
 	public void delAliasName(String named)
 	{
 		alias.remove(named.toUpperCase().trim());
 	}
+	@Override
 	public void setAlias(String named, String value)
 	{
 		alias.put(named.toUpperCase().trim(),value);
 	}
-	
+
 	public String getAliasXML()
 	{
 		if(alias.size()==0) return "";
@@ -442,7 +490,7 @@ public class DefaultPlayerStats implements PlayerStats
 			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBracketsAndQuotes(alias.get(key))).append("\" />");
 		return str.toString();
 	}
-	
+
 	public String getLegacyXML()
 	{
 		if(legacy.size()==0) return "";
@@ -451,7 +499,8 @@ public class DefaultPlayerStats implements PlayerStats
 			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\" />");
 		return str.toString();
 	}
-	
+
+	@Override
 	public String getActiveTitle()
 	{
 		if((titles==null)||(titles.size()==0)) return null;
@@ -460,7 +509,8 @@ public class DefaultPlayerStats implements PlayerStats
 			return s;
 		return s.substring(1,s.length()-1);
 	}
-	
+
+	@Override
 	public List<String> getTitles()
 	{
 		return titles;
@@ -481,31 +531,37 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return str.toString();
 	}
-	
+
+	@Override
 	public String getPoofIn()
 	{
 		return poofin;
 	}
-	
+
+	@Override
 	public String getPoofOut()
 	{
 		return poofout;
 	}
-	
+
+	@Override
 	public String getTranPoofIn()
 	{
 		return tranpoofin;
 	}
+	@Override
 	public String getTranPoofOut()
 	{
 		return tranpoofout;
 	}
-	
+
+	@Override
 	public int[] getBirthday()
 	{
 		return birthday;
 	}
-	
+
+	@Override
 	public int initializeBirthday(int ageHours, Race R)
 	{
 		birthday=new int[4];
@@ -530,7 +586,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2])-1;
 		return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
 	}
-	
+
 	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
@@ -539,9 +595,9 @@ public class DefaultPlayerStats implements PlayerStats
 			list.append((e.next())+";");
 		return list.toString();
 	}
-	
+
 	@Override
-	public void bumpPrideStat(PrideStat stat, int amt) 
+	public void bumpPrideStat(PrideStat stat, int amt)
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
@@ -561,15 +617,16 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 		}
 	}
-	
+
 	@Override
-	public int getPrideStat(TimePeriod period, PrideStat stat) 
+	public int getPrideStat(TimePeriod period, PrideStat stat)
 	{
 		if((period==null)||(stat==null))
 			return 0;
 		return prideStats[period.ordinal()][stat.ordinal()];
 	}
-	
+
+	@Override
 	public String getXML()
 	{
 		String f=getPrivateList(getFriends());
@@ -587,7 +644,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
-		
+
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
@@ -628,7 +685,7 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 		}
 	}
-	
+
 	private void setAliasXML(List<XMLpiece> xml)
 	{
 		alias.clear();
@@ -653,7 +710,7 @@ public class DefaultPlayerStats implements PlayerStats
 			alias.put(name.toUpperCase().trim(),CMLib.xml().restoreAngleBrackets(value));
 		}
 	}
-	
+
 	private void setLegacyXML(List<XMLpiece> xml)
 	{
 		legacy.clear();
@@ -669,7 +726,7 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 		}
 	}
-	
+
 	private void setTitleXML(List<XMLpiece> xml)
 	{
 		titles.clear();
@@ -687,13 +744,14 @@ public class DefaultPlayerStats implements PlayerStats
 				break;
 			titles.add(title);
 		}
-		
+
 	}
-	
+
+	@Override
 	public void setXML(String xmlStr)
 	{
 		account = null;
-		if(xmlStr==null) 
+		if(xmlStr==null)
 			return;
 		final XMLLibrary xmlLib=CMLib.xml();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
@@ -727,11 +785,11 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		str=xmlLib.getValFromPieces(xml,"WRAP");
 		if(debug) Log.debugOut("WRAP="+str);
-		if(CMath.isInteger(str)) 
+		if(CMath.isInteger(str))
 			wrap=CMath.s_int(str);
 		str=xmlLib.getValFromPieces(xml,"PAGEBREAK");
 		if(debug) Log.debugOut("PAGEBREAK="+str);
-		if(CMath.isInteger(str)) 
+		if(CMath.isInteger(str))
 			pageBreak=CMath.s_int(str);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.Int.PAGEBREAK);
@@ -744,42 +802,42 @@ public class DefaultPlayerStats implements PlayerStats
 		str=xmlLib.getValFromPieces(xml,"BIRTHDAY");
 		if(debug) Log.debugOut("BIRTHDAY="+str);
 		setBirthday(str);
-		
+
 		poofin=xmlLib.getValFromPieces(xml,"POOFIN");
 		if(debug) Log.debugOut("POOFIN="+poofin);
 		if(poofin==null) poofin="";
 		poofin=xmlLib.restoreAngleBrackets(poofin);
-		
+
 		poofout=xmlLib.getValFromPieces(xml,"POOFOUT");
 		if(debug) Log.debugOut("POOFOUT="+poofout);
 		if(poofout==null) poofout="";
 		poofout=xmlLib.restoreAngleBrackets(poofout);
-		
+
 		tranpoofin=xmlLib.getValFromPieces(xml,"TRANPOOFIN");
 		if(debug) Log.debugOut("TRANPOOFIN="+tranpoofin);
 		if(tranpoofin==null) tranpoofin="";
 		tranpoofin=xmlLib.restoreAngleBrackets(tranpoofin);
-		
+
 		tranpoofout=xmlLib.getValFromPieces(xml,"TRANPOOFOUT");
 		if(debug) Log.debugOut("TRANPOOFOUT="+tranpoofout);
 		if(tranpoofout==null) tranpoofout="";
 		tranpoofout=xmlLib.restoreAngleBrackets(tranpoofout);
-		
+
 		announceMsg=xmlLib.getValFromPieces(xml,"ANNOUNCE");
 		if(debug) Log.debugOut("ANNOUNCE="+announceMsg);
 		if(announceMsg==null) announceMsg="";
 		announceMsg=xmlLib.restoreAngleBrackets(announceMsg);
-		
+
 		savedPose=xmlLib.getValFromPieces(xml,"POSE");
 		if(debug) Log.debugOut("POSE="+savedPose);
 		if(savedPose==null) savedPose="";
 		savedPose=xmlLib.restoreAngleBrackets(savedPose);
-		
+
 		notes=xmlLib.getValFromPieces(xml,"NOTES");
 		if(debug) Log.debugOut("NOTES="+notes);
 		if(notes==null) notes="";
 		notes=xmlLib.restoreAngleBrackets(notes);
-		
+
 		str=xmlLib.getValFromPieces(xml,"DATES");
 		if(debug) Log.debugOut("DATES="+str);
 		if(str==null) str="";
@@ -827,7 +885,7 @@ public class DefaultPlayerStats implements PlayerStats
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
-		
+
 		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
 		if(debug) Log.debugOut("ACCOUNT="+str);
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
@@ -850,7 +908,8 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return buf.toString();
 	}
-	
+
+	@Override
 	public String getSetSecurityFlags(String newFlags)
 	{
 		if(newFlags != null)
@@ -858,14 +917,16 @@ public class DefaultPlayerStats implements PlayerStats
 			securityFlags=CMSecurity.instance().createGroup("", CMParms.parseSemicolons(newFlags,true));
 		}
 		return securityFlags.toString(';');
-		
+
 	}
-	
+
+	@Override
 	public CMSecurity.SecGroup getSecurityFlags()
-	{ 
+	{
 		return securityFlags;
 	}
-	
+
+	@Override
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
 	{
 		poofin=poofIn;
@@ -873,17 +934,20 @@ public class DefaultPlayerStats implements PlayerStats
 		tranpoofin=tranPoofIn;
 		tranpoofout=tranPoofOut;
 	}
-	
+
+	@Override
 	public long getHygiene()
 	{
 		return hygiene;
 	}
-	
+
+	@Override
 	public void setHygiene(long newVal)
 	{
 		hygiene=newVal;
 	}
-	
+
+	@Override
 	public boolean adjHygiene(long byThisMuch)
 	{
 		hygiene+=byThisMuch;
@@ -894,20 +958,23 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return true;
 	}
-	
+
 
 	// Acct Expire Code
+	@Override
 	public long getAccountExpiration()
 	{
 		return  (account != null) ? account.getAccountExpiration() : accountExpires;
 	}
+	@Override
 	public void setAccountExpiration(long newVal)
 	{
 		if(account != null)
 			account.setAccountExpiration(newVal);
 		accountExpires=newVal;
 	}
-	
+
+	@Override
 	public boolean addRoomVisit(Room R)
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
@@ -922,24 +989,28 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return false;
 	}
+	@Override
 	public boolean hasVisited(Room R)
 	{
 		return roomSet().contains(CMLib.map().getExtendedRoomID(R));
 	}
-	
+
+	@Override
 	public boolean hasVisited(Area A)
 	{
 		int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0) return true;
 		return roomSet().roomCount(A.Name())>0;
 	}
-	
+
+	@Override
 	public void unVisit(Room R)
 	{
 		if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
 			roomSet().remove(CMLib.map().getExtendedRoomID(R));
 	}
-	
+
+	@Override
 	public void unVisit(Area A)
 	{
 		Room R;
@@ -950,7 +1021,8 @@ public class DefaultPlayerStats implements PlayerStats
 				roomSet().remove(CMLib.map().getExtendedRoomID(R));
 		}
 	}
-	
+
+	@Override
 	public int percentVisited(MOB mob, Area A)
 	{
 		if(A==null)
@@ -980,7 +1052,8 @@ public class DefaultPlayerStats implements PlayerStats
 		double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
 		return (int)Math.round(100.0*pct);
 	}
-	
+
+	@Override
 	public long leveledDateTime(int level)
 	{
 		if(levelInfo.size()==0)
@@ -994,7 +1067,8 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return lowest;
 	}
-	
+
+	@Override
 	public void setLeveledDateTime(int level, Room R)
 	{
 		if(levelInfo.size()==0)
@@ -1023,7 +1097,8 @@ public class DefaultPlayerStats implements PlayerStats
 			return;
 		levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
 	}
-	
+
+	@Override
 	public int getTotalLegacyLevels()
 	{
 		int total=0;
@@ -1031,39 +1106,44 @@ public class DefaultPlayerStats implements PlayerStats
 			total+=value.intValue();
 		return total;
 	}
-	
+
+	@Override
 	public void addLegacyLevel(String category)
 	{
 		Integer level=legacy.get(category);
-		if(level != null) 
+		if(level != null)
 			legacy.put(category, Integer.valueOf(level.intValue()+1));
 		else
 			legacy.put(category, Integer.valueOf(1));
 	}
-	
+
+	@Override
 	public int getLegacyLevel(String category)
 	{
 		Integer level=legacy.get(category);
 		if(level != null) return level.intValue();
 		return 0;
 	}
-	
-	public PlayerAccount getAccount() 
-	{ 
+
+	@Override
+	public PlayerAccount getAccount()
+	{
 		return account;
 	}
-	
-	public void setAccount(PlayerAccount account) 
-	{ 
+
+	@Override
+	public void setAccount(PlayerAccount account)
+	{
 		this.account = account;
 	}
-	
-	public ItemCollection getExtItems() 
-	{ 
-		return extItems; 
+
+	@Override
+	public ItemCollection getExtItems()
+	{
+		return extItems;
 	}
-	
-	
+
+
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",
@@ -1072,6 +1152,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
 									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
 									 "SAVEDPOSE","THEME", "LEGLEVELS"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -1104,6 +1185,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -1137,21 +1219,23 @@ public class DefaultPlayerStats implements PlayerStats
 			break;
 		}
 	}
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(PlayerStats E)
 	{
 		if(!(E instanceof DefaultPlayerStats)) return false;
@@ -1160,6 +1244,6 @@ public class DefaultPlayerStats implements PlayerStats
 				return false;
 		return true;
 	}
-	
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

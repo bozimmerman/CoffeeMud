@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,10 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_UseSpellCast extends Prop_SpellAdder
 {
-	public String ID() { return "Prop_UseSpellCast"; }
-	public String name(){ return "Casting spells when used";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	
+	@Override public String ID() { return "Prop_UseSpellCast"; }
+	@Override public String name(){ return "Casting spells when used";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel, short maxTicks)
 	{
 		List<Ability> V=getMySpellsV();
@@ -47,9 +47,9 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		||(V.size()==0)
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 			return false;
-		
+
 		MOB qualMOB=getInvokerMOB(source,target);
-		
+
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=V.get(v);
@@ -88,23 +88,27 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		return true;
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," when used.");}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{}
-	
-	public int triggerMask() 
-	{ 
-		if((affected instanceof Armor)||(affected instanceof Weapon)) 
+
+	@Override
+	public int triggerMask()
+	{
+		if((affected instanceof Armor)||(affected instanceof Weapon))
 			return TriggeredAffect.TRIGGER_WEAR_WIELD;
-		if((affected instanceof Drink)||(affected instanceof Food)) 
+		if((affected instanceof Drink)||(affected instanceof Food))
 			return TriggeredAffect.TRIGGER_USE;
 		if(affected instanceof Container)
 			return TriggeredAffect.TRIGGER_DROP_PUTIN;
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

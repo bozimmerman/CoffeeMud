@@ -34,12 +34,12 @@ limitations under the License.
 */
 public class StdLimb extends StdItem implements FalseLimb
 {
-	public String ID(){    return "StdLimb";}
+	@Override public String ID(){    return "StdLimb";}
 	protected int partnum=-1;
 	protected long wearplace=-1;
 	protected short layer=-10;
 	protected short layerAttributes=0;
-	
+
 	public StdLimb()
 	{
 		super();
@@ -54,13 +54,15 @@ public class StdLimb extends StdItem implements FalseLimb
 		recoverPhyStats();
 	}
 
+	@Override
 	public void setName(String name)
 	{
 		super.setName(name);
 		wearplace=-1;
 		partnum=-1;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host, msg))
@@ -91,14 +93,16 @@ public class StdLimb extends StdItem implements FalseLimb
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void setSecretIdentity(String id)
 	{
 		super.setSecretIdentity(id);
 		wearplace=-1;
 		partnum=-1;
 	}
-	
+
+	@Override
 	public int partNum()
 	{
 		if(partnum>=0) return partnum;
@@ -112,31 +116,35 @@ public class StdLimb extends StdItem implements FalseLimb
 		return partnum;
 	}
 
+	@Override
 	public void setPartNum(int partNumber)
 	{
 		partnum=partNumber;
 	}
 
+	@Override
 	public long wearPlace()
-	{ 
+	{
 		if(wearplace>=0) return wearplace;
-		int num=partNum(); 
-		if(num<0) 
+		int num=partNum();
+		if(num<0)
 			wearplace=0;
 		else
 			wearplace=Race.BODY_WEARVECTOR[num];
 		return wearplace;
 	}
-	
+
+	@Override
 	public void setWearPlace(long wearPlace)
 	{
 		wearplace=wearPlace;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		
+
 		if((!amWearingAt(Wearable.IN_INVENTORY))
 		&&(!amWearingAt(Wearable.WORN_HELD))
 		&&(!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
@@ -148,10 +156,11 @@ public class StdLimb extends StdItem implements FalseLimb
 				setRawWornCode(0);
 		}
 	}
-	
+
+	@Override
 	public boolean canWear(MOB mob, long where)
 	{
-		if(where==Wearable.WORN_HELD) 
+		if(where==Wearable.WORN_HELD)
 			return super.canWear(mob,where);
 		if(where==Wearable.WORN_FLOATING_NEARBY)
 			return false;
@@ -175,17 +184,18 @@ public class StdLimb extends StdItem implements FalseLimb
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public boolean fitsOn(long wornCode)
 	{
-		if(wornCode==Wearable.WORN_HELD) 
+		if(wornCode==Wearable.WORN_HELD)
 			return super.fitsOn(wornCode);
 		if(wornCode==Wearable.WORN_FLOATING_NEARBY)
 			return false;
 		if(wornCode<=0)    return true;
 		return wearPlace()==wornCode;
 	}
-	
+
 	protected boolean canWearComplete(MOB mob)
 	{
 		if(partNum()<0)
@@ -202,25 +212,25 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public short getClothingLayer() 
+	public short getClothingLayer()
 	{
 		return layer;
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer) 
+	public void setClothingLayer(short newLayer)
 	{
 		layer=newLayer;
 	}
 
 	@Override
-	public short getLayerAttributes() 
+	public short getLayerAttributes()
 	{
 		return layerAttributes;
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes) 
+	public void setLayerAttributes(short newAttributes)
 	{
 		layerAttributes=newAttributes;
 	}

@@ -18,17 +18,19 @@ import java.util.*;
 
 public class Ignan extends StdLanguage
 {
-	public String ID() { return "Ignan"; }
-	public String name(){ return "Ignan";}
+	@Override public String ID() { return "Ignan"; }
+	@Override public String name(){ return "Ignan";}
 	public static List<String[]> wordLists=null;
 	public Ignan()
 	{
 		super();
 	}
+	@Override
 	public CMObject newInstance()
-	{	
+	{
 		return new Ignan();
 	}
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
@@ -50,6 +52,7 @@ public class Ignan extends StdLanguage
 		return wordLists;
 	}
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

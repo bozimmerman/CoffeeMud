@@ -26,8 +26,8 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		H1=map1;
 		H2=map2;
 	}
-	
-	public synchronized Vector<String> toStringVector(String divider) 
+
+	public synchronized Vector<String> toStringVector(String divider)
 	{
 		Vector<String> V=new Vector<String>(size());
 		for(Object S : keySet())
@@ -41,7 +41,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 			}
 		return V;
 	}
-	
+
 	@Override
 	public synchronized void clear()
 	{

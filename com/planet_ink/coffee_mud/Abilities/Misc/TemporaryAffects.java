@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,26 +36,28 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class TemporaryAffects extends StdAbility
 {
-	public String ID() { return "TemporaryAffects"; }
-	public String name(){ return "Temporary Affects";}
-	protected int canAffectCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "TemporaryAffects"; }
+	@Override public String name(){ return "Temporary Affects";}
+	@Override protected int canAffectCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"TEMPORARYAFFECTS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	protected boolean initialized=false;
 
 	protected SVector<Object[]> affects = new SVector<Object[]>();
-	
+
+	@Override
 	public String displayText()
-	{ 
+	{
 		StringBuilder str = new StringBuilder("");
 		for(Object[] A : affects)
 			if(A[0] instanceof Ability)
 				str.append(((Ability)A[0]).displayText());
 		return str.toString();
 	}
+	@Override
 	public int abstractQuality()
 	{
 		for(Object[] A : affects)
@@ -64,6 +66,7 @@ public class TemporaryAffects extends StdAbility
 					return Ability.QUALITY_MALICIOUS;
 		return Ability.QUALITY_INDIFFERENT;
 	}
+	@Override
 	public long flags()
 	{
 		long flag=0;
@@ -73,6 +76,7 @@ public class TemporaryAffects extends StdAbility
 		return flag;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -82,6 +86,7 @@ public class TemporaryAffects extends StdAbility
 				((StatsAffecting)A[0]).affectPhyStats(affected, affectableStats);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected, affectableStats);
@@ -91,6 +96,7 @@ public class TemporaryAffects extends StdAbility
 				((StatsAffecting)A[0]).affectCharStats(affected, affectableStats);
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableStats)
 	{
 		super.affectCharState(affected, affectableStats);
@@ -118,7 +124,8 @@ public class TemporaryAffects extends StdAbility
 			((MOB)P).recoverMaxState();
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(affected==null)
@@ -129,6 +136,7 @@ public class TemporaryAffects extends StdAbility
 		super.unInvoke();
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		super.setMiscText("");
@@ -164,7 +172,7 @@ public class TemporaryAffects extends StdAbility
 			else
 				for(Object[] A : affects)
 					unAffectAffected(A);
-				
+
 			int x=txt.indexOf(' ');
 			if(x<0) return;
 			String abilityStr=txt.substring(0,x).trim();
@@ -177,11 +185,11 @@ public class TemporaryAffects extends StdAbility
 				numTicksStr=numTicksStr.substring(0,x);
 			}
 			CMObject A=CMClass.getAbility(abilityStr);
-			if(A==null) 
+			if(A==null)
 				A=CMClass.getBehavior(abilityStr);
-			if(A==null) 
+			if(A==null)
 				A=CMClass.findAbility(abilityStr);
-			if(A==null) 
+			if(A==null)
 				A=CMClass.findBehavior(abilityStr);
 			if(A!=null)
 			{
@@ -194,7 +202,8 @@ public class TemporaryAffects extends StdAbility
 			}
 		}
 	}
-	
+
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
@@ -202,8 +211,8 @@ public class TemporaryAffects extends StdAbility
 			for(Object[] set : affects)
 				finishInit((CMObject)set[0]);
 	}
-	
-	
+
+
 	public void finishInit(CMObject A)
 	{
 		if(affected == null) return;
@@ -224,7 +233,7 @@ public class TemporaryAffects extends StdAbility
 		}
 		initialized=true;
 	}
-	
+
 	public boolean destroyIfNecessary()
 	{
 		Physical E=affected;
@@ -237,6 +246,7 @@ public class TemporaryAffects extends StdAbility
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(destroyIfNecessary())
@@ -246,7 +256,8 @@ public class TemporaryAffects extends StdAbility
 				return false;
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(destroyIfNecessary())
@@ -254,7 +265,8 @@ public class TemporaryAffects extends StdAbility
 		for(Object[] A : affects)
 			((MsgListener)A[0]).executeMsg(myHost, msg);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyIfNecessary())
@@ -271,6 +283,7 @@ public class TemporaryAffects extends StdAbility
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<3)
@@ -282,14 +295,14 @@ public class TemporaryAffects extends StdAbility
 		Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
 		if(target==null) return false;
 		commands.removeElementAt(0);
-		
+
 		String abilityStr = (String)commands.firstElement();
 		CMObject A=CMClass.getAbility(abilityStr);
-		if(A==null) 
+		if(A==null)
 			A=CMClass.getBehavior(abilityStr);
-		if(A==null) 
+		if(A==null)
 			A=CMClass.findAbility(abilityStr);
-		if(A==null) 
+		if(A==null)
 			A=CMClass.findBehavior(abilityStr);
 		if(A==null)
 		{

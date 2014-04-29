@@ -19,7 +19,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Necromancer extends Cleric
 {
-	public String ID(){return "Necromancer";}
-	public String name(){return "Necromancer";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
+	@Override public String ID(){return "Necromancer";}
+	@Override public String name(){return "Necromancer";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 1000;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 1000;}
 	protected boolean registeredAsListener=false;
 
 	public Necromancer()
@@ -53,6 +53,7 @@ public class Necromancer extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -138,7 +139,7 @@ public class Necromancer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
-		
+
 		if(!registeredAsListener)
 		{
 			synchronized(this)
@@ -152,17 +153,18 @@ public class Necromancer extends Cleric
 		}
 	}
 
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
-	public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override public String getOtherBonusDesc(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -187,12 +189,13 @@ public class Necromancer extends Cleric
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB))
 		{
 			super.executeMsg(myHost,msg);
-		} 
+		}
 		else
 		if((msg.sourceCode()==CMMsg.TYP_DEATH)&&(msg.othersCode()==CMMsg.TYP_DEATH))
 		{
@@ -225,7 +228,8 @@ public class Necromancer extends Cleric
 		else
 			super.executeMsg(myHost,msg);
 	}
-	
+
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -239,6 +243,7 @@ public class Necromancer extends Cleric
 		return false;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -249,5 +254,5 @@ public class Necromancer extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

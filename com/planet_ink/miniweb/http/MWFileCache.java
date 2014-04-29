@@ -44,7 +44,7 @@ limitations under the License.
  * Classes that do similar things to this one (such as the servlets and sessions manager)
  * are singleton instances, but in this case, the file manager should serve the entire
  * vm, and not even possibly be duplicated across multiple web servers
- * 
+ *
  * BTW -- a HashMap is used for the cache object as a reminder that every operation on
  * the cache is synchronized against it anyway, so having a synchronized container like
  * hashtable would be even more overhead.
@@ -77,7 +77,7 @@ public class MWFileCache implements FileCacheManager
 		this.logger=config.getLogger();
 		this.fileManager=fileManager;
 	}
-	
+
 	/**
 	 * Empty the cache and make it start over
 	 */
@@ -95,7 +95,7 @@ public class MWFileCache implements FileCacheManager
 	 * Otherwise, the r/w container is updated with the cache eTag value
 	 * @param entry the cache entry that represents the file we want
 	 * @param eTag a r/w single dimension string array for the eTag value
-	 * @throws HTTPException 
+	 * @throws HTTPException
 	 */
 	private void checkAndSetETag(final FileCacheEntry entry, final String[] eTag) throws HTTPException
 	{
@@ -108,7 +108,7 @@ public class MWFileCache implements FileCacheManager
 	}
 
 	/**
-	 * Since we are trying to maintain a limit on the amount of file data stored, 
+	 * Since we are trying to maintain a limit on the amount of file data stored,
 	 * adding an entry to the cache can be tricky.  First we check to see if
 	 * adding this entry would put us over the limit.  If so, we go through and
 	 * time out some old entries to make room.
@@ -158,7 +158,7 @@ public class MWFileCache implements FileCacheManager
 			}
 		}
 	}
-	
+
 	/**
 	 * Internal method for retreiving a cache entry, and potentially throwing a 304 not modified,
 	 * or even a 404 not found if appropriate
@@ -188,15 +188,16 @@ public class MWFileCache implements FileCacheManager
 		}
 		return null;
 	}
-	
+
 	/**
 	 * The publically accessible method for either compressing file data, or
-	 * potentially from the cache. 
+	 * potentially from the cache.
 	 * @param filename the name of the file that is being compressed
 	 * @param type the type of compression to look for
 	 * @return the byte[] buffer of the file to compress
 	 * @throws HTTPException either 304 or 404
 	 */
+	@Override
 	public DataBuffers compressFileData(final File pageFile, final CompressionType type, final DataBuffers uncompressedData) throws HTTPException
 	{
 		if(uncompressedData == null)
@@ -272,8 +273,8 @@ public class MWFileCache implements FileCacheManager
 			return new MWDataBuffers(compressedBytes, lastModified);
 		}
 	}
-	
-	
+
+
 	/**
 	 * The publically accessible method for getting data from a file (or
 	 * potentially from the cache.  You can also pass in a one dimensional
@@ -286,13 +287,14 @@ public class MWFileCache implements FileCacheManager
 	 * @return the byte[] buffer of the file to send to the client
 	 * @throws HTTPException either 304 or 404
 	 */
+	@Override
 	public DataBuffers getFileData(final File pageFile, final String[] eTag) throws HTTPException
 	{
 		final String fileName = pageFile.getAbsolutePath();
 		FileCacheEntry entry = getFileData(fileName, eTag);
 		if(entry != null)
 			return new MWDataBuffers(entry.buf[CompressionType.NONE.ordinal()], entry.modified);
-		
+
 		synchronized(fileName.intern())
 		{
 			entry = getFileData(fileName, eTag);
@@ -302,7 +304,7 @@ public class MWFileCache implements FileCacheManager
 			{
 				if(cacheActive)
 				{
-					synchronized(cache) 
+					synchronized(cache)
 					{
 						cache.put(fileName, new FileCacheEntry(null,0));
 					}
@@ -332,7 +334,7 @@ public class MWFileCache implements FileCacheManager
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)
 				{
-					synchronized(cache) 
+					synchronized(cache)
 					{
 						cache.put(fileName, new FileCacheEntry(null,0));
 					}
@@ -345,7 +347,7 @@ public class MWFileCache implements FileCacheManager
 				logger.throwing("", "", e);
 				if(cacheActiveThisFile)
 				{
-					synchronized(cache) 
+					synchronized(cache)
 					{
 						cache.put(fileName, new FileCacheEntry(null,0));
 					}
@@ -354,7 +356,7 @@ public class MWFileCache implements FileCacheManager
 			}
 		}
 	}
-	
+
 	private class FileCacheEntry
 	{
 		private final Date		 expires;		// when this cache entry expires (to allow us to edit our htdocs)
@@ -363,7 +365,7 @@ public class MWFileCache implements FileCacheManager
 		private final String  	 eTag;			// the string eTag associated with this file -- typically a hash of the data
 		private final AtomicLong bufsSize;		// the total size of all stored buffers.
 		private final long		 modified;		// when this cache entry was last modified
-		
+
 		/**
 		 * Construct a cache entry with the given buffer
 		 * @param buffer
@@ -374,12 +376,12 @@ public class MWFileCache implements FileCacheManager
 			if(buffer == null)
 			{
 				this.notFound=true;
-				this.bufsSize = new AtomicLong(0); 
+				this.bufsSize = new AtomicLong(0);
 			}
 			else
 			{
 				this.notFound=false;
-				this.bufsSize = new AtomicLong(buffer.length); 
+				this.bufsSize = new AtomicLong(buffer.length);
 			}
 			this.buf=new byte[CompressionType.values().length][];
 			this.buf[CompressionType.NONE.ordinal()]=buffer;

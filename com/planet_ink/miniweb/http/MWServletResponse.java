@@ -40,7 +40,7 @@ limitations under the License.
  * at will by the servlet.
  * As an Output Generator, it must have its generateOutput method called later
  * to get the results of all the servlet did to it.
- * 
+ *
  * See the interface for more comment
  * @author Bo Zimmerman
  *
@@ -53,19 +53,19 @@ public class MWServletResponse implements SimpleServletResponse
 	private ByteArrayOutputStream	bout		= new ByteArrayOutputStream();
 	private Map<String,String>		cookies		= new Hashtable<String,String>();
 	private static final String		EOLN		= HTTPIOHandler.EOLN;
-	
+
 	/**
 	 * Construct a response object for servlets
 	 */
 	public MWServletResponse()
 	{
 	}
-	
+
 	public int getStatusCode()
 	{
 		return statusCode;
 	}
-	
+
 	@Override
 	public void setStatusCode(int httpStatusCode)
 	{
@@ -96,13 +96,13 @@ public class MWServletResponse implements SimpleServletResponse
 	}
 
 	/**
-	 * Generates a bytebuffer representing the results of the request 
+	 * Generates a bytebuffer representing the results of the request
 	 * contained herein.  HTTP errors can still be generated, however,
 	 * so those are watched for.
-	 * 
+	 *
 	 * Requests can trigger file reads, servlet calls and other ways
 	 * of generating body and header data.
-	 * 
+	 *
 	 * @param request the request to generate output for
 	 * @throws HTTPException
 	 * @return the entire full output for this request

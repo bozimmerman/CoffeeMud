@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_BurningHands extends Spell
 {
-	public String ID() { return "Spell_BurningHands"; }
-	public String name(){return "Burning Hands";}
-	public String displayText(){return "(Burning Hands spell)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public long flags(){return Ability.FLAG_FIREBASED;}
+	@Override public String ID() { return "Spell_BurningHands"; }
+	@Override public String name(){return "Burning Hands";}
+	@Override public String displayText(){return "(Burning Hands spell)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public long flags(){return Ability.FLAG_FIREBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

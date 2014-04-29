@@ -23,49 +23,58 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Racketeer extends ThiefSkill
 {
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override
 	public String ID()
 	{
 		return "Thief_Racketeer";
 	}
 
+	@Override
 	public String name()
 	{
 		return "Racketeer";
 	}
 
+	@Override
 	public String displayText()
 	{
 		return "";
 	}
 
+	@Override
 	protected int canAffectCode()
 	{
 		return CAN_MOBS;
 	}
 
+	@Override
 	protected int canTargetCode()
 	{
 		return CAN_MOBS;
 	}
 
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;
 	}
 	private static final String[] triggerStrings={"RACKETEER"};
 
+	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
 	}
 
+	@Override
 	protected boolean disregardsArmorCheck(MOB mob)
 	{
 		return true;
 	}
 	public Vector mobs=new Vector();
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -90,6 +99,7 @@ public class Thief_Racketeer extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -112,6 +122,7 @@ public class Thief_Racketeer extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -120,7 +131,7 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 		}
 		MOB target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));

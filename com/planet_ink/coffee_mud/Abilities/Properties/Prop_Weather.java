@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,13 @@ import java.util.*;
 */
 public class Prop_Weather extends Property
 {
-	public String ID() { return "Prop_Weather"; }
-	public String name(){ return "Weather Setter";}
-	protected int canAffectCode(){return Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_Weather"; }
+	@Override public String name(){ return "Weather Setter";}
+	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
 
 	int code=-1;
-	
+
+	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
@@ -64,5 +65,5 @@ public class Prop_Weather extends Property
 			}
 		}
 	}
-	
+
 }

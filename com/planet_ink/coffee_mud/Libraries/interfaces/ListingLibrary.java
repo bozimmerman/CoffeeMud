@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public interface ListingLibrary extends CMLibrary
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList, String tag);
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);
-	
+
 	public static class ListStringer
 	{
 		public String stringify(Object o)
@@ -76,21 +76,21 @@ public interface ListingLibrary extends CMLibrary
 				return CMClass.classID(o);
 		}
 	}
-	
+
 	public static class ColFixer
 	{
 		public static final int fixColWidth(final double colWidth, final MOB mob)
 		{
 			return fixColWidth(colWidth,(mob==null)?null:mob.session());
 		}
-		
+
 		public static final int fixColWidth(final double colWidth, final Session session)
 		{
 			double totalWidth=(session==null)?78.0:(double)session.getWrap();
 			if(totalWidth==0.0) totalWidth=1024.0;
 			return (int)Math.round((colWidth/78.0)*totalWidth);
 		}
-		
+
 		public static final int fixColWidth(final double colWidth, final double totalWidth)
 		{
 			return (int)Math.round((colWidth/78.0)*totalWidth);

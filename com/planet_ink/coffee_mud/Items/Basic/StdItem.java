@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdItem implements Item
 {
-	public String ID(){	return "StdItem";}
+	@Override public String ID(){	return "StdItem";}
 
 	protected String		name="an ordinary item";
 	protected String		displayText="a nondescript item sits here doing nothing.";
@@ -57,7 +57,7 @@ public class StdItem implements Item
 	protected String		databaseID="";
 	protected boolean 		destroyed=false;
 	protected Item 			me=this;
-	
+
 	protected volatile Container	   myContainer=null;
 	protected volatile ItemPossessor   owner=null;
 	protected SVector<Ability>  	   affects=null;
@@ -77,21 +77,23 @@ public class StdItem implements Item
 	}
 	protected boolean abilityImbuesMagic(){return true;}
 	//protected void finalize() { CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM); }//removed for mem & perf
-	public void initializeClass(){}
-	public boolean isGeneric(){return false;}
-	public String Name(){ return name;}
-	public void setName(String newName){name=newName;}
+	@Override public void initializeClass(){}
+	@Override public boolean isGeneric(){return false;}
+	@Override public String Name(){ return name;}
+	@Override public void setName(String newName){name=newName;}
+	@Override
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
-	public String displayText(MOB viewerMob) { return displayText(); }
-	public String name(MOB viewerMob) { return name(); }
-	public void setDatabaseID(String id){databaseID=id;}
-	public boolean canSaveDatabaseID(){ return true;}
-	public String databaseID(){return databaseID;}
-	
+	@Override public String displayText(MOB viewerMob) { return displayText(); }
+	@Override public String name(MOB viewerMob) { return name(); }
+	@Override public void setDatabaseID(String id){databaseID=id;}
+	@Override public boolean canSaveDatabaseID(){ return true;}
+	@Override public String databaseID(){return databaseID;}
+
+	@Override
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -103,12 +105,14 @@ public class StdItem implements Item
 		}
 		return cachedImageName;
 	}
+	@Override
 	public String rawImage()
 	{
-		if(rawImageName==null) 
+		if(rawImageName==null)
 			return "";
 		return rawImageName;
 	}
+	@Override
 	public void setImage(String newImage)
 	{
 		if((newImage==null)||(newImage.trim().length()==0))
@@ -118,12 +122,14 @@ public class StdItem implements Item
 		if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
 			cachedImageName=null;
 	}
-	
+
+	@Override
 	public PhyStats phyStats()
 	{
 		return phyStats;
 	}
 
+	@Override
 	public PhyStats basePhyStats()
 	{
 		return basePhyStats;
@@ -131,8 +137,9 @@ public class StdItem implements Item
 
 	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
 	{
-		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
 	};
+	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
@@ -145,10 +152,12 @@ public class StdItem implements Item
 		   phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
 	}
 
+	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -161,7 +170,7 @@ public class StdItem implements Item
 		}
 		return new StdItem();
 	}
-	public boolean subjectToWearAndTear(){return false;}
+	@Override public boolean subjectToWearAndTear(){return false;}
 	protected void cloneFix(Item I)
 	{
 		destroyed=false;
@@ -199,6 +208,7 @@ public class StdItem implements Item
 			}
 		}
 	}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -217,7 +227,8 @@ public class StdItem implements Item
 		}
 	}
 
-	public Rideable riding(){return riding;}
+	@Override public Rideable riding(){return riding;}
+	@Override
 	public void setRiding(Rideable ride)
 	{
 		if((ride!=null)&&(riding()!=null)&&(riding()==ride)&&(riding().amRiding(this)))
@@ -229,7 +240,8 @@ public class StdItem implements Item
 			riding().addRider(this);
 	}
 
-	public ItemPossessor owner(){return owner;}
+	@Override public ItemPossessor owner(){return owner;}
+	@Override
 	public void setOwner(ItemPossessor E)
 	{
 		owner=E;
@@ -237,22 +249,26 @@ public class StdItem implements Item
 			setExpirationDate(0);
 		recoverPhyStats();
 	}
-	
+
+	@Override
 	public long expirationDate()
 	{
 		return dispossessionTime;
 	}
-	
+
+	@Override
 	public void setExpirationDate(long time)
 	{
 		dispossessionTime=time;
 	}
-	
+
+	@Override
 	public boolean amDestroyed()
 	{
 		return destroyed;
 	}
 
+	@Override
 	public boolean amWearingAt(long wornCode)
 	{
 		if((myWornCode+wornCode)==0)
@@ -262,13 +278,15 @@ public class StdItem implements Item
 			return false;
 		return (myWornCode & wornCode)==wornCode;
 	}
-	
+
+	@Override
 	public boolean fitsOn(long wornCode)
 	{
 		if(wornCode<=0)	return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
-	
+
+	@Override
 	public void wearEvenIfImpossible(MOB mob)
 	{
 		for(long code : Wearable.CODES.ALL_ORDERED())
@@ -280,12 +298,13 @@ public class StdItem implements Item
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean wearIfPossible(MOB mob, long wearCode)
 	{
 		if(wearCode<=0)
 			return false;
-		
+
 		if((fitsOn(wearCode))
 		&&(canWear(mob,wearCode)))
 		{
@@ -294,7 +313,8 @@ public class StdItem implements Item
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean wearIfPossible(MOB mob)
 	{
 		for(long code : Wearable.CODES.ALL_ORDERED())
@@ -302,7 +322,8 @@ public class StdItem implements Item
 				return true;
 		return false;
 	}
-	
+
+	@Override
 	public void wearAt(long wornCode)
 	{
 		if(wornCode==Wearable.IN_INVENTORY)
@@ -317,26 +338,31 @@ public class StdItem implements Item
 		recoverPhyStats();
 	}
 
+	@Override
 	public long rawProperLocationBitmap()
-	{ 
+	{
 		return properWornBitmap;
 	}
-	
+
+	@Override
 	public boolean rawLogicalAnd()
-	{ 
+	{
 		return wornLogicalAnd;
 	}
-	
+
+	@Override
 	public void setRawProperLocationBitmap(long newValue)
 	{
 		properWornBitmap=newValue;
 	}
-	
+
+	@Override
 	public void setRawLogicalAnd(boolean newAnd)
 	{
 		wornLogicalAnd=newAnd;
 	}
-	
+
+	@Override
 	public boolean compareProperLocations(Item toThis)
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
@@ -346,6 +372,7 @@ public class StdItem implements Item
 		return false;
 	}
 
+	@Override
 	public long whereCantWear(MOB mob)
 	{
 		long couldHaveBeenWornAt=-1;
@@ -384,6 +411,7 @@ public class StdItem implements Item
 		return 0;
 	}
 
+	@Override
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
@@ -392,16 +420,19 @@ public class StdItem implements Item
 		return mob.freeWearPositions(where,(short)0,(short)0)>0;
 	}
 
+	@Override
 	public long rawWornCode()
 	{
 		return myWornCode;
 	}
-	
+
+	@Override
 	public void setRawWornCode(long newValue)
 	{
 		myWornCode=newValue;
 	}
 
+	@Override
 	public void unWear()
 	{
 		setRawWornCode(Wearable.IN_INVENTORY);
@@ -409,32 +440,37 @@ public class StdItem implements Item
 	}
 
 
+	@Override
 	public int material()
 	{
 		return material;
 	}
 
+	@Override
 	public void setMaterial(int newValue)
 	{
 		material=newValue;
 	}
 
+	@Override
 	public int value()
 	{
 		return baseGoldValue()+(10*phyStats().ability());
 	}
-	
-	public int baseGoldValue(){return baseGoldValue;}
+
+	@Override public int baseGoldValue(){return baseGoldValue;}
+	@Override
 	public void setBaseValue(int newValue)
 	{
 		baseGoldValue=newValue;
 	}
 
-	public String readableText(){return miscText;}
-	public void setReadableText(String text){miscText=text;}
-	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
-	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
+	@Override public String readableText(){return miscText;}
+	@Override public void setReadableText(String text){miscText=text;}
+	@Override public boolean isReadable(){ return CMLib.flags().isReadable(this);}
+	@Override public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
 
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof Room)
@@ -470,12 +506,13 @@ public class StdItem implements Item
 			{
 				final Ability A=affects.get(a);
 				if((A!=null)&&(A.bubbleAffect()))
-					A.affectPhyStats(affected,affectableStats); 
+					A.affectPhyStats(affected,affectableStats);
 			}
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		final List<Ability> affects=this.affects;
@@ -486,12 +523,13 @@ public class StdItem implements Item
 			{
 				final Ability A=affects.get(a);
 				if((A!=null)&&(A.bubbleAffect()))
-					A.affectCharStats(affectedMob,affectableStats); 
+					A.affectCharStats(affectedMob,affectableStats);
 			}
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		final List<Ability> affects=this.affects;
@@ -502,42 +540,47 @@ public class StdItem implements Item
 			{
 				final Ability A=affects.get(a);
 				if((A!=null)&&(A.bubbleAffect()))
-					A.affectCharState(affectedMob,affectableMaxState); 
+					A.affectCharState(affectedMob,affectableMaxState);
 			}
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText=newText;
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return miscText;
 	}
-	
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public int getTickStatus(){return tickStatus;}
-	
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override public int getTickStatus(){return tickStatus;}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(destroyed) 
+		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			eachBehavior(new EachApplicable<Behavior>(){ @Override
+			public final void apply(final Behavior B)
 			{
 				B.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+			public final void apply(final ScriptingEngine S)
 			{
 				S.tick(ticking,tickID);
 			} });
@@ -548,7 +591,8 @@ public class StdItem implements Item
 		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			eachEffect(new EachApplicable<Ability>(){ @Override
+			public final void apply(final Ability A)
 			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
@@ -558,26 +602,29 @@ public class StdItem implements Item
 		return !amDestroyed();
 	}
 
+	@Override
 	public Item ultimateContainer(Physical stopAtC)
 	{
 		final Container C=container();
-		if(C==null) 
+		if(C==null)
 			return this;
 		else
-		if(C==stopAtC) 
+		if(C==stopAtC)
 			return C;
 		else
-		if(C==this) 
+		if(C==this)
 			return null;
 		else
 			return C.ultimateContainer(stopAtC);
 	}
+	@Override
 	public Container container()
 	{
 		return myContainer;
 	}
-	
-	public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
+
+	@Override public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
+	@Override
 	public String secretIdentity()
 	{
 		if((secretIdentity!=null)&&(secretIdentity.length()>0))
@@ -585,6 +632,7 @@ public class StdItem implements Item
 		return description()+"\n\rLevel: "+phyStats().level()+tackOns();
 	}
 
+	@Override
 	public void setSecretIdentity(String newIdentity)
 	{
 		if((newIdentity==null)
@@ -595,16 +643,19 @@ public class StdItem implements Item
 			secretIdentity=newIdentity;
 	}
 
+	@Override
 	public String displayText()
 	{
 		return displayText;
 	}
-	
+
+	@Override
 	public void setDisplayText(String newDisplayText)
 	{
 		displayText=newDisplayText;
 	}
 
+	@Override
 	public String description()
 	{
 		if(description == null)
@@ -623,8 +674,9 @@ public class StdItem implements Item
 		else
 			return (String)description;
 	}
-	public String description(MOB viewerMob) { return description(); }
-	
+	@Override public String description(MOB viewerMob) { return description(); }
+
+	@Override
 	public void setDescription(String newDescription)
 	{
 		if(newDescription.length()==0)
@@ -635,27 +687,32 @@ public class StdItem implements Item
 		else
 			description=newDescription;
 	}
-	
+
+	@Override
 	public void setContainer(Container newContainer)
 	{
 		myContainer=newContainer;
 	}
-	
+
+	@Override
 	public int numberOfItems()
 	{
 		return 1;
 	}
-	
+
+	@Override
 	public int usesRemaining()
 	{
 		return myUses;
 	}
-	
+
+	@Override
 	public void setUsesRemaining(int newUses)
 	{
 		myUses=newUses;
 	}
 
+	@Override
 	public boolean isSavable()
 	{
 		if(!CMLib.flags().isSavable(this))
@@ -664,9 +721,9 @@ public class StdItem implements Item
 			return container().isSavable();
 		return true;
 	}
-	
-	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
-	
+
+	@Override public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+
 	protected boolean canWearComplete(MOB mob, long wearWhere)
 	{
 		if(!canWear(mob,wearWhere))
@@ -732,7 +789,7 @@ public class StdItem implements Item
 		}
 		return true;
 	}
-	
+
 	protected boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
 		if(!thisItem.amWearingAt(Wearable.IN_INVENTORY))
@@ -752,6 +809,7 @@ public class StdItem implements Item
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// the order that these things are checked in should
@@ -780,7 +838,7 @@ public class StdItem implements Item
 		}
 
 		MOB mob=msg.source();
-		
+
 		if(msg.tool()==this)
 		{
 			switch(msg.sourceMinor())
@@ -1200,19 +1258,23 @@ public class StdItem implements Item
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		eachBehavior(new EachApplicable<Behavior>(){ @Override
+		public final void apply(final Behavior B)
 		{
 			B.executeMsg(me,msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+		public final void apply(final ScriptingEngine S)
 		{
 			S.executeMsg(me,msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			A.executeMsg(me, msg);
 		}});
@@ -1270,17 +1332,20 @@ public class StdItem implements Item
 		}
 	}
 
+	@Override
 	public int recursiveWeight()
 	{
 		return phyStats().weight();
 	}
-	
+
+	@Override
 	public void stopTicking()
 	{
 		destroyed=true; // WHY?!?!?
 		CMLib.threads().deleteTick(this,-1);
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
@@ -1292,7 +1357,7 @@ public class StdItem implements Item
 		delAllBehaviors();
 		delAllScripts();
 		CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
-		
+
 		riding=null;
 		destroyed=true;
 
@@ -1338,6 +1403,7 @@ public class StdItem implements Item
 		scripts=null;
 	}
 
+	@Override
 	public void removeFromOwnerContainer()
 	{
 		myContainer=null;
@@ -1374,6 +1440,7 @@ public class StdItem implements Item
 		recoverPhyStats();
 	}
 
+	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -1384,6 +1451,7 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
@@ -1392,12 +1460,14 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
@@ -1412,6 +1482,7 @@ public class StdItem implements Item
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
+	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
 		final SVector<Ability> affects=this.affects;
@@ -1440,15 +1511,17 @@ public class StdItem implements Item
 			affects.add(keepThisOne);
 		}
 	}
-	
-	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
 
+	@Override public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+
+	@Override
 	public int numEffects()
 	{
 		if(affects==null) return 0;
 		return affects.size();
 	}
-	
+
+	@Override
 	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
@@ -1459,7 +1532,8 @@ public class StdItem implements Item
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
@@ -1474,6 +1548,7 @@ public class StdItem implements Item
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
+	@Override
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
@@ -1488,7 +1563,8 @@ public class StdItem implements Item
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
-	
+
+	@Override
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -1497,7 +1573,8 @@ public class StdItem implements Item
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
-	
+
+	@Override
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
@@ -1507,18 +1584,21 @@ public class StdItem implements Item
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		}
 	}
-	
+
+	@Override
 	public int numBehaviors()
 	{
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-	
-	public Enumeration<Behavior> behaviors() 
-	{ 
+
+	@Override
+	public Enumeration<Behavior> behaviors()
+	{
 		return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();
 	}
-	
+
+	@Override
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1529,7 +1609,8 @@ public class StdItem implements Item
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
@@ -1538,7 +1619,8 @@ public class StdItem implements Item
 				return B;
 		return null;
 	}
-	
+
+	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -1553,14 +1635,15 @@ public class StdItem implements Item
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
 	/** Manipulation of the scripts list */
+	@Override
 	public void addScript(ScriptingEngine S)
 	{
-		if(scripts==null) 
+		if(scripts==null)
 			scripts=new SVector<ScriptingEngine>(1);
 		if(S==null) return;
-		if(!scripts.contains(S)) 
+		if(!scripts.contains(S))
 		{
 			ScriptingEngine S2=null;
 			for(int s=0;s<scripts.size();s++)
@@ -1574,7 +1657,8 @@ public class StdItem implements Item
 			scripts.addElement(S);
 		}
 	}
-	
+
+	@Override
 	public void delScript(ScriptingEngine S)
 	{
 		if(scripts!=null)
@@ -1588,7 +1672,8 @@ public class StdItem implements Item
 			}
 		}
 	}
-	
+
+	@Override
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -1597,13 +1682,14 @@ public class StdItem implements Item
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
-	
-	public int numScripts(){return (scripts==null)?0:scripts.size();}
-	
-	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	
-	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
-	
+
+	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
+
+	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
+
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+
+	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -1618,13 +1704,14 @@ public class StdItem implements Item
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
 	protected String tackOns()
 	{
 		final StringBuilder identity=new StringBuilder("");
 		if(numEffects()>0)
 			identity.append("\n\rHas the following magical properties: ");
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			if(A.accountForYourself().length()>0)
 				identity.append("\n\r"+A.accountForYourself());
@@ -1632,9 +1719,10 @@ public class StdItem implements Item
 		return identity.toString();
 	}
 
-	public int maxRange(){return 0;}
-	public int minRange(){return 0;}
+	@Override public int maxRange(){return 0;}
+	@Override public int minRange(){return 0;}
 	protected static String[] CODES={"CLASS","USES","LEVEL","ABILITY","TEXT"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -1647,6 +1735,7 @@ public class StdItem implements Item
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -1658,16 +1747,17 @@ public class StdItem implements Item
 		case 4: setMiscText(val); break;
 		}
 	}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdItem)) return false;

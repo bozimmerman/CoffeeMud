@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,29 +33,31 @@ import java.util.*;
 */
 public class Demon extends Unique
 {
-	public String ID(){	return "Demon"; }
-	public String name(){ return "Demon"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 100;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return 0;}
+	@Override public String ID(){	return "Demon"; }
+	@Override public String name(){ return "Demon"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 100;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return 0;}
 	private String[]culturalAbilityNames={"Undercommon"};
 	private int[]culturalAbilityProficiencies={25};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

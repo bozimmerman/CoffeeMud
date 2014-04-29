@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_PeaceRitual extends Prayer
 {
-	public String ID() { return "Prayer_PeaceRitual"; }
-	public String name(){ return "Peace Ritual";}
-	public String displayText(){ return "(Peace Ritual)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Prayer_PeaceRitual"; }
+	@Override public String name(){ return "Peace Ritual";}
+	@Override public String displayText(){ return "(Peace Ritual)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	public Clan clan1=null;
 	public Clan clan2=null;
 	public Iterable<Pair<Clan,Integer>> clan2Set=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -71,6 +72,7 @@ public class Prayer_PeaceRitual extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -99,6 +101,7 @@ public class Prayer_PeaceRitual extends Prayer
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -129,6 +132,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;

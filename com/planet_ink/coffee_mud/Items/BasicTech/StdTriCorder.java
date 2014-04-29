@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 */
 public class StdTriCorder extends StdElecContainer implements Electronics.Computer
 {
-	public String ID(){	return "StdTriCorder";}
+	@Override public String ID(){	return "StdTriCorder";}
 
 	protected final static int POWER_RATE		= 4; // how often (in ticks) an activated tricorder loses a tick of power. at 1000 power, this is 1 hr/rate (4 hrs total)
-	
+
 	protected MOB 			  lastReader		= null;
 	protected volatile long   nextSoftwareCheck = System.currentTimeMillis()+(10*1000);
 	protected List<Software>  software		 	= null;
@@ -69,13 +69,14 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 	@Override public void setActiveMenu(String internalName) { currentMenu=internalName; }
 	@Override public String getActiveMenu() { return currentMenu; }
 	@Override public TechType getTechType() { return TechType.PERSONAL_SENSOR; }
-	
-	@Override 
+
+	@Override
 	public boolean canContain(Environmental E)
 	{
 		return (E instanceof Software) && (((Software)E).getTechType()==TechType.PERSONAL_SOFTWARE);
 	}
 
+	@Override
 	public List<Software> getSoftware()
 	{
 		if((software==null)||(System.currentTimeMillis()>nextSoftwareCheck))
@@ -90,12 +91,14 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		}
 		return software;
 	}
-	
+
+	@Override
 	public void setReadableText(String text)
 	{
 		// important that this does nothing
 	}
-	
+
+	@Override
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder("");
@@ -136,10 +139,10 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				}
 			}
 		}
-		
+
 		return str.toString();
 	}
-	
+
 	@Override
 	public List<MOB> getCurrentReaders()
 	{
@@ -150,7 +153,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			readers.add((MOB)owner());
 		return readers;
 	}
-	
+
 	@Override
 	public void setOwner(ItemPossessor owner)
 	{
@@ -162,7 +165,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
@@ -172,7 +175,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			{
 			case CMMsg.TYP_READ:
 			case CMMsg.TYP_WRITE:
-				if(this.amWearingAt(Item.IN_INVENTORY))
+				if(this.amWearingAt(Wearable.IN_INVENTORY))
 				{
 					msg.source().tell(name()+" needs to be held first.");
 					return false;
@@ -184,7 +187,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
-				if(this.amWearingAt(Item.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(name()+" needs to be held first.");
 					return false;
@@ -202,7 +205,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if(this.amWearingAt(Item.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(name()+" needs to be held first.");
 					return false;
@@ -307,7 +310,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()) && (!amWearingAt(Item.IN_INVENTORY)))
+				if(CMLib.flags().canBeSeenBy(this, msg.source()) && (!amWearingAt(Wearable.IN_INVENTORY)))
 					msg.source().tell(name()+" is currently "+(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r"));
 				return;
 			case CMMsg.TYP_ACTIVATE:
@@ -424,7 +427,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void forceReadersSeeNew()
 	{
@@ -446,7 +449,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			}
 		}
 	}
-	
+
 	@Override
 	public void forceReadersMenu()
 	{
@@ -457,7 +460,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				CMLib.commands().postRead(M, this, "", true);
 		}
 	}
-	
+
 	protected void deactivateSystem()
 	{
 		if(activated())

@@ -44,6 +44,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @see CharClass#name(int)
 	 * @see CharClass#nameSet()
 	 */
+	@Override
 	public String name();
 
 	/**
@@ -193,9 +194,9 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether the mob shares in the exp gains
 	 */
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
-	
+
 	/**
-	 * Typically called when a mob gains a level in this class, to allow the class to 
+	 * Typically called when a mob gains a level in this class, to allow the class to
 	 * assign any new skills.  Can also be called just to populate a mob with class skills,
 	 * so it should also confirm any lower level skills also.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
@@ -203,7 +204,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param isBorrowedClass whether the skills are savable (false) or temporary (true)
 	 */
 	public void grantAbilities(MOB mob, boolean isBorrowedClass);
-	
+
 	/**
 	 * This method is called whenever a player gains a level while a member of this class.  If
 	 * there are any special things which need to be done to a player who gains a level, they
@@ -212,18 +213,18 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param gainedAbilityIDs the set of abilities/skill IDs gained during this leveling process
 	 */
 	public void level(MOB mob, List<String> gainedAbilityIDs);
-	
+
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
 	 * to modify the amount before the gain actually occurs.
-	 * @param host the player or mob whose class is being queried  
+	 * @param host the player or mob whose class is being queried
 	 * @param mob the player or mob gaining experience
 	 * @param victim if applicable, the mob or player who died to give the exp
 	 * @param amount the amount of exp on track for gaining
 	 * @return the adjusted amount of experience to gain
 	 */
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
-	
+
 	/**
 	 * This method is called whenever a player loses a level while a member of this class.  If
 	 * there are any special things which need to be done to a player who loses a level, they
@@ -231,7 +232,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param mob the mob to level down
 	 */
 	public void unLevel(MOB mob);
-	
+
 	/**
 	 * Returns a vector of Item objects representing the standard
 	 * clothing, weapons, or other objects commonly given to players
@@ -303,7 +304,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the number of levels between damage gains
 	 */
 	public int getLevelsPerBonusDamage();
-	
+
 	/**
 	 * Returns the formula used every time a player of this class gains
 	 * a level as this class.  The total is added (or removed on unlevel)
@@ -318,7 +319,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the formula that causes a gain or loss in movement
 	 */
 	public String getMovementFormula();
-	
+
 	/**
 	 * Returns a text description of the movement bonuses
 	 * gained by members of this class.
@@ -326,7 +327,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a text description of the movement bonuses
 	 */
 	public String getMovementDesc();
-	
+
 	/**
 	 * Returns the formula used every time a player of this class gains
 	 * a level as this class.  The total is added (or removed on unlevel)
@@ -341,7 +342,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the formula that causes a gain or loss in hit points
 	 */
 	public String getHitPointsFormula();
-	
+
 	/**
 	 * Returns a text description of the hit point bonuses
 	 * gained by members of this class.
@@ -349,7 +350,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a text description of the hit point bonuses
 	 */
 	public String getHitPointDesc();
-	
+
 	/**
 	 * Returns the formula used every time a player of this class gains
 	 * a level as this class.  The total is added (or removed on unlevel)
@@ -365,7 +366,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the formula that causes a gain or loss in mana
 	 */
 	public String getManaFormula();
-	
+
 	/**
 	 * Returns a text description of the mana bonuses
 	 * gained by members of this class.
@@ -385,11 +386,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 
 	/**
 	 * Returns pairings of stat names and the minimum a player
-	 * must have in the state in order to learn this class. 
+	 * must have in the state in order to learn this class.
 	 * @return a pairs of stat names and minimum
 	 */
 	public Pair<String,Integer>[] getMinimumStatRequirements();
-	
+
 	/**
 	 * Returns a text description of any weapon restrictions
 	 * imposed by this class upon its members.
@@ -461,7 +462,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the max stat values for this class.
 	 */
 	public String getMaxStatDesc();
-	
+
 	/**
 	 * Returns the highest class level that can be achieved
 	 * by a player who has this class.  Once this level is
@@ -470,7 +471,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return highest class level for this class;
 	 */
 	public int getLevelCap();
-	
+
 	/**
 	 * Returns a bonus or negative adjustments to the base
 	 * maximum for the CharStats.STAT_* base statistics.
@@ -497,7 +498,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether players of this class can gain or lose experience points
 	 */
 	public boolean expless();
-	
+
 	/**
 	 * This defines how this class fits into the SUB subclassing class system.
 	 * A class may be one that can change to any class, or only another class
@@ -525,21 +526,21 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return Max number of common crafting skills this class can learn.
 	 */
 	public int maxCraftingSkills();
-	
+
 	/**
 	 * Max number of common skills (both crafting and non-crafting) this class can learn.
 	 * 0 means unlimited.  Skills directly qualified for by the class are excepted.
 	 * @return Max number of common skills this class can learn.
 	 */
 	public int maxCommonSkills();
-	
+
 	/**
 	 * Max number of languages this class can learn.
 	 * 0 means unlimited.  Languages directly qualified for by the class or race are excepted.
 	 * @return Max number of languages this class can learn.
 	 */
 	public int maxLanguages();
-	
+
 	/**
 	 * A code designating what kind of armor can be used by this class
 	 * without affecting their skills.  The worn locations this coded
@@ -549,7 +550,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the encoded allowed armor type
 	 */
 	public int allowedArmorLevel();
-	
+
 	/**
 	 * A code designating what kind of weapons can be used by this class
 	 * without fumbling their usage.
@@ -557,7 +558,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the encoded allowed weapon type
 	 */
 	public int allowedWeaponLevel();
-	
+
 	/**
 	 * This defines how this class fits into the SUB subclassing class system.
 	 * A class may be one that can change to any class, or only another class
@@ -572,7 +573,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		ANY, /* can train away from this class to any other */
 		BASEONLY, /* can train away from this class, only if the same base class */
 	}
-	
+
 	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_ANY=0;
 	/** constant returned by allowedArmorLevel() to designate only cloth armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */

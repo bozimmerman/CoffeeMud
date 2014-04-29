@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_HeatMetal extends Spell
 {
-	public String ID() { return "Spell_HeatMetal"; }
-	public String name(){return "Heat Metal";}
-	public String displayText(){return "(Heated)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public long flags(){return Ability.FLAG_HEATING;}
+	@Override public String ID() { return "Spell_HeatMetal"; }
+	@Override public String name(){return "Heat Metal";}
+	@Override public String displayText(){return "(Heated)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public long flags(){return Ability.FLAG_HEATING;}
 
 	protected Vector affectedItems=new Vector();
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -62,6 +63,7 @@ public class Spell_HeatMetal extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -103,6 +105,7 @@ public class Spell_HeatMetal extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -112,7 +115,7 @@ public class Spell_HeatMetal extends Spell
 			return;
 		}
 
-		
+
 		if(affected instanceof MOB)
 		{
 			Vector affectedItems=this.affectedItems;
@@ -128,7 +131,7 @@ public class Spell_HeatMetal extends Spell
 						I.delEffect(A);
 						A=I.fetchEffect(this.ID());
 					}
-	
+
 				}
 			}
 		}
@@ -138,6 +141,7 @@ public class Spell_HeatMetal extends Spell
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

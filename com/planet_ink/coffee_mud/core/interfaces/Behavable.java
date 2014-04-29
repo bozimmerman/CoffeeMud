@@ -22,7 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * Something that can behave -- means almost everything!
 * @author Bo Zimmerman
 *
@@ -38,7 +38,7 @@ public interface Behavable
 	 * @param to The behavior object to add.
 	 */
 	public void addBehavior(Behavior to);
-	
+
 	/**
 	 * Delete a behavior from this object.  After calling this method,
 	 * recoverPhyStats() should be called next in case this behavior object modified the stats.
@@ -47,14 +47,14 @@ public interface Behavable
 	 * @param to The behavior object to remove.
 	 */
 	public void delBehavior(Behavior to);
-	
+
 	/**
 	 * The number of behaviors this object has.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
 	 * @return the number of behaviors
 	 */
 	public int numBehaviors();
-	
+
 	/**
 	 * Returns a behavior object on this object. May return null even if the index
 	 * is correct to mark a race condition.
@@ -64,7 +64,7 @@ public interface Behavable
 	 * @return the behavior object
 	 */
 	public Behavior fetchBehavior(int index);
-	
+
 	/**
 	 * Returns a behavior object listed on this object. The object will
 	 * be the one with the same ID() string as passed in.
@@ -95,12 +95,12 @@ public interface Behavable
 	 * @param s the scripting engine, fully populated, to add
 	 */
 	public void addScript(ScriptingEngine s);
-	
+
 	/**
 	 * Removes all behaviors from this object.
 	 */
 	public void delAllBehaviors();
-	
+
 	/**
 	 * Remove a running script from this object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
@@ -118,7 +118,7 @@ public interface Behavable
 	 * @return number of scripts
 	 */
 	public int numScripts();
-	
+
 	/**
 	 * Retreive one of the enumerated scripts running on this
 	 * object
@@ -127,14 +127,14 @@ public interface Behavable
 	 * @return the scripting engine
 	 */
 	public ScriptingEngine fetchScript(int x);
-	
+
 	/**
 	 * Returns an enumerator of all the scripts on this object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
 	 * @return an enumerator of all the scripts on this object.
 	 */
 	public Enumeration<ScriptingEngine> scripts();
-	
+
 	/**
 	 * Applies the given code to each scripting engine on this object
 	 * @param applier code to execute against each object

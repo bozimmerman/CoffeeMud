@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class CMLister extends StdLibrary implements ListingLibrary
 {
-	public String ID(){return "CMLister";}
+	@Override public String ID(){return "CMLister";}
 	protected static final ListStringer stringer=new ListStringer();
 	@SuppressWarnings("unchecked")
 	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
@@ -81,6 +81,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 	}
 
+	@Override
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
 		if(useName)
@@ -112,11 +113,12 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		else
 			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 	}
-	
-	public int getReps(MOB viewerM, 
-					   Environmental item, 
-					   List<? extends Environmental> theRest, 
-					   boolean useName, 
+
+	@Override
+	public int getReps(MOB viewerM,
+					   Environmental item,
+					   List<? extends Environmental> theRest,
+					   boolean useName,
 					   boolean longLook)
 	{
 		String str=itemSeenString(viewerM,item,useName,longLook,false);
@@ -144,12 +146,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		return reps;
 	}
-	
+
+	@Override
 	public void appendReps(int reps, StringBuilder say, boolean compress)
 	{
 		if(compress)
 		{
-			if(reps>0) 
+			if(reps>0)
 				say.append("("+(reps+1)+") ");
 		}
 		else
@@ -161,8 +164,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		if(reps>0)
 			say.append(" ("+CMStrings.padLeftPreserve(""+(reps+1),2)+") ");
 	}
-	
-	public String summarizeTheRest(MOB viewerM, List<? extends Environmental> things, boolean compress) 
+
+	public String summarizeTheRest(MOB viewerM, List<? extends Environmental> things, boolean compress)
 	{
 		Vector<String> restV=new Vector<String>();
 		Item I=null;
@@ -197,10 +200,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		return "^IThere are also "+theRest.toString()+" items here.^N"+(compress?"":"\n\r");
 	}
-	
-	public StringBuilder lister(MOB viewerM, 
+
+	@Override
+	public StringBuilder lister(MOB viewerM,
 								List<? extends Environmental> items,
-								boolean useName, 
+								boolean useName,
 								String tag,
 								String tagParm,
 								boolean longLook,
@@ -234,7 +238,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
 					say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));
 				say.append("^I");
-				
+
 				if(tag!=null)
 				{
 					if(nameTagParm)
@@ -242,16 +246,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					else
 						say.append("^<"+tag+tagParm+"^>");
 				}
-				if((compress)&&(item instanceof Physical)) 
+				if((compress)&&(item instanceof Physical))
 					say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^I");
 				say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs));
 				if(tag!=null)
 					say.append("^</"+tag+"^>");
-				if((!compress)&&(item instanceof Physical)) 
+				if((!compress)&&(item instanceof Physical))
 					say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^N\n\r");
-				else 
+				else
 					say.append("^N");
-				
+
 				if((longLook)
 				&&(item instanceof Container)
 				&&(((Container)item).container()==null)
@@ -280,7 +284,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 							say.append("^I");
 							if(compress)say.append(CMLib.flags().colorCodes(item2,viewerM)+"^I");
 							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
-							if(!compress) 
+							if(!compress)
 								say.append(CMLib.flags().colorCodes(item2,viewerM)+"^N\n\r");
 							else
 								say.append("^N");
@@ -292,51 +296,60 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		return say;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Filterer<Object>[] buildOfTypeFilter(int ofType)
 	{
 		return new Filterer[]{new AbilityTypeFilter(ofType)};
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Filterer<Object>[] buildLikeRoomFilter(Room R)
 	{
 		return new Filterer[]{new LikeRoomFilter(R)};
 	}
-	
+
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
 	{
 		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
 	{
 		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these.elements(),buildOfTypeFilter(ofType),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these)
 	{
 		return reallyList(viewerM,these.elements(),NO_FILTER,stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these)
 	{
 		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom)
 	{
 		return reallyList(viewerM,these.elements(),buildLikeRoomFilter(likeRoom),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
@@ -366,14 +379,17 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
-	{ 
+	{
 		return reallyList(viewerM,these.elements(),filters,stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom)
-	{ 
+	{
 		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
+	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
@@ -402,12 +418,14 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		lines.append("\n\r");
 		return lines;
 	}
-	
+
+	@Override
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these)
 	{
 		return reallyList2Cols(viewerM, these, NO_FILTER, stringer);
 	}
-	
+
+	@Override
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
 		if(stringer==null) stringer=CMLister.stringer;
@@ -436,27 +454,32 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		lines.append("\n\r");
 		return lines;
 	}
-	
+
+	@Override
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList)
-	{ 
+	{
 		return fourColumns(viewerM,reverseList,null);
 	}
-	
+
+	@Override
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag)
-	{ 
+	{
 		return makeColumns(viewerM,reverseList,tag,4);
 	}
-	
+
+	@Override
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList)
-	{ 
+	{
 		return threeColumns(viewerM,reverseList,null);
 	}
-	
+
+	@Override
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList, String tag)
-	{ 
+	{
 		return makeColumns(viewerM,reverseList,tag,3);
 	}
-	
+
+	@Override
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
 		StringBuilder topicBuffer=new StringBuilder("");

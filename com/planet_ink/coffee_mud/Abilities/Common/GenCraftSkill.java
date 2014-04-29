@@ -43,9 +43,9 @@ import java.util.regex.Pattern;
 public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID = "GenCraftSkill";
-	public String ID() { return ID;}
-	public String Name(){return name();}
-	public String name(){ return (String)V(ID,V_NAME);}
+	@Override public String ID() { return ID;}
+	@Override public String Name(){return name();}
+	@Override public String name(){ return (String)V(ID,V_NAME);}
 
 	private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
 	private static final int V_NAME=0;//S
@@ -61,7 +61,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int V_CNST=10;//B
 	private static final int NUM_VS=11;//S
 
-	public String parametersFormat(){ return 
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 	   +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
@@ -82,7 +83,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected DoorKey key=null;
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
 	private static final Object[] makeEmpty()
 	{
@@ -101,13 +102,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return O;
 	}
 
-	public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
+	@Override public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
 
-	protected boolean canBeDoneSittingDown() { return ((Boolean)V(ID,V_CNST)).booleanValue(); }
-	
-	public String parametersFile(){ return (String)V(ID,V_FNAM);}
+	@Override protected boolean canBeDoneSittingDown() { return ((Boolean)V(ID,V_CNST)).booleanValue(); }
 
-	public String supportedResourceString(){return (String)V(ID,V_RSCS);}
+	@Override public String parametersFile(){ return (String)V(ID,V_FNAM);}
+
+	@Override public String supportedResourceString(){return (String)V(ID,V_RSCS);}
 
 	private static final Object V(String ID, int varNum)
 	{
@@ -134,6 +135,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		super();
 	}
 
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -149,14 +151,15 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return new GenCraftSkill();
 	}
 
+	@Override
 	protected void cloneFix(Ability E)
 	{
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
 	// lots of work to be done here
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
@@ -173,8 +176,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 										 "CANSIT",//2S
 										};
 
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
 
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
@@ -182,6 +186,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return -1;
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		/*
@@ -216,6 +221,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return "";
 	}
 
+	@Override
 	public void setStat(String code, String val)
 	{
 		int num=0;
@@ -263,6 +269,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		}
 	}
 
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCraftSkill)) return false;
@@ -294,6 +301,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return str.toString();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -304,6 +312,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	protected List<List<String>> loadRecipes()
 	{
 		if(parametersFile().length()==0)
@@ -311,6 +320,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return super.loadRecipes(parametersFile());
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -360,11 +370,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		return mayICraft(null,I);
 	}
 
+	@Override
 	public boolean mayICraft(final MOB mob, final Item I)
 	{
 		if(I==null) return false;
@@ -385,12 +397,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true); }
 
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		Boolean canMendB=(Boolean)V(ID,V_CNMN);
-		if(!canMendB.booleanValue()) 
+		if(!canMendB.booleanValue())
 			return false;
-		if(!super.canMend(mob,E,quiet)) 
+		if(!super.canMend(mob,E,quiet))
 			return false;
 		Item IE=(Item)E;
 		if(mayICraft(mob, IE))
@@ -406,16 +419,18 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_AMOUNTMATS );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -581,13 +596,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to "+noun.toLowerCase()+" a '"+recipeName+"'.  Try \""+noun.toLowerCase()+" list\" for a list.");
 				return false;
 			}
-			
+
 			final String requiredMats = foundRecipe.get(RCP_AMOUNTMATS);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int numRequired=CMath.isInteger(requiredMats)?CMath.s_int(requiredMats):0;
 			numRequired=adjustWoodRequired(numRequired,mob);
-			
+
 			if(amount>numRequired) numRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			Integer[] ipm=super.supportedResourcesMap();

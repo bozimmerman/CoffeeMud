@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class GreatThinLake extends StdThinGrid
 {
-	public String ID(){return "GreatThinLake";}
+	@Override public String ID(){return "GreatThinLake";}
 	public GreatThinLake()
 	{
 		super();
@@ -45,14 +45,15 @@ public class GreatThinLake extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new GreatLake().newInstance();
 	}
-	public String getGridChildLocaleID(){return "WaterSurface";}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public String getGridChildLocaleID(){return "WaterSurface";}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

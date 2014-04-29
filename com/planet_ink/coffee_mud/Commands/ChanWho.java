@@ -38,7 +38,8 @@ public class ChanWho extends StdCommand
 	public ChanWho(){}
 
 	private final String[] access={"CHANWHO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -91,8 +92,8 @@ public class ChanWho extends StdCommand
 			mob.tell(head+buf.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

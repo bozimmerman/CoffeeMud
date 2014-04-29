@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  */
 
 public class GenPowder extends StdPowder {
-	public String ID(){	return "GenPowder";}
+	@Override public String ID(){	return "GenPowder";}
 
 	public GenPowder()
 	{
@@ -53,13 +53,15 @@ public class GenPowder extends StdPowder {
 		setMaterial(RawMaterial.RESOURCE_ASH);
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -67,12 +69,14 @@ public class GenPowder extends StdPowder {
 		recoverPhyStats();
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -80,12 +84,14 @@ public class GenPowder extends StdPowder {
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPowder)) return false;

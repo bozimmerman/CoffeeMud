@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Fear extends Spell
 {
-	public String ID() { return "Spell_Fear"; }
-	public String name(){return "Fear";}
-	public String displayText(){return "(Afraid)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+	@Override public String ID() { return "Spell_Fear"; }
+	@Override public String name(){return "Fear";}
+	@Override public String displayText(){return "(Afraid)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
 	public void unInvoke()
 	{
 		MOB M=null;
@@ -56,7 +57,8 @@ public class Spell_Fear extends Spell
 				M.tell("You are no longer afraid.");
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
@@ -69,7 +71,8 @@ public class Spell_Fear extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 		if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
@@ -81,7 +84,8 @@ public class Spell_Fear extends Spell
 			stats.setDamage((int)Math.round(CMath.mul(stats.damage(),0.90-f)));
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

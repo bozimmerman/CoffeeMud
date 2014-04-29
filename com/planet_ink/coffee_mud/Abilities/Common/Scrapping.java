@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Scrapping extends CommonSkill
 {
-	public String ID() { return "Scrapping"; }
-	public String name(){ return "Scrapping";}
+	@Override public String ID() { return "Scrapping"; }
+	@Override public String name(){ return "Scrapping";}
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;
 	boolean fireRequired=false;
@@ -57,6 +57,7 @@ public class Scrapping extends CommonSkill
 		verb="scrapping";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -73,6 +74,7 @@ public class Scrapping extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -104,6 +106,7 @@ public class Scrapping extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -133,19 +136,19 @@ public class Scrapping extends CommonSkill
 			commonTell(mob,"You don't know how to scrap "+I.name(mob)+".");
 			return false;
 		}
-		
+
 		if(I instanceof RawMaterial)
 		{
 			commonTell(mob,I.name(mob)+" already looks like scrap.");
 			return false;
 		}
-		
+
 		if(CMLib.flags().enchanted(I))
 		{
 			commonTell(mob,I.name(mob)+" is enchanted, and can't be scrapped.");
 			return false;
 		}
-		
+
 		Vector V=new Vector();
 		int totalWeight=0;
 		for(int i=0;i<mob.location().numItems();i++)

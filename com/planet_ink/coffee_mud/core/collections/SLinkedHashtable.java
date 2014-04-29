@@ -37,7 +37,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 			for(K o : H.keySet())
 				put(o,H.get(o));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public SLinkedHashtable(Object[][] H)
 	{
@@ -47,13 +47,13 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 			for(Object[] o : H)
 				this.H.put((K) o[0],(F) o[1]);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized Hashtable<K,F> toHashtable()
 	{
 		return (Hashtable<K,F>)H.clone();
 	}
-	public synchronized Vector<String> toStringVector(String divider) 
+	public synchronized Vector<String> toStringVector(String divider)
 	{
 		Vector<String> V=new Vector<String>(size());
 		for(Object S : keySet())
@@ -67,7 +67,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 			}
 		return V;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void clear()
@@ -77,7 +77,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SLinkedHashtable<K,F> copyOf() 
+	public synchronized SLinkedHashtable<K,F> copyOf()
 	{
 		SLinkedHashtable<K,F> SH=new SLinkedHashtable<K,F>();
 		SH.H=(LinkedHashMap<K,F>)H.clone();

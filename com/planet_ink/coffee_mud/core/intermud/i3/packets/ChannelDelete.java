@@ -56,7 +56,7 @@ public class ChannelDelete extends Packet  {
 		}
 	}
 
-	
+
 	public ChannelDelete(int t, String chan, String who)
 	{
 		super();
@@ -65,6 +65,7 @@ public class ChannelDelete extends Packet  {
 		sender_name = who;
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( channel == null )
 		{
@@ -74,6 +75,7 @@ public class ChannelDelete extends Packet  {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		NameServer n = Intermud.getNameServer();

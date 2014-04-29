@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Triad<T,K,L> extends Pair<T,K> 
+public class Triad<T,K,L> extends Pair<T,K>
 {
 	public L third;
 	public Triad(T frst, K scnd, L thrd)
@@ -23,17 +23,17 @@ public class Triad<T,K,L> extends Pair<T,K>
 		super(frst,scnd);
 		third=thrd;
 	}
-	public static final class FirstConverter<T,K,L> implements Converter<Triad<T,K,L>,T> 
+	public static final class FirstConverter<T,K,L> implements Converter<Triad<T,K,L>,T>
 	{
-		public T convert(Triad<T, K,L> obj) { return obj.first;}
+		@Override public T convert(Triad<T, K,L> obj) { return obj.first;}
 	}
-	public static final class SecondConverter<T,K,L> implements Converter<Triad<T,K,L>,K> 
+	public static final class SecondConverter<T,K,L> implements Converter<Triad<T,K,L>,K>
 	{
-		public K convert(Triad<T, K, L> obj) { return obj.second;}
+		@Override public K convert(Triad<T, K, L> obj) { return obj.second;}
 	}
 	public static final class ThirdConverter<T,K,L> implements Converter<Triad<T,K,L>,L>
 	{
-		public L convert(Triad<T, K, L> obj) { return obj.third;}
+		@Override public L convert(Triad<T, K, L> obj) { return obj.third;}
 	}
 	@Override
 	public boolean equals(Object o)
@@ -50,7 +50,7 @@ public class Triad<T,K,L> extends Pair<T,K>
 		return super.equals(o);
 	}
 	@Override
-	public int hashCode() 
+	public int hashCode()
 	{
 		return super.hashCode()  ^ ((third==null)?0:third.hashCode());
 	}

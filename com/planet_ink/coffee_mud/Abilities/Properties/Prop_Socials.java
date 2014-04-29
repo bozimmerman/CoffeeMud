@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 */
 public class Prop_Socials extends Property
 {
-	public String ID() { return "Prop_Socials"; }
-	public String name(){ return "Local Social creating property";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_Socials"; }
+	@Override public String name(){ return "Local Social creating property";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS;}
 	protected final Map<String,List<Social>> socials=new TreeMap<String,List<Social>>();
-	
+
 	protected boolean wornOnly=false;
 	protected MaskingLibrary.CompiledZapperMask mask=null;
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -74,7 +75,7 @@ public class Prop_Socials extends Property
 				wornOnly=CMath.s_bool(wornonly)||wornonly.equalsIgnoreCase("T")||wornonly.toUpperCase().startsWith("Y");
 				forgive=true;
 			}
-			
+
 			String name=CMParms.getParmStr(social, "NAME", "");
 			String target=CMParms.getParmStr(social, "TARGET", "");
 			String srcCode=CMParms.getParmStr(social, "SRCCODE", CMParms.getParmStr(social, "SOURCECODE", "M"));
@@ -84,7 +85,7 @@ public class Prop_Socials extends Property
 			String targetSee=CMParms.getParmStr(social, "TARGSEE", CMParms.getParmStr(social, "TARGETSEE", CMParms.getParmStr(social, "TGTSEE", "")));
 			String seeNoTargetSee=CMParms.getParmStr(social, "NOTARGSEE", CMParms.getParmStr(social, "NOTARGETSEE", CMParms.getParmStr(social, "NOTGTSEE", "")));
 			String mspFile=CMParms.getParmStr(social, "MSPFILE", "");
-			if(name.length()==0) 
+			if(name.length()==0)
 			{
 				if(!forgive) Log.errOut("Prop_Socials","NAME not found in: "+social);
 			}
@@ -122,6 +123,7 @@ public class Prop_Socials extends Property
 		CMLib.socials().putSocialsInHash(socials, lines);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)	return true;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,20 @@ import java.util.*;
 */
 public class GateGuard extends StdBehavior
 {
-	public String ID(){return "GateGuard";}
+	@Override public String ID(){return "GateGuard";}
 
 	protected int noticeTock=4;
 	protected boolean heardKnock=false;
 	protected boolean keepLocked=false;
 	protected boolean allnight=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "gate guarding";
 	}
 
+	@Override
 	public void setParms(String parm)
 	{
 		super.setParms(parm);
@@ -126,6 +128,7 @@ public class GateGuard extends StdBehavior
 		return num;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(host instanceof MOB)
@@ -152,6 +155,7 @@ public class GateGuard extends StdBehavior
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

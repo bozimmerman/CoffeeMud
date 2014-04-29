@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class Prop_SpellReflecting extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_SpellReflecting"; }
-	public String name(){ return "Spell reflecting property";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_SpellReflecting"; }
+	@Override public String name(){ return "Spell reflecting property";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
 	protected int minLevel=1;
 	protected int maxLevel=30;
@@ -46,16 +46,18 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	protected int uses=100;
 	protected long lastFade=0;
 
-	public int abilityCode(){return uses;}
-	public void setAbilityCode(int newCode){uses=newCode;}
-	
-	public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override public int abilityCode(){return uses;}
+	@Override public void setAbilityCode(int newCode){uses=newCode;}
 
+	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -67,6 +69,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 		setAbilityCode(remaining);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)	return true;

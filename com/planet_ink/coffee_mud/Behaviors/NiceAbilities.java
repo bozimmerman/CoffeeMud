@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class NiceAbilities extends ActiveTicker
 {
-	public String ID(){return "NiceAbilities";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	
+	@Override public String ID(){return "NiceAbilities";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+
 	private List<Ability> mySkills=null;
 	private int numAllSkills=-1;
-	
+
 	public NiceAbilities()
 	{
 		super();
@@ -48,11 +48,13 @@ public class NiceAbilities extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random benevolent skill using";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

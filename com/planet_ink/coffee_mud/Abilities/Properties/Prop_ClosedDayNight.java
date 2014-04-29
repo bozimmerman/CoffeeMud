@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 */
 public class Prop_ClosedDayNight extends Property
 {
-	public String ID() { return "Prop_ClosedDayNight"; }
-	public String name(){ return "Day/Night Visibility";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ClosedDayNight"; }
+	@Override public String name(){ return "Day/Night Visibility";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected boolean doneToday=false;
 	protected int lastClosed=-1;
 	protected boolean dayFlag=false;
@@ -50,12 +50,14 @@ public class Prop_ClosedDayNight extends Property
 	protected String shopMsg=null;
 	protected Room exitRoom=null;
 
+	@Override
 	public String accountForYourself()
 	{ return "";	}
 
-	
-	public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -104,6 +106,7 @@ public class Prop_ClosedDayNight extends Property
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		super.executeMsg(E,msg);
@@ -111,7 +114,7 @@ public class Prop_ClosedDayNight extends Property
 		if(msg.source().location()!=null)
 			exitRoom=msg.source().location();
 	}
-	
+
 	protected boolean closed(Environmental E)
 	{
 		boolean closed=false;
@@ -135,6 +138,7 @@ public class Prop_ClosedDayNight extends Property
 		return closed;
 	}
 
+	@Override
 	public boolean okMessage(Environmental E, CMMsg msg)
 	{
 		if(!super.okMessage(E,msg))
@@ -190,12 +194,12 @@ public class Prop_ClosedDayNight extends Property
 			try
 			{
 				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
-				if(rooms.size()>0) 
+				if(rooms.size()>0)
 					R=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 				else
 				{
 					List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
-					if(inhabs.size()>0) 
+					if(inhabs.size()>0)
 						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}
 			}catch(NoSuchElementException e){}
@@ -203,6 +207,7 @@ public class Prop_ClosedDayNight extends Property
 		return R;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -334,6 +339,7 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected==null) return;

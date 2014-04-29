@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,31 +34,33 @@ import java.util.*;
 */
 public class ManScorpion extends StdRace
 {
-	public String ID(){	return "ManScorpion"; }
-	public String name(){ return "Man-Scorpion"; }
-	public int shortestMale(){return 58;}
-	public int shortestFemale(){return 54;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 120;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Arachnid";}
+	@Override public String ID(){	return "ManScorpion"; }
+	@Override public String name(){ return "Man-Scorpion"; }
+	@Override public int shortestMale(){return 58;}
+	@Override public int shortestFemale(){return 54;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 120;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Arachnid";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -66,14 +68,17 @@ public class ManScorpion extends StdRace
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+2);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -86,6 +91,7 @@ public class ManScorpion extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

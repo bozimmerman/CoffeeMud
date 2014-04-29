@@ -77,26 +77,27 @@ public class GenRace extends StdRace
 
 	//  				   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	
-	public String ID(){	return ID; }
-	public String name(){ return name; }
-	public int practicesAtFirstLevel(){return 0;}
-	public int trainsAtFirstLevel(){return 0;}
-	public long forbiddenWornBits(){return forbiddenWornBits;}
-	public String racialCategory(){return racialCategory;}
-	public boolean isGeneric(){return true;}
-	public int shortestFemale(){return shortestFemale;}
-	public int heightVariance(){return heightVariance;}
-	public int lightestWeight(){return lightestWeight;}
-	public int weightVariance(){return weightVariance;}
-	public int shortestMale(){return shortestMale;}
-	public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
-	public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
-	public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
-	public boolean fertile(){return !((disableFlags&Race.GENFLAG_NOFERTILE)==Race.GENFLAG_NOFERTILE);}
-	protected boolean uncharmable(){return ((disableFlags&Race.GENFLAG_NOCHARM)==Race.GENFLAG_NOCHARM);}
-	public int[] bodyMask(){return parts;}
-	public int availabilityCode(){return availability;}
+
+	@Override public String ID(){	return ID; }
+	@Override public String name(){ return name; }
+	@Override public int practicesAtFirstLevel(){return 0;}
+	@Override public int trainsAtFirstLevel(){return 0;}
+	@Override public long forbiddenWornBits(){return forbiddenWornBits;}
+	@Override public String racialCategory(){return racialCategory;}
+	@Override public boolean isGeneric(){return true;}
+	@Override public int shortestFemale(){return shortestFemale;}
+	@Override public int heightVariance(){return heightVariance;}
+	@Override public int lightestWeight(){return lightestWeight;}
+	@Override public int weightVariance(){return weightVariance;}
+	@Override public int shortestMale(){return shortestMale;}
+	@Override public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
+	@Override public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
+	@Override public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
+	@Override public boolean fertile(){return !((disableFlags&Race.GENFLAG_NOFERTILE)==Race.GENFLAG_NOFERTILE);}
+	@Override protected boolean uncharmable(){return ((disableFlags&Race.GENFLAG_NOCHARM)==Race.GENFLAG_NOCHARM);}
+	@Override public int[] bodyMask(){return parts;}
+	@Override public int availabilityCode(){return availability;}
+	@Override
 	public int[] getAgingChart()
 	{
 		if(agingChart==null)
@@ -104,32 +105,34 @@ public class GenRace extends StdRace
 		return agingChart;
 	}
 
-	protected String[] racialEffectNames(){return racialEffectNames;}
-	protected int[] racialEffectLevels(){return racialEffectLevels;}
-	protected String[] racialEffectParms(){return racialEffectParms;}
-	public int[] getBreathables() { return sortedBreathables; }
+	@Override protected String[] racialEffectNames(){return racialEffectNames;}
+	@Override protected int[] racialEffectLevels(){return racialEffectLevels;}
+	@Override protected String[] racialEffectParms(){return racialEffectParms;}
+	@Override public int[] getBreathables() { return sortedBreathables; }
 
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
 
 	public GenRace()
 	{
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new GenRace();}}
+
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new GenRace();}}
+	@Override
 	public CMObject copyOf()
 	{
 		GenRace E=new GenRace();
 		E.setRacialParms(racialParms());
 		return E;
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(weaponBuddy!=null)
@@ -139,15 +142,18 @@ public class GenRace extends StdRace
 		return funHumanoidWeapon();
 	}
 
+	@Override
 	public String arriveStr()
 	{
 		return arriveStr;
 	}
+	@Override
 	public String leaveStr()
 	{
 		return leaveStr;
 	}
-	public Race makeGenRace(){return this;}
+	@Override public Race makeGenRace(){return this;}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		if((healthBuddy!=null)&&(healthBuddy!=this))
@@ -155,6 +161,7 @@ public class GenRace extends StdRace
 		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(adjPStats!=null)
@@ -171,6 +178,7 @@ public class GenRace extends StdRace
 			affectableStats.setWeight(affectableStats.weight()+adjPStats.weight());
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
@@ -181,6 +189,7 @@ public class GenRace extends StdRace
 				if(setStats.getStat(i)!=0)
 					affectableStats.setRacialStat(i,setStats.getStat(i));
 	}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		if(adjState!=null)
@@ -193,6 +202,7 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		if(resourceChoices==null)
@@ -209,6 +219,7 @@ public class GenRace extends StdRace
 		return R.getClass().getName();
 	}
 
+	@Override
 	public String racialParms()
 	{
 		StringBuffer str=new StringBuffer("");
@@ -341,6 +352,7 @@ public class GenRace extends StdRace
 		str.append("</RACE>");
 		return str.toString();
 	}
+	@Override
 	public void setRacialParms(String parms)
 	{
 		if(parms.trim().length()==0)
@@ -520,7 +532,7 @@ public class GenRace extends StdRace
 
 		sortedBreathables=CMParms.toIntArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(raceData, "BREATHELIST",""+RawMaterial.RESOURCE_AIR),true));
 		Arrays.sort(sortedBreathables);
-		
+
 		xV=CMLib.xml().getContentsFromPieces(raceData,"REFFECTS");
 		racialEffectNames=null;
 		racialEffectParms=null;
@@ -558,7 +570,7 @@ public class GenRace extends StdRace
 				culturalAbilityProficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"CPROFF");
 			}
 		}
-		
+
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 		for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
 			setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(raceData, getStatCodes()[i]));
@@ -576,6 +588,7 @@ public class GenRace extends StdRace
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
 									 "BREATHES"
 									 };
+	@Override
 	public String getStat(String code)
 	{
 		int num=0;
@@ -644,6 +657,7 @@ public class GenRace extends StdRace
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(eventBuddy!=null)
@@ -651,12 +665,14 @@ public class GenRace extends StdRace
 				return false;
 		return super.tick(myChar, tickID);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(eventBuddy!=null)
 			eventBuddy.executeMsg(myHost, msg);
 		super.executeMsg(myHost, msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((eventBuddy!=null)
@@ -666,6 +682,7 @@ public class GenRace extends StdRace
 
 	}
 
+	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
@@ -680,6 +697,7 @@ public class GenRace extends StdRace
 		}
 	}
 
+	@Override
 	public void setStat(String code, String val)
 	{
 		int num=0;
@@ -894,14 +912,16 @@ public class GenRace extends StdRace
 			break;
 		}
 	}
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
@@ -910,6 +930,7 @@ public class GenRace extends StdRace
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(Race E)
 	{
 		if(!(E instanceof GenRace)) return false;

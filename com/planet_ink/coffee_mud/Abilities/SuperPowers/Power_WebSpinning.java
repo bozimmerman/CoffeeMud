@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,29 +35,31 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Power_WebSpinning extends SuperPower
 {
-	public String ID() { return "Power_WebSpinning"; }
-	public String name(){return "Web Spinning";}
-	public String displayText(){return "(Webbed)";}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 1;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
-	public long flags(){return Ability.FLAG_BINDING;}
+	@Override public String ID() { return "Power_WebSpinning"; }
+	@Override public String name(){return "Web Spinning";}
+	@Override public String displayText(){return "(Webbed)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 1;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
+	@Override public long flags(){return Ability.FLAG_BINDING;}
 
 	public int amountRemaining=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-	
+
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
 			// from trying to do ANYTHING except sleep
@@ -108,6 +110,7 @@ public class Power_WebSpinning extends SuperPower
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -124,6 +127,7 @@ public class Power_WebSpinning extends SuperPower
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

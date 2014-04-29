@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Scavenger extends ActiveTicker
 {
-	public String ID(){return "Scavenger";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Scavenger";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	int origItems=-1;
 
 	public Scavenger()
@@ -47,11 +47,13 @@ public class Scavenger extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "refuse scavenging";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

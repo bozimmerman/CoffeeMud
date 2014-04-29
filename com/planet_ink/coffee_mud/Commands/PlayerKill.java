@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class PlayerKill extends StdCommand
 	public PlayerKill(){}
 
 	private final String[] access={"PLAYERKILL","PKILL","PVP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -60,7 +61,7 @@ public class PlayerKill extends StdCommand
 				mob.tell("Once turned on, this flag may not be turned off again.");
 				return false;
 			}
-			
+
 			if((mob.session()!=null)
 			&&(mob.session().getLastPKFight()>0)
 			&&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
@@ -90,8 +91,8 @@ public class PlayerKill extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

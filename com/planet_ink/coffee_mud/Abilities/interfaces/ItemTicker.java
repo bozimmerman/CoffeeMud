@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public interface ItemTicker extends Ability
 	 * @param room the room which the item is from
 	 */
 	public void loadMeUp(Item item, Room room);
-	
+
 	/**
 	 * Removes the rejuvinating ticker from an item.  This
 	 * is done when a room is resetting its content, and this
@@ -56,19 +56,19 @@ public interface ItemTicker extends Ability
 	 * @param item
 	 */
 	public void unloadIfNecessary(Item item);
-	
+
 	/**
 	 * Returns the room where this item belongs
 	 * @return a Room object
 	 */
 	public Room properLocation();
-	
+
 	/**
 	 * Sets the room where this item belongs
 	 * @param room a room object
 	 */
 	public void setProperLocation(Room room);
-	
+
 	/**
 	 * Returns whether the given item is an official item
 	 * being managed as a rejuving item

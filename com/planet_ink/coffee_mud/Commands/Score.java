@@ -37,7 +37,7 @@ public class Score extends Affect
 	public Score(){}
 
 	private final String[] access={"SCORE","SC"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuilder getScore(MOB mob){return getScore(mob,"");}
 	public StringBuilder getScore(MOB mob, String parm)
@@ -204,12 +204,13 @@ public class Score extends Affect
 		//if(CMLib.flags().canSeeHidden(mob))
 		//    msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
-		
+
 		msg.append(getMOBState(mob));
 		msg.append(getAffects(mob.session(),mob,false,false));
 		return msg;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -226,8 +227,8 @@ public class Score extends Affect
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,22 +35,23 @@ import java.util.*;
 */
 public class Trap_ExitRoom extends Trap_Trap
 {
-	public String ID() { return "Trap_ExitRoom"; }
-	public String name(){ return "Exit Trap";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Trap_ExitRoom"; }
+	@Override public String name(){ return "Exit Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
 	public PairVector<MOB,Integer> safeDirs=new PairVector<MOB,Integer>();
-	
-	protected boolean mayNotLeave() { return true; } 
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	protected boolean mayNotLeave() { return true; }
+
+	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public CMObject copyOf()
 	{
 		Trap_ExitRoom obj=(Trap_ExitRoom)super.copyOf();
 		obj.safeDirs=(PairVector)safeDirs.clone();
 		return obj;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung) return super.okMessage(myHost,msg);

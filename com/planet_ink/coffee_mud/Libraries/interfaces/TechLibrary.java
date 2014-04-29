@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,47 +35,47 @@ public interface TechLibrary extends CMLibrary
 {
 	/**
 	 * Unregisters an electronic component that belonged
-	 * in a complex circuitry, like a panel or a 
+	 * in a complex circuitry, like a panel or a
 	 * generator.
 	 * @param E the electronic component to unregister
 	 * @param oldKey the last key registered to this device
 	 */
 	public void unregisterElectronics(Electronics E, String oldKey);
-	
+
 	/**
 	 * Unregisters all electronic components that belonged
-	 * in a complex circuitry, like a panel or a 
+	 * in a complex circuitry, like a panel or a
 	 * generator, of the given key.
 	 * @param oldKey the last key registered to this device
 	 */
 	public void unregisterAllElectronics(final String oldKey);
-	
+
 	/**
 	 * Registers an electronic component that belongs
-	 * in a complex circuitry, like a panel or a 
+	 * in a complex circuitry, like a panel or a
 	 * generator
 	 * @param E the electronic component to register
 	 * @param oldKey the last key registered to this device
 	 * @return the new key assigned to this item (or old key)
 	 */
 	public String registerElectrics(Electronics E, String oldKey);
-	
+
 	/**
-	 * Returns whether the currents at the given key are still 
+	 * Returns whether the currents at the given key are still
 	 * active.  Some currents go inactive when players leave
 	 * the game, or their areas may be suspended by the system.
 	 * @param key the current key
 	 * @return true if the area is active
 	 */
 	public boolean isCurrentActive(final String key);
-	
+
 	/**
 	 * Returns a new exclusive list of all the registered electronics
 	 * keys being processed.
 	 * @return the list of keys
 	 */
 	public List<String> getMakeRegisteredKeys();
-	
+
 	/**
 	 * For the given key, return an eclusive list of all the electronics
 	 * that belong to that key.
@@ -83,7 +83,7 @@ public interface TechLibrary extends CMLibrary
 	 * @return
 	 */
 	public List<Electronics> getMakeRegisteredElectronics(String key);
-	
+
 	/**
 	 * Certain Key Systems may automatically force batteries in their circuit
 	 * to activate in order to provide that system with power. This will make
@@ -99,25 +99,25 @@ public interface TechLibrary extends CMLibrary
 	 * @return the default manufacturer for new products
 	 */
 	public Manufacturer getDefaultManufacturer();
-	
+
 	/**
 	 * Adds and saves a new manufacturer to the list.
 	 * @param manufacturer the one to add
 	 */
 	public void addManufacturer(Manufacturer manufacturer);
-	
+
 	/**
 	 * Removes a new manufacturer from the list.
 	 * @param manufacturer the one to remove
 	 */
 	public void delManufacturer(Manufacturer manufacturer);
-	
+
 	/**
 	 * Updates a new manufacturer in the list.
 	 * @param manufacturer the one to update
 	 */
 	public void updateManufacturer(Manufacturer manufacturer);
-	
+
 	/**
 	 * Retrieves the manufacturer of the given name, or null
 	 * if it is not found.  Can not handle RANDOM!!
@@ -125,7 +125,7 @@ public interface TechLibrary extends CMLibrary
 	 * @return the manufacturer found, or null
 	 */
 	public Manufacturer getManufacturer(String name);
-	
+
 	/**
 	 * Retrieves the manufacturer of the given name, or null
 	 * if it is not found.  If random is sent, it will find
@@ -141,7 +141,7 @@ public interface TechLibrary extends CMLibrary
 	 * @return the set to return
 	 */
 	public Iterator<Manufacturer> manufacterers();
-	
+
 	/**
 	 * Return all the rooms containing computers in the
 	 * given circuit key.
@@ -155,20 +155,20 @@ public interface TechLibrary extends CMLibrary
 	 * @return an iterator of computers
 	 */
 	public Iterator<Electronics.Computer> getComputers(String key);
-	
+
 	/**
 	 * Returns a random gaussian-distributed tech level from the
 	 * current low tech level bound to bound+10.
 	 * @return a random valid tech level;
 	 */
 	public int getRandomGlobalTechLevel();
-	
+
 	/**
 	 * Returns the global tech level
 	 * @return the global tech level
 	 */
 	public int getGlobalTechLevel();
-	
+
 	/**
 	 * "Fixes" the tech level of the given item by making sure
 	 * it's manufacturer is non-random, and by assigning a random

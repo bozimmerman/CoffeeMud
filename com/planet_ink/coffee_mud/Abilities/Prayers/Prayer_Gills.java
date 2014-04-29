@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Gills extends Prayer
 {
-	public String ID() { return "Prayer_Gills"; }
-	public String name(){ return "Gills";}
-	public String displayText(){return "(Gills)";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public String ID() { return "Prayer_Gills"; }
+	@Override public String name(){ return "Gills";}
+	@Override public String displayText(){return "(Gills)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -57,6 +58,7 @@ public class Prayer_Gills extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> gills vanish.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
@@ -76,6 +78,7 @@ public class Prayer_Gills extends Prayer
 		affectableStats.setBreathables(newSet);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

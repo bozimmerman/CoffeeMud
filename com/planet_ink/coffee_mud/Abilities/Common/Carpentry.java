@@ -39,12 +39,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Carpentry"; }
-	public String name(){ return "Carpentry";}
+	@Override public String ID() { return "Carpentry"; }
+	@Override public String name(){ return "Carpentry";}
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 	   +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
@@ -65,6 +66,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected DoorKey key=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -75,9 +77,10 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "carpentry.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "carpentry.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -139,6 +142,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -146,7 +150,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof MusicalInstrument)
 			return false;
@@ -199,6 +203,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -212,19 +217,21 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
-		
+
 		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
@@ -382,13 +389,13 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"carve list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.MATERIAL_WOODEN};

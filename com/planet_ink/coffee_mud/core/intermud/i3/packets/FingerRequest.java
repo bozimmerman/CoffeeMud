@@ -33,7 +33,7 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class FingerRequest extends Packet 
+public class FingerRequest extends Packet
 {
 	public FingerRequest()
 	{
@@ -54,6 +54,7 @@ public class FingerRequest extends Packet
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null)
 		{
@@ -62,6 +63,7 @@ public class FingerRequest extends Packet
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		String str="({\"finger-req\",5,\"" + I3Server.getMudName() +

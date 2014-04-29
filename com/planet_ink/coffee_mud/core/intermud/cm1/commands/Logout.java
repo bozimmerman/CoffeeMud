@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Logout extends CM1Command
 {
-	public String getCommandWord(){ return "LOGOUT";}
+	@Override public String getCommandWord(){ return "LOGOUT";}
 	public Logout(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
 
+	@Override
 	public void run()
 	{
 		try
@@ -64,7 +65,8 @@ public class Logout extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: LOGOUT: Logs out the current user, but does not disconnect.";

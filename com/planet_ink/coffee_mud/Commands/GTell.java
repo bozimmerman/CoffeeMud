@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class GTell extends StdCommand
 	public GTell(){}
 
 	private final String[] access={"GTELL","GT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -48,7 +49,7 @@ public class GTell extends StdCommand
 			return false;
 		}
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
-		
+
 		if((commands.size()>2)
 		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
@@ -66,7 +67,7 @@ public class GTell extends StdCommand
 			}
 			return false;
 		}
-								 
+
 		CMMsg tellMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_TELL,null,CMMsg.NO_EFFECT,null,CMMsg.MSG_TELL,null);
 		text=text.trim();
 		if(text.startsWith(",")
@@ -104,7 +105,7 @@ public class GTell extends StdCommand
 			tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
 			tellMsg.setOthersMessage(tellMsg.sourceMessage());
 		}
-		
+
 		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CMMsg msg=tellMsg;
 		for(Iterator e=group.iterator();e.hasNext();)
@@ -132,8 +133,8 @@ public class GTell extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

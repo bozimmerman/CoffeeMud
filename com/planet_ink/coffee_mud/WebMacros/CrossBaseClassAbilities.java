@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CrossBaseClassAbilities extends StdWebMacro
 {
-	public String name()	{return "CrossBaseClassAbilities";}
+	@Override public String name()	{return "CrossBaseClassAbilities";}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		StringBuffer buf=new StringBuffer("");
-		
+
 		Vector baseClasses=new Vector();
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
@@ -51,7 +52,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				   baseClasses.addElement(C.baseClass());
 			}
 		}
-		
+
 		for(int b=0;b<baseClasses.size();b++)
 		{
 			String baseClass=(String)baseClasses.elementAt(b);
@@ -64,7 +65,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				&&(!charClasses.contains(C.ID())))
 					charClasses.addElement(C.ID());
 			}
-			
+
 			Vector abilities=new Vector();
 			Vector levelssum=new Vector();
 			Vector numberare=new Vector();
@@ -94,7 +95,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 					}
 				}
 			}
-			
+
 			Vector sortedAbilities=new Vector();
 			while(abilities.size()>0)
 			{
@@ -119,7 +120,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 					numberare.removeElementAt(lowDex);
 				}
 			}
-				
+
 			buf.append("<BR><BR><BR><B><H3>"+baseClass+"</H3></B>\n\r");
 			buf.append("<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=1>\n\r");
 			buf.append("<TR>");

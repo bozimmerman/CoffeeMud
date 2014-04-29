@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,11 +39,11 @@ import java.util.*;
 public class GrinderFactions {
 	public String name() { return "GrinderFactions"; }
 
-	
+
 	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)
 	{
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -54,22 +54,22 @@ public class GrinderFactions {
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		String old;
-		
+
 		old=httpReq.getUrlParameter("NAME");
 		F.setName(old==null?"NAME":old);
-		
+
 		old=httpReq.getUrlParameter("SHOWINSCORE");
 		F.setShowInScore((old!=null)&&(old.equalsIgnoreCase("on")));
-		
+
 		old=httpReq.getUrlParameter("SHOWINFACTIONS");
 		F.setShowInFactionsCommand((old!=null)&&(old.equalsIgnoreCase("on")));
-		
+
 		old=httpReq.getUrlParameter("SHOWINEDITOR");
 		F.setShowInEditor((old!=null)&&(old.equalsIgnoreCase("on")));
-		
+
 		old=httpReq.getUrlParameter("SHOWINREPORTS");
 		F.setShowInSpecialReported((old!=null)&&(old.equalsIgnoreCase("on")));
-		
+
 		int num=0;
 		for(Enumeration e=F.ranges();e.hasMoreElements();)
 			F.delRange((Faction.FRange)e.nextElement());
@@ -79,7 +79,7 @@ public class GrinderFactions {
 			String code=httpReq.getUrlParameter("RANGECODE"+num);
 			if(old.length()>0)
 			{
-				if(code.length()==0) 
+				if(code.length()==0)
 					code=CMStrings.replaceAll(old.toUpperCase().trim()," ","_");
 				int low=CMath.s_int(httpReq.getUrlParameter("RANGELOW"+num));
 				int high=CMath.s_int(httpReq.getUrlParameter("RANGEHIGH"+num));
@@ -89,10 +89,10 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		
+
 		old=httpReq.getUrlParameter("PLAYERCHOICETEXT");
 		F.setChoiceIntro(old==null?"":old);
-		
+
 		String[] prefixes={"AUTOVALUE","DEFAULTVALUE","PLAYERCHOICE"};
 		for(int i=0;i<prefixes.length;i++)
 		{
@@ -116,7 +116,7 @@ public class GrinderFactions {
 				num++;
 			}
 		}
-		
+
 		F.clearChangeEvents();
 		num=0;
 		while(httpReq.getUrlParameter("CHANGESTRIGGER"+num)!=null)
@@ -142,7 +142,7 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		
+
 		for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 			F.delFactor(e.nextElement());
 		num=0;
@@ -157,7 +157,7 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		
+
 		num=0;
 		for(Enumeration e=F.relationFactions();e.hasMoreElements();)
 			F.delRelation((String)e.nextElement());
@@ -168,7 +168,7 @@ public class GrinderFactions {
 				F.addRelation(old,CMath.s_pct(httpReq.getUrlParameter("RELATIONSAMT"+num)));
 			num++;
 		}
-		
+
 		num=0;
 		DVector affBehav=new DVector(3);
 		HashSet affBehavKeepers=new HashSet();
@@ -199,7 +199,7 @@ public class GrinderFactions {
 			F.delAffectBehav((String)affBehav.elementAt(d,1));
 			F.addAffectBehav((String)affBehav.elementAt(d,1),(String)affBehav.elementAt(d,2),(String)affBehav.elementAt(d,3));
 		}
-		
+
 		num=0;
 		for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
 			F.delAbilityUsage((Faction.FAbilityUsage)e.nextElement());
@@ -227,8 +227,8 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		
-		
+
+
 		num=0;
 		for(Enumeration e=F.reactions();e.hasMoreElements();)
 			F.delReaction((Faction.FReactionItem)e.nextElement());
@@ -244,13 +244,13 @@ public class GrinderFactions {
 		}
 		old=httpReq.getUrlParameter("USELIGHTREACTIONS");
 		F.setLightReactions((old!=null)&&(old.equalsIgnoreCase("on")));
-		
+
 		old=httpReq.getUrlParameter("RATEMODIFIER");
 		F.setRateModifier(old==null?0.0:CMath.s_pct(old));
 
 		old=httpReq.getUrlParameter("AFFECTONEXP");
 		F.setExperienceFlag(old);
-		
+
 		return "";
 	}
 }

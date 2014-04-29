@@ -30,7 +30,7 @@ public class Experience extends StdCommand
 	public Experience(){}
 
 	private final String[] access={"EXPERIENCE","EXPER","XP","EXP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuffer getScore(MOB mob)
 	{
@@ -58,12 +58,12 @@ public class Experience extends StdCommand
 					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
 			}
 		}
-		
+
 
 		return msg;
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@Override @SuppressWarnings({"unchecked","rawtypes"})
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -78,5 +78,5 @@ public class Experience extends StdCommand
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

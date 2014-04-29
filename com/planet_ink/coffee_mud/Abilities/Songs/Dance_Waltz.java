@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dance_Waltz extends Dance
 {
-	public String ID() { return "Dance_Waltz"; }
-	public String name(){ return "Waltz";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Dance_Waltz"; }
+	@Override public String name(){ return "Waltz";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	private int[] statadd=null;
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -57,7 +58,8 @@ public class Dance_Waltz extends Dance
 		for(int i: CharStats.CODES.BASE())
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		statadd=null;

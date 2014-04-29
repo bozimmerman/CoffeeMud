@@ -35,22 +35,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Healer extends Cleric
 {
-	public String ID(){return "Healer";}
-	public String name(){return "Healer";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
+	@Override public String ID(){return "Healer";}
+	@Override public String name(){return "Healer";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 0;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 0;}
 	protected volatile long auraCheckTime = System.currentTimeMillis();
-	
+
 	public Healer()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -139,12 +140,13 @@ public class Healer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivineConstitution",false,CMParms.parseSemicolons("Prayer_HolyAura;Prayer_DeathsDoor;Prayer_Heal",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
-		
+
 		// level 30 == healing aura
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public int classLevelModifier(MOB myChar, Ability skill, int level)
 	{
 		if((myChar.charStats().getCurrentClass()==this)
@@ -154,7 +156,8 @@ public class Healer extends Cleric
 		}
 		return level;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
@@ -176,7 +179,7 @@ public class Healer extends Cleric
 		Ability A = myChar.fetchEffect("Prayer_HealingAura");
 		if((myChar.charStats().getClassLevel(this)>=30)&&(CMLib.flags().isGood(myChar)))
 		{
-			if(A==null) 
+			if(A==null)
 			{
 				A=CMClass.getAbility("Prayer_HealingAura");
 				if(A!=null)
@@ -193,21 +196,22 @@ public class Healer extends Cleric
 			A.destroy();
 		}
 	}
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
-	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -228,6 +232,7 @@ public class Healer extends Cleric
 		}
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

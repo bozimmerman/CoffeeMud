@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Target extends CM1Command
 {
-	public String getCommandWord(){ return "TARGET";}
+	@Override public String getCommandWord(){ return "TARGET";}
 	public Target(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
 
+	@Override
 	public void run()
 	{
 		try
@@ -65,7 +66,8 @@ public class Target extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;} // anybody can target, its harmless
+	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;} // anybody can target, its harmless
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: TARGET USER, <NAME>, <NAME>@<LOCATION>, @<LOCATION>";

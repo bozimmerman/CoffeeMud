@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 */
 public class CheckReqParm extends StdWebMacro
 {
-	public String name() { return "CheckReqParm"; }
+	@Override public String name() { return "CheckReqParm"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -65,7 +66,7 @@ public class CheckReqParm extends StdWebMacro
 				inside=true;
 				key=key.substring(1);
 			}
-			
+
 			if(key.startsWith("!"))
 			{
 				key=key.substring(1);
@@ -77,7 +78,7 @@ public class CheckReqParm extends StdWebMacro
 				if((check==null)&&(equals.length()==0))
 					thisCondition=false;
 				else
-				if(check==null) 
+				if(check==null)
 					thisCondition=true;
 				else
 				if(startswith)
@@ -99,7 +100,7 @@ public class CheckReqParm extends StdWebMacro
 				if((check==null)&&(equals.length()==0))
 					thisCondition=true;
 				else
-				if(check==null) 
+				if(check==null)
 					thisCondition=false;
 				else
 				if(startswith)

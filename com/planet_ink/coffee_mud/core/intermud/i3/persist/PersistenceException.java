@@ -42,7 +42,7 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 @SuppressWarnings("rawtypes")
-public class PersistenceException extends Exception 
+public class PersistenceException extends Exception
 {
 	public static final long serialVersionUID=0;
 	private Exception prior;
@@ -117,14 +117,16 @@ final class PersistenceExceptionEnumeration implements Enumeration {
 	exception = e;
   }
 
-  public boolean hasMoreElements()
+  @Override
+public boolean hasMoreElements()
   {
 
 	if( exception == null ) return false;
 	return true;
   }
 
-  public Object nextElement()
+  @Override
+public Object nextElement()
   {
 	Exception e;
 

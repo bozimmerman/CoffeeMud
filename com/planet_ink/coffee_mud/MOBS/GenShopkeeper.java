@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenShopkeeper extends StdShopKeeper
 {
-	public String ID(){return "GenShopkeeper";}
+	@Override public String ID(){return "GenShopkeeper";}
 	protected String prejudiceFactors="";
 	private String ignoreMask="";
 
@@ -47,12 +47,13 @@ public class GenShopkeeper extends StdShopKeeper
 		basePhyStats().setAbility(11); // his only off-default
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
-	public String prejudiceFactors(){return prejudiceFactors;}
-	public void setPrejudiceFactors(String factors){prejudiceFactors=factors;}
-	public String ignoreMask(){return ignoreMask;}
-	public void setIgnoreMask(String factors){ignoreMask=factors;}
+	@Override public String prejudiceFactors(){return prejudiceFactors;}
+	@Override public void setPrejudiceFactors(String factors){prejudiceFactors=factors;}
+	@Override public String ignoreMask(){return ignoreMask;}
+	@Override public void setIgnoreMask(String factors){ignoreMask=factors;}
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -62,12 +63,14 @@ public class GenShopkeeper extends StdShopKeeper
 		return super.text();
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BUDGET","DEVALRATE","INVRESETRATE","IGNOREMASK","PRICEMASKS"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -85,6 +88,7 @@ public class GenShopkeeper extends StdShopKeeper
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -111,6 +115,7 @@ public class GenShopkeeper extends StdShopKeeper
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -118,6 +123,7 @@ public class GenShopkeeper extends StdShopKeeper
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -131,6 +137,7 @@ public class GenShopkeeper extends StdShopKeeper
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenShopkeeper)) return false;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Play_Blues extends Play
 {
-	public String ID() { return "Play_Blues"; }
-	public String name(){ return "Blues";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
-	protected String songOf(){return "the "+name();}
+	@Override public String ID() { return "Play_Blues"; }
+	@Override public String name(){ return "Blues";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override protected String songOf(){return "the "+name();}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -65,6 +66,7 @@ public class Play_Blues extends Play
 		}
 		return true;
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -81,6 +83,7 @@ public class Play_Blues extends Play
 		}
 		return true;
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -90,6 +93,7 @@ public class Play_Blues extends Play
 											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
 													+(adjustedLevel(invoker(),0))));
 	}
+	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);

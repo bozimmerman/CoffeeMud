@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,22 +35,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Assassinate extends ThiefSkill
 {
-	public String ID() { return "Thief_Assassinate"; }
-	public String name(){ return "Assassinate";}
+	@Override public String ID() { return "Thief_Assassinate"; }
+	@Override public String name(){ return "Assassinate";}
 	protected String displayText="(Tracking)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String displayText(){ return displayText;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"ASSASSINATE"};
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -70,7 +71,7 @@ public class Thief_Assassinate extends ThiefSkill
 			&&(mob.isMonster())
 			&&(!CMLib.flags().isMobile(mob)))
 				return true;
-			
+
 			Room room=mob.location();
 			if(room==null) return false;
 			if(room.isInhabitant(tracking))
@@ -165,12 +166,14 @@ public class Thief_Assassinate extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -186,6 +189,7 @@ public class Thief_Assassinate extends ThiefSkill
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(affected instanceof MOB)?(MOB)affected:null;
@@ -198,7 +202,8 @@ public class Thief_Assassinate extends ThiefSkill
 		&&(mob.location()!=mob.getStartRoom()))
 			CMLib.tracking().wanderAway(mob,false,true);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,18 @@ import java.util.*;
 */
 public class Prop_Transporter extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_Transporter"; }
-	public String name(){ return "Room entering adjuster";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_Transporter"; }
+	@Override public String name(){ return "Room entering adjuster";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	int transCode=-1;
 
+	@Override
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_DROP_PUTIN;
 	}
 
@@ -94,6 +96,7 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 		return transCode;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((transCode()>=0)

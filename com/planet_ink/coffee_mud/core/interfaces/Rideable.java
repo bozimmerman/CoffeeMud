@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Iterator;
 import java.util.Set;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,20 +65,20 @@ public interface Rideable extends PhysicalAgent
 		"ENTER-IN","LADDER","WAGON"
 	};
 
-	/** 
+	/**
 	 * Whether the type of rideable is mobile.
 	 * @see Rideable
 	 * @return Whether this type of rideable is mobile
 	 */
 	public boolean isMobileRideBasis();
-	
-	/** 
+
+	/**
 	 * The type of rideable object this is.
 	 * @see Rideable
 	 * @return the RIDEABLE_* constant describing how this is ridden
 	 */
 	public int rideBasis();
-	/** 
+	/**
 	 * Sets type of rideable object this is.
 	 * @see Rideable
 	 * @param basis the RIDEABLE_* constant describing how this is ridden
@@ -108,7 +108,7 @@ public interface Rideable extends PhysicalAgent
 	 * @return the riders
 	 */
 	public Iterator<Rider> riders();
-	
+
 	/**
 	 * Returns a particular Rider mounted on this Rideable.  May return null
 	 * in the case of a race condition

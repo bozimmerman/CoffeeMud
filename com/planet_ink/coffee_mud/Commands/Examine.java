@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Examine extends StdCommand
 	public Examine(){}
 
 	private final String[] access={"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,7 +53,7 @@ public class Examine extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
-			
+
 			String ID=CMParms.combine(commands,1);
 			if(ID.length()==0)
 				thisThang=mob.location();
@@ -68,7 +69,7 @@ public class Examine extends StdCommand
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
-			
+
 			if(thisThang==null)
 				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			int dirCode=-1;
@@ -119,7 +120,7 @@ public class Examine extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(MOB mob, List<String> cmds){return 1.0;}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(MOB mob, List<String> cmds){return 1.0;}
+	@Override public boolean canBeOrdered(){return true;}
 }

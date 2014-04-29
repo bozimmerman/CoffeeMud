@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ChanneledMissiles extends Spell
 {
-	public String ID() { return "Spell_ChanneledMissiles"; }
-	public String name(){return "Channeled Missiles";}
-	public String displayText(){return "(Channeling Missile spell)";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	
+	@Override public String ID() { return "Spell_ChanneledMissiles"; }
+	@Override public String name(){return "Channeled Missiles";}
+	@Override public String displayText(){return "(Channeling Missile spell)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+
 	protected Runnable channelingClass = null;
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -71,6 +72,7 @@ public class Spell_ChanneledMissiles extends Spell
 		super.executeMsg(myHost, msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB))||(this.channelingClass==null))
@@ -88,25 +90,28 @@ public class Spell_ChanneledMissiles extends Spell
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
 		MOB mob=(affected instanceof MOB)?((MOB)affected):null;
 
 		super.unInvoke();
-		
+
 		if(mob==null) return;
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) channeling missiles.");
 	}
-	
+
+	@Override
 	public boolean invoke(final MOB mob, final Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB[] target=new MOB[]{this.getTarget(mob,commands,givenTarget)};
@@ -135,6 +140,7 @@ public class Spell_ChanneledMissiles extends Spell
 				{
 					thisSpellA.channelingClass = new Runnable()
 					{
+						@Override
 						public void run()
 						{
 							for(int i=0;(i<numMissiles) && (target[0].location()==R);i++)
@@ -172,7 +178,7 @@ public class Spell_ChanneledMissiles extends Spell
 								if(target[0].getVictim()==null)
 									target[0].setVictim(mob);
 							}
-							
+
 						}
 					};
 					thisSpellA.channelingClass.run();

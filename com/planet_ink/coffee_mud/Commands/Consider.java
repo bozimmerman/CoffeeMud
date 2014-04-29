@@ -38,10 +38,10 @@ public class Consider extends StdCommand
 	public Consider(){}
 
 	private final String[] access={"CONSIDER","COS","CO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
-	
+
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
@@ -184,6 +184,7 @@ public class Consider extends StdCommand
 		return lvlDiff;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -207,17 +208,18 @@ public class Consider extends StdCommand
 		doConsider(mob,target);
 		return true;
 	}
-	
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Integer.valueOf(0);
 		return Integer.valueOf(doConsider(mob, (MOB)args[0]));
 	}
-	
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
 
 }

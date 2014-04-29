@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 {
-	public String ID(){    return "StdWeapon";}
+	@Override public String ID(){    return "StdWeapon";}
 	protected int     weaponType=TYPE_NATURAL;
 	protected int     weaponClassification=CLASS_NATURAL;
 	protected boolean useExtendedMissString=false;
@@ -62,11 +62,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 
-	public int weaponType(){return weaponType;}
-	public int weaponClassification(){return weaponClassification;}
-	public void setWeaponType(int newType){weaponType=newType;}
-	public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
+	@Override public int weaponType(){return weaponType;}
+	@Override public int weaponClassification(){return weaponClassification;}
+	@Override public void setWeaponType(int newType){weaponType=newType;}
+	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
 
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
@@ -77,6 +78,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n":"")+id;
 		return id+"\n\rAttack: "+phyStats().attackAdjustment()+", Damage: "+phyStats().damage();
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -88,6 +90,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 				affectableStats.setDamage(affectableStats.damage()+phyStats().damage());
 		}
 	}
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
@@ -101,6 +104,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -229,6 +233,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			}
 		}
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -276,7 +281,8 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		}
 		return false;
 	}
-	
+
+	@Override
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
@@ -342,46 +348,55 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		else
 			return name()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
 	}
+	@Override
 	public String missString()
 	{
 		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
+	@Override
 	public String hitString(int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
 	}
+	@Override
 	public int minRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
 			return 0;
 		return minRange;
 	}
+	@Override
 	public int maxRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
 			return 100;
 		return maxRange;
 	}
-	public void setRanges(int min, int max){minRange=min;maxRange=max;}
+	@Override public void setRanges(int min, int max){minRange=min;maxRange=max;}
+	@Override
 	public boolean requiresAmmunition()
 	{
 		if((readableText()==null)||(this instanceof Wand))
 			return false;
 		return readableText().length()>0;
 	}
+	@Override
 	public void setAmmunitionType(String ammo)
 	{
 		if(!(this instanceof Wand))
 			setReadableText(ammo);
 	}
+	@Override
 	public String ammunitionType()
 	{
 		return readableText();
 	}
+	@Override
 	public int ammunitionRemaining()
 	{
 		return usesRemaining();
 	}
+	@Override
 	public void setAmmoRemaining(int amount)
 	{
 		final int oldAmount=ammunitionRemaining();
@@ -407,14 +422,16 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			if(recover) recoverOwner();
 		}
 	}
-	public int ammunitionCapacity(){return ammoCapacity;}
-	public void setAmmoCapacity(int amount){ammoCapacity=amount;}
+	@Override public int ammunitionCapacity(){return ammoCapacity;}
+	@Override public void setAmmoCapacity(int amount){ammoCapacity=amount;}
+	@Override
 	public int value()
 	{
 		if((subjectToWearAndTear())&&(usesRemaining()<1000))
 			return (int)Math.round(CMath.mul(super.value(),CMath.div(usesRemaining(),100)));
 		return super.value();
 	}
+	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return((!requiresAmmunition())
@@ -422,7 +439,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			&&(usesRemaining()<=1000)
 			&&(usesRemaining()>=0));
 	}
-	
+
 	public void recoverOwner()
 	{
 		final ItemPossessor myOwner=owner;

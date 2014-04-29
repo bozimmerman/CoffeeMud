@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 */
 public class Prop_Trashcan extends Property
 {
-	public String ID() { return "Prop_Trashcan"; }
-	public String name(){ return "Auto purges items put into a container";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_Trashcan"; }
+	@Override public String name(){ return "Auto purges items put into a container";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected SLinkedList<Item> trashables=new SLinkedList<Item>();
 	protected int tickDelay=0;
 	protected volatile long lastAddition=0;
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -62,12 +63,13 @@ public class Prop_Trashcan extends Property
 		return true;
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		tickDelay=CMParms.getParmInt(newMiscText, "DELAY", 0);
 	}
-	
+
 	protected void process(Item I)
 	{
 		if(tickDelay<=0)
@@ -84,7 +86,8 @@ public class Prop_Trashcan extends Property
 			trashables.add(I);
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

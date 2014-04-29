@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class IndoorInTheAir extends StdRoom
 {
-	public String ID(){return "IndoorInTheAir";}
+	@Override public String ID(){return "IndoorInTheAir";}
 	public IndoorInTheAir()
 	{
 		super();
@@ -43,13 +43,15 @@ public class IndoorInTheAir extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_AIR;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_AIR;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

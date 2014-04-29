@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Shore extends StdRoom
 {
-	public String ID(){return "Shore";}
+	@Override public String ID(){return "Shore";}
 	public Shore()
 	{
 		super();
@@ -44,13 +44,13 @@ public class Shore extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	protected int baseThirst(){return 1;}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	@Override protected int baseThirst(){return 1;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FISH),
 		Integer.valueOf(RawMaterial.RESOURCE_SAND)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Shore.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Shore.roomResources;}
 }

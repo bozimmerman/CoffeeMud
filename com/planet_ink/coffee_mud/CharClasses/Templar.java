@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Templar extends Cleric
 {
-	public String ID(){return "Templar";}
-	public String name(){return "Templar";}
-	public String baseClass(){return "Cleric";}
-	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	@Override public String ID(){return "Templar";}
+	@Override public String name(){return "Templar";}
+	@Override public String baseClass(){return "Cleric";}
+	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected int alwaysFlunksThisQuality(){return 1000;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected int alwaysFlunksThisQuality(){return 1000;}
 
 	protected int tickDown=0;
 
@@ -52,6 +52,7 @@ public class Templar extends Cleric
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -144,8 +145,9 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Avatar",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
@@ -162,18 +164,19 @@ public class Templar extends Cleric
 		return super.tick(myChar,tickID);
 	}
 
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Strength",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 
-	public String getOtherBonusDesc(){return "Receives Aura of Strife which increases in power.";}
-	public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
+	@Override public String getOtherBonusDesc(){return "Receives Aura of Strife which increases in power.";}
+	@Override public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -184,5 +187,5 @@ public class Templar extends Cleric
 		}
 		return outfitChoices;
 	}
-	
+
 }

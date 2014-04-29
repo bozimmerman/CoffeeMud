@@ -35,26 +35,27 @@ import java.util.*;
 
 public class Disease_Gangrene extends Disease
 {
-	public String ID() { return "Disease_Gangrene"; }
-	public String name(){ return "Gangrene";}
-	public String displayText(){ return "(Gangrene)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 4;}
+	@Override public String ID() { return "Disease_Gangrene"; }
+	@Override public String name(){ return "Gangrene";}
+	@Override public String displayText(){ return "(Gangrene)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 4;}
 
-	protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected int DISEASE_DELAY(){return 5;}
+	@Override protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
-	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
-	public int abilityCode(){return 0;}
+	@Override protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
+	@Override public int abilityCode(){return 0;}
 	protected int tickUpToDay=0;
 	protected int daysSick=0;
 	private boolean norecurse=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -90,6 +91,7 @@ public class Disease_Gangrene extends Disease
 		lastHP=mob.curState().getHitPoints();
 		return true;
 	}
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -107,6 +109,7 @@ public class Disease_Gangrene extends Disease
 			}
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,9 +33,10 @@ import java.util.*;
 */
 public class Prop_WearResister extends Prop_HaveResister
 {
-	public String ID() { return "Prop_WearResister"; }
-	public String name(){ return "Resistance due to worn";}
+	@Override public String ID() { return "Prop_WearResister"; }
+	@Override public String name(){ return "Resistance due to worn";}
 
+	@Override
 	public String accountForYourself()
 	{ return "The wearer gains resistances: "+describeResistance(text());}
 
@@ -43,8 +44,9 @@ public class Prop_WearResister extends Prop_HaveResister
 	public boolean disabled=false;
 	public boolean layered=false;
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
@@ -77,12 +79,14 @@ public class Prop_WearResister extends Prop_HaveResister
 		checked=true;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
@@ -102,7 +106,8 @@ public class Prop_WearResister extends Prop_HaveResister
 		else
 			super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public boolean canResist(Environmental E)
 	{
 		if(!super.canResist(E))

@@ -22,10 +22,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class BoxCitySquareLayout extends BoxCityLayout 
+public class BoxCitySquareLayout extends BoxCityLayout
 {
-	public String name() { return "BOXCITYSQUARE";}
-	
+	@Override public String name() { return "BOXCITYSQUARE";}
+
+	@Override
 	protected void drawABox(LayoutSet lSet, int width, int height)
 	{
 		lSet.drawABox(width, height);

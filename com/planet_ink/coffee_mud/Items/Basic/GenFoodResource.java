@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 */
 public class GenFoodResource extends GenFood implements RawMaterial, Food
 {
-	public String ID(){	return "GenFoodResource";}
+	@Override public String ID(){	return "GenFoodResource";}
 	protected static Ability rot=null;
-	
+
 	public GenFoodResource()
 	{
 		super();
@@ -50,13 +50,15 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		recoverPhyStats();
 		decayTime=0;
 	}
-	
+
+	@Override
 	public void setMaterial(int newValue)
 	{
 		super.setMaterial(newValue);
 		decayTime=0;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -68,10 +70,11 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		}
 		rot.executeMsg(this,msg);
 	}
-	
-	public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
-	public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
-	
+
+	@Override public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
+	@Override public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(rot==null)
@@ -85,6 +88,6 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		return super.okMessage(host,msg);
 	}
 	protected String domainSource=null;
-	public String domainSource(){return domainSource;}
-	public void setDomainSource(String src){domainSource=src;}
+	@Override public String domainSource(){return domainSource;}
+	@Override public void setDomainSource(String src){domainSource=src;}
 }

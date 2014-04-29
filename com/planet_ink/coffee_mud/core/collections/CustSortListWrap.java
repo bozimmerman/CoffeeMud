@@ -31,7 +31,7 @@ public class CustSortListWrap<T extends Comparable<T>> extends SortedListWrap<T>
 	@SuppressWarnings("unchecked")
 	@Override protected int compareTo(T arg0, Object arg1)
 	{
-		
+
 		if(arg0 == null)
 		{
 			if(arg1 == null)

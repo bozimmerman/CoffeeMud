@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 
 public class MasterDigging extends Digging
 {
-	public String ID() { return "MasterDigging"; }
-	public String name(){ return "Master Gem Digging";}
+	@Override public String ID() { return "MasterDigging"; }
+	@Override public String name(){ return "Master Gem Digging";}
 	private static final String[] triggerStrings = {"MGDIG","MGDIGGING","MGEMDIGGING","MASTERGDIG","MASTERGDIGGING","MASTERGEMDIGGING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected int getDuration(MOB mob, int level)
 	{
 		return getDuration(150,mob,level,37);
 	}
-	protected int baseYield() { return 3; }
+	@Override protected int baseYield() { return 3; }
 }
-	
+

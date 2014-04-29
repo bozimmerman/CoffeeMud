@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public interface TrackingLibrary extends CMLibrary
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
-	
+
 	public static abstract class RFilter
 	{
 		public abstract boolean isFilteredOut(final Room R, final Exit E, final int dir);
@@ -67,7 +67,7 @@ public interface TrackingLibrary extends CMLibrary
 		private RFilterNode next=null;
 		private final RFilter filter;
 		public RFilterNode(RFilter fil){ this.filter=fil;}
-		
+
 	}
 	public static class RFilters
 	{
@@ -83,8 +83,8 @@ public interface TrackingLibrary extends CMLibrary
 			}
 			return false;
 		}
-		public RFilters plus(RFilter filter) 
-		{ 
+		public RFilters plus(RFilter filter)
+		{
 			RFilterNode me=head;
 			if(me==null)
 				head=new RFilterNode(filter);
@@ -97,39 +97,46 @@ public interface TrackingLibrary extends CMLibrary
 			return this;
 		}
 	}
-	
-	public static enum TrackingFlag 
+
+	public static enum TrackingFlag
 	{
-		NOHOMES(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		NOHOMES(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
-			return CMLib.law().getLandTitle(R)!=null; 
+			return CMLib.law().getLandTitle(R)!=null;
 		}}),
-		OPENONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		OPENONLY(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
 			return !E.isOpen();
 		}}),
-		UNLOCKEDONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		UNLOCKEDONLY(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
 			return !E.hasALock();
 		}}),
-		AREAONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		AREAONLY(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
-			return CMLib.law().getLandTitle(R)!=null; 
+			return CMLib.law().getLandTitle(R)!=null;
 		}}),
-		NOEMPTYGRIDS(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		NOEMPTYGRIDS(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
-			return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0); 
+			return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0);
 		}}),
-		NOAIR(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		NOAIR(new RFilter(){ @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
-			return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR); 
+			return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR);
 		}}),
-		NOWATER(new RFilter(){  public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		NOWATER(new RFilter(){  @Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
 			return (R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 				   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE); 
+				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE);
 		}});
 		public RFilter myFilter;
 		private TrackingFlag(RFilter filter)
@@ -137,14 +144,14 @@ public interface TrackingLibrary extends CMLibrary
 			this.myFilter=filter;
 		}
 	}
-	
-	public static class TrackingFlags extends HashSet<TrackingFlag> 
+
+	public static class TrackingFlags extends HashSet<TrackingFlag>
 	{
 		private static final long serialVersionUID = -6914706649617909073L;
 		private int hashCode=(int)serialVersionUID;
-		public TrackingFlags plus(TrackingFlag flag) 
-		{ 
-			add(flag); 
+		public TrackingFlags plus(TrackingFlag flag)
+		{
+			add(flag);
 			hashCode^=flag.hashCode();
 			return this;
 		}

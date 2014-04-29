@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman, Jeremy Vyska
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 /**
  * An Area is an abstract collection of rooms organized together under a single name
  * in order to share attributes or give some common functionality.  Areas can also
- * include other areas in a parent->child relationship.  
- * 
+ * include other areas in a parent->child relationship.
+ *
  * @author Bo Zimmerman, Jeremy Vyska
  *
  */
@@ -73,25 +73,25 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public void setTheme(int level);
 	/**
 	 * Returns the coffeemud .cmare filename that will be used when the EXPORT command
-	 * is used in such a way as to auto-generate filenames. 
+	 * is used in such a way as to auto-generate filenames.
 	 * @return the name of the .cmare filename to use
 	 */
 	public String getArchivePath();
 	/**
 	 * Sets the coffeemud .cmare filename that will be used when the EXPORT command
-	 * is used in such a way as to auto-generate filenames. 
+	 * is used in such a way as to auto-generate filenames.
 	 * @param pathFile  the name of the .cmare filename to use
 	 */
 	public void setArchivePath(String pathFile);
 	/**
-	 * Returns a reference to the Climate object that represents the 
+	 * Returns a reference to the Climate object that represents the
 	 * current and future weather for this area.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Climate
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.Climate object
 	 */
 	public Climate getClimateObj();
 	/**
-	 * Sets a reference to the Climate object that represents the 
+	 * Sets a reference to the Climate object that represents the
 	 * current and future weather for this area.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Climate
 	 * @param obj a com.planet_ink.coffee_mud.Common.interfaces.Climate object
@@ -100,7 +100,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**
 	 * Returns a reference to the TimeClock object that represents the
 	 * calendar and date/time for this area.  May be shared by numerous
-	 * areas.  
+	 * areas.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.TimeClock object
 	 */
@@ -108,7 +108,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**
 	 * Sets a reference to the TimeClock object that represents the
 	 * calendar and date/time for this area.  May be shared by numerous
-	 * areas.  
+	 * areas.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock
 	 * @param obj a com.planet_ink.coffee_mud.Common.interfaces.TimeClock object
 	 */
@@ -126,7 +126,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**
 	 * Sets the default currency for this area, which will be referenced by
 	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
-	 * format for this string, as it can be anything from a full current 
+	 * format for this string, as it can be anything from a full current
 	 * definition, to a reference to an existing one.
 	 * @return a currency name/definition
 	 */
@@ -134,7 +134,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**
 	 * Returns the default currency for this area, which will be referenced by
 	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
-	 * format for this string, as it can be anything from a full current 
+	 * format for this string, as it can be anything from a full current
 	 * definition, to a reference to an existing one.
 	 * @param currency  a currency name/definition
 	 */
@@ -220,7 +220,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public Room getRoom(String roomID);
 	/**
-	 * Returns whether the given Room object belongs to this Area, even if the 
+	 * Returns whether the given Room object belongs to this Area, even if the
 	 * Room object properly has not been loaded yet (due to the area being thin).
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @param R the Room object to check for
@@ -289,7 +289,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public void setProperRoomnumbers(RoomnumberSet set);
 	/**
-	 * Returns a RoomnumberSet for all rooms that properly belong to this area, 
+	 * Returns a RoomnumberSet for all rooms that properly belong to this area,
 	 * excluding those not yet loaded.
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet object
 	 */
@@ -328,7 +328,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public void delMetroRoom(Room R);
 	/**
-	 * Designates that a given roomid represents a room which 
+	 * Designates that a given roomid represents a room which
 	 * belongs to one of this areas children.
 	 * @param roomID a roomid for a room
 	 */
@@ -359,7 +359,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public Room getRandomMetroRoom();
 	/**
-	 * Generates a new RoomID for a new Room in this area.  
+	 * Generates a new RoomID for a new Room in this area.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @param startRoom the room connected to the upcoming new one (or null)
 	 * @param direction the direction from the startRoom the new one will go
@@ -390,14 +390,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public void addSubOp(String username);
 	/**
-	 * Removes a SubOp to this area.  
+	 * Removes a SubOp to this area.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#addSubOp(String)
 	 * @param username a players Name
 	 */
 	public void delSubOp(String username);
 	/**
-	 * Returns whether the given player name is a SubOp to this area.  This must be 
-	 * a valid Player Name.  A Player with this designation will have their 
+	 * Returns whether the given player name is a SubOp to this area.  This must be
+	 * a valid Player Name.  A Player with this designation will have their
 	 * AREA_ security flags activated when in this area.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#addSubOp(String)
 	 * @param username a players Name
@@ -406,7 +406,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public boolean amISubOp(String username);
 	/**
 	 * Returns a semicolon delimited list of player Names that represent the SubOp
-	 * list for this area.   A Player with this designation will have their 
+	 * list for this area.   A Player with this designation will have their
 	 * AREA_ security flags activated when in this area.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#addSubOp(String)
 	 * @return a semicolon delimited list of player Names.
@@ -414,7 +414,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public String getSubOpList();
 	/**
 	 * Sets the semicolon delimited list of player Names that represent the SubOp
-	 * list for this area.   A Player with this designation will have their 
+	 * list for this area.   A Player with this designation will have their
 	 * AREA_ security flags activated when in this area.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#addSubOp(String)
 	 * @param list  a semicolon delimited list of player Names.
@@ -422,7 +422,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public void setSubOpList(String list);
 	/**
 	 * Returns a enumeration of player Names that represent the SubOp
-	 * list for this area.   A Player with this designation will have their 
+	 * list for this area.   A Player with this designation will have their
 	 * AREA_ security flags activated when in this area.
 	 * @return enumeration of player Names
 	 */
@@ -436,7 +436,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public StringBuffer getAreaStats();
 	/**
-	 * Returns an integer array of statistics about this area based on 
+	 * Returns an integer array of statistics about this area based on
 	 * a snapshot generated the first time it is called.  This array is
 	 * the cached for future calls, but can be unloaded from resources
 	 * using the UNLOAD command, to force a re-generation.
@@ -545,7 +545,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the Area named MAY BE designated as a parent of this Area
 	 */
 	public boolean canParent(Area newParent);
-	
+
 	/**
 	 * Class to hold a reference to a child area instance,
 	 * and the inhabitants who belong there.
@@ -566,7 +566,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 			this.creationTime = System.currentTimeMillis();
 		}
 	}
-	
+
 	public final static String[] THEME_BIT_NAMES={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_INHERIT=0;
@@ -581,7 +581,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/** Indexed description of the THEME_ bitmap constants in all possible combinations -- in upper/single word format */
 	public final static String[] THEME_NAMES={"INHERITED","FANTASY","TECH","FANTAST+TECH","HEROIC","HEROIC+FANTASY","HEROIC+TECH","ALL","SKILLONLY"};
 	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  In readable format.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 */
 	public final static String[] THEME_PHRASE={"Inherited",   		  // 0
 											   "Fantasy",   		  // 1
@@ -592,8 +592,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 											   "Heroic & Technical",  // 6
 											   "All Allowed"		  // 7
 	};
-	/**	Indexed extended description of the THEME_ bitmap constants in all possible combinations.  
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
+	/**	Indexed extended description of the THEME_ bitmap constants in all possible combinations.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 */
 	public final static String[] THEME_PHRASE_EXT={"Unavailable",   	  // 0
 												   "Fantasy",   		  // 1
@@ -611,20 +611,20 @@ public interface Area extends Economics, PhysicalAgent, Places
 												   "Powers & Spells only",// 13
 												   "Hero&Tech Skill only",// 14
 												   "Any skill only" 	  // 15
-											   
-	};	
-	
+
+	};
+
 	/**	State flag meaning this area is a THIN type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_THIN=1;
 	/**	State flag meaning this area is a INSTANCE parent type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_INSTANCE_PARENT=2;
 	/**	State flag meaning this area is a INSTANCE child type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_INSTANCE_CHILD=4;
-	
+
 	/** Various area IStat constants.. see @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
 	public static enum Stats
 	{
-		POPULATION, 
+		POPULATION,
 		MIN_LEVEL,
 		MAX_LEVEL,
 		AVG_LEVEL,
@@ -636,9 +636,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 		VISITABLE_ROOMS,
 		INDOOR_ROOMS
 	}
-	
-	/**	
-	 * State flag for areas.	
+
+	/**
+	 * State flag for areas.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaState()
 	 */
 	public static enum State
@@ -647,11 +647,11 @@ public interface Area extends Economics, PhysicalAgent, Places
 		PASSIVE, /** Area is threaded, and running, but not mobile */
 		FROZEN, /** Area is thread, but not running or mobile */
 		STOPPED/** Area is neither threaded, running, nor mobile */
-		
+
 	}
 	/**	Amount of time of player absence before an area automatically goes from Active to passive */
 	public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
-	
+
 	/**
 	 * @author Owner
 	 * This enumerator is for loading any rooms not yet
@@ -661,13 +661,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	{
 		private Enumeration<String> roomIDEnumerator=null;
 		private Area area=null;
-		
+
 		public RoomIDEnumerator(Area myArea)
 		{
 			area=myArea;
 			roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
 		}
-		public boolean hasMoreElements(){return roomIDEnumerator.hasMoreElements();}
+		@Override public boolean hasMoreElements(){return roomIDEnumerator.hasMoreElements();}
+		@Override
 		public Room nextElement()
 		{
 			String roomID=roomIDEnumerator.nextElement();
@@ -689,7 +690,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public class CompleteRoomEnumerator implements Enumeration<Room>
 	{
 		private MultiEnumeration<Room> roomEnumerators=null;
-		
+
 		public CompleteRoomEnumerator(MultiEnumeration<Room> enums)
 		{
 			roomEnumerators=enums;
@@ -698,7 +699,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 		{
 			roomEnumerators=new MultiEnumeration<Room>(enu);
 		}
-		public boolean hasMoreElements(){return roomEnumerators.hasMoreElements();}
+		@Override public boolean hasMoreElements(){return roomEnumerators.hasMoreElements();}
+		@Override
 		public Room nextElement()
 		{
 			Room room=roomEnumerators.nextElement();
@@ -709,29 +711,31 @@ public interface Area extends Economics, PhysicalAgent, Places
 			return room;
 		}
 	}
-	
+
 	/**
 	 * Comparator for tree sets, comparing room ids of rooms
 	 * @author Bo Zimmerman
 	 */
-	public static class RoomIDComparator implements Comparator<String> 
+	public static class RoomIDComparator implements Comparator<String>
 	{
+		@Override
 		public int compare(String arg0, String arg1)
 		{
 			return arg0.compareToIgnoreCase(arg1);
 		}
 	}
-	
+
 	/**
 	 * Comparator for tree sets, comparing room ids of rooms
 	 * @author Bo Zimmerman
 	 */
-	public static class RoomComparator implements Comparator<Room> 
+	public static class RoomComparator implements Comparator<Room>
 	{
+		@Override
 		public int compare(Room arg0, Room arg1)
 		{
 			return arg0.roomID().compareToIgnoreCase(arg1.roomID());
 		}
 	}
-	
+
 }

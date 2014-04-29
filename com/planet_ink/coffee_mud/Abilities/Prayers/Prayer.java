@@ -36,15 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer extends StdAbility
 {
-	public String ID() { return "Prayer"; }
-	public String name(){ return "a Prayer";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Prayer"; }
+	@Override public String name(){ return "a Prayer";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"PRAY","PR"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_PRAYER;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER;}
 
 
 	protected String prayWord(MOB mob)
@@ -92,6 +92,7 @@ public class Prayer extends StdAbility
 		return "praying";
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,target,auto,asLevel))

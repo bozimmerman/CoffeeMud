@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Kamikaze extends ThiefSkill
 {
-	public String ID() { return "Thief_Kamikaze"; }
-	public String name(){ return "Kamikaze";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Thief_Kamikaze"; }
+	@Override public String name(){ return "Kamikaze";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"KAMIKAZE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -85,6 +86,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -104,6 +106,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

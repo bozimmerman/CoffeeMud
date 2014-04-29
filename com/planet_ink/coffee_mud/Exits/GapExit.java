@@ -33,9 +33,9 @@ import java.util.*;
 */
 public class GapExit extends StdExit
 {
-	public String ID(){	return "GapExit";}
-	public String Name(){ return "a crevasse";}
-	public String description(){return "Looks like you'll have to jump it.";}
+	@Override public String ID(){	return "GapExit";}
+	@Override public String Name(){ return "a crevasse";}
+	@Override public String description(){return "Looks like you'll have to jump it.";}
 
 	public int mobWeight(MOB mob)
 	{
@@ -49,6 +49,7 @@ public class GapExit extends StdExit
 		return weight;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -70,6 +71,7 @@ public class GapExit extends StdExit
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

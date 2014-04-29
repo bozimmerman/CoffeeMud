@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import java.util.*;
 */
 public class Duck extends WaterFowl
 {
-	public String ID(){	return "Duck"; }
-	public String name(){ return "Duck"; }
-	
+	@Override public String ID(){	return "Duck"; }
+	@Override public String name(){ return "Duck"; }
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)

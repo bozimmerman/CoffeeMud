@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,38 +36,41 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_SetAlarm extends ThiefSkill implements Trap
 {
-	public String ID() { return "Thief_SetAlarm"; }
-	public String name(){ return "Set Alarm";}
-	protected int canAffectCode(){return Ability.CAN_EXITS;}
-	protected int canTargetCode(){return Ability.CAN_EXITS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_SetAlarm"; }
+	@Override public String name(){ return "Set Alarm";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS;}
+	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SETALARM"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean sprung=false;
 	public Room room1=null;
 	public Room room2=null;
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public boolean sprung(){return sprung;}
-	public boolean disabled(){return false;}
-	public void disable(){ unInvoke();}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public boolean sprung(){return sprung;}
+	@Override public boolean disabled(){return false;}
+	@Override public void disable(){ unInvoke();}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
 
+	@Override
 	public void spring(MOB M)
 	{
 		sprung=true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung){	return;	}
@@ -81,6 +84,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -132,6 +136,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whatToalarm=CMParms.combine(commands,0);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,19 +34,21 @@ import java.util.*;
 */
 public class LinkedWeather extends StdBehavior
 {
-	public String ID(){return "LinkedWeather";}
-	protected int canImproveCode(){return Behavior.CAN_AREAS;}
+	@Override public String ID(){return "LinkedWeather";}
+	@Override protected int canImproveCode(){return Behavior.CAN_AREAS;}
 
 	protected long lastWeather=-1;
 	protected long lastPending=-1;
 	protected String areaName=null;
 	protected boolean rolling=false;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "weather event linking";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

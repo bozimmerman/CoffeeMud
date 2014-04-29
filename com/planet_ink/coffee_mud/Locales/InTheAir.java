@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class InTheAir extends StdRoom
 {
-	public String ID(){return "InTheAir";}
+	@Override public String ID(){return "InTheAir";}
 	public InTheAir()
 	{
 		super();
@@ -43,9 +43,10 @@ public class InTheAir extends StdRoom
 		name="the sky";
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -134,6 +135,7 @@ public class InTheAir extends StdRoom
 			makeFall(P,room,avg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -156,7 +158,7 @@ public class InTheAir extends StdRoom
 			msg.source().tell("You can't sleep here.");
 			return false;
 		}
-				
+
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amITarget(room)))
 		{

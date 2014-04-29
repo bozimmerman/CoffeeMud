@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,10 @@ public class Equipment extends StdCommand
 	public Equipment(){}
 
 	private final String[] access={"EQUIPMENT","EQ","EQUIP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
-	
+
 	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
 		StringBuilder msg=new StringBuilder("");
@@ -51,7 +51,7 @@ public class Equipment extends StdCommand
 		int wrap=ListingLibrary.ColFixer.fixColWidth(74,seer.session());
 		int shortWrap=ListingLibrary.ColFixer.fixColWidth(50,seer.session());
 		int headWrap=26;
-		
+
 		long wornCode=0;
 		String header=null;
 		String wornName=null;
@@ -108,8 +108,8 @@ public class Equipment extends StdCommand
 					{
 						set=sets.get(s);
 						if(set.size()==0)
-						{ 
-							set.add(I); 
+						{
+							set.add(I);
 							break;
 						}
 						for(int s2=0;s2<set.size();s2++)
@@ -138,11 +138,11 @@ public class Equipment extends StdCommand
 								break;
 							}
 						}
-						if(set.contains(I)) 
+						if(set.contains(I))
 							break;
 						if(layer2<layer)
-						{ 
-							set.add(I); 
+						{
+							set.add(I);
 							break;
 						}
 					}
@@ -309,7 +309,8 @@ public class Equipment extends StdCommand
 				session.wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
 		}
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -321,9 +322,10 @@ public class Equipment extends StdCommand
 		viewEquipment(mob,(commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")));
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
+	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
@@ -338,5 +340,5 @@ public class Equipment extends StdCommand
 			viewEquipment(mob,false);
 		return null;
 	}
-	
+
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Mark extends ThiefSkill
 {
-	public String ID() { return "Thief_Mark"; }
-	public String name(){ return "Mark";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Mark"; }
+	@Override public String name(){ return "Mark";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"MARK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	public int code=0;
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 	public MOB mark=null;
 	public int ticks=0;
 
+	@Override
 	public String displayText()
 	{
 		if(mark!=null)
@@ -58,6 +59,7 @@ public class Thief_Mark extends ThiefSkill
 		return "";
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
@@ -69,6 +71,7 @@ public class Thief_Mark extends ThiefSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -80,6 +83,7 @@ public class Thief_Mark extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable me, int tickID)
 	{
 		if((text().length()==0)
@@ -124,6 +128,7 @@ public class Thief_Mark extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

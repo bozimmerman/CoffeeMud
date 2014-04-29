@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import java.util.*;
 */
 public class LogViewer extends StdWebMacro
 {
-	public String name() { return "LogViewer"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "LogViewer"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String s=Log.instance().getLog().toString();

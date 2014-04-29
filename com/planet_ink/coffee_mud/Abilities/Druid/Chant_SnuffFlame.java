@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SnuffFlame extends Chant
 {
-	public String ID() { return "Chant_SnuffFlame"; }
-	public String name(){ return "Snuff Flame";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Chant_SnuffFlame"; }
+	@Override public String name(){ return "Snuff Flame";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget, Wearable.FILTER_ANY);

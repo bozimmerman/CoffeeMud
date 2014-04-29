@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +36,28 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
-	public String ID() { return "Prayer_Doomspout"; }
-	public String name(){ return "Doomspout";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "(Doomspout)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int difficultyLevel(){return 7;}
+	@Override public String ID() { return "Prayer_Doomspout"; }
+	@Override public String name(){ return "Doomspout";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String displayText(){ return "(Doomspout)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int difficultyLevel(){return 7;}
 	int plagueDown=4;
 	String godName="The Demon";
 	protected boolean ispoke=false;
 
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Profound mental compulsion disorder.";
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -109,6 +110,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -117,6 +119,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,3);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -124,8 +127,9 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		&&(msg.source()==affected)
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK))
 			ispoke=true;
-	}	
-	
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -143,6 +147,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -152,7 +157,8 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

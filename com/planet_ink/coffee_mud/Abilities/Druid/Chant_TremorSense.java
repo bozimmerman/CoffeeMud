@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_TremorSense extends Chant
 {
-	public String ID() { return "Chant_TremorSense"; }
-	public String name(){return "Tremor Sense";}
-	public String displayText(){return "(Tremor Sense)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	@Override public String ID() { return "Chant_TremorSense"; }
+	@Override public String name(){return "Tremor Sense";}
+	@Override public String displayText(){return "(Tremor Sense)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected Vector<Room> rooms=new Vector();
 
+	@Override
 	public CMObject copyOf()
 	{
 		Chant_TremorSense obj=(Chant_TremorSense)super.copyOf();
@@ -52,7 +53,8 @@ public class Chant_TremorSense extends Chant
 		obj.rooms.addAll(rooms);
 		return obj;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -77,6 +79,7 @@ public class Chant_TremorSense extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -123,6 +126,7 @@ public class Chant_TremorSense extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

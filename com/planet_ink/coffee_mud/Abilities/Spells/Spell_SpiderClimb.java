@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SpiderClimb extends Spell
 {
-	public String ID() { return "Spell_SpiderClimb"; }
-	public String name(){return "Spider Climb";}
-	public String displayText(){return "(Spider Climb)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_SpiderClimb"; }
+	@Override public String name(){return "Spider Climb";}
+	@Override public String displayText(){return "(Spider Climb)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
@@ -52,6 +53,7 @@ public class Spell_SpiderClimb extends Spell
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 		}
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -66,6 +68,7 @@ public class Spell_SpiderClimb extends Spell
 			room.recoverRoomStats();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

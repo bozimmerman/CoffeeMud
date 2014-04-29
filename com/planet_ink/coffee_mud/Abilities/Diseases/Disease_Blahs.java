@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Blahs extends Disease
 {
-	public String ID() { return "Disease_Blahs"; }
-	public String name(){ return "Blahs";}
-	public String displayText(){ return "(The Blahs)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 4;}
+	@Override public String ID() { return "Disease_Blahs"; }
+	@Override public String name(){ return "Blahs";}
+	@Override public String displayText(){ return "(The Blahs)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 4;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return 20;}
-	protected String DISEASE_DONE(){return "You feel a little better.";}
-	protected String DISEASE_START(){return "^G<S-NAME> get(s) the blahs.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> sigh(s).";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return 20;}
+	@Override protected String DISEASE_DONE(){return "You feel a little better.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) the blahs.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> sigh(s).";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -85,7 +86,8 @@ public class Disease_Blahs extends Disease
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,23 @@ import java.util.*;
 */
 public class Prop_Crawlspace extends Property
 {
-	public String ID() { return "Prop_Crawlspace"; }
-	public String name(){ return "Room navigation limitation";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_Crawlspace"; }
+	@Override public String name(){ return "Room navigation limitation";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
 	public String accountForYourself()
 	{ return "Must be crawled through.";	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCRUNCHEDIN);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))

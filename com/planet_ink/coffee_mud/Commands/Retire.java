@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,8 @@ public class Retire extends StdCommand
 	public Retire(){}
 
 	private final String[] access={"RETIRE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -51,14 +52,14 @@ public class Retire extends StdCommand
 		mob.tell("^HThis will delete your player from the system FOREVER!");
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
-			@Override public void showPrompt() 
+			@Override public void showPrompt()
 			{
 				session.promptPrint("If that's what you want, re-enter your password: ");
 			}
 			@Override public void timedOut() {}
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
-				if(input.trim().length()==0) 
+				if(input.trim().length()==0)
 					return;
 				if(!pstats.matchesPassword(input.trim()))
 					mob.tell("Password incorrect.");
@@ -73,14 +74,14 @@ public class Retire extends StdCommand
 					else
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"")
 					{
-						@Override public void showPrompt() 
+						@Override public void showPrompt()
 						{
 							session.promptPrint("OK.  Please leave us a short message as to why you are deleting this"
 										+" character.  Your answers will be kept confidential, "
 										+"and are for administrative purposes only.\n\r: ");
 						}
 						@Override public void timedOut() {}
-						@Override public void callBack() 
+						@Override public void callBack()
 						{
 							Log.sysOut("Retire","Retired: "+mob.Name()+": "+this.input);
 							CMLib.players().obliteratePlayer(mob,true,false);
@@ -92,9 +93,9 @@ public class Retire extends StdCommand
 		});
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

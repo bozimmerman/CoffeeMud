@@ -20,7 +20,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.CMCatalog.CataDataImpl;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public class RoomLoader
 	private int currentRecordPos=1;
 	private int updateBreak=1;
 	private final static String zeroes="000000000000";
-	
+
 	protected static class StuffClass
 	{
 		public Hashtable<String,Hashtable<String,PhysicalAgent>> itemNums=new Hashtable<String,Hashtable<String,PhysicalAgent>>();
@@ -92,7 +92,7 @@ public class RoomLoader
 		}
 		return null;
 	}
-	
+
 	protected void DBReadAllAreas()
 	{
 		DBConnection D=null;
@@ -126,7 +126,7 @@ public class RoomLoader
 				A.setTheme((int)DBConnections.getLongRes(R,"CMTECH"));
 				if((currentRecordPos%updateBreak)==0)
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
-				
+
 				CMLib.map().addArea(A);
 				areasLoaded.add(new Pair<Area,String>(A,miscData));
 			}
@@ -152,7 +152,7 @@ public class RoomLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
 	{
 		RoomnumberSet roomSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
@@ -177,12 +177,12 @@ public class RoomLoader
 		}
 		return roomSet;
 	}
-	
+
 	public Map<String, Room> DBReadRoomData(String singleRoomIDtoLoad, boolean reportStatus)
-	{ 
+	{
 		return DBReadRoomData(singleRoomIDtoLoad,null,reportStatus,null,null);
 	}
-	
+
 	public Room[] DBReadRoomObjects(String areaName, boolean reportStatus)
 	{
 		DBConnection D=null;
@@ -205,7 +205,7 @@ public class RoomLoader
 		}
 		return new Room[0];
 	}
-	
+
 	private void buildExistingRoomObject(ResultSet R, Room newRoom) throws SQLException
 	{
 		newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
@@ -242,7 +242,7 @@ public class RoomLoader
 		}
 		return rooms;
 	}
-	
+
 	public boolean DBReReadRoomObject(Room room)
 	{
 		if((room==null)||(room.roomID()==null))
@@ -268,7 +268,7 @@ public class RoomLoader
 		}
 		return true;
 	}
-	
+
 	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
 	{
 		DBConnection D=null;
@@ -292,15 +292,16 @@ public class RoomLoader
 		}
 		return null;
 	}
-	
+
 	public Map<String,Room> DBReadRoomData(String singleRoomIDtoLoad,
 										   RoomnumberSet roomsToLoad,
-										   boolean reportStatus, 
-										   List<String> unknownAreas, 
+										   boolean reportStatus,
+										   List<String> unknownAreas,
 										   RoomnumberSet unloadedRooms)
 	{
 		STreeMap<String, Room> roomSet = new STreeMap<String, Room>(new Comparator<String>()
 		{
+			@Override
 			public int compare(String o1, String o2)
 			{
 				if(o1==o2) return 0;
@@ -384,7 +385,7 @@ public class RoomLoader
 		map.put(roomID, room);
 		DBReadRoomExits(roomID,map,reportStatus,null);
 	}
-	
+
 	public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus, RoomnumberSet unloadedRooms)
 	{
 		DBConnection D=null;
@@ -453,7 +454,7 @@ public class RoomLoader
 						if(newExit!=null)
 							newExit.setTemporaryDoorLink(nextRoomID);
 					}
-							
+
 					if((newExit==null)&&(newRoom==null))
 						Log.errOut("Room",roomID+":no room&exit to '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
 					else
@@ -515,7 +516,7 @@ public class RoomLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public void DBReadAllRooms(RoomnumberSet set)
 	{
 		List<String> newAreasToCreate=new Vector<String>();
@@ -526,7 +527,7 @@ public class RoomLoader
 
 		RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		Map<String,Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
-		
+
 		// handle stray areas
 		for(String areaName : newAreasToCreate)
 		{
@@ -542,7 +543,7 @@ public class RoomLoader
 					R.setArea(A);
 			}
 		}
-		
+
 		DBReadRoomExits(null,rooms,set==null,unloadedRooms);
 
 		DBReadContent(null,null,rooms,unloadedRooms,set==null,true);
@@ -561,7 +562,7 @@ public class RoomLoader
 			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				a.nextElement().getAreaStats();
 	}
-	
+
 	public String DBReadRoomDesc(String roomID)
 	{
 		DBConnection D=null;
@@ -586,7 +587,7 @@ public class RoomLoader
 		}
 		return null;
 	}
-	
+
 	public String DBReadRoomMOBData(String roomID, String mobID)
 	{
 		DBConnection D=null;
@@ -700,25 +701,25 @@ public class RoomLoader
 		if(mobRides!=null)
 			fixMOBRides(mobRides,content);
 	}
-	
+
 	public void DBReadCatalogs()
 	{
 		DBReadContent("CATALOG_MOBS",null,null,null,true,false);
 		DBReadContent("CATALOG_ITEMS",null,null,null,true,false);
 	}
-	
+
 	public void DBReadContent(String thisRoomID, Room thisRoom, Map<String, Room> rooms, RoomnumberSet unloadedRooms, boolean setStatus, boolean makeLive)
 	{
 		boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
-		
+
 		StuffClass stuff=new StuffClass();
 		Hashtable<String,PhysicalAgent> itemNums=null;
 		Hashtable<String,String> cataData=null;
 		Hashtable<Item,String> itemLocs=null;
 		Hashtable<MOB, String> mobRides=null;
-		
+
 		boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
 
 		DBConnection D=null;
@@ -937,7 +938,7 @@ public class RoomLoader
 				Item oldI=CMLib.catalog().getCatalogItem(I.Name());
 				if((oldI!=null)&&(I.databaseID().length()>0)&&(!oldI.databaseID().equals(I.databaseID())))
 					DBDeleteRoomItem("CATALOG_ITEMS", I);
-				else	
+				else
 				{
 					CMLib.catalog().submitToCatalog(I);
 					if((data!=null)&&(data.length()>0))
@@ -967,7 +968,7 @@ public class RoomLoader
 				MOB oldM=CMLib.catalog().getCatalogMob(M.Name());
 				if((oldM!=null)&&(M.databaseID().length()>0)&&(!oldM.databaseID().equals(M.databaseID())))
 					DBDeleteRoomMOB("CATALOG_MOBS", M);
-				else	
+				else
 				{
 					CMLib.catalog().submitToCatalog(M);
 					if((data!=null)&&(data.length()>0))
@@ -979,7 +980,7 @@ public class RoomLoader
 				}
 			}
 		}
-		
+
 		// now load the rooms
 		if(rooms!=null)
 		for(Map.Entry<String,Room> entry : rooms.entrySet())
@@ -996,7 +997,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 	}
 
-	
+
 	private List<Item> DBGetContents(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return new Vector<Item>();
@@ -1009,7 +1010,7 @@ public class RoomLoader
 		}
 		return contents;
 	}
-	
+
 	protected DBPreparedBatchEntry getDBCreateItemString(String roomID, Item thisItem)
 	{
 		boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
@@ -1062,7 +1063,7 @@ public class RoomLoader
 	{
 		DB.updateWithClobs(getDBCreateItemString(roomID,thisItem));
 	}
-	
+
 	public void DBUpdateTheseItems(Room room, List<Item> items)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
@@ -1080,7 +1081,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Finished items update for room "+room.roomID());
 	}
-	
+
 	public void DBUpdateItems(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
@@ -1090,7 +1091,7 @@ public class RoomLoader
 	public void DBUpdateExits(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
-		
+
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
@@ -1099,7 +1100,7 @@ public class RoomLoader
 		{
 			Exit thisExit=room.getRawExit(d);
 			Room thisRoom=room.rawDoors()[d];
-			
+
 			if((thisExit!=null)&&(!thisExit.isSavable()))
 				thisExit=null;
 			if((thisRoom!=null)&&(!thisRoom.isSavable()))
@@ -1177,13 +1178,13 @@ public class RoomLoader
 	{
 		DB.updateWithClobs(getDBCreateMOBString(roomID,thisMOB));
 	}
-	
+
 	public DBPreparedBatchEntry getDBCreateMOBString(String roomID, MOB thisMOB)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
 		boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
-		
+
 		String ride=null;
 		if(thisMOB.riding()!=null)
 			ride=""+thisMOB.riding();
@@ -1194,13 +1195,13 @@ public class RoomLoader
 			ride="";
 		String mobID=""+thisMOB;
 		thisMOB.setDatabaseID(mobID);
-		
+
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
-		
+
 		if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))&&(!catalog))
 		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
-		
+
 		String text=thisMOB.text();
 		if(catalog)
 		{
@@ -1230,7 +1231,7 @@ public class RoomLoader
 		+")",
 		text+" ");
 	}
-	
+
 	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
@@ -1300,13 +1301,13 @@ public class RoomLoader
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROOM)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
-		
+
 		DB.update(
 		"UPDATE CMROOM SET "
 		+"CMROID='"+room.roomID()+"', "
 		+"CMAREA='"+room.getArea().Name()+"' "
 		+"WHERE CMROID='"+oldID+"'");
-		
+
 		if(CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
 			for(int m=0;m<room.numInhabitants();m++)
 			{
@@ -1314,7 +1315,7 @@ public class RoomLoader
 				if((M!=null)&&(M.isSavable()))
 					M.setMiscText(M.text());
 			}
-		
+
 		DB.update(
 		"UPDATE CMROCH SET "
 		+"CMROID='"+room.roomID()+"' "
@@ -1324,17 +1325,17 @@ public class RoomLoader
 		"UPDATE CMROEX SET "
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
-		
+
 		DB.update(
 		"UPDATE CMROEX SET "
 		+"CMNRID='"+room.roomID()+"' "
 		+"WHERE CMNRID='"+oldID+"'");
-		
+
 		DB.update(
 		"UPDATE CMROIT SET "
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
-		
+
 		DB.update(
 		"UPDATE CMCHAR SET "
 		+"CMROID='"+room.roomID()+"' "
@@ -1354,7 +1355,7 @@ public class RoomLoader
 		}
 
 		CMLib.map().registerWorldObjectLoaded(A, null, A);
-		
+
 		DB.updateWithClobs(
 		"INSERT INTO CMAREA ("
 		+"CMAREA,"
@@ -1411,7 +1412,7 @@ public class RoomLoader
 		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMITNM='"+keyName+"'");
 	}
-	
+
 	public void DBUpdateRoomItem(String roomID, Item item)
 	{
 		if((roomID==null)||(!item.isSavable())||(item.amDestroyed())) return;
@@ -1425,7 +1426,7 @@ public class RoomLoader
 				Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		}
 	}
-	
+
 	public void DBDeleteRoomMOB(String roomID, MOB mob)
 	{
 		String keyName=mob.databaseID();
@@ -1437,7 +1438,7 @@ public class RoomLoader
 		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMCHNM='"+keyName+"'");
 	}
-	
+
 	public void DBUpdateRoomMOB(String roomID, MOB mob)
 	{
 		if((roomID==null)||(!mob.isSavable())||(mob.amDestroyed())) return;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Berzerk extends FighterSkill
 {
-	public String ID() { return "Fighter_Berzerk"; }
-	public String name(){ return "Berzerk";}
-	public String displayText(){ return "(Berzerk)";}
+	@Override public String ID() { return "Fighter_Berzerk"; }
+	@Override public String name(){ return "Berzerk";}
+	@Override public String displayText(){ return "(Berzerk)";}
 	private static final String[] triggerStrings = {"BERZERK"};
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
 	public int hpAdjustment=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -62,6 +63,7 @@ public class Fighter_Berzerk extends FighterSkill
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
@@ -69,6 +71,7 @@ public class Fighter_Berzerk extends FighterSkill
 			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affecting() instanceof MOB)
@@ -89,6 +92,7 @@ public class Fighter_Berzerk extends FighterSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +102,8 @@ public class Fighter_Berzerk extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

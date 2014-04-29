@@ -38,12 +38,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Torturesmithing"; }
-	public String name(){ return "Torturesmithing";}
+	@Override public String ID() { return "Torturesmithing"; }
+	@Override public String name(){ return "Torturesmithing";}
 	private static final String[] triggerStrings = {"TORTURESMITH","TORTURESMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 	   +"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
@@ -62,9 +63,10 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_MATERIAL=9;
 	protected static final int RCP_SPELL=10;
 
-	public String parametersFile(){ return "torturesmith.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "torturesmith.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -97,14 +99,15 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(!CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(!CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof Ammunition)
 			return false;
@@ -125,6 +128,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 
 	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
 
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -138,16 +142,18 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -226,13 +232,13 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \""+triggerStrings[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		String materialtype=foundRecipe.get(RCP_MATERIAL);

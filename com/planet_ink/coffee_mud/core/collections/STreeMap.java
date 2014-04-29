@@ -29,7 +29,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V> 
+public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V>
 {
 	private static final long serialVersionUID = -6713012858839312626L;
 	private volatile TreeMap<K,V> T;
@@ -41,7 +41,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	{
 		T=new TreeMap<K,V>(comp);
 	}
-	
+
 	public STreeMap(Map<K,V> E)
 	{
 		T=new TreeMap<K,V>();
@@ -49,7 +49,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 			for(K o : E.keySet())
 				put(o,E.get(o));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized TreeMap<K,V> toTreeMap()
 	{
@@ -90,7 +90,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized STreeMap<K,V> copyOf() 
+	public synchronized STreeMap<K,V> copyOf()
 	{
 		STreeMap<K,V> SH=new STreeMap<K,V>();
 		SH.T=(TreeMap<K,V>)T.clone();

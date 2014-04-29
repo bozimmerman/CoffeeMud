@@ -32,7 +32,7 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-public class MWThreadExecutor extends ThreadPoolExecutor 
+public class MWThreadExecutor extends ThreadPoolExecutor
 {
 	protected HashMap<Runnable,MWRunWrap>active 		= new HashMap<Runnable,MWRunWrap>();
 	protected long  				 	 timeoutMillis;
@@ -52,12 +52,12 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
 	}
-	
+
 	public MWThreadExecutor(String poolName,
 							MiniWebConfig config,
 							int corePoolSize, int maximumPoolSize,
-							long keepAliveTime, TimeUnit unit, 
-							long timeoutSecs, int queueSize) 
+							long keepAliveTime, TimeUnit unit,
+							long timeoutSecs, int queueSize)
 	{
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new CMLinkedBlockingQueue<Runnable>(queueSize));
 		((CMLinkedBlockingQueue<Runnable>)getQueue()).executor=this;
@@ -75,8 +75,9 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		});
 	}
 
-	protected void beforeExecute(Thread t, Runnable r) 
-	{ 
+	@Override
+	protected void beforeExecute(Thread t, Runnable r)
+	{
 		synchronized(active)
 		{
 			try
@@ -89,9 +90,10 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			}
 		}
 	}
-	
-	protected void afterExecute(Runnable r, Throwable t) 
-	{ 
+
+	@Override
+	protected void afterExecute(Runnable r, Throwable t)
+	{
 		synchronized(active)
 		{
 			try
@@ -109,8 +111,9 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 	public int getActiveCount()
 	{
 		return active.size();
-	} 
-	
+	}
+
+	@Override
 	public void execute(Runnable r)
 	{
 		try
@@ -118,7 +121,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			if(this.getQueue().contains(r))
 				return;
 			super.execute(r);
-			
+
 			// an optomization for logging purposes.  When my smtp server gets hit
 			// by a spam-bot, the log fills up my hard drive.  this helps prevent that.
 			if((rejectCount>0)&&(System.currentTimeMillis()-lastRejectTime)>5000)
@@ -137,7 +140,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			rejectCount++;
 		}
 	}
-	
+
 	/**
 	 * Scans the list of active running threads/runnables for ones that have
 	 * been active longer than permitted.  It will attempt to kill those, returning
@@ -185,7 +188,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 					}
 				}
 			}
-			catch(Exception e) 
+			catch(Exception e)
 			{ /**/ }
 		}
 		while(killedOut.size()>0)
@@ -196,7 +199,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 				thread.interrupt();
 				//CMLib.killThread(t,100,3);
 			}
-			catch(Exception e)  
+			catch(Exception e)
 			{ /**/ }
 		}
 		return timedOut;

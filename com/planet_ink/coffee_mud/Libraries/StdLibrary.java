@@ -23,13 +23,14 @@ limitations under the License.
 */
 public class StdLibrary implements CMLibrary, Tickable
 {
-	public String ID(){return "StdLibrary";}
+	@Override public String ID(){return "StdLibrary";}
 	protected String name=ID();
-	public String name(){return name; }
+	@Override public String name(){return name; }
 	protected int tickStatus=Tickable.STATUS_NOT;
-	protected TickClient serviceClient=null; 
+	protected TickClient serviceClient=null;
 	protected boolean isDebugging = false;
-	
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -43,33 +44,38 @@ public class StdLibrary implements CMLibrary, Tickable
 		return new StdLibrary();
 	}
 
-	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	
+	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+
+	@Override
 	public void initializeClass()
 	{
 	}
-	
+
+	@Override
 	public boolean activate()
 	{
 		return true;
 	}
-	
+
+	@Override
 	public void propertiesLoaded()
 	{
 	}
-	
+
+	@Override
 	public boolean shutdown()
 	{
 		return true;
 	}
-	
-	public TickClient getServiceClient() 
+
+	@Override
+	public TickClient getServiceClient()
 	{
 		return serviceClient;
 	}
-	
+
 	public void setThreadStatus(TickClient C, String msg)
 	{
 		if(C!=null)
@@ -79,19 +85,19 @@ public class StdLibrary implements CMLibrary, Tickable
 				Log.debugOut(C.getName(),msg);
 		}
 	}
-	
+
 	@Override
-	public int getTickStatus() 
+	public int getTickStatus()
 	{
 		return Tickable.STATUS_NOT;
 	}
-	
+
 	@Override
-	public boolean tick(Tickable ticking, int tickID) 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		return false;
 	}
-	
+
 	protected boolean checkDatabase()
 	{
 		setThreadStatus(serviceClient,"pinging connections");

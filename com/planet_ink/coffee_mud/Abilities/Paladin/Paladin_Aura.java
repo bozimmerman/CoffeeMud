@@ -36,9 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_Aura extends PaladinSkill
 {
-	public String ID() { return "Paladin_Aura"; }
-	public String name(){ return "Paladin`s Aura";}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public String ID() { return "Paladin_Aura"; }
+	@Override public String name(){ return "Paladin`s Aura";}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Aura()
 	{
 		super();
@@ -46,6 +46,7 @@ public class Paladin_Aura extends PaladinSkill
 	}
 	protected boolean pass=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -69,6 +70,7 @@ public class Paladin_Aura extends PaladinSkill
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

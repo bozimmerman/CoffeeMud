@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Charge extends FighterSkill
 {
-	public String ID() { return "Fighter_Charge"; }
-	public String name(){ return "Charge";}
+	@Override public String ID() { return "Fighter_Charge"; }
+	@Override public String name(){ return "Charge";}
 	private static final String[] triggerStrings = {"CHARGE"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public String displayText(){return "(Charging!!)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int minRange(){return 1;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String displayText(){return "(Charging!!)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int minRange(){return 1;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	protected int code=0;
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int c){code=c;}
-	
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int c){code=c;}
+
 	public boolean done=false;
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -64,6 +65,7 @@ public class Fighter_Charge extends FighterSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -71,6 +73,7 @@ public class Fighter_Charge extends FighterSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -80,6 +83,7 @@ public class Fighter_Charge extends FighterSkill
 		affectableStats.setArmor(affectableStats.armor()+(2*(xlvl+affected.phyStats().level())));
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -91,7 +95,8 @@ public class Fighter_Charge extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean notInCombat=!mob.isInCombat();

@@ -36,19 +36,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Paladin extends StdCharClass
 {
-	public String ID(){return "Paladin";}
-	public String name(){return "Paladin";}
-	public String baseClass(){return "Fighter";}
-	public int getBonusPracLevel(){return 0;}
-	public int getBonusAttackLevel(){return 0;}
-	public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public int getPracsFirstLevel(){return 3;}
-	public int getTrainsFirstLevel(){return 4;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
-	public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?3))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	@Override public String ID(){return "Paladin";}
+	@Override public String name(){return "Paladin";}
+	@Override public String baseClass(){return "Fighter";}
+	@Override public int getBonusPracLevel(){return 0;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public int getPracsFirstLevel(){return 3;}
+	@Override public int getTrainsFirstLevel(){return 4;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?3))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 
 	public Paladin()
 	{
@@ -56,6 +56,7 @@ public class Paladin extends StdCharClass
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -152,9 +153,10 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -175,9 +177,10 @@ public class Paladin extends StdCharClass
 		}
 	}
 
-	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	public String getOtherLimitsDesc(){return "Must remain good to avoid spell/skill failure chance.";}
-	public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	@Override public String getOtherLimitsDesc(){return "Must remain good to avoid spell/skill failure chance.";}
+	@Override public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -195,15 +198,16 @@ public class Paladin extends StdCharClass
 		return super.okMessage(myChar, msg);
 	}
 	private final String[] raceRequiredList=new String[]{"Human"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Strength",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

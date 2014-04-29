@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraHarm extends Prayer
 {
-	public String ID() { return "Prayer_AuraHarm"; }
-	public String name(){ return "Aura of Harm";}
-	public String displayText(){ return "(Harm Aura)";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_AuraHarm"; }
+	@Override public String name(){ return "Aura of Harm";}
+	@Override public String displayText(){ return "(Harm Aura)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	private int damageTickDown=4;
 
 	public Prayer_AuraHarm()
@@ -54,6 +54,7 @@ public class Prayer_AuraHarm extends Prayer
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +68,7 @@ public class Prayer_AuraHarm extends Prayer
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The harmful aura around you fades.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -103,7 +105,8 @@ public class Prayer_AuraHarm extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -119,7 +122,8 @@ public class Prayer_AuraHarm extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

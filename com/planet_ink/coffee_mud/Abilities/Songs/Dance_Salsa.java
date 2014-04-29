@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Dance_Salsa extends Dance
 {
-	public String ID() { return "Dance_Salsa"; }
-	public String name(){ return "Salsa";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Dance_Salsa"; }
+	@Override public String name(){ return "Salsa";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -97,6 +98,7 @@ public class Dance_Salsa extends Dance
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -106,7 +108,8 @@ public class Dance_Salsa extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

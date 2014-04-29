@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Plague extends Disease
 {
-	public String ID() { return "Disease_Plague"; }
-	public String name(){ return "The Plague";}
-	public String displayText(){ return "(Plague)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Plague"; }
+	@Override public String name(){ return "The Plague";}
+	@Override public String displayText(){ return "(Plague)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 48;}
-	protected int DISEASE_DELAY(){return 4;}
-	protected String DISEASE_DONE(){return "The sores on your face clear up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) seriously ill!^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 48;}
+	@Override protected int DISEASE_DELAY(){return 4;}
+	@Override protected String DISEASE_DONE(){return "The sores on your face clear up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) seriously ill!^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 0;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -72,6 +73,7 @@ public class Disease_Plague extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

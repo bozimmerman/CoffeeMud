@@ -35,21 +35,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Poison_Alcohol extends Poison
 {
-	public String ID() { return "Poison_Alcohol"; }
-	public String name(){ return "Alcohol";}
+	@Override public String ID() { return "Poison_Alcohol"; }
+	@Override public String name(){ return "Alcohol";}
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
-	public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
-	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
+	@Override public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
-	protected int POISON_TICKS(){return 65;}
-	protected int POISON_DELAY(){return 1;}
-	protected String POISON_DONE(){return "You feel sober again.";}
-	protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}
-	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return 0;}
+	@Override protected int POISON_TICKS(){return 65;}
+	@Override protected int POISON_DELAY(){return 1;}
+	@Override protected String POISON_DONE(){return "You feel sober again.";}
+	@Override protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}
+	@Override protected String POISON_AFFECT(){return "";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return 0;}
 	protected boolean disableHappiness=false;
 
 	protected int alchoholContribution(){return 1;}
@@ -62,11 +62,13 @@ public class Poison_Alcohol extends Poison
 		drunkness=5;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).phyStats().level()));
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
@@ -74,6 +76,7 @@ public class Poison_Alcohol extends Poison
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -90,10 +93,11 @@ public class Poison_Alcohol extends Poison
 		super.unInvoke();
 	}
 
+	@Override
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		boolean caughtIt=super.catchIt(mob,target);
-		if(!(affected instanceof Drink)) 
+		if(!(affected instanceof Drink))
 			return caughtIt;
 		if(CMLib.dice().roll(1,1000,0)>(alchoholContribution()*alchoholContribution()*alchoholContribution()))
 			return caughtIt;
@@ -109,6 +113,7 @@ public class Poison_Alcohol extends Poison
 		}
 		return caughtIt;
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -224,6 +229,7 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -258,7 +264,7 @@ public class Poison_Alcohol extends Poison
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{
-				
+
 				Room room=msg.source().location();
 				if((msg.target() !=null)&&(msg.target() instanceof MOB)&&(room!=null))
 				{
@@ -280,6 +286,7 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();

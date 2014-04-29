@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,27 +34,30 @@ import java.util.*;
 */
 public class Prop_StatTrainer extends Property
 {
-	public String ID() { return "Prop_StatTrainer"; }
-	public String name(){ return "Good training MOB";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_StatTrainer"; }
+	@Override public String name(){ return "Good training MOB";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected static final int[] all25=new int[CharStats.CODES.instance().total()];
 	static { for(int i : CharStats.CODES.BASE()) all25[i]=25;}
 	protected int[] stats=all25;
 	protected boolean noteach=false;
 
+	@Override
 	public String accountForYourself()
 	{ return "Stats Trainer";	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
 			affectedMOB.setBitmap(CMath.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
-		
+
 		for(int i: CharStats.CODES.BASE())
 			affectableStats.setStat(i,stats[i]);
 	}
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);

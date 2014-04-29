@@ -37,18 +37,18 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings("rawtypes")
 public class Thief_KillLog extends ThiefSkill
 {
-	public String ID() { return "Thief_KillLog"; }
-	public String name(){ return "Kill Log";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Thief_KillLog"; }
+	@Override public String name(){ return "Kill Log";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	private static final String[] triggerStrings = {"KILLLOG"};
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 	protected Map<String,String[]> theList=new Hashtable<String,String[]>();
 	protected Thief_Mark lastMarker=null;
 	public MOB mark=null;
@@ -68,6 +68,7 @@ public class Thief_KillLog extends ThiefSkill
 		return null;
 	}
 
+	@Override
 	public String text()
 	{
 		StringBuffer str=new StringBuffer("<MOBS>");
@@ -83,7 +84,8 @@ public class Thief_KillLog extends ThiefSkill
 		str.append("</MOBS>");
 		return str.toString();
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		Thief_KillLog obj=(Thief_KillLog)super.copyOf();
@@ -92,6 +94,7 @@ public class Thief_KillLog extends ThiefSkill
 		return obj;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((mark!=null)
@@ -122,6 +125,7 @@ public class Thief_KillLog extends ThiefSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public void setMiscText(String str)
 	{
 		theList.clear();
@@ -146,6 +150,7 @@ public class Thief_KillLog extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -178,6 +183,7 @@ public class Thief_KillLog extends ThiefSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

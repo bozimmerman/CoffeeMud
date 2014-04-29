@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,36 +23,36 @@ limitations under the License.
  * and removes by copying the underlying vector whenever those
  * operations are done.
  */
-public class XHashtable<K,V> extends Hashtable<K,V> 
+public class XHashtable<K,V> extends Hashtable<K,V>
 {
 	private static final long serialVersionUID = 6687178785122563992L;
-	
+
 	public XHashtable()
 	{
 		super();
 	}
-	
+
 	public XHashtable(Map<K,V> V)
 	{
 		super();
 		if(V!=null)
 			putAll(V);
 	}
-	
+
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				remove(E.nextElement());
 	}
-	
+
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				remove(E.next());
 	}
-	
+
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)

@@ -15,14 +15,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlyNavigableSet<K> implements NavigableSet<K> 
+public class ReadOnlyNavigableSet<K> implements NavigableSet<K>
 {
 	private NavigableSet<K> set;
 	public ReadOnlyNavigableSet(NavigableSet<K> s)
 	{
 		set=s;
 	}
-	
+
 	@Override
 	public K ceiling(K arg0)
 	{

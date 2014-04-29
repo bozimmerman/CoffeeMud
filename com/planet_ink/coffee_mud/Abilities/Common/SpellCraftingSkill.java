@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,10 +40,10 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class SpellCraftingSkill extends CraftingSkill
 {
-	public String ID() { return "SpellCraftingSkill"; }
-	public String name(){ return "Spell Crafting Skill";}
+	@Override public String ID() { return "SpellCraftingSkill"; }
+	@Override public String name(){ return "Spell Crafting Skill";}
 	public SpellCraftingSkill(){super();}
-	
+
 	protected String getCraftableSpellName(Vector commands)
 	{
 		String spellName=null;
@@ -75,7 +75,7 @@ public class SpellCraftingSkill extends CraftingSkill
 				{ spellFound=V; break;}
 		return spellFound;
 	}
-	
+
 	protected Ability getCraftableSpellRecipeSpell(Vector commands)
 	{
 		Ability theSpell=null;

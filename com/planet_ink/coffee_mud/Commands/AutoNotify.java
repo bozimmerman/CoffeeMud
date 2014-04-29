@@ -39,8 +39,9 @@ public class AutoNotify extends StdCommand
 	public AutoNotify(){}
 
 	private final String[] access={"AUTONOTIFY"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -56,6 +57,6 @@ public class AutoNotify extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
 }

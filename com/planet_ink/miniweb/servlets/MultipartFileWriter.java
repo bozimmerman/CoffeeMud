@@ -71,7 +71,7 @@ public class MultipartFileWriter implements SimpleServlet
 			}
 		}
 	}
-	
+
 	@Override
 	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
 	{

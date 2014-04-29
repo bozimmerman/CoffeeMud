@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRoom implements Room
 {
-	public String ID(){return "StdRoom";}
+	@Override public String ID(){return "StdRoom";}
 	protected String		myID="";
 	protected String		name="the room";
 	protected String		displayText="Standard Room";
@@ -68,7 +68,7 @@ public class StdRoom implements Room
 	protected Room						me=this;
 
 	// base move points and thirst points per round
-	
+
 	public StdRoom()
 	{
 		super();
@@ -78,7 +78,8 @@ public class StdRoom implements Room
 		recoverPhyStats();
 	}
 	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.LOCALE); }//removed for mem & perf
-	public void initializeClass(){}
+	@Override public void initializeClass(){}
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -92,43 +93,51 @@ public class StdRoom implements Room
 		return new StdRoom();
 	}
 
+	@Override
 	public String roomID()
 	{
 		return myID	;
 	}
-	
+
+	@Override
 	public String Name()
 	{
 		return name;
 	}
-	
+
+	@Override
 	public void setName(String newName)
 	{
 		name=newName;
 	}
-	
+
+	@Override
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
-	
-	public String name(MOB viewerMob) 
+
+	@Override
+	public String name(MOB viewerMob)
 	{
-		return name(); 
+		return name();
 	}
 
-	public int getAtmosphereCode() 
+	@Override
+	public int getAtmosphereCode()
 	{
-		return atmosphere; 
+		return atmosphere;
 	}
-	
-	public void setAtmosphere(int resourceCode) 
+
+	@Override
+	public void setAtmosphere(int resourceCode)
 	{
-		atmosphere=resourceCode; 
+		atmosphere=resourceCode;
 	}
-	
-	public int getAtmosphere() 
+
+	@Override
+	public int getAtmosphere()
 	{
 		if(getGridParent()!=null)
 			return getGridParent().getAtmosphere();
@@ -138,7 +147,8 @@ public class StdRoom implements Room
 		else
 			return (myArea==null)?RawMaterial.RESOURCE_AIR:myArea.getAtmosphere();
 	}
-	
+
+	@Override
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -150,14 +160,16 @@ public class StdRoom implements Room
 		}
 		return cachedImageName;
 	}
-	
+
+	@Override
 	public String rawImage()
 	{
-		if(rawImageName==null) 
+		if(rawImageName==null)
 			return "";
 		return rawImageName;
 	}
-	
+
+	@Override
 	public void setImage(String newImage)
 	{
 		if((newImage==null)||(newImage.trim().length()==0))
@@ -167,12 +179,13 @@ public class StdRoom implements Room
 		if((cachedImageName!=null)&&(!cachedImageName.equals(newImage)))
 			cachedImageName=null;
 	}
-	
+
+	@Override
 	public boolean isGeneric()
 	{
 		return false;
 	}
-	
+
 	protected void cloneFix(Room R)
 	{
 		me=this;
@@ -244,7 +257,8 @@ public class StdRoom implements Room
 			addScript((ScriptingEngine)SE.copyOf());
 		}
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -261,23 +275,27 @@ public class StdRoom implements Room
 			return this.newInstance();
 		}
 	}
-	
+
+	@Override
 	public int domainType()
 	{
 		return Room.DOMAIN_OUTDOORS_CITY;
 	}
-	
+
+	@Override
 	public int getClimateTypeCode()
 	{
 		return climask;
 	}
-	
+
+	@Override
 	public void setClimateType(int climask)
 	{
 		this.climask=climask;
 	}
-	
-	public int getClimateType() 
+
+	@Override
+	public int getClimateType()
 	{
 		if(getGridParent()!=null)
 			return getGridParent().getClimateType();
@@ -287,28 +305,31 @@ public class StdRoom implements Room
 		else
 			return (myArea==null)?CLIMASK_NORMAL:myArea.getClimateType();
 	}
-	
+
+	@Override
 	public long expirationDate()
 	{
 		return expirationDate;
 	}
-	
+
+	@Override
 	public void setExpirationDate(long time)
 	{
 		expirationDate=time;
 	}
-	
+
+	@Override
 	public void setRawExit(int direction, Environmental to)
 	{
-		if((direction<0)||(direction>=exits.length)) 
+		if((direction<0)||(direction>=exits.length))
 			return;
 		Exit E=exits[direction];
 		if(to instanceof Room)
 			to=((Room)to).getRawExit(direction);
-		
+
 		if(E==to) return;
 		if(E!=null) E.exitUsage((short)-1);
-		
+
 		if(to instanceof Exit)
 		{
 			((Exit)to).exitUsage((short)1);
@@ -316,25 +337,28 @@ public class StdRoom implements Room
 		}
 		else
 			exits[direction]=null;
-		
+
 		/**
 		 * cant be done
-		 * 
+		 *
 		if((E!=null)&&(E.exitUsage((short)0)==0))
 			E.destroy();
 		 */
 	}
 
+	@Override
 	public String displayText()
 	{
 		return displayText;
 	}
-	
+
+	@Override
 	public void setDisplayText(String newDisplayText)
 	{
 		displayText=newDisplayText;
 	}
-	
+
+	@Override
 	public String description()
 	{
 		if(description == null)
@@ -362,7 +386,8 @@ public class StdRoom implements Room
 		else
 			return ((String)description);
 	}
-	
+
+	@Override
 	public void setDescription(String newDescription)
 	{
 		if(newDescription.length()==0)
@@ -373,30 +398,34 @@ public class StdRoom implements Room
 		else
 			description=newDescription;
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
-	
+
+	@Override
 	public String miscTextFormat()
 	{
 		return CMParms.FORMAT_UNDEFINED;
 	}
-	
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		if(newMiscText.trim().length()>0)
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
-	
+
+	@Override
 	public void setRoomID(String newID)
 	{
 		if((myID!=null)&&(!myID.equals(newID)))
 		{
 			myID=newID;
 			if(myArea!=null)
-			{ 
+			{
 				// force the re-sort
 				myArea.delProperRoom(this);
 				myArea.addProperRoom(this);
@@ -405,13 +434,15 @@ public class StdRoom implements Room
 		else
 			myID=newID;
 	}
-	
+
+	@Override
 	public Area getArea()
 	{
 		if(myArea==null) return CMClass.randomArea();
 		return myArea;
 	}
-	
+
+	@Override
 	public void setArea(Area newArea)
 	{
 		if(newArea!=myArea)
@@ -422,27 +453,30 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
 	public void setGridParent(GridLocale room)
 	{
-		gridParent=room; 
+		gridParent=room;
 	}
-	
+
+	@Override
 	public GridLocale getGridParent()
 	{
 		return gridParent;
 	}
-	
+
+	@Override
 	public void giveASky(int depth)
 	{
 		if(skyedYet) return;
 		if(depth>1000) return;
-		
+
 		skyedYet=true;
 		if((roomID().length()==0)
 		&&(getGridParent()!=null)
 		&&(getGridParent().roomID().length()==0))
 			return;
-		
+
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -455,8 +489,8 @@ public class StdRoom implements Room
 				upE=dnE;
 			else
 				upE=CMClass.getExit("UnseenWalkway");
-				
-					
+
+
 			GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
 			sky.setRoomID("");
 			sky.setArea(getArea());
@@ -495,6 +529,7 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
 	public void clearSky()
 	{
 		if(!skyedYet) return;
@@ -514,17 +549,20 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
 	public List<Integer> resourceChoices()
 	{
 		return null;
 	}
-	
+
+	@Override
 	public void setResource(int resourceCode)
 	{
 		myResource=resourceCode;
 		lastResourceTime= (resourceCode>=0) ? lastResourceTime=System.currentTimeMillis() : 0;
 	}
 
+	@Override
 	public int myResource()
 	{
 		if(lastResourceTime!=0)
@@ -562,21 +600,24 @@ public class StdRoom implements Room
 		return myResource;
 	}
 
+	@Override
 	public void toggleMobility(boolean onoff)
 	{
 		mobility=onoff;
 	}
-	
+
+	@Override
 	public boolean getMobility()
 	{
 		return mobility;
 	}
-	
+
 	protected Vector herbTwistChart()
 	{
 		return null;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!getArea().okMessage(this,msg))
@@ -721,6 +762,7 @@ public class StdRoom implements Room
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		getArea().executeMsg(this,msg);
@@ -784,7 +826,8 @@ public class StdRoom implements Room
 				break;
 			}
 		}
-		eachItem(new EachApplicable<Item>(){ public final void apply(final Item I)
+		eachItem(new EachApplicable<Item>(){ @Override
+		public final void apply(final Item I)
 		{
 			I.executeMsg(me, msg);
 		} });
@@ -796,19 +839,22 @@ public class StdRoom implements Room
 				E.executeMsg(this,msg);
 		}
 
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		eachBehavior(new EachApplicable<Behavior>(){ @Override
+		public final void apply(final Behavior B)
 		{
 			B.executeMsg(me, msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+		public final void apply(final ScriptingEngine S)
 		{
 			S.executeMsg(me, msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			A.executeMsg(me,msg);
 		} });
-		
+
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		{
 			try
@@ -816,7 +862,8 @@ public class StdRoom implements Room
 				if(CMSecurity.isSaveFlag("ROOMMOBS"))
 				{
 					if(roomID().length()==0)
-						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M)
+						eachInhabitant(new EachApplicable<MOB>(){ @Override
+						public final void apply(final MOB M)
 						{
 							if((M.isSavable())
 							&&(M.getStartRoom()!=me)
@@ -828,7 +875,8 @@ public class StdRoom implements Room
 				else
 				if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 				{
-					eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M)
+					eachInhabitant(new EachApplicable<MOB>(){ @Override
+					public final void apply(final MOB M)
 					{
 						if((M instanceof ShopKeeper)
 						&&(M.isSavable())
@@ -839,13 +887,14 @@ public class StdRoom implements Room
 				}
 			}catch(NoSuchElementException e){}
 		}
-		
+
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))
 		{
 			synchronized(("SYNC"+roomID()).intern())
 			{
 				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
-				eachItem(new EachApplicable<Item>(){ public final void apply(final Item I)
+				eachItem(new EachApplicable<Item>(){ @Override
+				public final void apply(final Item I)
 				{
 					if((I instanceof DeadBody)
 					&&(((DeadBody)I).playerCorpse()))
@@ -875,7 +924,8 @@ public class StdRoom implements Room
 					final Vector bodies=new Vector(1);
 					if(CMSecurity.isSaveFlag("ROOMMOBS"))
 					{
-						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M)
+						eachInhabitant(new EachApplicable<MOB>(){ @Override
+						public final void apply(final MOB M)
 						{
 							if(M.isSavable())
 							{
@@ -888,7 +938,8 @@ public class StdRoom implements Room
 					else
 					if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 					{
-						eachInhabitant(new EachApplicable<MOB>(){ public final void apply(final MOB M)
+						eachInhabitant(new EachApplicable<MOB>(){ @Override
+						public final void apply(final MOB M)
 						{
 							if((M.isSavable())
 							&&(M instanceof ShopKeeper)
@@ -900,7 +951,8 @@ public class StdRoom implements Room
 					}
 					if(CMSecurity.isSaveFlag("ROOMITEMS"))
 					{
-						eachItem(new EachApplicable<Item>(){ public final void apply(final Item I)
+						eachItem(new EachApplicable<Item>(){ @Override
+						public final void apply(final Item I)
 						{
 							if(I instanceof DeadBody)
 								bodies.add(I);
@@ -924,9 +976,11 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
 	public void startItemRejuv()
 	{
-		eachItem(new EachApplicable<Item>(){ public final void apply(final Item item)
+		eachItem(new EachApplicable<Item>(){ @Override
+		public final void apply(final Item item)
 		{
 			if(item.container()==null)
 			{
@@ -939,11 +993,13 @@ public class StdRoom implements Room
 		} });
 	}
 
+	@Override
 	public int getTickStatus()
 	{
 		return tickStatus;
 	}
 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
@@ -951,12 +1007,14 @@ public class StdRoom implements Room
 		{
 			if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			eachBehavior(new EachApplicable<Behavior>(){ @Override
+			public final void apply(final Behavior B)
 			{
 				B.tick(ticking, tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+			public final void apply(final ScriptingEngine S)
 			{
 				S.tick(ticking, tickID);
 			} });
@@ -964,7 +1022,8 @@ public class StdRoom implements Room
 		else
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			eachEffect(new EachApplicable<Ability>(){ @Override
+			public final void apply(final Ability A)
 			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
@@ -974,30 +1033,33 @@ public class StdRoom implements Room
 		return !amDestroyed();
 	}
 
+	@Override
 	public PhyStats phyStats()
 	{
 		return phyStats;
 	}
+	@Override
 	public PhyStats basePhyStats()
 	{
 		return basePhyStats;
 	}
-	
+
 	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
 	{
-		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
 	};
-	
+
 	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>()
 	{
-		public final void apply(final Item I){ I.affectPhyStats(me,phyStats);} 
+		@Override public final void apply(final Item I){ I.affectPhyStats(me,phyStats);}
 	};
-	
+
 	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>()
 	{
-		public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);} 
+		@Override public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);}
 	};
-	
+
+	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
@@ -1009,39 +1071,44 @@ public class StdRoom implements Room
 		eachItem(recoverPhyStatsItemApplicable);
 		eachInhabitant(recoverPhyStatsInhabitantApplicable);
 	}
-	
-	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>() { 
-		public final void apply(final Item I) 
-		{ 
+
+	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>() {
+		@Override
+		public final void apply(final Item I)
+		{
 			I.recoverPhyStats();
-		} 
+		}
 	};
-	
+
 	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>()
 	{
-		public final void apply(final MOB M) 
-		{ 
+		@Override
+		public final void apply(final MOB M)
+		{
 			M.recoverCharStats();
 			M.recoverPhyStats();
 			M.recoverMaxState();
-		} 
+		}
 	};
-	
+
+	@Override
 	public void recoverRoomStats()
 	{
 		recoverPhyStats();
 		eachInhabitant(recoverRoomStatsInhabitantApplicable);
 		for(final Exit X : exits)
-			if(X!=null) 
+			if(X!=null)
 				X.recoverPhyStats();
 		eachItem(recoverRoomStatsItemApplicable);
 	}
 
+	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		getArea().affectPhyStats(affected,affectableStats);
@@ -1051,30 +1118,36 @@ public class StdRoom implements Room
 			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
 		} });
 	}
-	
+
+	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
 		} });
 	}
-	
+
+	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
 		} });
 	}
-	
+
+	@Override
 	public int compareTo(CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
@@ -1093,7 +1166,7 @@ public class StdRoom implements Room
 				{
 					buf.append(text.substring(curDex, aligatorDex));
 					int y=text.indexOf(code.closeTag,aligatorDex+code.openTag.length());
-					if(y<0) 
+					if(y<0)
 					{
 						curDex = text.length();
 						y=text.length();
@@ -1135,16 +1208,19 @@ public class StdRoom implements Room
 		return text;
 	}
 
+	@Override
 	public String displayText(MOB mob)
 	{
 		return parseVaries(mob,displayText());
 	}
-	
+
+	@Override
 	public String description(MOB mob)
 	{
 		return parseVaries(mob,description());
 	}
 
+	@Override
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
 		if(mob==null) return;
@@ -1215,18 +1291,20 @@ public class StdRoom implements Room
 		recoverRoomStats();
 	}
 
-	public void moveItemTo(Item container) 
+	@Override
+	public void moveItemTo(Item container)
 	{
 		moveItemTo(container, Expire.Never);
 	}
-	
+
+	@Override
 	public void moveItemTo(Item item, Expire expire, Move... moveFlags)
 	{
 		if(item==null) return;
 
 		if(item.owner()==null) return;
 		Environmental o=item.owner();
-		
+
 		List<Item> V=new Vector();
 		if(item instanceof Container)
 			V=((Container)item).getContents();
@@ -1242,7 +1320,7 @@ public class StdRoom implements Room
 			addItem(i2);
 		}
 		item.setContainer(null);
-		
+
 		final Rideable RI=item.riding();
 		if((RI!=null)&&(o instanceof Room)&&(CMLib.map().roomLocation(RI)==o))
 		{
@@ -1283,7 +1361,7 @@ public class StdRoom implements Room
 				}
 			}
 		}
-		
+
 		if(o instanceof Room)
 			((Room)o).recoverRoomStats();
 		else
@@ -1295,7 +1373,8 @@ public class StdRoom implements Room
 		}
 		recoverRoomStats();
 	}
-	
+
+	@Override
 	public Exit getReverseExit(int direction)
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
@@ -1305,7 +1384,8 @@ public class StdRoom implements Room
 			return opRoom.getExitInDir(Directions.getOpDirectionCode(direction));
 		return null;
 	}
-	
+
+	@Override
 	public Exit getPairedExit(int direction)
 	{
 		Exit opExit=getReverseExit(direction);
@@ -1317,6 +1397,7 @@ public class StdRoom implements Room
 		return opExit;
 	}
 
+	@Override
 	public Room prepareRoomInDir(Room R, int direction)
 	{
 		if(amDestroyed)
@@ -1336,26 +1417,28 @@ public class StdRoom implements Room
 			setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
 		return this;
 	}
-	
+
+	@Override
 	public Room getRoomInDir(int direction)
 	{
 		if((direction<0)||(direction>=doors.length)||(amDestroyed))
 			return null;
 		Room nextRoom=rawDoors()[direction];
 		if(gridParent!=null) nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
-		if(nextRoom!=null) 
+		if(nextRoom!=null)
 		{
 			nextRoom=nextRoom.prepareRoomInDir(this,direction);
-			if((nextRoom!=null)&&(nextRoom.amDestroyed())) 
+			if((nextRoom!=null)&&(nextRoom.amDestroyed()))
 				return null;
 		}
 		return nextRoom;
 	}
+	@Override
 	public Exit getExitInDir(int direction)
 	{
 		if((direction<0)||(direction>=exits.length))
 			return null;
-		if((gridParent!=null)&&(getRawExit(direction)==null)) 
+		if((gridParent!=null)&&(getRawExit(direction)==null))
 			getRoomInDir(direction);
 		return getRawExit(direction);
 	}
@@ -1393,17 +1476,20 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
 	public void send(MOB source, CMMsg msg)
 	{
 		source.executeMsg(source,msg);
 		reallySend(source,msg,0);
 	}
-	
+
+	@Override
 	public void sendOthers(MOB source, CMMsg msg)
 	{
 		reallySend(source,msg,0);
 	}
 
+	@Override
 	public void showHappens(int allCode, String allMessage)
 	{
 		MOB everywhereMOB=CMLib.map().getFactoryMOB(this);
@@ -1411,7 +1497,8 @@ public class StdRoom implements Room
 		sendOthers(everywhereMOB,msg);
 		everywhereMOB.destroy();
 	}
-	
+
+	@Override
 	public void showHappens(int allCode, Environmental like, String allMessage)
 	{
 		MOB everywhereMOB=CMClass.getMOB("StdMOB");
@@ -1424,7 +1511,8 @@ public class StdRoom implements Room
 		send(everywhereMOB,msg);
 		everywhereMOB.destroy();
 	}
-	
+
+	@Override
 	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
@@ -1433,7 +1521,8 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	
+
+	@Override
 	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
@@ -1442,13 +1531,14 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	
-	public boolean show(MOB source, 
-						Environmental target, 
-						Environmental tool, 
-						int srcCode, 
-						int tarCode, 
-						int othCode, 
+
+	@Override
+	public boolean show(MOB source,
+						Environmental target,
+						Environmental tool,
+						int srcCode,
+						int tarCode,
+						int othCode,
 						String allMessage)
 	{
 		CMMsg msg=CMClass.getMsg(source,target,tool,srcCode,tarCode,othCode,allMessage);
@@ -1457,7 +1547,8 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	
+
+	@Override
 	public boolean show(MOB source,
 						Environmental target,
 						Environmental tool,
@@ -1472,7 +1563,8 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	
+
+	@Override
 	public boolean show(MOB source,
 						Environmental target,
 						Environmental tool,
@@ -1489,7 +1581,8 @@ public class StdRoom implements Room
 		send(source,msg);
 		return true;
 	}
-	
+
+	@Override
 	public boolean showOthers(MOB source,
 							  Environmental target,
 							  int allCode,
@@ -1501,7 +1594,8 @@ public class StdRoom implements Room
 		reallySend(source,msg,0);
 		return true;
 	}
-	
+
+	@Override
 	public boolean showOthers(MOB source,
 						   Environmental target,
 						   Environmental tool,
@@ -1514,7 +1608,8 @@ public class StdRoom implements Room
 		reallySend(source,msg,0);
 		return true;
 	}
-	
+
+	@Override
 	public boolean showSource(MOB source,
 						   Environmental target,
 						   int allCode,
@@ -1526,7 +1621,8 @@ public class StdRoom implements Room
 		source.executeMsg(source,msg);
 		return true;
 	}
-	
+
+	@Override
 	public boolean showSource(MOB source,
 						   Environmental target,
 						   Environmental tool,
@@ -1540,18 +1636,21 @@ public class StdRoom implements Room
 		return true;
 	}
 
+	@Override
 	public Exit getRawExit(final int dir)
 	{
 		if(dir<exits.length)
 			return exits[dir];
 		return null;
 	}
-	
+
+	@Override
 	public Room[] rawDoors()
 	{
 		return doors;
 	}
-	
+
+	@Override
 	public boolean isSavable()
 	{
 		return ((roomID().length()>0)
@@ -1559,12 +1658,14 @@ public class StdRoom implements Room
 					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
 				&&(CMLib.flags().isSavable(this)));
 	}
-	
+
+	@Override
 	public void setSavable(boolean truefalse)
-	{ 
+	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
+	@Override
 	public void destroy()
 	{
 		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
@@ -1611,22 +1712,26 @@ public class StdRoom implements Room
 		gridParent=null;
 		amDestroyed=true;
 	}
-	
+
+	@Override
 	public boolean amDestroyed()
 	{
 		return amDestroyed;
 	}
-	
+
+	@Override
 	public int getCombatTurnMobIndex()
 	{
 		return combatTurnMobIndex;
 	}
 
+	@Override
 	public void setCombatTurnMobIndex(final int index)
 	{
 		combatTurnMobIndex = (short)index;
 	}
 
+	@Override
 	public boolean isHere(Environmental E)
 	{
 		if(E instanceof Item)
@@ -1651,14 +1756,16 @@ public class StdRoom implements Room
 			return fetchBehavior(E.ID())!=null;
 		return false;
 	}
-	
+
+	@Override
 	public MOB fetchRandomInhabitant()
 	{
-		if(inhabitants.size()==0) 
+		if(inhabitants.size()==0)
 			return null;
 		return fetchInhabitant(CMLib.dice().roll(1,numInhabitants(),-1));
 	}
-	
+
+	@Override
 	public MOB fetchInhabitant(String inhabitantID)
 	{
 		if(inhabitants.size()==0) return null;
@@ -1667,9 +1774,10 @@ public class StdRoom implements Room
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
-	
+
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
 
+	@Override
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
 		if(inhabitants.size()==0) return emptyMOBV;
@@ -1678,22 +1786,26 @@ public class StdRoom implements Room
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
 		return inhabs;
 	}
-	
+
+	@Override
 	public void addInhabitant(MOB mob)
 	{
 		inhabitants.addElement(mob);
 	}
-	
+
+	@Override
 	public Enumeration<MOB> inhabitants()
-	{ 
+	{
 		return inhabitants.elements();
 	}
-	
+
+	@Override
 	public int numInhabitants()
 	{
 		return inhabitants.size();
 	}
-	
+
+	@Override
 	public int numPCInhabitants()
 	{
 		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
@@ -1704,12 +1816,14 @@ public class StdRoom implements Room
 				num++;
 		return num;
 	}
-	
+
+	@Override
 	public boolean isInhabitant(MOB mob)
 	{
 		return inhabitants.contains(mob);
 	}
-	
+
+	@Override
 	public MOB fetchInhabitant(int i)
 	{
 		try
@@ -1719,7 +1833,8 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public void eachInhabitant(final EachApplicable<MOB> applier)
 	{
 		final List<MOB> inhabitants=this.inhabitants;
@@ -1734,12 +1849,14 @@ public class StdRoom implements Room
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void delInhabitant(MOB mob)
 	{
 		inhabitants.removeElement(mob);
 	}
-	
+
+	@Override
 	public void delAllInhabitants(boolean destroy)
 	{
 		try
@@ -1759,6 +1876,7 @@ public class StdRoom implements Room
 		catch(Exception e){}
 	}
 
+	@Override
 	public Item findItem(String itemID)
 	{
 		if(contents.size()==0) return null;
@@ -1766,12 +1884,14 @@ public class StdRoom implements Room
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	
-	public Enumeration<Item> items() 
+
+	@Override
+	public Enumeration<Item> items()
 	{
 		return contents.elements();
 	}
-	
+
+	@Override
 	public Item findItem(Item goodLocation, String itemID)
 	{
 		if(contents.size()==0) return null;
@@ -1779,7 +1899,8 @@ public class StdRoom implements Room
 		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
-	
+
+	@Override
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
 		if(contents.size()==0) return new Vector<Item>(1);
@@ -1788,7 +1909,8 @@ public class StdRoom implements Room
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
-	
+
+	@Override
 	public List<Item> findItems(String itemID)
 	{
 		if(contents.size()==0) return new Vector<Item>(1);
@@ -1798,6 +1920,7 @@ public class StdRoom implements Room
 		return items;
 	}
 
+	@Override
 	public void addItem(Item item, Expire expire)
 	{
 		addItem(item);
@@ -1817,7 +1940,8 @@ public class StdRoom implements Room
 		else
 			item.setExpirationDate(System.currentTimeMillis()+(numMins * TimeManager.MILI_MINUTE));
 	}
-	
+
+	@Override
 	public void addItem(Item item)
 	{
 		if((item!=null)&&(!item.amDestroyed()))
@@ -1827,13 +1951,15 @@ public class StdRoom implements Room
 			item.recoverPhyStats();
 		}
 	}
-	
+
+	@Override
 	public void delItem(Item item)
 	{
 		contents.removeElement(item);
 		item.recoverPhyStats();
 	}
-	
+
+	@Override
 	public void delAllItems(boolean destroy)
 	{
 		if(destroy)
@@ -1849,17 +1975,20 @@ public class StdRoom implements Room
 			}
 		contents.clear();
 	}
-	
+
+	@Override
 	public int numItems()
 	{
 		return contents.size();
 	}
-	
+
+	@Override
 	public boolean isContent(Item item)
 	{
 		return contents.contains(item);
 	}
-	
+
+	@Override
 	public Item getItem(int i)
 	{
 		try
@@ -1869,7 +1998,8 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public void eachItem(final EachApplicable<Item> applier)
 	{
 		final List<Item> contents=this.contents;
@@ -1884,13 +2014,15 @@ public class StdRoom implements Room
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public Item getRandomItem()
 	{
 		if(numItems()==0) return null;
 		return getItem(CMLib.dice().roll(1,numItems(),-1));
 	}
-	
+
+	@Override
 	public String getContextName(Environmental E)
 	{
 		if(E instanceof Exit)
@@ -1920,7 +2052,8 @@ public class StdRoom implements Room
 			return E.name();
 		return "nothing";
 	}
-	
+
+	@Override
 	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, final Filterer<Environmental> filter)
 	{
 		PhysicalAgent found=null;
@@ -1943,7 +2076,7 @@ public class StdRoom implements Room
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,true);
 			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,false);
-			
+
 			if((found instanceof Item)  // the smurfy well/gate exception
 			&&(goodLocation==null)
 			&&(found.displayText().length()==0)
@@ -1956,7 +2089,7 @@ public class StdRoom implements Room
 				if(visibleItem!=null)
 					found=visibleItem;
 			}
-			
+
 			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
@@ -1983,11 +2116,12 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,filter); 
+			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,filter);
 		}
 		return found;
 	}
-	
+
+	@Override
 	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
@@ -2014,11 +2148,12 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName); 
+			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName);
 		}
 		return found;
 	}
 
+	@Override
 	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
@@ -2034,21 +2169,23 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName); 
+			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName);
 		}
 		return found;
 	}
 
+	@Override
 	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
 	{
 		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,true);
 	}
-	
+
+	@Override
 	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
 	{
 		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,false);
 	}
-	
+
 	private PhysicalAgent fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName, final Filterer<Environmental> filter, boolean favorItems)
 	{
 		PhysicalAgent found=null;
@@ -2119,21 +2256,23 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,filter,favorItems); 
+			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,filter,favorItems);
 		}
 		return found;
 	}
 
+	@Override
 	public int pointsPerMove(MOB mob)
-	{	
-		return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);	
+	{
+		return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);
 	}
-	
+
 	protected int baseThirst()
 	{
 		return 1;
 	}
-	
+
+	@Override
 	public int thirstPerRound(MOB mob)
 	{
 		final int derivedClimate=getClimateType();
@@ -2148,17 +2287,20 @@ public class StdRoom implements Room
 			adjustment+=1;
 		return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
 	}
-	
+
+	@Override
 	public int minRange()
 	{
 		return Integer.MIN_VALUE;
 	}
-	
+
+	@Override
 	public int maxRange()
 	{
 		return((domainType()&Room.INDOORS)>0)?1:10;
 	}
 
+	@Override
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
@@ -2168,7 +2310,8 @@ public class StdRoom implements Room
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	
+
+	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -2179,7 +2322,8 @@ public class StdRoom implements Room
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	
+
+	@Override
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
@@ -2190,7 +2334,8 @@ public class StdRoom implements Room
 				affects=new SVector(1);
 		}
 	}
-	
+
+	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
@@ -2205,7 +2350,8 @@ public class StdRoom implements Room
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
 		if(affects==null) return;
@@ -2220,22 +2366,25 @@ public class StdRoom implements Room
 		}
 		affects=new SVector(1);
 	}
-	
+
+	@Override
 	public int numEffects()
 	{
-		if(affects==null) 
+		if(affects==null)
 			return 0;
 		return affects.size();
 	}
-	
+
+	@Override
 	public Enumeration<Ability> effects()
 	{
 		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
 	}
-	
+
+	@Override
 	public Ability fetchEffect(int index)
 	{
-		if(affects==null) 
+		if(affects==null)
 			return null;
 		try
 		{
@@ -2244,7 +2393,8 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
@@ -2259,6 +2409,7 @@ public class StdRoom implements Room
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
+	@Override
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
@@ -2271,7 +2422,8 @@ public class StdRoom implements Room
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
-	
+
+	@Override
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
@@ -2283,7 +2435,8 @@ public class StdRoom implements Room
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 		}
 	}
-	
+
+	@Override
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -2292,18 +2445,21 @@ public class StdRoom implements Room
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
-	
+
+	@Override
 	public int numBehaviors()
 	{
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-	
-	public Enumeration<Behavior> behaviors() 
+
+	@Override
+	public Enumeration<Behavior> behaviors()
 	{
 		return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();
 	}
-	
+
+	@Override
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -2314,7 +2470,8 @@ public class StdRoom implements Room
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
+	@Override
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
@@ -2323,7 +2480,8 @@ public class StdRoom implements Room
 				return B;
 		return null;
 	}
-	
+
+	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -2340,11 +2498,12 @@ public class StdRoom implements Room
 	}
 
 	/** Manipulation of the scripts list */
+	@Override
 	public void addScript(ScriptingEngine S)
 	{
 		if(scripts==null) scripts=new SVector(1);
 		if(S==null) return;
-		if(!scripts.contains(S)) 
+		if(!scripts.contains(S))
 		{
 			for(final Enumeration<ScriptingEngine> s2=scripts();s2.hasMoreElements();)
 			{
@@ -2357,7 +2516,8 @@ public class StdRoom implements Room
 			scripts.addElement(S);
 		}
 	}
-	
+
+	@Override
 	public void delScript(ScriptingEngine S)
 	{
 		if(scripts!=null)
@@ -2371,7 +2531,8 @@ public class StdRoom implements Room
 			}
 		}
 	}
-	
+
+	@Override
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -2380,17 +2541,20 @@ public class StdRoom implements Room
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
-	
+
+	@Override
 	public int numScripts()
 	{
 		return (scripts==null)?0:scripts.size();
 	}
-	
-	public Enumeration<ScriptingEngine> scripts() 
+
+	@Override
+	public Enumeration<ScriptingEngine> scripts()
 	{
 		return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();
 	}
-	
+
+	@Override
 	public ScriptingEngine fetchScript(int x)
 	{
 		try
@@ -2400,7 +2564,8 @@ public class StdRoom implements Room
 		catch(Exception e){}
 		return null;
 	}
-	
+
+	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -2415,20 +2580,22 @@ public class StdRoom implements Room
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+
+	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE","CLIMATE","ATMOSPHERE"};
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(STDCODES,this);
-		return codes; 
+		return codes;
 	}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){ return CMParms.indexOf(codes, code.toUpperCase());}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -2444,6 +2611,7 @@ public class StdRoom implements Room
 		default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -2460,9 +2628,9 @@ public class StdRoom implements Room
 			break;
 		}
 		case 5: setImage(val); break;
-		case 6: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
+		case 6: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS,val)); break;
 		case 7: {
-			if(CMath.isMathExpression(val)) 
+			if(CMath.isMathExpression(val))
 				setAtmosphere(CMath.s_parseIntExpression(val));
 			int matCode=RawMaterial.CODES.FIND_IgnoreCase(val);
 			if(matCode>=0)
@@ -2474,6 +2642,7 @@ public class StdRoom implements Room
 			break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdRoom)) return false;
@@ -2483,6 +2652,7 @@ public class StdRoom implements Room
 				return false;
 		return true;
 	}
+	@Override
 	public boolean isSameRoom(Object O)
 	{
 		if(O==this) return true;

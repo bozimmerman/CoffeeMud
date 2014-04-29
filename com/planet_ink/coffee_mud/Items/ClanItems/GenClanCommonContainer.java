@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenClanCommonContainer extends StdClanCommonContainer
 {
-	public String ID(){	return "GenClanCommonContainer";}
+	@Override public String ID(){	return "GenClanCommonContainer";}
 	protected String readableText = "";
 	public GenClanCommonContainer()
 	{
@@ -49,24 +49,28 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 		recoverPhyStats();
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -75,6 +79,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 									 "CLANID","CITYPE"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -91,6 +96,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -109,6 +115,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -116,6 +123,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -129,6 +137,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenClanCommonContainer)) return false;

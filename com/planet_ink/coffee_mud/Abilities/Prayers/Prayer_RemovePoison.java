@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_RemovePoison extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_RemovePoison"; }
-	public String name(){ return "Remove Poison";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_RemovePoison"; }
+	@Override public String name(){ return "Remove Poison";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
-	
+
 	public static List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
@@ -61,6 +62,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		return offenders;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -73,7 +75,8 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RandomTraps extends ActiveTicker
 {
-	public String ID(){return "RandomTraps";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override public String ID(){return "RandomTraps";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected Vector<Physical> maintained=new Vector<Physical>();
 	protected int minTraps=1;
@@ -52,8 +52,8 @@ public class RandomTraps extends ActiveTicker
 
 	protected Vector restrictedLocales=null;
 	private int tickStatus=Tickable.STATUS_NOT;
-	
-	public int getTickStatus(){return tickStatus;}
+
+	@Override public int getTickStatus(){return tickStatus;}
 
 	public RandomTraps()
 	{
@@ -61,11 +61,13 @@ public class RandomTraps extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "random trapping";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		maintained=new Vector();
@@ -227,6 +229,7 @@ public class RandomTraps extends ActiveTicker
 			elligible.addElement(R);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
@@ -254,7 +257,7 @@ public class RandomTraps extends ActiveTicker
 				}
 
 			tickStatus=Tickable.STATUS_MISC+3;
-			
+
 			if(maintained.size()<avgTraps)
 			{
 				Vector<Physical> elligible=new Vector<Physical>();
@@ -272,7 +275,7 @@ public class RandomTraps extends ActiveTicker
 				}
 				else
 					return true;
-				
+
 				tickStatus=Tickable.STATUS_MISC+6;
 				if(elligible.size()==0)
 					return true;
@@ -285,7 +288,7 @@ public class RandomTraps extends ActiveTicker
 					try{R=(Room)elligible.elementAt(r);}catch(IndexOutOfBoundsException e){}
 					if(R==null) continue;
 
-					
+
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{

@@ -36,8 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Play_Symphony extends Play
 {
-	public String ID() { return "Play_Symphony"; }
-	public String name(){ return "Symphony";}
+	@Override public String ID() { return "Play_Symphony"; }
+	@Override public String name(){ return "Symphony";}
+	@Override
 	public int abstractQuality()
 	{
 		if(toDoCode<0)
@@ -586,6 +587,7 @@ public class Play_Symphony extends Play
 		return toDoCode;
 	}
 
+	@Override
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -620,6 +622,7 @@ public class Play_Symphony extends Play
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -639,6 +642,7 @@ public class Play_Symphony extends Play
 			break;
 		}
 	}
+	@Override
 	public void affectPhyStats(Physical mob, PhyStats stats)
 	{
 		super.affectPhyStats(mob,stats);
@@ -663,6 +667,7 @@ public class Play_Symphony extends Play
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -672,7 +677,8 @@ public class Play_Symphony extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -711,7 +717,7 @@ public class Play_Symphony extends Play
 				List<Ability> V=CMLib.flags().flaggedAffects(M,toDoVal);
 				for(int v=0;v<V.size();v++)
 				{
-					Ability A =V.get(v); 
+					Ability A =V.get(v);
 					A.unInvoke();
 					if(M.fetchEffect(A.ID())==null)
 						break;
@@ -759,6 +765,7 @@ public class Play_Symphony extends Play
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		instrument=null;

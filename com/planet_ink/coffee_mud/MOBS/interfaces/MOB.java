@@ -41,7 +41,7 @@ import java.util.Vector;
 public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityContainer
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
-	
+
 	public int getBitmap();
 	public void setBitmap(int bitmap);
 	public String titledName();
@@ -77,7 +77,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int rangeToTarget();
 	public boolean mayIFight(MOB mob);
 	public boolean mayPhysicallyAttack(MOB mob);
-	
+
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
@@ -148,7 +148,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Pair<Clan,Integer> getClanRole(String clanID);
 	public void setClan(String clanID, int role);
 
-	
+
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newRoom);
@@ -206,7 +206,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 
 	/**
 	 * Deletes an expertise.
-	 * 
+	 *
 	 * @param baseCode the expertise code
 	 */
 	public void delExpertise(String baseCode);
@@ -229,7 +229,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return an enumerator
 	 */
 	public Enumeration<String> expertises();
-	
+
 	/** Manipulation of the tatoo list */
 	public void addTattoo(Tattoo of);
 	public void delTattoo(Tattoo of);
@@ -254,29 +254,30 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public Follower(MOB M, int order){follower=M; marchingOrder=order;}
 		public static final Converter<Follower,MOB> converter = new Converter<Follower,MOB>()
 		{
-			public MOB convert(Follower obj) { return obj.follower;}
+			@Override public MOB convert(Follower obj) { return obj.follower;}
 		};
 	}
-	
+
 	public static class Tattoo implements Cloneable, CMObject
 	{
 		public int tickDown=0;
 		public String tattooName;
 		public Tattoo(String name) { tattooName = name.toUpperCase().trim(); }
 		public Tattoo(String name, int down) { tattooName = name.toUpperCase().trim(); tickDown=down;}
-		public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
-		public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(Exception e){ return this; }}
-		public int compareTo(CMObject o) 
-		{ 
+		@Override public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
+		@Override public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(Exception e){ return this; }}
+		@Override
+		public int compareTo(CMObject o)
+		{
 			if(o==null) return 1;
 			return (this==o)?0:this.ID().compareTo(o.ID());
 		}
-		public String ID() { return tattooName; }
-		public String name() { return ID();}
-		public CMObject newInstance() { return new Tattoo(tattooName); }
-		public void initializeClass() {}
+		@Override public String ID() { return tattooName; }
+		@Override public String name() { return ID();}
+		@Override public CMObject newInstance() { return new Tattoo(tattooName); }
+		@Override public void initializeClass() {}
 	}
-	
+
 	public static class QMCommand
 	{
 		public Object   	commandObj = null;

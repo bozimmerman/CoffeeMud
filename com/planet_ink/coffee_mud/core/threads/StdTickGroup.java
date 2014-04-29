@@ -20,7 +20,7 @@ import java.net.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,26 +38,26 @@ import java.util.*;
 public class StdTickGroup implements TickableGroup, Cloneable
 {
 	private final ThreadEngine myEngine;
-	
+
 	private final long 	  tickTime;
 	private final int 	  tickObjectCounter;
 	private final String  name;
 	private final String  threadGroupName;
 	private final boolean solitaryTicker;
-	
+
 	private volatile long nextTickTime;
 	private volatile long lastStart=0;
 	private volatile long lastStop=0;
 	private volatile long milliTotal=0;
 	private volatile int  tickTotal=0;
-	
+
 	private volatile TickClient lastClient=null;
 	private volatile Thread currentThread = null;
 
 	private static volatile int tickObjReference=0;
-	
+
 	private final STreeSet<TickClient> tickers=new STreeSet<TickClient>();
-	
+
 	public StdTickGroup(long sleep, String threadGroupName, boolean isSolitary)
 	{
 		name = "Tick."+(tickObjReference+1);
@@ -79,7 +79,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		solitaryTicker=isSolitary;
 		this.threadGroupName=threadGroupName;
 	}
-	
+
 	public StdTickGroup(ThreadEngine theEngine, long sleep, String threadGroupName, boolean isSolitary)
 	{
 		name = "Tick."+(tickObjReference+1);
@@ -103,7 +103,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		catch(Exception e){}
 		return this;
 	}
-	
+
+	@Override
 	public TickClient fetchTickerByIndex(int i)
 	{
 		int x=0;
@@ -112,25 +113,26 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				return C;
 		return null;
 	}
-	
-	public Thread getCurrentThread() { return currentThread; }
-	
-	public String getThreadGroupName() { return threadGroupName; }
-	
-	public long getLastStartTime() { return lastStart;}
-	
-	public long getLastStopTime() { return lastStop; }
-	
-	public long getMilliTotal() { return milliTotal; }
-	
-	public long getTickTotal() { return tickTotal; }
-	
-	public boolean isSolitaryTicker() { return solitaryTicker; }
-	
-	public boolean isAwake() { return currentThread != null; }
-	
-	public Iterator<TickClient> tickers(){return tickers.iterator();}
-	public int numTickers(){return tickers.size();}
+
+	@Override public Thread getCurrentThread() { return currentThread; }
+
+	@Override public String getThreadGroupName() { return threadGroupName; }
+
+	@Override public long getLastStartTime() { return lastStart;}
+
+	@Override public long getLastStopTime() { return lastStop; }
+
+	@Override public long getMilliTotal() { return milliTotal; }
+
+	@Override public long getTickTotal() { return tickTotal; }
+
+	@Override public boolean isSolitaryTicker() { return solitaryTicker; }
+
+	@Override public boolean isAwake() { return currentThread != null; }
+
+	@Override public Iterator<TickClient> tickers(){return tickers.iterator();}
+	@Override public int numTickers(){return tickers.size();}
+	@Override
 	public Iterator<TickClient> getTickSet(final Tickable T, final int tickID)
 	{
 		final LinkedList<TickClient> subSet = new LinkedList<TickClient>();
@@ -140,7 +142,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			subSet.addAll(tickers.subSet(new StdTickClient(T,0,tickID), true, new StdTickClient(T,0,tickID), true));
 		return subSet.iterator();
 	}
-	
+
+	@Override
 	public Iterator<TickClient> getLocalItems(int itemTypes, Room R)
 	{
 		LinkedList<TickClient> localItems=null;
@@ -187,47 +190,55 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		if(localItems == null) return null;
 		return localItems.iterator();
 	}
-	
+
+	@Override
 	public String getName()
 	{
 		return name;
 	}
-	
+
+	@Override
 	public long getTickInterval()
 	{
 		return tickTime;
 	}
-	
+
+	@Override
 	public long getNextTickTime()
 	{
 		return nextTickTime;
 	}
-	
+
+	@Override
 	public boolean contains(final Tickable T, final int tickID)
 	{
 		if(tickID >= 0)
 			return tickers.contains(new StdTickClient(T,0,tickID));
 		return tickers.subSet(new StdTickClient(T,0,-1), true, new StdTickClient(T,0,Integer.MAX_VALUE), true).size()>0;
 	}
-	
+
 	public int getCounter(){return tickObjectCounter;}
-	
+
+	@Override
 	public void delTicker(TickClient C)
 	{
 		tickers.remove(C);
 	}
+	@Override
 	public void addTicker(TickClient C)
 	{
 		if(!tickers.contains(C))
 			tickers.add(C);
 	}
-	
+
+	@Override
 	public TickClient getLastTicked()
 	{
 		return lastClient;
 	}
 
-	public String getStatus() 
+	@Override
+	public String getStatus()
 	{
 		final TickClient lastTicked = getLastTicked();
 		if(!isAwake())
@@ -237,7 +248,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		final Tickable ticker = lastTicked.getClientObject();
 		return ticker.ID()+": "+ticker.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(ticker):"null");
 	}
-	
+
+	@Override
 	public void shutdown()
 	{
 		tickers.clear();
@@ -245,9 +257,10 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			((ServiceEngine)CMLib.threads()).delTickGroup(this);
 	}
 
+	@Override
 	public void run()
 	{
-		
+
 		nextTickTime=System.currentTimeMillis() + tickTime;
 		//final String oldThreadName=Thread.currentThread().getName();
 		try
@@ -287,7 +300,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	}
 
 	@Override
-	public long activeTimeMillis() 
+	public long activeTimeMillis()
 	{
 		if(this.isAwake())
 			return System.currentTimeMillis()-this.lastStart;

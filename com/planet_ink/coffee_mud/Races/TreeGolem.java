@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,40 +34,44 @@ import java.util.*;
 */
 public class TreeGolem extends StdRace
 {
-	public String ID(){	return "TreeGolem"; }
-	public String name(){ return "Tree Golem"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 400;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Vegetation";}
-	public boolean uncharmable(){return true;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "TreeGolem"; }
+	@Override public String name(){ return "Tree Golem"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 400;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Vegetation";}
+	@Override public boolean uncharmable(){return true;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,10,20,50,65,75,100,150,160};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "slides in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "slides";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -81,6 +85,7 @@ public class TreeGolem extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)
@@ -96,6 +101,7 @@ public class TreeGolem extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
@@ -106,6 +112,7 @@ public class TreeGolem extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -142,7 +149,8 @@ public class TreeGolem extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
-	
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -152,11 +160,12 @@ public class TreeGolem extends StdRace
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" sapling";
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class SoundEcho extends StdAbility
 {
-	public String ID() { return "SoundEcho"; }
-	public String name(){ return "Sound Echo";}
+	@Override public String ID() { return "SoundEcho"; }
+	@Override public String name(){ return "Sound Echo";}
 	protected String displayText="";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_ROOMS|CAN_AREAS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	
+	@Override public String displayText(){ return displayText;}
+	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_AREAS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+
 	public static MOB bmob=null;
 	public synchronized MOB blindMOB()
 	{
@@ -61,7 +61,8 @@ public class SoundEcho extends StdAbility
 		}
 		return bmob;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,24 +35,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
-	public String ID() { return "Spell_Tourettes"; }
-	public String name(){return "Tourettes";}
-	public String displayText(){return "(Tourettes)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public int difficultyLevel(){return 5;}
+	@Override public String ID() { return "Spell_Tourettes"; }
+	@Override public String name(){return "Tourettes";}
+	@Override public String displayText(){return "(Tourettes)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int difficultyLevel(){return 5;}
 
 	int plagueDown=4;
 
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Mental compulsion disorder: Tourettes Syndrome.";
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -71,6 +72,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -142,6 +144,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -149,6 +152,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		affectableStats.setStat(CharStats.STAT_CHARISMA,2);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

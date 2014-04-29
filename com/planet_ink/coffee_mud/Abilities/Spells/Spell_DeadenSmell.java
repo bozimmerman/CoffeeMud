@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DeadenSmell extends Spell
 {
-	public String ID() { return "Spell_DeadenSmell"; }
-	public String name(){return "Deaden Smell";}
-	public String displayText(){return "(Deadened Smell)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Spell_DeadenSmell"; }
+	@Override public String name(){return "Deaden Smell";}
+	@Override public String displayText(){return "(Deadened Smell)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,6 +62,7 @@ public class Spell_DeadenSmell extends Spell
 			mob.tell("You nose clears up.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

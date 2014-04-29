@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenDeity extends StdDeity
 {
-	public String ID(){return "GenDeity";}
+	@Override public String ID(){return "GenDeity";}
 	public GenDeity()
 	{
 		super();
@@ -48,8 +48,9 @@ public class GenDeity extends StdDeity
 		recoverCharStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -59,12 +60,14 @@ public class GenDeity extends StdDeity
 		return super.text();
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 	private final static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT","SVCRIT"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -80,6 +83,7 @@ public class GenDeity extends StdDeity
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -97,6 +101,7 @@ public class GenDeity extends StdDeity
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -104,6 +109,7 @@ public class GenDeity extends StdDeity
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -117,6 +123,7 @@ public class GenDeity extends StdDeity
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenDeity)) return false;

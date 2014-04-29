@@ -34,23 +34,24 @@ import java.util.*;
 
 public class Disease_Tetnus extends Disease
 {
-	public String ID() { return "Disease_Tetnus"; }
-	public String name(){ return "Tetanus";}
-	public String displayText(){ return "(Tetanus)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Tetnus"; }
+	@Override public String name(){ return "Tetanus";}
+	@Override public String displayText(){ return "(Tetanus)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected String DISEASE_DONE(){return "Your tetnus clears up!";}
-	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	public int difficultyLevel(){return 0;}
+	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected String DISEASE_DONE(){return "Your tetnus clears up!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override public int difficultyLevel(){return 0;}
 	protected int dexDown=1;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -68,6 +69,7 @@ public class Disease_Tetnus extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

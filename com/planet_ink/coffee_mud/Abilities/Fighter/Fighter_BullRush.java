@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_BullRush extends FighterSkill
 {
-	public String ID() { return "Fighter_BullRush"; }
-	public String name(){ return "Bullrush";}
-	public int minRange(){return 0;}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Fighter_BullRush"; }
+	@Override public String name(){ return "Bullrush";}
+	@Override public int minRange(){return 0;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"BULLRUSH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return Ability.FLAG_MOVING;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

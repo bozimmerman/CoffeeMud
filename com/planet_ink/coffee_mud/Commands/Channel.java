@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,18 @@ import java.util.*;
 public class Channel extends StdCommand
 {
 	public Channel(){}
-	public String[] getAccessWords() { return CMLib.channels().getChannelNames(); }
+	@Override public String[] getAccessWords() { return CMLib.channels().getChannelNames(); }
 
 	private final static Class[][] internalParameters=new Class[][]{{Boolean.class,String.class,String.class}};
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		return channel(mob, commands, false);
 	}
 
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
@@ -56,7 +58,7 @@ public class Channel extends StdCommand
 		CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
 		return Boolean.TRUE;
 	}
-	
+
 	public boolean channel(MOB mob, Vector commands, boolean systemMsg)
 	{
 		PlayerStats pstats=mob.playerStats();
@@ -71,7 +73,7 @@ public class Channel extends StdCommand
 			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
 			return false;
 		}
-		
+
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell("You have QUIET mode on.  You must turn it off first.");
@@ -80,7 +82,7 @@ public class Channel extends StdCommand
 
 		if(commands.size()==0)
 		{
-			int size = CMLib.channels().getChannelQue(channelInt).size(); 
+			int size = CMLib.channels().getChannelQue(channelInt).size();
 			if(size>0)
 			{
 				if(size>5) size=5;
@@ -107,7 +109,7 @@ public class Channel extends StdCommand
 			mob.tell("This channel is not available to you.");
 			return false;
 		}
-		
+
 		Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
 		if((flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
@@ -117,7 +119,7 @@ public class Channel extends StdCommand
 				return false;
 			}
 		}
-		
+
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
@@ -132,7 +134,7 @@ public class Channel extends StdCommand
 				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				long elapsedTime=0;
 				long now=System.currentTimeMillis();
-				LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>(); 
+				LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>();
 				for(Iterator<ChannelsLibrary.ChannelMsg> i=que.iterator();i.hasNext();)
 				{
 					showThese.add(i.next());
@@ -149,7 +151,7 @@ public class Channel extends StdCommand
 						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts);
 						elapsedTime=0;
 					}
-						
+
 					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
 					if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
 						modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
@@ -183,7 +185,7 @@ public class Channel extends StdCommand
 		return false;
 	}
 
-	
-	public boolean canBeOrdered(){return true;}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 }

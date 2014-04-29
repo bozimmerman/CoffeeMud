@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_SummonMonster extends Spell
 {
-	public String ID() { return "Spell_SummonMonster"; }
-	public String name(){return "Monster Summoning";}
-	public String displayText(){return "(Monster Summoning)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Spell_SummonMonster"; }
+	@Override public String name(){return "Monster Summoning";}
+	@Override public String displayText(){return "(Monster Summoning)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -54,6 +55,7 @@ public class Spell_SummonMonster extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -67,6 +69,7 @@ public class Spell_SummonMonster extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -93,12 +96,12 @@ public class Spell_SummonMonster extends Spell
 		// return whether it worked
 		return success;
 	}
-	
+
 	public void bringToLife(MOB M)
 	{
-		
+
 	}
-	
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 		Room R=caster.location();
@@ -195,7 +198,7 @@ public class Spell_SummonMonster extends Spell
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
 			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
 		}
-		if(newMOB.amDead()||newMOB.amDestroyed()) 
+		if(newMOB.amDead()||newMOB.amDestroyed())
 			return null;
 		return(newMOB);
 	}

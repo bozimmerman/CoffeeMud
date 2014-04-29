@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ public class PageBreak extends StdCommand
 	public PageBreak(){}
 
 	private final String[] access={"PAGEBREAK"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((mob==null)||(mob.playerStats()==null))
 			return false;
-		
+
 		if(commands.size()<2)
 		{
 			String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
@@ -68,9 +69,9 @@ public class PageBreak extends StdCommand
 		mob.tell("Your new page break setting is: "+pageBreak+".");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

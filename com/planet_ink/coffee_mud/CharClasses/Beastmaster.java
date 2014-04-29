@@ -37,21 +37,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Beastmaster extends StdCharClass
 {
-	public String ID(){return "Beastmaster";}
-	public String name(){return "Beastmaster";}
-	public String baseClass(){return "Druid";}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	public int getLevelsPerBonusDamage(){ return 15;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
+	@Override public String ID(){return "Beastmaster";}
+	@Override public String name(){return "Beastmaster";}
+	@Override public String baseClass(){return "Druid";}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
+	@Override public int getLevelsPerBonusDamage(){ return 15;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
+	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
 	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Beastmaster()
 	{
@@ -59,6 +59,7 @@ public class Beastmaster extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -165,21 +166,22 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Dwarf","Giant-kin"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -203,16 +205,18 @@ public class Beastmaster extends StdCharClass
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
-		Druid.doAnimalFollowerLevelingCheck(this,host,msg);  
+	{
+		super.executeMsg(host,msg);
+		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
 		Druid.doAnimalFreeingCheck(this,host,msg);
 	}
- 
-	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
 
+	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
+
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -226,6 +230,7 @@ public class Beastmaster extends StdCharClass
 		return false;
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -237,7 +242,8 @@ public class Beastmaster extends StdCharClass
 		return outfitChoices;
 	}
 
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -258,6 +264,7 @@ public class Beastmaster extends StdCharClass
 		}
 	}
 
+	@Override
 	public int classDurationModifier(MOB myChar,
 									 Ability skill,
 									 int duration)

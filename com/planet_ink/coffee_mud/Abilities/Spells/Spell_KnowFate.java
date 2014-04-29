@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_KnowFate extends Spell
 {
-	public String ID() { return "Spell_KnowFate"; }
-	public String name(){return "Know Fate";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_KnowFate"; }
+	@Override public String name(){return "Know Fate";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -57,7 +58,7 @@ public class Spell_KnowFate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
+
 				String[] aliasNames=new String[0];
 				if(mob.playerStats()!=null)
 					aliasNames=mob.playerStats().getAliasNames();
@@ -78,13 +79,13 @@ public class Spell_KnowFate extends Spell
 						  }
 					}
 				 }
-				
+
 				int iwin=0;
 				int hewin=0;
 				long ihp=0;
 				long hehp=0;
 				int draws=0;
-				
+
 				Session fakeS=(Session)CMClass.getCommon("FakeSession");
 				fakeS.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),"MEMORY");
 				for(int tries=0;tries<20;tries++)
@@ -100,7 +101,7 @@ public class Spell_KnowFate extends Spell
 					newVictiM.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					newVictiM.setStartRoom(null);
-				
+
 					int motionlessTries=10;
 					while((!newMOB.amDead())
 					&&(!newVictiM.amDead())
@@ -112,7 +113,7 @@ public class Spell_KnowFate extends Spell
 								newMOB.enqueCommand(cmd, 0, 0);
 						final int nowHp=newMOB.curState().getHitPoints();
 						final int hisHp=newVictiM.curState().getHitPoints();
-						try 
+						try
 						{
 							newMOB.setVictim(newVictiM);
 							newVictiM.setVictim(newMOB);
@@ -135,7 +136,7 @@ public class Spell_KnowFate extends Spell
 						else
 							motionlessTries=10;
 					}
-							
+
 					if((newMOB.amDead())||(newMOB.amDestroyed()))
 					{
 						hewin++;

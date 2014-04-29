@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,35 +34,37 @@ import java.util.*;
 */
 public class Kobold extends StdRace
 {
-	public String ID(){	return "Kobold"; }
-	public String name(){ return "Kobold"; }
-	public int shortestMale(){return 45;}
-	public int shortestFemale(){return 40;}
-	public int heightVariance(){return 6;}
-	public int lightestWeight(){return 50;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Reptile";}
+	@Override public String ID(){	return "Kobold"; }
+	@Override public String name(){ return "Kobold"; }
+	@Override public int shortestMale(){return 45;}
+	@Override public int shortestFemale(){return 40;}
+	@Override public int heightVariance(){return 6;}
+	@Override public int lightestWeight(){return 50;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={75};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,12,20,30,45,47,49};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -70,16 +72,20 @@ public class Kobold extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,10);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -116,6 +122,7 @@ public class Kobold extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

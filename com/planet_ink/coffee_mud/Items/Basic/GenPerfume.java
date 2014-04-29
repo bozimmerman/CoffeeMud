@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPerfume extends StdPerfume
 {
-	public String ID(){ return "GenPerfume"; }
+	@Override public String ID(){ return "GenPerfume"; }
 	protected String readableText="";
 
 	public GenPerfume()
@@ -49,13 +49,15 @@ public class GenPerfume extends StdPerfume
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
@@ -64,10 +66,11 @@ public class GenPerfume extends StdPerfume
 		return CMath.s_int(readableText);
 	}
 
-	public void setLiquidType(int newLiquidType){ readableText=""+newLiquidType; }
+	@Override public void setLiquidType(int newLiquidType){ readableText=""+newLiquidType; }
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -76,6 +79,7 @@ public class GenPerfume extends StdPerfume
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -94,6 +98,7 @@ public class GenPerfume extends StdPerfume
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -110,15 +115,16 @@ public class GenPerfume extends StdPerfume
 		case 6:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setLiquidType(x); 
+				setLiquidType(x);
 				break;
-			   } 
+			   }
 		case 7: setSmellList(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -126,6 +132,7 @@ public class GenPerfume extends StdPerfume
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -139,6 +146,7 @@ public class GenPerfume extends StdPerfume
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenDrink)) return false;

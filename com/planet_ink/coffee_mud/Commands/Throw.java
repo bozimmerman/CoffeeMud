@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Throw extends StdCommand
 	public Throw(){}
 
 	private final String[] access={"THROW","TOSS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -114,8 +115,8 @@ public class Throw extends StdCommand
 						List<Ability> V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
 							if(V.get(v).abstractQuality()==Ability.QUALITY_MALICIOUS)
-							{ 
-								targetMsg=CMMsg.MSG_WEAPONATTACK; 
+							{
+								targetMsg=CMMsg.MSG_WEAPONATTACK;
 								break;
 							}
 					}
@@ -141,9 +142,9 @@ public class Throw extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

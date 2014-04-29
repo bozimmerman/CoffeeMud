@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *
  */
 public class IMC_CHANNEL {
-	
+
 	public int perm_level;
 	public String name = ""; /* name of channel */
 	public String owner = ""; /* owner (singular) of channel */
@@ -65,5 +65,5 @@ public class IMC_CHANNEL {
 	public String socformat = "";
 	public String history = "";
 	public boolean refreshed;
-	
+
 }

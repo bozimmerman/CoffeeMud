@@ -35,12 +35,12 @@ import java.util.*;
 */
 public class StdThinPlanet extends StdThinArea implements SpaceObject
 {
-	public String ID(){	return "StdThinPlanet";}
+	@Override public String ID(){	return "StdThinPlanet";}
 
 	protected long[]	coordinates	= new long[3];
 	protected double[]	direction	= new double[2];
 	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
-	
+
 	public StdThinPlanet()
 	{
 		super();
@@ -49,6 +49,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		CMObject O=super.copyOf();
@@ -56,18 +57,19 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 		return O;
 	}
 
-	public TimeClock getTimeObj(){return myClock;}
+	@Override public TimeClock getTimeObj(){return myClock;}
 
-	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;} 
-	
-	public void addChild(Area area) 
+	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;}
+
+	@Override
+	public void addChild(Area area)
 	{
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());
 		for(Enumeration<Area> cA=area.getChildren();cA.hasMoreElements();)
 			cA.nextElement().setTimeObj(getTimeObj());
 	}
-	
+
 	@Override public long[] coordinates(){return coordinates;}
 	@Override public void setCoords(long[] coords)
 	{
@@ -90,9 +92,9 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	@Override public void setKnownTarget(SpaceObject O){}
 	@Override public SpaceObject knownSource(){return null;}
 	@Override public void setKnownSource(SpaceObject O){}
-	
+
 	@Override
-	public BoundedCube getBounds() 
+	public BoundedCube getBounds()
 	{
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}

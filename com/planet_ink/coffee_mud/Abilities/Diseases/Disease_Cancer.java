@@ -33,24 +33,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Disease_Cancer extends Disease
 {
-	public String ID() { return "Disease_Cancer"; }
-	public String name(){ return "Cancer";}
-	public String displayText(){ return "(Cancer)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 5;}
+	@Override public String ID() { return "Disease_Cancer"; }
+	@Override public String name(){ return "Cancer";}
+	@Override public String displayText(){ return "(Cancer)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 5;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	protected String DISEASE_DONE(){return "Your cancer is cured!";}
-	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
-	public int abilityCode(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
+	@Override protected String DISEASE_DONE(){return "Your cancer is cured!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
+	@Override public int abilityCode(){return 0;}
 	protected int conDown=1;
 	private boolean norecurse=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -68,6 +69,7 @@ public class Disease_Cancer extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -85,6 +87,7 @@ public class Disease_Cancer extends Disease
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

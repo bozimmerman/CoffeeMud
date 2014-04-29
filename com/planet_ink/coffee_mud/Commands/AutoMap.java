@@ -38,7 +38,8 @@ public class AutoMap extends StdCommand
 	public AutoMap(){}
 
 	private final String[] access={"AUTOMAP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,10 +55,10 @@ public class AutoMap extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.Int.AWARERANGE)>0;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.Int.AWARERANGE)>0;}
+
+
 }
 

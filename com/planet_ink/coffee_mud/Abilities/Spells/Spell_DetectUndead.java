@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DetectUndead extends Spell
 {
-	public String ID() { return "Spell_DetectUndead"; }
-	public String name(){return "Detect Undead";}
-	public String displayText(){return "(Detecting Undead)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override public String ID() { return "Spell_DetectUndead"; }
+	@Override public String name(){return "Detect Undead";}
+	@Override public String displayText(){return "(Detecting Undead)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	Room lastRoom=null;
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -55,6 +56,7 @@ public class Spell_DetectUndead extends Spell
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer as dark.");
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -76,6 +78,7 @@ public class Spell_DetectUndead extends Spell
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -88,7 +91,8 @@ public class Spell_DetectUndead extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

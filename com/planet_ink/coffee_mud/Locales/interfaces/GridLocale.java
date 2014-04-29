@@ -20,7 +20,7 @@ import java.util.Vector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,6 +56,6 @@ public interface GridLocale extends Room, GridZones
 	public static class ThinGridEntryConverter implements Converter<ThinGridEntry,Room>
 	{
 		public static ThinGridEntryConverter INSTANCE = new ThinGridEntryConverter();
-		public Room convert(ThinGridEntry obj) { return obj.room;}
+		@Override public Room convert(ThinGridEntry obj) { return obj.room;}
 	}
 }

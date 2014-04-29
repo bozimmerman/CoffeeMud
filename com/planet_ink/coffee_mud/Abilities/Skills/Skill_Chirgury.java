@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Chirgury extends StdSkill
 {
-	public String ID() { return "Skill_Chirgury"; }
-	public String name(){ return "Chirurgy";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Chirgury"; }
+	@Override public String name(){ return "Chirurgy";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CHIRURGY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public static final Object[][] parts={{"FETUS"},
 										  {"BLOOD"},
 										  {"HEART",Integer.valueOf(Race.BODY_TORSO)},
@@ -57,18 +57,19 @@ public class Skill_Chirgury extends StdSkill
 										  {"TONGUE",Integer.valueOf(Race.BODY_MOUTH)},
 										  {"EYES",Integer.valueOf(Race.BODY_EYE)},
 										  {"BLADDER",Integer.valueOf(Race.BODY_TORSO)}};
-	
-	public static final String[] badRaceCats={"Earth Elemental","Fire Elemental", "Water Elemental", "Air Elemental", "Unique", 
+
+	public static final String[] badRaceCats={"Earth Elemental","Fire Elemental", "Water Elemental", "Air Elemental", "Unique",
 											  "Slime", "Vegetation", "Metal Golem", "Wood Golem", "Electricity Elemental", "Stone Golem",
 											  "Stone Golem", "Unknown"};
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
 			mob.tell("Remove what from whom? Parts include: "+CMParms.toStringList(parts));
 			return false;
-			
+
 		}
 		String part=(String)commands.firstElement();
 		commands.removeElementAt(0);

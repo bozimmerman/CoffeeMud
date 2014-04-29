@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,8 +31,8 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * A trap is a kind of ability that behaves mostly like a property, in that 
- * it is not typically invoked as a skill, although there are skills that 
+ * A trap is a kind of ability that behaves mostly like a property, in that
+ * it is not typically invoked as a skill, although there are skills that
  * generate or make use of Trap abilities.
  */
 public interface Trap extends Ability
@@ -45,7 +45,7 @@ public interface Trap extends Ability
 	public final static int TRAP_GAS=2;
 	/** deprecated spell trap-type constant for deprecated traps.  Returned by internal trapType() methods. */
 	public final static int TRAP_SPELL=3;
-	
+
 	/**
 	 * Returns whether this trap is a bomb, with delayed effect.
 	 * @return true if its a bomb, false otherwise
@@ -100,7 +100,7 @@ public interface Trap extends Ability
 	 * @return the number of ticks between resets
 	 */
 	public int getReset();
-	
+
 	/**
 	 * Returns whether the given mob, at the given level, is allowed
 	 * to set this trap.  This is where level restrictions are enforced,
@@ -119,7 +119,7 @@ public interface Trap extends Ability
 	public List<Item> getTrapComponents();
 	/**
 	 * Returns whether the given trapper is currently in a position to set this
-	 * trap on the specified object.  Error messages should be delivered to the 
+	 * trap on the specified object.  Error messages should be delivered to the
 	 * trapper if any internal checks aren't made.  Required materials or conditions
 	 * are checked here
 	 * @see Trap#maySetTrap(MOB, int)
@@ -131,7 +131,7 @@ public interface Trap extends Ability
 	public boolean canSetTrapOn(MOB mob, Physical P);
 	/**
 	 * Completed the task of setting a trap on a given object. If any materials are
-	 * required, this method will consume them.  If it is a bomb, it will still 
+	 * required, this method will consume them.  If it is a bomb, it will still
 	 * require activation, however.  This wil also set the reset time based on the
 	 * given classlevel and qualifyingClassLevel of the trapper.
 	 * @param mob the trapper
@@ -148,5 +148,5 @@ public interface Trap extends Ability
 	 * @return a descriptive text for this trap.
 	 */
 	public String requiresToSet();
-	
+
 }

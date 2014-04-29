@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_BrighteningAura extends Prayer
 {
-	public String ID() { return "Prayer_BrighteningAura"; }
-	public String name(){ return "Brightening Aura";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public String displayText(){ return "(Brightening Aura)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prayer_BrighteningAura"; }
+	@Override public String name(){ return "Brightening Aura";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String displayText(){ return "(Brightening Aura)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -58,6 +59,7 @@ public class Prayer_BrighteningAura extends Prayer
 			mob.tell("Your brightening aura fades.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg)) return true;
@@ -74,7 +76,8 @@ public class Prayer_BrighteningAura extends Prayer
 			msg.setValue((int)Math.round(CMath.mul(msg.value(),1.5)));
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -87,7 +90,7 @@ public class Prayer_BrighteningAura extends Prayer
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already surrounded by a brightening aura.");
 			return false;
 		}
-		
+
 		Room R=CMLib.map().roomLocation(target);
 		if(R==null) R=mob.location();
 

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Foraging extends GatheringSkill
 {
-	public String ID() { return "Foraging"; }
-	public String name(){ return "Foraging";}
+	@Override public String ID() { return "Foraging"; }
+	@Override public String name(){ return "Foraging";}
 	private static final String[] triggerStrings = {"FORAGE","FORAGING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	protected boolean allowedWhileMounted(){return false;}
-	public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
+	@Override protected boolean allowedWhileMounted(){return false;}
+	@Override public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
 
 	protected Item found=null;
 	protected String foundShortName="";
@@ -56,8 +56,9 @@ public class Foraging extends GatheringSkill
 	{
 		return getDuration(45,mob,level,10);
 	}
-	protected int baseYield() { return 1; }
+	@Override protected int baseYield() { return 1; }
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -88,6 +89,7 @@ public class Foraging extends GatheringSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -115,6 +117,7 @@ public class Foraging extends GatheringSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -129,7 +132,7 @@ public class Foraging extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		
+
 		verb="foraging";
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_VEGETATION,mob.location()))

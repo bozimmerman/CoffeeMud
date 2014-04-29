@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,18 +38,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Shelter extends Spell
 {
-	public String ID() { return "Spell_Shelter"; }
-	public String name(){return "Shelter";}
-	public String displayText(){return "(In a shelter)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_Shelter"; }
+	@Override public String name(){return "Shelter";}
+	@Override public String displayText(){return "(In a shelter)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public Room previousLocation=null;
 	public Room shelter=null;
-	
+
 	public Room getPreviousLocation(MOB mob)
 	{
 		if(previousLocation==null)
@@ -62,6 +62,7 @@ public class Spell_Shelter extends Spell
 		return previousLocation;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -112,6 +113,7 @@ public class Spell_Shelter extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -126,7 +128,8 @@ public class Spell_Shelter extends Spell
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -147,7 +150,7 @@ public class Spell_Shelter extends Spell
 				mob.location().send(mob,msg);
 				Set<MOB> h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
-	
+
 				Room thisRoom=mob.location();
 				previousLocation=thisRoom;
 				shelter=CMClass.getLocale("MagicShelter");

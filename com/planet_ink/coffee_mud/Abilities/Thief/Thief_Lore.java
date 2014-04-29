@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Lore extends ThiefSkill
 {
-	public String ID() { return "Thief_Lore"; }
-	public String name(){ return "Lore";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Lore"; }
+	@Override public String name(){ return "Lore";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"LORE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

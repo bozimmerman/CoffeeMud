@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Timeport extends Spell
 {
-	public String ID() { return "Spell_Timeport"; }
-	public String name(){return "Timeport";}
-	public String displayText(){return "(Time Travelling)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Timeport"; }
+	@Override public String name(){return "Timeport";}
+	@Override public String displayText(){return "(Time Travelling)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	protected final static int mask=
 			PhyStats.CAN_NOT_TASTE|PhyStats.CAN_NOT_SMELL|PhyStats.CAN_NOT_SEE
@@ -58,6 +58,7 @@ public class Spell_Timeport extends Spell
 			-PhyStats.CAN_SEE_SNEAKERS
 			-PhyStats.CAN_SEE_VICTIM;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -68,6 +69,7 @@ public class Spell_Timeport extends Spell
 		affectableStats.setDisposition(PhyStats.IS_HIDDEN);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -84,6 +86,7 @@ public class Spell_Timeport extends Spell
 			room.show(mob, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -113,6 +116,7 @@ public class Spell_Timeport extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

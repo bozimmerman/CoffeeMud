@@ -39,10 +39,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_ScrapExplode extends Property {
 
-	public String ID() { return "Prop_ScrapExplode"; }
-	public String name() { return "Scrap Explode"; }
-	protected int canAffectCode() { return Ability.CAN_ITEMS; }
+	@Override public String ID() { return "Prop_ScrapExplode"; }
+	@Override public String name() { return "Scrap Explode"; }
+	@Override protected int canAffectCode() { return Ability.CAN_ITEMS; }
 
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg affect)
 	{
 		super.executeMsg(myHost, affect);

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -103,7 +103,7 @@ public interface Drink extends PhysicalAgent, Decayable
 	 * @return Whether the item survives after drinking.
 	 */
 	public boolean disappearsAfterDrinking();
-	
+
 	/**
 	 * Given the liquid source, the amount of liquid which would need to be taken
 	 * from the source liquid source to fill up THIS liquid source.

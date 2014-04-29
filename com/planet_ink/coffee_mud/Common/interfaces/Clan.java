@@ -80,24 +80,24 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the set of clan votes
 	 */
 	public Enumeration<ClanVote> votes();
-	
+
 	/**
 	 * Orders the system to save any changes to existing
-	 * ongoing votes for this 
+	 * ongoing votes for this
 	 */
 	public void updateVotes();
-	
+
 	/**
 	 * Adds a new ClanVote object to the list of ongoing
-	 * votes for this 
+	 * votes for this
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to add
 	 */
 	public void addVote(ClanVote CV);
-	
+
 	/**
 	 * Removes a new ClanVote object from the list of ongoing
-	 * votes for this 
+	 * votes for this
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to remove
 	 */
@@ -112,9 +112,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of members of this clan who can vote on it
 	 */
 	public int getNumVoters(Function function);
-	
+
 	/**
-	 * Returns the number of members of this 
+	 * Returns the number of members of this
 	 * @return the membership count.
 	 */
 	public int getSize();
@@ -123,36 +123,36 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the name of the clan, which is almost always the
 	 * same as the ID, which is why clans can't change their names.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setName(String)
-	 * @return the name of the 
+	 * @return the name of the
 	 */
 	public String getName();
-	
+
 	/**
 	 * Returns the unique identifying ID of the clan for reference
 	 * elsewhere.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getName()
-	 * @return the unique identifier of the 
+	 * @return the unique identifier of the
 	 */
 	public String clanID();
-	
+
 	/**
-	 * Sets a new name for this 
+	 * Sets a new name for this
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getName()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#clanID()
 	 * @param newName the new name of this clan
 	 */
 	public void setName(String newName);
-	
+
 	/**
 	 * Returns the category of the clan, which is almost always the
 	 * same as the government category.  This is significant since a player
 	 * can only belong to N clans of a given category.  See also MAXCLANS
 	 * in coffeemud.ini.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setCategory(String)
-	 * @return the name of the 
+	 * @return the name of the
 	 */
 	public String getCategory();
-	
+
 	/**
 	 * Sets a new category for this, which is almost always the
 	 * same as the government category.  This is significant since a player
@@ -162,7 +162,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param newCategory the new cata of this clan
 	 */
 	public void setCategory(String newCategory);
-	
+
 	/**
 	 * Returns Clan, Republic, or another one of the
 	 * clan government types.
@@ -188,7 +188,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return a vector of the Ability objects
 	 */
 	public SearchIDList<Ability> clanAbilities(MOB mob);
-	
+
 	/**
 	 * Return a vector of skills, spells, and other effects granted to the given
 	 * mob of the given mobs level.
@@ -197,17 +197,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return a vector of the Ability objects
 	 */
 	public ChameleonList<Ability> clanEffects(MOB mob);
-	
+
 	/**
 	 * Return size of a vector of skills, spells, and other effects granted to the given
-	 * mob of the given mobs level. Much more efficient than getting the whole list 
+	 * mob of the given mobs level. Much more efficient than getting the whole list
 	 * and checking its size.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @param mob the mob to grant the abilities to
 	 * @return a size of a vector of the Ability objects
 	 */
 	public int numClanEffects(MOB mob);
-	
+
 	/**
 	 * Retrieves this Clan's basic story.
 	 * This is to make the Clan's more RP based and so we can
@@ -216,7 +216,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the story of this clan
 	 */
 	public String getPremise();
-	
+
 	/**
 	 * Returns whether the high role id outranks the low roldid
 	 * @param highRoleID first
@@ -224,7 +224,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return true if highRoleiD outranks lowRoleID
 	 */
 	public boolean doesOutRank(int highRoleID, int lowRoleID);
-	
+
 	/**
 	 * Sets this Clan's basic story.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPremise()
@@ -255,16 +255,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Returns a mask used to identify whether a player is allowed
-	 * to join a particular 
+	 * to join a particular
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAcceptanceSettings(String)
 	 * @return the mask used to identify prospects
 	 */
 	public String getAcceptanceSettings();
-	
+
 	/**
 	 * Sets a mask used to identify whether a player is allowed
-	 * to join a particular 
+	 * to join a particular
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAcceptanceSettings()
 	 * @param newSettings the mask used to identify prospects
@@ -278,7 +278,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return xml document describing the politics of this clan
 	 */
 	public String getPolitics();
-	
+
 	/**
 	 * Sets an XML string used to identify the political relations
 	 * between this clan and others.
@@ -286,23 +286,23 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param politics xml document describing the politics of this clan
 	 */
 	public void setPolitics(String politics);
-	
+
 	/**
-	 * Returns whether membership is automatically approved to this 
+	 * Returns whether membership is automatically approved to this
 	 * And if so, what the default position for members are.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAutoPosition(int)
 	 * @return xml document describing the politics of this clan
 	 */
 	public int getAutoPosition();
-	
+
 	/**
-	 * Sets whether membership is automatically approved to this 
+	 * Sets whether membership is automatically approved to this
 	 * And if so, what the default position for members are.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAutoPosition()
 	 * @param pos the positition to give to applicants
 	 */
 	public void setAutoPosition(int pos);
-	
+
 	/**
 	 * Returns one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.
@@ -311,7 +311,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return a CLANSTAT_* constant
 	 */
 	public int getStatus();
-	
+
 	/**
 	 * Sets one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.
@@ -320,7 +320,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param newStatus a CLANSTAT_* constant
 	 */
 	public void setStatus(int newStatus);
-	
+
 	/**
 	 * Returns true if this clan is rivalrous with other rivalrous clans,
 	 * meaning that pvp is enabled between them, and war can be declared
@@ -330,7 +330,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return true or false
 	 */
 	public boolean isRivalrous();
-	
+
 	/**
 	 * Set to true if this clan is rivalrous with other rivalrous clans,
 	 * meaning that pvp is enabled between them, and war can be declared
@@ -339,21 +339,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param isRivalrous true or false
 	 */
 	public void setRivalrous(boolean isRivalrous);
-	
+
 	/**
 	 * Returns the current clan level
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanLevel(int)
 	 * @return the current clan level
 	 */
 	public int getClanLevel();
-	
+
 	/**
 	 * Sets the new clan level
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanLevel()
 	 * @param newClanLevel the new clan level
 	 */
 	public void setClanLevel(int newClanLevel);
-	
+
 	/**
 	 * Returns the roomID of this clans recall room (their clan home)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setRecall(String)
@@ -373,7 +373,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the roomID of this clans morgue room
 	 */
 	public String getMorgue();
-	
+
 	/**
 	 * Sets the roomID of this clans morgue room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getMorgue()
@@ -382,7 +382,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setMorgue(String newRecall);
 
 	/**
-	 * Returns a bitmap representing the trophies won by this 
+	 * Returns a bitmap representing the trophies won by this
 	 * The bitmap is made up of TROPHY_* constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
@@ -390,7 +390,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public int getTrophies();
 	/**
-	 * Sets a bitmap representing the trophies won by this 
+	 * Sets a bitmap representing the trophies won by this
 	 * The bitmap is made up of TROPHY_* constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
@@ -404,7 +404,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the roomID of this clans donation room
 	 */
 	public String getDonation();
-	
+
 	/**
 	 * Sets the roomID of this clans donation room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getDonation()
@@ -413,30 +413,30 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setDonation(String newDonation);
 
 	/**
-	 * Gets the amount of experience earned by this 
+	 * Gets the amount of experience earned by this
 	 * @return the experience earned
 	 */
 	public long getExp();
-	
+
 	/**
-	 * Sets the amount of experience earned by this 
+	 * Sets the amount of experience earned by this
 	 * @param exp the experience earned
 	 */
 	public void setExp(long exp);
-	
+
 	/**
 	 * Returns the inner (government usually)
-	 * requirements to even apply to this clan 
+	 * requirements to even apply to this clan
 	 * @return the zapper mask that applies
 	 */
 	public String getBasicRequirementMask();
-	
+
 	/**
-	 * Adjusts the amount of experience earned by this 
+	 * Adjusts the amount of experience earned by this
 	 * @param howMuch the experience adjustment, + or -
 	 */
 	public void adjExp(int howMuch);
-	
+
 	/**
 	 * Adjusts the amount of experience earned by a player based
 	 * on the tax rate.  Will automatically adjust the exp of
@@ -444,22 +444,22 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param exp the old experience
 	 */
 	public int applyExpMods(int exp);
-	
+
 	/**
-	 * Called when a member of this clan kills a member of another 
+	 * Called when a member of this clan kills a member of another
 	 * Will update the clan in the database.
 	 * @param killer the member of this clan that did the killing
 	 * @param killed the mob or member of other clan killed
 	 */
 	public void recordClanKill(MOB killer, MOB killed);
-	
+
 	/**
 	 * Returns the number of other-clan kills this clan has recorded.
 	 * @param killer the member of this clan that did the killing or NULL for all
 	 * @return the number of kills.
 	 */
 	public int getCurrentClanKills(MOB killer);
-	
+
 	/**
 	 * Returns the total control points represented by the list of
 	 * controlled areas given.
@@ -470,7 +470,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of control points represented
 	 */
 	public long calculateMapPoints(List<Area> controlledAreas);
-	
+
 	/**
 	 * Returns the total control points earned by this clan
 	 * @see Clan#calculateMapPoints(List)
@@ -479,9 +479,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of control points represented
 	 */
 	public long calculateMapPoints();
-	
+
 	/**
-	 * Returns all the areas on the map controlled by this 
+	 * Returns all the areas on the map controlled by this
 	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
 	 * @return a vector of area objects
@@ -489,27 +489,27 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public List<Area> getControlledAreas();
 
 	/**
-	 * Sets the tax rate for this 
+	 * Sets the tax rate for this
 	 * @see Clan#getTaxes()
 	 * @param rate the tax rate 0-100.0
 	 */
 	public void setTaxes(double rate);
-	
+
 	/**
-	 * Gets the tax rate for this 
+	 * Gets the tax rate for this
 	 * @see Clan#setTaxes(double)
 	 * @return rate the tax rate 0-100.0
 	 */
 	public double getTaxes();
-	
+
 	/**
-	 * Returns the maximum number of players who can hold the given 
+	 * Returns the maximum number of players who can hold the given
 	 * role in this   For assignment purposes.
 	 * @param roleID the role to get a max for
 	 * @return the max
 	 */
 	public int getMostInRole(int roleID);
-	
+
 	/**
 	 * Returns the friendly descriptive name of a given role in a clan, based
 	 * on very specific criteria.
@@ -519,7 +519,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the friendly descriptive name of a given role in a clan
 	 */
 	public String getRoleName(int roleID, boolean titleCase, boolean plural);
-	
+
 	/**
 	 * For the clan government type, this function will return
 	 * the clan role that most closely matches the given string "position".
@@ -544,14 +544,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return true if it is, false otherwise.
 	 */
 	public boolean isOnlyFamilyApplicants();
-	
+
 	/**
 	 * Returns the list of roles for people in this clan, from
 	 * lowest rank to the highest.  Must correspond with roleIDs
 	 * @return the role list
 	 */
 	public String[] getRolesList();
-	
+
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord
@@ -561,7 +561,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList();
-	
+
 	/**
 	 * Returns the set of members, where
 	 * each row represents a FullMemberRecord
@@ -583,7 +583,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public List<MemberRecord> getMemberList(int PosFilter);
 
 	/**
-	 * Returns the highest ranking member of this 
+	 * Returns the highest ranking member of this
 	 * @return the mob object for the highest ranking member.
 	 */
 	public MOB getResponsibleMember();
@@ -593,21 +593,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * between this clan and the clan of the given name.
 	 * @see Clan#setClanRelations(String, int, long)
 	 * @see Clan#getLastRelationChange(String)
-	 * @param id the name of another 
+	 * @param id the name of another
 	 * @return the REL_* constant
 	 */
 	public int getClanRelations(String id);
-	
+
 	/**
 	 * Returns the time/date stamp when this clan last changed
-	 * its relations with the given 
+	 * its relations with the given
 	 * @see Clan#setClanRelations(String, int, long)
 	 * @see Clan#getClanRelations(String)
 	 * @param id the other clan
 	 * @return when the last change was
 	 */
 	public long getLastRelationChange(String id);
-	
+
 	/**
 	 * Sets a new relationship between this clan and the clan
 	 * with the given id.
@@ -616,27 +616,27 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param time a current date/time stamp for this change
 	 */
 	public void setClanRelations(String id, int rel, long time);
-	
+
 	/**
 	 * Returns the id representing the government type
-	 * of this 
+	 * of this
 	 * @see Clan
 	 * @see Clan#setGovernmentID(int)
 	 * @see Clan#getGovernment()
 	 * @return the if constant
 	 */
 	public int getGovernmentID();
-	
+
 	/**
 	 * Returns the object representing the government
-	 * of this 
+	 * of this
 	 * @see ClanGovernment
 	 * @see Clan#getGovernmentID()
 	 * @see Clan#setGovernmentID(int)
 	 * @return the if constant
 	 */
 	public ClanGovernment getGovernment();
-	
+
 	/**
 	 * Returns the minimum clan members for the clan
 	 * to become active, or to prevent being purged.
@@ -644,7 +644,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return minimum number of clan members.
 	 */
 	public int getMinClanMembers();
-	
+
 	/**
 	 * Sets the minimum clan members for the clan
 	 * to become active, or to prevent being purged.
@@ -653,29 +653,29 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public void setMinClanMembers(int amt);
 	/**
-	 * Returns whether this clan attains conquest loyalty 
+	 * Returns whether this clan attains conquest loyalty
 	 * through giving out clan items.
 	 * @return true if if does, false otherwise
 	 */
 	public boolean isLoyaltyThroughItems();
-	
+
 	/**
-	 * Returns whether this clan attains conquest loyalty 
+	 * Returns whether this clan attains conquest loyalty
 	 * through mobs worshiping the same deity as their leader.
 	 * @return true if if does, false otherwise
 	 */
 	public boolean isWorshipConquest();
-	
+
 	/**
 	 * Returns the id constant representing the government type
-	 * of this 
+	 * of this
 	 * @see Clan
 	 * @see Clan#getGovernmentID()
 	 * @see Clan#getGovernment()
 	 * @param type the type id constant
 	 */
 	public void setGovernmentID(int type);
-	
+
 	/**
 	 * Returns the roleid constant representing the highest rank
 	 * in this clan type that can perform the given function
@@ -687,7 +687,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the roleid constant
 	 */
 	public int getTopQualifiedRoleID(Function func, MOB mob);
-	
+
 	/**
 	 * Returns the roleid(s) constant representing the highest rank
 	 * roleid(s) in this clan type that can perform the given function.
@@ -697,36 +697,36 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the top roleid
 	 */
 	public List<Integer> getTopRankedRoles(Function func);
-	
+
 	/**
 	 * Returns the number of roles (max roleid)
 	 * @return number of roles
 	 */
 	public int getNumberRoles();
-	
+
 	/**
 	 * Del a member from this clan
 	 * @param M the member to remove
 	 */
 	public void delMember(MOB M);
-	
+
 	/**
 	 * Adds a new member to this clan
 	 * @param M the member to add
 	 * @param role the coded role number
 	 */
 	public void addMember(MOB M, int role);
-	
+
 	/**
 	 * Orders the system to update this clan in the database.
 	 */
 	public void update();
-	
+
 	/**
 	 * Orders the system to destroy this clan in the database.
 	 */
 	public void destroyClan();
-	
+
 	/**
 	 * Orders the system to create this clan in the database.
 	 */
@@ -739,7 +739,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return true if they can, false otherwise
 	 */
 	public boolean canBeAssigned(MOB mob, int role);
-	
+
 	/**
 	 * Represents an individual clan vote
 	 * @author Bo Zimmerman
@@ -777,9 +777,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 */
 		public PairVector<String,Boolean> votes=null;
 	}
-	
+
 	/**
-	 * A internal membership record, as returned by the database 
+	 * A internal membership record, as returned by the database
 	 * @author Bo Zimmerman
 	 */
 	public class MemberRecord
@@ -792,7 +792,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		{
 			this.name=name; this.role=role; this.mobpvps=mobpvps; this.playerpvps=playerpvps;
 		}
-		public String toString() { return name;}
+		@Override public String toString() { return name;}
 	}
 	/**
 	 * A internal membership record, as returned by the database,
@@ -808,7 +808,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			super(name,role,mobpvps,playerpvps); this.level=level; this.timestamp=timestamp;
 		}
 	}
-	
+
 	/** Vote just started constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_STARTED=0;
 	/** Vote has failed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
@@ -822,7 +822,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"Passed"
 	};
 
-	
+
 	/** Stat variables associated with clan objects. */
 	public final static String[] CLAN_STATS={
 		"ACCEPTANCE", // 0
@@ -862,7 +862,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"PENDING",
 		"FADING"
 	};
-	
+
 	/** constant for getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */
 	public static final int REL_NEUTRAL=0;
 	/** constant for getClanRelations method, denoting at war with. @see Clan#getClanRelations(String) */
@@ -887,7 +887,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
-	
+
 	/** long descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_STATES={
 		"NEUTRALITY TOWARDS",
@@ -931,7 +931,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		CAN_DO,
 		MUST_VOTE_ON
 	}
-	
+
 	/**
 	 * An enumeration of ways auto-promotion can work in a clan
 	 * @author bzimmerman
@@ -944,7 +944,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		LEVEL_OVERWRITE,
 		RANK_OVERWRITE
 	}
-	
+
 	/**
 	 * An enumation of all the major clan functions gated
 	 * by internal security

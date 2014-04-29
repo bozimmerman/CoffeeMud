@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,28 @@ import java.util.*;
 
 public class Poison_Bloodboil extends Poison
 {
-	public String ID() { return "Poison_Bloodboil"; }
-	public String name(){ return "Blood Boil";}
+	@Override public String ID() { return "Poison_Bloodboil"; }
+	@Override public String name(){ return "Blood Boil";}
 	private static final String[] triggerStrings = {"POISONBURN"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	protected int POISON_TICKS(){return 20;} // 0 means no adjustment!
-	protected int POISON_DELAY(){return 2;}
-	protected String POISON_DONE(){return "Your blood stops burning.";}
-	protected String POISON_START(){return "^R<S-NAME> turn(s) red.^?";}
-	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as <S-HIS-HER> blood burns.";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to sting <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,2,0):0;}
+	@Override protected int POISON_TICKS(){return 20;} // 0 means no adjustment!
+	@Override protected int POISON_DELAY(){return 2;}
+	@Override protected String POISON_DONE(){return "Your blood stops burning.";}
+	@Override protected String POISON_START(){return "^R<S-NAME> turn(s) red.^?";}
+	@Override protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as <S-HIS-HER> blood burns.";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to sting <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,2,0):0;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);

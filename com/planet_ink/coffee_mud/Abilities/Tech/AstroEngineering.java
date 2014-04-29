@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2013-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AstroEngineering extends TechSkill
 {
-	public String ID() { return "AstroEngineering"; }
-	public String name(){ return "Astro Engineering";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected  int canTargetCode(){return CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "AstroEngineering"; }
+	@Override public String name(){ return "Astro Engineering";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected  int canTargetCode(){return CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ASTROENGINEER","ASTROENGINEERING","ENGINEER","AE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+
 	protected volatile int baseTickSpan = Integer.MAX_VALUE;
 	protected volatile boolean aborted = false;
 	protected volatile boolean failure = false;
@@ -55,9 +55,9 @@ public class AstroEngineering extends TechSkill
 	protected volatile Room targetRoom  = null;
 	protected volatile Operation op = Operation.REPAIR;
 	protected volatile String altverb="";
-	
-	protected static enum Operation 
-	{ 
+
+	protected static enum Operation
+	{
 		INSTALL("installing"),
 		REPAIR("repairing"),
 		ENHANCE("enhancing");
@@ -93,7 +93,7 @@ public class AstroEngineering extends TechSkill
 		}
 		return (int)Math.round(CMath.mul(multiplyBy, score));
 	}
-	
+
 	public void giveBonus(MOB mob, Electronics item)
 	{
 		if((mob==null)||(item==null))
@@ -101,7 +101,7 @@ public class AstroEngineering extends TechSkill
 
 		if((System.currentTimeMillis()-lastCastHelp)<300000)
 			return;
-		
+
 		String experName;
 		if(CMLib.dice().rollPercentage()>50)
 		{
@@ -137,7 +137,8 @@ public class AstroEngineering extends TechSkill
 			mob.tell(mob,null,null,"You gain some new insights about "+experName+".");
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -194,7 +195,8 @@ public class AstroEngineering extends TechSkill
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -204,8 +206,8 @@ public class AstroEngineering extends TechSkill
 			||(mob.location()!=targetRoom)
 			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
 			{
-				aborted=true; 
-				unInvoke(); 
+				aborted=true;
+				unInvoke();
 				return false;
 			}
 			if(tickDown==4)
@@ -226,12 +228,13 @@ public class AstroEngineering extends TechSkill
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
-		
+
 		if(!super.tick(ticking,tickID))
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -247,7 +250,8 @@ public class AstroEngineering extends TechSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
@@ -385,14 +389,14 @@ public class AstroEngineering extends TechSkill
 			return false;
 
 		failure=!proficiencyCheck(mob,0,auto);
-		
+
 		baseTickSpan = targetItem.basePhyStats().weight()/4;
 		if(failure)
 			baseTickSpan=baseTickSpan/2;
 		if(baseTickSpan<8)
 			baseTickSpan=8;
 		startTickDown(mob, mob, baseTickSpan);
-		
+
 		return !failure;
 	}
 }

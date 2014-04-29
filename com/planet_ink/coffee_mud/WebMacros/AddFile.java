@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,8 +40,9 @@ import java.util.*;
 */
 public class AddFile extends StdWebMacro
 {
-	public String name() { return "AddFile"; }
+	@Override public String name() { return "AddFile"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		PairSVector<String,String> parms=super.parseOrderedParms(parm,true);

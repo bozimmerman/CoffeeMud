@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,26 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_ConcealDoor extends ThiefSkill
 {
-	public String ID() { return "Thief_ConcealDoor"; }
-	public String name(){ return "Conceal Door";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String ID() { return "Thief_ConcealDoor"; }
+	@Override public String name(){ return "Conceal Door";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"DOORCONCEAL","DCONCEAL","CONCEALDOOR"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=Integer.MIN_VALUE;
 
+	@Override
 	public int abilityCode()
 	{
 		if(code<0) code=CMath.s_int(text());
 		return code;
 	}
-	public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
+	@Override public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
@@ -63,7 +65,8 @@ public class Thief_ConcealDoor extends ThiefSkill
 			//stats.setLevel(stats.level()+abilityCode());
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -105,7 +108,8 @@ public class Thief_ConcealDoor extends ThiefSkill
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
@@ -140,7 +144,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			mob.tell(mob,X,null,"You'd better close <T-NAME> first.");
 			return false;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

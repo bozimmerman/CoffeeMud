@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ public interface Wand extends MiscMagic
 {
 	public void setSpell(Ability theSpell);
 	public Ability getSpell();
-	
+
 	public boolean checkWave(MOB mob, String message);
 	public void waveIfAble(MOB mob, Physical afftarget, String message);
 	public String magicWord();

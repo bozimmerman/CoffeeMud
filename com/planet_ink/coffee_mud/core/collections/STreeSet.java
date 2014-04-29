@@ -30,14 +30,14 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	{
 		T=new TreeSet<K>(comp);
 	}
-	
+
 	public STreeSet(List<K> E)
 	{
 		T=new TreeSet<K>();
 		if(E!=null)
 			this.T.addAll(E);
 	}
-	
+
 	public STreeSet(K[] E)
 	{
 		T=new TreeSet<K>();
@@ -45,7 +45,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 			for(K o : E)
 				T.add(o);
 	}
-	
+
 	public STreeSet(Enumeration<K> E)
 	{
 		T=new TreeSet<K>();
@@ -53,7 +53,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 			for(;E.hasMoreElements();)
 				T.add(E.nextElement());
 	}
-	
+
 	public STreeSet(Iterator<K> E)
 	{
 		T=new TreeSet<K>();
@@ -61,7 +61,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 			for(;E.hasNext();)
 				T.add(E.next());
 	}
-	
+
 	public STreeSet(Set<K> E)
 	{
 		T=new TreeSet<K>();
@@ -69,49 +69,49 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 			for(K o : E)
 				add(o);
 	}
-	
+
 	public synchronized void addAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.add(E.nextElement());
 	}
-	
+
 	public synchronized void addAll(K[] E)
 	{
 		if(E!=null)
 			for(K e : E)
 				T.add(e);
 	}
-	
+
 	public synchronized void addAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.add(E.next());
 	}
-	
+
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				T.remove(E.nextElement());
 	}
-	
+
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				T.remove(E.next());
 	}
-	
+
 	public synchronized void removeAll(List<K> E)
 	{
 		if(E!=null)
 			for(K o : E)
 				T.remove(o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized TreeSet<K> toTreeSet()
 	{
@@ -151,7 +151,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		T.clear();
 	}
 	@SuppressWarnings("unchecked")
-	public synchronized STreeSet<K> copyOf() 
+	public synchronized STreeSet<K> copyOf()
 	{
 		STreeSet<K> TS=new STreeSet<K>();
 		TS.T=(TreeSet<K>)T.clone();

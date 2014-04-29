@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,24 +35,27 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_ClosedSeason extends Property
 {
-	public String ID() { return "Prop_ClosedSeason"; }
-	public String name(){ return "Contingent Visibility";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ClosedSeason"; }
+	@Override public String name(){ return "Contingent Visibility";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected Vector closedV=null;
 	boolean doneToday=false;
 	private Area exitArea=null;
 
+	@Override
 	public String accountForYourself()
 	{ return "";	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
 		closedV=CMParms.parse(text.toUpperCase());
 	}
 
+	@Override
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		super.executeMsg(E,msg);
@@ -61,11 +64,11 @@ public class Prop_ClosedSeason extends Property
 		if(msg.source().location()!=null)
 			exitArea=msg.source().location().getArea();
 	}
-	
+
 	protected boolean closed(Area A)
 	{
 		if(A==null) return false;
-		
+
 		for(final Room.VariationCode code : Room.VariationCode.values())
 		{
 			if(closedV.contains(code.toString()))
@@ -88,6 +91,7 @@ public class Prop_ClosedSeason extends Property
 		return false;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected==null) return;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_AreaForSale extends Property implements LandTitle
 {
-	public String ID() { return "Prop_AreaForSale"; }
-	public String name(){ return "Putting an area up for sale";}
-	protected int canAffectCode(){return Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_AreaForSale"; }
+	@Override public String name(){ return "Putting an area up for sale";}
+	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
 	protected Hashtable lastItemNums=new Hashtable();
+	@Override
 	public String accountForYourself()
 	{ return "For Sale";	}
 	protected long lastCall=0;
 	protected long lastMobSave=0;
 	protected int lastDayDone=-1;
 
-	public boolean allowsExpansionConstruction(){ return false;}
+	@Override public boolean allowsExpansionConstruction(){ return false;}
 
+	@Override
 	public int getPrice()
 	{
 		if(text().length()==0)
@@ -61,30 +63,34 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				break;
 		}
 		int price=CMath.s_int(s.substring(index+1).trim());
-				
+
 		if(price<=0) price=100000;
 		return price;
 	}
-	
+
+	@Override
 	public String getUniqueLotID()
-	{ 
+	{
 		return "AREA_PROPERTY_"+landPropertyID();
 	}
-	
+
+	@Override
 	public void setPrice(int price)
-	{   
+	{
 		setMiscText(getOwnerName()+"/"
 			+(rentalProperty()?"RENTAL ":"")
 			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 			+price);
 	}
-	
+
+	@Override
 	public String getOwnerName()
 	{
 		if(text().indexOf('/')<0) return "";
 		return text().substring(0,text().indexOf('/'));
 	}
 
+	@Override
 	public String getTitleID()
 	{
 		if(affected != null)
@@ -92,6 +98,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return "";
 	}
 
+	@Override
 	public CMObject getOwnerObject()
 	{
 		String owner=getOwnerName();
@@ -100,15 +107,17 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	
+
+	@Override
 	public void setOwnerName(String owner)
-	{   
+	{
 		setMiscText(owner+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 				+getPrice());
 	}
 
+	@Override
 	public int backTaxes()
 	{
 		if(text().indexOf('/')<0) return 0;
@@ -117,28 +126,32 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
+	@Override
 	public void setBackTaxes(int tax)
-	{	
+	{
 		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((tax!=0)?"TAX"+tax+"X ":"")
 				+getPrice());
 	}
-	
+
+	@Override
 	public boolean rentalProperty()
 	{
 		if(text().indexOf('/')<0) return text().indexOf("RENTAL")>=0;
 		return text().indexOf("RENTAL",text().indexOf('/'))>0;
 	}
+	@Override
 	public void setRentalProperty(boolean truefalse)
-	{	
+	{
 		setMiscText(getOwnerName()+"/"
 				+(truefalse?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 				+getPrice());
 	}
-	
+
 	// update title, since it may affect clusters, worries about ALL involved
+	@Override
 	public void updateTitle()
 	{
 		if(affected instanceof Area)
@@ -149,11 +162,12 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		else
 		{
 			Area A=CMLib.map().getArea(landPropertyID());
-			if(A!=null) 
+			if(A!=null)
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
 	}
 
+	@Override
 	public String landPropertyID()
 	{
 		if((affected!=null)&&(affected instanceof Area))
@@ -164,15 +178,17 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return "";
 	}
 
-	public void setLandPropertyID(String landID){}
+	@Override public void setLandPropertyID(String landID){}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		Prop_RoomForSale.robberyCheck(this,msg);
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -209,6 +225,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		List<Room> V=new Vector();
@@ -227,9 +244,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 		return V;
 	}
-	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
+	@Override public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
+	@Override
 	public void updateLot(List optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Lee Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 
 public class Drowish extends StdLanguage
 {
-	public String ID() { return "Drowish"; }
-	public String name(){ return "Drowish";}
+	@Override public String ID() { return "Drowish"; }
+	@Override public String name(){ return "Drowish";}
 	public static List<String[]> wordLists=null;
 	public Drowish()
 	{
 		super();
 	}
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
@@ -62,11 +63,12 @@ public class Drowish extends StdLanguage
 		return wordLists;
 	}
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;
-		
+
 		hashwords.put("NOBLE","c'rintri");
 		hashwords.put("DAUGHTER","dalharil");
 		hashwords.put("SON","dalharuk");
@@ -725,10 +727,10 @@ public class Drowish extends StdLanguage
 		hashwords.put("50TH","hueszithar");
 		hashwords.put("HUNDREDTH","ravhelar");
 		hashwords.put("THOUSANDTH","szithrelar");
-//		
+//
 //		These are words for which the Drow do not have a translation for since the concepts are lost to them.
 //		Thus, they are translated straight.
-//		
+//
 		hashwords.put("JOY","joy");
 		hashwords.put("COMPASSION","compassion");
 		hashwords.put("HOPE","hope");

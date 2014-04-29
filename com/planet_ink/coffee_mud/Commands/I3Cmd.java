@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class I3Cmd extends StdCommand
 	public I3Cmd(){}
 
 	private final String[] access={"I3"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void i3Error(MOB mob)
 	{
@@ -49,6 +49,7 @@ public class I3Cmd extends StdCommand
 			mob.tell("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME].");
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -149,8 +150,8 @@ public class I3Cmd extends StdCommand
 
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

@@ -41,7 +41,7 @@ public class GenAbility extends StdAbility
 	// data should be stored in a common instance object .. something common to all genability of same id,
 	// but diff to others.n  I'm thinking like a DVector, and just have
 	private String ID="GenAbility";
-	public String ID() { return ID; }
+	@Override public String ID() { return ID; }
 	private static final Hashtable vars=new Hashtable();
 	private static final int V_NAME=0;//S
 	private static final int V_DISP=1;//S
@@ -151,30 +151,31 @@ public class GenAbility extends StdAbility
 	private Runnable periodicEffect = null;
 
 
-	public String Name(){return name();}
-	public String name(){ return (String)V(ID,V_NAME);}
-	public String description(){return "&";}
-	public String displayText(){return (String)V(ID,V_DISP);}
-	public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
-	public int maxRange(){return adjustedMaxInvokerRange(((Integer)V(ID,V_MAXR)).intValue());}
-	public int minRange(){return ((Integer)V(ID,V_MINR)).intValue();}
-	public boolean isAutoInvoked(){return ((Boolean)V(ID,V_AUTO)).booleanValue();}
-	public long flags(){return ((Integer)V(ID,V_FLAG)).intValue();}
-	public int usageType(){return ((Integer)V(ID,V_USAG)).intValue();}
-	protected int overrideMana(){return ((Integer)V(ID,V_OMAN)).intValue();} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
-	public int classificationCode(){ return ((Integer)V(ID,V_CLAS)).intValue(); }
-	protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
-	protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
-	public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
+	@Override public String Name(){return name();}
+	@Override public String name(){ return (String)V(ID,V_NAME);}
+	@Override public String description(){return "&";}
+	@Override public String displayText(){return (String)V(ID,V_DISP);}
+	@Override public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(((Integer)V(ID,V_MAXR)).intValue());}
+	@Override public int minRange(){return ((Integer)V(ID,V_MINR)).intValue();}
+	@Override public boolean isAutoInvoked(){return ((Boolean)V(ID,V_AUTO)).booleanValue();}
+	@Override public long flags(){return ((Integer)V(ID,V_FLAG)).intValue();}
+	@Override public int usageType(){return ((Integer)V(ID,V_USAG)).intValue();}
+	@Override protected int overrideMana(){return ((Integer)V(ID,V_OMAN)).intValue();} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
+	@Override public int classificationCode(){ return ((Integer)V(ID,V_CLAS)).intValue(); }
+	@Override protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
+	@Override protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
+	@Override public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
 	public int tickOverride() { return ((Integer)V(ID,V_TKOV)).intValue();}
-	
+
 	protected long timeToNextCast = 0;
-	protected int getTicksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
-	protected long getTimeOfNextCast(){ return timeToNextCast; }
-	protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
-	
+	@Override protected int getTicksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
+	@Override protected long getTimeOfNextCast(){ return timeToNextCast; }
+	@Override protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+
 	protected boolean isChannelingSkill() { return ((Boolean)V(ID,V_CHAN)).booleanValue(); }
 
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -199,6 +200,7 @@ public class GenAbility extends StdAbility
 		return new GenAbility();
 	}
 
+	@Override
 	protected void cloneFix(Ability E)
 	{
 		if(E instanceof GenAbility)
@@ -215,8 +217,9 @@ public class GenAbility extends StdAbility
 		}
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public boolean invoke(final MOB mob, Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!auto)
@@ -363,7 +366,7 @@ public class GenAbility extends StdAbility
 				msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS|OTH.intValue()|(auto?CMMsg.MASK_ALWAYS:0),null);
 			else
 				msg2=null;
-			
+
 			if(mob.location().okMessage(mob,msg)&&(this.okMessage(mob, msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2)&&(this.okMessage(mob, msg2)))))
 			{
@@ -380,7 +383,7 @@ public class GenAbility extends StdAbility
 							success[0]=beneficialAffect(mob,target,asLevel,tickOverride());
 					}
 					setTimeOfNextCast(mob);
-					
+
 					String afterAffect=(String)V(ID,V_PAFF);
 					if((afterAffect.length()>0)&&(success[0]))
 					{
@@ -412,6 +415,7 @@ public class GenAbility extends StdAbility
 				final Ability me=this;
 				final Runnable skillAction = new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						String DMG=(String)V(ID,V_PDMG);
@@ -477,7 +481,7 @@ public class GenAbility extends StdAbility
 						if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
 						{
 							Ability A=finalTarget.fetchEffect(ID());
-							if((!(A instanceof GenAbility))||(A.invoker()!=mob)) 
+							if((!(A instanceof GenAbility))||(A.invoker()!=mob))
 								A=null;
 							if(A!=null)
 								A.unInvoke();
@@ -489,7 +493,7 @@ public class GenAbility extends StdAbility
 				if((canAffectCode()!=0)&&(finalTarget!=null)&&(!finalTargetMOB.amDead())&&(CMLib.flags().isInTheGame(finalTarget, true)))
 				{
 					Ability A=finalTarget.fetchEffect(ID());
-					if((!(A instanceof GenAbility))||(A.invoker()!=mob)) 
+					if((!(A instanceof GenAbility))||(A.invoker()!=mob))
 						A=null;
 					if(A instanceof GenAbility)
 						((GenAbility)A).periodicEffect = skillAction;
@@ -505,11 +509,13 @@ public class GenAbility extends StdAbility
 		return true;
 	}
 
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		ScriptingEngine S=getScripter();
@@ -536,6 +542,7 @@ public class GenAbility extends StdAbility
 		return;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
@@ -544,6 +551,7 @@ public class GenAbility extends StdAbility
 		if(isChannelingSkill())
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
@@ -551,6 +559,7 @@ public class GenAbility extends StdAbility
 			A.affectCharStats(affectedMob,affectableStats);
 
 	}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
@@ -558,6 +567,7 @@ public class GenAbility extends StdAbility
 			A.affectCharState(affectedMob,affectableMaxState);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		ScriptingEngine S=getScripter();
@@ -567,8 +577,9 @@ public class GenAbility extends StdAbility
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
-	{ 
+	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 		if(!super.tick(ticking,tickID))
@@ -583,7 +594,7 @@ public class GenAbility extends StdAbility
 	}
 
 	// lots of work to be done here
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
 										 "NAME",//2S
@@ -617,13 +628,15 @@ public class GenAbility extends StdAbility
 										 "TICKAFFECTS", //30B
 										 "CHANNELING" //31B
 										};
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -666,6 +679,7 @@ public class GenAbility extends StdAbility
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		int num=0;
@@ -822,6 +836,7 @@ public class GenAbility extends StdAbility
 		return 0;
 	}
 
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenAbility)) return false;

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public interface LegalLibrary extends CMLibrary
 	public Area getLegalObject(Area A);
 	public Area getLegalObject(Room R);
 	public String getLandOwnerName(Room room);
-	
+
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);
 	public boolean isRoomSimilarlyTitled(LandTitle title, Room R);
@@ -52,10 +52,10 @@ public interface LegalLibrary extends CMLibrary
 	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals);
 	public Ability getClericInfusion(Physical room);
 	public Deity getClericInfused(Room room);
-	
+
 	public boolean isLegalOfficerHere(MOB mob);
 	public boolean isLegalJudgeHere(MOB mob);
 	public boolean isLegalOfficialHere(MOB mob);
-	
+
 	public boolean isACity(Area A);
 }

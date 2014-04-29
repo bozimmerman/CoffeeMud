@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class JungleGrid extends StdGrid
 {
-	public String ID(){return "JungleGrid";}
+	@Override public String ID(){return "JungleGrid";}
 	public JungleGrid()
 	{
 		super();
@@ -44,8 +44,8 @@ public class JungleGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 
-	public String getGridChildLocaleID(){return "Jungle";}
-	public List<Integer> resourceChoices(){return Jungle.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Jungle";}
+	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

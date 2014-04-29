@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class GenWallpaper implements Item
 {
-	public String ID(){ return "GenWallpaper";}
+	@Override public String ID(){ return "GenWallpaper";}
 	protected String		name="some wallpaper";
 	protected Object		description=null;
 	protected String		readableText="";
@@ -50,36 +50,41 @@ public class GenWallpaper implements Item
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ITEM);//removed for mem & perf
 	}
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public boolean isGeneric(){return true;}
-	public Rideable riding(){return null;}
-	public void setRiding(Rideable one){}
-	public String image(){return "";}
-	public String rawImage(){return "";}
-	public void setImage(String newImage){}
-	public void initializeClass(){}
-	
-	public void setDatabaseID(String id){}//databaseID=id;}
-	public String databaseID(){return "";}//databaseID;}
-	public boolean canSaveDatabaseID(){ return false;}
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public boolean isGeneric(){return true;}
+	@Override public Rideable riding(){return null;}
+	@Override public void setRiding(Rideable one){}
+	@Override public String image(){return "";}
+	@Override public String rawImage(){return "";}
+	@Override public void setImage(String newImage){}
+	@Override public void initializeClass(){}
 
-	public String Name(){ return name;}
+	@Override public void setDatabaseID(String id){}//databaseID=id;}
+	@Override public String databaseID(){return "";}//databaseID;}
+	@Override public boolean canSaveDatabaseID(){ return false;}
+
+	@Override public String Name(){ return name;}
+	@Override
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
-	public void setName(String newName){name=newName;}
+	@Override public void setName(String newName){name=newName;}
+	@Override
 	public PhyStats phyStats()
 	{return phyStats;}
+	@Override
 	public PhyStats basePhyStats()
 	{ return phyStats; }
+	@Override
 	public void recoverPhyStats()
 	{ phyStats().setSensesMask(phyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);}
-	public void setBasePhyStats(PhyStats newStats){}
+	@Override public void setBasePhyStats(PhyStats newStats){}
 	public boolean isAContainer(){return false;}
-	public int numberOfItems(){return 1;}
+	@Override public int numberOfItems(){return 1;}
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM);}//removed for mem & perf
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -92,7 +97,8 @@ public class GenWallpaper implements Item
 		}
 		return new GenWallpaper();
 	}
-	public boolean subjectToWearAndTear(){return false;}
+	@Override public boolean subjectToWearAndTear(){return false;}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -109,46 +115,49 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public int recursiveWeight(){return phyStats().weight();}
-	public ItemPossessor owner(){return owner;}
+	@Override public int recursiveWeight(){return phyStats().weight();}
+	@Override public ItemPossessor owner(){return owner;}
+	@Override
 	public void setOwner(ItemPossessor E)
 	{ owner=E;}
-	public long expirationDate(){return 0;}
-	public void setExpirationDate(long time){}
+	@Override public long expirationDate(){return 0;}
+	@Override public void setExpirationDate(long time){}
 
+	@Override
 	public boolean amDestroyed()
 	{return destroyed;}
 
-	public boolean amWearingAt(long wornCode){if(wornCode==Wearable.IN_INVENTORY)return true; return false;}
-	public boolean fitsOn(long wornCode){return false;}
-	public boolean wearIfPossible(MOB mob){ return false;}
-	public boolean wearIfPossible(MOB mob, long wearCode){ return false;}
-	public void wearAt(long wornCode){}
-	public long rawProperLocationBitmap(){return 0;}
-	public boolean rawLogicalAnd(){return false;}
-	public void setRawProperLocationBitmap(long newValue){}
-	public void setRawLogicalAnd(boolean newAnd){}
-	public boolean compareProperLocations(Item toThis){return true;}
-	public long whereCantWear(MOB mob){ return 0;}
-	public boolean canWear(MOB mob, long wornCode){ return false;}
-	public long rawWornCode(){return 0;}
-	public void setRawWornCode(long newValue){}
-	public void unWear(){}
+	@Override public boolean amWearingAt(long wornCode){if(wornCode==Wearable.IN_INVENTORY)return true; return false;}
+	@Override public boolean fitsOn(long wornCode){return false;}
+	@Override public boolean wearIfPossible(MOB mob){ return false;}
+	@Override public boolean wearIfPossible(MOB mob, long wearCode){ return false;}
+	@Override public void wearAt(long wornCode){}
+	@Override public long rawProperLocationBitmap(){return 0;}
+	@Override public boolean rawLogicalAnd(){return false;}
+	@Override public void setRawProperLocationBitmap(long newValue){}
+	@Override public void setRawLogicalAnd(boolean newAnd){}
+	@Override public boolean compareProperLocations(Item toThis){return true;}
+	@Override public long whereCantWear(MOB mob){ return 0;}
+	@Override public boolean canWear(MOB mob, long wornCode){ return false;}
+	@Override public long rawWornCode(){return 0;}
+	@Override public void setRawWornCode(long newValue){}
+	@Override public void unWear(){}
 	public int capacity(){return 0;}
 	public void setCapacity(int newValue){}
-	public int material(){return RawMaterial.RESOURCE_PAPER;}
-	public void setMaterial(int newValue){}
-	public int baseGoldValue(){return 0;}
-	public int value(){return 0;}
-	public void setBaseValue(int newValue){}
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
-	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
-	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
-	public void affectPhyStats(Physical affected, PhyStats affectableStats){}
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int material(){return RawMaterial.RESOURCE_PAPER;}
+	@Override public void setMaterial(int newValue){}
+	@Override public int baseGoldValue(){return 0;}
+	@Override public int value(){return 0;}
+	@Override public void setBaseValue(int newValue){}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override public boolean isReadable(){ return CMLib.flags().isReadable(this);}
+	@Override public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
+	@Override public void affectPhyStats(Physical affected, PhyStats affectableStats){}
+	@Override public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
+	@Override public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
 	public void setMiscText(String newText)
 	{
 		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(newText);
@@ -160,6 +169,7 @@ public class GenWallpaper implements Item
 			setReadableText(CMLib.xml().getValFromPieces(V,"READ"));
 		}
 	}
+	@Override
 	public String text()
 	{    StringBuffer text=new StringBuffer("");
 		text.append(CMLib.xml().convertXMLtoTag("NAME",Name()));
@@ -168,24 +178,26 @@ public class GenWallpaper implements Item
 		text.append(CMLib.xml().convertXMLtoTag("READ",readableText()));
 		return text.toString();
 	}
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed) return false;
 		return true;
 	}
-	public Container container(){return null;}
-	public Item ultimateContainer(Physical stopAtC){return this;}
-	public void wearEvenIfImpossible(MOB mob){}
-	public String rawSecretIdentity(){return "";}
-	public String secretIdentity(){return "";}
-	public void setSecretIdentity(String newIdentity){}
-	public String displayText(){return "";}
-	public String displayText(MOB viewerMob) { return displayText(); }
-	public String name(MOB viewerMob) { return name(); }
-	public void setDisplayText(String newDisplayText){}
-	public String description(MOB viewerMob) { return description(); }
+	@Override public Container container(){return null;}
+	@Override public Item ultimateContainer(Physical stopAtC){return this;}
+	@Override public void wearEvenIfImpossible(MOB mob){}
+	@Override public String rawSecretIdentity(){return "";}
+	@Override public String secretIdentity(){return "";}
+	@Override public void setSecretIdentity(String newIdentity){}
+	@Override public String displayText(){return "";}
+	@Override public String displayText(MOB viewerMob) { return displayText(); }
+	@Override public String name(MOB viewerMob) { return name(); }
+	@Override public void setDisplayText(String newDisplayText){}
+	@Override public String description(MOB viewerMob) { return description(); }
+	@Override
 	public String description()
 	{
 		if(description == null)
@@ -204,7 +216,8 @@ public class GenWallpaper implements Item
 		else
 			return (String)description;
 	}
-	
+
+	@Override
 	public void setDescription(String newDescription)
 	{
 		if(newDescription.length()==0)
@@ -215,12 +228,13 @@ public class GenWallpaper implements Item
 		else
 			description=newDescription;
 	}
-	
-	public void setContainer(Container newContainer){}
-	public int usesRemaining(){return Integer.MAX_VALUE;}
-	public void setUsesRemaining(int newUses){}
-	public boolean isSavable(){return CMLib.flags().isSavable(this);}
-	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+
+	@Override public void setContainer(Container newContainer){}
+	@Override public int usesRemaining(){return Integer.MAX_VALUE;}
+	@Override public void setUsesRemaining(int newUses){}
+	@Override public boolean isSavable(){return CMLib.flags().isSavable(this);}
+	@Override public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -262,6 +276,7 @@ public class GenWallpaper implements Item
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -275,11 +290,13 @@ public class GenWallpaper implements Item
 		}
 	}
 
+	@Override
 	public void stopTicking()
 	{
 		destroyed=true; // WHY?!?!?
 		CMLib.threads().deleteTick(this,-1);
 	}
+	@Override
 	public void destroy()
 	{
 		if(owner==null) return;
@@ -289,6 +306,7 @@ public class GenWallpaper implements Item
 		owner=null;
 	}
 
+	@Override
 	public void removeFromOwnerContainer()
 	{
 		if(owner==null) return;
@@ -305,43 +323,44 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public void addNonUninvokableEffect(Ability to){}
-	public void addEffect(Ability to){}
-	public void delEffect(Ability to){}
-	public void delAllEffects(boolean unInvoke){}
-	public int numEffects(){return 0;}
-	public void eachEffect(final EachApplicable<Ability> applier){}
-	public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
-	public Ability fetchEffect(int index){return null;}
-	public Ability fetchEffect(String ID){return null;}
-	public int maxRange(){return 0;}
-	public int minRange(){return 0;}
-	public void addBehavior(Behavior to){}
-	public void delBehavior(Behavior to){}
-	public void delAllBehaviors(){}
-	public int numBehaviors(){return 0;}
-	public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
-	public Behavior fetchBehavior(int index){return null;}
-	public Behavior fetchBehavior(String ID){return null;}
-	public void eachBehavior(final EachApplicable<Behavior> applier){}
-	public void addScript(ScriptingEngine S){}
-	public void delScript(ScriptingEngine S) {}
-	public void delAllScripts(){}
-	public int numScripts(){return 0;}
-	public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
-	public ScriptingEngine fetchScript(int x){ return null;}
-	public void eachScript(final EachApplicable<ScriptingEngine> applier){}
+	@Override public void addNonUninvokableEffect(Ability to){}
+	@Override public void addEffect(Ability to){}
+	@Override public void delEffect(Ability to){}
+	@Override public void delAllEffects(boolean unInvoke){}
+	@Override public int numEffects(){return 0;}
+	@Override public void eachEffect(final EachApplicable<Ability> applier){}
+	@Override public Enumeration<Ability> effects(){return EmptyEnumeration.INSTANCE;}
+	@Override public Ability fetchEffect(int index){return null;}
+	@Override public Ability fetchEffect(String ID){return null;}
+	@Override public int maxRange(){return 0;}
+	@Override public int minRange(){return 0;}
+	@Override public void addBehavior(Behavior to){}
+	@Override public void delBehavior(Behavior to){}
+	@Override public void delAllBehaviors(){}
+	@Override public int numBehaviors(){return 0;}
+	@Override public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
+	@Override public Behavior fetchBehavior(int index){return null;}
+	@Override public Behavior fetchBehavior(String ID){return null;}
+	@Override public void eachBehavior(final EachApplicable<Behavior> applier){}
+	@Override public void addScript(ScriptingEngine S){}
+	@Override public void delScript(ScriptingEngine S) {}
+	@Override public void delAllScripts(){}
+	@Override public int numScripts(){return 0;}
+	@Override public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
+	@Override public ScriptingEngine fetchScript(int x){ return null;}
+	@Override public void eachScript(final EachApplicable<ScriptingEngine> applier){}
 
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -354,6 +373,7 @@ public class GenWallpaper implements Item
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -366,6 +386,7 @@ public class GenWallpaper implements Item
 		case 4: setReadableText(val); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenWallpaper)) return false;

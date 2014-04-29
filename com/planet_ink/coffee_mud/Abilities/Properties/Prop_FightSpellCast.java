@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,23 @@ import java.util.*;
 */
 public class Prop_FightSpellCast extends Prop_SpellAdder
 {
-	public String ID() { return "Prop_FightSpellCast"; }
-	public String name(){ return "Casting spells when properly used during combat";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_FightSpellCast"; }
+	@Override public String name(){ return "Casting spells when properly used during combat";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 
+	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," during combat.");}
 
-	public long flags(){return Ability.FLAG_CASTER;}
+	@Override public long flags(){return Ability.FLAG_CASTER;}
 
-	public int triggerMask() { return TriggeredAffect.TRIGGER_HITTING_WITH; }
-	
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_HITTING_WITH; }
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonHail extends Chant
 {
-	public String ID() { return "Chant_SummonHail"; }
-	public String name(){ return renderedMundane?"hail":"Summon Hail";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
+	@Override public String ID() { return "Chant_SummonHail"; }
+	@Override public String name(){ return renderedMundane?"hail":"Summon Hail";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		 if(mob!=null)
@@ -63,7 +64,8 @@ public class Chant_SummonHail extends Chant
 		 }
 		 return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

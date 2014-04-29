@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_IdentifyTraps extends ThiefSkill
 {
-	public String ID() { return "Thief_IdentifyTraps"; }
-	public String name(){ return "Identify Traps";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_IdentifyTraps"; }
+	@Override public String name(){ return "Identify Traps";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"IDENTIFYTRAPS","IDTRAP"};
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected Environmental lastChecked=null;
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Vector savedCommands=new XVector(commands);
@@ -81,18 +82,18 @@ public class Thief_IdentifyTraps extends ThiefSkill
 				return false;
 			}
 		}
-		
+
 		int oldProficiency=proficiency();
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		CharState savedState=(CharState)mob.curState().copyOf();
 		boolean detected=detect.invoke(mob,savedCommands,givenTarget,auto,asLevel);
 		mob.curState().setHitPoints(savedState.getHitPoints());
 		mob.curState().setMana(savedState.getMana());
 		mob.curState().setMovement(savedState.getMovement());
 		if(!detected)return false;
-		
+
 		boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
 											 -unlockThis.phyStats().level())*3),auto);
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
@@ -124,7 +125,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 				}
 			}
 		}
-		
+
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,null);
 		if(mob.location().okMessage(mob,msg)&&(unlockThis!=null))
 		{

@@ -20,7 +20,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,13 @@ import java.util.*;
 */
 public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 {
-	public String ID(){	return "StdShipTelnetProgram";}
-	
+	@Override public String ID(){	return "StdShipTelnetProgram";}
+
 	protected Socket sock = null;
 	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
-	
+
 	public ShipTelnetProgram()
 	{
 		super();
@@ -55,27 +55,31 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
-	
-	public String getParentMenu() { return ""; }
-	
-	public String getInternalName() { return "TELNET";}
-	
-	public boolean isActivationString(String word) 
-	{ 
-		return isCommandString(word,false); 
+
+	@Override public String getParentMenu() { return ""; }
+
+	@Override public String getInternalName() { return "TELNET";}
+
+	@Override
+	public boolean isActivationString(String word)
+	{
+		return isCommandString(word,false);
 	}
-	
-	public boolean isDeActivationString(String word) 
-	{ 
-		return isCommandString(word,false); 
+
+	@Override
+	public boolean isDeActivationString(String word)
+	{
+		return isCommandString(word,false);
 	}
-	
+
+	@Override
 	public void onDeactivate(MOB mob, String message)
 	{
 		shutdown();
 		super.addScreenMessage("Telnet connection closed.");
 	}
 
+	@Override
 	public boolean isCommandString(String word, boolean isActive)
 	{
 		if(!isActive)
@@ -89,6 +93,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		}
 	}
 
+	@Override
 	public String getActivationMenu()
 	{
 		return "TELNET [HOST] [PORT]: Telnet Network Software";
@@ -128,7 +133,8 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean checkActivate(MOB mob, String message)
 	{
 		List<String> parsed=CMParms.parse(message);
@@ -157,13 +163,15 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			return false;
 		}
 	}
-	
+
+	@Override
 	public boolean checkDeactivate(MOB mob, String message)
 	{
 		shutdown();
 		return true;
 	}
-	
+
+	@Override
 	public boolean checkTyping(MOB mob, String message)
 	{
 		synchronized(this)
@@ -176,13 +184,14 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		super.forceNewMenuRead();
 		return true;
 	}
-	
+
+	@Override
 	public boolean checkPowerCurrent(int value)
 	{
 		nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
 		return true;
 	}
-	
+
 	public void fillWithData()
 	{
 		try
@@ -202,13 +211,13 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 					}
 					if(bout.size()>0)
 						super.addScreenMessage(new String(bout.toByteArray(),"UTF-8"));
-					
+
 				}
 			}
 		}
 		catch(java.net.SocketTimeoutException se)
 		{
-			
+
 		}
 		catch(Exception e)
 		{
@@ -219,18 +228,19 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			super.forceNewMenuRead();
 		}
 	}
-	
+
+	@Override
 	public void onTyping(MOB mob, String message)
 	{
 		synchronized(this)
 		{
 			if(writer!=null)
 			{
-				try 
+				try
 				{
 					writer.write(message+"\n\r");
 					writer.flush();
-				} 
+				}
 				catch (IOException e)
 				{
 					super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
@@ -242,7 +252,8 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			}
 		}
 	}
-	
+
+	@Override
 	public void onPowerCurrent(int value)
 	{
 		if(value>0)

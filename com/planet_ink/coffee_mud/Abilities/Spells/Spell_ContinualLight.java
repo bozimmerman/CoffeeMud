@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ContinualLight extends Spell
 {
-	public String ID() { return "Spell_ContinualLight"; }
-	public String name(){return "Continual Light";}
-	public String displayText(){return "(Continual Light)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_ContinualLight"; }
+	@Override public String name(){return "Continual Light";}
+	@Override public String displayText(){return "(Continual Light)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
@@ -51,6 +52,7 @@ public class Spell_ContinualLight extends Spell
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -65,6 +67,7 @@ public class Spell_ContinualLight extends Spell
 			room.recoverRoomStats();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -74,7 +77,8 @@ public class Spell_ContinualLight extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=null;

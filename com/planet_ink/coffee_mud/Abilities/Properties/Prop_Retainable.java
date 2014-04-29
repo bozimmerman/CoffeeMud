@@ -35,9 +35,9 @@ import java.util.*;
 */
 public class Prop_Retainable extends Property
 {
-	public String ID() { return "Prop_Retainable"; }
-	public String name(){ return "Ability to set Price/Retainability of a pet.";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_Retainable"; }
+	@Override public String name(){ return "Ability to set Price/Retainability of a pet.";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected Room lastRoom=null;
 
 	protected long payPeriodLengthInMilliseconds=0;
@@ -46,9 +46,11 @@ public class Prop_Retainable extends Property
 	protected long lastPayDayTimestamp=0;
 	protected long lastMoveIn=0;
 
+	@Override
 	public String accountForYourself()
 	{ return "Retainable";	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -82,6 +84,7 @@ public class Prop_Retainable extends Property
 	{
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -191,6 +194,7 @@ public class Prop_Retainable extends Property
 			CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

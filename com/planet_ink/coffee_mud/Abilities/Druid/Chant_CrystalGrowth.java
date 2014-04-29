@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_CrystalGrowth extends Chant
 {
-	public String ID() { return "Chant_CrystalGrowth"; }
-	public String name(){ return "Crystal Growth";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return 50;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Chant_CrystalGrowth"; }
+	@Override public String name(){ return "Crystal Growth";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int overrideMana(){return 50;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)

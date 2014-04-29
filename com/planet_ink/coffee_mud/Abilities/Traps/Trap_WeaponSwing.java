@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_WeaponSwing extends StdTrap
 {
-	public String ID() { return "Trap_WeaponSwing"; }
-	public String name(){ return "weapon swing";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 9;}
-	public String requiresToSet(){return "a melee weapon";}
+	@Override public String ID() { return "Trap_WeaponSwing"; }
+	@Override public String name(){ return "weapon swing";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 9;}
+	@Override public String requiresToSet(){return "a melee weapon";}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -55,6 +55,7 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return null;
 	}
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -62,6 +63,7 @@ public class Trap_WeaponSwing extends StdTrap
 		return V;
 	}
 
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -75,6 +77,7 @@ public class Trap_WeaponSwing extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -89,6 +92,7 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())

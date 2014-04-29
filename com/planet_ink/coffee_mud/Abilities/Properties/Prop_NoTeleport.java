@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,12 +31,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoTeleport extends Property
 {
-	public String ID() { return "Prop_NoTeleport"; }
-	public String name(){ return "Teleport-INTO Spell Neutralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_NoTeleport"; }
+	@Override public String name(){ return "Teleport-INTO Spell Neutralizing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
-	public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override public long flags(){return Ability.FLAG_IMMUNER;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

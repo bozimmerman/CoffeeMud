@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Play_Solo extends Play
 {
-	public String ID() { return "Play_Solo"; }
-	public String name(){ return "Solo";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected boolean persistantSong(){return false;}
-	protected boolean skipStandardSongTick(){return true;}
-	protected String songOf(){return "a "+name();}
-	protected boolean skipStandardSongInvoke(){return true;}
+	@Override public String ID() { return "Play_Solo"; }
+	@Override public String name(){ return "Solo";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected boolean persistantSong(){return false;}
+	@Override protected boolean skipStandardSongTick(){return true;}
+	@Override protected String songOf(){return "a "+name();}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
 
+	@Override
 	public boolean okMessage(Environmental E, CMMsg msg)
 	{
 		if(!super.okMessage(E,msg)) return false;
@@ -79,6 +80,7 @@ public class Play_Solo extends Play
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -88,7 +90,8 @@ public class Play_Solo extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -119,7 +122,7 @@ public class Play_Solo extends Play
 						R.sendOthers(mob,msg);
 					invoker=mob;
 					Play newOne=(Play)this.copyOf();
-	
+
 					Vector songsToCancel=new Vector();
 					for(int i=0;i<R.numInhabitants();i++)
 					{

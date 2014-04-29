@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Doppleganger extends StdMOB
 {
-	public String ID(){return "Doppleganger";}
+	@Override public String ID(){return "Doppleganger";}
 	protected MOB mimicing=null;
 	protected long ticksSinceMimicing=0;
 
@@ -79,6 +79,7 @@ public class Doppleganger extends StdMOB
 
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
@@ -95,12 +96,14 @@ public class Doppleganger extends StdMOB
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
 		revert();
 		return super.killMeDead(createBody);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

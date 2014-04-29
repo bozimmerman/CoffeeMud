@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,14 +56,14 @@ public interface DatabaseEngine extends CMLibrary
 		DBABILITY,DBCHARCLASS,DBRACE,DBPLAYERS,DBMAP,
 		DBSTATS,DBPOLLS,DBVFS,DBJOURNALS,DBQUEST,DBCLANS
 	}
-	
+
 	public String errorStatus();
 	public void resetConnections();
 	public DBConnector getConnector();
 	public int pingAllConnections();
 	public int pingAllConnections(final long overrideTimeoutIntervalMillis);
-	// DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS  
-	
+	// DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS
+
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadCatalogs();
 	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive);
@@ -205,7 +205,7 @@ public interface DatabaseEngine extends CMLibrary
 	public MOB.Tattoo parseTattoo(String tattoo);
 	public int DBRawExecute(String sql) throws CMException;
 	public List<String[]> DBRawQuery(String sql) throws CMException;
-	
+
 	public static class PlayerData
 	{
 		public String who="";
@@ -213,7 +213,7 @@ public interface DatabaseEngine extends CMLibrary
 		public String key="";
 		public String xml="";
 	}
-	
+
 	public static class PollData
 	{
 		public String name="";
@@ -225,21 +225,21 @@ public interface DatabaseEngine extends CMLibrary
 		public String qual="";
 		public String results="";
 		public long expiration=0;
-		
+
 	}
-	
+
 	public static class AckRecord
 	{
 		public String ID="";
 		public String data="";
 		public String typeClass="GenAbility";
 		public AckRecord(String id, String dataStr, String type)
-		{ 
-			ID=id; 
-			data=dataStr; 
-			if((type!=null)&&(type.length()>0)) 
-				typeClass=type; 
+		{
+			ID=id;
+			data=dataStr;
+			if((type!=null)&&(type.length()>0))
+				typeClass=type;
 		}
 	}
-	
+
 }

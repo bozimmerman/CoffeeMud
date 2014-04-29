@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Brittle extends Chant
 {
-	public String ID() { return "Chant_Brittle"; }
-	public String name(){return "Brittle";}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_Brittle"; }
+	@Override public String name(){return "Brittle";}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
 
@@ -65,20 +65,22 @@ public class Chant_Brittle extends Chant
 			}
 		}
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
 		checkBritality(affected);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host, msg);
 		//checkBritality(affected);
 	}
-	
-	private Item getItem(MOB mobTarget) 
+
+	private Item getItem(MOB mobTarget)
 	{
 		Vector goodPossibilities=new Vector();
 		Vector possibilities=new Vector();
@@ -102,6 +104,7 @@ public class Chant_Brittle extends Chant
 		return null;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
@@ -114,6 +117,7 @@ public class Chant_Brittle extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);

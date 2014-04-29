@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Orc extends StdMOB
 {
-	public String ID(){return "Orc";}
+	@Override public String ID(){return "Orc";}
 	public Orc()
 	{
 		super();

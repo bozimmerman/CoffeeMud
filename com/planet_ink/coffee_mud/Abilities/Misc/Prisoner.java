@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 
 public class Prisoner extends StdAbility
 {
-	public String ID() { return "Prisoner"; }
-	public String name(){ return "Prisoner";}
-	public String displayText(){ return "(Prisoner's Geas)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Prisoner"; }
+	@Override public String name(){ return "Prisoner";}
+	@Override public String displayText(){ return "(Prisoner's Geas)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
@@ -77,6 +78,7 @@ public class Prisoner extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

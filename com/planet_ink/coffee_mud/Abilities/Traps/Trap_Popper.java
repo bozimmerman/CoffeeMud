@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Trap_Popper extends StdTrap
 {
-	public String ID() { return "Trap_Popper"; }
-	public String name(){ return "popping noise";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 1;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_Popper"; }
+	@Override public String name(){ return "popping noise";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 1;}
+	@Override public String requiresToSet(){return "";}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

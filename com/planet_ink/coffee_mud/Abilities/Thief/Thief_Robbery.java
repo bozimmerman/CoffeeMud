@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Robbery extends ThiefSkill
 {
-	public String ID() { return "Thief_Robbery"; }
-	public String name(){ return "Robbery";}
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	@Override public String ID() { return "Thief_Robbery"; }
+	@Override public String name(){ return "Robbery";}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public List<MOB> mobs=new Vector<MOB>();
 	private PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
@@ -69,6 +69,7 @@ public class Thief_Robbery extends ThiefSkill
 		return times+1;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(affected))
@@ -88,6 +89,7 @@ public class Thief_Robbery extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -104,6 +106,7 @@ public class Thief_Robbery extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -120,7 +123,7 @@ public class Thief_Robbery extends ThiefSkill
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
@@ -227,7 +230,7 @@ public class Thief_Robbery extends ThiefSkill
 				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
 					A.mobs.add(mob);
-				
+
 				if((!target.isMonster())&&(mob.isMonster())&&(!alreadyFighting))
 				{
 					if(target.getVictim()==mob)

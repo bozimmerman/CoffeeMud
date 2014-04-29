@@ -37,8 +37,9 @@ public class AHelp extends StdCommand
 	public AHelp(){}
 
 	private final String[] access={"ARCHELP","AHELP"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -123,7 +124,7 @@ public class AHelp extends StdCommand
 						theRest.append("\n\rTech Skills:\n\r");
 						theRest.append(CMLib.lister().fourColumns(mob,V));
 					}
-					
+
 					V.clear();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
@@ -157,9 +158,9 @@ public class AHelp extends StdCommand
 			mob.session().wraplessPrintln(thisTag.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
+
+
 }

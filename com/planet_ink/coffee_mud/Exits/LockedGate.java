@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class LockedGate extends Gate
 {
-	public String ID(){	return "LockedGate";}
-	public String closedText(){return "a closed, locked gate";}
-	public boolean hasALock(){return true;}
-	public boolean defaultsLocked(){return true;}
+	@Override public String ID(){	return "LockedGate";}
+	@Override public String closedText(){return "a closed, locked gate";}
+	@Override public boolean hasALock(){return true;}
+	@Override public boolean defaultsLocked(){return true;}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class SpacePort extends StdRoom implements LocationRoom
 {
-	public String ID(){return "SpacePort";}
+	@Override public String ID(){return "SpacePort";}
 	protected double[] dirFromCore = new double[2];
-	
+
 	public SpacePort()
 	{
 		super();
@@ -44,10 +44,10 @@ public class SpacePort extends StdRoom implements LocationRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
-	
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
+
 	@Override
-	public long[] coordinates() 
+	public long[] coordinates()
 	{
 		SpaceObject planet=CMLib.map().getSpaceObject(this,true);
 		if(planet!=null)
@@ -55,18 +55,19 @@ public class SpacePort extends StdRoom implements LocationRoom
 		return new long[]{0,0,0};
 	}
 	@Override
-	public double[] getDirectionFromCore() 
+	public double[] getDirectionFromCore()
 	{
 		return dirFromCore;
 	}
 	@Override
-	public void setDirectionFromCore(double[] dir) 
+	public void setDirectionFromCore(double[] dir)
 	{
 		if((dir!=null)&&(dir.length==2))
 			dirFromCore=dir;
 	}
-	
+
 	private final static String[] MYCODES={"COREDIR"};
+	@Override
 	public String getStat(String code)
 	{
 		switch(getLocCodeNum(code))
@@ -75,6 +76,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		default: return super.getStat(code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getLocCodeNum(code))
@@ -90,8 +92,9 @@ public class SpacePort extends StdRoom implements LocationRoom
 		return -1;
 	}
 	private static String[] codes=null;
-	public String[] getStatCodes() 
-	{ 
+	@Override
+	public String[] getStatCodes()
+	{
 		return (codes != null) ? codes : (codes =  CMProps.getStatCodesList(CMParms.appendToArray(super.getStatCodes(), MYCODES),this));
 	}
 }

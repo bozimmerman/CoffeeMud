@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,23 +37,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_ChargeMetal extends Chant
 {
-	public String ID() { return "Chant_ChargeMetal"; }
-	public String name(){return "Charge Metal";}
-	public String displayText(){return "(Charged)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	@Override public String ID() { return "Chant_ChargeMetal"; }
+	@Override public String name(){return "Charge Metal";}
+	@Override public String displayText(){return "(Charged)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	private WeakReference<CMMsg> lastMsg=null;
-	
+
 	protected List<Item> affectedItems=new Vector<Item>();
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		affectedItems=new Vector<Item>();
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		Chant_ChargeMetal obj=(Chant_ChargeMetal)super.copyOf();
@@ -61,7 +63,7 @@ public class Chant_ChargeMetal extends Chant
 		obj.affectedItems.addAll(affectedItems);
 		return obj;
 	}
-	
+
 	public Item wieldingMetal(MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)
@@ -77,6 +79,7 @@ public class Chant_ChargeMetal extends Chant
 		return null;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -113,6 +116,7 @@ public class Chant_ChargeMetal extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -140,6 +144,7 @@ public class Chant_ChargeMetal extends Chant
 		super.unInvoke();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -153,7 +158,8 @@ public class Chant_ChargeMetal extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

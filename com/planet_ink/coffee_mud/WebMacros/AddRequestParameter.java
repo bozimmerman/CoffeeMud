@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.net.URLEncoder;
 */
 public class AddRequestParameter extends StdWebMacro
 {
-	public String name() { return "AddRequestParameter"; }
+	@Override public String name() { return "AddRequestParameter"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String str="";
 		java.util.Map<String,String> parms=parseParms(parm);
-		
+
 		for(String key : parms.keySet())
 		{
 			if(key!=null)
@@ -53,7 +54,7 @@ public class AddRequestParameter extends StdWebMacro
 				else
 				if((val.equals("--")&&(httpReq.isUrlParameter(key))))
 					val=""+(CMath.s_int(httpReq.getUrlParameter(key))-1);
-			
+
 				httpReq.addFakeUrlParameter(key,val);
 			}
 		}

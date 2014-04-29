@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +34,18 @@ import java.util.*;
 */
 public class Vagrant extends StdBehavior
 {
-	public String ID(){return "Vagrant";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Vagrant";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected int sleepForTicks=0;
 	protected int wakeForTicks=0;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "vagrant sleepiness";
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
@@ -64,6 +66,7 @@ public class Vagrant extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

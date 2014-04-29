@@ -30,7 +30,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 public class HerbChest extends BagOfHolding {
-	public String ID(){	return "HerbChest";}
+	@Override public String ID(){	return "HerbChest";}
 	public HerbChest()
 	{
 		super();

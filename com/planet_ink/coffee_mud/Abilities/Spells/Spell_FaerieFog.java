@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FaerieFog extends Spell
 {
-	public String ID() { return "Spell_FaerieFog"; }
-	public String name(){return "Faerie Fog";}
-	public String displayText(){return "(Faerie Fog)";}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_FaerieFog"; }
+	@Override public String name(){return "Faerie Fog";}
+	@Override public String displayText(){return "(Faerie Fog)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	private Room theRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,6 +61,7 @@ public class Spell_FaerieFog extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -106,9 +108,10 @@ public class Spell_FaerieFog extends Spell
 				}
 			}
 		}
-				
+
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -121,7 +124,8 @@ public class Spell_FaerieFog extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

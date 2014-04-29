@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Domesticating extends CommonSkill
 {
-	public String ID() { return "Domesticating"; }
-	public String name(){ return "Domesticating";}
+	@Override public String ID() { return "Domesticating"; }
+	@Override public String name(){ return "Domesticating";}
 	private static final String[] triggerStrings = {"DOMESTICATE","DOMESTICATING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected MOB taming=null;
 	protected boolean messedUp=false;
@@ -50,6 +50,7 @@ public class Domesticating extends CommonSkill
 		verb="domesticating";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -66,6 +67,7 @@ public class Domesticating extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -95,6 +97,7 @@ public class Domesticating extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -158,7 +161,7 @@ public class Domesticating extends CommonSkill
 				if(oldName.endsWith("named "+((String)oldV.lastElement())))
 					oldName=oldName.substring(0,oldName.length()-(6+((String)oldV.lastElement()).length()));
 			}
-			
+
 			if((oldName.toUpperCase().startsWith("A "))
 			||(oldName.toUpperCase().startsWith("AN "))
 			||(oldName.toUpperCase().startsWith("SOME ")))

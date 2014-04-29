@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 */
 public class ROMGangMember extends StdBehavior
 {
-	public String ID(){return "ROMGangMember";}
+	@Override public String ID(){return "ROMGangMember";}
 
 	int tickTock=5;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "gang membership";
 	}
-	
+
 	public void pickAFight(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
@@ -107,6 +108,7 @@ public class ROMGangMember extends StdBehavior
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

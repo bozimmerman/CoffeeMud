@@ -41,7 +41,7 @@ public class VFSLoader
 	{
 		DB=newDB;
 	}
-	
+
 	public CMFile.CMVFSDir DBReadDirectory()
 	{
 		DBConnection D=null;
@@ -75,7 +75,7 @@ public class VFSLoader
 		// log comment
 		return root;
 	}
-	
+
 	public CMFile.CMVFSFile DBRead(String filename)
 	{
 		DBConnection D=null;
@@ -126,7 +126,7 @@ public class VFSLoader
 			buf=B64Encoder.B64encodeBytes((byte[])data);
 		return buf;
 	}
-	
+
 	public void DBCreate(String filename, int bits, String creator, long updateTime, Object data)
 	{
 		String buf=makeVBuf(data);
@@ -150,7 +150,7 @@ public class VFSLoader
 		 +"?"
 		 +")", buf);
 	}
-	
+
 	public void DBUpSert(String filename, int bits, String creator, long updateTime, Object data)
 	{
 		DBConnection D=null;
@@ -191,7 +191,7 @@ public class VFSLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public void DBDelete(String filename)
 	{
 		DBConnection D=null;
@@ -212,6 +212,6 @@ public class VFSLoader
 			DB.DBDone(D);
 		}
 	}
-	
-	
+
+
 }

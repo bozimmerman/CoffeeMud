@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,8 @@ import java.util.*;
 */
 public class DefaultPlayerAccount implements PlayerAccount
 {
-	public String ID(){return "DefaultPlayerAccount";}
-	public String name() { return ID();}
+	@Override public String ID(){return "DefaultPlayerAccount";}
+	@Override public String name() { return ID();}
 
 	protected SHashSet<String>	friends				= new SHashSet<String>();
 	protected SHashSet<String>	ignored				= new SHashSet<String>();
@@ -56,15 +56,16 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected volatile MOB 		fakePlayerM			= null;
 	protected long[]			prideExpireTime		= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]			prideStats			= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
-	
+
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
 
-	public DefaultPlayerAccount() 
+	public DefaultPlayerAccount()
 	{
 		super();
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -76,9 +77,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return new DefaultPlayerStats();
 		}
 	}
-	
-	public void initializeClass(){}
-	
+
+	@Override public void initializeClass(){}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -94,54 +96,64 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return new DefaultPlayerStats();
 		}
 	}
-	
+
+	@Override
 	public String getLastIP()
 	{
 		return lastIP;
 	}
-	
+
+	@Override
 	public void setLastIP(String ip)
 	{
 		lastIP=ip;
 	}
-	
+
+	@Override
 	public String getEmail()
 	{
-		if(email==null) 
-			return ""; 
+		if(email==null)
+			return "";
 		return email;
 	}
-	
+
+	@Override
 	public void setEmail(String newAdd)
 	{
 		email=newAdd;
 	}
-	
+
+	@Override
 	public long getLastUpdated()
 	{
 		return lastUpdated;
 	}
-	
+
+	@Override
 	public void setLastUpdated(long time)
 	{
 		lastUpdated=time;
 	}
-	
+
+	@Override
 	public long getLastDateTime()
 	{
 		return lastDateTime;
 	}
-	
+
+	@Override
 	public void setLastDateTime(long C)
-	{ 
+	{
 		lastDateTime=C;
 	}
-	
+
+	@Override
 	public String getPasswordStr()
 	{
 		return password;
 	}
-	
+
+	@Override
 	public void setPassword(String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
@@ -150,24 +162,27 @@ public class DefaultPlayerAccount implements PlayerAccount
 		else
 			password=newPassword;
 	}
-	
+
+	@Override
 	public boolean matchesPassword(String checkPass)
 	{
 		if(CMLib.encoder().isARandomHashString(password))
 			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
 		return checkPass.equalsIgnoreCase(password);
 	}
-	
+
+	@Override
 	public String getNotes()
 	{
 		return notes;
 	}
-	
+
+	@Override
 	public void setNotes(String newnotes)
 	{
 		notes=newnotes;
 	}
-	
+
 	protected SHashSet<String> getHashFrom(String str)
 	{
 		SHashSet<String> h=new SHashSet<String>();
@@ -184,18 +199,20 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return h;
 	}
 
+	@Override
 	public Set<String> getFriends()
 	{
 		return friends;
 	}
-	
+
+	@Override
 	public Set<String> getIgnored()
 	{
 		return ignored;
 	}
 
 	@Override
-	public void bumpPrideStat(PrideStat stat, int amt) 
+	public void bumpPrideStat(PrideStat stat, int amt)
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
@@ -215,15 +232,16 @@ public class DefaultPlayerAccount implements PlayerAccount
 			}
 		}
 	}
-	
+
 	@Override
-	public int getPrideStat(TimePeriod period, PrideStat stat) 
+	public int getPrideStat(TimePeriod period, PrideStat stat)
 	{
 		if((period==null)||(stat==null))
 			return 0;
 		return prideStats[period.ordinal()][stat.ordinal()];
 	}
-	
+
+	@Override
 	public MOB getAccountMob()
 	{
 		if(fakePlayerM!=null)
@@ -242,7 +260,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return fakePlayerM;
 		}
 	}
-	
+
 	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
@@ -251,7 +269,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 			list.append((e.next())+";");
 		return list.toString();
 	}
-	
+
+	@Override
 	public String getXML()
 	{
 		StringBuffer rest=new StringBuffer("");
@@ -274,6 +293,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return rest.toString();
 	}
 
+	@Override
 	public void setXML(String str)
 	{
 		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
@@ -294,32 +314,37 @@ public class DefaultPlayerAccount implements PlayerAccount
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
-		
+
 	}
 
 
 	// Acct Expire Code
-	public long getAccountExpiration() 
+	@Override
+	public long getAccountExpiration()
 	{
 		return accountExpiration;
 	}
-	
+
+	@Override
 	public void setAccountExpiration(long newVal)
 	{
 		accountExpiration=newVal;
 	}
-	
-	public String getAccountName() 
-	{ 
+
+	@Override
+	public String getAccountName()
+	{
 		return accountName;
 	}
-	
-	public void setAccountName(String name) 
-	{ 
+
+	@Override
+	public void setAccountName(String name)
+	{
 		accountName = name;
 	}
-	
-	public void addNewPlayer(MOB mob) 
+
+	@Override
+	public void addNewPlayer(MOB mob)
 	{
 		if(players.contains(mob.Name()))
 			return;
@@ -335,7 +360,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players.add(mob.Name());
 		thinPlayers.clear();
 	}
-	
+
+	@Override
 	public String findPlayer(String name)
 	{
 		if(name==null) return null;
@@ -344,8 +370,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 				return pName;
 		return null;
 	}
-	
-	public void delPlayer(String name) 
+
+	@Override
+	public void delPlayer(String name)
 	{
 		players.remove(name);
 		try
@@ -357,8 +384,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		catch(Exception e) {}
 		thinPlayers.clear();
 	}
-	
-	public void delPlayer(MOB mob) 
+
+	@Override
+	public void delPlayer(MOB mob)
 	{
 		if(mob==fakePlayerM)
 			return;
@@ -372,8 +400,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		catch(Exception e) {}
 		thinPlayers.clear();
 	}
-	
-	public Enumeration<MOB> getLoadPlayers() 
+
+	@Override
+	public Enumeration<MOB> getLoadPlayers()
 	{
 		Vector<MOB> mobs = new Vector<MOB>(players.size());
 		for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
@@ -383,8 +412,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		return mobs.elements();
 	}
-	
-	public Enumeration<PlayerLibrary.ThinPlayer> getThinPlayers() 
+
+	@Override
+	public Enumeration<PlayerLibrary.ThinPlayer> getThinPlayers()
 	{
 		synchronized(thinPlayers)
 		{
@@ -399,13 +429,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		return thinPlayers.elements();
 	}
-	
-	public Enumeration<String> getPlayers() 
+
+	@Override
+	public Enumeration<String> getPlayers()
 	{
 		return players.elements();
 	}
-	
-	public void setPlayerNames(Vector<String> names) 
+
+	@Override
+	public void setPlayerNames(Vector<String> names)
 	{
 		if(names != null)
 		{
@@ -418,17 +450,20 @@ public class DefaultPlayerAccount implements PlayerAccount
 			}
 		}
 	}
-	
-	public int numPlayers() 
-	{ 
+
+	@Override
+	public int numPlayers()
+	{
 		return players.size();
 	}
-	
-	public boolean isSet(String flagName) 
-	{ 
+
+	@Override
+	public boolean isSet(String flagName)
+	{
 		return acctFlags.contains(flagName.toUpperCase());
 	}
-	
+
+	@Override
 	public void setFlag(String flagName, boolean setOrUnset)
 	{
 		if(setOrUnset)
@@ -436,9 +471,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 		else
 			acctFlags.remove(flagName.toUpperCase());
 	}
-	
+
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME","NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
-	
+
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -456,7 +492,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -475,15 +512,16 @@ public class DefaultPlayerAccount implements PlayerAccount
 			break;
 		}
 	}
-	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
@@ -492,12 +530,12 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 	public boolean sameAs(PlayerAccount E)
 	{
-		if(!(E instanceof DefaultPlayerAccount)) 
+		if(!(E instanceof DefaultPlayerAccount))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
 		return true;
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

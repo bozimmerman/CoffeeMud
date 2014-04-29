@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Philosophy extends Prayer
 {
-	public String ID() { return "Prayer_Philosophy"; }
-	public String name(){return "Philosophy";}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public String displayText(){return "(Philosophy spell)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Prayer_Philosophy"; }
+	@Override public String name(){return "Philosophy";}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String displayText(){return "(Philosophy spell)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -69,6 +70,7 @@ public class Prayer_Philosophy extends Prayer
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -82,6 +84,7 @@ public class Prayer_Philosophy extends Prayer
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 */
 public class StdElecCompItem extends StdElecItem implements ShipComponent
 {
-	public String ID(){	return "StdElecCompItem";}
-	
+	@Override public String ID(){	return "StdElecCompItem";}
+
 	protected float installedFactor = 1.0f;
 	private volatile String circuitKey=null;
-	
-	
+
+
 	public StdElecCompItem()
 	{
 		super();
@@ -53,16 +53,18 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
-	
+
 	@Override public float getInstalledFactor() { return installedFactor; }
 	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
-	
+
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdElecCompItem)) return false;
 		return super.sameAs(E);
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -72,7 +74,8 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		}
 		super.destroy();
 	}
-	
+
+	@Override
 	public void setOwner(ItemPossessor newOwner)
 	{
 		final ItemPossessor prevOwner=super.owner;
@@ -88,7 +91,8 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -108,10 +112,10 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
-				if((!(this instanceof Electronics.FuelConsumer)) 
+				if((!(this instanceof Electronics.FuelConsumer))
 				&&(!(this instanceof Electronics.PowerGenerator))
-				&& activated() 
-				&& (powerNeeds()>0) 
+				&& activated()
+				&& (powerNeeds()>0)
 				&& (msg.value()>0))
 				{
 					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
@@ -126,7 +130,8 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		}
 		return super.okMessage(host, msg);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -192,7 +197,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		}
 		super.executeMsg(host, msg);
 	}
-	
+
 	@Override
 	public boolean subjectToWearAndTear()
 	{

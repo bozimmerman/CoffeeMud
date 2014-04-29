@@ -35,24 +35,25 @@ import java.util.*;
 
 public class Disease_Syphilis extends Disease
 {
-	public String ID() { return "Disease_Syphilis"; }
-	public String name(){ return "Syphilis";}
-	public String displayText(){ return "(Syphilis)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Syphilis"; }
+	@Override public String name(){ return "Syphilis";}
+	@Override public String displayText(){ return "(Syphilis)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	protected String DISEASE_DONE(){return "Your syphilis clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
+	@Override protected String DISEASE_DONE(){return "Your syphilis clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 0;}
 	protected int conDown=0;
 	private boolean norecurse=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -80,6 +81,7 @@ public class Disease_Syphilis extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -97,6 +99,7 @@ public class Disease_Syphilis extends Disease
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

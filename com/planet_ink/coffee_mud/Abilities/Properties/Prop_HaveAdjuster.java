@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,20 +37,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_HaveAdjuster"; }
-	public String name(){ return "Adjustments to stats when owned";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public boolean bubbleAffect(){return true;}
+	@Override public String ID() { return "Prop_HaveAdjuster"; }
+	@Override public String name(){ return "Adjustments to stats when owned";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public boolean bubbleAffect(){return true;}
 	protected Object[] charStatsChanges=null;
 	protected Object[] charStateChanges=null;
 	protected Object[] phyStatsChanges=null;
 	protected MaskingLibrary.CompiledZapperMask mask=null;
 	protected String[] parameters=new String[]{"",""};
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
@@ -71,8 +72,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		for(int i=0;i<V.size();i++)
 			O[i]=V.elementAt(i);
 		return O;
-	}   
-	
+	}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -142,7 +144,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
 		addIfPlussed(parameters[0],"mov",CharState.STAT_MOVE,charStateV);
 		addIfPlussed(parameters[0],"thi",CharState.STAT_THIRST,charStateV);
-		
+
 		this.charStateChanges=makeObjectArray(charStateV);
 		this.phyStatsChanges=makeObjectArray(phyStatsV);
 		this.charStatsChanges=makeObjectArray(charStatsV);
@@ -181,20 +183,21 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			return true;
 		return false;
 	}
-	
+
 	public boolean canApply(Environmental E)
 	{
 		if(E instanceof MOB)
 			return canApply((MOB)E);
 		return false;
 	}
-	
+
 	protected void ensureStarted()
 	{
 		if(mask==null)
 			setMiscText(text());
 	}
 
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		ensureStarted();
@@ -234,12 +237,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
 		if(canApply(affectedMOB)) adjCharStats(charStatsChanges,affectedStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
@@ -300,6 +305,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return parameters;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		return fixAccoutingsWithMask("Affects the owner: "+parameters[0],parameters[1]);

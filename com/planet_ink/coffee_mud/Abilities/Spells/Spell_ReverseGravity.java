@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_ReverseGravity extends Spell
 {
-	public String ID() { return "Spell_ReverseGravity"; }
-	public String name(){return "Reverse Gravity";}
-	public String displayText(){return "(Gravity is Reversed)";}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Spell_ReverseGravity"; }
+	@Override public String name(){return "Reverse Gravity";}
+	@Override public String displayText(){return "(Gravity is Reversed)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected Vector childrenAffects=new Vector();
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -88,6 +89,7 @@ public class Spell_ReverseGravity extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -126,6 +128,7 @@ public class Spell_ReverseGravity extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -135,7 +138,8 @@ public class Spell_ReverseGravity extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

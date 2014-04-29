@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class JungleThinGrid extends StdThinGrid
 {
-	public String ID(){return "JungleThinGrid";}
+	@Override public String ID(){return "JungleThinGrid";}
 	public JungleThinGrid()
 	{
 		super();
@@ -45,14 +45,15 @@ public class JungleThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new JungleGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "Jungle";}
-	public List<Integer> resourceChoices(){return Jungle.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Jungle";}
+	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

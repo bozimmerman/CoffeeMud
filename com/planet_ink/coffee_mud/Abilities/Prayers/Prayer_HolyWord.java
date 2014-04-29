@@ -36,22 +36,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_HolyWord"; }
-	public String name(){ return "Holy Word";}
-	public String displayText(){ return "(Holy Word)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_HolyWord"; }
+	@Override public String name(){ return "Holy Word";}
+	@Override public String displayText(){ return "(Holy Word)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof MOB)
 				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
 					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -76,6 +78,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -90,6 +93,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

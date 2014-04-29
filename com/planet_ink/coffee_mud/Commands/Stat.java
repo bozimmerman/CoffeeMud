@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class Stat  extends Skills
 	public Stat(){}
 
 	private final String[] access={"STAT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static final int ABLETYPE_EQUIPMENT=-2;
 	public static final int ABLETYPE_INVENTORY=-3;
@@ -50,7 +50,7 @@ public class Stat  extends Skills
 	public static final int ABLETYPE_AREASEXPLORED=-10;
 	public static final int ABLETYPE_WORLDEXPLORED=-11;
 	public static final int ABLETYPE_FACTIONS=-12;
-	
+
 	public static final String[][] ABLETYPE_DESCS={
 		{"EQUIPMENT","EQ","EQUIP"},
 		{"INVENTORY","INVEN","INV"},
@@ -64,7 +64,7 @@ public class Stat  extends Skills
 		{"WORLDEXPLORED"},
 		{"FACTIONS","FACTION"},
 	};
-	
+
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
 	{
 		MOB target=null;
@@ -207,7 +207,7 @@ public class Stat  extends Skills
 					A=(Ability)allSkills.elementAt(x);
 					if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
 					{
-						
+
 						table.append(CMStrings.padRight(""+A.ID(),25)
 								+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
 						if(cr) table.append("\n\r");
@@ -324,7 +324,7 @@ public class Stat  extends Skills
 		mob.tell(table.toString());
 		return false;
 	}
-	
+
 	public int averageDamage(MOB M)
 	{
 		long total=0;
@@ -333,6 +333,7 @@ public class Stat  extends Skills
 		return (int)(total / 1000);
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -382,7 +383,7 @@ public class Stat  extends Skills
 			if(s2.equals("YEARS")&&(CMath.isNumber(s1)))
 				return showTableStats(mob,(CMath.s_int(s1)*365),365,rest);
 		}
-		
+
 		int ableTypes=-1;
 		if(commands.size()>1)
 		{
@@ -695,9 +696,9 @@ public class Stat  extends Skills
 		if(diff<0)
 			str.append("^C"+CMStrings.padRight(test.Name(),40)+": ^W"+diff+"\n\r");
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT);}
+
+
 }

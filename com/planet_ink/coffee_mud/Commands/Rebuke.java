@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Rebuke extends StdCommand
 	public Rebuke(){}
 
 	private final String[] access={"REBUKE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -56,7 +57,7 @@ public class Rebuke extends StdCommand
 			target=CMLib.players().getLoadPlayer(mob.getLiegeID());
 		if((target==null)&&(mob.numFollowers()>0))
 			target=mob.fetchFollower(str);
-		
+
 		if(target==null)
 		{
 			mob.tell("You don't see anybody called '"+CMParms.combine(commands,1)+"' or you aren't serving '"+CMParms.combine(commands,1)+"'.");
@@ -77,9 +78,9 @@ public class Rebuke extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

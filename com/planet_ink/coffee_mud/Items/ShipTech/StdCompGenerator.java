@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class StdCompGenerator extends StdCompFuelConsumer implements Electronics.PowerGenerator
 {
-	public String ID(){	return "StdCompGenerator";}
+	@Override public String ID(){	return "StdCompGenerator";}
 	public StdCompGenerator()
 	{
 		super();
@@ -50,19 +50,19 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 		baseGoldValue=0;
 		recoverPhyStats();
 	}
-	
+
 	protected int   generatedAmtPerTick = 1;
-	
+
+	@Override public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
 	@Override
-	public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
-	@Override
-	public void setGenerationAmountPerTick(int amt) 
+	public void setGenerationAmountPerTick(int amt)
 	{
 		generatedAmtPerTick=amt;
 	}
 
 	@Override public TechType getTechType() { return TechType.SHIP_GENERATOR; }
-	
+
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);

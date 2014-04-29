@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spirit extends Undead
 {
-	public String ID(){	return "Spirit"; }
-	public String name(){ return "Spirit"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	protected boolean destroyBodyAfterUse(){return true;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "Spirit"; }
+	@Override public String name(){ return "Spirit"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override protected boolean destroyBodyAfterUse(){return true;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
+	@Override
 	protected Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
@@ -97,13 +98,16 @@ public class Spirit extends Undead
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return super.makeMobName('N', Race.AGE_MATURE);
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -140,7 +144,8 @@ public class Spirit extends Undead
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

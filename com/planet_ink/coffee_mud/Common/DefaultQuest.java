@@ -39,7 +39,7 @@ import org.mozilla.javascript.ScriptableObject;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultQuest implements Quest, Tickable, CMObject
 {
-	public String ID(){return "DefaultQuest";}
+	@Override public String ID(){return "DefaultQuest";}
 
 	protected String 	name="";
 	protected String 	author="";
@@ -67,17 +67,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected SVector<String> 	winners=new SVector<String>();
 
 	// the unique name of the quest
-	public String name(){return name;}
-	public void setName(String newName){name=newName;}
+	@Override public String name(){return name;}
+	@Override public void setName(String newName){name=newName;}
 
 	// the author of the quest
-	public String author(){return author;}
-	public void setAuthor(String newName){author=newName;}
-	
-	// the display name of the quest
-	public String displayName(){ return displayName;}
-	public void setDisplayName(String newName){ displayName=newName;}
+	@Override public String author(){return author;}
+	@Override public void setAuthor(String newName){author=newName;}
 
+	// the display name of the quest
+	@Override public String displayName(){ return displayName;}
+	@Override public void setDisplayName(String newName){ displayName=newName;}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -91,12 +92,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public boolean suspended(){ return suspended;}
-	public void setSuspended(boolean truefalse){suspended=truefalse;}
+	@Override public boolean suspended(){ return suspended;}
+	@Override public void setSuspended(boolean truefalse){suspended=truefalse;}
 
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
-	public void initializeClass(){}
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
+	@Override public void initializeClass(){}
 
+	@Override
 	public Object getDesignatedObject(String named)
 	{
 		int code=-1;
@@ -124,6 +126,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return questState.getStat(named);
 	}
 
+	@Override
 	public void internalQuestDelete()
 	{
 		if(isCopy()) return;
@@ -150,7 +153,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// the unique name of the quest
-	public String startDate(){return startDate;}
+	@Override public String startDate(){return startDate;}
+	@Override
 	public void setStartDate(String newDate)
 	{
 		int x=newDate.indexOf('-');
@@ -159,6 +163,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		&&(CMath.isMathExpression(newDate.substring(x+1))))
 			startDate=newDate;
 	}
+	@Override
 	public void setStartMudDate(String newDate)
 	{
 		setStartDate(newDate);
@@ -167,24 +172,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// the duration, in ticks
-	public int duration(){return duration;}
-	public void setDuration(int newTicks){duration=newTicks;}
+	@Override public int duration(){return duration;}
+	@Override public void setDuration(int newTicks){duration=newTicks;}
 
-	public void setCopy(boolean truefalse){copy=truefalse;}
-	public boolean isCopy(){return copy;}
+	@Override public void setCopy(boolean truefalse){copy=truefalse;}
+	@Override public boolean isCopy(){return copy;}
 
-	public void setSpawn(int spawnFlag){spawn=(spawnFlag<0)?0:spawnFlag;}
-	public int getSpawn(){return spawn;}
+	@Override public void setSpawn(int spawnFlag){spawn=(spawnFlag<0)?0:spawnFlag;}
+	@Override public int getSpawn(){return spawn;}
 
-	public int minPlayers(){return minPlayers;}
-	public void setMinPlayers(int players){minPlayers=players;}
-	public int runLevel(){return runLevel;}
-	public void setRunLevel(int level){runLevel=level;}
-	public String playerMask(){return playerMask;}
-	public void setPlayerMask(String mask){playerMask=mask;}
+	@Override public int minPlayers(){return minPlayers;}
+	@Override public void setMinPlayers(int players){minPlayers=players;}
+	@Override public int runLevel(){return runLevel;}
+	@Override public void setRunLevel(int level){runLevel=level;}
+	@Override public String playerMask(){return playerMask;}
+	@Override public void setPlayerMask(String mask){playerMask=mask;}
 
 	// the rest of the script.  This may be semicolon-separated instructions,
 	// or a LOAD command followed by the quest script path.
+	@Override
 	public boolean setScript(String parm, boolean showErrors)
 	{
 		rawScriptParameter=parm;
@@ -208,8 +214,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(isCopy()) spawn=SPAWN_NO;
 		return true;
 	}
-	public String script(){return rawScriptParameter;}
+	@Override public String script(){return rawScriptParameter;}
 
+	@Override
 	public void autostartup()
 	{
 		if(!resetWaitRemaining(0))
@@ -219,6 +226,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
 	}
 
+	@Override
 	public void setVars(List<?> script, int startAtLine)
 	{
 		List<String> parsedLine=null;
@@ -238,13 +246,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public StringBuffer getResourceFileData(String named, boolean showErrors)
 	{
 		int index=-1;
 		if(internalFiles!=null)
 		{
 			index=internalFiles.indexOf(named.toUpperCase().trim());
-			if(index>=0) 
+			if(index>=0)
 				return (StringBuffer)internalFiles.elementAt(index,2);
 		}
 		StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,showErrors?CMFile.FLAG_LOGERRORS:0).text();
@@ -288,7 +297,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			list.add(e.nextElement());
 		return list;
 	}
-	
+
 	private List sortSelect(Environmental E, String str,
 							List choices,
 							List choices0,
@@ -2971,13 +2980,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 
-	public boolean startQuest() 
+	@Override
+	public boolean startQuest()
 	{
 		if((!running())&&(!isCopy()))
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTSTARTATTEMPT);
 		return startQuestInternal();
 	}
-	
+
 	// this will execute the quest script.  If the quest is running, it
 	// will call stopQuestInternal first to shut it down.
 	public boolean startQuestInternal()
@@ -3251,6 +3261,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	// step and resume quest script processing.
 	// if this is the LAST step, stopQuestInternal() is automatically called
 
+	@Override
 	public boolean stepQuest()
 	{
 		if((questState==null)||(stoppingQuest))
@@ -3296,6 +3307,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return false;
 	}
 
+	@Override
 	public void resetQuest(int firstPauseTicks)
 	{
 		if(stoppingQuest) return;
@@ -3303,14 +3315,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		resetData=new int[]{firstPauseTicks,ticksRemaining};
 		stopQuest();
 	}
-	
+
+	@Override
 	public void stopQuest()
 	{
 		if((!stoppingQuest)&&(running()))
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTSUCCESS);
 		stopQuestInternal();
 	}
-	
+
 	// this will stop executing of the quest script.  It will clean up
 	// any objects or mobs which may have been loaded, restoring map
 	// mobs to their previous state.
@@ -3334,6 +3347,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		stoppingQuest=false;
 	}
 
+	@Override
 	public boolean enterDormantState()
 	{
 		ticksRemaining=-1;
@@ -3346,16 +3360,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return true;
 	}
 
+	@Override
 	public boolean resetWaitRemaining(long ellapsedTime)
 	{
-		
+
 		if(resetData!=null)
 		{
 			waitRemaining=resetData[0];
 			resetData[0]*=2;
 			return true;
 		}
-		
+
 		if(((minWait()<0)||(maxWait<0))
 		&&(startDate().trim().length()==0))
 			return false;
@@ -3401,11 +3416,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return true;
 	}
 
-	public int minWait(){return minWait;}
-	public void setMinWait(int wait){minWait=wait;}
-	public int waitInterval(){return maxWait;}
-	public void setWaitInterval(int wait){maxWait=wait;}
-	public int waitRemaining(){return waitRemaining;}
+	@Override public int minWait(){return minWait;}
+	@Override public void setMinWait(int wait){minWait=wait;}
+	@Override public int waitInterval(){return maxWait;}
+	@Override public void setWaitInterval(int wait){maxWait=wait;}
+	@Override public int waitRemaining(){return waitRemaining;}
 
 	public Quest getMainQuestObject()
 	{
@@ -3424,6 +3439,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// if the quest has a winner, this is him.
+	@Override
 	public void declareWinner(String name)
 	{
 		if(name==null) return;
@@ -3455,6 +3471,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public String getWinnerStr()
 	{
 		Quest Q=getMainQuestObject();
@@ -3465,6 +3482,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return list.toString();
 	}
 
+	@Override
 	public void setWinners(String list)
 	{
 		Quest Q=getMainQuestObject();
@@ -3485,6 +3503,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// retreive the list of previous winners
+	@Override
 	public List<String> getWinners()
 	{
 		Quest Q=getMainQuestObject();
@@ -3493,6 +3512,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// was a previous winner
+	@Override
 	public boolean wasWinner(String name)
 	{
 		if(name==null) return false;
@@ -3509,14 +3529,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// informational
-	public boolean running(){return ticksRemaining>=0;}
-	public boolean stopping(){return stoppingQuest;}
-	public boolean waiting(){return waitRemaining>=0;}
-	public int ticksRemaining(){return ticksRemaining;}
-	public int minsRemaining(){return (int)(ticksRemaining*CMProps.getTickMillis()/60000);}
+	@Override public boolean running(){return ticksRemaining>=0;}
+	@Override public boolean stopping(){return stoppingQuest;}
+	@Override public boolean waiting(){return waitRemaining>=0;}
+	@Override public int ticksRemaining(){return ticksRemaining;}
+	@Override public int minsRemaining(){return (int)(ticksRemaining*CMProps.getTickMillis()/60000);}
 	private int tickStatus=Tickable.STATUS_NOT;
-	public int getTickStatus(){return tickStatus;}
+	@Override public int getTickStatus(){return tickStatus;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_QUEST)
@@ -3589,6 +3610,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 
+	@Override
 	public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give)
 	{
 		if(mob==null) return;
@@ -3627,6 +3649,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public void runtimeRegisterObject(PhysicalAgent P)
 	{
 		synchronized(questState)
@@ -3645,6 +3668,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public void runtimeRegisterEffect(PhysicalAgent affected, String abilityID, String parms, boolean give)
 	{
 		if(affected==null) return;
@@ -3684,6 +3708,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public void runtimeRegisterBehavior(PhysicalAgent behaving, String behaviorID, String parms, boolean give)
 	{
 		if(behaving==null) return;
@@ -3798,6 +3823,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return -1;
 	}
 
+	@Override
 	public int getQuestMobIndex(String name)
 	{
 		int[] num={1};
@@ -3814,6 +3840,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return x;
 	}
 
+	@Override
 	public int getQuestRoomIndex(String roomID)
 	{
 		int[] num={1};
@@ -3835,6 +3862,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return x;
 	}
 
+	@Override
 	public int getQuestItemIndex(String name)
 	{
 		int[] num={1};
@@ -3854,11 +3882,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return x;
 	}
 
+	@Override
 	public long getFlags()
 	{
 		return suspended()?FLAG_SUSPENDED:0;
 	}
-	
+
+	@Override
 	public void setFlags(long flags)
 	{
 		if(CMath.bset(flags,FLAG_SUSPENDED))
@@ -3866,7 +3896,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			setSuspended(true);
 		}
 	}
-	
+
 	public Environmental getQuestThing(Iterator<? extends Environmental> e, int dex, CMClass.CMObjectType type, int[] num)
 	{
 		if(e==null) return null;
@@ -3883,6 +3913,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	@Override
 	public MOB getQuestMob(int i)
 	{
 		int[] num={1};
@@ -3902,6 +3933,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	@Override
 	public Item getQuestItem(int i)
 	{
 		int[] num={1};
@@ -3921,6 +3953,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	@Override
 	public Room getQuestRoom(int i)
 	{
 		int[] num={1};
@@ -3942,6 +3975,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	@Override
 	public String getQuestMobName(int i)
 	{
 		MOB M=getQuestMob(i);
@@ -3949,6 +3983,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return "";
 	}
 
+	@Override
 	public String getQuestItemName(int i)
 	{
 		Item I=getQuestItem(i);
@@ -3956,6 +3991,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return "";
 	}
 
+	@Override
 	public String getQuestRoomID(int i)
 	{
 		Room R=getQuestRoom(i);
@@ -3963,6 +3999,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return "";
 	}
 
+	@Override
 	public int getObjectInUseIndex(String name)
 	{
 		synchronized(questState)
@@ -3978,6 +4015,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return -1;
 	}
 
+	@Override
 	public boolean isObjectInUse(Environmental E)
 	{
 		if(questState.worldObjects!=null)
@@ -4211,6 +4249,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 
+	@Override
 	public String[] getStatCodes()
 	{
 		String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
@@ -4221,7 +4260,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return QCODES;
 	}
 
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	protected int getCodeNum(String code)
 	{
 		String[] CCODES=getStatCodes();
@@ -4239,6 +4278,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return true;
 	}
 
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -4269,6 +4309,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public boolean isStat(String code)
 	{
 		if((getCodeNum(code)>=0)
@@ -4277,6 +4318,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return false;
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -4349,6 +4391,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
+	@Override
 	public int compareTo(CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
@@ -4367,17 +4410,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public PhysicalAgent obj;
 		private static Converter<PreservedQuestObject, PhysicalAgent> converter = new Converter<PreservedQuestObject, PhysicalAgent>()
 		{
-			public PhysicalAgent convert(PreservedQuestObject obj) { return obj.obj;}
+			@Override public PhysicalAgent convert(PreservedQuestObject obj) { return obj.obj;}
 		};
 		public PreservedQuestObject(PhysicalAgent o, int state){ this.obj=o; this.preserveState=state;}
 		public static Iterator<PhysicalAgent> getPOIter(List<PreservedQuestObject> o)
 		{
-			ConvertingIterator<PreservedQuestObject,PhysicalAgent> iter = 
+			ConvertingIterator<PreservedQuestObject,PhysicalAgent> iter =
 				 new ConvertingIterator<PreservedQuestObject,PhysicalAgent>(o.iterator(),converter);
 			return iter;
 		}
 	}
-	
+
 	/**
 	 * A quest state class maps the parse-state of a quest, since quest parsing
 	 * is highly state dependent, but the state is not explicit in the script itself.
@@ -4480,7 +4523,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	 * MysteryData is a helper class for QuestState that stores quest
 	 * state variables for the parsing of quests that make use of the
 	 * "mystery" variables (mystery as in Sherlock Holmes, not as in
-	 * unknown).  
+	 * unknown).
 	 * @author bzimmerman
 	 */
 	public static class MysteryData implements Cloneable
@@ -4534,10 +4577,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return null;
 		}
 	}
-	
+
 	protected static class JScriptQuest extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptQuest";}
+		@Override public String getClassName(){ return "JScriptQuest";}
 		static final long serialVersionUID=44;
 		Quest quest=null;
 		QuestState state=null;

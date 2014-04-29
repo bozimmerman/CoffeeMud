@@ -33,7 +33,7 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class PingPacket extends Packet 
+public class PingPacket extends Packet
 {
 	public PingPacket()
 	{
@@ -41,7 +41,7 @@ public class PingPacket extends Packet
 		type = Packet.PING_PACKET;
 		target_mud=Intermud.getNameServer().name;
 	}
-	
+
 	public PingPacket(Vector v)
 	{
 		super(v);
@@ -56,12 +56,14 @@ public class PingPacket extends Packet
 		target_mud=mud;
 	}
 
-	public void send() throws InvalidPacketException 
+	@Override
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}
 
-	public String toString() 
+	@Override
+	public String toString()
 	{
 		return "({\"ping-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
 	}

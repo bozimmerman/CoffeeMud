@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_LimbRack extends Spell
 {
-	public String ID() { return "Spell_LimbRack"; }
-	public String name(){return "Limb Rack";}
-	public String displayText(){return "(Being pulled apart)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_LimbRack"; }
+	@Override public String name(){return "Limb Rack";}
+	@Override public String displayText(){return "(Being pulled apart)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public List<String> limbsToRemove=new Vector<String>();
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -58,10 +59,11 @@ public class Spell_LimbRack extends Spell
 				:"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
 			CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
 		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)
@@ -91,7 +93,8 @@ public class Spell_LimbRack extends Spell
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -115,7 +118,7 @@ public class Spell_LimbRack extends Spell
 				mob.tell("There is nothing left on "+target.name(mob)+" to rack off!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

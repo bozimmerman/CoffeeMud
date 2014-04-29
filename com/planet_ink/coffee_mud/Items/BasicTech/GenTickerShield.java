@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@ import java.util.*;
 public class GenTickerShield extends StdElecItem implements Armor
 {
 
-	public String ID(){	return "GenTickerShield";}
-	
+	@Override public String ID(){	return "GenTickerShield";}
+
 	short layer=0;
 	short layerAttributes=0;
 	String readableText="";
@@ -58,11 +58,11 @@ public class GenTickerShield extends StdElecItem implements Armor
 		super.setPowerCapacity(100);
 		super.setPowerRemaining(100);
 	}
-	
+
 	protected String fieldOnStr(MOB viewerM) { return "A field surrounds <O-NAME>."; }
-	
+
 	protected String fieldDeadStr(MOB viewerM) { return "The around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
-	
+
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
 	@Override
@@ -76,7 +76,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 				CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 		}
 	}
-	
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -84,7 +84,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return false;
 		if(activated() && (tickID==Tickable.TICKID_ELECTRONICS))
 		{
-			if(!amWearingAt(Item.IN_INVENTORY))
+			if(!amWearingAt(Wearable.IN_INVENTORY))
 			setPowerRemaining(powerRemaining()-1);
 			if(powerRemaining()<=0)
 			{
@@ -102,7 +102,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 		}
 		return !amDestroyed();
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -121,7 +122,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -172,7 +174,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			}
 			}
 		}
-		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
+		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			switch(msg.targetMinor())
 			{
@@ -185,14 +187,14 @@ public class GenTickerShield extends StdElecItem implements Armor
 		}
 		super.executeMsg(host, msg);
 	}
-	
+
 
 	@Override public short getClothingLayer(){return layer;}
 	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
 	@Override public short getLayerAttributes(){return layerAttributes;}
 	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
 
-	@Override 
+	@Override
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
@@ -200,17 +202,19 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return false;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
-	
-	public boolean isGeneric(){return true;}
 
+	@Override public boolean isGeneric(){return true;}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
-	
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -219,6 +223,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -235,6 +240,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -253,6 +259,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -260,6 +267,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -273,6 +281,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenTickerShield)) return false;

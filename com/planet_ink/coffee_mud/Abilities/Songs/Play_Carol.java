@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 */
 public class Play_Carol extends Play
 {
-	public String ID() { return "Play_Carol"; }
-	public String name(){ return "Carol";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return "a "+name();}
+	@Override public String ID() { return "Play_Carol"; }
+	@Override public String name(){ return "Carol";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return "a "+name();}
+	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);

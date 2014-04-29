@@ -32,18 +32,19 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DefaultCharState implements CharState
 {
-	public String ID(){return "DefaultCharState";}
-	public String name() { return ID();}
+	@Override public String ID(){return "DefaultCharState";}
+	@Override public String name() { return ID();}
 	protected final static int[] DEFAULT_STATES={10,100,50,1000,500,0,0};
 	protected int[] states=DEFAULT_STATES.clone();
 	protected long Fatigue=0;
 
 	public DefaultCharState(){}
-	
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
-	
-	public void initializeClass(){}
-	
+
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
+
+	@Override public void initializeClass(){}
+
+	@Override
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<states.length;i++)
@@ -51,13 +52,15 @@ public class DefaultCharState implements CharState
 		Fatigue=def;
 	}
 
+	@Override
 	public void reset()
 	{
 		for(int i=0;i<DEFAULT_STATES.length;i++)
 			states[i]=DEFAULT_STATES[i];
 		Fatigue=0;
 	}
-	
+
+	@Override
 	public void copyInto(CharState intoState)
 	{
 		if(intoState instanceof DefaultCharState)
@@ -71,16 +74,19 @@ public class DefaultCharState implements CharState
 			intoState.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
 	}
 
+	@Override
 	public int getHitPoints()
 	{
 		return states[STAT_HITPOINTS];
 	}
-	
+
+	@Override
 	public void setHitPoints(int newVal)
 	{
 		states[STAT_HITPOINTS]=newVal;
 	}
-	
+
+	@Override
 	public boolean adjHitPoints(int byThisMuch, CharState max)
 	{
 		states[STAT_HITPOINTS]+=byThisMuch;
@@ -96,17 +102,20 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	
+
+	@Override
 	public long getFatigue()
 	{
 		return Fatigue;
 	}
-	
+
+	@Override
 	public void setFatigue(long newVal)
 	{
 		Fatigue=newVal;
 	}
-	
+
+	@Override
 	public boolean adjFatigue(final long byThisMuch, final CharState max)
 	{
 		Fatigue+=byThisMuch;
@@ -117,25 +126,29 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
+	@Override
 	public int getHunger()
 	{
 		return states[STAT_HUNGER];
 	}
-	
+
+	@Override
 	public void setHunger(int newVal)
 	{
-		states[STAT_HUNGER]=newVal; 
+		states[STAT_HUNGER]=newVal;
 		if(states[STAT_HUNGER]>0)
 			states[STAT_TICKSHUNGRY]=0;
 	}
-	
+
+	@Override
 	public int adjTicksHungry(boolean bumpUp)
 	{
 		if(bumpUp)
 			states[STAT_TICKSHUNGRY]++;
 		return states[STAT_TICKSHUNGRY];
 	}
-	
+
+	@Override
 	public boolean adjHunger(int byThisMuch, int max)
 	{
 		if((byThisMuch>0)&&(states[STAT_HUNGER]==Integer.MAX_VALUE))
@@ -146,7 +159,7 @@ public class DefaultCharState implements CharState
 			states[STAT_HUNGER]=0;
 			return false;
 		}
-		if(states[STAT_HUNGER]>0) 
+		if(states[STAT_HUNGER]>0)
 			states[STAT_TICKSHUNGRY]=0;
 		if(states[STAT_HUNGER]>max)
 		{
@@ -155,6 +168,7 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
+	@Override
 	public int maxHunger(int baseWeight)
 	{
 		long factor=baseWeight/250;
@@ -164,26 +178,30 @@ public class DefaultCharState implements CharState
 			return Integer.MAX_VALUE;
 		return (int)factor;
 	}
-	
+
+	@Override
 	public int getThirst()
 	{
 		return states[STAT_THIRST];
 	}
-	
+
+	@Override
 	public void setThirst(int newVal)
 	{
-		states[STAT_THIRST]=newVal; 
-		if(states[STAT_THIRST]>0) 
+		states[STAT_THIRST]=newVal;
+		if(states[STAT_THIRST]>0)
 			states[STAT_TICKSTHIRSTY]=0;
 	}
-	
+
+	@Override
 	public int adjTicksThirsty(boolean bumpUp)
 	{
 		if(bumpUp)
 			states[STAT_TICKSTHIRSTY]++;
 		return states[STAT_TICKSTHIRSTY];
 	}
-	
+
+	@Override
 	public boolean adjThirst(int byThisMuch, int max)
 	{
 		if((byThisMuch>0)&&(states[STAT_THIRST]==Integer.MAX_VALUE))
@@ -194,7 +212,7 @@ public class DefaultCharState implements CharState
 			states[STAT_THIRST]=0;
 			return false;
 		}
-		if(states[STAT_THIRST]>0) 
+		if(states[STAT_THIRST]>0)
 			states[STAT_TICKSTHIRSTY]=0;
 		if(states[STAT_THIRST]>max)
 		{
@@ -203,7 +221,8 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int maxThirst(int baseWeight)
 	{
 		long factor=baseWeight/250;
@@ -214,21 +233,25 @@ public class DefaultCharState implements CharState
 		return (int)factor;
 	}
 
+	@Override
 	public String getCombatStats()
 	{
 		return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;
 	}
-	
+
+	@Override
 	public int getMana()
 	{
 		return states[STAT_MANA];
 	}
-	
+
+	@Override
 	public void setMana(int newVal)
-	{ 
+	{
 		states[STAT_MANA]=newVal;
 	}
-	
+
+	@Override
 	public boolean adjMana(int byThisMuch, CharState max)
 	{
 		states[STAT_MANA]+=byThisMuch;
@@ -244,17 +267,20 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int getMovement()
 	{
 		return states[STAT_MOVE];
 	}
-	
+
+	@Override
 	public void setMovement(int newVal)
-	{ 
+	{
 		states[STAT_MOVE]=newVal;
 	}
-	
+
+	@Override
 	public boolean adjMovement(int byThisMuch, CharState max)
 	{
 		states[STAT_MOVE]+=byThisMuch;
@@ -274,15 +300,16 @@ public class DefaultCharState implements CharState
 	private final static String[] CODES={
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};
-	public int getSaveStatIndex(){return getStatCodes().length;}
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public boolean sameAs(CharState E)
 	{
 		for(int i=0;i<CODES.length;i++)
@@ -291,6 +318,7 @@ public class DefaultCharState implements CharState
 		return true;
 	}
 
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -303,6 +331,7 @@ public class DefaultCharState implements CharState
 		case 5: setFatigue(CMath.s_parseIntExpression(val)); break;
 		}
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -318,6 +347,7 @@ public class DefaultCharState implements CharState
 	}
 
 	// create a new one of these
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -331,5 +361,5 @@ public class DefaultCharState implements CharState
 			return new DefaultCharState();
 		}
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

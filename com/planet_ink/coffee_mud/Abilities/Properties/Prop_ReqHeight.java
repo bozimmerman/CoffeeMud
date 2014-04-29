@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,23 @@ import java.util.*;
 */
 public class Prop_ReqHeight extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqHeight"; }
-	public String name(){ return "Height Restrictions";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqHeight"; }
+	@Override public String name(){ return "Height Restrictions";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 
-	public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return "Height limit: "+CMath.s_int(text());	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

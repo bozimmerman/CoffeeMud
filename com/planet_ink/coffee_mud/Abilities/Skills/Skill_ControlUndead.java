@@ -34,15 +34,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_ControlUndead extends StdSkill
 {
-	public String ID() { return "Skill_ControlUndead"; }
-	public String name(){ return "Control Undead";}
-	public String displayText(){ return "(Controlled)";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_ControlUndead"; }
+	@Override public String name(){ return "Control Undead";}
+	@Override public String displayText(){ return "(Controlled)";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"CONTROL"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	protected MOB charmer=null;
 	protected MOB getCharmer()
@@ -62,6 +62,7 @@ public class Skill_ControlUndead extends StdSkill
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -75,7 +76,8 @@ public class Skill_ControlUndead extends StdSkill
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -134,15 +136,16 @@ public class Skill_ControlUndead extends StdSkill
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		
-		if(mob.isMonster()) 
+
+		if(mob.isMonster())
 			return super.tick(ticking,tickID);
-		
+
 		if((getCharmer()!=null)
 		&&(!CMLib.flags().isInTheGame(getCharmer(),false)))
 			unInvoke();
@@ -156,6 +159,7 @@ public class Skill_ControlUndead extends StdSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -185,6 +189,7 @@ public class Skill_ControlUndead extends StdSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -202,6 +207,7 @@ public class Skill_ControlUndead extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

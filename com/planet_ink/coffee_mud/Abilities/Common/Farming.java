@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Farming extends GatheringSkill
 {
-	public String ID() { return "Farming"; }
-	public String name(){ return "Farming";}
+	@Override public String ID() { return "Farming"; }
+	@Override public String name(){ return "Farming";}
 	private static final String[] triggerStrings = {"PLANT","FARM","FARMING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	protected boolean allowedWhileMounted(){return false;}
-	public String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
+	@Override protected boolean allowedWhileMounted(){return false;}
+	@Override public String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
 
 	protected Item found=null;
 	protected Room room=null;
@@ -57,8 +57,9 @@ public class Farming extends GatheringSkill
 	{
 		return getDuration(45,mob,level,15);
 	}
-	protected int baseYield() { return 1; }
-	
+	@Override protected int baseYield() { return 1; }
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -76,6 +77,7 @@ public class Farming extends GatheringSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		boolean isaborted=aborted;
@@ -137,7 +139,8 @@ public class Farming extends GatheringSkill
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -152,7 +155,7 @@ public class Farming extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		
+
 		verb="planting";
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)>0))
 		{
@@ -187,8 +190,8 @@ public class Farming extends GatheringSkill
 			{
 				Item I2=mob.location().getItem(i);
 				if(plantable(mob,I2))
-				{ 
-					mine=I2; 
+				{
+					mine=I2;
 					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
 					break;
 				}
@@ -280,7 +283,7 @@ public class Farming extends GatheringSkill
 			commonTell(mob,"'"+mineName+"' does not seem to be taking root here.");
 			return false;
 		}
-		
+
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -298,7 +301,7 @@ public class Farming extends GatheringSkill
 				found.text();
 			}
 		}
-		
+
 		mine.destroy();
 		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) planting "+foundShortName+".");

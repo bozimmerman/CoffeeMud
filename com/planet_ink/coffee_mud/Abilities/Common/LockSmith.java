@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,17 +39,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class LockSmith extends CraftingSkill
 {
-	public String ID() { return "LockSmith"; }
-	public String name(){ return "Locksmithing";}
+	@Override public String ID() { return "LockSmith"; }
+	@Override public String name(){ return "Locksmithing";}
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "METAL|MITHRIL";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 
 	private String keyCode="";
 	protected Physical workingOn=null;
 	protected boolean boltlock=false;
 	private boolean delock=false;
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -86,6 +87,7 @@ public class LockSmith extends CraftingSkill
 		return newbuilding;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -111,7 +113,7 @@ public class LockSmith extends CraftingSkill
 							for(int d : Directions.CODES())
 								if(mob.location().getExitInDir(d)==workingOn)
 								{
-									dir=d; 
+									dir=d;
 									break;
 								}
 							if((messedUp)||(dir<0))
@@ -184,6 +186,7 @@ public class LockSmith extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

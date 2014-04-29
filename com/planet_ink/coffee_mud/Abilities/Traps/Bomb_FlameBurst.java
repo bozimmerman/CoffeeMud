@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_FlameBurst extends StdBomb
 {
-	public String ID() { return "Bomb_FlameBurst"; }
-	public String name(){ return "flame burst bomb";}
-	protected int trapLevel(){return 17;}
-	public String requiresToSet(){return "some lamp oil";}
+	@Override public String ID() { return "Bomb_FlameBurst"; }
+	@Override public String name(){ return "flame burst bomb";}
+	@Override protected int trapLevel(){return 17;}
+	@Override public String requiresToSet(){return "some lamp oil";}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
 		V.addElement(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -59,6 +61,7 @@ public class Bomb_FlameBurst extends StdBomb
 		}
 		return true;
 	}
+	@Override
 	public void spring(MOB target)
 	{
 		if(target.location()!=null)

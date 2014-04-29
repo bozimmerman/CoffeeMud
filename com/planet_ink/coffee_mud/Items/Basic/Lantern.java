@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class Lantern extends LightSource
 {
-	public String ID(){	return "Lantern";}
+	@Override public String ID(){	return "Lantern";}
 	public static final int DURATION_TICKS=800;
 	public Lantern()
 	{
@@ -53,6 +53,7 @@ public class Lantern extends LightSource
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -87,6 +88,7 @@ public class Lantern extends LightSource
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

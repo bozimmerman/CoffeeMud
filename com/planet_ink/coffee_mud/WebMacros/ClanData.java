@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ClanData extends StdWebMacro
 {
-	public String name() { return "ClanData"; }
+	@Override public String name() { return "ClanData"; }
 
 	// valid parms include PREMISE, RECALL, DONATION, TAX, EXP, STATUS,
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
@@ -54,7 +54,7 @@ public class ClanData extends StdWebMacro
 		}
 		return members;
 	}
-	
+
 	public static MemberRecord getMember(Clan C, HTTPRequest httpReq, String cmember)
 	{
 		List<MemberRecord> members=getMembers(C,httpReq);
@@ -68,7 +68,7 @@ public class ClanData extends StdWebMacro
 		}
 		return null;
 	}
-	
+
 	public static StringBuffer members(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -213,6 +213,7 @@ public class ClanData extends StdWebMacro
 		return str;
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -349,7 +350,7 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("TAX"))
 				{
 					String old=httpReq.getUrlParameter("TAX");
-					if(old==null) 
+					if(old==null)
 						old=((int)Math.round(C.getTaxes()*100.0))+"%";
 					else
 						old=((int)Math.round(CMath.s_pct(old)*100.0))+"%";

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,28 +35,30 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantTrap extends Chant implements Trap
 {
-	public String ID() { return "Chant_PlantTrap"; }
-	public String name(){ return "Plant Trap";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int overrideMana(){return 100;}
+	@Override public String ID() { return "Chant_PlantTrap"; }
+	@Override public String name(){ return "Plant Trap";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int overrideMana(){return 100;}
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
 
-	public boolean disabled(){return false;}
-	public boolean sprung(){return false;}
-	public void disable(){unInvoke();}
+	@Override public boolean disabled(){return false;}
+	@Override public boolean sprung(){return false;}
+	@Override public void disable(){unInvoke();}
+	@Override
 	public void spring(MOB M)
 	{
 		doMyThing(M);
@@ -96,7 +98,8 @@ public class Chant_PlantTrap extends Chant implements Trap
 			 return true;
 		return false;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -105,7 +108,8 @@ public class Chant_PlantTrap extends Chant implements Trap
 			spring(msg.source());
 		super.executeMsg(myHost,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -127,7 +131,8 @@ public class Chant_PlantTrap extends Chant implements Trap
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

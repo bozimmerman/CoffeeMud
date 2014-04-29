@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenLaserGun extends GenElecWeapon
 {
-	public String ID(){	return "GenLaserGun";}
+	@Override public String ID(){	return "GenLaserGun";}
 
 	public GenLaserGun()
 	{

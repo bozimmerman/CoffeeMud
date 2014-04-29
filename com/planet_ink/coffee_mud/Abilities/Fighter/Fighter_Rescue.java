@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_Rescue extends FighterSkill
 {
-	public String ID() { return "Fighter_Rescue"; }
-	public String name(){ return "Rescue";}
+	@Override public String ID() { return "Fighter_Rescue"; }
+	@Override public String name(){ return "Rescue";}
 	private static final String[] triggerStrings = {"RESCUE","RES"};
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public long flags(){return FLAG_AGGROFYING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public long flags(){return FLAG_AGGROFYING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob==null) return false;

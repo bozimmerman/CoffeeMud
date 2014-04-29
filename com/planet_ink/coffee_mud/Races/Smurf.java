@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,26 +35,27 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Smurf extends StdRace
 {
-	public String ID(){	return "Smurf"; }
-	public String name(){ return "Smurf"; }
-	public int shortestMale(){return 7;}
-	public int shortestFemale(){return 7;}
-	public int heightVariance(){return 1;}
-	public int lightestWeight(){return 5;}
-	public int weightVariance(){return 2;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Fairy-kin";}
+	@Override public String ID(){	return "Smurf"; }
+	@Override public String name(){ return "Smurf"; }
+	@Override public int shortestMale(){return 7;}
+	@Override public int shortestFemale(){return 7;}
+	@Override public int heightVariance(){return 1;}
+	@Override public int lightestWeight(){return 5;}
+	@Override public int weightVariance(){return 2;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Fairy-kin";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	protected Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
@@ -107,8 +108,10 @@ public class Smurf extends StdRace
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -145,6 +148,7 @@ public class Smurf extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

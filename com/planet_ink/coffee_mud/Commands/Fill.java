@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,8 @@ public class Fill extends StdCommand
 	public Fill(){}
 
 	private final String[] access={"FILL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -60,7 +61,7 @@ public class Fill extends StdCommand
 				mob.location().send(msg.source(),msg);
 			return false;
 		}
-		
+
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
 			mob.tell("From what should I fill the "+(String)commands.elementAt(0)+"?");
@@ -110,7 +111,7 @@ public class Fill extends StdCommand
 				V.addElement(fillThis);
 			addendumStr="."+(++addendum);
 		}
-		
+
 		if(V.size()==0)
 			mob.tell("You don't seem to have '"+thingToFill+"'.");
 		else
@@ -130,9 +131,9 @@ public class Fill extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

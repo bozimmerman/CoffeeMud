@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,29 +35,30 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_SlipperyMind extends ThiefSkill
 {
-	public String ID() { return "Thief_SlipperyMind"; }
-	public String name(){ return "Slippery Mind";}
-	public String displayText(){return "(Slippery Mind)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_SlipperyMind"; }
+	@Override public String name(){ return "Slippery Mind";}
+	@Override public String displayText(){return "(Slippery Mind)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SLIPPERYMIND"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected volatile LinkedList<Pair<Faction,Integer>> oldFactions=null;
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(unInvoked) return false;
 		if((affected!=null)&&(affected instanceof MOB)&&(ticking instanceof MOB))
 		{
-			if(!super.tick(ticking,tickID)) 
+			if(!super.tick(ticking,tickID))
 				return false;
 			MOB mob=(MOB)affected;
 			Faction F=null;
 			if(oldFactions==null)
 			{
 				oldFactions=new LinkedList<Pair<Faction,Integer>>();
-				for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
+				for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 				{
 					F=CMLib.factions().getFaction((String)e.nextElement());
 					if(F!=null)
@@ -77,7 +78,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -93,7 +95,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 				unInvoke();
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -105,7 +108,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		Environmental E=affected;
@@ -120,6 +124,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

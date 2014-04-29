@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class Prop_NewDeathMsg extends Property
 {
-	public String ID() { return "Prop_NewDeathMsg"; }
-	public String name(){ return "NewDeathMsg";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_NewDeathMsg"; }
+	@Override public String name(){ return "NewDeathMsg";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Changed death msg";	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==msg.source())

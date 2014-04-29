@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Lightning extends Spell
 {
-	public String ID() { return "Spell_Lightning"; }
-	public String name(){return "Lightning Bolt";}
-	public String displayText(){return "(Lightning Bolt spell)";}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_AIRBASED;}
+	@Override public String ID() { return "Spell_Lightning"; }
+	@Override public String name(){return "Lightning Bolt";}
+	@Override public String displayText(){return "(Lightning Bolt spell)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_AIRBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

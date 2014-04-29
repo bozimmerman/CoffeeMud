@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,22 +33,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_RoomWatch extends Property
 {
-	public String ID() { return "Prop_RoomWatch"; }
-	public String name(){ return "Different Room Can Watch";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_RoomWatch"; }
+	@Override public String name(){ return "Different Room Can Watch";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected Vector newRooms=null;
 	protected String prefix=null;
 
+	@Override
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		newRooms=null;
 		prefix=null;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Dance_Swing extends Dance
 {
-	public String ID() { return "Dance_Swing"; }
-	public String name(){ return "Swing";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String ID() { return "Dance_Swing"; }
+	@Override public String name(){ return "Swing";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected boolean doneThisRound=false;
-	protected String danceOf(){return name()+" Dancing";}
+	@Override protected String danceOf(){return name()+" Dancing";}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -48,6 +49,7 @@ public class Dance_Swing extends Dance
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;

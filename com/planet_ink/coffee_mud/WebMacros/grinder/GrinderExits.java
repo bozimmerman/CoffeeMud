@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class GrinderExits
 	  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 	  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
 	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
-	
+
 	public static String dispositions(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setDisposition(0);
@@ -54,7 +54,7 @@ public class GrinderExits
 		}
 		return "";
 	}
-	
+
 	public static String editExit(Room R, int dir,HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -62,7 +62,7 @@ public class GrinderExits
 			R=CMLib.map().getRoom(R);
 			Exit X=R.getRawExit(dir);
 			if(X==null) return "No Exit to edit?!";
-			
+
 			// important generic<->non generic swap!
 			String newClassID=httpReq.getUrlParameter("CLASSES");
 			if((newClassID!=null)&&(!CMClass.classID(X).equals(newClassID)))
@@ -70,7 +70,7 @@ public class GrinderExits
 				X=CMClass.getExit(newClassID);
 				R.setRawExit(dir,X);
 			}
-			
+
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -86,18 +86,18 @@ public class GrinderExits
 				switch(o)
 				{
 				case 0: // name
-					X.setName(old);	
+					X.setName(old);
 					break;
 				case 1: // classes
 					break;
 				case 2: // displaytext
-					X.setDisplayText(old);	
+					X.setDisplayText(old);
 					break;
 				case 3: // description
-					X.setDescription(old); 
+					X.setDescription(old);
 					break;
 				case 4: // level
-					X.basePhyStats().setLevel(CMath.s_int(old));	
+					X.basePhyStats().setLevel(CMath.s_int(old));
 					break;
 				case 5: // levelrestricted;
 					break;
@@ -110,16 +110,16 @@ public class GrinderExits
 						X.setDoorsNLocks(false,true,false,false,false,false);
 					break;
 				case 8: // closedtext
-					X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old); 
+					X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old);
 					break;
 				case 9: // defaultsclosed
 					X.setDoorsNLocks(X.hasADoor(),X.isOpen(),old.equals("on"),X.hasALock(),X.isLocked(),X.defaultsLocked());
 					break;
 				case 10: // openword
-					X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());	
+					X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());
 					break;
 				case 11: // closeword
-					X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());	
+					X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());
 					break;
 				case 12: // hasalock
 					if(old.equals("on"))
@@ -150,7 +150,7 @@ public class GrinderExits
 					break;
 				case 21: // misctext
 					if(!X.isGeneric())
-						X.setMiscText(old); 
+						X.setMiscText(old);
 					break;
 				case 22: // is generic
 					break;
@@ -165,7 +165,7 @@ public class GrinderExits
 					break;
 				}
 			}
-			
+
 			if(X.isGeneric())
 			{
 				String error=GrinderExits.dispositions(X,httpReq,parms);
@@ -175,11 +175,11 @@ public class GrinderExits
 				error=GrinderAreas.doBehavs(X,httpReq,parms);
 				if(error.length()>0) return error;
 			}
-			
+
 			//adjustments
 			if(!X.hasADoor())
 				X.setDoorsNLocks(false,true,false,false,false,false);
-					
+
 			CMLib.database().DBUpdateExits(R);
 			String makeSame=httpReq.getUrlParameter("MAKESAME");
 			if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
@@ -218,7 +218,7 @@ public class GrinderExits
 		}
 		return "";
 	}
-	
+
 	public static String linkRooms(Room R, Room R2, int dir, int dir2)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -227,14 +227,14 @@ public class GrinderExits
 			R.clearSky();
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);
-			
+
 			if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
-				
+
 			if(R.getRawExit(dir)==null)
 				R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
-			
+
 			CMLib.database().DBUpdateExits(R);
-				
+
 			R.getArea().fillInAreaRoom(R);
 		}
 		synchronized(("SYNC"+R2.roomID()).intern())

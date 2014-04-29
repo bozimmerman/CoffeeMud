@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_AuraStrife extends Prayer
 {
-	public String ID() { return "Prayer_AuraStrife"; }
-	public String name(){ return "Aura of Strife";}
-	public String displayText(){ return "(Aura of Strife)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_AuraStrife"; }
+	@Override public String name(){ return "Aura of Strife";}
+	@Override public String displayText(){ return "(Aura of Strife)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -56,6 +57,7 @@ public class Prayer_AuraStrife extends Prayer
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -67,7 +69,8 @@ public class Prayer_AuraStrife extends Prayer
 			unInvoke();
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -81,6 +84,7 @@ public class Prayer_AuraStrife extends Prayer
 			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"The aura of strife around <S-NAME> fades.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -124,6 +128,7 @@ public class Prayer_AuraStrife extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -146,6 +151,7 @@ public class Prayer_AuraStrife extends Prayer
 		return success;
 	}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_FrameMark extends ThiefSkill
 {
-	public String ID() { return "Thief_FrameMark"; }
-	public String name(){ return "Frame Mark";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_FrameMark"; }
+	@Override public String name(){ return "Frame Mark";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"FRAME"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int overrideMana(){return 50;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int overrideMana(){return 50;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public MOB getMark(MOB mob)
 	{
@@ -59,6 +59,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return A.ticks;
 		return -1;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getMark(mob);

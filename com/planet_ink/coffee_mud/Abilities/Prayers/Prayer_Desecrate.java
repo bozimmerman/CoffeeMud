@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Desecrate extends Prayer
 {
-	public String ID() { return "Prayer_Desecrate"; }
-	public String name(){ return "Desecrate";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_Desecrate"; }
+	@Override public String name(){ return "Desecrate";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=null;

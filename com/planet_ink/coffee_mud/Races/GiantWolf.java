@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 import java.util.Vector;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,36 +33,40 @@ import java.util.Vector;
 */
 public class GiantWolf extends Wolf
 {
-	public String ID(){	return "GiantWolf"; }
-	public String name(){ return "Giant Wolf"; }
-	public int shortestMale(){return 26;}
-	public int shortestFemale(){return 26;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 60;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Canine";}
+	@Override public String ID(){	return "GiantWolf"; }
+	@Override public String name(){ return "Giant Wolf"; }
+	@Override public int shortestMale(){return 26;}
+	@Override public int shortestFemale(){return 26;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 60;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Canine";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+200);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Chlamydia extends Disease
 {
-	public String ID() { return "Disease_Chlamydia"; }
-	public String name(){ return "Chlamydia";}
-	public String displayText(){ return "(Chlamydia)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 5;}
+	@Override public String ID() { return "Disease_Chlamydia"; }
+	@Override public String name(){ return "Chlamydia";}
+	@Override public String displayText(){ return "(Chlamydia)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 5;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
+	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -66,12 +67,14 @@ public class Disease_Chlamydia extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		affectableState.setMovement(affectableState.getMovement()/2);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);

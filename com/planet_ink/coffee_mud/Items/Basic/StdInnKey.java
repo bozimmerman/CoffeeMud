@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdInnKey extends StdKey implements InnKey
 {
-	public String ID(){	return "StdInnKey";}
+	@Override public String ID(){	return "StdInnKey";}
 	public ShopKeeper myShopkeeper=null;
 
 	public StdInnKey()
@@ -50,6 +50,7 @@ public class StdInnKey extends StdKey implements InnKey
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_ITEM_BOUNCEBACK)
@@ -70,6 +71,7 @@ public class StdInnKey extends StdKey implements InnKey
 		return true;
 	}
 
+	@Override
 	public void hangOnRack(ShopKeeper SK)
 	{
 		if(myShopkeeper==null)
@@ -88,6 +90,7 @@ public class StdInnKey extends StdKey implements InnKey
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -102,6 +105,7 @@ public class StdInnKey extends StdKey implements InnKey
 			destroy();
 		}
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

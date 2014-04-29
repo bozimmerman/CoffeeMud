@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,17 +39,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Cooking extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Cooking"; }
-	public String name(){ return "Cooking";}
+	@Override public String ID() { return "Cooking"; }
+	@Override public String name(){ return "Cooking";}
 	private static final String[] triggerStrings = {"COOK","COOKING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "cook";}
 	public String cookWord(){return "cooking";}
 	public boolean honorHerbs(){return true;}
 	public boolean requireFire(){return true;}
 	public boolean requireLid(){return false;}
-	public String supportedResourceString(){return "MISC";}
-	public String parametersFormat(){ return 
+	@Override public String supportedResourceString(){return "MISC";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tFOOD_DRINK||RESOURCE_NAME\tSMELL_LIST||CODED_SPELL_LIST\tITEM_LEVEL\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
@@ -73,7 +74,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	protected Hashtable oldPotContents=null;
 	protected String defaultFoodSound="sizzle.wav";
 	protected String defaultDrinkSound="liquid.wav";
-	 
+
 	public Cooking()
 	{
 		super();
@@ -85,7 +86,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	{
 		return getDuration(40,mob,level,5);
 	}
-	
+
 	public boolean isMineForCooking(MOB mob, Container cooking)
 	{
 		for(int a=0;a<mob.numEffects();a++)
@@ -107,7 +108,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public boolean meetsLidRequirements(MOB mob, Container cooking)
 	{
 		if(!requireLid()) return true;
-		if((cooking.hasALid())&&(!cooking.isOpen())) 
+		if((cooking.hasALid())&&(!cooking.isOpen()))
 			return true;
 		if((cooking.container()!=null)
 		&&(cooking.container().hasALid())
@@ -116,6 +117,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -144,16 +146,18 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
-	public String parametersFile(){ return "recipes.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "recipes.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -182,7 +186,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						&&(cookingPot instanceof Drink))
 							((Drink)cookingPot).setLiquidRemaining(0);
-							
+
 					}
 				}
 			}
@@ -605,7 +609,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}
-		
+
 		if(buildingI!=null)
 		{
 			if(mob!=null)
@@ -623,7 +627,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 		return buildingI;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -638,10 +643,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		oldPotContents=null;
 		activity = CraftingActivity.CRAFTING;
 		List<List<String>> allRecipes=addRecipes(mob,loadRecipes());
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
-		
+
 		if(parsedVars.autoGenerate>0)
 		{
 			finalAmount=1;
@@ -814,7 +819,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
-				int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/"); 
+				int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/");
 				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 				{ found=true; break;}
 			}

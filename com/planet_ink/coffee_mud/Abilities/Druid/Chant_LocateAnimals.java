@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,17 +38,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_LocateAnimals extends Chant
 {
-	public String ID() { return "Chant_LocateAnimals"; }
-	public String name(){ return "Locate Animals";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public String ID() { return "Chant_LocateAnimals"; }
+	@Override public String name(){ return "Locate Animals";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected String displayText="(Locating Animals)";
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String displayText(){return displayText;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String displayText(){return displayText;}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
-	public long flags(){return Ability.FLAG_TRACKING;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -89,6 +90,7 @@ public class Chant_LocateAnimals extends Chant
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -116,12 +118,14 @@ public class Chant_LocateAnimals extends Chant
 		return null;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

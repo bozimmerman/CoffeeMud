@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,33 +34,35 @@ import java.util.*;
 */
 public class Cow extends StdRace
 {
-	public String ID(){	return "Cow"; }
-	public String name(){ return "Cow"; }
-	public int shortestMale(){return 48;}
-	public int shortestFemale(){return 48;}
-	public int heightVariance(){return 6;}
-	public int lightestWeight(){return 250;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Bovine";}
+	@Override public String ID(){	return "Cow"; }
+	@Override public String name(){ return "Cow"; }
+	@Override public int shortestMale(){return 48;}
+	@Override public int shortestFemale(){return 48;}
+	@Override public int heightVariance(){return 6;}
+	@Override public int lightestWeight(){return 250;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Bovine";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
-	public boolean canBreedWith(Race R) 
-	{ 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
+	public boolean canBreedWith(Race R)
+	{
 		if((!super.sameAs(R))&&(R!=null))
 			return R.ID().equals("Bull")||R.ID().equals("Buffalo");
 		return true;
-	} 
+	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -68,7 +70,8 @@ public class Cow extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
-	
+
+	@Override
 	public Race mixRace(Race race, String newRaceID, String newRaceName)
 	{
 		if(ID().equals("Cow"))
@@ -80,7 +83,8 @@ public class Cow extends StdRace
 		}
 		return super.mixRace(race, newRaceID, newRaceName);
 	}
-	
+
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -93,7 +97,8 @@ public class Cow extends StdRace
 		}
 		return naturalWeapon;
 	}
-	
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -129,7 +134,8 @@ public class Cow extends StdRace
 				}
 		}
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -166,6 +172,7 @@ public class Cow extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

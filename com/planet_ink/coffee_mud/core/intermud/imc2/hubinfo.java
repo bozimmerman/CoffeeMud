@@ -48,7 +48,7 @@ import java.util.Date;
  *
  */
 public class hubinfo {
-	
+
 	/* The mud's connection data for the hub */
 	public String hubname = ""; /* name of hub */
 	public String host = ""; /* hostname of hub */

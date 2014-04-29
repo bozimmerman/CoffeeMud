@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant extends StdAbility
 {
-	public String ID() { return "Chant"; }
-	public String name(){ return "a Druidic Chant";}
-	public String displayText(){return "("+name()+")";}
+	@Override public String ID() { return "Chant"; }
+	@Override public String name(){ return "a Druidic Chant";}
+	@Override public String displayText(){return "("+name()+")";}
 	protected boolean renderedMundane=false;
-	
+
 	/** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
 	public final static int WEATHERQUE_NADA=0;
 	public final static int WEATHERQUE_WIND=1;
@@ -48,7 +48,8 @@ public class Chant extends StdAbility
 	public final static int WEATHERQUE_HOT=4;
 	public final static int WEATHERQUE_COLD=8;
 	public final static int WEATHERQUE_CALM=16;
-	
+
+	@Override
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
 	{
 		if(renderedMundane)
@@ -63,11 +64,12 @@ public class Chant extends StdAbility
 		return super.verbalCastCode(mob,target,auto);
 	}
 	private static final String[] triggerStrings = {"CHANT","CH"};
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		if(newText.equalsIgnoreCase("render mundane"))
@@ -75,7 +77,7 @@ public class Chant extends StdAbility
 		else
 			super.setMiscText(newText);
 	}
-	public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
+	@Override public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
 
 	/** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
 	public int weatherQue(Room R)
@@ -101,7 +103,8 @@ public class Chant extends StdAbility
 		default: return WEATHERQUE_CALM;
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

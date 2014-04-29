@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class LizardManShaman extends LizardMan
 {
-	public String ID(){return "LizardManShaman";}
+	@Override public String ID(){return "LizardManShaman";}
 	protected int spellDown=3;
 
 	public LizardManShaman()
@@ -92,6 +92,7 @@ public class LizardManShaman extends LizardMan
 
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))

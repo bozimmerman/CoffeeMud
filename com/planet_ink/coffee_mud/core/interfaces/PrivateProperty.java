@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,13 +59,13 @@ public interface PrivateProperty extends Environmental
 	 * @param owner the name of the owner of the property
 	 */
 	public void setOwnerName(String owner);
-	
+
 	/**
 	 * Get the actual clan or mob owner of the property, or null if it can not.
 	 * @return the owner of the property
 	 */
 	public CMObject getOwnerObject();
-	
+
 	/**
 	 * Returns a unique id for this particular title and the rooms is represents, even if the contents change.
 	 * @return a unique id

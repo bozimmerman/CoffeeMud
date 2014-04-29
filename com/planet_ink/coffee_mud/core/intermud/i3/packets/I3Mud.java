@@ -33,7 +33,7 @@ import java.io.Serializable;
 public class I3Mud implements Serializable
 {
 	public static final long serialVersionUID=0;
-	
+
 	public String address;
 	public String admin_email;
 	public String base_mudlib;
@@ -47,12 +47,12 @@ public class I3Mud implements Serializable
 	public String status;
 	public int    tcp_port;
 	public int    udp_port;
-   
+
 	public I3Mud()
 	{
 		super();
 	}
-	
+
 	public I3Mud(I3Mud other)
 	{
 		super();
@@ -71,4 +71,4 @@ public class I3Mud implements Serializable
 		udp_port = other.udp_port;
 	}
 }
-	
+

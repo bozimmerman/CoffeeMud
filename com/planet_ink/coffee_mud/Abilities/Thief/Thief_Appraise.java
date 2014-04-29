@@ -34,20 +34,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Appraise extends ThiefSkill
 {
-	public String ID() { return "Thief_Appraise"; }
-	public String name(){ return "Appraise";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Appraise"; }
+	@Override public String name(){ return "Appraise";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"APPRAISE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public int code=0;
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

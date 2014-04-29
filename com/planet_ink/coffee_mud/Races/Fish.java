@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,35 +34,36 @@ import java.util.*;
 */
 public class Fish extends StdRace
 {
-	public String ID(){	return "Fish"; }
-	public String name(){ return "Fish"; }
-	public int shortestMale(){return 2;}
-	public int shortestFemale(){return 2;}
-	public int heightVariance(){return 3;}
-	public int lightestWeight(){return 5;}
-	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	public String racialCategory(){return "Amphibian";}
+	@Override public String ID(){	return "Fish"; }
+	@Override public String name(){ return "Fish"; }
+	@Override public int shortestMale(){return 2;}
+	@Override public int shortestFemale(){return 2;}
+	@Override public int heightVariance(){return 3;}
+	@Override public int lightestWeight(){return 5;}
+	@Override public int weightVariance(){return 15;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Amphibian";}
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	public int[] getBreathables() { return breatheWaterArray; }
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public int[] getBreathables() { return breatheWaterArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,1,2,2,3,3,4,4};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -70,14 +71,17 @@ public class Fish extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,7);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "swims in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "swims";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -91,6 +95,7 @@ public class Fish extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		final MOB mob=(MOB)affected;
@@ -103,7 +108,8 @@ public class Fish extends StdRace
 			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental affected, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -119,6 +125,7 @@ public class Fish extends StdRace
 		return true;
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -131,8 +138,9 @@ public class Fish extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
-	
-	
+
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -169,6 +177,7 @@ public class Fish extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

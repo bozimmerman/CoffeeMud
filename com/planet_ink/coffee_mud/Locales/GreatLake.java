@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class GreatLake extends StdGrid
 {
-	public String ID(){return "GreatLake";}
+	@Override public String ID(){return "GreatLake";}
 	public GreatLake()
 	{
 		super();
@@ -44,8 +44,8 @@ public class GreatLake extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
-	public String getGridChildLocaleID(){return "WaterSurface";}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public String getGridChildLocaleID(){return "WaterSurface";}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_BackStab extends ThiefSkill
 {
-	public String ID() { return "Thief_BackStab"; }
-	public String name(){ return "Back Stab";}
-	public String displayText(){return "(Backstabbing)";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_BackStab"; }
+	@Override public String name(){ return "Back Stab";}
+	@Override public String displayText(){return "(Backstabbing)";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"BACKSTAB","BS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected String lastMOB="";
 	protected int controlCode=0;
-	public int abilityCode(){return controlCode;}
-	public void setAbilityCode(int newCode){super.setAbilityCode(newCode); controlCode=newCode;}
+	@Override public int abilityCode(){return controlCode;}
+	@Override public void setAbilityCode(int newCode){super.setAbilityCode(newCode); controlCode=newCode;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Thief_BackStab extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -74,6 +76,7 @@ public class Thief_BackStab extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))

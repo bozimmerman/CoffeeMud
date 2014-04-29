@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class BardMap extends GenMap
 {
-	public String ID(){	return "BardMap";}
+	@Override public String ID(){	return "BardMap";}
 	public BardMap()
 	{
 		super();
@@ -48,11 +48,13 @@ public class BardMap extends GenMap
 		recoverPhyStats();
 	}
 
+	@Override
 	public void doMapArea()
 	{
 		//myMap=null;
 	}
 
+	@Override
 	public StringBuffer[][] getMyMappedRoom(int width)
 	{
 		StringBuffer[][] myMap=null;
@@ -61,6 +63,7 @@ public class BardMap extends GenMap
 		return myMap;
 	}
 
+	@Override
 	public Hashtable makeMapRooms(int width)
 	{
 		String newText=getMapArea();

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRideable extends StdContainer implements Rideable
 {
-	public String ID(){	return "StdRideable";}
+	@Override public String ID(){	return "StdRideable";}
 	protected int rideBasis=Rideable.RIDEABLE_WATER;
 	protected int riderCapacity=4;
 	protected List<Rider> riders=new SVector<Rider>();
@@ -51,7 +51,8 @@ public class StdRideable extends StdContainer implements Rideable
 		capacity=3000;
 		material=RawMaterial.RESOURCE_OAK;
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		while(riders.size()>0)
@@ -77,7 +78,8 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return super.isSavable();
 	}
-	
+
+	@Override
 	public boolean isMobileRideBasis()
 	{
 		switch(rideBasis())
@@ -92,23 +94,26 @@ public class StdRideable extends StdContainer implements Rideable
 		return true;
 	}
 	// common item/mob stuff
-	public int rideBasis(){return rideBasis;}
-	public void setRideBasis(int basis){rideBasis=basis;}
-	public int riderCapacity(){ return riderCapacity;}
-	public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
-	public int numRiders(){return riders.size();}
+	@Override public int rideBasis(){return rideBasis;}
+	@Override public void setRideBasis(int basis){rideBasis=basis;}
+	@Override public int riderCapacity(){ return riderCapacity;}
+	@Override public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
+	@Override public int numRiders(){return riders.size();}
+	@Override
 	public Rider fetchRider(int which)
 	{
 		try	{ return riders.get(which);	}
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
+	@Override
 	public void addRider(Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
 			riders.add(mob);
 	}
-	public Iterator<Rider> riders(){return riders.iterator();}
+	@Override public Iterator<Rider> riders(){return riders.iterator();}
+	@Override
 	public void delRider(Rider mob)
 	{
 		if(mob!=null)
@@ -116,11 +121,13 @@ public class StdRideable extends StdContainer implements Rideable
 				{}
 	}
 
+	@Override
 	protected void cloneFix(Item E)
 	{
 		super.cloneFix(E);
 		riders=new SVector();
 	}
+	@Override
 	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
 		if(list==null) return list;
@@ -134,6 +141,7 @@ public class StdRideable extends StdContainer implements Rideable
 		return list;
 	}
 
+	@Override
 	public boolean mobileRideBasis()
 	{
 		switch(rideBasis)
@@ -146,6 +154,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return false;
 	}
+	@Override
 	public String stateString(Rider R)
 	{
 		switch(rideBasis)
@@ -168,6 +177,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "riding in";
 	}
+	@Override
 	public String putString(Rider R)
 	{
 		switch(rideBasis)
@@ -187,6 +197,7 @@ public class StdRideable extends StdContainer implements Rideable
 		return "in";
 	}
 
+	@Override
 	public String mountString(int commandType, Rider R)
 	{
 		switch(rideBasis)
@@ -211,6 +222,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "board(s)";
 	}
+	@Override
 	public String dismountString(Rider R)
 	{
 		switch(rideBasis)
@@ -231,6 +243,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "disembark(s) from";
 	}
+	@Override
 	public String stateStringSubject(Rider R)
 	{
 		switch(rideBasis)
@@ -250,6 +263,7 @@ public class StdRideable extends StdContainer implements Rideable
 		return "";
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
@@ -259,6 +273,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -281,6 +296,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 	}
 
+	@Override
 	public String displayText(MOB mob)
 	{
  		if((numRiders()>0)
@@ -310,10 +326,12 @@ public class StdRideable extends StdContainer implements Rideable
 		}
  		return super.displayText(mob);
 	}
+	@Override
 	public boolean amRiding(Rider mob)
 	{
 		return riders.contains(mob);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -602,6 +620,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -36,12 +36,13 @@ import java.util.*;
 
 public class Chant_KillerVine extends Chant_SummonVine
 {
-	public String ID() { return "Chant_KillerVine"; }
-	public String name(){ return "Killer Vine";}
-	public String displayText(){return "(Killer Vine)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Chant_KillerVine"; }
+	@Override public String name(){ return "Killer Vine";}
+	@Override public String displayText(){return "(Killer Vine)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();

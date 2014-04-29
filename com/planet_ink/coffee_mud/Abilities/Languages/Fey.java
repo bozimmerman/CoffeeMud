@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,19 +34,21 @@ import java.util.*;
 
 public class Fey extends StdLanguage
 {
-	public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
-	public String name(){ return "Fey";}
-	public static List<String[]> wordLists=null;	
+	@Override public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
+	@Override public String name(){ return "Fey";}
+	public static List<String[]> wordLists=null;
 	public Fey()
 	{
 		super();
 	}
+	@Override
 	public CMObject newInstance()
-	{	
+	{
 		return new Fey();
 	}
+	@Override
 	public List<String[]> translationVector(String language)
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"se","rh","al","o","na","e","ce","uu","si","lag"};
@@ -63,12 +65,13 @@ public class Fey extends StdLanguage
 			wordLists.add(five);
 			wordLists.add(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
-		if((hashwords!=null)&&(hashwords.size()>0)) 
+		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;
 
 		hashwords.put("ABANDON","fnuuthan");

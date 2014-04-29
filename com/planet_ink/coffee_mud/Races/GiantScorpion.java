@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,44 +34,49 @@ import java.util.*;
 */
 public class GiantScorpion extends StdRace
 {
-	public String ID(){	return "GiantScorpion"; }
-	public String name(){ return "Giant Scorpion"; }
-	public int shortestMale(){return 32;}
-	public int shortestFemale(){return 34;}
-	public int heightVariance(){return 2;}
-	public int lightestWeight(){return 87;}
-	public int weightVariance(){return 97;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Arachnid";}
+	@Override public String ID(){	return "GiantScorpion"; }
+	@Override public String name(){ return "Giant Scorpion"; }
+	@Override public int shortestMale(){return 32;}
+	@Override public int shortestFemale(){return 34;}
+	@Override public int heightVariance(){return 2;}
+	@Override public int lightestWeight(){return 87;}
+	@Override public int weightVariance(){return 97;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Arachnid";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,2 ,2 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,3,4,5,6,7,8};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -84,6 +89,7 @@ public class GiantScorpion extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -96,6 +102,7 @@ public class GiantScorpion extends StdRace
 		}
 		return resources;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -104,7 +111,7 @@ public class GiantScorpion extends StdRace
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return "baby "+name().toLowerCase();
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}

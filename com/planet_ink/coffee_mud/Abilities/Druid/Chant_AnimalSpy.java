@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_AnimalSpy extends Chant
 {
-	public String ID() { return "Chant_AnimalSpy"; }
-	public String name(){ return "Animal Spy";}
-	public String displayText(){return "(Animal Spy)";}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public String ID() { return "Chant_AnimalSpy"; }
+	@Override public String name(){ return "Animal Spy";}
+	@Override public String displayText(){return "(Animal Spy)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected MOB spy=null;
 	protected boolean disable=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -59,6 +60,7 @@ public class Chant_AnimalSpy extends Chant
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -77,6 +79,7 @@ public class Chant_AnimalSpy extends Chant
 		super.unInvoke();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		try
@@ -128,6 +131,7 @@ public class Chant_AnimalSpy extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dyeing extends CommonSkill
 {
-	public String ID() { return "Dyeing"; }
-	public String name(){ return "Dyeing";}
+	@Override public String ID() { return "Dyeing"; }
+	@Override public String name(){ return "Dyeing";}
 	private static final String[] triggerStrings = {"DYE","DYEING"};
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	protected Item found=null;
 	protected String writing="";
 	protected boolean brightFlag = false;
 	protected boolean lightFlag = false;
 	protected boolean darkFlag = false;
-	protected boolean canBeDoneSittingDown() { return true; }
-	
+	@Override protected boolean canBeDoneSittingDown() { return true; }
+
 	public Dyeing()
 	{
 		super();
@@ -97,6 +97,7 @@ public class Dyeing extends CommonSkill
 		return CMParms.combine(V,0);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -126,7 +127,7 @@ public class Dyeing extends CommonSkill
 					if(brightFlag) prefix="bright ";
 					if(lightFlag) prefix="light ";
 					if(darkFlag) prefix="dark ";
-					
+
 					found.setName(fixColor(found.Name(),writing.charAt(0),prefix+writing));
 					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),prefix+writing));
 					found.text();
@@ -137,6 +138,7 @@ public class Dyeing extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -196,7 +198,7 @@ public class Dyeing extends CommonSkill
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
-		if(!proficiencyCheck(mob,0,auto)) 
+		if(!proficiencyCheck(mob,0,auto))
 			writing="";
 		int duration=30;
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)

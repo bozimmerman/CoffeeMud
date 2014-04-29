@@ -49,7 +49,7 @@ public interface SimpleServletSession
 	 */
 	public Date getSessionStart();
 	/**
-	 * Returns the time, in milliseconds, when this session 
+	 * Returns the time, in milliseconds, when this session
 	 * was last "touched" by the client
 	 * @return time in millis when last touched
 	 */

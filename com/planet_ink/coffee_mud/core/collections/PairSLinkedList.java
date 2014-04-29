@@ -89,7 +89,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -99,7 +99,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -109,7 +109,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -119,7 +119,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -138,7 +138,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		for(final Iterator<Pair<T,K>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((t==null ? pair.first==null : t.equals(pair.first))) 
+			if((t==null ? pair.first==null : t.equals(pair.first)))
 				return super.remove(pair);
 		}
 		return false;
@@ -149,7 +149,7 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 		for(final Iterator<Pair<T,K>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((k==null ? pair.second==null : k.equals(pair.second))) 
+			if((k==null ? pair.second==null : k.equals(pair.second)))
 				return super.remove(pair);
 		}
 		return false;

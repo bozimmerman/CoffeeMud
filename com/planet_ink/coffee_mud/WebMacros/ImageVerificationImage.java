@@ -60,11 +60,11 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 	private String value;
 	public  static Object sync=new Object();
 	private static Random rand=new Random();
- 
-	public boolean isAWebPath(){return true;}
-	public boolean preferBinary(){return true;}
+
+	@Override public boolean isAWebPath(){return true;}
+	@Override public boolean preferBinary(){return true;}
 	public ImageVerificationImage (){}
-	
+
 	public static class ImgCacheEntry
 	{
 		public String key;
@@ -72,7 +72,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		public long createdTimeMillis=System.currentTimeMillis();
 		public String ip;
 	}
-	
+
  	@SuppressWarnings("unchecked")
 	public static SLinkedList<ImgCacheEntry> getVerifyCache()
 	{
@@ -95,20 +95,22 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		}
 		catch(Exception e)
 		{
-			
+
 		}
 		return verSet;
 	}
- 	
-	 public String getFilename(HTTPRequest httpReq, String filename)
+
+	 @Override
+	public String getFilename(HTTPRequest httpReq, String filename)
 	 {
 		 String foundFilename=httpReq.getUrlParameter("FILENAME");
 		 if((foundFilename!=null)&&(foundFilename.length()>0))
 			 return foundFilename;
 		 return filename;
 	 }
-	 
-	 public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+
+	 @Override
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	 {
 		 ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		 try
@@ -152,23 +154,24 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 				 httpReq.addFakeUrlParameter("IMGVERKEY", key);
 			 }
 		 }
-		 catch(IOException ioe) 
+		 catch(IOException ioe)
 		 {
 			 Log.errOut("ImgVerWM",ioe);
 		 }
 		 return bout.toByteArray();
 	 }
-	 
-	 public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+
+	 @Override
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	 {
 		 return "[Unimplemented string method!]";
 	 }
-	 
+
 	 public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
 	 {
 		 this(34,120,oldValue,out);
 	 }
-	 
+
 	 public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
 	 {
 		 BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -234,7 +237,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		 // make sure your clean up the graphics object
 		 g.dispose();
 	 }
-	 
+
 	 /**
 	  * return the value to check for when the user enters it in. Make sure you
 	  * store this off in the session or something like a database and NOT in the
@@ -248,4 +251,3 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		 return this.value;
 	 }
  }
- 

@@ -20,11 +20,11 @@ limitations under the License.
 public class SingleEnumeration<K> implements Enumeration<K>
 {
 	private K k;
-	
+
 	public SingleEnumeration(K k)
 	{
 		this.k=k;
 	}
-	public boolean hasMoreElements(){ return k!=null;}
-	public K nextElement(){ K o=k; k=null; return o; }
+	@Override public boolean hasMoreElements(){ return k!=null;}
+	@Override public K nextElement(){ K o=k; k=null; return o; }
 }

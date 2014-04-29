@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,21 @@ import java.util.*;
 
 public class Poison_XXX extends Poison
 {
-	public String ID() { return "Poison_XXX"; }
-	public String name(){ return "XXX";}
+	@Override public String ID() { return "Poison_XXX"; }
+	@Override public String name(){ return "XXX";}
 	private static final String[] triggerStrings = {"POISONXXX"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	protected int POISON_TICKS(){return 25;} // 0 means no adjustment!
-	protected int POISON_DELAY(){return 2;}
-	protected String POISON_DONE(){return "The poison runs its course.";}
-	protected String POISON_START(){return "^G<S-NAME> turn(s) green.^?";}
-	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) in horrible pain as the poison courses through <S-HIS-HER> blood.";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> bite(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,99,1):0;}
+	@Override protected int POISON_TICKS(){return 25;} // 0 means no adjustment!
+	@Override protected int POISON_DELAY(){return 2;}
+	@Override protected String POISON_DONE(){return "The poison runs its course.";}
+	@Override protected String POISON_START(){return "^G<S-NAME> turn(s) green.^?";}
+	@Override protected String POISON_AFFECT(){return "<S-NAME> cringe(s) in horrible pain as the poison courses through <S-HIS-HER> blood.";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> bite(s) <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,99,1):0;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-5);

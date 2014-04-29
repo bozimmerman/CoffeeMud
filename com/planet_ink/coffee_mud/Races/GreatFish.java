@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,46 +34,50 @@ import java.util.*;
 */
 public class GreatFish extends GiantFish
 {
-	public String ID(){	return "GreatFish"; }
-	public String name(){ return "Great Fish"; }
-	public int shortestMale(){return 30;}
-	public int shortestFemale(){return 35;}
-	public int heightVariance(){return 10;}
-	public int lightestWeight(){return 55;}
-	public int weightVariance(){return 15;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	public String racialCategory(){return "Amphibian";}
+	@Override public String ID(){	return "GreatFish"; }
+	@Override public String name(){ return "Great Fish"; }
+	@Override public int shortestMale(){return 30;}
+	@Override public int shortestFemale(){return 35;}
+	@Override public int heightVariance(){return 10;}
+	@Override public int lightestWeight(){return 55;}
+	@Override public int weightVariance(){return 15;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Amphibian";}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,3,4,5,6,7,8};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "swims in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "swims";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -86,6 +90,7 @@ public class GreatFish extends GiantFish
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

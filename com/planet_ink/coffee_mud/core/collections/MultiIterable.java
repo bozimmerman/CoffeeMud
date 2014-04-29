@@ -26,10 +26,10 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	@SuppressWarnings("unchecked")
 	private Iterable<K>[] iters=new Iterable[0];
 	private int size=0;
-	
-	public MultiIterable(Iterable<K>[] esets, int newSize) 
+
+	public MultiIterable(Iterable<K>[] esets, int newSize)
 	{
-		if((esets==null)||(esets.length==0)) 
+		if((esets==null)||(esets.length==0))
 			return;
 		iters=esets.clone();
 		size=newSize;
@@ -38,7 +38,7 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	public MultiIterable()
 	{
 	}
-	
+
 	public synchronized void add(Iterable<K> eset, int sizeAdd)
 	{
 		iters=Arrays.copyOf(iters, iters.length+1);
@@ -57,5 +57,5 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	{
 		return size;
 	}
-	
+
 }

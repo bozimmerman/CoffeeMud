@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 
 public class Fighter_JungleTactics extends Fighter_FieldTactics
 {
-	public String ID() { return "Fighter_JungleTactics"; }
-	public String name(){ return "Jungle Tactics";}
+	@Override public String ID() { return "Fighter_JungleTactics"; }
+	@Override public String name(){ return "Jungle Tactics";}
 	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_OUTDOORS_JUNGLE)};
-	public Integer[] landClasses(){return landClasses;}
+	@Override public Integer[] landClasses(){return landClasses;}
 }

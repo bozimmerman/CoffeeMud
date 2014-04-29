@@ -7,8 +7,8 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import java.util.*;
 
-/* 
-   Copyright 2004-2006 Robert Little 
+/*
+   Copyright 2004-2006 Robert Little
 	http://www.tttgames.divineright.org
 	 The Looking Glass RPG
    www.tttgames.divineright.org  host: divineright.org port: 7000
@@ -26,9 +26,10 @@ import java.util.*;
 */
 public class Prop_IceBox extends Property
 {
-	public String ID() { return "Prop_IceBox"; }
-	public String name(){ return "Works like an ice box";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_IceBox"; }
+	@Override public String name(){ return "Works like an ice box";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -63,5 +64,5 @@ public class Prop_IceBox extends Property
 			break;
 		}
 		return true;
-	}	
+	}
 }

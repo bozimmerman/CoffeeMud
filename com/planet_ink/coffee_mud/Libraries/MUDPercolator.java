@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,19 +40,20 @@ import java.util.*;
 */
 public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 {
-	public String ID(){return "MUDPercolator";}
+	@Override public String ID(){return "MUDPercolator";}
 
-	protected final static char[] splitters=new char[]{'<','>','='}; 
+	protected final static char[] splitters=new char[]{'<','>','='};
 	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
-	
+
 	private SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
-	
+
 	private interface BuildCallback
 	{
 		public void willBuild(Environmental E, XMLLibrary.XMLpiece xmlPiece);
 	}
-	
-	public LayoutManager getLayoutManager(String named) 
+
+	@Override
+	public LayoutManager getLayoutManager(String named)
 	{
 		Class<LayoutManager> mgr = mgrs.get(named.toUpperCase().trim());
 		if(mgr != null)
@@ -67,7 +68,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
 	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined)
 	{
 		if(xmlRoot==null) return;
@@ -91,10 +93,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			buildDefinedIDSet(piece.contents,defined);
 		}
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean activate()
-	{ 
+	{
 		String filePath="com/planet_ink/coffee_mud/Libraries/layouts";
 		CMProps page = CMProps.instance();
 		Vector<Object> layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
@@ -106,18 +109,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean shutdown()
 	{
 		mgrs.clear();
 		return true;
 	}
-	
+
 	// vars created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
+	@Override
 	public Room buildRoom(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException
 	{
 		addDefinition("DIRECTION",Directions.getDirectionName(direction).toLowerCase(),defined);
-		
+
 		String classID = findString("class",piece,defined);
 		Room R = CMClass.getLocale(classID);
 		if(R == null) throw new CMException("Unable to build room on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
@@ -132,14 +137,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		fillOutCopyCodes(R, ignoreStats, "ROOM_", piece, defined);
 		fillOutStatCodes(R, ignoreStats, "ROOM_", piece, defined);
 		List<MOB> mV = findMobs(piece,defined);
-		for(int i=0;i<mV.size();i++) 
+		for(int i=0;i<mV.size();i++)
 		{
 			MOB M=mV.get(i);
 			M.setSavable(true);
 			M.bringToLife(R,true);
 		}
 		List<Item> iV = findItems(piece,defined);
-		for(int i=0;i<iV.size();i++) 
+		for(int i=0;i<iV.size();i++)
 		{
 			Item I=iV.get(i);
 			R.addItem(I);
@@ -147,20 +152,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.setExpirationDate(0);
 		}
 		List<Ability> aV = findAffects(piece,defined,null);
-		for(int i=0;i<aV.size();i++) 
+		for(int i=0;i<aV.size();i++)
 		{
 			Ability A=aV.get(i);
 			A.setSavable(true);
 			R.addNonUninvokableEffect(A);
 		}
 		List<Behavior> bV = findBehaviors(piece,defined);
-		for(int i=0;i<bV.size();i++) 
+		for(int i=0;i<bV.size();i++)
 		{
 			Behavior B=bV.get(i);
 			B.setSavable(true);
 			R.addBehavior(B);
 		}
-		for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++) 
+		for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
 		{
 			Exit E=exits[dir];
 			if((E==null)&&(defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase())))
@@ -169,7 +174,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				Exit E2=findExit(piece, defined);
 				if(E2!=null) E=E2;
 				defined.remove("ROOMLINK_DIR");
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
 			}
 			else
@@ -185,12 +190,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if(n != null)
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-			if(n.links().containsKey(Integer.valueOf(d))) 
+			if(n.links().containsKey(Integer.valueOf(d)))
 			{
 				LayoutNode offN=n.links().get(Integer.valueOf(d));
 				if((offN.type()==type)
 				&&(!group.contains(offN))
-				&&(!nodesDone.contains(offN))) 
+				&&(!nodesDone.contains(offN)))
 				{
 					group.addElement(offN);
 					nodesDone.add(offN);
@@ -198,7 +203,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 	}
-	
+
 	protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, HashSet<LayoutNode> nodesDone, List<LayoutNode> group)
 	{
 		n=n.links().get(Integer.valueOf(direction));
@@ -209,14 +214,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			n=n.links().get(Integer.valueOf(direction));
 		}
 	}
-	
-	
-	
+
+
+
+	@Override
 	public Area findArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int directions) throws CMException
 	{
 		String tagName="AREA";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
-		if((choices==null)||(choices.size()==0)) 
+		if((choices==null)||(choices.size()==0))
 		{
 			return null;
 		}
@@ -240,14 +246,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return null;
 	}
-	
+
 	public Area buildArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int direction) throws CMException
 	{
 		defined.put("DIRECTION",Directions.getDirectionName(direction).toLowerCase());
 
 		String classID = findString("class",piece,defined);
 		Area A = CMClass.getAreaType(classID);
-		if(A == null) 
+		if(A == null)
 			throw new CMException("Unable to build area on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 		defined.put("AREA_CLASS",classID);
 		String name = findString(A,null,"AREA_","NAME",piece,defined);
@@ -256,9 +262,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			A.destroy();
 			throw new CMException("Unable to create area '"+A.Name()+"', you must destroy the old one first.");
 		}
-		
+
 		A.setName(name);
-		
+
 		defined.put("AREA_NAME",name);
 		String author = findOptionalString(A,null,"AREA_","author",piece,defined);
 		if(author != null)
@@ -273,7 +279,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return A;
 		throw new CMException("Unable to build area for some reason.");
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Room layOutRooms(Area A, LayoutManager layoutManager, int size, int direction, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
@@ -284,11 +290,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int i=0;i<roomsLayout.size();i++)
 		{
 			LayoutNode node=roomsLayout.get(i);
-			if(node.type()==LayoutTypes.leaf) 
+			if(node.type()==LayoutTypes.leaf)
 				numLeafs++;
 		}
 		defined.put("AREA_NUMLEAFS", ""+numLeafs);
-		
+
 		// now break our rooms into logical groups, generate those rooms.
 		List<List<LayoutNode>> roomGroups = new Vector<List<LayoutNode>>();
 		LayoutNode magicRoomNode = roomsLayout.get(0);
@@ -300,7 +306,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(int i=0;i<roomsLayout.size();i++)
 			{
 				LayoutNode node=roomsLayout.get(i);
-				if(node.type()==LayoutTypes.leaf) 
+				if(node.type()==LayoutTypes.leaf)
 				{
 					Vector<LayoutNode> group=new Vector<LayoutNode>();
 					group.add(node);
@@ -334,36 +340,36 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(int i=0;i<roomsLayout.size();i++)
 			{
 				LayoutNode node=roomsLayout.get(i);
-				if(node.type()==LayoutTypes.street) 
+				if(node.type()==LayoutTypes.street)
 				{
 					List<LayoutNode> group=new Vector<LayoutNode>();
 					group.add(node);
 					nodesDone.add(node);
 					LayoutRuns run=node.getFlagRuns();
-					if(run==LayoutRuns.ns) 
+					if(run==LayoutRuns.ns)
 					{
 						layoutFollow(node,LayoutTypes.street,Directions.NORTH,nodesDone,group);
 						layoutFollow(node,LayoutTypes.street,Directions.SOUTH,nodesDone,group);
-					} 
+					}
 					else
-					if(run==LayoutRuns.ew) 
+					if(run==LayoutRuns.ew)
 					{
 						layoutFollow(node,LayoutTypes.street,Directions.EAST,nodesDone,group);
 						layoutFollow(node,LayoutTypes.street,Directions.WEST,nodesDone,group);
-					} 
+					}
 					else
-					if(run==LayoutRuns.nesw) 
+					if(run==LayoutRuns.nesw)
 					{
 						layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,nodesDone,group);
 						layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,nodesDone,group);
-					} 
+					}
 					else
-					if(run==LayoutRuns.nwse) 
+					if(run==LayoutRuns.nwse)
 					{
 						layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,nodesDone,group);
 						layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,nodesDone,group);
 					}
-					else 
+					else
 					{
 						int topDir=-1;
 						int topSize=-1;
@@ -393,10 +399,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(group.size()>0)
 						roomGroups.add(group);
 					keepLooking=true;
-				} 
+				}
 			}
 		}
-		
+
 		while(roomsLayout.size() >0)
 		{
 			LayoutNode node=roomsLayout.get(0);
@@ -414,7 +420,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int g=0;g<roomGroups.size();g++)
 		{
 			List<LayoutNode> group=roomGroups.get(g);
-			if(group.contains(magicRoomNode)) 
+			if(group.contains(magicRoomNode))
 			{
 				magicGroup=group;
 				break;
@@ -424,7 +430,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int g=0;g<roomGroups.size();g++)
 		{
 			Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.get(g);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","GROUP:"+A.Name()+": "+group.firstElement().type().toString()+": "+group.size());
 		}
 		Map<List<LayoutNode>,Map<String,Object>> groupDefinitions=new Hashtable<List<LayoutNode>,Map<String,Object>>();
@@ -436,12 +442,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		Map<String,Object> groupDefined = groupDefinitions.get(magicGroup);
 		Room magicRoom = processRoom(A,direction,piece,magicRoomNode,groupDefined);
-		
+
 		//now generate the rooms and add them to the area
 		for(List<LayoutNode> group : roomGroups)
 		{
 			groupDefined = groupDefinitions.get(group);
-			
+
 			for(LayoutNode node : group)
 				if(node!=magicRoomNode)
 					processRoom(A,direction,piece,node,groupDefined);
@@ -450,7 +456,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				String key=e.next();
 				if(key.startsWith("__"))
 				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 						Log.debugOut("AREADEF:"+key+"="+CMStrings.limit(groupDefined.get(key).toString(), 10));
 					defined.put(key, groupDefined.get(key));
 					for(List<LayoutNode> group2 : roomGroups)
@@ -476,11 +482,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 		}
-		
+
 		return magicRoom;
 	}
-	
+
 	// vars created: LINK_DIRECTION, AREA_CLASS, AREA_NAME, AREA_DESCRIPTION, AREA_LAYOUT, AREA_SIZE
+	@Override
 	public boolean fillInArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Area A, int direction) throws CMException
 	{
 		String layoutType = findString("layout",piece,defined);
@@ -496,7 +503,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		defined.put("AREA_SIZE",size);
 		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","NAME","DESCRIPTION","LAYOUT","SIZE"});
 		fillOutStatCodes(A, ignoreStats,"AREA_",piece,defined);
-		
+
 		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++)
 		{
@@ -511,10 +518,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			B.setSavable(true);
 			A.addBehavior(B);
 		}
-		
+
 		CMLib.map().addArea(A); // necessary for proper naming.
-		
-		try 
+
+		try
 		{
 			layOutRooms(A, layoutManager, CMath.s_int(size), direction, piece, defined);
 			CMLib.map().delArea(A); // we added it for id assignment, now we are done.
@@ -537,10 +544,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(LayoutTags key : node.tags().keySet())
 			groupDefined.put("ROOMTAG_"+key.toString().toUpperCase(),node.tags().get(key));
 		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-		for(Integer linkDir : node.links().keySet()) 
+		for(Integer linkDir : node.links().keySet())
 		{
 			LayoutNode linkNode = node.links().get(linkDir);
-			if(linkNode.room() != null) 
+			if(linkNode.room() != null)
 			{
 				int opDir=Directions.getOpDirectionCode(linkDir.intValue());
 				exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
@@ -551,7 +558,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator",A.Name()+": type: "+node.type().toString());
 			StringBuffer defs=new StringBuffer("");
 			for(Iterator<String> e=groupDefined.keySet().iterator();e.hasNext();)
@@ -559,14 +566,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				String key=e.next();
 				defs.append(key+"="+CMStrings.limit(groupDefined.get(key).toString(),10)+",");
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","DEFS: "+defs.toString());
 		}
 		Room R=findRoom(A,piece, groupDefined, exits, direction);
 		if(R==null)
 			throw new CMException("Failure to generate room from "+piece.value);
 		R.setRoomID(A.getNewRoomID(null,-1));
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 			Log.debugOut("MUDPercolator","ROOMID: "+R.roomID());
 		R.setArea(A);
 		A.addProperRoom(R);
@@ -580,25 +587,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return R;
 	}
-	
+
+	@Override
 	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		return findMobs(piece, defined, null);
 	}
-	
+
 	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
 	{
 		List<MOB> V = new Vector<MOB>();
 		String tagName="MOB";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 		if((choices==null)||(choices.size()==0)) return V;
-		for(int c=0;c<choices.size();c++) 
+		for(int c=0;c<choices.size();c++)
 		{
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			MOB M=buildMob(valPiece,defined);
@@ -609,12 +617,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return V;
 	}
-	
+
 	public Room findRoom(Area A, XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int directions) throws CMException
 	{
 		String tagName="ROOM";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
-		if((choices==null)||(choices.size()==0)) 
+		if((choices==null)||(choices.size()==0))
 		{
 			return null;
 		}
@@ -627,7 +635,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			Map<String,Object> rDefined=new Hashtable<String,Object>();
 			rDefined.putAll(defined);
 			defineReward(null,null,null,valPiece,null,rDefined);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
 			Room R;
 			String layoutType=valPiece.parms.get("LAYOUT");
@@ -655,7 +663,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				String key=e.next();
 				if(key.startsWith("_"))
 				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 						Log.debugOut("RGDEF:"+key+"="+CMStrings.limit(rDefined.get(key).toString(), 10));
 					defined.put(key,rDefined.get(key));
 				}
@@ -664,28 +672,28 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return null;
 	}
-	
+
 	public DVector findRooms(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException
 	{
 		DVector DV = new DVector(2);
 		String tagName="ROOM";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 		if((choices==null)||(choices.size()==0)) return DV;
-		for(int c=0;c<choices.size();c++) 
+		for(int c=0;c<choices.size();c++)
 		{
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
 			Exit[] theseExits=exits.clone();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
 			Room R=buildRoom(valPiece,defined,theseExits,direction);
 			DV.addElement(R,theseExits);
 		}
 		return DV;
 	}
-	
+
 	public Exit findExit(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String tagName="EXIT";
@@ -698,7 +706,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
 			Exit E=buildExit(valPiece,defined);
 			if(E!=null)
@@ -719,7 +727,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public boolean toPlural=false;
 		public boolean isMathExpression=false;
 	}
-	
+
 	protected List<Varidentifier> parseVariables(String str)
 	{
 		int x=str.indexOf('$');
@@ -781,14 +789,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return list;
 	}
-	
+
 	protected String fillOutStatCode(Modifiable E, List<String> ignoreStats, String defPrefix, String stat, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
 		String value = null;
-		if(!ignoreStats.contains(stat.toUpperCase().trim())) 
+		if(!ignoreStats.contains(stat.toUpperCase().trim()))
 		{
 			value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,defined);
-			if(value != null) 
+			if(value != null)
 			{
 				E.setStat(stat, value);
 				if((defPrefix!=null)&&(defPrefix.length()>0))
@@ -797,11 +805,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return value;
 	}
-	
+
 	protected void fillOutStatCodes(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
 		String[] statCodes = E.getStatCodes();
-		for(int s=0;s<statCodes.length;s++) 
+		for(int s=0;s<statCodes.length;s++)
 		{
 			String stat=statCodes[s];
 			fillOutStatCode(E,ignoreStats,defPrefix,stat,piece,defined);
@@ -831,7 +839,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			E.setStat(stat, E2.getStat(stat));
 		}
 	}
-	
+
 	protected boolean fillOutCopyCodes(final Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String copyStatID = findOptionalString(E,ignoreStats,defPrefix,"COPYOF",piece,defined);
@@ -860,7 +868,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 					final BuildCallback callBack=new BuildCallback()
 					{
-						@Override public void willBuild(Environmental E2, XMLpiece xmlPiece) 
+						@Override public void willBuild(Environmental E2, XMLpiece xmlPiece)
 						{
 							fillOutCopyStats(E,E2);
 						}
@@ -875,7 +883,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return false;
 	}
-	
+
 	protected MOB buildMob(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
@@ -885,7 +893,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(classID.equalsIgnoreCase("catalog"))
 		{
 			String name = findString("NAME",piece,defined);
-			if((name == null)||(name.length()==0)) 
+			if((name == null)||(name.length()==0))
 				throw new CMException("Unable to build a catalog mob without a name, Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			M = CMLib.catalog().getCatalogMob(name);
 			if(M==null)
@@ -900,7 +908,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			M = CMClass.getMOB(classID);
 			if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			addDefinition("MOB_CLASS",classID,defined);
-			
+
 			if(M.isGeneric())
 			{
 				copyFilled = fillOutCopyCodes(M,ignoreStats,"MOB_",piece,defined);
@@ -914,7 +922,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		addDefinition("MOB_NAME",M.Name(),defined);
 		if(!copyFilled)
 			M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
-		
+
 		String value = fillOutStatCode(M,ignoreStats,"MOB_","LEVEL",piece,defined);
 		if(value != null)
 		{
@@ -932,9 +940,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(R!=null)
 				R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 		}
-		
+
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(M,ignoreStats,"MOB_","FACTION", piece, defined, true);
-		if((choices!=null)&&(choices.size()>0)) 
+		if((choices!=null)&&(choices.size()>0))
 		{
 			for(int c=0;c<choices.size();c++)
 			{
@@ -949,9 +957,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		M.recoverCharStats();
 		M.recoverPhyStats();
 		M.recoverMaxState();
-		
+
 		List<Item> items = findItems(piece,defined);
-		for(int i=0;i<items.size();i++) 
+		for(int i=0;i<items.size();i++)
 		{
 			Item I=items.get(i);
 			M.addItem(I);
@@ -959,21 +967,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.wearIfPossible(M);
 		}
 		List<Ability> aV = findAffects(piece,defined,null);
-		for(int i=0;i<aV.size();i++) 
+		for(int i=0;i<aV.size();i++)
 		{
 			Ability A=aV.get(i);
 			A.setSavable(true);
 			M.addNonUninvokableEffect(A);
 		}
 		List<Behavior> bV= findBehaviors(piece,defined);
-		for(int i=0;i<bV.size();i++) 
+		for(int i=0;i<bV.size();i++)
 		{
 			Behavior B=bV.get(i);
 			B.setSavable(true);
 			M.addBehavior(B);
 		}
 		List<Ability> abV = findAbilities(piece,defined,null);
-		for(int i=0;i<abV.size();i++) 
+		for(int i=0;i<abV.size();i++)
 		{
 			Ability A=abV.get(i);
 			A.setSavable(true);
@@ -988,7 +996,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(int i=0;i<iV.size();i++)
 				SK.getShop().addStoreInventory(iV.get(i).first,iV.get(i).second.intValue(),iV.get(i).third.intValue());
 		}
-		
+
 		M.recoverCharStats();
 		M.recoverPhyStats();
 		M.recoverMaxState();
@@ -999,12 +1007,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		M.recoverMaxState();
 		return M;
 	}
-	
+
 	public List<Exit> findExits(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		return findExits(piece,defined,null);
 	}
-	
+
 	public List<Exit> findExits(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
 	{
 		List<Exit> V = new Vector<Exit>();
@@ -1016,7 +1024,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
 			defineReward(null,null,null,valPiece,null,defined);
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
@@ -1028,7 +1036,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	   }
 		return V;
 	}
-	
+
 	// remember to check ROOMLINK_DIR for N,S,E,W,U,D,etc..
 	protected Exit buildExit(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
@@ -1059,7 +1067,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		E.recoverPhyStats();
 		return E;
 	}
-	
+
 	protected List<Triad<Environmental,Integer,Long>> findShopInventory(final XMLLibrary.XMLpiece piece, final Map<String,Object> defined) throws CMException
 	{
 		final List<Triad<Environmental,Integer,Long>> V = new Vector<Triad<Environmental,Integer,Long>>();
@@ -1075,7 +1083,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			try
 			{
 				String baseStr=CMLib.xml().getParmValue(shopPiece.parms, "NUMBER");
-				if(baseStr != null) baseNumber[0]=baseStr; 
+				if(baseStr != null) baseNumber[0]=baseStr;
 			}
 			catch(Exception e){ }
 			try
@@ -1086,7 +1094,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			catch(Exception e){ }
 			final BuildCallback callBack=new BuildCallback()
 			{
-				@Override public void willBuild(Environmental E, XMLpiece xmlPiece) 
+				@Override public void willBuild(Environmental E, XMLpiece xmlPiece)
 				{
 					String numbStr=CMLib.xml().getParmValue(xmlPiece.parms, "NUMBER");
 					if(numbStr == null) numbStr=baseNumber[0];
@@ -1114,24 +1122,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				prevSet.add(key.toUpperCase());
 		return prevSet;
 	}
-	
+
 	public void clearNewlyDefined(Map<String,Object> defined, Set<String> exceptSet, String prefix)
 	{
 		Set<String> clearSet=new HashSet<String>();
 		for(String key : defined.keySet())
-			if(key.toUpperCase().startsWith(prefix.toUpperCase()) 
+			if(key.toUpperCase().startsWith(prefix.toUpperCase())
 			&& (!exceptSet.contains(key.toUpperCase()))
 			&& (!key.startsWith("_")))
 				clearSet.add(key);
 		for(String key : clearSet)
 			defined.remove(key);
 	}
-	
+
+	@Override
 	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		return findItems(piece, defined, null);
 	}
-	
+
 	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
 	{
 		List<Item> V = new Vector<Item>();
@@ -1144,7 +1153,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			try
@@ -1157,7 +1166,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			catch(CMException e)
-			{ 
+			{
 				throw e;
 			}
 			clearNewlyDefined(defined, definedSet, tagName+"_");
@@ -1174,7 +1183,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int c=0;c<choices.size();c++)
 		{
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MUDPercolator","Found Content: "+valPiece.value);
 			V.addAll(findItems(valPiece,defined));
 		}
@@ -1185,10 +1194,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		int levelLimit=-1;
 		int levelFloor=-1;
-		Class<?>[] deriveClasses=new Class[0]; 
+		Class<?>[] deriveClasses=new Class[0];
 		Map.Entry<Character, String>[] otherParms=CMStrings.splitMulti(recipe, splitters);
 		recipe=otherParms[0].getValue();
-		if(otherParms.length==1) 
+		if(otherParms.length==1)
 			return recipe;
 		for(int i=1;i<otherParms.length;i++)
 		{
@@ -1198,7 +1207,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(CMath.isMathExpression(lvlStr))
 				{
 					levelLimit=CMath.parseIntExpression(lvlStr);
-					if((levelLimit==0)||(levelLimit<levelFloor)) 
+					if((levelLimit==0)||(levelLimit<levelFloor))
 						levelLimit=-1;
 				}
 			}
@@ -1209,7 +1218,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(CMath.isMathExpression(lvlStr))
 				{
 					levelFloor=CMath.parseIntExpression(lvlStr);
-					if((levelFloor==0)||((levelFloor>levelLimit)&&(levelLimit>0))) 
+					if((levelFloor==0)||((levelFloor>levelLimit)&&(levelLimit>0)))
 						levelFloor=-1;
 				}
 			}
@@ -1233,7 +1242,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			filter.second=Integer.valueOf(levelFloor);
 		if(deriveClasses.length>0)
 			filter.third=deriveClasses;
-		return recipe; 
+		return recipe;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1254,7 +1263,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		skillContentsCopy.addAll(skillContents);
 		return skillContentsCopy;
 	}
-	
+
 	protected boolean checkMetacraftItem(Item I, Triad<Integer,Integer,Class<?>[]> filter)
 	{
 		final int levelLimit=filter.first.intValue();
@@ -1270,7 +1279,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return true;
 		return false;
 	}
-	
+
 	protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
@@ -1288,10 +1297,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			{
 				recipe = findString("NAME",piece,defined);
-				if((recipe == null)||(recipe.length()==0)) 
+				if((recipe == null)||(recipe.length()==0))
 					throw new CMException("Unable to metacraft with malformed class Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			}
-			
+
 			String materialStr = findOptionalString(null,null,null,"material",piece,defined);
 			int material=-1;
 			if(materialStr!=null)
@@ -1448,7 +1457,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(classID.equalsIgnoreCase("catalog"))
 		{
 			String name = findString("NAME",piece,defined);
-			if((name == null)||(name.length()==0)) 
+			if((name == null)||(name.length()==0))
 				throw new CMException("Unable to build a catalog item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			Item I = CMLib.catalog().getCatalogItem(name);
 			if(I==null)
@@ -1466,12 +1475,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			contents.add(I);
 			addDefinition("ITEM_CLASS",classID,defined);
-			
+
 			if(I.isGeneric())
 			{
 				boolean filledOut = fillOutCopyCodes(I,ignoreStats,"ITEM_",piece,defined);
 				String name = fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
-				if((!filledOut) && ((name == null)||(name.length()==0))) 
+				if((!filledOut) && ((name == null)||(name.length()==0)))
 					throw new CMException("Unable to build an item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 				if((name != null)&&(name.length()>0))
 					I.setName(name);
@@ -1479,7 +1488,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","NAME"}));
 			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
 		}
-		
+
 		int contentSize=contents.size();
 		for(int it=0;it<contentSize;it++) // no iterator, please!!
 		{
@@ -1490,7 +1499,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.recoverPhyStats();
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
 			I.recoverPhyStats();
-			
+
 			if(I instanceof Container)
 			{
 				List<Item> V= findContents(piece,defined);
@@ -1524,17 +1533,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return contents;
 	}
-	
+
 	protected List<Ability> findAffects(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
-	{ 
+	{
 		return findAbilities("AFFECT",piece,defined,callBack);
 	}
 
 	protected List<Ability> findAbilities(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
-	{ 
+	{
 		return findAbilities("ABILITY",piece,defined,callBack);
 	}
-	
+
 	protected List<Ability> findAbilities(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
 	{
 		List<Ability> V = new Vector<Ability>();
@@ -1587,7 +1596,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			A.setMiscText(value);
 		return A;
 	}
-	
+
 	protected Behavior buildBehavior(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
@@ -1599,8 +1608,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			B.setParms(value);
 		return B;
 	}
-	
-	protected void addDefinition(String definition, String value, Map<String,Object> defined) 
+
+	protected void addDefinition(String definition, String value, Map<String,Object> defined)
 	{
 		definition=definition.toUpperCase().trim();
 		defined.put(definition, value);
@@ -1612,29 +1621,31 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(def==null) defined.put(definition, value);
 		else defined.put(definition, def+","+value);
 	}
-	
+
 	protected String findOptionalString(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
-		try 
+		try
 		{
 			return findString(E,ignoreStats,defPrefix,tagName, piece, defined);
-		} 
-		catch(CMException x) 
+		}
+		catch(CMException x)
 		{
 			return null;
 		}
 	}
-	
+
+	@Override
 	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException
 	{
 		defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),piece,value,defined,true);
 	}
-	
+
+	@Override
 	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"PREDEFINE"),piece,piece.value,defined,false);
 	}
-	
+
 	protected void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, String defineString, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined, boolean recurseAllowed) throws CMException
 	{
 		if((defineString!=null)&&(defineString.trim().length()>0))
@@ -1669,7 +1680,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					definition=Integer.toString(CMath.s_parseIntExpression(definition));
 				if(defVar.trim().length()>0)
 					defined.put(defVar.toUpperCase().trim(), definition);
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
 			}
 		}
@@ -1682,25 +1693,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		tagName=tagName.toUpperCase().trim();
 		String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
 		if(asParm != null) return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
-		
+
 		Object asDefined = defined.get(tagName);
-		if(asDefined instanceof String) 
+		if(asDefined instanceof String)
 			return (String)asDefined;
-		
+
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
 		if((choices==null)||(choices.size()==0))
 			throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 		StringBuffer finalValue = new StringBuffer("");
-		
+
 		for(int c=0;c<choices.size();c++)
 		{
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
-				
+
 			String value=strFilter(E,ignoreStats,defPrefix,valPiece.value,piece, defined);
 			defineReward(E,ignoreStats,defPrefix,valPiece,value,defined);
-			
+
 			String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
 			if((action==null)||(action.length()==0)) action="APPEND";
 			if(action.equalsIgnoreCase("REPLACE"))
@@ -1717,13 +1728,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return finalValue.toString().trim();
 	}
 
+	@Override
 	public XMLLibrary.XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
 		if(like!=null)
 		{
 			List<String> V=CMParms.parseCommas(like,true);
-			XMLLibrary.XMLpiece origPiece = piece; 
+			XMLLibrary.XMLpiece origPiece = piece;
 			piece=piece.copyOf();
 			for(int v=0;v<V.size();v++)
 			{
@@ -1739,14 +1751,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return piece;
 	}
-	
+
 	protected List<XMLpiece> getAllChoices(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined, boolean skipTest) throws CMException
 	{
 		if((!skipTest)&&(!testCondition(piece,defined)))
 			return new Vector<XMLpiece>(1);
-		
+
 		preDefineReward(E,ignoreStats,defPrefix,piece, defined);
-		
+
 		List<XMLpiece> choices = new Vector<XMLpiece>();
 		String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
 		if(inserter!=null)
@@ -1768,21 +1780,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			if((piece.parms.containsKey("LAYOUT")) && (piece.tag.equalsIgnoreCase("ROOM")) && (!defined.containsKey("ROOM_LAYOUT")))
 				return new XVector<XMLpiece>(processLikeParm(tagName,piece,defined));
-				
+
 			boolean container=false;
 			for(int p=0;p<piece.contents.size();p++)
 			{
 				final XMLLibrary.XMLpiece ppiece=piece.contents.get(p);
 				if(ppiece.tag.equalsIgnoreCase(tagName))
-				{	
-					container=true; 
+				{
+					container=true;
 					break;
 				}
 			}
 			if(!container)
 				return new XVector<XMLpiece>(processLikeParm(tagName,piece,defined));
 		}
-		
+
 		for(int p=0;p<piece.contents.size();p++)
 		{
 			XMLLibrary.XMLpiece subPiece = piece.contents.get(p);
@@ -1802,7 +1814,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			List<Varidentifier> ids=parseVariables(condition);
 			for(Varidentifier id : ids)
 			{
-				try 
+				try
 				{
 					String value=findString(id.var, piece, defined);
 					if(CMath.isMathExpression(value))
@@ -1814,19 +1826,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							value=""+val;
 					}
 					fixed.put(id.var.toUpperCase(),value);
-				} 
+				}
 				catch(CMException e) {}
 			}
 			boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST "+piece.tag+": "+condition+"="+test);
 			return test;
-		} 
+		}
 		catch(Exception e)
 		{
 			Log.errOut("Generate",e.getMessage()+": "+condition);
-			try { 
-				CMStrings.parseStringExpression(condition,fixed, true); 
+			try {
+				CMStrings.parseStringExpression(condition,fixed, true);
 			}
 			catch(Exception e1) {}
 			return false;
@@ -1836,8 +1848,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		return testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(piece.parms,"CONDITION")),piece,defined);
 	}
-	
-	protected String getRequirementsDescription(String values) 
+
+	protected String getRequirementsDescription(String values)
 	{
 		if(values==null) return "";
 		if(values.equalsIgnoreCase("integer")||values.equalsIgnoreCase("int"))
@@ -1853,8 +1865,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return " as one of the following values: "+values;
 		return "";
 	}
-	
-	protected boolean checkRequirementsValue(String validValue, String value) 
+
+	protected boolean checkRequirementsValue(String validValue, String value)
 	{
 		if(validValue==null) return value != null;
 		if(validValue.equalsIgnoreCase("integer")||validValue.equalsIgnoreCase("int"))
@@ -1870,8 +1882,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return CMParms.containsIgnoreCase(CMParms.toStringArray(CMParms.parseSemicolons(validValue,true)),value);
 		return value.length()==0;
 	}
-	
-	protected String cleanRequirementsValue(String values, String value) 
+
+	protected String cleanRequirementsValue(String values, String value)
 	{
 		if(values==null) return value;
 		if(values.equalsIgnoreCase("integer")||values.equalsIgnoreCase("int"))
@@ -1892,7 +1904,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return value;
 	}
-	
+
+	@Override
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLLibrary.XMLpiece piece)
 	{
 		String requirements = CMLib.xml().getParmValue(piece.parms,"REQUIRES");
@@ -1932,7 +1945,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		return set;
 	}
-	
+
 	protected void checkRequirements(Map<String,Object> defined, String requirements) throws CMException
 	{
 		if(requirements==null) return;
@@ -1955,22 +1968,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new CMException("The required variable '"+reqVariable+"' is not properly defined.  Please define this variable"+getRequirementsDescription(validValues)+".");
 		}
 	}
-	
+
+	@Override
 	public void checkRequirements(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		checkRequirements(defined,CMLib.xml().getParmValue(piece.parms,"REQUIRES"));
 	}
-	
+
 	protected List<XMLpiece> selectChoices(Modifiable E, String tagName, List<String> ignoreStats, String defPrefix, List<XMLpiece> choices, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String selection = CMLib.xml().getParmValue(piece.parms,"SELECT");
 		if(selection == null) return choices;
 		selection=selection.toUpperCase().trim();
 		List<XMLLibrary.XMLpiece> selectedChoicesV=null;
-		if(selection.equals("NONE")) 
+		if(selection.equals("NONE"))
 			selectedChoicesV= new Vector<XMLpiece>();
 		else
-		if(selection.equals("ALL")) 
+		if(selection.equals("ALL"))
 			selectedChoicesV=choices;
 		else
 		if((choices.size()==0)
@@ -2007,7 +2021,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				selectedChoicesV.add(choices.remove(CMLib.dice().roll(1, choices.size(), -1)));
 		}
 		else
-		if(selection.equals("LAST"))  
+		if(selection.equals("LAST"))
 			selectedChoicesV=new XVector<XMLpiece>(choices.get(choices.size()-1));
 		else
 		if(selection.startsWith("LAST-"))
@@ -2037,7 +2051,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					weights[c]=weight;
 					total+=weight;
 				}
-				
+
 				int choice=CMLib.dice().roll(1,total,0);
 				int c=-1;
 				while(choice>0)
@@ -2097,7 +2111,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 		return selectedChoicesV;
 	}
-	
+
 	protected String strFilter(Modifiable E, List<String> ignoreStats, String defPrefix, String str, XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		List<Varidentifier> vars=parseVariables(str);
@@ -2124,7 +2138,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				val=E.getStat(V.var.substring(5));
 			else
 				val = defined.get(V.var.toUpperCase().trim());
-			if(val instanceof XMLLibrary.XMLpiece) 
+			if(val instanceof XMLLibrary.XMLpiece)
 				val = findString(E,ignoreStats,defPrefix,"STRING",(XMLLibrary.XMLpiece)val,defined);
 			if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
 			{
@@ -2141,7 +2155,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 			}
-			if(val == null) 
+			if(val == null)
 				throw new CMException("Unknown variable '$"+V.var+"' in str '"+str+"'",new CMException("$"+V.var));
 			if(V.toUpperCase) val=val.toString().toUpperCase();
 			if(V.toLowerCase) val=val.toString().toLowerCase();
@@ -2171,7 +2185,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public String findString(String tagName, XMLpiece piece, Map<String, Object> defined) throws CMException 
+	public String findString(String tagName, XMLpiece piece, Map<String, Object> defined) throws CMException
 	{
 		return findString(null,null,null,tagName,piece,defined);
 	}

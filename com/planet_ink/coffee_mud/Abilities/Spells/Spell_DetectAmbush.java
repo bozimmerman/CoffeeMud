@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_DetectAmbush extends Spell
 {
-	public String ID() { return "Spell_DetectAmbush"; }
-	public String name(){return "Detect Ambush";}
-	public String displayText(){return "(Detecting Ambushes)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override public String ID() { return "Spell_DetectAmbush"; }
+	@Override public String name(){return "Detect Ambush";}
+	@Override public String displayText(){return "(Detecting Ambushes)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	Room lastRoom=null;
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -56,6 +57,7 @@ public class Spell_DetectAmbush extends Spell
 			mob.tell("You are no longer detecting ambushes.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -73,8 +75,8 @@ public class Spell_DetectAmbush extends Spell
 			{
 				MOB M=R.fetchInhabitant(m);
 				if(CMLib.flags().isHidden(M))
-				{ 
-					found=true; 
+				{
+					found=true;
 					break;
 				}
 				for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
@@ -95,6 +97,7 @@ public class Spell_DetectAmbush extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -107,7 +110,8 @@ public class Spell_DetectAmbush extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

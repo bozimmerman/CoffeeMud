@@ -39,51 +39,53 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class TargetPlayer extends ActiveTicker
 {
-	public String ID(){return "TargetPlayer";}
-	protected int canImproveCode() {return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "TargetPlayer";}
+	@Override protected int canImproveCode() {return Behavior.CAN_MOBS;}
 
-	public TargetPlayer() 
+	public TargetPlayer()
 	{
 		super();
 		minTicks=3; maxTicks=12; chance=100;
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "hero targeting";
 	}
 
-	public boolean tick(Tickable ticking, int tickID) 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(canAct(ticking,tickID))
 		{
 			MOB mob = (MOB) ticking;
-			if (mob.getVictim() != null) 
+			if (mob.getVictim() != null)
 			{
 				Set<MOB> theBadGuys = mob.getVictim().getGroupMembers(new HashSet<MOB>());
 				MOB shouldFight = null;
-				for (Iterator e = theBadGuys.iterator(); e.hasNext(); ) 
+				for (Iterator e = theBadGuys.iterator(); e.hasNext(); )
 				{
 					MOB consider = (MOB) e.next();
 					if (consider.isMonster())
 						continue;
-					if (shouldFight == null) 
+					if (shouldFight == null)
 					{
 						shouldFight = consider;
 					}
-					else 
+					else
 					{
-						if (((shouldFight.phyStats()!=null)&&(consider.phyStats()!=null)) 
+						if (((shouldFight.phyStats()!=null)&&(consider.phyStats()!=null))
 						&&(shouldFight.phyStats().level() > consider.phyStats().level()))
 							shouldFight = consider;
 					}
 				}
-				if(shouldFight!=null) 
+				if(shouldFight!=null)
 				{
 					if(shouldFight.equals(mob.getVictim()))
 						return true;
-					else 
+					else
 					if(CMLib.flags().canBeSeenBy(shouldFight,mob))
 					{
 						mob.setVictim(shouldFight);

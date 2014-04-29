@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_AnimateMummy extends Prayer
 {
-	public String ID() { return "Prayer_AnimateMummy"; }
-	public String name(){ return "Animate Mummy";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_AnimateMummy"; }
+	@Override public String name(){ return "Animate Mummy";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

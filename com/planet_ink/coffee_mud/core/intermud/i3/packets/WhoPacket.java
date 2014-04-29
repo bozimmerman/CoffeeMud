@@ -41,7 +41,7 @@ public class WhoPacket extends Packet {
 		super();
 		type = Packet.WHO_REQUEST;
 	}
-	
+
 	public WhoPacket(Vector v)
 	{
 		super(v);
@@ -56,6 +56,7 @@ public class WhoPacket extends Packet {
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( type == Packet.WHO_REPLY && who == null )
 		{
@@ -64,6 +65,7 @@ public class WhoPacket extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		if(type==Packet.WHO_REQUEST)

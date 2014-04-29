@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,18 +37,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Resurrect"; }
-	public String name(){ return "Resurrect";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prayer_Resurrect"; }
+	@Override public String name(){ return "Resurrect";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof DeadBody);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical body=null;
@@ -195,7 +197,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		// return whether it worked
 		return success;
 	}
-	
+
 	public PhysicalAgent parseHeavenlyData(String data)
 	{
 		String classID=null;
@@ -219,6 +221,6 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		object.basePhyStats().setAbility(ability);
 		object.recoverPhyStats();
 		return object;
-		
+
 	}
 }

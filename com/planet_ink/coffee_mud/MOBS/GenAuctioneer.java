@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenAuctioneer extends StdAuctioneer
 {
-	public String ID(){return "GenAuctioneer";}
+	@Override public String ID(){return "GenAuctioneer";}
 	private String PrejudiceFactors="";
 	private String auctionChain="";
 	private String IgnoreMask="";
@@ -47,8 +47,9 @@ public class GenAuctioneer extends StdAuctioneer
 		setDisplayText("A generic auctioneer stands here.");
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -58,13 +59,14 @@ public class GenAuctioneer extends StdAuctioneer
 		return super.text();
 	}
 
-	public String prejudiceFactors(){return PrejudiceFactors;}
-	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	public String ignoreMask(){return IgnoreMask;}
-	public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	public String auctionHouse(){return auctionChain;}
-	public void setAuctionHouse(String named){auctionChain=named;}
+	@Override public String prejudiceFactors(){return PrejudiceFactors;}
+	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+	@Override public String ignoreMask(){return IgnoreMask;}
+	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
+	@Override public String auctionHouse(){return auctionChain;}
+	@Override public void setAuctionHouse(String named){auctionChain=named;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -76,6 +78,7 @@ public class GenAuctioneer extends StdAuctioneer
 										   "TIMEPCT","LIVECUT","TIMECUT",
 										   "MAXADAYS","MINADAYS",
 										   "IGNOREMASK","PRICEMASKS"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -96,6 +99,7 @@ public class GenAuctioneer extends StdAuctioneer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -125,6 +129,7 @@ public class GenAuctioneer extends StdAuctioneer
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -132,6 +137,7 @@ public class GenAuctioneer extends StdAuctioneer
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -145,6 +151,7 @@ public class GenAuctioneer extends StdAuctioneer
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenAuctioneer)) return false;

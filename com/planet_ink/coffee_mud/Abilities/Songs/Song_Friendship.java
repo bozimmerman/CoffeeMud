@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Song_Friendship extends Song
 {
-	public String ID() { return "Song_Friendship"; }
-	public String name(){ return "Friendship";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardSongInvoke(){return true;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
-	public long flags(){return Ability.FLAG_CHARMING;}
+	@Override public String ID() { return "Song_Friendship"; }
+	@Override public String name(){ return "Friendship";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override public long flags(){return Ability.FLAG_CHARMING;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(affected==invoker))
@@ -88,6 +89,7 @@ public class Song_Friendship extends Song
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -100,7 +102,8 @@ public class Song_Friendship extends Song
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -117,6 +120,7 @@ public class Song_Friendship extends Song
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -148,6 +152,7 @@ public class Song_Friendship extends Song
 			super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -181,7 +186,7 @@ public class Song_Friendship extends Song
 					Song newOne=(Song)this.copyOf();
 					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
@@ -190,7 +195,7 @@ public class Song_Friendship extends Song
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
@@ -199,7 +204,7 @@ public class Song_Friendship extends Song
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 							int levelDiff=follower.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 							if(levelDiff<0) levelDiff=0;
-	
+
 							if((levelDiff>(3+((mob.phyStats().level()+(getXLEVELLevel(mob)*2))/10)))&&(mindAttack()))
 								mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
 							else

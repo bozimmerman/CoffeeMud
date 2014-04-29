@@ -26,9 +26,9 @@ limitations under the License.
 */
 
 /**
- * Manages a relatively static set of servlet classes 
+ * Manages a relatively static set of servlet classes
  * and the root contexts needed to access them.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -37,13 +37,13 @@ public class MWServletManager implements SimpleServletManager
 	private final Map<String,Class<? extends SimpleServlet>> 		  servlets; 	// map of registered servlets by context
 	private final Map<Class<? extends SimpleServlet>, MWRequestStats> servletStats; // stats about each servlet
 	private final Map<Class<? extends SimpleServlet>, Boolean> 		  servletInit; // whether a servlets been initialized
-	
+
 	public MWServletManager(MiniWebConfig config)
 	{
 		servlets = new Hashtable<String,Class<? extends SimpleServlet>>();
 		servletStats = new Hashtable<Class<? extends SimpleServlet>, MWRequestStats>();
 		servletInit = new Hashtable<Class<? extends SimpleServlet>, Boolean>();
-		
+
 		for(String context : config.getServlets().keySet())
 		{
 			String className=config.getServlets().get(context);
@@ -61,25 +61,27 @@ public class MWServletManager implements SimpleServletManager
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Internal method to register a servlets existence, and its context.
 	 * This will go away when a config file is permitted
 	 * @param context the uri context the servlet responds to
 	 * @param servletClass the class of the servlet
 	 */
+	@Override
 	public void registerServlet(String context, Class<? extends SimpleServlet> servletClass)
 	{
 		servlets.put(context, servletClass);
 		servletStats.put(servletClass, new MWRequestStats());
 	}
-	
+
 	/**
 	 * For anyone externally interested, will return the list of servlet classes
 	 * that are registered
 	 * @return the list of servlet classes
 	 */
+	@Override
 	public Collection<Class<? extends SimpleServlet>> getServlets()
 	{
 		return servlets.values();
@@ -91,6 +93,7 @@ public class MWServletManager implements SimpleServletManager
 	 * @param rootContext the uri context
 	 * @return the servlet class, if any, or null
 	 */
+	@Override
 	public Class<? extends SimpleServlet> findServlet(String rootContext)
 	{
 		final Class<? extends SimpleServlet> c=servlets.get(rootContext);
@@ -120,6 +123,7 @@ public class MWServletManager implements SimpleServletManager
 	 * @param servletClass the servlet class managed by this web server
 	 * @return the servlet stats object
 	 */
+	@Override
 	public MWRequestStats getServletStats(Class<? extends SimpleServlet> servletClass)
 	{
 		return servletStats.get(servletClass);

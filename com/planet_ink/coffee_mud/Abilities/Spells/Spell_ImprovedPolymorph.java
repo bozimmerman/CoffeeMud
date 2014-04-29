@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ImprovedPolymorph extends Spell
 {
-	public String ID() { return "Spell_ImprovedPolymorph"; }
-	public String name(){return "Improved Polymorph";}
-	public String displayText(){return "(Improved Polymorph)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Spell_ImprovedPolymorph"; }
+	@Override public String name(){return "Improved Polymorph";}
+	@Override public String displayText(){return "(Improved Polymorph)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	Race newRace=null;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -71,6 +73,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -83,6 +86,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> morph(s) back to <S-HIS-HER> normal form.");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -95,7 +99,8 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -152,13 +157,13 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already polymorphed.");
 			return false;
 		}
-		
+
 		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
 			mob.tell("You can't turn "+target.name(mob)+" into a '"+R.name()+"'!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -192,7 +197,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;
 		if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target)) statDiff+=5;
 		fakeMOB.destroy();
-		
+
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
@@ -201,7 +206,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(target.name(mob)+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;
 		}
-		
+
 		if((success)&&((auto)||((levelDiff-statDiff)>-100)))
 		{
 			// it worked, so build a copy of this ability,

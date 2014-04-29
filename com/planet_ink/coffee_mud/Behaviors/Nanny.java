@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Nanny extends StdBehavior
 {
-	public String ID(){return "Nanny";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Nanny";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected boolean watchesBabies=true;
 	protected boolean watchesChildren=true;
 	protected boolean watchesMounts=false;
@@ -49,17 +49,18 @@ public class Nanny extends StdBehavior
 	protected boolean watchesMOBFollowers=false;
 	protected boolean changedSinceLastSave=false;
 	protected String place="Nursery";
-	protected double hourlyRate=1.0; 
-	
+	protected double hourlyRate=1.0;
+
 	protected List<DropOff> dropOffs=null;
 	protected List<Payment> payments=new SVector<Payment>();
 	protected DVector sayLaters=new DVector(2);
 	// dynamic list of who belongs to what, before they leave
 	// and get added to official drop-offs.
 	protected List<DropOff> associations=new SVector<DropOff>();
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "caretaking and babysitting for a fee";
 	}
 
@@ -70,14 +71,14 @@ public class Nanny extends StdBehavior
 		public long dropOffTime;
 		public DropOff(MOB momM, PhysicalAgent baby, long dropOff){mommyM=momM;this.baby=baby; dropOffTime=dropOff;}
 	}
-	
+
 	private static class Payment
 	{
 		public MOB mommyM;
 		public double paid;
 		public Payment(MOB M, double d){mommyM=M; paid=d;}
 	}
-	
+
 	public double getPaidBy(MOB mob)
 	{
 		if(mob==null) return 0.0;
@@ -87,7 +88,7 @@ public class Nanny extends StdBehavior
 				amt+=P.paid;
 		return amt;
 	}
-	
+
 	public boolean isDroppedOff(PhysicalAgent P)
 	{
 		if(P==null) return false;
@@ -96,7 +97,7 @@ public class Nanny extends StdBehavior
 				return true;
 		return false;
 	}
-	
+
 	public boolean isAssociated(PhysicalAgent P)
 	{
 		if(P==null) return false;
@@ -105,7 +106,7 @@ public class Nanny extends StdBehavior
 				return true;
 		return false;
 	}
-	
+
 	public void addPayment(MOB mob,double amt)
 	{
 		if(mob==null) return;
@@ -117,7 +118,7 @@ public class Nanny extends StdBehavior
 			}
 		payments.add(new Payment(mob,amt));
 	}
-	
+
 	public void clearTheSlate(MOB mob)
 	{
 		if(mob==null) return;
@@ -129,7 +130,7 @@ public class Nanny extends StdBehavior
 				if(D.mommyM==mob)
 				{
 					boolean found=false;
-					for(DropOff A : associations) 
+					for(DropOff A : associations)
 						found = found || (A.mommyM==D.mommyM);
 					if(!found)
 						associations.add(D);
@@ -137,7 +138,7 @@ public class Nanny extends StdBehavior
 					changedSinceLastSave=true;
 				}
 	}
-	
+
 	public double getAllOwedBy(MOB mob)
 	{
 		if(mob==null) return 0.0;
@@ -165,7 +166,7 @@ public class Nanny extends StdBehavior
 					V.add(D.baby);
 		return V;
 	}
-	
+
 	public String getPronoun(List<PhysicalAgent> V)
 	{
 		if(V.size()==0) return "your stuff";
@@ -204,7 +205,7 @@ public class Nanny extends StdBehavior
 		}
 		return list.toString().trim();
 	}
-	
+
 	public String getOwedFor(String currency, PhysicalAgent P)
 	{
 		for(DropOff D : dropOffs)
@@ -216,7 +217,7 @@ public class Nanny extends StdBehavior
 			}
 		return "";
 	}
-	
+
 	public String getAllOwedBy(String currency, MOB mob)
 	{
 		if(mob==null) return "";
@@ -236,7 +237,7 @@ public class Nanny extends StdBehavior
 		if(s.endsWith(", "))s=s.substring(0,s.length()-2);
 		return s;
 	}
-	
+
 	public PhysicalAgent getDroppedOffObjIfAny(PhysicalAgent P)
 	{
 		if(P==null) return null;
@@ -254,7 +255,8 @@ public class Nanny extends StdBehavior
 		}
 		return null;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
@@ -387,7 +389,7 @@ public class Nanny extends StdBehavior
 			return true;
 		return false;
 	}
-	
+
 	public boolean isDropOffable(Environmental E)
 	{
 		if(E==null) return false;
@@ -422,11 +424,11 @@ public class Nanny extends StdBehavior
 	public MOB ultimateFollowing(Environmental E)
 	{
 		MOB ultimateFollowing=null;
-		if(E instanceof MOB) 
+		if(E instanceof MOB)
 			ultimateFollowing=((MOB)E).amUltimatelyFollowing();
 		return ultimateFollowing;
 	}
-	
+
 	public MOB getMommyOf(Physical P)
 	{
 		if((P instanceof Item)
@@ -459,7 +461,7 @@ public class Nanny extends StdBehavior
 		return null;
 	}
 
-	
+
 	public void addAssociationsIfNecessary(Set<PhysicalAgent> H)
 	{
 		PhysicalAgent P=null;
@@ -506,19 +508,20 @@ public class Nanny extends StdBehavior
 					V.add(A.baby);
 		return V;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		if(dropOffs==null) return;
-		
+
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==CMLib.map().roomLocation(host)))
 		{
 			String currency=CMLib.beanCounter().getCurrency(host);
 			Set H=msg.source().getGroupMembers(new HashSet<MOB>());
 			msg.source().getRideBuddies(H);
-			if(!H.contains(msg.source())) 
+			if(!H.contains(msg.source()))
 				H.add(msg.source());
 			HashSet<Environmental> H2 = null;
 			do
@@ -538,7 +541,7 @@ public class Nanny extends StdBehavior
 				}
 			}
 			while(H.size() > H2.size());
-			
+
 			addAssociationsIfNecessary(H);
 			List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());
 			StringBuffer list=new StringBuffer("");
@@ -556,7 +559,7 @@ public class Nanny extends StdBehavior
 							list.toString()+" here under my care and protection.  Be aware that I charge "
 							+CMLib.beanCounter().abbreviatedPrice(currency,hourlyRate)+" per hour, each.  " +
 							"No payment is due until you return to fetch your "+getPronoun(myAssocs)+".");
-			
+
 			double owed=getAllOwedBy(msg.source());
 			double paid=getPaidBy(msg.source());
 			if(owed>0)
@@ -638,7 +641,7 @@ public class Nanny extends StdBehavior
 		&&(!((MOB)msg.target()).isMine(msg.tool())))
 			CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
-	
+
 	public int getNameIndex(Vector V, String name)
 	{
 		int index=0;
@@ -649,7 +652,8 @@ public class Nanny extends StdBehavior
 		}
 		return index;
 	}
-	
+
+	@Override
 	public String getParms()
 	{
 		StringBuffer parms=new StringBuffer("");
@@ -674,7 +678,7 @@ public class Nanny extends StdBehavior
 			for(DropOff D : dropOffs)
 			{
 				parms.append("<DROP>");
-				
+
 				eName=D.baby.Name();
 				oName=D.mommyM.Name();
 				if(oldNames.contains(eName))
@@ -688,6 +692,7 @@ public class Nanny extends StdBehavior
 		return parms.toString().trim();
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -718,7 +723,8 @@ public class Nanny extends StdBehavior
 			if(watch.startsWith("FOL")) watchesMOBFollowers=true;
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -762,7 +768,7 @@ public class Nanny extends StdBehavior
 							else
 							{
 								M=CMLib.players().getLoadPlayer(oName);
-								if(M==null) 
+								if(M==null)
 									parsedPlayers.put(oName,"");
 								else
 									parsedPlayers.put(oName,M);
@@ -792,7 +798,7 @@ public class Nanny extends StdBehavior
 				((MOB)sayLaters.elementAt(s,1)).tell((String)sayLaters.elementAt(s,2));
 			sayLaters.removeElementAt(s);
 		}
-		
+
 		Room R=CMLib.map().roomLocation((Environmental)ticking);
 		if(R!=null)
 		for(DropOff D : associations)
@@ -816,7 +822,7 @@ public class Nanny extends StdBehavior
 			else
 				associations.remove(D);
 		}
-		
+
 		if(!changedSinceLastSave)
 			for(DropOff D : dropOffs)
 				if((D.baby instanceof MOB)
@@ -834,13 +840,13 @@ public class Nanny extends StdBehavior
 				dropOffs.remove(D);
 				changedSinceLastSave=true;
 			}
-				
+
 		if(changedSinceLastSave)
 		{
 			if(R!=null)
 			{
 				Vector<MOB> mobsToSave=new Vector<MOB>();
-				if(ticking instanceof MOB) 
+				if(ticking instanceof MOB)
 					mobsToSave.addElement((MOB)ticking);
 				MOB M=null;
 				for(int i=0;i<R.numInhabitants();i++)
@@ -862,10 +868,10 @@ public class Nanny extends StdBehavior
 				}
 				CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
 			}
-			
-			
+
+
 			Vector<Item> itemsToSave=new Vector<Item>();
-			if(ticking instanceof Item) 
+			if(ticking instanceof Item)
 				itemsToSave.addElement((Item)ticking);
 			Item I=null;
 			if(R!=null)
@@ -892,7 +898,7 @@ public class Nanny extends StdBehavior
 				CMLib.database().DBUpdateRoom((Room)ticking);
 			changedSinceLastSave=false;
 		}
-		
+
 		if((dropOffs.size()>0)&&(ticking instanceof MOB)&&(CMLib.dice().rollPercentage()<10)&&(R!=null))
 		{
 			MOB mob=(MOB)ticking;
@@ -909,7 +915,7 @@ public class Nanny extends StdBehavior
 					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) with <T-NAME>.");
 				else
 					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>.");
-				
+
 			}
 			else
 			if(CMLib.flags().isChild(PA))

@@ -38,7 +38,7 @@ public class Announce extends StdCommand
 	public Announce(){}
 
 	private final String[] access={"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
@@ -69,10 +69,11 @@ public class Announce extends StdCommand
 	  	S.stdPrintln(Message.toString());
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		
+
 		String cmd=((String)commands.firstElement()).toUpperCase();
 		if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
@@ -113,7 +114,7 @@ public class Announce extends StdCommand
 					text=CMParms.combine(commands,2);
 				else
 					text=CMParms.combine(commands,1);
-					
+
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
@@ -147,9 +148,9 @@ public class Announce extends StdCommand
 			mob.tell("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);}
+
+
 }

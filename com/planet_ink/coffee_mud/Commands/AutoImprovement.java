@@ -39,7 +39,8 @@ public class AutoImprovement extends StdCommand
 	public AutoImprovement(){}
 
 	private final String[] access={"AUTOIMPROVEMENT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -55,9 +56,9 @@ public class AutoImprovement extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,16 +27,17 @@ import com.planet_ink.coffee_mud.core.Log;
 */
 public class CMEncoder extends StdLibrary implements TextEncoders
 {
-	public String ID(){return "CMEncoder";}
+	@Override public String ID(){return "CMEncoder";}
 	private byte[] encodeBuffer = new byte[65536];
 	private Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private Inflater decompresser = new Inflater();
-	
+
 	public CMEncoder()
 	{
 		super();
 	}
 
+	@Override
 	public synchronized String decompressString(byte[] b)
 	{
 		try
@@ -60,6 +61,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		}
 	}
 
+	@Override
 	public synchronized byte[] compressString(String s)
 	{
 		byte[] result = null;
@@ -69,7 +71,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 			compresser.reset();
 			compresser.setInput(s.getBytes(CMProps.getVar(CMProps.Str.CHARSETINPUT)));
 			compresser.finish();
-			
+
 			synchronized (encodeBuffer)
 			{
 				if(s.length()>encodeBuffer.length)
@@ -90,6 +92,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		return result;
 	}
 
+	@Override
 	public String makeRandomHashString(final String password)
 	{
 		int salt=(int)Math.round(CMath.random() * Integer.MAX_VALUE);
@@ -97,12 +100,14 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		return "|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(salt).array())
 			  +"|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(passHash).array());
 	}
-	
+
+	@Override
 	public boolean isARandomHashString(final String password)
 	{
 		return ((password.length()>2) && (password.startsWith("|")) && (password.indexOf('|',1)>1));
 	}
-	
+
+	@Override
 	public boolean checkAgainstRandomHashString(final String checkString, final String hashString)
 	{
 		int hashDex=hashString.indexOf('|',1);
@@ -110,7 +115,8 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		int hash=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(hashDex+1))).getInt();
 		return hash==(checkString+salt).toLowerCase().hashCode();
 	}
-	
+
+	@Override
 	public String generateRandomPassword()
 	{
 		StringBuilder str=new StringBuilder("");
@@ -123,5 +129,5 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		}
 		return str.toString();
 	}
-	
+
 }

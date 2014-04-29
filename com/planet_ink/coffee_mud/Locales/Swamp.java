@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Swamp extends StdRoom
 {
-	public String ID(){return "Swamp";}
+	@Override public String ID(){return "Swamp";}
 	public Swamp()
 	{
 		super();
@@ -44,8 +44,9 @@ public class Swamp extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
@@ -78,5 +79,5 @@ public class Swamp extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Swamp.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }

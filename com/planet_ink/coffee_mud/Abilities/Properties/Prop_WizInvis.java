@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Prop_WizInvis extends Property
 {
-	public String ID() { return "Prop_WizInvis"; }
-	
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public String ID() { return "Prop_WizInvis"; }
 
-	public String displayText() 
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+
+	@Override
+	public String displayText()
 	{
 		if(CMath.bset(abilityCode(),PhyStats.IS_CLOAKED|PhyStats.IS_NOT_SEEN))
 			return "(Wizard Invisibility)";
@@ -51,20 +52,22 @@ public class Prop_WizInvis extends Property
 		else
 			return "";
 	}
-	public String name(){ return "Wizard Invisibility";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String name(){ return "Wizard Invisibility";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected boolean disabled=false;
 	protected int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
-	public int abilityCode(){return abilityCode;}
-	public void setAbilityCode(int newCode){abilityCode=newCode;}
+	@Override public int abilityCode(){return abilityCode;}
+	@Override public void setAbilityCode(int newCode){abilityCode=newCode;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Wizard Invisibile";	}
 
 
-	public boolean canBeUninvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return true;}
 	public boolean isAnAutoEffect(){return false;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -88,6 +91,7 @@ public class Prop_WizInvis extends Property
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -95,6 +99,7 @@ public class Prop_WizInvis extends Property
 		affected.curState().setThirst(affected.maxState().maxThirst(affected.baseWeight()));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -127,6 +132,7 @@ public class Prop_WizInvis extends Property
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))

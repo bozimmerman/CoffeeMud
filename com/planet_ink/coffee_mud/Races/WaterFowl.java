@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,33 +34,34 @@ import java.util.*;
 */
 public class WaterFowl extends StdRace
 {
-	public String ID(){	return "WaterFowl"; }
-	public String name(){ return "Water Fowl"; }
-	public int shortestMale(){return 8;}
-	public int shortestFemale(){return 8;}
-	public int heightVariance(){return 5;}
-	public int lightestWeight(){return 5;}
-	public int weightVariance(){return 5;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Avian";}
+	@Override public String ID(){	return "WaterFowl"; }
+	@Override public String name(){ return "Water Fowl"; }
+	@Override public int shortestMale(){return 8;}
+	@Override public int shortestFemale(){return 8;}
+	@Override public int heightVariance(){return 5;}
+	@Override public int lightestWeight(){return 5;}
+	@Override public int weightVariance(){return 5;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Avian";}
 	private String[]racialAbilityNames={"WingFlying","Skill_Swim"};
 	private int[]racialAbilityLevels={1,1};
 	private int[]racialAbilityProficiencies={100,100};
 	private boolean[]racialAbilityQuals={false,false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,1,2,4,5,5,6,7,8};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -68,19 +69,23 @@ public class WaterFowl extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "waddles in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "waddles";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -94,6 +99,7 @@ public class WaterFowl extends StdRace
 		return naturalWeapon;
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -130,6 +136,7 @@ public class WaterFowl extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

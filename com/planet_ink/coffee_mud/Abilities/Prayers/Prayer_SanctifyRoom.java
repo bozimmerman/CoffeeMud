@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SanctifyRoom extends Prayer
 {
-	public String ID() { return "Prayer_SanctifyRoom"; }
-	public String name(){return "Sanctify Room";}
-	public String displayText(){return "(Sanctify Room)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	
+	@Override public String ID() { return "Prayer_SanctifyRoom"; }
+	@Override public String name(){return "Sanctify Room";}
+	@Override public String displayText(){return "(Sanctify Room)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+
 	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]{
 		Integer.valueOf(CMMsg.TYP_GET),
 		Integer.valueOf(CMMsg.TYP_PULL),
@@ -60,7 +60,8 @@ public class Prayer_SanctifyRoom extends Prayer
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
@@ -81,6 +82,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -93,7 +95,8 @@ public class Prayer_SanctifyRoom extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob.location();
@@ -115,7 +118,7 @@ public class Prayer_SanctifyRoom extends Prayer
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
-				
+
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{

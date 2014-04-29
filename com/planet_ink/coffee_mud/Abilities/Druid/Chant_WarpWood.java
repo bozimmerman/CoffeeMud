@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WarpWood extends Chant
 {
-	public String ID() { return "Chant_WarpWood"; }
-	public String name(){ return "Warp Wood";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	
+	@Override public String ID() { return "Chant_WarpWood"; }
+	@Override public String name(){ return "Warp Wood";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+
 	public Item getPossibility(MOB mobTarget)
 	{
 		if(mobTarget!=null)
@@ -71,6 +71,7 @@ public class Chant_WarpWood extends Chant
 		return null;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -85,13 +86,14 @@ public class Chant_WarpWood extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=getPossibility(mobTarget);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) 
+		if(target==null)
 			return false;
 		if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		||(!target.subjectToWearAndTear()))

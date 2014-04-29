@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Geas extends Spell
 {
-	public String ID() { return "Spell_Geas"; }
-	public String name(){return "Geas";}
-	public String displayText(){return "(Geas to "+text()+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Spell_Geas"; }
+	@Override public String name(){return "Geas";}
+	@Override public String displayText(){return "(Geas to "+text()+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public SlaveryLibrary.geasSteps STEPS=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +68,7 @@ public class Spell_Geas extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -89,6 +91,7 @@ public class Spell_Geas extends Spell
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -107,6 +110,7 @@ public class Spell_Geas extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())

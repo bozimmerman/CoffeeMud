@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Scalp extends CommonSkill
 {
-	public String ID() { return "Scalp"; }
-	public String name(){ return "Scalping";}
+	@Override public String ID() { return "Scalp"; }
+	@Override public String name(){ return "Scalping";}
 	private static final String[] triggerStrings = {"SCALP","SCALPING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	private DeadBody body=null;
 	protected boolean failed=false;
@@ -51,6 +51,7 @@ public class Scalp extends CommonSkill
 		verb="scalping";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((body!=null)
@@ -61,6 +62,7 @@ public class Scalp extends CommonSkill
 			unInvoke();
 		return super.tick(ticking,tickID);
 	}
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -103,6 +105,7 @@ public class Scalp extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

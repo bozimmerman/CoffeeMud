@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,8 @@ public class Who extends StdCommand
 	public Who(){}
 
 	private final String[] access={"WHO","WH"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public int[] getShortColWidths(MOB seer)
 	{
 		return new int[]{
@@ -49,7 +49,7 @@ public class Who extends StdCommand
 			ListingLibrary.ColFixer.fixColWidth(40,seer.session())
 		};
 	}
-	
+
 	public String getHead(int[] colWidths)
 	{
 		StringBuilder head=new StringBuilder("");
@@ -63,7 +63,7 @@ public class Who extends StdCommand
 		head.append("] Character name^.^N\n\r");
 		return head.toString();
 	}
-	
+
 	public StringBuffer showWhoShort(MOB who, int[] colWidths)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -123,7 +123,7 @@ public class Who extends StdCommand
 		msg.append("\n\r");
 		return msg;
 	}
-	
+
 	public String getWho(MOB mob, Set<String> friends, String mobName)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -150,7 +150,8 @@ public class Who extends StdCommand
 			return head.toString();
 		}
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -175,7 +176,7 @@ public class Who extends StdCommand
 			friends=mob.playerStats().getFriends();
 			mobName=null;
 		}
-		
+
 		if((mobName!=null)
 		&&(mob!=null)
 		&&(mobName.equalsIgnoreCase("pk")
@@ -198,10 +199,11 @@ public class Who extends StdCommand
 			mob.tell(msg);
 		return false;
 	}
-	
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		return getWho(mob,null,null);
 	}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

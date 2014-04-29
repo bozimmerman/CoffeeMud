@@ -55,7 +55,7 @@ public class ChannelAdd extends Packet  {
 		}
 	}
 
-	
+
 	public ChannelAdd(int t, String chan, String who)
 	{
 		super();
@@ -64,6 +64,7 @@ public class ChannelAdd extends Packet  {
 		sender_name = who;
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( channel == null  )
 		{
@@ -72,6 +73,7 @@ public class ChannelAdd extends Packet  {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		NameServer n = Intermud.getNameServer();

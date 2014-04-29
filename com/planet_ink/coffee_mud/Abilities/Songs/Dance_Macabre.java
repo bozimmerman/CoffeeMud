@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 */
 public class Dance_Macabre extends Dance
 {
-	public String ID() { return "Dance_Macabre"; }
-	public String name(){ return "Macabre";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Macabre"; }
+	@Override public String name(){ return "Macabre";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
 	protected boolean activated=false;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -61,6 +62,7 @@ public class Dance_Macabre extends Dance
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(CMLib.flags().isHidden(affected))

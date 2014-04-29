@@ -36,16 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Monolith extends Prayer
 {
-	public String ID() { return "Prayer_Monolith"; }
-	public String name(){return "Monolith";}
-	public String displayText(){return "(Monolith)";}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 1;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Monolith"; }
+	@Override public String name(){return "Monolith";}
+	@Override public String displayText(){return "(Monolith)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 1;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	private final static int TYP_ICE=0;
 	private final static int TYP_FIRE=1;
@@ -56,6 +56,7 @@ public class Prayer_Monolith extends Prayer
 	protected int amountRemaining=0;
 	protected Item theWall=null;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
@@ -159,6 +160,7 @@ public class Prayer_Monolith extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		super.unInvoke();
@@ -193,6 +195,7 @@ public class Prayer_Monolith extends Prayer
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -238,6 +241,7 @@ public class Prayer_Monolith extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenMultiPotion extends GenDrink implements Potion
 {
-	public String ID(){	return "GenMultiPotion";}
+	@Override public String ID(){	return "GenMultiPotion";}
 
 	public GenMultiPotion()
 	{
@@ -51,10 +51,11 @@ public class GenMultiPotion extends GenDrink implements Potion
 	}
 
 
-	public boolean isGeneric(){return true;}
-	public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
+	@Override public boolean isGeneric(){return true;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
 
-	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override
 	public void setDrunk(boolean isTrue)
 	{
 		if(isTrue&&isDrunk()) return;
@@ -71,11 +72,13 @@ public class GenMultiPotion extends GenDrink implements Potion
 		}
 	}
 
+	@Override
 	public String secretIdentity()
 	{
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells());
 	}
 
+	@Override
 	public int value()
 	{
 		if(isDrunk())
@@ -83,19 +86,23 @@ public class GenMultiPotion extends GenDrink implements Potion
 		return super.value();
 	}
 
+	@Override
 	public String getSpellList()
 	{ return readableText;}
-	public void setSpellList(String list){readableText=list;}
+	@Override public void setSpellList(String list){readableText=list;}
+	@Override
 	public List<Ability> getSpells()
 	{
 		return StdPotion.getSpells(this);
 	}
+	@Override
 	public void setReadableText(String text)
 	{
 		readableText=text;
 		setSpellList(readableText);
 	}
 
+	@Override
 	public void drinkIfAble(MOB owner, Physical drinkerTarget)
 	{
 		List<Ability> spells=getSpells();
@@ -128,6 +135,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this))
@@ -142,6 +150,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

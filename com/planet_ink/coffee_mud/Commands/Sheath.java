@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Sheath extends StdCommand
 	public Sheath(){}
 
 	private final String[] access={"SHEATH"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static Vector getSheaths(MOB mob)
 	{
@@ -58,6 +58,7 @@ public class Sheath extends StdCommand
 		return sheaths;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -212,15 +213,17 @@ public class Sheath extends StdCommand
 		}
 		return false;
 	}
+	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),200.0));
 	}
+	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),200.0));
 	}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

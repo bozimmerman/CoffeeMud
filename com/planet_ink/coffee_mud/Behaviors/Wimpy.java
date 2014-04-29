@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,24 +35,27 @@ import java.util.*;
 */
 public class Wimpy extends StdBehavior
 {
-	public String ID(){return "Wimpy";}
+	@Override public String ID(){return "Wimpy";}
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean veryWimpy=false;
 
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return false;
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().trim().length()>0)
 			return "wimpy fear of "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
 			return "wimpy fear of combat";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -61,6 +64,7 @@ public class Wimpy extends StdBehavior
 		veryWimpy=CMParms.getParmInt(newParms,"very",0)==1;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

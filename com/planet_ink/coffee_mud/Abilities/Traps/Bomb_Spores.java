@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_Spores extends StdBomb
 {
-	public String ID() { return "Bomb_Spores"; }
-	public String name(){ return "spore bomb";}
-	protected int trapLevel(){return 15;}
-	public String requiresToSet(){return "some diseased meat";}
+	@Override public String ID() { return "Bomb_Spores"; }
+	@Override public String name(){ return "spore bomb";}
+	@Override protected int trapLevel(){return 15;}
+	@Override public String requiresToSet(){return "some diseased meat";}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -52,6 +52,7 @@ public class Bomb_Spores extends StdBomb
 		return offenders;
 	}
 
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		Vector V=new Vector();
@@ -62,6 +63,7 @@ public class Bomb_Spores extends StdBomb
 		V.addElement(I);
 		return V;
 	}
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -74,6 +76,7 @@ public class Bomb_Spores extends StdBomb
 		}
 		return true;
 	}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
@@ -83,6 +86,7 @@ public class Bomb_Spores extends StdBomb
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if(target.location()!=null)

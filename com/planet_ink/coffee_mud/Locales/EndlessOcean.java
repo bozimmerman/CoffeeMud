@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class EndlessOcean extends StdGrid
 {
-	public String ID(){return "EndlessOcean";}
+	@Override public String ID(){return "EndlessOcean";}
 	public EndlessOcean()
 	{
 		super();
@@ -44,15 +44,17 @@ public class EndlessOcean extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
-	public String getGridChildLocaleID(){return "SaltWaterSurface";}
-	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override public String getGridChildLocaleID(){return "SaltWaterSurface";}
+	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
@@ -62,7 +64,8 @@ public class EndlessOcean extends StdGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public void buildGrid()
 	{
 		super.buildGrid();

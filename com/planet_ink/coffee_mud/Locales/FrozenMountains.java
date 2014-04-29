@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class FrozenMountains extends Mountains
 {
-	public String ID(){return "FrozenMountains";}
+	@Override public String ID(){return "FrozenMountains";}
 	public FrozenMountains()
 	{
 		super();
@@ -43,5 +43,5 @@ public class FrozenMountains extends Mountains
 		climask=Places.CLIMASK_COLD;
 	}
 
-	public List<Integer> resourceChoices(){return Mountains.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

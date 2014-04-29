@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Song_Ode extends Song
 {
-	public String ID() { return "Song_Ode"; }
-	public String name(){ return "Ode";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String ID() { return "Song_Ode"; }
+	@Override public String name(){ return "Ode";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public MOB whom=null;
 	public Hashtable benefits=null;
 
 	protected String song=null;
 	protected Hashtable songs=null;
 	protected StringBuffer trail=null;
-	protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
-	protected boolean skipStandardSongTick(){return (song==null);}
+	@Override protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
+	@Override protected boolean skipStandardSongTick(){return (song==null);}
 	protected static final Hashtable cmds=new Hashtable();
 	protected static final String[][] stuff={
 		{""+CMMsg.TYP_EAT,"s","h","<O-NAME> knows our hunger pains!"},
@@ -135,6 +135,7 @@ public class Song_Ode extends Song
 		return comp;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((whom!=null)&&(song!=null))
@@ -162,6 +163,7 @@ public class Song_Ode extends Song
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if((whom!=null)&&(song!=null))
@@ -185,6 +187,7 @@ public class Song_Ode extends Song
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableStats)
 	{
 		if((whom!=null)&&(song!=null))
@@ -229,6 +232,7 @@ public class Song_Ode extends Song
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((whom!=null)
@@ -244,6 +248,7 @@ public class Song_Ode extends Song
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -253,7 +258,8 @@ public class Song_Ode extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		MOB mob=(MOB)affected;
@@ -311,6 +317,7 @@ public class Song_Ode extends Song
 		return benefits;
 	}
 
+	@Override
 	public String text()
 	{
 		StringBuffer x=new StringBuffer("");
@@ -347,6 +354,7 @@ public class Song_Ode extends Song
 		return songs;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;

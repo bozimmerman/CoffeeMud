@@ -36,21 +36,22 @@ import java.util.*;
 public class Skill_Trip extends StdSkill
 {
 	boolean doneTicking=false;
-	public String ID() { return "Skill_Trip"; }
-	public String name(){ return "Trip";}
-	public String displayText(){ return "(Tripped)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_Trip"; }
+	@Override public String name(){ return "Trip";}
+	@Override public String displayText(){ return "(Tripped)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TRIP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 	protected int enhancement=0;
-	public int abilityCode(){return enhancement;}
-	public void setAbilityCode(int newCode){enhancement=newCode;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abilityCode(){return enhancement;}
+	@Override public void setAbilityCode(int newCode){enhancement=newCode;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -58,6 +59,7 @@ public class Skill_Trip extends StdSkill
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -72,6 +74,7 @@ public class Skill_Trip extends StdSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -96,6 +99,7 @@ public class Skill_Trip extends StdSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -114,6 +118,7 @@ public class Skill_Trip extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

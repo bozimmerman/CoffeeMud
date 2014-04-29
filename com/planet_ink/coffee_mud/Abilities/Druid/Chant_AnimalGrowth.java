@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_AnimalGrowth extends Chant
 {
-	public String ID() { return "Chant_AnimalGrowth"; }
-	public String name(){ return "Animal Growth";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public String displayText(){return "(Animal Growth)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public String ID() { return "Chant_AnimalGrowth"; }
+	@Override public String name(){ return "Animal Growth";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public String displayText(){return "(Animal Growth)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -58,6 +59,7 @@ public class Chant_AnimalGrowth extends Chant
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -68,6 +70,7 @@ public class Chant_AnimalGrowth extends Chant
 				+(affectedMOB.basePhyStats().weight()*3));
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
@@ -86,6 +89,7 @@ public class Chant_AnimalGrowth extends Chant
 		affectedStats.setName("An ENORMOUS "+oldName);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +102,8 @@ public class Chant_AnimalGrowth extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

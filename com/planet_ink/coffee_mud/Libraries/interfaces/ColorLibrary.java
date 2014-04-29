@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,7 +92,7 @@ public interface ColorLibrary extends CMLibrary
 	public static final String HTTAG_BGPURPLE=" style=\"background-color: purple\"";
 	public static final String HTTAG_BGBLACK=" style=\"background-color: black\"";
 	public static final String HTTAG_BGDEFAULT=" style=\"background-color: white\"";
-	
+
 	public static final String[] COLOR_CODELETTERSINCARDINALORDER={
 		"k","r","g","y","b","p","c","w",null,null
 	};
@@ -105,7 +105,7 @@ public interface ColorLibrary extends CMLibrary
 		COLOR_BGWHITE,COLOR_BGGREEN,COLOR_BGBLUE,COLOR_BGRED,
 		COLOR_BGYELLOW,COLOR_BGCYAN,COLOR_BGPURPLE,COLOR_BGBLACK,
 		COLOR_BGDEFAULT,
-		
+
 	};
 	public static final String[] COLOR_ALLHTTAGS={
 		HTTAG_WHITE,HTTAG_LIGHTGREEN,HTTAG_LIGHTBLUE,HTTAG_LIGHTRED,
@@ -127,7 +127,7 @@ public interface ColorLibrary extends CMLibrary
 		"BGYELLOW","BGCYAN","BGPURPLE","BGBLACK",
 		"BGDEFAULT"
 	};
-	
+
 	public static final Map<String,String> MAP_COLOR_TO_BGCOLOR=new SHashtable<String,String>(new Object[][]{
 		{   COLOR_WHITE, COLOR_BGWHITE},
 		{   COLOR_LIGHTGREEN, COLOR_BGGREEN},
@@ -186,7 +186,7 @@ public interface ColorLibrary extends CMLibrary
 	public static final char COLORCODE_HIGHLIGHT='H';
 	public static final char COLORCODE_UNEXPDIRECTION='U';
 	public static final char COLORCODE_UNEXPDOORDESC='u';
-	
+
 	public static final char[] COLORCODE_ALLCODES={
 		COLORCODE_YOU_FIGHT,COLORCODE_FIGHT_YOU,COLORCODE_FIGHT,COLORCODE_SPELL,
 		COLORCODE_EMOTE,COLORCODE_TALK,COLORCODE_TELL,COLORCODE_CHANNEL,
@@ -209,37 +209,37 @@ public interface ColorLibrary extends CMLibrary
 	public static final char COLORCODE_BACKGROUND='~';
 	public static final char COLORCODE_FANSI256='#';
 	public static final char COLORCODE_BANSI256='|';
-	
+
 	public static final String COLOR_FR0G3B5="\033[38;5;"+(16+(0*36)+(3*6)+5)+"m";
 	public static final String COLOR_BR0G3B5="\033[48;5;"+(16+(0*36)+(3*6)+5)+"m";
-	
+
 	public static class ColorState
 	{
 		public final char foregroundCode;
 		public final char backgroundCode;
 		private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
-		
-		public ColorState(final char fg, final char bg) 
-		{ 
-			foregroundCode=fg; 
-			backgroundCode=bg; 
+
+		public ColorState(final char fg, final char bg)
+		{
+			foregroundCode=fg;
+			backgroundCode=bg;
 		}
-		
+
 		@Override
 		public boolean equals(Object cs)
 		{
 			if(!(cs instanceof ColorState))
 				return false;
-			return (((ColorState)cs).foregroundCode == foregroundCode) 
+			return (((ColorState)cs).foregroundCode == foregroundCode)
 				&& (((ColorState)cs).backgroundCode == backgroundCode);
 		}
 
 		@Override
-		public int hashCode() 
+		public int hashCode()
 		{
 			return (backgroundCode * 65536) + foregroundCode;
 		}
-		
+
 		public static final ColorState valueOf(final char fg, final char bg)
 		{
 			final Integer keyI=Integer.valueOf((bg * 65536) + fg);
@@ -251,7 +251,7 @@ public interface ColorLibrary extends CMLibrary
 		}
 	}
 	public static final ColorState COLORSTATE_NORMAL=ColorState.valueOf('N','.');
-	
+
 	public void clearLookups();
 	public int translateSingleCMCodeToANSIOffSet(String code);
 	public String translateCMCodeToANSI(String code);
@@ -261,5 +261,5 @@ public interface ColorLibrary extends CMLibrary
 	public CMMsg fixSourceFightColor(CMMsg msg);
 	public String[] standardHTMLlookups();
 	public String[] standardColorLookups();
-	
+
 }

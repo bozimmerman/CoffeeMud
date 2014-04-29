@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 */
 public class Dance_Cotillon extends Dance
 {
-	public String ID() { return "Dance_Cotillon"; }
-	public String name(){ return "Cotillon";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String danceOf(){return name()+" Dance";}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Dance_Cotillon"; }
+	@Override public String name(){ return "Cotillon";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String danceOf(){return name()+" Dance";}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	protected MOB whichLast=null;
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -52,7 +53,8 @@ public class Dance_Cotillon extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2008-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 /**
  * A Language ability represents both the ability to understand one or more
  * spoken or written languages, and the ability to speak one or more spoken
- * languages.  A single ability usually represents a single language, but 
+ * languages.  A single ability usually represents a single language, but
  * may support multiple simultaneously.
  */
 public interface Language extends Ability
 {
 	/**
 	 * Returns the name of this language when it is in written form.
-	 * This is usually the same as the spoken form. 
+	 * This is usually the same as the spoken form.
 	 * @return the name of this language when it is in written form.
 	 */
 	public String writtenName();
@@ -84,7 +84,7 @@ public interface Language extends Ability
 	public Map<String, String> translationHash(String language);
 	/**
 	 * Returns the word-length rough-translation vector of string arrays for the given language
-	 * The first string array in the vector represents 1 letter words, the second 2, 
+	 * The first string array in the vector represents 1 letter words, the second 2,
 	 * and so forth.
 	 * @param language the language to return the vector for (usually ID())
 	 * @return the vector of word-length rough translation string arrays

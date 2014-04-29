@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,19 +35,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_RockFlesh extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_RockFlesh"; }
-	public String name(){return "Rock Flesh";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Prayer_RockFlesh"; }
+	@Override public String name(){return "Rock Flesh";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		return (item.fetchEffect("Spell_FleshStone")!=null)||(item.fetchEffect("Prayer_FleshRock")!=null);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

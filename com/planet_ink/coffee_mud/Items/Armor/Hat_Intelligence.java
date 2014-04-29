@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Hat_Intelligence extends StdArmor
 {
-	public String ID(){	return "Hat_Intelligence";}
+	@Override public String ID(){	return "Hat_Intelligence";}
 	public Hat_Intelligence()
 	{
 		super();
@@ -52,6 +52,7 @@ public class Hat_Intelligence extends StdArmor
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

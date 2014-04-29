@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 import com.planet_ink.coffee_mud.Libraries.SMTPclient;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ public interface SMTPLibrary extends CMLibrary
 	/** Default port number */
 	public static final int DEFAULT_PORT = 25;
 	/** network end of line */
-	public static final String EOL = "\r\n"; 
+	public static final String EOL = "\r\n";
 	/** default timeout */
 	public static final int DEFAULT_TIMEOUT=10000;
 
@@ -38,7 +38,7 @@ public interface SMTPLibrary extends CMLibrary
 	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message);
 	public SMTPClient getClient(String SMTPServerInfo, int port)  throws UnknownHostException, IOException;
 	public SMTPClient getClient(String emailAddress) throws IOException, BadEmailAddressException;
-	
+
 	public static interface SMTPClient
 	{
 		public void sendMessage(String froaddress, String reply_address, String to_address, String mockto_address, String subject, String message)

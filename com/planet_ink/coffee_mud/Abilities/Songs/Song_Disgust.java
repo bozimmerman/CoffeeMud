@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Song_Disgust extends Song
 {
-	public String ID() { return "Song_Disgust"; }
-	public String name(){ return "Disgust";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override public String ID() { return "Song_Disgust"; }
+	@Override public String name(){ return "Disgust";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -62,6 +63,7 @@ public class Song_Disgust extends Song
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -71,5 +73,5 @@ public class Song_Disgust extends Song
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 }

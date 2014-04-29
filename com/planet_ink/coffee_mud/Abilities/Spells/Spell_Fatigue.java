@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Fatigue extends Spell
 {
-	public String ID() { return "Spell_Fatigue"; }
-	public String name(){return "Fatigue";}
-	public String displayText(){return "(Fatigue)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Fatigue"; }
+	@Override public String name(){return "Fatigue";}
+	@Override public String displayText(){return "(Fatigue)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -53,7 +54,8 @@ public class Spell_Fatigue extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_CollectBounty extends StdSkill
 {
-	public String ID() { return "Skill_CollectBounty"; }
-	public String name(){ return "Collect Bounty";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Skill_CollectBounty"; }
+	@Override public String name(){ return "Collect Bounty";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"COLLECTBOUNTY","BOUNTY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
-	public int usageType(){return USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override public int usageType(){return USAGE_MANA;}
 
 	public List<LegalWarrant> getWarrantsOf(MOB target, Room R)
 	{
@@ -114,6 +114,7 @@ public class Skill_CollectBounty extends StdSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

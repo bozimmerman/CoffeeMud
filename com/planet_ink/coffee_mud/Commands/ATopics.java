@@ -37,7 +37,7 @@ public class ATopics extends StdCommand
 	public ATopics(){}
 
 	private final String[] access={"ARCTOPICS","ATOPICS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
@@ -67,6 +67,7 @@ public class ATopics extends StdCommand
 	}
 
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -81,9 +82,9 @@ public class ATopics extends StdCommand
 		doTopics(mob,arcHelpFile,"AHELP", "ARCHON TOPICS");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
+
+
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Satire extends BardSkill
 {
-	public String ID() { return "Skill_Satire"; }
-	public String name(){ return "Satire";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Satire"; }
+	@Override public String name(){ return "Satire";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SATIRE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 
 	public void criminalFail(LegalBehavior B, Area A2, MOB mob, MOB witness)
 	{
@@ -53,7 +53,8 @@ public class Skill_Satire extends BardSkill
 		String sentence=Law.PUNISHMENT_DESCS[0];
 		B.addWarrant(A2,mob,witness,crimeLocs,crimeFlags,crime,sentence,desc);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -94,7 +95,7 @@ public class Skill_Satire extends BardSkill
 			mob.tell(mob,target,null,"<T-NAME> can't hear you.");
 			return false;
 		}
-		
+
 		if(forgivables.size()==0)
 		{
 			mob.tell("Noone you know is wanted for anything here.");
@@ -109,7 +110,7 @@ public class Skill_Satire extends BardSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		
+
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class DVector implements Cloneable, java.io.Serializable
 	protected int 				dimensions=1;
 	private SVector<Object[]> 	stuff;
 	private final static int 	MAX_SIZE=9;
-	
+
 	public DVector(int dim)
 	{
 		if(dim<1) throw new java.lang.IndexOutOfBoundsException();
@@ -52,7 +52,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		dimensions=dim;
 		stuff=new SVector<Object[]>(startingSize);
 	}
-	
+
 	public synchronized void clear()
 	{
 		stuff.clear();
@@ -62,7 +62,7 @@ public class DVector implements Cloneable, java.io.Serializable
 	{
 		stuff.trimToSize();
 	}
-	
+
 	public synchronized int indexOf(Object O)
 	{
 		int x=0;
@@ -83,7 +83,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
 		return stuff.elementAt(x);
 	}
-	
+
 	public synchronized Object[] removeElementsAt(int x)
 	{
 		if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
@@ -91,7 +91,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		stuff.removeElementAt(x);
 		return O;
 	}
-	
+
 	public synchronized DVector copyOf()
 	{
 		DVector V=new DVector(dimensions);
@@ -102,7 +102,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		}
 		return V;
 	}
-	
+
 	public synchronized void sortBy(int dim)
 	{
 		if((dim<1)||(dim>dimensions)) throw new java.lang.IndexOutOfBoundsException();
@@ -141,7 +141,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		}
 		return DV;
 	}
-	
+
 	public synchronized void addSharedElements(Object[] O)
 	{
 		if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();
@@ -198,13 +198,13 @@ public class DVector implements Cloneable, java.io.Serializable
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
 		return (stuff.elementAt(i))[dim-1];
 	}
-	
+
 	public synchronized void setElementAt(int index, int dim, Object O)
 	{
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
 		stuff.elementAt(index)[dim-1]=O;
 	}
-	
+
 	public synchronized void insertElementAt(int here, Object... Os)
 	{
 		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();

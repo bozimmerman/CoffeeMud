@@ -39,7 +39,8 @@ public class ClanVote extends StdCommand
 	public ClanVote(){}
 
 	private final String[] access={"CLANVOTE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -53,7 +54,7 @@ public class ClanVote extends StdCommand
 		}
 		else
 			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
-		
+
 		Clan C=null;
 		Integer clanRole=null;
 		for(Pair<Clan,Integer> c : mob.clans())
@@ -225,7 +226,7 @@ public class ClanVote extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return false;}
+	@Override public boolean canBeOrdered(){return false;}
 
 
 }

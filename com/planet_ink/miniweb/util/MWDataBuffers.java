@@ -27,7 +27,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class MWDataBuffers implements DataBuffers 
+public class MWDataBuffers implements DataBuffers
 {
 	private static class FileEntry
 	{
@@ -50,13 +50,13 @@ public class MWDataBuffers implements DataBuffers
 			this.length=endPos-start;
 		}
 	}
-	
+
 	private LinkedList<FileEntry> list;
 	private LinkedList<Closeable> closers;
 	private byte[]						   buffer=null;
 	private long						   length=0;
 	private long						   lastModifiedTime=0;
-	
+
 	public MWDataBuffers()
 	{
 		list=new LinkedList<FileEntry>();
@@ -81,7 +81,7 @@ public class MWDataBuffers implements DataBuffers
 		add(file, lastModifiedTime);
 		created();
 	}
-	
+
 	@SuppressWarnings("resource")
 	private ByteBuffer tryNext()
 	{
@@ -159,20 +159,17 @@ public class MWDataBuffers implements DataBuffers
 		}
 	}
 
-	@Override
-	public boolean hasNext() { return tryNext()!=null;}
+	@Override public boolean hasNext() { return tryNext()!=null;}
 
-	@Override
-	public ByteBuffer next() { return tryNext(); }
+	@Override public ByteBuffer next() { return tryNext(); }
 
-	@Override
-	public void remove() { throw new java.lang.NoSuchMethodError(); }
+	@Override public void remove() { throw new java.lang.NoSuchMethodError(); }
 
 	private volatile StackTraceElement[] createdStackTrace=null;
 	private volatile StackTraceElement[] lastStackTrace=null;
 	private final void created() { createdStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void accessed() { lastStackTrace=Thread.currentThread().getStackTrace(); }
-	private final void finalized() { 
+	private final void finalized() {
 		if(this.length>0)
 		{
 			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded in "+((list!=null)?list.size():0)+" items.\n\rFirst stack trace:");
@@ -182,7 +179,8 @@ public class MWDataBuffers implements DataBuffers
 			System.err.println("vvvvvvvvvvvvvvvvvvvvvvv");
 		}
 	}
-	
+
+	@Override
 	public void finalize() throws Throwable
 	{
 		if(list.size()>0)
@@ -192,7 +190,7 @@ public class MWDataBuffers implements DataBuffers
 		}
 		super.finalize();
 	}
-	
+
 	@Override
 	public void close()
 	{
@@ -204,7 +202,7 @@ public class MWDataBuffers implements DataBuffers
 		list.clear();
 		length=0;
 	}
-	
+
 	@Override
 	public void add(final ByteBuffer buf, final long lastModifiedTime)
 	{
@@ -261,7 +259,7 @@ public class MWDataBuffers implements DataBuffers
 		if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
 			this.lastModifiedTime=lastModifiedTime;
 	}
-	
+
 	public void addFlush(final MWDataBuffers buffers)
 	{
 		this.length += buffers.getLength();
@@ -295,18 +293,17 @@ public class MWDataBuffers implements DataBuffers
 		close();
 		return ByteBuffer.wrap(bout.toByteArray());
 	}
-	
-	@Override
-	public long getLength(){ return length; }
-	
+
+	@Override public long getLength(){ return length; }
+
 	@Override
 	public Date getLastModified()
 	{
 		if(this.lastModifiedTime==0)
 			return new Date();
-		return new Date(this.lastModifiedTime); 
+		return new Date(this.lastModifiedTime);
 	}
-	
+
 	@Override
 	public void setRanges(final List<long[]> ranges)
 	{

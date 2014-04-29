@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ArmsLength extends Spell
 {
-	public String ID() { return "Spell_ArmsLength"; }
-	public String name(){return "Arms Length";}
-	public String displayText(){return "(Arms Length)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	
+	@Override public String ID() { return "Spell_ArmsLength"; }
+	@Override public String name(){return "Arms Length";}
+	@Override public String displayText(){return "(Arms Length)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -55,7 +56,8 @@ public class Spell_ArmsLength extends Spell
 				mob.tell(mob,null,null,"<S-YOUPOSS> arms length magic fades.");
 	}
 
-  public int castingQuality(MOB mob, Physical target)
+  @Override
+public int castingQuality(MOB mob, Physical target)
   {
 	  if(mob!=null)
 	  {
@@ -64,7 +66,8 @@ public class Spell_ArmsLength extends Spell
 	  }
 	  return super.castingQuality(mob,target);
   }
-  
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -85,6 +88,7 @@ public class Spell_ArmsLength extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

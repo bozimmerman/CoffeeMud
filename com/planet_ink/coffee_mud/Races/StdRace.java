@@ -37,13 +37,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRace implements Race
 {
-	public String	 ID(){	return "StdRace"; }
-	
+	@Override public String	 ID(){	return "StdRace"; }
+
 	protected static final int[] breatheAnythingArray = new int[0];
 	protected static final int[] breatheAirArray = new int[]{ RawMaterial.RESOURCE_AIR };
 	protected static final int[] breatheWaterArray = new int[]{ RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 	protected static final int[] breatheAirWaterArray = new int[]{ RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
-	
+
 	private int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
 	protected String	   baseStatChgDesc = null;
 	protected String	   sensesChgDesc = null;
@@ -54,28 +54,28 @@ public class StdRace implements Race
 	protected boolean	   mappedCulturalAbilities=false;
 	protected List<Item>   outfitChoices=null;
 	protected List<Weapon> naturalWeaponChoices=null;
-	protected Map<Integer,SearchIDList<Ability>> 
+	protected Map<Integer,SearchIDList<Ability>>
 						   racialAbilityMap=null;
 	protected Map<Integer,SearchIDList<Ability>>
 						   racialEffectMap=null;
-	
-	public String   	name(){ return "StdRace"; }
+
+	@Override public String   	name(){ return "StdRace"; }
 	protected int   	practicesAtFirstLevel(){return 0;}
 	protected int   	trainsAtFirstLevel(){return 0;}
-	public int  		shortestMale(){return 24;}
-	public int  		shortestFemale(){return 24;}
-	public int  		heightVariance(){return 5;}
-	public int  		lightestWeight(){return 60;}
-	public int  		weightVariance(){return 10;}
-	public long 		forbiddenWornBits(){return 0;}
-	public String   	racialCategory(){return "Unknown";}
-	public boolean  	isGeneric(){return false;}
-	public boolean  	classless(){return false;}
-	public boolean  	leveless(){return false;}
-	public boolean  	expless(){return false;}
-	public int[]		bodyMask(){return parts;}
-	public int[]		getAgingChart(){return agingChart;}
-	public int[]		getBreathables() { return breatheAirArray; }
+	@Override public int  		shortestMale(){return 24;}
+	@Override public int  		shortestFemale(){return 24;}
+	@Override public int  		heightVariance(){return 5;}
+	@Override public int  		lightestWeight(){return 60;}
+	@Override public int  		weightVariance(){return 10;}
+	@Override public long 		forbiddenWornBits(){return 0;}
+	@Override public String   	racialCategory(){return "Unknown";}
+	@Override public boolean  	isGeneric(){return false;}
+	@Override public boolean  	classless(){return false;}
+	@Override public boolean  	leveless(){return false;}
+	@Override public boolean  	expless(){return false;}
+	@Override public int[]		bodyMask(){return parts;}
+	@Override public int[]		getAgingChart(){return agingChart;}
+	@Override public int[]		getBreathables() { return breatheAirArray; }
 	protected String[]  racialEffectNames(){return null;}
 	protected int[] 	racialEffectLevels(){return null;}
 	protected String[]  racialEffectParms(){return null;}
@@ -91,14 +91,15 @@ public class StdRace implements Race
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	public CMObject newInstance(){return this;}
-	public void 	initializeClass(){}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public CMObject newInstance(){return this;}
+	@Override public void 	initializeClass(){}
 	protected static final SearchIDList emptyIDs=new CMUniqSortSVec(1);
 	protected static final List empty=new ReadOnlyVector(1);
 
 	public boolean fertile(){return true;}
 
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -114,8 +115,9 @@ public class StdRace implements Race
 	}
 
 	public Race healthBuddy(){return this;}
-	
-	public boolean canBreedWith(Race R) 
+
+	@Override
+	public boolean canBreedWith(Race R)
 	{
 		if(!fertile())
 			return false;
@@ -123,16 +125,19 @@ public class StdRace implements Race
 			return false;
 		if(ID().equals("Human")||R.ID().equals("Human"))
 			return true;
-		return ID().equals(R.ID()); 
-	} 
-	
+		return ID().equals(R.ID());
+	}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats charStats)
 	{
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -179,7 +184,8 @@ public class StdRace implements Race
 				}
 		}
 	}
-	
+
+	@Override
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
 	{
 		if((baseStats.getStat(CharStats.STAT_AGE)>0)
@@ -255,10 +261,12 @@ public class StdRace implements Race
 			}
 		}
 	}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(uncharmable()
@@ -274,6 +282,7 @@ public class StdRace implements Race
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// the sex rules
@@ -349,19 +358,22 @@ public class StdRace implements Race
 			}
 		}
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "arrives";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "leaves";
 	}
-	public void level(MOB mob, List<String> gainedAbilityIDs){}
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
+	@Override public void level(MOB mob, List<String> gainedAbilityIDs){}
+	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
-	public boolean tick(Tickable myChar, int tickID){return true;}
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public boolean tick(Tickable myChar, int tickID){return true;}
+	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		if((!mappedCulturalAbilities)
@@ -411,6 +423,7 @@ public class StdRace implements Race
 			}
 		}
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -418,8 +431,9 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	public List<Item> outfit(MOB myChar){return outfitChoices;}
+	@Override public List<Item> outfit(MOB myChar){return outfitChoices;}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		return CMLib.combat().standardMobCondition(viewer,mob);
@@ -481,7 +495,8 @@ public class StdRace implements Race
 		return CMClass.getWeapon("Natural");
 	}
 
-	public List<RawMaterial> myResources(){return new Vector();}
+	@Override public List<RawMaterial> myResources(){return new Vector();}
+	@Override
 	public void setHeightWeight(PhyStats stats, char gender)
 	{
 		int weightModifier=0;
@@ -505,7 +520,7 @@ public class StdRace implements Race
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	protected RawMaterial makeResource(String name, int type)
 	{
@@ -515,6 +530,7 @@ public class StdRace implements Race
 		return null;
 	}
 
+	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		if(room==null) room=mob.location();
@@ -644,11 +660,13 @@ public class StdRace implements Race
 		return bodyI;
 	}
 
+	@Override
 	public int numRacialEffects(MOB mob)
 	{
 		return racialEffectsList(mob).size();
 	}
 
+	@Override
 	public ChameleonList<Ability> racialEffects(final MOB mob)
 	{
 		final StdRace myRace = this;
@@ -665,17 +683,18 @@ public class StdRace implements Race
 		if(mob==null)
 		{
 			finalFinalV = new ChameleonList<Ability>(finalV,
-			new ChameleonList.Signaler<Ability>(myList) 
+			new ChameleonList.Signaler<Ability>(myList)
 			{
-				public boolean isDeprecated() { return false;}
-				public void rebuild(final ChameleonList<Ability> me){}
+				@Override public boolean isDeprecated() { return false;}
+				@Override public void rebuild(final ChameleonList<Ability> me){}
 			});
 		}
 		else
 		{
 			finalFinalV = new ChameleonList(finalV,
-			new ChameleonList.Signaler<Ability>(myList) 
+			new ChameleonList.Signaler<Ability>(myList)
 			{
+				@Override
 				public boolean isDeprecated()
 				{
 					if((mob.amDestroyed())
@@ -684,6 +703,7 @@ public class StdRace implements Race
 						return true;
 					return false;
 				}
+				@Override
 				public void rebuild(final ChameleonList<Ability> me)
 				{
 					if(mob.amDestroyed())
@@ -698,7 +718,7 @@ public class StdRace implements Race
 		}
 		return finalFinalV;
 	}
-	
+
 	public final List<Ability> racialEffectsList(final MOB mob)
 	{
 		if(racialEffectNames()==null)
@@ -719,7 +739,7 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 
 		if(racialEffectMap.containsKey(level))
-			return racialEffectMap.get(level); 
+			return racialEffectMap.get(level);
 		final CMUniqSortSVec<Ability> finalV = new CMUniqSortSVec<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
@@ -744,6 +764,7 @@ public class StdRace implements Race
 		return finalV;
 	}
 
+	@Override
 	public Race makeGenRace()
 	{
 		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
@@ -906,6 +927,7 @@ public class StdRace implements Race
 		return GR;
 	}
 
+	@Override
 	public Race mixRace(Race race, String newRaceID, String newRaceName)
 	{
 		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
@@ -1173,6 +1195,7 @@ public class StdRace implements Race
 		return GR;
 	}
 
+	@Override
 	public PairVector<String,Integer> culturalAbilities()
 	{
 		PairVector<String,Integer> ables=new PairVector<String,Integer>();
@@ -1182,7 +1205,8 @@ public class StdRace implements Race
 				ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
 		return ables;
 	}
-	
+
+	@Override
 	public SearchIDList<Ability> racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)
@@ -1230,21 +1254,25 @@ public class StdRace implements Race
 		return finalV;
 	}
 
+	@Override
 	public String getStatAdjDesc()
 	{
 		makeStatChgDesc();
 		return baseStatChgDesc;
 	}
+	@Override
 	public String getSensesChgDesc()
 	{
 		makeStatChgDesc();
 		return sensesChgDesc;
 	}
+	@Override
 	public String getDispositionChgDesc()
 	{
 		makeStatChgDesc();
 		return dispChgDesc;
 	}
+	@Override
 	public String getTrainAdjDesc()
 	{
 		if(trainsAtFirstLevel()>0)
@@ -1253,6 +1281,7 @@ public class StdRace implements Race
 			return "trains"+trainsAtFirstLevel();
 		return "";
 	}
+	@Override
 	public String getPracAdjDesc()
 	{
 		if(practicesAtFirstLevel()>0)
@@ -1261,21 +1290,23 @@ public class StdRace implements Race
 			return "practices"+practicesAtFirstLevel();
 		return "";
 	}
+	@Override
 	public String getAbilitiesDesc()
 	{
 		makeStatChgDesc();
 		return abilitiesDesc;
 	}
+	@Override
 	public String getLanguagesDesc()
 	{
 		makeStatChgDesc();
 		return languagesDesc;
 	}
-	public String racialParms(){ return "";}
-	public void setRacialParms(String parms){}
-	
+	@Override public String racialParms(){ return "";}
+	@Override public void setRacialParms(String parms){}
+
 	protected void clrStatChgDesc()
-	{ 
+	{
 		baseStatChgDesc=null;
 		dispChgDesc=null;
 		sensesChgDesc=null;
@@ -1322,10 +1353,10 @@ public class StdRace implements Race
 				baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);
 			StringBuilder astr=new StringBuilder("");
 			StringBuilder lstr=new StringBuilder("");
-			
+
 			List<Ability> ables=new Vector<Ability>();
 			ables.addAll(racialAbilities(null));
-			
+
 			PairVector<String,Integer> cables=culturalAbilities();
 			Ability A=null;
 			if(cables!=null)
@@ -1357,10 +1388,11 @@ public class StdRace implements Race
 				languagesDesc=languagesDesc.substring(0,languagesDesc.length()-2);
 		}
 	}
-	
-	
+
+
 	protected static String[] CODES={"CLASS","PARMS"};
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -1370,6 +1402,7 @@ public class StdRace implements Race
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -1378,8 +1411,8 @@ public class StdRace implements Race
 		case 1: setRacialParms(val); break;
 		}
 	}
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)

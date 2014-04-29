@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Butchering extends GatheringSkill
 {
-	public String ID() { return "Butchering"; }
-	public String name(){ return "Butchering";}
+	@Override public String ID() { return "Butchering"; }
+	@Override public String name(){ return "Butchering";}
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}
+	@Override public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}
 	protected DeadBody body=null;
 	protected boolean failed=false;
 	public Butchering()
@@ -57,8 +57,9 @@ public class Butchering extends GatheringSkill
 		if(duration>40) duration=40;
 		return duration;
 	}
-	protected int baseYield() { return 1; }
-	
+	@Override protected int baseYield() { return 1; }
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -106,6 +107,7 @@ public class Butchering extends GatheringSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -113,7 +115,7 @@ public class Butchering extends GatheringSkill
 
 		body=null;
 		Item I=null;
-		
+
 		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
@@ -124,8 +126,8 @@ public class Butchering extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		
-		
+
+
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))
 		&&(commands.size()==0))

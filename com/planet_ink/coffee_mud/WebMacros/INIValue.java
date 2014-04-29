@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class INIValue extends StdWebMacro
 {
-	public String name() { return "INIValue"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "INIValue"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
-	
+
 	public String getHelpFor(String tag, String mask)
 	{
 		Vector help=new Vector();
@@ -75,7 +75,8 @@ public class INIValue extends StdWebMacro
 		}
 		return "";
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -88,13 +89,13 @@ public class INIValue extends StdWebMacro
 			return page.getStr(last);
 		}
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("INI");
 			return "";
 		}
 		if(parms.containsKey("NEXT"))
 		{
-			if(!parms.containsKey("MASK")) 
+			if(!parms.containsKey("MASK"))
 				return " @break@";
 			String mask=parms.get("MASK").toUpperCase().trim();
 			String lastID="";
@@ -102,7 +103,7 @@ public class INIValue extends StdWebMacro
 			for(int p=0;p<page.size();p++)
 			{
 				String s=page.get(p).trim();
-				if(s.startsWith("#")||s.startsWith("!")) 
+				if(s.startsWith("#")||s.startsWith("!"))
 					continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');
@@ -116,7 +117,7 @@ public class INIValue extends StdWebMacro
 							continue;
 					}
 					else
-					if(!mask.equalsIgnoreCase(id)) 
+					if(!mask.equalsIgnoreCase(id))
 						continue;
 					httpReq.addFakeUrlParameter("INI",id);
 					if(parms.containsKey("VALUE"))
@@ -133,7 +134,7 @@ public class INIValue extends StdWebMacro
 				return "<!--EMPTY-->";
 			return " @break@";
 		}
-		if(!parms.containsKey("MASK")) 
+		if(!parms.containsKey("MASK"))
 			return "'MASK' not found!";
 		String mask=parms.get("MASK").toUpperCase();
 		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));

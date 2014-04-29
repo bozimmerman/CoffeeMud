@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,9 +36,9 @@ import java.util.*;
 
 public class Inebriation extends Poison_Alcohol
 {
-	public String ID() { return "Inebriation"; }
-	public String name(){ return "Inebriation";}
+	@Override public String ID() { return "Inebriation"; }
+	@Override public String name(){ return "Inebriation";}
 	private static final String[] triggerStrings = {"INEBRIATE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int alchoholContribution(){return 6;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int alchoholContribution(){return 6;}
 }

@@ -35,8 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class HolidayData extends StdWebMacro
 {
-	public String name() { return "HolidayData"; }
+	@Override public String name() { return "HolidayData"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -147,7 +148,7 @@ public class HolidayData extends StdWebMacro
 						{
 							int areaNum=2;
 							boolean reallyAll=true;
-							
+
 							for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 								if(areaCodes.contains("AREAGROUP"+areaNum))
 									areaNames.add(((Area)e.nextElement()).Name().toUpperCase());

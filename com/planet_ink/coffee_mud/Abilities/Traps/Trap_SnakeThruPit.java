@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import java.util.*;
 */
 public class Trap_SnakeThruPit extends Trap_SnakePit
 {
-	public String ID() { return "Trap_SnakeThruPit"; }
-	public String name(){ return "small snake pit";}
-	protected int trapLevel(){return 9;}
-	public boolean getTravelThroughFlag() { return true; }
+	@Override public String ID() { return "Trap_SnakeThruPit"; }
+	@Override public String name(){ return "small snake pit";}
+	@Override protected int trapLevel(){return 9;}
+	@Override public boolean getTravelThroughFlag() { return true; }
 }

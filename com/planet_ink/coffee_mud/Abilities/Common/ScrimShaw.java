@@ -40,12 +40,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "ScrimShaw"; }
-	public String name(){ return "Scrimshawing";}
+	@Override public String ID() { return "ScrimShaw"; }
+	@Override public String name(){ return "Scrimshawing";}
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "BONE";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "BONE";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS\t"
 		+"CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION";}
@@ -62,6 +63,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	protected Item key=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -72,9 +74,10 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "scrimshaw.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "scrimshaw.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -127,6 +130,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -134,7 +138,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(I.material()!=RawMaterial.RESOURCE_BONE)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(I instanceof Rideable)
 		{
@@ -171,7 +175,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -184,17 +189,19 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -318,13 +325,13 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to scrim a '"+recipeName+"'.  Try \"scrim list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.RESOURCE_BONE};
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -338,7 +345,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(amount>woodRequired) woodRequired=amount;
-			
+
 			final Session session=mob.session();
 			if((misctype.equalsIgnoreCase("statue"))
 			&&(session!=null)
@@ -362,12 +369,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				});
 				return false;
 			}
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			
-			
-			
+
+
+
 			int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
@@ -399,7 +406,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(bundling) buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			key=null;
-			
+
 			if((misctype.equalsIgnoreCase("statue"))
 			&&(statue!=null)
 			&&(statue.trim().length()>0))

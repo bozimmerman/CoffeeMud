@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
-	public String ID() { return "Prop_RoomsForSale"; }
-	public String name(){ return "Putting a cluster of rooms up for sale";}
+	@Override public String ID() { return "Prop_RoomsForSale"; }
+	@Override public String name(){ return "Putting a cluster of rooms up for sale";}
 	protected String uniqueLotID=null;
 
 	protected void fillCluster(Room R, List<Room> V)
@@ -59,6 +59,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		List<Room> V=new ArrayList<Room>();
@@ -71,6 +72,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		return V;
 	}
 
+	@Override
 	public String getTitleID()
 	{
 		if(affected instanceof Room)
@@ -78,13 +80,14 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		else
 		{
 			Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) 
+			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
 		return "";
 	}
-	
+
 	// update title, since it may affect room clusters, worries about EVERYONE
+	@Override
 	public void updateTitle()
 	{
 		List<Room> V=getAllTitledRooms();
@@ -120,13 +123,15 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
+	@Override
 	public String getUniqueLotID()
 	{
 		if(uniqueLotID==null) updateTitle();
 		return uniqueLotID;
 	}
-	
+
 	// update lot, since its called by the savethread, ONLY worries about itself
+	@Override
 	public void updateLot(List optPlayerList)
 	{
 		if(affected instanceof Room)

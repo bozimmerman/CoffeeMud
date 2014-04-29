@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Undead_WeakEnergyDrain extends StdAbility
 {
-	public String ID() { return "Undead_WeakEnergyDrain"; }
-	public String name(){ return "Weak Energy Drain";}
-	public String displayText(){ return "(Drained of Energy)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Undead_WeakEnergyDrain"; }
+	@Override public String name(){ return "Weak Energy Drain";}
+	@Override public String displayText(){ return "(Drained of Energy)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAINWEAKENERGY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int levelsDown=1;
 	public int direction=1;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -64,6 +65,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(attacklevel*(levelsDown*direction)));
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -76,6 +78,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		affectableState.setMovement(affectableState.getMovement()-(movelevel*(levelsDown*direction)));
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -85,6 +88,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		affectableStats.setClassLevel(affectableStats.getCurrentClass(),newLevel);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -97,6 +101,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 			mob.tell("The energy drain is lifted.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;

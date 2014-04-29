@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_MyPlants extends StdAbility
 {
-	public String ID() { return "Druid_MyPlants"; }
-	public String name(){ return "My Plants";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Druid_MyPlants"; }
+	@Override public String name(){ return "My Plants";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 
 	public static boolean isMyPlant(Item I, MOB mob)
 	{
@@ -98,7 +98,7 @@ public class Druid_MyPlants extends StdAbility
 		}catch(NoSuchElementException e){}
 		return V;
 	}
-	
+
 	public static Vector myPlantRooms(MOB mob)
 	{
 		Vector V=new Vector();
@@ -115,6 +115,7 @@ public class Druid_MyPlants extends StdAbility
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

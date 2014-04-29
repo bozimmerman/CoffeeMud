@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_CommonTwister extends Property
 {
-	public String ID() { return "Prop_CommonTwister"; }
-	public String name(){ return "Common Twister";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_CommonTwister"; }
+	@Override public String name(){ return "Common Twister";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	protected DVector changes=new DVector(3);
 
+	@Override
 	public String accountForYourself()
 	{ return "Twists around what the gathering common skills gives you.";	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -58,6 +60,7 @@ public class Prop_CommonTwister extends Property
 
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

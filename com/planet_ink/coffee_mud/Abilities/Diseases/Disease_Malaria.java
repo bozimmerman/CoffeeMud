@@ -34,25 +34,26 @@ import java.util.*;
 
 public class Disease_Malaria extends Disease
 {
-	public String ID() { return "Disease_Malaria"; }
-	public String name(){ return "Malaria";}
-	public String displayText(){ return "(Malaria)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Malaria"; }
+	@Override public String name(){ return "Malaria";}
+	@Override public String displayText(){ return "(Malaria)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your malaria clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 1;}
+	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your malaria clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 1;}
 	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int tickUp=0;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -90,6 +91,7 @@ public class Disease_Malaria extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
@@ -108,6 +110,7 @@ public class Disease_Malaria extends Disease
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,26 +34,27 @@ import java.util.*;
 */
 public class GreatLizard extends StdRace
 {
-	public String ID(){	return "GreatLizard"; }
-	public String name(){ return "Great Lizard"; }
-	public int shortestMale(){return 20;}
-	public int shortestFemale(){return 20;}
-	public int heightVariance(){return 5;}
-	public int lightestWeight(){return 250;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	public String racialCategory(){return "Reptile";}
+	@Override public String ID(){	return "GreatLizard"; }
+	@Override public String name(){ return "Great Lizard"; }
+	@Override public int shortestMale(){return 20;}
+	@Override public int shortestFemale(){return 20;}
+	@Override public int heightVariance(){return 5;}
+	@Override public int lightestWeight(){return 250;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Reptile";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,4,8,14,30,40,41,42};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -61,14 +62,17 @@ public class GreatLizard extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -81,6 +85,7 @@ public class GreatLizard extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -89,10 +94,11 @@ public class GreatLizard extends StdRace
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" hatchling";
-			default : 
+			default :
 				return super.makeMobName(gender, age);
 		}
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -129,6 +135,7 @@ public class GreatLizard extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

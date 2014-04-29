@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ThiefSkill extends StdAbility
 {
-	public String ID() { return "ThiefSkill"; }
-	public String name(){ return "a Thief Skill";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	
+	@Override public String ID() { return "ThiefSkill"; }
+	@Override public String name(){ return "a Thief Skill";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -61,7 +62,7 @@ public class ThiefSkill extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public int getMOBLevel(MOB meMOB)
 	{
 		if(meMOB==null) return 0;
@@ -92,7 +93,7 @@ public class ThiefSkill extends StdAbility
 		}
 		return highestMOB;
 	}
-	
+
 	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, Vector commands, int[] dirCode, boolean failOnOpen)
 	{
 		if((room==null)||(mob==null)) return null;
@@ -106,7 +107,7 @@ public class ThiefSkill extends StdAbility
 		else
 		if(givenTarget != null)
 			unlockThis = givenTarget;
-		
+
 		if(unlockThis instanceof Exit)
 		{
 			if(((Exit)unlockThis).isOpen()==failOnOpen)
@@ -117,7 +118,7 @@ public class ThiefSkill extends StdAbility
 					mob.tell(mob,unlockThis,null,"<T-NAME> is closed!");
 				return null;
 			}
-			
+
 		}
 		else
 		if(unlockThis instanceof Container)

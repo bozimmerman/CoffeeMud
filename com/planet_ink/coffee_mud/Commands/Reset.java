@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,9 +39,9 @@ public class Reset extends StdCommand
 	public Reset(){}
 
 	private final String[] access={"RESET"};
-	public boolean canBeOrdered(){return true;}
-	public String[] getAccessWords(){return access;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESET);}
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESET);}
 
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
 		throws java.io.IOException
@@ -160,7 +160,7 @@ public class Reset extends StdCommand
 			}
 		}
 	}
-	
+
 	protected int rightImportMat(MOB mob, Item I, boolean openOnly)
 		throws java.io.IOException
 	{
@@ -231,7 +231,7 @@ public class Reset extends StdCommand
 	{
 		Room R=null;
 		StringBuffer warning=new StringBuffer("");
-		String roomWarning=null; 
+		String roomWarning=null;
 		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 		{
 			R=e.nextElement();
@@ -269,7 +269,7 @@ public class Reset extends StdCommand
 		if(warning.length()==0) return null;
 		return warning.toString();
 	}
-	
+
 	private void reportChangesDestroyNewM(MOB oldM, MOB newM, StringBuffer changes)
 	{
 		if((changes == null)||(oldM==null)) return;
@@ -280,7 +280,7 @@ public class Reset extends StdCommand
 		changes.append("\n\r");
 		newM.destroy(); // this was a copy
 	}
-	
+
 	public boolean fixMob(MOB M, StringBuffer recordedChanges)
 	{
 		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
@@ -305,7 +305,8 @@ public class Reset extends StdCommand
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -801,7 +802,7 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 					}
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE) 
+				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
@@ -841,7 +842,7 @@ public class Reset extends StdCommand
 							CMLib.database().DBUpdateMOBs(R);
 					}
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE) 
+				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
@@ -863,7 +864,7 @@ public class Reset extends StdCommand
 				mob.tell("'"+ID+"' is not a known property or behavior.  Try LIST.");
 				return false;
 			}
-			
+
 			mob.session().print("working...");
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -972,7 +973,7 @@ public class Reset extends StdCommand
 						}
 					}
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE) 
+				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
 			mob.session().println("done!");
@@ -982,7 +983,7 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
-			
+
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
 			StringBuffer recordedChanges=null;
@@ -992,7 +993,7 @@ public class Reset extends StdCommand
 					recordedChanges=new StringBuffer("");
 					break;
 				}
-			
+
 			Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
 				rooms.addElement(mob.location());
@@ -1064,7 +1065,7 @@ public class Reset extends StdCommand
 				}
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
-					
+
 					R=CMLib.map().getRoom(R);
 					CMLib.map().resetRoom(R, true);
 					boolean changedMOBS=false;
@@ -1120,7 +1121,7 @@ public class Reset extends StdCommand
 					if(recordedChanges==null)
 						mob.session().print(".");
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE) 
+				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
 			if((recordedChanges!=null)&&(recordedChanges.length()>0))
@@ -1339,7 +1340,7 @@ public class Reset extends StdCommand
 			}
 			}
 			catch(java.io.IOException e){}
-			if(A.getAreaState()!=Area.State.ACTIVE) 
+			if(A.getAreaState()!=Area.State.ACTIVE)
 				A.setAreaState(Area.State.ACTIVE);
 			mob.tell("Done.");
 		}

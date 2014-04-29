@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class LightSource extends StdItem implements Light
 {
-	public String ID(){	return "LightSource";}
+	@Override public String ID(){	return "LightSource";}
 	protected boolean lit=false;
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
@@ -53,16 +53,17 @@ public class LightSource extends StdItem implements Light
 		recoverPhyStats();
 	}
 
-	public void setDuration(int duration){durationTicks=duration;}
-	public int getDuration(){return durationTicks;}
-	public boolean destroyedWhenBurnedOut(){return destroyedWhenBurnedOut;}
-	public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
-	public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
-	public boolean isLit(){return lit;}
-	public void light(boolean isLit){lit=isLit;}
+	@Override public void setDuration(int duration){durationTicks=duration;}
+	@Override public int getDuration(){return durationTicks;}
+	@Override public boolean destroyedWhenBurnedOut(){return destroyedWhenBurnedOut;}
+	@Override public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
+	@Override public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
+	@Override public boolean isLit(){return lit;}
+	@Override public void light(boolean isLit){lit=isLit;}
 
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -100,6 +101,7 @@ public class LightSource extends StdItem implements Light
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		if((getDuration()>0)&&(isLit()))
@@ -110,6 +112,7 @@ public class LightSource extends StdItem implements Light
 		super.recoverPhyStats();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_LIGHT_FLICKERS)
@@ -171,6 +174,7 @@ public class LightSource extends StdItem implements Light
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

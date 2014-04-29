@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PaladinSkill extends StdAbility
 {
-	public String ID() { return "PaladinSkill"; }
-	public String name(){ return "Paladin Skill";}
-	public String displayText(){return "";}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "PaladinSkill"; }
+	@Override public String name(){ return "Paladin Skill";}
+	@Override public String displayText(){return "";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Vector paladinsGroup=null;
-	public int classificationCode(){ return Ability.ACODE_SKILL;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -83,6 +84,7 @@ public class PaladinSkill extends StdAbility
 		return true;
 	}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

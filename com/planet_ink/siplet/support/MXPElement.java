@@ -26,7 +26,7 @@ public class MXPElement implements Cloneable
 	public static final int BIT_NOTSUPPORTED=32;
 	public static final int BIT_EATTEXT=64;
 	public static final int BIT_DISABLED=128;
-	
+
 	private String name="";
 	private String definition="";
 	private String attributes="";
@@ -38,9 +38,9 @@ public class MXPElement implements Cloneable
 	private Hashtable alternativeAttributes=null;
 	private List<String> userParms=new Vector();
 	private boolean basicElement=true;
-	
+
 	private int bufInsert=-1;
-	
+
 	public MXPElement(String newName,
 					  String theDefinition,
 					  String theAttributes,
@@ -57,7 +57,7 @@ public class MXPElement implements Cloneable
 		&&(theDefinition.toUpperCase().indexOf("&TEXT;")>=0))
 			  bitmap=bitmap|BIT_NEEDTEXT;
 	}
-	
+
 	public MXPElement(String newName,
 					  String theDefinition,
 					  String theAttributes,
@@ -115,7 +115,7 @@ public class MXPElement implements Cloneable
 		return Util.parseSpaces(unsupportedParms,true);
 	}
 	public void setAttributes(String newAttributes)
-	{ 
+	{
 		attributes=newAttributes;
 		parsedAttributes=null;
 		attributeValues=null;
@@ -136,7 +136,7 @@ public class MXPElement implements Cloneable
 		if(value!=null)
 			attributeValues.put(tag,value);
 	}
-	
+
 	public synchronized Vector getParsedAttributes()
 	{
 		if(parsedAttributes!=null) return parsedAttributes;
@@ -241,7 +241,7 @@ public class MXPElement implements Cloneable
 		getParsedAttributes();
 		attributeValues.remove(name.toUpperCase().trim());
 	}
-	
+
 	public Vector getCloseTags(String desc)
 	{
 		StringBuffer buf=new StringBuffer(desc);
@@ -302,7 +302,7 @@ public class MXPElement implements Cloneable
 		if(MXP.tagDebug){System.out.println("/TAG/CLOSERS="+Util.toStringList(tags)); System.out.flush();}
 		return tags;
 	}
-	
+
 	public String getFoldedDefinition(String text)
 	{
 		Vector aV=getParsedAttributes();

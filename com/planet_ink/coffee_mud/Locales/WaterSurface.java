@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class WaterSurface extends StdRoom implements Drink
 {
-	public String ID(){return "WaterSurface";}
+	@Override public String ID(){return "WaterSurface";}
 	public WaterSurface()
 	{
 		super();
@@ -43,26 +43,27 @@ public class WaterSurface extends StdRoom implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	public long decayTime(){return 0;}
-	public void setDecayTime(long time){}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override public long decayTime(){return 0;}
+	@Override public void setDecayTime(long time){}
 
 	protected String UnderWaterLocaleID(){return "UnderWaterGrid";}
 	protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderWaterGrid)||(thatSea instanceof UnderWaterThinGrid);}
 
+	@Override
 	public void giveASky(int depth)
 	{
 		if(skyedYet) return;
 		if(depth>1000) return;
 		super.giveASky(depth+1);
 		skyedYet=true;
-		
+
 		if((roomID().length()==0)
 		&&(getGridParent()!=null)
 		&&(getGridParent().roomID().length()==0))
 			return;
-		
+
 		if((rawDoors()[Directions.DOWN]==null)
 		&&(domainType()!=UnderWaterDomainType())
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
@@ -110,6 +111,7 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 
+	@Override
 	public void clearSky()
 	{
 		if(!skyedYet) return;
@@ -128,6 +130,7 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
@@ -201,21 +204,22 @@ public class WaterSurface extends StdRoom implements Drink
 		return 0;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	public int thirstQuenched(){return 1000;}
-	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	public void setLiquidType(int newLiquidType){}
-	public void setThirstQuenched(int amount){}
-	public void setLiquidHeld(int amount){}
-	public void setLiquidRemaining(int amount){}
-	public boolean disappearsAfterDrinking(){return false;}
-	public boolean containsDrink(){return true;}
-	public int amountTakenToFillMe(Drink theSource){return 0;}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public int thirstQuenched(){return 1000;}
+	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
+	@Override public void setLiquidType(int newLiquidType){}
+	@Override public void setThirstQuenched(int amount){}
+	@Override public void setLiquidHeld(int amount){}
+	@Override public void setLiquidRemaining(int amount){}
+	@Override public boolean disappearsAfterDrinking(){return false;}
+	@Override public boolean containsDrink(){return true;}
+	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

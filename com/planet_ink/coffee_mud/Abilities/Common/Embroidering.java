@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Embroidering extends CommonSkill
 {
-	public String ID() { return "Embroidering"; }
-	public String name(){ return "Embroidering";}
+	@Override public String ID() { return "Embroidering"; }
+	@Override public String name(){ return "Embroidering";}
 	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
 
 	protected Item found=null;
 	protected String writing="";
@@ -49,8 +49,9 @@ public class Embroidering extends CommonSkill
 		displayText="You are embroidering...";
 		verb="embroidering";
 	}
-	protected boolean canBeDoneSittingDown() { return true; }
+	@Override protected boolean canBeDoneSittingDown() { return true; }
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -74,6 +75,7 @@ public class Embroidering extends CommonSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -90,7 +92,7 @@ public class Embroidering extends CommonSkill
 			return false;
 		}
 		commands.remove(commands.firstElement());
-		
+
 		Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{

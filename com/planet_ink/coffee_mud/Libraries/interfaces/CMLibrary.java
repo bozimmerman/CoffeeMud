@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ public interface CMLibrary extends CMObject
 	public boolean shutdown();
 	public void propertiesLoaded();
 	public TickClient getServiceClient();
-	
+
 	/**
 	 * Localize an internal string -- shortcut. Same as calling:
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary#fullSessionTranslation(String, String...)

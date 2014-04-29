@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,18 @@ import java.util.*;
 
 public class Disease_Cannibalism extends Disease
 {
-	public String ID() { return "Disease_Cannibalism"; }
-	public String name(){ return "Cannibalism";}
-	public String displayText(){ return "(Cannibalism)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 6;}
+	@Override public String ID() { return "Disease_Cannibalism"; }
+	@Override public String name(){ return "Cannibalism";}
+	@Override public String displayText(){ return "(Cannibalism)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 6;}
 
-	protected int DISEASE_TICKS(){return 999999;}
-	protected int DISEASE_DELAY(){return 100;}
+	@Override protected int DISEASE_TICKS(){return 999999;}
+	@Override protected int DISEASE_DELAY(){return 100;}
+	@Override
 	protected String DISEASE_DONE()
    {
 	  String desiredMeat = "";
@@ -59,6 +60,7 @@ public class Disease_Cannibalism extends Disease
 	  }
 	  return "<S-NAME> no longer hunger for "+ desiredMeat +" meat.";
    }
+	@Override
 	protected String DISEASE_START()
    {
 	  String desiredMeat = "";
@@ -73,9 +75,10 @@ public class Disease_Cannibalism extends Disease
 	  }
 	  return "^G<S-NAME> hunger(s) for "+ desiredMeat +" meat.^?";
    }
-	protected String DISEASE_AFFECT(){return "";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affected==null)
@@ -92,6 +95,7 @@ public class Disease_Cannibalism extends Disease
 			super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

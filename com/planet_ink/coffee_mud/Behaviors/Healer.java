@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Healer extends ActiveTicker
 {
-	public String ID(){return "Healer";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Healer";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	protected static final List<Ability> healingVector=new Vector<Ability>();
-	
+
 	public Healer()
 	{
 		super();
@@ -55,11 +55,13 @@ public class Healer extends ActiveTicker
 		}
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "benevolent healing";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

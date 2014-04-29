@@ -34,10 +34,10 @@ import java.lang.String;
  *
  */
 public final class PACKET {
-	
+
 	/* max number of data keys in a packet */
 	public final static int IMC_MAX_KEYS = 20;
-	
+
 	String to = ""; /* destination of packet */
 	String from = ""; /* source of packet      */
 	String type = ""; /* type of packet 	   */

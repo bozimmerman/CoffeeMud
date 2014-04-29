@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CheckAuthCode extends StdWebMacro
 {
-	public String name() { return "CheckAuthCode"; }
+	@Override public String name() { return "CheckAuthCode"; }
 
 	public Hashtable getAuths(HTTPRequest httpReq)
 	{
@@ -49,7 +49,7 @@ public class CheckAuthCode extends StdWebMacro
 			auths=new Hashtable();
 			boolean subOp=false;
 			boolean sysop=CMSecurity.isASysOp(mob);
-			
+
 			String AREA=httpReq.getUrlParameter("AREA");
 			Room R=null;
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
@@ -57,9 +57,9 @@ public class CheckAuthCode extends StdWebMacro
 				Area A=(Area)a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
 					if(A.amISubOp(mob.Name()))
-					{ 
+					{
 						R=A.getRandomProperRoom();
-						subOp=true; 
+						subOp=true;
 						break;
 					}
 			}
@@ -85,14 +85,15 @@ public class CheckAuthCode extends StdWebMacro
 				httpReq.addFakeUrlParameter("BESTFILEBROWSE","");
 			auths.put("SYSOP",""+sysop);
 			auths.put("SUBOP",""+(sysop||subOp));
-			
+
 			for(Iterator<CMSecurity.SecFlag> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
 				auths.put("AUTH_"+i.next().toString(),"true");
 			httpReq.getRequestObjects().put("AUTHS_"+mob.Name().toUpperCase().trim(),auths);
 		}
 		return auths;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -117,7 +118,7 @@ public class CheckAuthCode extends StdWebMacro
 				if((check==null)&&(equals.length()==0))
 					thisCondition=false;
 				else
-				if(check==null) 
+				if(check==null)
 					thisCondition=true;
 				else
 				if(!check.equalsIgnoreCase(equals))
@@ -130,7 +131,7 @@ public class CheckAuthCode extends StdWebMacro
 				if((check==null)&&(equals.length()==0))
 					thisCondition=true;
 				else
-				if(check==null) 
+				if(check==null)
 					thisCondition=false;
 				else
 				if(!check.equalsIgnoreCase(equals))

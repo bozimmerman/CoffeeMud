@@ -55,23 +55,27 @@ import java.util.*;
  */
 public class Prop_ClanEquipment extends Property implements TriggeredAffect
 {
+	@Override
 	public String ID()
 	{
 		return "Prop_ClanEquipment";
 	}
 
+	@Override
 	public String name()
 	{
 		return "Clan Equipment";
 	}
 
+	@Override
 	public boolean bubbleAffect()
 	{
 		return true;
 	}
 
-	public long flags(){return Ability.FLAG_CASTER;}
+	@Override public long flags(){return Ability.FLAG_CASTER;}
 
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;
@@ -89,15 +93,17 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	protected CharStats EQadjCharStats=null;
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		if(affected instanceof Weapon)
 			return TriggeredAffect.TRIGGER_HITTING_WITH;
-		if(affected instanceof Armor) 
+		if(affected instanceof Armor)
 			return TriggeredAffect.TRIGGER_BEING_HIT;
 		return TriggeredAffect.TRIGGER_USE;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		// My slightly complicated way of showing the clan effect when ID'd
@@ -121,6 +127,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		return id.toString();
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -250,7 +257,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		}
 		return false;
 	}
-	
+
 	/*
 	 * ********************** Staff/Wand Clan Eq **********************
 	 */
@@ -301,6 +308,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			adjCharStats.setStat(i,0);
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		if(EQadjCharStats==null)
@@ -320,6 +328,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

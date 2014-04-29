@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,8 @@ public class ClanQual extends StdCommand
 	public ClanQual(){}
 
 	private final String[] access={"CLANQUAL"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -48,13 +49,13 @@ public class ClanQual extends StdCommand
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
-			
+
 		if(chkC==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
-		
+
 		commands.setElementAt(getAccessWords()[0],0);
 
 		final Clan C=chkC;
@@ -69,7 +70,7 @@ public class ClanQual extends StdCommand
 			mob.tell("You aren't in the right position to set the qualifications to your "+C.getGovernmentName()+".");
 			return false;
 		}
-		
+
 		if((skipChecks)&&(commands.size()>1))
 		{
 			setClanQualMask(mob,C,CMParms.combine(commands,1));
@@ -85,7 +86,7 @@ public class ClanQual extends StdCommand
 		{
 			@Override public void showPrompt() { session.promptPrint("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ");}
 			@Override public void timedOut() { }
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
 				final String qualMask=this.input;
 				if(qualMask.length()==0)
@@ -100,13 +101,13 @@ public class ClanQual extends StdCommand
 				}
 				session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0)
 				{
-					@Override public void showPrompt() 
-					{ 
+					@Override public void showPrompt()
+					{
 						session.println("Your qualifications will be as follows: "+CMLib.masking().maskDesc(qualMask)+"\n\r");
 						session.promptPrint("Is this correct (Y/n)?");
 					}
 					@Override public void timedOut() { }
-					@Override public void callBack() 
+					@Override public void callBack()
 					{
 						if(!this.input.equalsIgnoreCase("Y"))
 						{
@@ -127,15 +128,15 @@ public class ClanQual extends StdCommand
 		session.prompt(IC[0]);
 		return false;
 	}
-	
+
 	public void setClanQualMask(MOB mob, Clan C, String qualMask)
 	{
 		C.setAcceptanceSettings(qualMask);
 		C.update();
 		CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.getGovernmentName()+" "+C.clanID()+" have been changed.");
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 */
 public class Prop_Familiar extends Property
 {
-	public String ID() { return "Prop_Familiar"; }
-	public String name(){ return "Find Familiar Property";}
+	@Override public String ID() { return "Prop_Familiar"; }
+	@Override public String name(){ return "Find Familiar Property";}
 	protected String displayText="Familiarity with an animal";
-	public String displayText() {return displayText;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String displayText() {return displayText;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected final static int DOG=0;
 	protected final static int TURTLE=1;
 	protected final static int CAT=2;
@@ -59,12 +59,13 @@ public class Prop_Familiar extends Property
 	protected int[] lastBreathablesSet=null;
 	protected int[] newBreathablesSet=null;
 
+	@Override
 	public String accountForYourself()
 	{
 		return "is a familiar MOB";
 	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
 	public boolean removeMeFromFamiliarTo()
 	{
@@ -100,6 +101,7 @@ public class Prop_Familiar extends Property
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -146,9 +148,10 @@ public class Prop_Familiar extends Property
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		
+
 		if((familiarWith!=null)
 		&&(familiarTo!=null)
 		&&(familiarWith.location()==familiarTo.location()))
@@ -179,6 +182,7 @@ public class Prop_Familiar extends Property
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
@@ -205,6 +209,7 @@ public class Prop_Familiar extends Property
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
@@ -212,7 +217,8 @@ public class Prop_Familiar extends Property
 			removeMeFromFamiliarTo();
 		super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -224,6 +230,7 @@ public class Prop_Familiar extends Property
 		displayText="(Familiarity with the "+names[familiarType]+")";
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		if((familiarWith!=null)

@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Gonorrhea extends Disease
 {
-	public String ID() { return "Disease_Gonorrhea"; }
-	public String name(){ return "Gonorrhea";}
-	public String displayText(){ return "(Gonorrhea)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 1;}
+	@Override public String ID() { return "Disease_Gonorrhea"; }
+	@Override public String name(){ return "Gonorrhea";}
+	@Override public String displayText(){ return "(Gonorrhea)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 1;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	protected String DISEASE_DONE(){return "Your gonorrhea clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
+	@Override protected String DISEASE_DONE(){return "Your gonorrhea clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -77,12 +78,14 @@ public class Disease_Gonorrhea extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);

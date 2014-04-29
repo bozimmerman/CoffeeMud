@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief extends StdCharClass
 {
-	public String ID(){return "Thief";}
-	public String name(){return "Thief";}
-	public String baseClass(){return "Thief";}
-	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
-	public int getLevelsPerBonusDamage(){ return 5;}
-	public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
-	public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?3))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	@Override public String ID(){return "Thief";}
+	@Override public String name(){return "Thief";}
+	@Override public String baseClass(){return "Thief";}
+	@Override public int getBonusPracLevel(){return 1;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
+	@Override public int getLevelsPerBonusDamage(){ return 5;}
+	@Override public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?3))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 
 	public Thief()
@@ -57,6 +57,7 @@ public class Thief extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -159,16 +160,17 @@ public class Thief extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Nondetection",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -179,7 +181,8 @@ public class Thief extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -200,6 +203,7 @@ public class Thief extends StdCharClass
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(myHost instanceof MOB)
@@ -227,5 +231,5 @@ public class Thief extends StdCharClass
 		super.executeMsg(myHost,msg);
 	}
 
-	public String getOtherBonusDesc(){return "Bonus experience for using certain skills.";}
+	@Override public String getOtherBonusDesc(){return "Bonus experience for using certain skills.";}
 }

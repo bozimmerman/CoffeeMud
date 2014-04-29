@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,9 +49,9 @@ public class Generate extends StdCommand
 	});
 
 	private final String[] access={"GENERATE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
-	public void createNewPlace(MOB mob, Room oldR, Room R, int direction) 
+	public void createNewPlace(MOB mob, Room oldR, Room R, int direction)
 	{
 		if(R.roomID().length()==0)
 		{
@@ -75,7 +75,8 @@ public class Generate extends StdCommand
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+dirName);
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -88,7 +89,7 @@ public class Generate extends StdCommand
 		CMFile file = null;
 		if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
 		{
-			file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob);	
+			file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob);
 			commands.removeElementAt(3);
 			commands.removeElementAt(3);
 		}
@@ -110,7 +111,7 @@ public class Generate extends StdCommand
 		{
 			for(Enumeration e=OBJECT_TYPES.keys();e.hasMoreElements();)
 			{
-				String key =(String)e.nextElement(); 
+				String key =(String)e.nextElement();
 				if(key.startsWith(typeName.toUpperCase().trim()))
 				{
 					objectType = key;
@@ -133,7 +134,7 @@ public class Generate extends StdCommand
 				mob.tell("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by.");
 				return false;
 			}
-			if(mob.location().getRoomInDir(direction)!=null) 
+			if(mob.location().getRoomInDir(direction)!=null)
 			{
 				String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
@@ -164,14 +165,14 @@ public class Generate extends StdCommand
 			mob.tell("Found ids include: \n\r"+foundIDs.toString());
 			return false;
 		}
-		
+
 		XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
 		definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
-		try 
+		try
 		{
 			CMLib.percolator().checkRequirements(piece, definedIDs);
-		} 
-		catch(CMException cme) 
+		}
+		catch(CMException cme)
 		{
 			mob.tell("Required ids for "+idName+" were missing: "+cme.getMessage());
 			return false;
@@ -283,8 +284,8 @@ public class Generate extends StdCommand
 		Log.sysOut("Generate",finalLog);
 		return true;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS);}
+	@Override public boolean canBeOrdered(){return false;}
+
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS);}
 }

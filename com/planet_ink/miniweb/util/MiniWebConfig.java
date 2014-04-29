@@ -48,45 +48,45 @@ public class MiniWebConfig implements Cloneable
 
 	private static final String   DEFAULT_PAGE 					= "index.html"; // this would normally be configurable as a list
 	private static final String   ERROR_PAGE 					= "root\\errorpage.mwhtml";
-	
+
 	// configuration for the request thread pool
 	private static final int	  DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
 	private static final int	  DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
 	private static final int	  DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
 	private static final int	  DEFAULT_THREAD_TIMEOUT_SECS		= 30; //Timeout for active request threads
 	private static final int	  DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
-	
+
 	private static final long     DEFAULT_FILECACHE_EXPIRE_MS	= 5 * 60 * 1000; 		// 5 minutes -- how long a cache entry lived
 	private static final long     DEFAULT_FILECACHE_MAX_BYTES	= 10 * 1024 * 1024;	// the maximum number of bytes this cache will hold total
 	private static final long     DEFAULT_FILECACHE_MAX_FBYTES	= 2 * 1024 * 1024;	// the maximum size of file the cache will hold
 
 	private static final long     DEFAULT_FILECOMP_MAX_FBYTES	= 16 * 1024 * 1024;	// the maximum size of file the cache will hold
-	
+
 	private static final long     DEFAULT_MAX_BODY_BYTES   		= 1024 * 1024 * 2; // maximum size of a request body
 	private static final long     DEFAULT_MAX_IDLE_MILLIS  		= 30 * 1000;		// maximum time a request can be idle (between reads)
 	private static final int 	  DEFAULT_LINE_BUFFER_SIZE		= 4096; // maximum length of a single line in the main request
 	private static final int  	  DEFAULT_MAX_ALIVE_SECS 		= 15;	// maximum age, in seconds, of a request connection
 	private static final int	  DEFAULT_MAX_PIPELINED_REQUESTS= 10;	// maximum number of requests per connection
-	
+
 	private static final String   DEFAULT_SSL_KEYSTORE_TYPE		= "JKS";
 	private static final String   DEFAULT_SSL_KEYMANAGER_ENC	= "SunX509";
-	
+
 	private static final String   DEFAULT_DEBUG_FLAG			= "OFF";
-	
+
 	private static final String   DEFAULT_ACCESSLOG_FLAG		= "OFF";
 
 	private static final long     DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
 	private static final long     DEFAULT_SESSION_AGE_MILLIS  	= 24 *60 * 60 * 1000;	// maximum time a session can be in existence
-	
+
 	private static final Integer  ALL_PORTS						= Integer.valueOf(-1);
 	private static final String   ALL_HOSTS						= "";
-	
+
 	private Map<String,String> 	  servlets 						= new HashMap<String,String>();
 	private Map<String,String>    fileConverts					= new HashMap<String,String>();
-	
+
 	private Map<String,String> 	  miscFlags						= new HashMap<String,String>();
 	private Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
-	
+
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
 	private MimeConverterManager  converters					= null;
@@ -95,53 +95,53 @@ public class MiniWebConfig implements Cloneable
 	private HTTPFileGetter		  fileGetter					= null;
 	private MiniWebServer		  miniWebServer					= null;
 	private FileManager			  fileManager					= new MWFileManager();
-	
+
 	private String  sslKeystorePath		 = null;
 	private String  sslKeystorePassword  = null;
 	private String	sslKeystoreType		 = DEFAULT_SSL_KEYSTORE_TYPE;
 	private String	sslKeyManagerEncoding= DEFAULT_SSL_KEYMANAGER_ENC;
-	
+
 	private int[]	httpListenPorts		 = new int[]{DEFAULT_HTP_LISTEN_PORT};
 	private int[]	httpsListenPorts	 = new int[]{DEFAULT_SSL_PORT};
 	private String 	bindAddress			 = null;
-	
+
 	private int		coreThreadPoolSize	 = DEFAULT_CORE_THREAD_POOL_SIZE;
 	private int		maxThreadPoolSize	 = DEFAULT_MAX_THREAD_POOL_SIZE;
 	private int		maxThreadIdleMs		 = DEFAULT_THREAD_KEEP_ALIVE_MS;
 	private int		maxThreadTimeoutSecs = DEFAULT_THREAD_TIMEOUT_SECS;
 	private int		maxThreadQueueSize	 = DEFAULT_THREAD_QUEUE_SIZE;
-	
+
 	private long	fileCacheExpireMs	 = DEFAULT_FILECACHE_EXPIRE_MS;
 	private long	fileCacheMaxBytes	 = DEFAULT_FILECACHE_MAX_BYTES;
 	private long	fileCacheMaxFileBytes= DEFAULT_FILECACHE_MAX_FBYTES;
 	private long	fileCompMaxFileBytes = DEFAULT_FILECOMP_MAX_FBYTES;
-	
+
 	private long	sessionMaxIdleMs	 = DEFAULT_SESSION_IDLE_MILLIS;
 	private long	sessionMaxAgeMs		 = DEFAULT_SESSION_AGE_MILLIS;
-	
+
 	private long	requestMaxBodyBytes	 = DEFAULT_MAX_BODY_BYTES;
 	private long	requestMaxIdleMs	 = DEFAULT_MAX_IDLE_MILLIS;
 	private long	requestLineBufBytes	 = DEFAULT_LINE_BUFFER_SIZE;
 	private int		requestMaxAliveSecs	 = DEFAULT_MAX_ALIVE_SECS;
 	private int		requestMaxPerConn	 = DEFAULT_MAX_PIPELINED_REQUESTS;
-	
+
 	private String	defaultPage			 = DEFAULT_PAGE;
 	private String	errorPage			 = ERROR_PAGE;
-	
+
 	private String  debugFlag			 = DEFAULT_DEBUG_FLAG;
 	private boolean isDebugging			 = false;
 
 	private String  accessLogFlag		 = DEFAULT_ACCESSLOG_FLAG;
-	
+
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		mounts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
-	
+
 	public enum DupPolicy { ENUMERATE, OVERWRITE }
-	
+
 	public enum DisableFlag { RANGED }
-	
+
 	private DupPolicy dupPolicy = DupPolicy.OVERWRITE;
-	
+
 	/**
 	 * @return the debugFlag
 	 */
@@ -164,7 +164,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		return isDebugging;
 	}
-	
+
 	/**
 	 * @return the dupPolicy
 	 */
@@ -193,7 +193,7 @@ public class MiniWebConfig implements Cloneable
 			this.dupPolicy = DupPolicy.OVERWRITE;
 		}
 	}
-	
+
 	/**
 	 * @return the accessLogFlag
 	 */
@@ -208,7 +208,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		this.accessLogFlag = accessLogFlag;
 	}
-	
+
 	/**
 	 * @return the defaultPage
 	 */
@@ -287,32 +287,32 @@ public class MiniWebConfig implements Cloneable
 	{
 		this.fileManager = fileManager;
 	}
-	
+
 	/**
 	 * @return the fileGetter
 	 */
-	public HTTPFileGetter getFileGetter() 
+	public HTTPFileGetter getFileGetter()
 	{
 		return fileGetter;
 	}
 	/**
 	 * @param fileGetter the fileGetter to set
 	 */
-	public void setFileGetter(HTTPFileGetter fileGetter) 
+	public void setFileGetter(HTTPFileGetter fileGetter)
 	{
 		this.fileGetter = fileGetter;
 	}
 	/**
 	 * @return the miniWebServer
 	 */
-	public MiniWebServer getMiniWebServer() 
+	public MiniWebServer getMiniWebServer()
 	{
 		return miniWebServer;
 	}
 	/**
 	 * @param miniWebServer the miniWebServer to set
 	 */
-	public void setMiniWebServer(MiniWebServer miniWebServer) 
+	public void setMiniWebServer(MiniWebServer miniWebServer)
 	{
 		this.miniWebServer = miniWebServer;
 	}
@@ -400,7 +400,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		this.bindAddress = bindAddress;
 	}
-	
+
 	/**
 	 * return the proper mount for the given host and context and port
 	 * @param host the host name to search for, or "" for all hosts
@@ -496,7 +496,7 @@ public class MiniWebConfig implements Cloneable
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return the sslKeystorePath
 	 */
@@ -651,7 +651,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		this.maxThreadQueueSize = maxThreadQueueSize;
 	}
-	
+
 	/**
 	 * @param flag the flag to check
 	 * @return true if its disabled, false otherwise
@@ -660,7 +660,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		return (flag != null) && disableFlags.contains(flag);
 	}
-	
+
 	/**
 	 * @return the disable flags
 	 */
@@ -668,7 +668,7 @@ public class MiniWebConfig implements Cloneable
 	{
 		return disableFlags;
 	}
-	
+
 	/**
 	 * @return the fileCacheMaxBytes
 	 */
@@ -801,7 +801,7 @@ public class MiniWebConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there, or isn't an int
-	 * @return 
+	 * @return
 	 */
 	private int getInt(final Properties props, final String propName, final int defaultVal)
 	{
@@ -820,7 +820,7 @@ public class MiniWebConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there, or isn't an long
-	 * @return 
+	 * @return
 	 */
 	private long getLong(final Properties props, final String propName, final long defaultVal)
 	{
@@ -839,7 +839,7 @@ public class MiniWebConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there
-	 * @return 
+	 * @return
 	 */
 	private String getString(final Properties props, final String propName, final String defaultVal)
 	{
@@ -849,9 +849,9 @@ public class MiniWebConfig implements Cloneable
 		}
 		return defaultVal;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public MiniWebConfig copyOf()
@@ -921,7 +921,7 @@ public class MiniWebConfig implements Cloneable
 		}
 		return newMounts;
 	}
-	
+
 	/**
 	 * Parses a url host:port/context into its constituent parts and returns them
 	 * @param value the url
@@ -999,9 +999,9 @@ public class MiniWebConfig implements Cloneable
 	{
 		return miscFlags.get(propName.toUpperCase());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param props
 	 */
 	public void load(Properties props)
@@ -1013,11 +1013,11 @@ public class MiniWebConfig implements Cloneable
 		sslKeystorePassword=getString(props,"SSLKEYSTOREPASSWORD",sslKeystorePassword);
 		sslKeystoreType=getString(props,"SSLKEYSTORETYPE",sslKeystoreType);
 		sslKeyManagerEncoding=getString(props,"SSLKEYMANAGERENCODING",sslKeyManagerEncoding);
-		
+
 		httpListenPorts=getPorts(props,"PORT",httpListenPorts);
 		httpsListenPorts=getPorts(props,"SSLPORT",httpsListenPorts);
 		bindAddress=getString(props,"BIND",null);
-		
+
 		coreThreadPoolSize=getInt(props,"CORETHREADPOOLSIZE",coreThreadPoolSize);
 		maxThreadPoolSize=getInt(props,"MAXTHREADS",maxThreadPoolSize);
 		maxThreadIdleMs=getInt(props,"MAXTHREADIDLEMILLIS",maxThreadIdleMs);
@@ -1030,7 +1030,7 @@ public class MiniWebConfig implements Cloneable
 		fileCacheMaxBytes=getLong(props,"FILECACHEMAXBYTES",fileCacheMaxBytes);
 		fileCacheMaxFileBytes=getLong(props,"FILECACHEMAXFILEBYTES",fileCacheMaxFileBytes);
 		fileCompMaxFileBytes=getLong(props,"FILECOMPMAXBYTES",fileCompMaxFileBytes);
-		
+
 		requestMaxBodyBytes=getLong(props,"REQUESTMAXBODYBYTES",requestMaxBodyBytes);
 		requestMaxIdleMs=getLong(props,"REQUESTMAXIDLEMS",requestMaxIdleMs);
 		requestLineBufBytes=getLong(props,"REQUESTLINEBUFBYTES",requestLineBufBytes);
@@ -1044,23 +1044,23 @@ public class MiniWebConfig implements Cloneable
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
 		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
-		
+
 		String[] disableStrs=getString(props,"DISABLE","").split(",");
 		disableFlags.clear();
 		if((disableStrs.length>0)&&(disableStrs[0].trim().length()>0))
 		for(String disable : disableStrs)
 		{
 			disable=disable.toUpperCase().trim();
-			try 
+			try
 			{
 				disableFlags.add(DisableFlag.valueOf(disable));
-			} 
-			catch(Exception e) 
+			}
+			catch(Exception e)
 			{
 				getLogger().severe("Unknown DISABLE flag in mw.ini: "+disable);
 			}
 		}
-		
+
 		Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
 		if(newServlets != null)
 			servlets=newServlets;

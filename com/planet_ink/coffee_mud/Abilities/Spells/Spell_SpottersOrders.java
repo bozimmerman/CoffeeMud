@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SpottersOrders extends Spell
 {
-	public String ID() { return "Spell_SpottersOrders"; }
-	public String name(){return "Spotters Orders";}
-	public String displayText(){return "(Spotting weaknesses of "+text()+")";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_SpottersOrders"; }
+	@Override public String name(){return "Spotters Orders";}
+	@Override public String displayText(){return "(Spotting weaknesses of "+text()+")";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	protected MOB spottedM=null;
 	protected boolean activated=true;
 	protected List<Triad<MOB,Ability,long[]>> groupMembers=null;
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(target instanceof MOB)
@@ -59,15 +60,17 @@ public class Spell_SpottersOrders extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		
+
 		if((affected instanceof MOB)&&(activated))
 			affectableStats.setSpeed(affectableStats.speed()-0.5);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -155,6 +158,7 @@ public class Spell_SpottersOrders extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -175,6 +179,7 @@ public class Spell_SpottersOrders extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -191,7 +196,7 @@ public class Spell_SpottersOrders extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

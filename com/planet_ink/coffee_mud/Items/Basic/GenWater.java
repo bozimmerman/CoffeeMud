@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenWater extends GenDrink
 {
-	public String ID(){	return "GenWater";}
+	@Override public String ID(){	return "GenWater";}
 
 	public GenWater()
 	{

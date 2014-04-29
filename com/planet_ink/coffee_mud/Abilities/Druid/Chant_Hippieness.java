@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Hippieness extends Chant
 {
-	public String ID() { return "Chant_Hippieness"; }
-	public String name(){return "Hippieness";}
-	public String displayText(){return "(Feeling Groovy)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Hippieness"; }
+	@Override public String name(){return "Hippieness";}
+	@Override public String displayText(){return "(Feeling Groovy)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	protected List<Pair<Clan,Integer>> oldClans=null;
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Chant_Hippieness extends Chant
 		affected.setClan("",Integer.MIN_VALUE); // deletes all clans
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -77,6 +79,7 @@ public class Chant_Hippieness extends Chant
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -87,7 +90,7 @@ public class Chant_Hippieness extends Chant
 			for(Pair<Clan,Integer> p : mob.clans())
 				oldClans.add(p);
 			mob.setClan("",Integer.MIN_VALUE); // deletes all clans
-			
+
 			boolean mouthed=mob.fetchFirstWornItem(Wearable.WORN_MOUTH)!=null;
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
@@ -101,7 +104,7 @@ public class Chant_Hippieness extends Chant
 			if(A!=null) A.unInvoke();
 			A=mob.fetchEffect("Song_Rage");
 			if(A!=null) A.unInvoke();
-			
+
 			if(mob.numItems()>0)
 			{
 				Item I=mob.getRandomItem();
@@ -143,6 +146,7 @@ public class Chant_Hippieness extends Chant
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -159,6 +163,7 @@ public class Chant_Hippieness extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -173,7 +178,8 @@ public class Chant_Hippieness extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

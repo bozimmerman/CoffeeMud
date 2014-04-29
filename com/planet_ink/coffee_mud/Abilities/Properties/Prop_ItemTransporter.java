@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ItemTransporter extends Property
 {
-	public String ID() { return "Prop_ItemTransporter"; }
-	public String name(){ return "Item Transporter";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_ItemTransporter"; }
+	@Override public String name(){ return "Item Transporter";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected Room roomDestination=null;
 	protected MOB mobDestination=null;
 	protected Container nextDestination=null;
 	protected static Map<String,List<PhysicalAgent>> possiblePossibilities=new Hashtable<String,List<PhysicalAgent>>();
 	protected static Map<String,Integer> lastLooks=new Hashtable<String,Integer>();
 
+	@Override
 	public String accountForYourself()
 	{ return "Item Transporter";	}
 
@@ -161,6 +162,7 @@ public class Prop_ItemTransporter extends Property
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -281,6 +283,7 @@ public class Prop_ItemTransporter extends Property
 			}
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -288,6 +291,7 @@ public class Prop_ItemTransporter extends Property
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// amazingly important that this happens first!

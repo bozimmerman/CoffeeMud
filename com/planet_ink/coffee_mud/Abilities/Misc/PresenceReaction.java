@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,9 +36,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PresenceReaction extends StdAbility
 {
-	public String ID(){return "PresenceReaction";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID(){return "PresenceReaction";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected MOB reactToM=null;
 	protected boolean startedManaging=false;
 	protected String previousMood = null;
@@ -53,6 +53,7 @@ public class PresenceReaction extends StdAbility
 		super.savable=false;
 		super.canBeUninvoked=false;
 	}
+	@Override
 	protected void cloneFix(Ability E)
 	{
 		reactToM=null;
@@ -101,7 +102,8 @@ public class PresenceReaction extends StdAbility
 			}
 		}
 	}
-	
+
+	@Override
 	public void setMiscText(String parms)
 	{
 		if(parms.startsWith("+"))
@@ -114,6 +116,7 @@ public class PresenceReaction extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		for(CMObject O : managed)
@@ -123,6 +126,7 @@ public class PresenceReaction extends StdAbility
 		return super.okMessage(affecting,msg);
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		for(CMObject O : managed)
@@ -131,18 +135,21 @@ public class PresenceReaction extends StdAbility
 		super.executeMsg(affecting,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		for(CMObject O : managed)
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectPhyStats(affected, affectableStats);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		for(CMObject O : managed)
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectCharStats(affectedMob, affectableStats);
 	}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		for(CMObject O : managed)
@@ -180,10 +187,10 @@ public class PresenceReaction extends StdAbility
 		managed.clear();
 		return false;
 	}
-	
+
 	protected boolean initializeManagedObjects(MOB affected)
 	{
-		if(unmanagedYet.size()==0) 
+		if(unmanagedYet.size()==0)
 			return false;
 		boolean didAnything=false;
 		SLinkedList<Object[]> commands = new SLinkedList<Object[]>();
@@ -253,7 +260,8 @@ public class PresenceReaction extends StdAbility
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -285,13 +293,14 @@ public class PresenceReaction extends StdAbility
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(target==null)
 		{
 			PresenceReaction A=(PresenceReaction)mob.fetchEffect(ID());
-			if(A!=null) 
+			if(A!=null)
 				A.shutdownPresence(mob);
 			if(affected==mob)
 				shutdownPresence(mob);
@@ -324,6 +333,6 @@ public class PresenceReaction extends StdAbility
 			A.initializeManagedObjects(mob);
  			return true;
 		}
-		
+
 	}
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,24 @@ import java.util.*;
 
 public class Disease_Infection extends Disease
 {
-	public String ID() { return "Disease_Infection"; }
-	public String name(){ return "Infection";}
-	public String displayText(){ return "(Infected Wounds)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 0;}
+	@Override public String ID() { return "Disease_Infection"; }
+	@Override public String name(){ return "Infection";}
+	@Override public String displayText(){ return "(Infected Wounds)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 0;}
 
-	protected int DISEASE_TICKS(){return 34;}
-	protected int DISEASE_DELAY(){return 5;}
+	@Override protected int DISEASE_TICKS(){return 34;}
+	@Override protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
-	protected String DISEASE_DONE(){return "Your infected wounds feel better.";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
-	public int abilityCode(){return 0;}
+	@Override protected String DISEASE_DONE(){return "Your infected wounds feel better.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
+	@Override public int abilityCode(){return 0;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

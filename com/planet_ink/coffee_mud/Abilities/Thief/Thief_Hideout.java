@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,18 +39,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Hideout extends ThiefSkill
 {
-	public String ID() { return "Thief_Hideout"; }
-	public String name(){return "Hideout";}
-	public String displayText(){return "(In your hideout)";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Hideout"; }
+	@Override public String name(){return "Hideout";}
+	@Override public String displayText(){return "(In your hideout)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"HIDEOUT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	public Room previousLocation=null;
 	public Room shelter=null;
-	
+
 	public Room getPreviousLocation(MOB mob)
 	{
 		if(previousLocation==null)
@@ -63,6 +63,7 @@ public class Thief_Hideout extends ThiefSkill
 		return previousLocation;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -113,6 +114,7 @@ public class Thief_Hideout extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -135,7 +137,8 @@ public class Thief_Hideout extends ThiefSkill
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -146,7 +149,7 @@ public class Thief_Hideout extends ThiefSkill
 			mob.fetchEffect(ID()).unInvoke();
 			return false;
 		}
-		
+
 		Room thisRoom=mob.location();
 		if(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
@@ -186,7 +189,7 @@ public class Thief_Hideout extends ThiefSkill
 			Room newRoom=shelter;
 			shelter.setArea(mob.location().getArea());
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
-			
+
 			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> slip(s) away.");
 			CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> duck(s) into the hideout.");
 			if(thisRoom.okMessage(mob,msg) && newRoom.okMessage(mob,enterMsg))

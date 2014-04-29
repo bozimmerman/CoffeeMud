@@ -98,7 +98,7 @@ public interface Auctioneer extends ShopKeeper
 
 	public int minTimedAuctionDays();
 	public void setMinTimedAuctionDays(int d);
-	
+
 	public static class AuctionRates
 	{
 		public double liveListPrice=0.0;
@@ -120,8 +120,8 @@ public interface Auctioneer extends ShopKeeper
 			timeCutPct=CMath.s_pct(ratesV.get(4));
 			minDays=CMath.s_int(ratesV.get(5));
 			maxDays=CMath.s_int(ratesV.get(6));
-			if(minDays>maxDays) 
-				minDays=maxDays; 
+			if(minDays>maxDays)
+				minDays=maxDays;
 		}
 		public AuctionRates(Auctioneer A)
 		{
@@ -134,7 +134,7 @@ public interface Auctioneer extends ShopKeeper
 			timeCutPct=A.timedFinalCutPct()<0.0?base.timeCutPct:A.timedFinalCutPct();
 			maxDays=A.maxTimedAuctionDays()<0?base.maxDays:A.maxTimedAuctionDays();
 			minDays=A.minTimedAuctionDays()<0?base.minDays:A.minTimedAuctionDays();
-			if(minDays>maxDays) minDays=maxDays; 
+			if(minDays>maxDays) minDays=maxDays;
 		}
 	}
 }

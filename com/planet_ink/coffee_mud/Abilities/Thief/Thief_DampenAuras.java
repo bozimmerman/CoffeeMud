@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,30 +35,33 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_DampenAuras extends ThiefSkill
 {
-	public String ID() { return "Thief_DampenAuras"; }
-	public String name(){ return "Dampen Auras";}
-	public String displayText(){return "(Dampened Auras)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_DampenAuras"; }
+	@Override public String name(){ return "Dampen Auras";}
+	@Override public String displayText(){return "(Dampened Auras)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"DAMPENAURAS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(unInvoked) return false;
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
-		if(unInvoked) 
+		if(unInvoked)
 			host.delEffect(this);
 		else
 			stats.addAmbiance("-MOST");
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -74,7 +77,8 @@ public class Thief_DampenAuras extends ThiefSkill
 				unInvoke();
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		Environmental E=affected;
@@ -83,6 +87,7 @@ public class Thief_DampenAuras extends ThiefSkill
 			((MOB)E).tell("You noticed the aura dampening is wearing away on "+E.name()+".");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

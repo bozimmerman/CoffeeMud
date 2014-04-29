@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_Trainer extends Prop_StatTrainer
 {
-	public String ID() { return "Prop_Trainer"; }
-	public String name(){ return "THE Training MOB";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public String accountForYourself() { return "Trainer";	}
-	
+	@Override public String ID() { return "Prop_Trainer"; }
+	@Override public String name(){ return "THE Training MOB";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String accountForYourself() { return "Trainer";	}
+
 	private boolean built=false;
 
 	private void addCharClassIfNotFound(MOB mob, CharClass C)
@@ -55,7 +55,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 			mob.baseCharStats().setClassLevel(C,0);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!built)&&(affected instanceof MOB))
@@ -99,8 +100,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 			if(allowedExpertises.size()==0)
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 				allowedExpertises.addElement(e.nextElement());
-			
-			
+
+
 			MOB mob=(MOB)affected;
 			for(int c=0;c<allowedClasses.size();c++)
 			{

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class EndlessThinSky extends StdThinGrid
 {
-	public String ID(){return "EndlessThinSky";}
+	@Override public String ID(){return "EndlessThinSky";}
 	protected boolean crossLinked=false;
 
 	public EndlessThinSky()
@@ -55,16 +55,18 @@ public class EndlessThinSky extends StdThinGrid
 			ysize=3;
 		}
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
 
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new EndlessSky().newInstance();
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -72,18 +74,20 @@ public class EndlessThinSky extends StdThinGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);
 	}
-	public String getGridChildLocaleID(){return "InTheAir";}
+	@Override public String getGridChildLocaleID(){return "InTheAir";}
 
+	@Override
 	protected void fillExitsOfGridRoom(final Room R, final int x, final int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);
-		
-		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
+
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -155,7 +159,7 @@ public class EndlessThinSky extends StdThinGrid
 					linkRoom(R,R2,Directions.DOWN,ox,ox);
 			}
 		}
-		
+
 		if((y==0)&&(doorsR[Directions.NORTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,yGridSize()-1);
@@ -169,8 +173,8 @@ public class EndlessThinSky extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
-		
-		
+
+
 		if((x==0)&&(doorsR[Directions.WEST]==null))
 		{
 			R2=getMakeSingleGridRoom(xGridSize()-1,y);
@@ -184,7 +188,7 @@ public class EndlessThinSky extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
-		
+
 		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 		{
 			if(((x==0)||(y==0))&&(doorsR[Directions.NORTHWEST]==null))
@@ -200,7 +204,7 @@ public class EndlessThinSky extends StdThinGrid
 				if(R2!=null)
 					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
 			}
-			
+
 			if(((x==xGridSize()-1)||(y==0))&&(doorsR[Directions.NORTHEAST]==null))
 			{
 				R2=getMakeSingleGridRoom(0,yGridSize()-1);

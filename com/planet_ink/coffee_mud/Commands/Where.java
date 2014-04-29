@@ -38,8 +38,8 @@ public class Where extends StdCommand
 	public Where(){}
 
 	private final String[] access={"WHERE"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	protected void whereAdd(DVector V, Area area, int i)
 	{
 		if(V.contains(area)) return;
@@ -74,7 +74,8 @@ public class Where extends StdCommand
 			return "^g";
 		return "";
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -140,7 +141,7 @@ public class Where extends StdCommand
 					roomOnly=true;
 					who=who.substring(5).trim();
 				}
-				
+
 				if((who.toUpperCase().startsWith("EXIT "))
 				||(who.toUpperCase().startsWith("EXITS")))
 				{
@@ -511,7 +512,7 @@ public class Where extends StdCommand
 				Area A=(Area)scores.elementAt(i,1);
 				int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
-				
+
 				msg.append(CMStrings.padRight(A.name(),35))
 				   .append(CMStrings.padRight(Integer.toString(lvl),6))
 				   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
@@ -525,7 +526,7 @@ public class Where extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 
 
 }

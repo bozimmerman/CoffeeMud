@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_WeakBridge extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_WeakBridge"; }
-	public String name(){ return "Weak Rickity Bridge";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_WeakBridge"; }
+	@Override public String name(){ return "Weak Rickity Bridge";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 
 	protected boolean bridgeIsUp=true;
 	protected int max=400;
@@ -45,14 +45,17 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	protected int ticksDown=100;
 	protected List<MOB> mobsToKill=new Vector();
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return "Weak and Rickity";	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		mobsToKill=new Vector();
@@ -62,6 +65,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		ticksDown=CMParms.getParmInt(newText,"down",300);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -95,6 +99,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -128,6 +133,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		}
 		super.executeMsg(myHost,msg);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		// get rid of flying restrictions when bridge is up
@@ -136,6 +142,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		&&(bridgeIsUp))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_SPELL_AFFECT)

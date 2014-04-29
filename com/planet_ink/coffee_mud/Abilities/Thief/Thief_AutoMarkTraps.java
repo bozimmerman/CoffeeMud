@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_AutoMarkTraps extends ThiefSkill
 {
-	public String ID() { return "Thief_AutoMarkTraps"; }
-	public String displayText() {return "(Automarking traps)";}
-	public String name(){ return "AutoMark Traps";}
+	@Override public String ID() { return "Thief_AutoMarkTraps"; }
+	@Override public String displayText() {return "(Automarking traps)";}
+	@Override public String name(){ return "AutoMark Traps";}
 	private static final String[] triggerStrings = {"AUTOMARKTRAPS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -77,7 +78,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 			}
 		}
 	}
-	
+
 	public void dropem(MOB mob, Physical P)
 	{
 		Ability A=mob.fetchAbility("Thief_DetectTraps");
@@ -101,7 +102,8 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 		mob.curState().setHitPoints(savedState.getHitPoints());
 		mob.curState().setMovement(savedState.getMovement());
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonInsects extends Chant
 {
-	public String ID() { return "Chant_SummonInsects"; }
-	public String name(){ return "Summon Insects";}
-	public String displayText(){return "(In a swarm of insects)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonInsects"; }
+	@Override public String name(){ return "Summon Insects";}
+	@Override public String displayText(){return "(In a swarm of insects)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	Room castingLocation=null;
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
@@ -67,6 +68,7 @@ public class Chant_SummonInsects extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -80,6 +82,7 @@ public class Chant_SummonInsects extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		 if(mob!=null)
@@ -96,6 +99,7 @@ public class Chant_SummonInsects extends Chant
 		 return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

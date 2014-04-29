@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
-	public String ID() { return "Disease_MummyRot"; }
-	public String name(){ return "Mummy Rot";}
-	public String displayText(){ return "(Mummy Rot)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_MummyRot"; }
+	@Override public String name(){ return "Mummy Rot";}
+	@Override public String displayText(){ return "(Mummy Rot)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"MUMMYROT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_DISEASE;}
-	public int abilityCode(){return 0;}
-	public int spreadBitmap() { return 0; }
-	public int difficultyLevel(){return 2;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_DISEASE;}
+	@Override public int abilityCode(){return 0;}
+	@Override public int spreadBitmap() { return 0; }
+	@Override public int difficultyLevel(){return 2;}
 
 	int conDown=1;
 	int diseaseTick=0;
@@ -58,7 +58,8 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	{
 		return "Suffering the effects of "+name();
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -77,6 +78,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -94,6 +96,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		}
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -107,6 +110,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_InfuseBalance extends Prayer
 {
-	public String ID() { return "Prayer_InfuseBalance"; }
-	public String name(){return "Infuse Balance";}
-	public String displayText(){return "(Infused Balance)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prayer_InfuseBalance"; }
+	@Override public String name(){return "Infuse Balance";}
+	@Override public String displayText(){return "(Infused Balance)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int serviceRunning=0;
-	public int abilityCode(){return serviceRunning;}
-	public void setAbilityCode(int newCode){serviceRunning=newCode;}
+	@Override public int abilityCode(){return serviceRunning;}
+	@Override public void setAbilityCode(int newCode){serviceRunning=newCode;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -57,6 +58,7 @@ public class Prayer_InfuseBalance extends Prayer
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -70,6 +72,7 @@ public class Prayer_InfuseBalance extends Prayer
 
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(serviceRunning==0)
@@ -93,6 +96,7 @@ public class Prayer_InfuseBalance extends Prayer
 		return super.okMessage(myHost, msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
@@ -109,7 +113,7 @@ public class Prayer_InfuseBalance extends Prayer
 		Deity D=null;
 		if(CMLib.law().getClericInfusion(target)!=null)
 		{
-			
+
 			if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
 			if(D!=null)
 				mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name(mob)+".");
@@ -117,7 +121,7 @@ public class Prayer_InfuseBalance extends Prayer
 				mob.tell("There is already an infused aura around "+target.name(mob)+".");
 			return false;
 		}
-		
+
 		D=mob.getMyDeity();
 		if(target instanceof Room)
 		{

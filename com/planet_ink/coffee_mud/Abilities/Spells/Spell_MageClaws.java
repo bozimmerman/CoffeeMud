@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_MageClaws extends Spell
 {
-	public String ID() { return "Spell_MageClaws"; }
-	public String name(){return "Mage Claws";}
-	public String displayText(){return "(Mage Claws spell)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+	@Override public String ID() { return "Spell_MageClaws"; }
+	@Override public String name(){return "Mage Claws";}
+	@Override public String displayText(){return "(Mage Claws spell)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 	protected Weapon naturalWeapon=null;
 
 	private boolean freeHands(MOB mob)
 	{
-		if((mob==null) 
+		if((mob==null)
 		||(mob.fetchWieldedItem()!=null)
 		||(mob.fetchHeldItem()!=null))
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -88,7 +89,8 @@ public class Spell_MageClaws extends Spell
 			msg.setValue(msg.value()+naturalWeapon.basePhyStats().damage()+super.getXLEVELLevel(mob));
 		return super.okMessage(myHost,msg);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -104,6 +106,7 @@ public class Spell_MageClaws extends Spell
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,15 +28,16 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 */
 public class Sessions extends StdLibrary implements SessionsList
 {
-	public String ID(){return "Sessions";}
-	
-	private volatile long nextSweepTime = System.currentTimeMillis(); 
-	
+	@Override public String ID(){return "Sessions";}
+
+	private volatile long nextSweepTime = System.currentTimeMillis();
+
 	public final SLinkedList<Session> all=new SLinkedList<Session>();
-	
+
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>()
 	{
-		public boolean passesFilter(Session obj) { 
+		@Override
+		public boolean passesFilter(Session obj) {
 			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
 				MOB M=obj.mob();
@@ -45,28 +46,32 @@ public class Sessions extends StdLibrary implements SessionsList
 			return false;
 		}
 	};
-	
-	public Iterator<Session> all(){return all.iterator();}
-	public Iterable<Session> allIterable(){return all;}
+
+	@Override public Iterator<Session> all(){return all.iterator();}
+	@Override public Iterable<Session> allIterable(){return all;}
+	@Override
 	public Iterator<Session> localOnline()
 	{
 		return new FilteredIterator<Session>(all.iterator(),localOnlineFilter);
 	}
+	@Override
 	public Iterable<Session> localOnlineIterable()
 	{
 		return new FilteredIterable<Session>(all,localOnlineFilter);
 	}
-	
+
+	@Override
 	public int getCountAll()
 	{
 		return getCount(all());
 	}
-	
+
+	@Override
 	public int getCountLocalOnline()
 	{
 		return getCount(localOnline());
 	}
-	
+
 	protected int getCount(Iterator<Session> i)
 	{
 		int xt=0;
@@ -77,12 +82,13 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return xt;
 	}
-	
+
+	@Override
 	public Session getAllSessionAt(int index)
 	{
 		return getAllSessionAt(all(),index);
 	}
-	
+
 	protected Session getAllSessionAt(Iterator<Session> i, int index)
 	{
 		int xt=0;
@@ -96,18 +102,21 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return null;
 	}
-	
+
+	@Override
 	public synchronized void add(Session s)
 	{
 		if(!all.contains(s))
 			all.add(s);
 	}
-	
+
+	@Override
 	public synchronized void remove(Session s)
 	{
 		all.remove(s);
 	}
-	
+
+	@Override
 	public void stopSessionAtAllCosts(Session S)
 	{
 		if(S==null) return;
@@ -122,7 +131,7 @@ public class Sessions extends StdLibrary implements SessionsList
 			}
 		}
 	}
-	
+
 	protected void sessionCheck()
 	{
 		setThreadStatus(serviceClient,"checking player sessions.");
@@ -215,8 +224,9 @@ public class Sessions extends StdLibrary implements SessionsList
 			}
 		}
 	}
-	
-	public boolean activate() 
+
+	@Override
+	public boolean activate()
 	{
 		nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
 		if(serviceClient==null)
@@ -226,8 +236,8 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return true;
 	}
-	
-	@Override public boolean tick(Tickable ticking, int tickID) 
+
+	@Override public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
 		try
@@ -237,7 +247,7 @@ public class Sessions extends StdLibrary implements SessionsList
 			{
 				for(final Session S : all)
 				{
-					if(!S.isRunning()) 
+					if(!S.isRunning())
 					{
 						CMLib.threads().executeRunnable(S.getGroupName(), S);
 					}
@@ -261,8 +271,9 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return true;
 	}
-	
-	public boolean shutdown() 
+
+	@Override
+	public boolean shutdown()
 	{
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
@@ -271,14 +282,16 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return true;
 	}
-	
+
+	@Override
 	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
 	{
 		Session S=findPlayerSessionOnline(srchStr, exactOnly);
 		if(S==null) return null;
 		return S.mob();
 	}
-	
+
+	@Override
 	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
 	{
 		// then look for players

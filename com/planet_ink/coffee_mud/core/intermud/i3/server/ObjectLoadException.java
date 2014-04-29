@@ -30,15 +30,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * limitations under the License.
  *
  */
-public class ObjectLoadException extends Exception 
+public class ObjectLoadException extends Exception
 {
 	public static final long serialVersionUID=0;
-	
+
 	public ObjectLoadException()
 	{
 		super();
 	}
-	
+
 	public ObjectLoadException(String err)
 	{
 		super(err);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 */
 public class Prop_HaveResister extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_HaveResister"; }
-	public String name(){ return "Resistance due to ownership";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public boolean bubbleAffect(){return true;}
+	@Override public String ID() { return "Prop_HaveResister"; }
+	@Override public String name(){ return "Resistance due to ownership";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public boolean bubbleAffect(){return true;}
 	protected CharStats adjCharStats=null;
 	protected String maskString="";
 	protected String parmString="";
@@ -45,13 +45,15 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	protected long lastProtection=0;
 	protected int remainingProtection=0;
 
-	public long flags(){return Ability.FLAG_RESISTER;}
+	@Override public long flags(){return Ability.FLAG_RESISTER;}
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -81,6 +83,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			setMiscText(text());
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
@@ -99,7 +102,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	{
 		String nonMask=parmString.toUpperCase();
 		int z=nonMask.indexOf(protType.toUpperCase());
-		if(z<0) 
+		if(z<0)
 			return 0;
 		int x=nonMask.indexOf('%',z+protType.length());
 		if(x<0)
@@ -131,7 +134,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		if(protection>=100){ return 0;}
 		return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
 	}
-	
+
 	public void resistAffect(CMMsg msg, MOB mob, Ability me, String maskString)
 	{
 		if(mob.location()==null) return;
@@ -168,6 +171,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		}
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return "The owner gains resistances: "+describeResistance(text());}
 
@@ -206,7 +210,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		}
 		return true;
 	}
-	
+
 	public String describeResistance(String text)
 	{
 		String id=parmString+".";
@@ -214,7 +218,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			id+="  Restrictions: "+CMLib.masking().maskDesc(maskString)+".";
 		return id;
 	}
-	
+
 	public boolean canResist(Environmental E)
 	{
 		if((affected instanceof Item)
@@ -225,6 +229,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return false;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((canResist(msg.target()))

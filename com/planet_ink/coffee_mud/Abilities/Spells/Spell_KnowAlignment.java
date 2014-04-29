@@ -35,11 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_KnowAlignment extends Spell
 {
-	public String ID() { return "Spell_KnowAlignment"; }
-	public String name(){return "Know Alignment";}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_KnowAlignment"; }
+	@Override public String name(){return "Know Alignment";}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

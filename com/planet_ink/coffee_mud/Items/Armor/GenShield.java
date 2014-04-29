@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenShield extends GenArmor implements Shield
 {
-	public String ID(){	return "GenShield";}
+	@Override public String ID(){	return "GenShield";}
 	public GenShield()
 	{
 		super();
@@ -48,7 +48,7 @@ public class GenShield extends GenArmor implements Shield
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_OAK;
 	}
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
 
 }

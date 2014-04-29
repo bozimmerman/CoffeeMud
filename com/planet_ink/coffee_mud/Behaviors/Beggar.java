@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,17 @@ import java.util.*;
 */
 public class Beggar extends StdBehavior
 {
-	public String ID(){return "Beggar";}
+	@Override public String ID(){return "Beggar";}
 	Vector<MOB> mobsHitUp=new Vector<MOB>();
 	int tickTock=0;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "vagrant-like begging";
 	}
-	
+
+	@Override
 	public CMObject copyOf()
 	{
 		Beggar obj=(Beggar)super.copyOf();
@@ -51,7 +53,8 @@ public class Beggar extends StdBehavior
 		obj.mobsHitUp.addAll(mobsHitUp);
 		return obj;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);
@@ -62,6 +65,7 @@ public class Beggar extends StdBehavior
 			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

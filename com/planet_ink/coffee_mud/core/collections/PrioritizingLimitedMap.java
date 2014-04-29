@@ -34,8 +34,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected final long touchAgeLimitMillis;
 	protected final long maxAgeLimitMillis;
 	protected final int  threshHoldToExpand;
-	
-	
+
+
 	private class LinkedEntry<V,W> extends Pair<V,W>
 	{
 		public volatile LinkedEntry<V,W> next=null;
@@ -43,17 +43,17 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		public volatile int 			 priority=0;
 		public volatile boolean			 causedExpand=false;
 		public volatile int  			 index=0;
-		public volatile long			 lastTouch=System.currentTimeMillis(); 
+		public volatile long			 lastTouch=System.currentTimeMillis();
 		public final	long  			 birthDate=System.currentTimeMillis();
 		public LinkedEntry(V frst, W scnd)
 		{
 			super(frst, scnd);
 		}
 	}
-	
+
 	protected volatile LinkedEntry<T,K>  head=null;
 	protected volatile LinkedEntry<T,K>  tail=null;
-	protected final TreeMap<T,LinkedEntry<T,K>> map=new TreeMap<T,LinkedEntry<T,K>>(); 
+	protected final TreeMap<T,LinkedEntry<T,K>> map=new TreeMap<T,LinkedEntry<T,K>>();
 
 	/**
 	 * Constructed a "limit" tree-based map.
@@ -76,7 +76,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		this.maxAgeLimitMillis=(maxAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : maxAgeLimitMillis;
 		this.threshHoldToExpand=threshHoldToExpand;
 	}
-	
+
 	/**
 	 * Constructed a "limit" tree-based map.
 	 * All the parameters here are somewhat fuzzy.  The itemLimit will be ignored if lots of youngsters
@@ -91,7 +91,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	{
 		this(itemLimit,touchAgeLimitMillis,maxAgeLimitMillis,Integer.MAX_VALUE);
 	}
-	
+
 	@Override
 	public K get(Object key)
 	{
@@ -106,16 +106,15 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized void clear() 
+	public synchronized void clear()
 	{
 		head=null;
 		tail=null;
 		map.clear();
 	}
 
-	@Override
-	public boolean containsKey(Object arg0) { return map.containsKey(arg0); }
-	
+	@Override public boolean containsKey(Object arg0) { return map.containsKey(arg0); }
+
 	public Enumeration<T> prioritizedKeys()
 	{
 		return new Enumeration<T>()
@@ -140,7 +139,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 			}
 		};
 	}
-	
+
 	@Override
 	public synchronized boolean containsValue(Object arg0)
 	{
@@ -159,11 +158,9 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		return c;
 	}
 
-	@Override
-	public boolean isEmpty() { return map.isEmpty(); }
+	@Override public boolean isEmpty() { return map.isEmpty(); }
 
-	@Override
-	public Set<T> keySet() { return map.keySet(); }
+	@Override public Set<T> keySet() { return map.keySet(); }
 
 	private void markFoundAgain(LinkedEntry<T,K> p)
 	{

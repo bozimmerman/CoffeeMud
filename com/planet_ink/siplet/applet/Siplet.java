@@ -24,7 +24,7 @@ limitations under the License.
 public class Siplet
 {
 	public final static boolean debugDataOut=false;
-	
+
 	public final static long serialVersionUID=7;
 	public static final float VERSION_MAJOR=(float)2.1;
 	public static final long  VERSION_MINOR=0;
@@ -49,7 +49,7 @@ public class Siplet
 		Telnet.setNeverMXPSupport(!mxp);
 		Telnet.setNeverMSPSupport(msp);
 	}
-	
+
 	public void init()
 	{
 		buffer = new StringBuffer();
@@ -73,7 +73,7 @@ public class Siplet
 	public void destroy()
 	{
 	}
-	
+
 	public Siplet create() { return new Siplet();}
 
 	public void addItem(String newWord)
@@ -142,7 +142,7 @@ public class Siplet
 		}
 		return true;
 	}
-	
+
 	public void disconnectFromURL()
 	{
 		connected=false;
@@ -150,7 +150,7 @@ public class Siplet
 		{
 			if(out!=null)
 			{
-				out.write(new byte[]{(byte)255,(byte)253,18}); //iac, iacdo, logout 
+				out.write(new byte[]{(byte)255,(byte)253,18}); //iac, iacdo, logout
 				out.flush();
 			}
 		}
@@ -208,7 +208,7 @@ public class Siplet
 		}
 	}
 	public String getJScriptCommands()
-	{ 
+	{
 		return Telnet.getEnquedJScript();
 	}
 

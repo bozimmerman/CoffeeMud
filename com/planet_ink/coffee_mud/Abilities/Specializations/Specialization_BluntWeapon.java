@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 */
 public class Specialization_BluntWeapon extends Specialization_Weapon
 {
-	public String ID() { return "Specialization_BluntWeapon"; }
-	public String name(){ return "Blunt Weapon Specialization";}
+	@Override public String ID() { return "Specialization_BluntWeapon"; }
+	@Override public String name(){ return "Blunt Weapon Specialization";}
 	public Specialization_BluntWeapon()
 	{
 		super();

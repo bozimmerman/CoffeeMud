@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,12 @@ import java.util.*;
 
 public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
-	public String ID() { return "Chant_SummonSeaweed"; }
-	public String name(){ return "Summon Seaweed";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonSeaweed"; }
+	@Override public String name(){ return "Summon Seaweed";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected boolean seaOk(){return true;}
 
 	public static Item buildSeaweed(MOB mob, Room room)
@@ -98,11 +98,13 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		return newItem;
 	}
 
+	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		return buildSeaweed(mob,room);
 	}
 
+	@Override
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)

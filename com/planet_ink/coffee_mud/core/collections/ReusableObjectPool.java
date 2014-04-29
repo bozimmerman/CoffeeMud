@@ -26,7 +26,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReusableObjectPool<T extends CMObject> 
+public class ReusableObjectPool<T extends CMObject>
 {
 	private final NotifyingCMObjectVector<T>   			masterList;
 	private final Stack<NotifyingCMObjectVector<T>>		masterPool = new Stack<NotifyingCMObjectVector<T>>();
@@ -59,17 +59,18 @@ public class ReusableObjectPool<T extends CMObject>
 			}
 			fix();
 		}
-		
+
 		public void fix()
 		{
-			Runtime.getRuntime().runFinalization(); 
+			Runtime.getRuntime().runFinalization();
 			System.gc();
 			try{Thread.sleep(100);}catch(Exception e){}
-			Runtime.getRuntime().runFinalization(); 
+			Runtime.getRuntime().runFinalization();
 			try{Thread.sleep(100);}catch(Exception e){}
 			System.gc();
 		}
-		
+
+		@Override
 		public void run()
 		{
 			try
@@ -99,11 +100,11 @@ public class ReusableObjectPool<T extends CMObject>
 			}
 		}
 	}
-	
+
 	private class NotifyingCMObjectVector<K extends CMObject> extends Vector<T>
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		public NotifyingCMObjectVector(final List<T> V)
 		{
 			super(V);
@@ -112,6 +113,7 @@ public class ReusableObjectPool<T extends CMObject>
 		{
 			super(size);
 		}
+		@Override
 		protected void finalize() throws Throwable
 		{
 			final NotifyingCMObjectVector<T> V = new NotifyingCMObjectVector<T>(this);
@@ -123,7 +125,7 @@ public class ReusableObjectPool<T extends CMObject>
 			super.finalize();
 		}
 	}
-	
+
 	public ReusableObjectPool(final List<T> initialEntry, final int minEntries)
 	{
 		if(initialEntry.size()==0)
@@ -134,11 +136,11 @@ public class ReusableObjectPool<T extends CMObject>
 		for(int i=0;i<minEntries;i++)
 			masterPool.add(makeNewEntry());
 	}
-	
+
 	public int getMasterPoolSize() { return masterPool.size();}
-	
+
 	public int getListSize() { return masterList.size(); }
-	
+
 	@SuppressWarnings("unchecked")
 	private final NotifyingCMObjectVector<T> makeNewEntry()
 	{
@@ -150,7 +152,7 @@ public class ReusableObjectPool<T extends CMObject>
 			Log.errOut("ReuseOP","Reusable Object Pool pass all reason: "+CMParms.toStringList(masterList));
 		return myList;
 	}
-	
+
 	public final List<T> get()
 	{
 		if(masterList.size()==0)

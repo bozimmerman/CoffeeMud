@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2012-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,19 @@ import java.util.*;
 */
 public class Prop_RoomLit extends Property
 {
-	public String ID() { return "Prop_RoomLit"; }
-	public String name(){ return "Lighting Property";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public boolean bubbleAffect(){return true;}
+	@Override public String ID() { return "Prop_RoomLit"; }
+	@Override public String name(){ return "Lighting Property";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public boolean bubbleAffect(){return true;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Always Lit";	}
 
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(CMLib.flags().isInDark(affected))

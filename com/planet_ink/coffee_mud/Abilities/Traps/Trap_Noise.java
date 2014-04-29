@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Trap_Noise extends StdTrap
 {
-	public String ID() { return "Trap_Noise"; }
-	public String name(){ return "noisy trap";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 1;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_Noise"; }
+	@Override public String name(){ return "noisy trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 1;}
+	@Override public String requiresToSet(){return "";}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

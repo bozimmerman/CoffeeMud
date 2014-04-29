@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Wand_Fire extends StdWand
 {
-	public String ID(){	return "Wand_Fire";}
+	@Override public String ID(){	return "Wand_Fire";}
 	public Wand_Fire()
 	{
 		super();
@@ -51,11 +51,13 @@ public class Wand_Fire extends StdWand
 	}
 
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="BLAZE, BURN";
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -63,6 +65,7 @@ public class Wand_Fire extends StdWand
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

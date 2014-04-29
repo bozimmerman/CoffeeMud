@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class BankAccountInfo extends StdWebMacro
 {
-	public String name() { return "BankAccountInfo"; }
+	@Override public String name() { return "BankAccountInfo"; }
 
 	public static class BankAccountStuff
 	{
@@ -43,7 +43,7 @@ public class BankAccountInfo extends StdWebMacro
 		MoneyLibrary.DebtItem debt=null;
 		List<Item> items=new Vector<Item>(1);
 	}
-	
+
 	public static synchronized BankAccountStuff getMakeAccountInfo(HTTPRequest httpReq, Banker B, MOB playerM)
 	{
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
@@ -62,7 +62,8 @@ public class BankAccountInfo extends StdWebMacro
 		httpReq.getRequestObjects().put("BANKINFO: "+B.bankChain()+": "+playerM.Name(),info);
 		return info;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		MOB playerM=null;
@@ -109,7 +110,7 @@ public class BankAccountInfo extends StdWebMacro
 				}
 			}
 			playerA=CMLib.map().getStartArea(playerM);
-			if(playerA==null) 
+			if(playerA==null)
 				return "PLAYER not found!";
 		}
 		else
@@ -117,9 +118,9 @@ public class BankAccountInfo extends StdWebMacro
 		BankAccountStuff acct=BankAccountInfo.getMakeAccountInfo(httpReq,B,playerM);
 		double balance=acct.balance;
 		if(parms.containsKey("HASACCT"))
-			return (balance>0.0)?"true":"false"; 
+			return (balance>0.0)?"true":"false";
 		if(balance<=0.0) return "";
-		if(parms.containsKey("BALANCE")) 
+		if(parms.containsKey("BALANCE"))
 			return CMLib.beanCounter().nameCurrencyLong(playerM,balance);
 		if((parms.containsKey("DEBTAMT"))
 		||(parms.containsKey("DEBTRSN"))
@@ -176,7 +177,7 @@ public class BankAccountInfo extends StdWebMacro
 		{
 			if((destroyPlayer)&&(playerM!=null))
 			{
-				playerM.setLocation(null); 
+				playerM.setLocation(null);
 				playerM.destroy();
 			}
 		}

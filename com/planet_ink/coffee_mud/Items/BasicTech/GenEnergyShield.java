@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenEnergyShield extends GenPersonalShield
 {
-	public String ID(){	return "GenEnergyShield";}
+	@Override public String ID(){	return "GenEnergyShield";}
 
 	public GenEnergyShield()
 	{
@@ -43,24 +43,24 @@ public class GenEnergyShield extends GenPersonalShield
 		setDisplayText("an energy shield generator sits here.");
 		setDescription("The energy shield generator is worn about the body and activated to use. It protects against standard blaster and energy fire. ");
 	}
-	
+
 	@Override
-	protected String fieldOnStr(MOB viewerM) 
-	{ 
+	protected String fieldOnStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"An energy field surrounds <O-NAME>.":
-			"An energy field surrounds <T-NAME>."; 
+			"An energy field surrounds <T-NAME>.";
 	}
-	
+
 	@Override
-	protected String fieldDeadStr(MOB viewerM) 
+	protected String fieldDeadStr(MOB viewerM)
 	{
 		return (owner() instanceof MOB)?
 			"The energy field around <O-NAME> flickers and dies out.":
-			"The energy field around <T-NAME> flickers and dies out."; 
+			"The energy field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(mob.location()!=null)
@@ -81,14 +81,14 @@ public class GenEnergyShield extends GenPersonalShield
 		}
 		return false;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(!activated())
 			return false;
-		if((msg.tool() instanceof Electronics) 
-		&& (msg.tool() instanceof Weapon) 
+		if((msg.tool() instanceof Electronics)
+		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
 		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SHOOT))
 		{

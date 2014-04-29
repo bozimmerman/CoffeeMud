@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Alertness extends ThiefSkill
 {
-	public String ID() { return "Thief_Alertness"; }
-	public String name(){ return "Alertness";}
-	public String displayText(){return "(Alertness)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Alertness"; }
+	@Override public String name(){ return "Alertness";}
+	@Override public String displayText(){return "(Alertness)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ALERTNESS"};
-	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	Room room=null;
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -89,6 +90,7 @@ public class Thief_Alertness extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -96,7 +98,8 @@ public class Thief_Alertness extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You don't feel quite so alert any more.");
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

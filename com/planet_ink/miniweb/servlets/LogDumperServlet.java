@@ -31,7 +31,7 @@ limitations under the License.
 */
 
 /**
- * Dumps the web server log into a page 
+ * Dumps the web server log into a page
  * @author Bo Zimmerman
  *
  */
@@ -74,7 +74,7 @@ public class LogDumperServlet implements SimpleServlet
 				{
 					try
 					{
-						bs.close(); 
+						bs.close();
 					}
 					catch(Exception e) {} // java really needs an " i don't care " syntax for exception handling
 				}

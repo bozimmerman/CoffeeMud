@@ -34,14 +34,15 @@ import java.util.*;
 */
 public class Prop_EnlargeRoom extends Property
 {
-	public String ID() { return "Prop_EnlargeRoom"; }
-	public String name(){ return "Change a rooms movement requirements";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_EnlargeRoom"; }
+	@Override public String name(){ return "Change a rooms movement requirements";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
+	@Override
 	public String accountForYourself()
 	{ return "Enlarged";	}
 
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
 	protected double dval(String s)
 	{
@@ -55,6 +56,7 @@ public class Prop_EnlargeRoom extends Property
 		return (int)Math.round(dval(s));
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(text().length()>0)

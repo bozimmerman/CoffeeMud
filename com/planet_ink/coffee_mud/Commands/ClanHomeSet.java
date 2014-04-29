@@ -39,22 +39,23 @@ public class ClanHomeSet extends StdCommand
 	public ClanHomeSet(){}
 
 	private final String[] access={"CLANHOMESET"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
-		
+
 		Clan C=null;
 		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
-			
+
 		if(C==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_HOME)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
-		
+
 		commands.setElementAt(getAccessWords()[0],0);
 
 		Room R=mob.location();
@@ -101,8 +102,8 @@ public class ClanHomeSet extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

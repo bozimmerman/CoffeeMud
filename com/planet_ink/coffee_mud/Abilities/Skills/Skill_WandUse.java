@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 */
 public class Skill_WandUse extends StdSkill
 {
-	public String ID() { return "Skill_WandUse"; }
-	public String name(){ return "Wands";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
-	public int abilityCode(){return (invoker==null)?0:(getXLEVELLevel(invoker));}
+	@Override public String ID() { return "Skill_WandUse"; }
+	@Override public String name(){ return "Wands";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
+	@Override public int abilityCode(){return (invoker==null)?0:(getXLEVELLevel(invoker));}
 }

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class Gem extends StdItem
 {
-	public String ID(){	return "Gem";}
+	@Override public String ID(){	return "Gem";}
 	public final static int QUARTZ 			= 0;
 	public final static int AZURITE			= 1;
 	public final static int BLOODSTONE		= 2;
@@ -62,12 +62,13 @@ public class Gem extends StdItem
 		recoverPhyStats();
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
 		if(lastLevel!=phyStats().level())
-		{ 
-			lastLevel=phyStats().level(); 
+		{
+			lastLevel=phyStats().level();
 			setItemDescription(phyStats.level());
 		}
 	}

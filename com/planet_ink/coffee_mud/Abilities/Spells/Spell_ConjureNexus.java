@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ConjureNexus extends Spell
 {
-	public String ID() { return "Spell_ConjureNexus"; }
-	public String name(){return "Conjure Nexus";}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_ConjureNexus"; }
+	@Override public String name(){return "Conjure Nexus";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(invoker()!=null)&&(affected!=null)&&(affected instanceof Room))
@@ -48,6 +49,7 @@ public class Spell_ConjureNexus extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -74,6 +76,7 @@ public class Spell_ConjureNexus extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		try
@@ -90,7 +93,7 @@ public class Spell_ConjureNexus extends Spell
 							A.unInvoke();
 							break;
 						}
-						
+
 					}
 			}
 		}catch(NoSuchElementException nse){}

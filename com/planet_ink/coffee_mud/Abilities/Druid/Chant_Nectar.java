@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Nectar extends Chant
 {
-	public String ID() { return "Chant_Nectar"; }
-	public String name(){ return "Nectar";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_Nectar"; }
+	@Override public String name(){ return "Nectar";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return 0;}
 	public Vector drank=null;
 	protected int lastNum=-1;
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected==null)
@@ -68,6 +69,7 @@ public class Chant_Nectar extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -97,6 +99,7 @@ public class Chant_Nectar extends Chant
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)
@@ -122,6 +125,7 @@ public class Chant_Nectar extends Chant
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)

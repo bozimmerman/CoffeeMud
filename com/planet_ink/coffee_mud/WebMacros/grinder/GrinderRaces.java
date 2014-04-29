@@ -366,11 +366,11 @@ public class GrinderRaces
 			}
 		}
 		R.setStat("BREATHES", CMParms.toStringList(l));
-				
+
 		DVector DV;
 		setDynAbilities(R,httpReq);
 		setDynEffects(R,httpReq);
-		
+
 		DV=cabilities(httpReq);
 		R.setStat("NUMCABLE", ""+DV.size());
 		for(int i=0;i<DV.size();i++)

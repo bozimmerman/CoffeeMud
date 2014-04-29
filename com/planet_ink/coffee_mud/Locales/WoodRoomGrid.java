@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class WoodRoomGrid extends StdGrid
 {
-	public String ID(){return "WoodRoomGrid";}
+	@Override public String ID(){return "WoodRoomGrid";}
 	public WoodRoomGrid()
 	{
 		super();
@@ -42,7 +42,7 @@ public class WoodRoomGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 
-	public String getGridChildLocaleID(){return "WoodRoom";}
+	@Override public String getGridChildLocaleID(){return "WoodRoom";}
 }

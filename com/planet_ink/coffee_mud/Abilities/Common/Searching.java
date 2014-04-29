@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Searching extends CommonSkill
 {
-	public String ID() { return "Searching"; }
-	public String name(){ return "Searching";}
+	@Override public String ID() { return "Searching"; }
+	@Override public String name(){ return "Searching";}
 	private static final String[] triggerStrings = {"SEARCH","SEARCHING"};
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected Room searchRoom=null;
 	private int bonusThisRoom=0;
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -57,6 +58,7 @@ public class Searching extends CommonSkill
 		verb="searching";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -89,6 +91,7 @@ public class Searching extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affectedEnv,affectableStats);
@@ -96,6 +99,7 @@ public class Searching extends CommonSkill
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

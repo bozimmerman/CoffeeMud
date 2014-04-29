@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,21 @@ import java.util.*;
 */
 public class Chimp extends Monkey
 {
-	public String ID(){	return "Chimp"; }
-	public String name(){ return "Chimp"; }
-	public int shortestMale(){return 36;}
-	public int shortestFemale(){return 34;}
-	public int heightVariance(){return 8;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 50;}
-	public String racialCategory(){return "Primate";}
+	@Override public String ID(){	return "Chimp"; }
+	@Override public String name(){ return "Chimp"; }
+	@Override public int shortestMale(){return 36;}
+	@Override public int shortestFemale(){return 34;}
+	@Override public int heightVariance(){return 8;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 50;}
+	@Override public String racialCategory(){return "Primate";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -55,6 +56,7 @@ public class Chimp extends Monkey
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

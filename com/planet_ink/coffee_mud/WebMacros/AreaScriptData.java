@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AreaScriptData extends AreaScriptNext 
+public class AreaScriptData extends AreaScriptNext
 {
-	public String name() { return "AreaScriptData"; }
+	@Override public String name() { return "AreaScriptData"; }
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		
+
 		String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
 		String script=httpReq.getUrlParameter("AREASCRIPT");
@@ -64,7 +65,7 @@ public class AreaScriptData extends AreaScriptNext
 		}
 		else
 			entry=(subList.size()>0)?subList.get(0):null;
-			
+
 		if(parms.containsKey("NEXT")||parms.containsKey("RESET"))
 		{
 			if(parms.containsKey("RESET"))
@@ -89,24 +90,24 @@ public class AreaScriptData extends AreaScriptNext
 				return "<!--EMPTY-->";
 			return " @break@";
 		}
-		
+
 		StringBuilder str = new StringBuilder("");
-		
+
 		if(parms.containsKey("NUMHOSTS"))
 			str.append(subList.size()+", ");
-		
+
 		if(parms.containsKey("FILE") && (entry != null))
 			str.append(Resources.makeFileResourceName(entry.fileName)+", ");
-		
+
 		if(parms.containsKey("RESOURCEKEY") && (entry != null))
 			str.append(entry.instanceKey+", ");
-		
+
 		if(parms.containsKey("RESOURCEKEYENCODED") && (entry != null))
 			try
 			{
 				str.append(URLEncoder.encode(entry.instanceKey,"UTF-8")+", ");
 			}catch(Exception e){}
-		
+
 		if(parms.containsKey("PATH") && (entry != null))
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
@@ -116,7 +117,7 @@ public class AreaScriptData extends AreaScriptNext
 
 		if(parms.containsKey("ENTRYPATH") && (entry != null))
 			str.append(CMParms.combineWith(entry.path, '.',0, entry.path.size())+", ");
-		
+
 		if(parms.containsKey("CUSTOMSCRIPT") && (entry != null))
 			try
 			{
@@ -135,14 +136,14 @@ public class AreaScriptData extends AreaScriptNext
 				}
 				str.append(webify(new StringBuffer(s))+", ");
 			}catch(Exception e){}
-		
+
 		if(parms.containsKey("FILENAME") && (entry != null))
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
 			int x=path.lastIndexOf('/');
 			str.append(((x<0)?path:path.substring(x+1))+", ");
 		}
-		
+
 		if(parms.containsKey("ENCODEDPATH") && (entry != null))
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
@@ -152,7 +153,7 @@ public class AreaScriptData extends AreaScriptNext
 				str.append(URLEncoder.encode(((x<0)?"":path.substring(0,x)),"UTF-8")+", ");
 			}catch(Exception e){}
 		}
-		
+
 		if(parms.containsKey("ENCODEDFILENAME") && (entry != null))
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
@@ -162,25 +163,25 @@ public class AreaScriptData extends AreaScriptNext
 				str.append(URLEncoder.encode(((x<0)?path:path.substring(x+1)),"UTF-8")+", ");
 			}catch(Exception e){}
 		}
-		
+
 		if(parms.containsKey("ROOM") && (entry != null) && (entry.path.size()>1))
 			str.append(entry.path.get(1)+", ");
-		
+
 		if(parms.containsKey("AREA") && (entry != null))
 			str.append(entry.path.get(0)+", ");
-		
+
 		if(parms.containsKey("SCRIPTKEY") && (entry != null))
 			str.append(entry.instanceKey+", ");
-		
+
 		if(parms.containsKey("CLEARRESOURCE") && (entry != null))
 			Resources.removeResource(entry.instanceKey);
-		
+
 		if(parms.containsKey("ISCUSTOM") && (entry != null))
 			str.append(entry.key.equalsIgnoreCase("Custom")+", ");
-		
+
 		if(parms.containsKey("ISFILE") && (entry != null))
 			str.append(!entry.key.equalsIgnoreCase("Custom")+", ");
-		
+
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
 			strstr=strstr.substring(0,strstr.length()-2);

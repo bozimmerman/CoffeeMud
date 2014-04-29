@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,29 +36,31 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_WeaponSharpening extends FighterSkill
 {
-	public String ID() { return "Fighter_WeaponSharpening"; }
-	public String name(){ return "Weapon Sharpening";}
+	@Override public String ID() { return "Fighter_WeaponSharpening"; }
+	@Override public String name(){ return "Weapon Sharpening";}
 	protected String displayString="Sharpening";
-	public String displayText(){ return "("+displayString+")";}
+	@Override public String displayText(){ return "("+displayString+")";}
 	private static final String[] triggerStrings = {"WEAPONSHARPENING","SHARPEN"};
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
-	public int usageType(){return USAGE_MANA;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
+	@Override public int usageType(){return USAGE_MANA;}
 	protected final static int TICKS_TO_SHARPEN=8;
 	protected Item weapon=null;
 	protected int damageBonus = 1;
-	
-	public void setMiscText(String newMiscText) 
+
+	@Override
+	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 			damageBonus=CMath.s_int(newMiscText);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof MOB)
@@ -90,7 +92,8 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		}
 		return super.tick(ticking, tickID);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)
@@ -118,7 +121,8 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		if((affected instanceof Item)&&(damageBonus>0)&&(((Item)affected).owner() instanceof MOB))
@@ -127,7 +131,8 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			stats.addAmbiance("^w*^?");
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(ID())!=null)
@@ -196,7 +201,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			mob.tell(mob,weapon,null,_("<T-NAME> is too weak of a weapon to provide any more benefit from sharpening."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

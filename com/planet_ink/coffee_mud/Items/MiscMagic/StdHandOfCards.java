@@ -18,25 +18,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
 	Copyright (c) 2005-2014 Bo Zimmerman
 	All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 	following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
-	disclaimer. 
+	* Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+	disclaimer.
 
-	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following 
-	disclaimer in the documentation and/or other materials provided with the distribution. 
+	* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+	disclaimer in the documentation and/or other materials provided with the distribution.
 
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	Hand Of Cards
@@ -49,13 +49,13 @@ import java.util.*;
 */
 public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCards
 {
-	public String ID(){ return "StdHandOfCards";}
-	
+	@Override public String ID(){ return "StdHandOfCards";}
+
 	// if this hand or deck is owned by a mob or a room, then
 	// than mob or room suffices as a container.  Otherwise,
 	// we need an internal container to keep track.
 	private List<Item> backupContents=new SVector<Item>();
-	
+
 	// the constructor for this class doesn't do much except set
 	// some of the display properties of the deck container
 	public StdHandOfCards()
@@ -64,7 +64,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		setName("a hand of cards");
 		setDisplayText("a pile of cards lay here");
 		setDescription("");
-		
+
 		// uncomment below for added security
 		//CMLib.flags().setGettable(this,false);
 		//CMLib.flags().setDroppable(this,false);
@@ -84,17 +84,19 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// if the hand or deck is owned by a mob or a room, then
 	// than mob or room suffices as a container.  Otherwise,
 	// we need to use the internal container to keep track.
+	@Override
 	public ReadOnlyList<Item> getContents()
 	{
 		if((owner instanceof MOB)||(owner instanceof Room))
 			return super.getContents();
 		return new ReadOnlyList<Item>(backupContents);
 	}
-	
+
 	// shuffleDeck()
 	// Shuffles the deck by removing a random card from the
 	// middle of the deck and adding it to the bottom
 	// 52*5 times.
+	@Override
 	public boolean shuffleDeck()
 	{
 		List<Item> V=getContents();
@@ -124,9 +126,10 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return true;
 	}
-	
+
 	// getTopCardFromDeck()
-	// returns the top card item object from the deck 
+	// returns the top card item object from the deck
+	@Override
 	public PlayingCard getTopCardFromDeck()
 	{
 		List<Item> deckContents=getContents();
@@ -136,20 +139,21 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			((HandOfCards)card.container()).removeCard(card);
 		return card;
 	}
-	
+
 	// addCard(PlayingCard card)
-	// returns the given card item object to 
+	// returns the given card item object to
 	// the deck by removing it from its current
 	// owner and adding it back to the decks owner
-	// and container.  If doing this causes a players 
+	// and container.  If doing this causes a players
 	// hand to be devoid of cards, the hand container
 	// is destroyed.
+	@Override
 	public boolean addCard(PlayingCard card)
 	{
 		if(card==null) return false;
 		if(card.container() instanceof HandOfCards)
 			((HandOfCards)card.container()).removeCard(card);
-		
+
 		if(owner() instanceof MOB)
 		{
 			if(card.owner()==null)
@@ -185,16 +189,18 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// numberOfCards()
 	// returns the current number of cards
 	// in the deck.
+	@Override
 	public int numberOfCards()
 	{
 		return getContents().size();
 	}
 
 	// removeCard(PlayingCard card)
-	// removes the given card from the 
+	// removes the given card from the
 	// deck and places it in limbo.  calls
 	// to this method should be followed
 	// by an addCard method on another deck.
+	@Override
 	public boolean removeCard(PlayingCard card)
 	{
 		List<Item> handContents=getContents();
@@ -216,6 +222,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// method should be followed by either
 	// a destroy method on the cards themselves
 	// or an addCard method on another deck.
+	@Override
 	public boolean removeAllCards()
 	{
 		List<Item> handContents=getContents();
@@ -224,12 +231,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			removeCard((PlayingCard)handContents.get(i));
 		return true;
 	}
-	
-	
+
+
 	// getContentsEncoded()
 	// This method builds a string array equal in size to the deck.
-	// It then returns the contents of the deck encoded in 
+	// It then returns the contents of the deck encoded in
 	// cardStringCode format.  See convertCardBitCodeToCardStringCode
+	@Override
 	public String[] getContentsEncoded()
 	{
 		List<Item> contents=getContents();
@@ -241,10 +249,11 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return encodedDeck;
 	}
-	
+
 	// sortByValueAceHigh()
 	// This method is a sort of anti-shuffle.  It puts the cards in
 	// order, first by value, then by suit, with ace considered high.
+	@Override
 	public void sortByValueAceHigh()
 	{
 		List<Item> unsorted=new Vector<Item>();
@@ -254,7 +263,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		// then re-add them in order.
 		for(int u=0;u<unsorted.size();u++)
 			removeCard((PlayingCard)unsorted.get(u));
-		
+
 		// now we pick them out in order
 		while(unsorted.size()>0)
 		{
@@ -276,11 +285,12 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			addCard(card);
 		}
 	}
-	
-	
+
+
 	// sortByValueAceLow()
 	// This method is a sort of anti-shuffle.  It puts the cards in
 	// order, first by value, then by suit, with ace low.
+	@Override
 	public void sortByValueAceLow()
 	{
 		List<Item> unsorted=new Vector<Item>();
@@ -290,7 +300,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		// then re-add them in order.
 		for(int u=0;u<unsorted.size();u++)
 			removeCard((PlayingCard)unsorted.get(u));
-		
+
 		// now we pick them out in order
 		while(unsorted.size()>0)
 		{
@@ -319,9 +329,10 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// createEmptyHand(Environmental player)
 	// creates an empty HandOfCards object
 	// if the player passed in is not null, it will
-	// add the new hand to the inventory of the given 
-	// hand-holder.  Either way, it will return the 
+	// add the new hand to the inventory of the given
+	// hand-holder.  Either way, it will return the
 	// empty hand object.
+	@Override
 	public HandOfCards createEmptyHand(Environmental player)
 	{
 		// calling this method without the intention
@@ -360,9 +371,10 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a string code is a single letter suit followed
 	// by a single letter for face cards and the ace,
 	// or a number for other cards.
+	@Override
 	public boolean containsCard(String cardStringCode)
 	{ return getCard(cardStringCode)!=null;}
-	
+
 	// getCard(String cardStringCode)
 	// returns the PlayingCard from this deck or hand if
 	// it is to be found herein.  DOES NOT REMOVE!
@@ -370,6 +382,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a string code is a single letter suit followed
 	// by a single letter for face cards and the ace,
 	// or a number for other cards.
+	@Override
 	public PlayingCard getCard(String cardStringCode)
 	{
 		List<Item> handContents=getContents();
@@ -384,13 +397,14 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// getFirstCardOfValue(String cardStringCode)
 	// returns the first PlayingCard from this deck or hand
 	// of the given value is to be found herein.  DOES NOT REMOVE!
 	// removeCard should be called next to do that.
-	// a string code is a single letter for face cards 
+	// a string code is a single letter for face cards
 	// and the ace, or a number for other cards.
+	@Override
 	public PlayingCard getFirstCardOfValue(String cardStringCode)
 	{
 		List<Item> handContents=getContents();
@@ -405,27 +419,30 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// containsAtLeastOneOfValue(String cardStringCode)
 	// returns whether a PlayingCard in this deck or hand
-	// of the given value is to be found herein.  
-	// a string code is a single letter for face cards 
+	// of the given value is to be found herein.
+	// a string code is a single letter for face cards
 	// and the ace, or a number for other cards.
+	@Override
 	public boolean containsAtLeastOneOfValue(String cardStringCode)
 	{ return getFirstCardOfValue(cardStringCode)!=null;}
-	
+
 	// containsAtLeastOneOfSuit(String cardStringCode)
 	// returns whether a PlayingCard in this deck or hand
-	// of the given suit is to be found herein.  
-	// a string code is a single letter suit 
+	// of the given suit is to be found herein.
+	// a string code is a single letter suit
+	@Override
 	public boolean containsAtLeastOneOfSuit(String cardStringCode)
 	{ return getFirstCardOfSuit(cardStringCode)!=null;}
-	
+
 	// getFirstCardOfSuit(String cardStringCode)
 	// returns the first PlayingCard from this deck or hand
 	// of the given suit is to be found herein.  DOES NOT REMOVE!
 	// removeCard should be called next to do that.
-	// a string code is a single letter suit 
+	// a string code is a single letter suit
+	@Override
 	public PlayingCard getFirstCardOfSuit(String cardStringCode)
 	{
 		List<Item> handContents=getContents();
@@ -439,19 +456,21 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// containsCard(int cardBitCode)
 	// returns whether this hand contains a card of
 	// the given bit code value
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public boolean containsCard(int cardBitCode)
 	{ return getCard(cardBitCode)!=null;}
-	
+
 	// getCard(int cardBitCode)
 	// returns the PlayingCard from this deck or hand if
 	// it is to be found herein.  DOES NOT REMOVE!
 	// removeCard should be called next to do that.
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public PlayingCard getCard(int cardBitCode)
 	{
 		if((cardBitCode&(1+2+4+8))==1)
@@ -466,12 +485,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// getFirstCardOfValue(int cardBitCode)
 	// returns the first PlayingCard from this deck or hand
 	// of the given value is to be found herein.  DOES NOT REMOVE!
 	// removeCard should be called next to do that.
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public PlayingCard getFirstCardOfValue(int cardBitCode)
 	{
 		List<Item> handContents=getContents();
@@ -486,26 +506,29 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// containsAtLeastOneOfValue(int cardBitCode)
 	// returns whether a PlayingCard in this deck or hand
-	// of the given value is to be found herein.  
+	// of the given value is to be found herein.
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public boolean containsAtLeastOneOfValue(int cardBitCode)
 	{ return getFirstCardOfValue(cardBitCode)!=null;}
-	
+
 	// containsAtLeastOneOfSuit(int cardBitCode)
 	// returns whether a PlayingCard in this deck or hand
-	// of the given suit is to be found herein.  
+	// of the given suit is to be found herein.
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public boolean containsAtLeastOneOfSuit(int cardBitCode)
 	{ return getFirstCardOfSuit(cardBitCode)!=null;}
-	
+
 	// getFirstCardOfSuit(int cardBitCode)
 	// returns the first PlayingCard from this deck or hand
 	// of the given suit is to be found herein.  DOES NOT REMOVE!
 	// removeCard should be called next to do that.
 	// a bit code is as described in PlayingCard.java
+	@Override
 	public PlayingCard getFirstCardOfSuit(int cardBitCode)
 	{
 		List<Item> handContents=getContents();
@@ -519,27 +542,29 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		}
 		return null;
 	}
-	
+
 	// canContain(Environmental E)
 	// we override the canContain method of StdContainer so
 	// that we are allowed to ONLY put playing cards in the
 	// container.
+	@Override
 	public boolean canContain(Environmental E)
 	{
 		if (!(E instanceof PlayingCard)) return false;
 		return true;
 	}
-		
+
 	// this method is a general event handler
 	// to make playing stud-games easier on the players,
 	// we capture the LOOK event in this method and
 	// then tell the looker what the other player
 	// has  "turned up"
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(owner() instanceof MOB)
 		{
-			// check to see if this event is a LOOK or EXAMINE event 
+			// check to see if this event is a LOOK or EXAMINE event
 			// and see of the target of the action is the owner of
 			// this hand of cards, and also check quickly whether
 			// the player HAS any cards.
@@ -557,7 +582,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 					if(card.isFaceUp())
 						str.append(card.name()+", ");
 				}
-				
+
 				// now we have that list, so we generate a new OK (always occurs)
 				// message to notify the looker of what our player has.  We add our
 				// new message as a "trailer" to ensure it happens after the

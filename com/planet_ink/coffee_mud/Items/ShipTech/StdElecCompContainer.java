@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 */
 public class StdElecCompContainer extends StdElecContainer implements ShipComponent
 {
-	public String ID(){	return "StdElecCompContainer";}
-	
+	@Override public String ID(){	return "StdElecCompContainer";}
+
 	protected float installedFactor = 1.0f;
-	
+
 	public StdElecCompContainer()
 	{
 		super();
@@ -51,24 +51,26 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
-	
+
 	@Override public float getInstalledFactor() { return installedFactor; }
 	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
-	
+
 	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return true;
 	}
-	
+
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdElecCompContainer)) return false;
 		return super.sameAs(E);
 	}
-	
+
 	protected volatile String circuitKey=null;
-	
+
+	@Override
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -78,7 +80,8 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		}
 		super.destroy();
 	}
-	
+
+	@Override
 	public void setOwner(ItemPossessor newOwner)
 	{
 		final ItemPossessor prevOwner=super.owner;
@@ -94,7 +97,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			}
 		}
 	}
-	
+
 	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
 	{
 		if(!E.activated())
@@ -103,7 +106,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
-	
+
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
 		if(E instanceof Electronics.ElecPanel)
@@ -112,7 +115,8 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -132,7 +136,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
-				if((!(this instanceof Electronics.FuelConsumer)) 
+				if((!(this instanceof Electronics.FuelConsumer))
 				&&(!(this instanceof Electronics.PowerGenerator))
 				&& activated() && (powerNeeds()>0) && (msg.value()>0))
 				{
@@ -148,7 +152,8 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		}
 		return super.okMessage(host, msg);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))

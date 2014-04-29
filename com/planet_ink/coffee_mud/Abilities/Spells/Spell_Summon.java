@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Summon extends Spell
 {
-	public String ID() { return "Spell_Summon"; }
-	public String name(){return "Summon";}
-	public String displayText(){return "(Summoned)";}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return 0;}
-	protected int overrideMana(){return Ability.COST_PCT+50;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Summon"; }
+	@Override public String name(){return "Summon";}
+	@Override public String displayText(){return "(Summoned)";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affected instanceof MOB)
@@ -65,7 +66,8 @@ public class Spell_Summon extends Spell
 		}
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -82,11 +84,11 @@ public class Spell_Summon extends Spell
 			{
 				Room R=CMLib.map().getRandomRoom();
 				if((CMLib.flags().canAccess(mob,R))&&(R.numInhabitants()>0))
-				{	
+				{
 					MOB M=R.fetchRandomInhabitant();
 					if(M!=null)
 					{
-						areaName=M.Name().toUpperCase(); 
+						areaName=M.Name().toUpperCase();
 						break;
 					}
 				}
@@ -133,7 +135,7 @@ public class Spell_Summon extends Spell
 
 		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
-		
+
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
 			mob.tell(target.name(mob)+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");

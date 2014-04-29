@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_GravitySlam extends Spell
 {
-	public String ID() { return "Spell_GravitySlam"; }
-	public String name(){return "Gravity Slam";}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public long flags(){return Ability.FLAG_MOVING;}
+	@Override public String ID() { return "Spell_GravitySlam"; }
+	@Override public String name(){return "Gravity Slam";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

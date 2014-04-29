@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 public class Song_Revelation extends Song
 {
 
-	public String ID() { return "Song_Revelation"; }
-	public String name(){ return "Revelation";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	
+	@Override public String ID() { return "Song_Revelation"; }
+	@Override public String name(){ return "Revelation";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -62,6 +63,7 @@ public class Song_Revelation extends Song
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

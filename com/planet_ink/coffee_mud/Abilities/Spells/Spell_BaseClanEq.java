@@ -39,16 +39,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_BaseClanEq extends Spell
 {
-	public String ID() { return "Spell_BaseClanEq"; }
-	public String name(){return "Enchant Clan Equipment Base Model";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
+	@Override public String ID() { return "Spell_BaseClanEq"; }
+	@Override public String name(){return "Enchant Clan Equipment Base Model";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
 	protected int overridemana(){return Ability.COST_ALL;}
 	protected String type="";
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 
+	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(student!=null)
@@ -66,6 +67,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 		return super.canBeLearnedBy(teacher,student);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * The PhyStats interface is a state object that holds some basic information about
  * just about every Physical object in the game.  Not all stats are relevant for
  * ALL Physicals, but most, especially the big ones.
- * 
+ *
  * Physicals always keep two instances of this object, a base one, representing
  * his base unmodified state, and current one, representing his state after spells
  * and other affects have had their say.
@@ -45,28 +45,28 @@ public interface PhyStats extends CMCommon, Modifiable
 {
 	/** Constant shortcut for setting the rejuvination rate on a mob so that it will NOT rejuv. */
 	public static final int NO_REJUV=Integer.MAX_VALUE;
-	
+
 	/**
-	 * Returns a bitmask for sense related flags of mobs (CAN_ constants), or 
-	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
+	 * Returns a bitmask for sense related flags of mobs (CAN_ constants), or
+	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNOREMOVE
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
 	 * @return a bitmask made up of SENSE_ constants or CAN_ constants
 	 */
 	public int sensesMask(); // mobs, run-time items
-	
-	
+
+
 	/**
-	 * Sets a bitmask for sense related flags of mobs (CAN_ constants), or 
-	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
+	 * Sets a bitmask for sense related flags of mobs (CAN_ constants), or
+	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNOREMOVE
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
 	 * @param newMask a bitmask made up of SENSE_ constants or CAN_ constants
 	 */
 	public void setSensesMask(int newMask);
-	
+
 	/**
 	 * Returns a bitmask for disposition related flags of Physicals (IS_ constants).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#IS_BONUS
@@ -74,7 +74,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return a bitmask of disposition related flags
 	 */
 	public int disposition(); // items, mobs
-	
+
 	/**
 	 * Sets a bitmask for disposition related flags of Physicals (IS_ constants).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#IS_BONUS
@@ -82,14 +82,14 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @param newDisposition a bitmask of disposition flags
 	 */
 	public void setDisposition(int newDisposition);
-	
+
 	/**
 	 * Returns the experience level of the mob, item, exit, Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setLevel(int)
 	 * @return the experience level
 	 */
 	public int level(); // items, exits, mobs
-	
+
 	/**
 	 * Sets the experience level of the mob, item, exit, Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#level()
@@ -105,7 +105,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the ability level (or misc integer)
 	 */
 	public int ability(); // items, mobs
-	
+
 	/**
 	 * Sets the ability level (a secondary level, e.g. if magical, how much?)
 	 * Also acts as a random flag for various purposes. For instance, on mobs,
@@ -114,7 +114,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @param newAdjustment the new ability level (or misc integer)
 	 */
 	public void setAbility(int newAdjustment);
-	
+
 	/**
 	 * Returns the number of ticks before a Physical removed from the game
 	 * (due to death, destruction, or just removal from home) is restored.
@@ -122,7 +122,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the number of ticks before rejuv (0==never)
 	 */
 	public int rejuv(); // items, mobs
-	
+
 	/**
 	 * Sets the number of ticks before a Physical removed from the game
 	 * (due to death, destruction, or just removal from home) is restored.
@@ -137,7 +137,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the weight of this Physical
 	 */
 	public int weight(); // items, mobs
-	
+
 	/**
 	 * Sets the weight of this Physical, in pounds.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#weight()
@@ -151,7 +151,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the height of this Physical, in inches (0=indeterminate)
 	 */
 	public int height(); // items, mobs
-	
+
 	/**
 	 * Sets the height of this Physical, in inches
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#height()
@@ -165,7 +165,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the raw defensive capability of this Physical
 	 */
 	public int armor(); // armor items, mobs
-	
+
 	/**
 	 * Sets the defensive capability number of this Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
@@ -174,14 +174,14 @@ public interface PhyStats extends CMCommon, Modifiable
 	public void setArmor(int newArmor);
 
 	/**
-	 * Returns the maximum damaging ability of this Physical 
+	 * Returns the maximum damaging ability of this Physical
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setDamage(int)
 	 * @return the maxiumu damaging ability of this Physical
 	 */
 	public int damage(); // weapon items, mobs
-	
+
 	/**
-	 * Sets the maximum damaging ability of this Physical 
+	 * Sets the maximum damaging ability of this Physical
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#damage()
 	 * @param newDamage the new maximum damaging ability of this Physical
 	 */
@@ -193,9 +193,9 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the number of actions per tick.
 	 */
 	public double speed(); // mobs
-	
+
 	/**
-	 * Sets the number of actions this mob can do per tick 
+	 * Sets the number of actions this mob can do per tick
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#speed()
 	 * @param newSpeed the new number of actions this mob can do per tick
 	 */
@@ -208,7 +208,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return the raw combat attack prowess of this Physical
 	 */
 	public int attackAdjustment(); // weapon items, mobs
-	
+
 	/**
 	 * Sets the rawcombat attack prowess of this Physical
 	 * Usually mobs or weapons
@@ -233,14 +233,14 @@ public interface PhyStats extends CMCommon, Modifiable
 
 	/**
 	 * Returns a list of ambiances (extra words, visible fields) that are tacked
-	 * onto the display text of this Physical. 
+	 * onto the display text of this Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @return a list of ambiances
 	 */
 	public String[] ambiances(); // everything
-	
+
 	/**
 	 * Check to see if the given ambiance exists in the list.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
@@ -250,40 +250,40 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * @return true if its in there, false otherwise
 	 */
 	public boolean isAmbiance(String ambiance);
-	
+
 	/**
 	 * Adds an ambiance (extra word, visible field) to the list that are tacked
-	 * onto the display text of this Physical. 
+	 * onto the display text of this Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @param ambiance a new ambiance string
 	 */
 	public void addAmbiance(String ambiance);
-	
+
 	/**
 	 * Removes an ambiance (extra word, visible field) from the list that are tacked
-	 * onto the display text of this Physical. 
+	 * onto the display text of this Physical.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @param ambiance the old ambiance string
 	 */
 	public void delAmbiance(String ambiance);
-	
+
 	/**
 	 * Returns a single string summary of several important stats from this object.
 	 * @return a single string summary of several important stats from this object.
 	 */
 	public String getCombatStats();
-	
+
 	/**
 	 * Returns whether the given object is substantially the same as this one
 	 * @param E the PhyStats to compare to
 	 * @return whether or not they are the same
 	 */
 	public boolean sameAs(PhyStats E);
-	
+
 	/**
 	 * Copies the internal data of this object into another of kind.
 	 * @param intoStats another PhyStats object.
@@ -300,7 +300,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * Resets all the stats in this object to their factory defaults.
 	 */
 	public void reset();
-	
+
 	/** an index into the internal stats integer array for level */
 	public final static int STAT_LEVEL=0;
 	/** an index into the internal stats integer array for senses */
@@ -323,7 +323,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int STAT_HEIGHT=9;
 	/** the size of the internal stats integer array */
 	public final static int NUM_STATS=10;
-	 
+
 	// sensemask stuff
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to see */
 	public final static int CAN_NOT_SEE=1;
@@ -365,8 +365,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_WORK=262144;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in standard combat ticks*/
 	public final static int CAN_NOT_AUTO_ATTACK=524288;
-	
-	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */ 
+
+	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */
 	public static final String[] CAN_SEE_CODES={"CANNOTSEE",
 												"CANSEEHIDDEN",
 												"CANSEEINVISIBLE",
@@ -387,8 +387,8 @@ public interface PhyStats extends CMCommon, Modifiable
 												"CANNOTTHINK",
 												"CANNOTWORK",
 												"CANNOTAUTOATTACK"};
-	
-	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
+
+	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
 	public static final String[] CAN_SEE_DESCS={"Is Blind",
 											 "Can see hidden",
 											 "Can see invisible",
@@ -409,8 +409,8 @@ public interface PhyStats extends CMCommon, Modifiable
 											 "Can not concentrate",
 											 "Is too busy",
 											 "Is not auto-attacking"};
-	
-	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */ 
+
+	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
 	public static final String[] CAN_SEE_VERBS={"Causes Blindness",
 												"Allows see hidden",
 												"Allows see invisible",
@@ -467,8 +467,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	//public final static int SENSE_ROOMCIRCUITED=32768;
 	/** a bit setting, as from sensesMask(), flagging this item/room and unable to be destroyed */
 	public final static int SENSE_UNDESTROYABLE=65536;
-	
-	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */ 
+
+	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */
 	public static final String[] SENSE_CODES={
 		"UNLOCATABLE",
 		"ITEMNOMINRANGE",
@@ -491,7 +491,7 @@ public interface PhyStats extends CMCommon, Modifiable
 
 		/** All bits in a Integer, cast into a long */
 	public final static long ALLMASK=Integer.MAX_VALUE;
-	
+
 	// dispositions
 	/** a bit setting, as from disposition(), flagging this object as not being seen */
 	public final static int IS_NOT_SEEN=1;
@@ -538,8 +538,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from disposition(), flagging this object as being unattackable */
 	public final static int IS_UNATTACKABLE=2097152;
 
-	
-	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
+
+	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_CODES={"ISSEEN",
 										   "ISHIDDEN",
 										   "ISINVISIBLE",
@@ -562,8 +562,8 @@ public interface PhyStats extends CMCommon, Modifiable
 										   "ISUNSAVABLE",
 										   "ISCATALOGED",
 										   "ISUNATTACKABLE"};
-	
-	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
+
+	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_DESCS= {"Is never seen",
 											"Is hidden",
 											"Is invisible",
@@ -586,8 +586,8 @@ public interface PhyStats extends CMCommon, Modifiable
 											"Is never saved",
 											"Is cataloged",
 											"Is unattackable"};
-	
-	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */ 
+
+	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_VERBS= {"Causes Nondetectability",
 											"Causes hide",
 											"Causes invisibility",

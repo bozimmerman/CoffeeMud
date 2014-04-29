@@ -38,12 +38,12 @@ import org.mozilla.javascript.ScriptableObject;
 */
 
 /**
- * The interface for the main CoffeeMud scripting engine, which implements 
- * a scripting engine descended from the old mud codebases of the 90's 
+ * The interface for the main CoffeeMud scripting engine, which implements
+ * a scripting engine descended from the old mud codebases of the 90's
  * usually called MOBPROG.  Its main features include easy to understand
  * event-oriented triggers, making all mud commands implicit scripting
  * commands.  It also includes methods for embedding javascript.
- * 
+ *
  * @see com.planet_ink.coffee_mud.Behaviors.Scriptable
  */
 public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
@@ -75,13 +75,13 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 						  DVector script,
 						  String msg,
 						  Object[] tmp);
-	
+
 	/**
 	 * Uses this scripting engines variable parsing system to replace
 	 * any script variables $XXXX with their script determined values.
 	 * This is a powerful mechanism for getting at the script functions
 	 * in order to access stat data about specific objects, do math, etc.
-	 *  
+	 *
 	 * @param source the source of the event
 	 * @param target the target of the event
 	 * @param scripted the object that is scripted
@@ -108,23 +108,23 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 */
 	public void dequeResponses();
 
-	
+
 	/**
 	 * Creates a mob from the Tickable object sent, possibly saving it
-	 * locally to this object for use later.   
+	 * locally to this object for use later.
 	 * @param ticking
 	 * @return a mob from a tickable
 	 */
 	public MOB getMakeMOB(Tickable ticking);
-	
+
 	/**
-	 * Receives a string for evaluation by the eval function, and stores 
+	 * Receives a string for evaluation by the eval function, and stores
 	 * it as the first element in the given 2 dimensional string array.
 	 * @param evaluable the eval expression
 	 * @return EVAL the 1 dimensional array to hold the compiled eval
 	 */
 	public String[] parseEval(String evaluable) throws ScriptParseException;
-	
+
 	/**
 	 * Evaluates a scripting function.  Is called by the execute command
 	 * to resolve IF, WHILE, and similar expressions that utilize the MOBPROG
@@ -195,7 +195,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the script or load command(s)
 	 */
 	public String getScript();
-	
+
 
 	/**
 	 * Returns the hey used to cache the script or load commands in here.
@@ -203,7 +203,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the key to the script or load command(s)
 	 */
 	public String getScriptResourceKey();
-	
+
 	/**
 	 * Sets the script or load command(s).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()
@@ -211,32 +211,32 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param newParms the script or load command(s)
 	 */
 	public void setScript(String newParms);
-	
+
 	/**
 	 * If the script is a load command, this will return the
 	 * list of loaded script files referenced by the load command
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setScript(String)
-	 * @return a list of loaded script files. 
+	 * @return a list of loaded script files.
 	 */
 	public List<String> externalFiles();
-	
+
 	/**
-	 * If this script is associated with a particular quest, this 
+	 * If this script is associated with a particular quest, this
 	 * method is called to register that quest name.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#defaultQuestName()
 	 * @param questName the quest associated with this script
 	 */
 	public void registerDefaultQuest(String questName);
-	
+
 	/**
-	 * If this script is associated with a particular quest, this 
+	 * If this script is associated with a particular quest, this
 	 * method is called to return that quest name.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#registerDefaultQuest(String)
 	 * @return the quest associated with this script, if any
 	 */
 	public String defaultQuestName();
-	
+
 	/**
 	 * Sets the scope of any variables defined within the script.  Although the scope
 	 * is somewhat modified if this script is quest-bound, it is usually honored.
@@ -247,7 +247,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param scope the scope of variables
 	 */
 	public void setVarScope(String scope);
-	
+
 	/**
 	 * Returns the scope of any variables defined within the script.  Although the scope
 	 * is somewhat modified if this script is quest-bound, it is usually honored.
@@ -258,19 +258,19 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the scope of variables
 	 */
 	public String getVarScope();
-	
+
 	/**
-	 * If the variable scope of this script is local, this will return all the variables 
+	 * If the variable scope of this script is local, this will return all the variables
 	 * and values defined as an xml document for easy storage.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVar(String, String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
 	 * @return the local variable values as xml
 	 */
-	public String getLocalVarXML(); 
-	
+	public String getLocalVarXML();
+
 	/**
-	 * If the variable scope of this script is local, this will set all the variables 
+	 * If the variable scope of this script is local, this will set all the variables
 	 * and values defined from a passed in xml document.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVar(String, String)
@@ -278,7 +278,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param xml the local variable values as xml
 	 */
 	public void setLocalVarXML(String xml);
-	
+
 	/**
 	 * Returns whether this script is a temporary attributed of the scripted object,
 	 * or a permanent on that should be saved with the object.
@@ -286,7 +286,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return whether this script is a saveable attribute of the scripted object
 	 */
 	public boolean isSavable();
-	
+
 	/**
 	 * Sets whether this script is a temporary attributed of the scripted object,
 	 * or a permanent on that should be saved with the object.
@@ -294,7 +294,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param truefalse true if this script is a saveable attribute of the scripted object
 	 */
 	public void setSavable(boolean truefalse);
-	
+
 	/**
 	 * Returns the value of one of the internal variables, determined by the scope
 	 * of the script, the context of the variable, and the name of the variable.
@@ -309,7 +309,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the value of the variable
 	 */
 	public String getVar(String context, String variable);
-	
+
 	/**
 	 * Returns whether an internal variables, determined by the scope
 	 * of the script, the context of the variable, and the name of the variable, is defined.
@@ -324,7 +324,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return true if the variable has been set in the past, false otherwise
 	 */
 	public boolean isVar(String context, String variable);
-	
+
 	/**
 	 * Sets the value of one of the internal variables, determined by the scope
 	 * of the script, the context of the variable, and the name of the variable.
@@ -339,7 +339,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @param value the value of the variable
 	 */
 	public void setVar(String context, String variable, String value);
-	
+
 	/**
 	 * An object that holds the information about an event until it is
 	 * time to execute its associated script.
@@ -399,7 +399,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		}
 
 		/**
-		 * Decrements the internal tick counter and returns true if 
+		 * Decrements the internal tick counter and returns true if
 		 * the tick counter has dropped to or below 0
 		 * @return true if its time to execute
 		 */
@@ -412,7 +412,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public static final int SPECIAL_RANDPC=10;
 	/** The index into the local variables array for a random pc or mob  */
 	public static final int SPECIAL_RANDANYONE=11;
-	
+
 	/** String list of all valid trigger keywords */
 	public static final String[] progs={
 		"GREET_PROG", //1
@@ -460,7 +460,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"IMASK_PROG", // 43
 		"KILL_PROG", //44
 		"ARRIVE_PROG" //45
-		
+
 	};
 
 	/** String list of all valid mobprog functions for logical expressions or string functions */
@@ -564,7 +564,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"WORNON", // 97
 		"CLANQUALIFIES", // 98
 	};
-	
+
 	/** String list of all valid mobprog commands */
 	public static final String[] methods={
 		"MPASOUND", //1
@@ -658,13 +658,13 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public final static int GSTATADD_CLAN=1;
 	/** index and equate for stat code for mob: clan role */
 	public final static int GSTATADD_CLANROLE=2;
-	
+
 	/** a list of the different parts of a time clock */
 	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
-	
+
 	/** List of evaluation signs ==, !=, >, etc.*/
 	public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
-	
+
 	/** Index and equate for == */
 	public final static int SIGN_EQUL=0;
 	/** Index and equate for >= */
@@ -681,7 +681,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public final static int SIGN_EQLT=6;
 	/** Index and equate for != */
 	public final static int SIGN_NTEQ=7;
-	
+
 	/** a list of logical connectors (and, or, etc)*/
 	public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};
 	/** index and equate for logical connector AND*/

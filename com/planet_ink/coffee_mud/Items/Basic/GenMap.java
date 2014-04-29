@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenMap extends StdMap
 {
-	public String ID(){	return "GenMap";}
+	@Override public String ID(){	return "GenMap";}
 	protected String	readableText="";
 	public GenMap()
 	{
@@ -49,19 +49,22 @@ public class GenMap extends StdMap
 		recoverPhyStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public String readableText(){return readableText;}
-	public String getMapArea(){return readableText;}
+	@Override public String readableText(){return readableText;}
+	@Override public String getMapArea(){return readableText;}
+	@Override
 	public void setMapArea(String mapName)
 	{
 		setReadableText(mapName);
 	}
 
+	@Override
 	public void setReadableText(String newReadableText)
 	{
 		String oldName=Name();
@@ -71,18 +74,21 @@ public class GenMap extends StdMap
 		setName(oldName);
 		setDescription(oldDesc);
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -90,12 +96,14 @@ public class GenMap extends StdMap
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMap)) return false;

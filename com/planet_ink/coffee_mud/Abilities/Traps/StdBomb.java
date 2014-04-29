@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,13 @@ import java.util.*;
 */
 public class StdBomb extends StdTrap
 {
-	public String ID() { return "StdBomb"; }
-	public String name(){ return "a bomb";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public String requiresToSet(){return "";}
-	public boolean isABomb(){return true;}
-	public int baseRejuvTime(int level){ return 5;}
+	@Override public String ID() { return "StdBomb"; }
+	@Override public String name(){ return "a bomb";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return true;}
+	@Override public int baseRejuvTime(int level){ return 5;}
 	public StdBomb(){ super(); reset=3;}
 
 }

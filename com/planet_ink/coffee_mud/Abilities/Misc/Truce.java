@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Truce extends StdAbility
 {
-	public String ID() { return "Truce"; }
-	public String name(){return "Truce";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Truce"; }
+	@Override public String name(){return "Truce";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DECLARETRUCE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	public boolean truceWithAnyone=false;
 	public CMList<Pair<String,Long>> truces=new CMList<Pair<String,Long>>();
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(CMStrings.capitalizeAndLower(newMiscText));
@@ -72,7 +73,7 @@ public class Truce extends StdAbility
 		}
 		return null;
 	}
-	
+
 	public boolean isTruceWith(final String name)
 	{
 		if(truceWithAnyone)
@@ -81,6 +82,7 @@ public class Truce extends StdAbility
 			return (text().equals(name));
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -99,6 +101,7 @@ public class Truce extends StdAbility
 		}
 		super.executeMsg(myHost, msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -119,6 +122,7 @@ public class Truce extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -150,7 +154,7 @@ public class Truce extends StdAbility
 					if(A!=null)A.setMiscText(target.Name());
 				}
 				target.makePeace();
-				if(mob.getVictim()==target) 
+				if(mob.getVictim()==target)
 					mob.makePeace();
 			}
 		}

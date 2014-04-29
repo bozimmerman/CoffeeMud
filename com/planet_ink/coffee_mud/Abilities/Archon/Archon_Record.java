@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,19 +39,20 @@ import java.util.*;
 public class Archon_Record extends ArchonSkill
 {
 	boolean doneTicking=false;
-	public String ID() { return "Archon_Record"; }
-	public String name(){ return "Record";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Archon_Record"; }
+	@Override public String name(){ return "Record";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"RECORD"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	Session sess=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -71,6 +72,7 @@ public class Archon_Record extends ArchonSkill
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -81,7 +83,8 @@ public class Archon_Record extends ArchonSkill
 			((MOB)affected).session().setBeingSnoopedBy(sess, true);
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));

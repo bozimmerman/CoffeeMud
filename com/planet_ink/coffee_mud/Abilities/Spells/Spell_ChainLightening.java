@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_ChainLightening extends Spell
 {
-	public String ID() { return "Spell_ChainLightening"; }
-	public String name(){return "Chain Lightning";}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public long flags(){return Ability.FLAG_AIRBASED;}
+	@Override public String ID() { return "Spell_ChainLightening"; }
+	@Override public String name(){return "Chain Lightning";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_AIRBASED;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -95,7 +96,7 @@ public class Spell_ChainLightening extends Spell
 								return true;
 							continue;
 						}
-	
+
 						// it worked, so build a copy of this ability,
 						// and add it to the affects list of the
 						// affected MOB.  Then tell everyone else
@@ -111,7 +112,7 @@ public class Spell_ChainLightening extends Spell
 							mob.location().send(mob,msg);
 							mob.location().send(mob,msg2);
 							invoker=mob;
-	
+
 							int dmg=damage;
 							if((msg.value()>0)||(msg2.value()>0)||myGroup.contains(target)||(mob==target))
 								dmg = (int)Math.round(CMath.div(dmg,2.0));

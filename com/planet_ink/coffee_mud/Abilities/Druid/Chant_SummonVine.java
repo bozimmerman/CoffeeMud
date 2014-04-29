@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SummonVine extends Chant
 {
-	public String ID() { return "Chant_SummonVine"; }
-	public String name(){ return "Summon Vine";}
-	public String displayText(){return "(Summon Vine)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonVine"; }
+	@Override public String name(){ return "Summon Vine";}
+	@Override public String displayText(){return "(Summon Vine)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected int peaceTicks=0;
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -71,6 +72,7 @@ public class Chant_SummonVine extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -86,6 +88,7 @@ public class Chant_SummonVine extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -99,6 +102,7 @@ public class Chant_SummonVine extends Chant
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -112,6 +116,7 @@ public class Chant_SummonVine extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -129,12 +134,13 @@ public class Chant_SummonVine extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				if(!mob.isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 			}
 		}
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)

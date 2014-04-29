@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 */
 public class GenDisruptor2 extends GenElecWeapon
 {
-	public String ID(){	return "GenDisruptor2";}
+	@Override public String ID(){	return "GenDisruptor2";}
 
 	protected int state=0;
-	
+
 	public GenDisruptor2()
 	{
 		super();

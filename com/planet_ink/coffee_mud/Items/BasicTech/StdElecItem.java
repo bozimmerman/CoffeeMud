@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +35,14 @@ import java.util.*;
 */
 public class StdElecItem extends StdItem implements Electronics
 {
-	public String ID(){	return "StdElecItem";}
-	
+	@Override public String ID(){	return "StdElecItem";}
+
 	protected long 			powerCapacity	= 100;
 	protected long 			power			= 100;
 	protected boolean 		activated		= false;
 	protected String	 	manufacturer	= "RANDOM";
 	protected Manufacturer  cachedManufact  = null;
-	
+
 	public StdElecItem()
 	{
 		super();
@@ -54,7 +54,7 @@ public class StdElecItem extends StdItem implements Electronics
 		baseGoldValue=0;
 		recoverPhyStats();
 	}
-	
+
 	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
 	{
 		if(!E.activated())
@@ -63,7 +63,7 @@ public class StdElecItem extends StdItem implements Electronics
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
-	
+
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
 		if(E instanceof Electronics.ElecPanel)
@@ -72,7 +72,7 @@ public class StdElecItem extends StdItem implements Electronics
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
-	
+
 	@Override public long powerCapacity(){return powerCapacity;}
 	@Override public void setPowerCapacity(long capacity){powerCapacity=capacity;}
 	@Override public long powerRemaining(){return power;}
@@ -85,7 +85,7 @@ public class StdElecItem extends StdItem implements Electronics
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public TechType getTechType() { return TechType.GIZMO; }
 	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
-	@Override 
+	@Override
 	public Manufacturer getFinalManufacturer()
 	{
 		if(cachedManufact==null)

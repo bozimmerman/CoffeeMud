@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 
 public class Drunken extends StdLanguage
 {
-	public String ID() { return "Drunken"; }
-	public String name(){ return "Drunken";}
+	@Override public String ID() { return "Drunken"; }
+	@Override public String name(){ return "Drunken";}
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Drunken()
@@ -45,6 +45,7 @@ public class Drunken extends StdLanguage
 					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		return wordLists;
@@ -78,6 +79,7 @@ public class Drunken extends StdLanguage
 		return V;
 	}
 
+	@Override
 	public String translate(String language, String word)
 	{
 		StringBuffer sbw=new StringBuffer(word);

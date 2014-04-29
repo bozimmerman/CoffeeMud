@@ -34,16 +34,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_TurnUndead extends StdSkill
 {
-	public String ID() { return "Skill_TurnUndead"; }
-	public String name(){ return "Turn Undead";}
-	public String displayText(){ return "(Turned)";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_TurnUndead"; }
+	@Override public String name(){ return "Turn Undead";}
+	@Override public String displayText(){ return "(Turned)";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"TURN"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -59,7 +60,8 @@ public class Skill_TurnUndead extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

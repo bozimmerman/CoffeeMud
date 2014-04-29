@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Enemy1 extends StdAbility
 {
-	public String ID() { return "Ranger_Enemy1"; }
-	public String name(){ return "Favored Enemy 1";}
-	public String displayText(){ return "(Enemy of the "+text()+")";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	@Override public String ID() { return "Ranger_Enemy1"; }
+	@Override public String name(){ return "Favored Enemy 1";}
+	@Override public String displayText(){ return "(Enemy of the "+text()+")";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 
+	@Override
 	public String text()
 	{
 		if(miscText.length()==0)
@@ -94,6 +95,7 @@ public class Ranger_Enemy1 extends StdAbility
 		return super.text();
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -110,7 +112,8 @@ public class Ranger_Enemy1 extends StdAbility
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -121,7 +124,8 @@ public class Ranger_Enemy1 extends StdAbility
 			helpProficiency(msg.source(), 0);
 		return super.okMessage(myHost, msg);
 	}
-	
+
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

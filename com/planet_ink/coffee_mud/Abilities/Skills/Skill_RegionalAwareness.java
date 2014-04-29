@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_RegionalAwareness extends StdSkill
 {
-	public String ID() { return "Skill_RegionalAwareness"; }
-	public String name(){ return "Regional Awareness";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_RegionalAwareness"; }
+	@Override public String name(){ return "Regional Awareness";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"REGION","REGIONALAWARENESS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	public int overrideMana(){return 0;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override public int overrideMana(){return 0;}
 
 	public char roomColor(Room room)
 	{
@@ -73,7 +73,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_INDOORS_AIR:return ' ';
 		case Room.DOMAIN_INDOORS_WATERSURFACE:return 'b';
 		case Room.DOMAIN_INDOORS_METAL:return 'P';
-		default: 
+		default:
 			return 'k';
 		}
 	}
@@ -105,11 +105,11 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_INDOORS_CAVE:
 		case Room.DOMAIN_INDOORS_MAGIC:
 		case Room.DOMAIN_INDOORS_METAL:return '#';
-		default: 
+		default:
 			return '?';
 		}
 	}
-	
+
 	public String[] getMiniMap(Room room, final int diameter, boolean openOnly)
 	{
 		char[][] map=new char[diameter][diameter];
@@ -127,14 +127,14 @@ public class Skill_RegionalAwareness extends StdSkill
 		if(openOnly)
 			flags = flags
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				
+
 		CMLib.tracking().getRadiantRooms(room,rooms,flags,null,diameter,null);
 		rmap[diameter/2][diameter/2]=room;
 		map[diameter/2][diameter/2]='*';
 		for(int i=0;i<rooms.size();i++)
 		{
 			Room R=(Room)rooms.elementAt(i);
-			if((closedPaths.contains(R)) 
+			if((closedPaths.contains(R))
 			||(R==room))
 				continue;
 			Room parentR=null;
@@ -166,7 +166,7 @@ public class Skill_RegionalAwareness extends StdSkill
 				{
 					map[xy[1]][xy[0]]=roomChar(R,!amIndoors);
 					rmap[xy[1]][xy[0]]=R;
-				
+
 					if((R.domainType()&Room.INDOORS)==Room.INDOORS)
 						closedPaths.add(R);
 				}
@@ -192,7 +192,8 @@ public class Skill_RegionalAwareness extends StdSkill
 		}
 		return miniMap;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(auto && (givenTarget instanceof Room) && (asLevel>0))
@@ -205,27 +206,27 @@ public class Skill_RegionalAwareness extends StdSkill
 			}
 			else
 			for(final String s : miniMap)
-				if(mob.session()!=null) 
+				if(mob.session()!=null)
 					mob.session().colorOnlyPrintln(s);
 			return true;
 		}
-		
+
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)==Room.INDOORS))
 		{
 			mob.tell("This only works outdoors.");
 			return false;
 		}
-		
+
 		if((!auto)
 		&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
 			mob.tell("You need to be able to see your surroundings to do that.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -235,7 +236,7 @@ public class Skill_RegionalAwareness extends StdSkill
 				mob.location().send(mob,msg);
 				final String[] miniMap=getMiniMap(mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
 				for(String s : miniMap)
-					if(mob.session()!=null) 
+					if(mob.session()!=null)
 						mob.session().colorOnlyPrintln(s+"\n\r");
 			}
 		}

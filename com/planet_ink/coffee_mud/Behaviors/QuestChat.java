@@ -35,13 +35,14 @@ import java.util.*;
 public class QuestChat extends MudChat
 {
 
-	public String ID(){return "QuestChat";}
+	@Override public String ID(){return "QuestChat";}
 	private Map<String,List<String>> alreadySaid=new Hashtable<String,List<String>>();
 	private String myQuestName=null;
 
-	public void registerDefaultQuest(String questName){ myQuestName=questName;}
+	@Override public void registerDefaultQuest(String questName){ myQuestName=questName;}
 
 
+	@Override
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
 		if(expression.indexOf("::")>=0)

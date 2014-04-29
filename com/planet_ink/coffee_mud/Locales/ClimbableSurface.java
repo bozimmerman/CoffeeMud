@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class ClimbableSurface extends StdRoom
 {
-	public String ID(){return "ClimbableSurface";}
+	@Override public String ID(){return "ClimbableSurface";}
 	public ClimbableSurface()
 	{
 		super();
@@ -42,7 +42,7 @@ public class ClimbableSurface extends StdRoom
 		basePhyStats.setWeight(4);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
 
 	public void mountLadder(MOB mob, Rideable ladder)
 	{
@@ -75,6 +75,7 @@ public class ClimbableSurface extends StdRoom
 		return null;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -104,6 +105,7 @@ public class ClimbableSurface extends StdRoom
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

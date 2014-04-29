@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,13 +42,14 @@ public class Spell_Siphon extends Spell
 		if(randomizer==null)
 		   randomizer = new Random(System.currentTimeMillis());
 	}
-	public String ID() { return "Spell_Siphon"; }
-	public String name(){return "Siphon";}
-	public String displayText(){return "(Siphon spell)";}
-	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Siphon"; }
+	@Override public String name(){return "Siphon";}
+	@Override public String displayText(){return "(Siphon spell)";}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -73,7 +74,8 @@ public class Spell_Siphon extends Spell
 		return success;
 	}
 
-   public void unInvoke()
+   @Override
+public void unInvoke()
 	{
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
@@ -84,6 +86,7 @@ public class Spell_Siphon extends Spell
 		mob.tell("You no longer feel a thirst for the energy of others.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,35 +35,37 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Elf extends StdRace
 {
-	public String ID(){	return "Elf"; }
-	public String name(){ return "Elf"; }
-	public int shortestMale(){return 59;}
-	public int shortestFemale(){return 59;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 80;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Elf";}
+	@Override public String ID(){	return "Elf"; }
+	@Override public String name(){ return "Elf"; }
+	@Override public int shortestMale(){return 59;}
+	@Override public int shortestFemale(){return 59;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 80;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Elf";}
 	private String[]culturalAbilityNames={"Elvish","Foraging"};
 	private int[]culturalAbilityProficiencies={75,50};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -73,6 +75,7 @@ public class Elf extends StdRace
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -99,15 +102,17 @@ public class Elf extends StdRace
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
 			outfitChoices.add(p1);
-			
+
 			Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -144,6 +149,7 @@ public class Elf extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

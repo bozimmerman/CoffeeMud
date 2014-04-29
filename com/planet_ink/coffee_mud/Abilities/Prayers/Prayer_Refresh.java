@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Refresh extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Refresh"; }
-	public String name(){ return "Refresh";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
+	@Override public String ID() { return "Prayer_Refresh"; }
+	@Override public String name(){ return "Refresh";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof MOB)
 				&&(((((MOB)item).curState()).getFatigue()>0)
 						||((((MOB)item).curState()).getMovement()<(((MOB)item).maxState()).getMovement())
@@ -53,7 +54,8 @@ public class Prayer_Refresh extends Prayer implements MendingSkill
 						||((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints())
 						);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -66,8 +68,9 @@ public class Prayer_Refresh extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
-   public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+
+   @Override
+public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

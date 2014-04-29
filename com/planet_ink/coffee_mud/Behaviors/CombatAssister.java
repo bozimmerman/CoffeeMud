@@ -34,16 +34,18 @@ import java.util.*;
 */
 public class CombatAssister extends StdBehavior
 {
-	public String ID(){return "CombatAssister";}
+	@Override public String ID(){return "CombatAssister";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().length()>0)
 			return "protecting of "+CMLib.masking().maskDesc(getParms(),true);
 		else
 			return "protecting of others";
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 */
 public class JournalFunction extends StdWebMacro
 {
-	public String name() { return "JournalFunction"; }
-	
+	@Override public String name() { return "JournalFunction"; }
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null) return "Function not performed -- no Journal specified.";
-		
+
 		Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journalName,setClan);
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -193,7 +194,7 @@ public class JournalFunction extends StdWebMacro
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
-		if(srch!=null) 
+		if(srch!=null)
 			srch=srch.toLowerCase();
 		boolean doThemAll=parms.containsKey("EVERYTHING");
 		if(doThemAll)
@@ -235,7 +236,7 @@ public class JournalFunction extends StdWebMacro
 				}
 				fieldSuffix=msgKey;
 			}
-			else 
+			else
 				keepProcessing=false;
 			JournalsLibrary.JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
 			if((entry==null)&&parms.containsKey("DELETEREPLY"))
@@ -423,7 +424,7 @@ public class JournalFunction extends StdWebMacro
 		}
 		return messages.toString();
 	}
-	
+
 	public String fixForumString(String s)
 	{
 		if(s==null) return "";
@@ -435,5 +436,5 @@ public class JournalFunction extends StdWebMacro
 		}
 		return s;
 	}
-	
+
 }

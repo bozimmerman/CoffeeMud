@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Song_SingleMindedness extends Song
 {
-	public String ID() { return "Song_SingleMindedness"; }
-	public String name(){ return "Single Mindedness";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Song_SingleMindedness"; }
+	@Override public String name(){ return "Single Mindedness";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected CMMsg themsg=null;
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+	@Override
 	public void executeMsg(Environmental ticking, CMMsg msg)
 	{
 		super.executeMsg(ticking,msg);
@@ -53,6 +54,7 @@ public class Song_SingleMindedness extends Song
 			themsg=msg;
 	}
 
+	@Override
 	public boolean okMessage(Environmental ticking, CMMsg msg)
 	{
 		if((themsg!=null)

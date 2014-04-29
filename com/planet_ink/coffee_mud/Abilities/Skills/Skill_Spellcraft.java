@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,19 @@ import java.util.*;
 */
 public class Skill_Spellcraft extends StdSkill
 {
-	public String ID() { return "Skill_Spellcraft"; }
-	public String name(){ return "Spellcraft";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
+	@Override public String ID() { return "Skill_Spellcraft"; }
+	@Override public String name(){ return "Spellcraft";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
 
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if(!super.autoInvocation(mob))
@@ -67,7 +68,8 @@ public class Skill_Spellcraft extends StdSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

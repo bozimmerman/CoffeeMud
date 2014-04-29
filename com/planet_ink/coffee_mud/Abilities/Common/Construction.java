@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,11 +39,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Construction extends CraftingSkill
 {
-	public String ID() { return "Construction"; }
-	public String name(){ return "Construction";}
+	@Override public String ID() { return "Construction"; }
+	@Override public String name(){ return "Construction";}
 	private static final String[] triggerStrings = {"CONSTRUCT"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN";}
 
 	protected static final int BUILD_WALL=0;
 	protected static final int BUILD_DOOR=1;
@@ -105,7 +105,7 @@ public class Construction extends CraftingSkill
 		E2.recoverPhyStats();
 		return E2;
 	}
-	
+
 	protected void demolishRoom(MOB mob, Room room)
 	{
 		LandTitle title=CMLib.law().getLandTitle(room);
@@ -137,6 +137,7 @@ public class Construction extends CraftingSkill
 		final Room theRoomToReturnTo=returnToRoom;
 		room.eachInhabitant(new EachApplicable<MOB>()
 		{
+			@Override
 			public void apply(MOB a)
 			{
 				theRoomToReturnTo.bringMobHere(a, false);
@@ -144,6 +145,7 @@ public class Construction extends CraftingSkill
 		});
 		room.eachItem(new EachApplicable<Item>()
 		{
+			@Override
 			public void apply(Item a)
 			{
 				theRoomToReturnTo.addItem(a,Expire.Player_Drop);
@@ -224,7 +226,8 @@ public class Construction extends CraftingSkill
 		room.destroy();
 		return R;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -288,7 +291,7 @@ public class Construction extends CraftingSkill
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(room))) R.setImage(null);
-							
+
 							Area area=room.getArea();
 							if(area!=null) area.delProperRoom(room);
 							R.setArea(area);
@@ -408,7 +411,7 @@ public class Construction extends CraftingSkill
 							Exit upExit=CMClass.getExit("OpenDescriptable");
 							upExit.setMiscText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
 							room.setRawExit(Directions.UP,upExit);
-							
+
 							Exit downExit=CMClass.getExit("OpenDescriptable");
 							downExit.setMiscText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
 							upRoom.rawDoors()[Directions.DOWN]=room;
@@ -588,7 +591,7 @@ public class Construction extends CraftingSkill
 							room=CMLib.map().getRoom(room);
 							if(dir<0)
 							{
-								
+
 								if(CMLib.law().isHomeRoomUpstairs(room))
 								{
 									demolishRoom(mob,room);
@@ -620,14 +623,14 @@ public class Construction extends CraftingSkill
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
-	
+
 	public boolean isHomePeerTitledRoom(Room R)
 	{
 		LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null) return false;
 		return title.getOwnerName().length()>0;
 	}
-	
+
 	public LandTitle ifHomePeerLandTitle(Room R)
 	{
 		if((R!=null)
@@ -637,6 +640,7 @@ public class Construction extends CraftingSkill
 		return null;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -664,7 +668,7 @@ public class Construction extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		
+
 		designTitle="";
 		designDescription="";
 		String startStr=null;
@@ -711,7 +715,7 @@ public class Construction extends CraftingSkill
 			}
 			return true;
 		}
-		
+
 		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
 		String firstWord=(String)commands.firstElement();
 		for(int r=0;r<data.length;r++)
@@ -820,7 +824,7 @@ public class Construction extends CraftingSkill
 			commonTell(mob,"That can only be built outdoors!");
 			return false;
 		}
-		
+
 		if(doingCode==BUILD_STAIRS)
 		{
 			LandTitle title=CMLib.law().getLandTitle(mob.location());
@@ -855,7 +859,7 @@ public class Construction extends CraftingSkill
 				return false;
 			}
 		}
-		
+
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=CMParms.combine(commands,1);

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,9 @@ public class Look extends StdCommand
 	public Look(){}
 
 	private final String[] access={"LOOK","LOO","LO","L"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,14 +55,14 @@ public class Look extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
-			
+
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
 			   commands.removeElementAt(1);
 			else
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
 			String ID=CMParms.combine(commands,1);
-			
+
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
 				CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
@@ -73,7 +74,7 @@ public class Look extends StdCommand
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
-			
+
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID, noCoinFilter);
 			if(thisThang==null)
@@ -161,5 +162,5 @@ public class Look extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

@@ -38,7 +38,8 @@ public class ClanCreate extends StdCommand
 	public ClanCreate(){}
 
 	private final String[] access={"CLANCREATE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -63,7 +64,7 @@ public class ClanCreate extends StdCommand
 				mob.tell("You are not elligible to create a new clan at this time.");
 			return false;
 		}
-		
+
 		final Session session=mob.session();
 		if(session!=null)
 		{
@@ -80,7 +81,7 @@ public class ClanCreate extends StdCommand
 			{
 				@Override public void showPrompt() { session.promptPrint("Are you sure you want to found a new clan (y/N)?");}
 				@Override public void timedOut() { }
-				@Override public void callBack() 
+				@Override public void callBack()
 				{
 					String check=this.input;
 					if(!check.equalsIgnoreCase("Y"))
@@ -89,7 +90,7 @@ public class ClanCreate extends StdCommand
 					{
 						@Override public void showPrompt() { session.promptPrint("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N");}
 						@Override public void timedOut() { }
-						@Override public void callBack() 
+						@Override public void callBack()
 						{
 							final String doubleCheck=this.input;
 							if(doubleCheck.length()<1)
@@ -112,7 +113,7 @@ public class ClanCreate extends StdCommand
 								{
 									@Override public void showPrompt() { session.promptPrint("\n\rIs '"+doubleCheck+"' correct (y/N)?");}
 									@Override public void timedOut() { }
-									@Override public void callBack() 
+									@Override public void callBack()
 									{
 										String check=this.input;
 										if(!check.equalsIgnoreCase("Y"))
@@ -122,8 +123,8 @@ public class ClanCreate extends StdCommand
 										final InputCallback[] IC=new InputCallback[1];
 										IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 										{
-											@Override public void showPrompt() 
-											{ 
+											@Override public void showPrompt()
+											{
 												StringBuilder promptmsg=new StringBuilder("\n\r^HNow enter a political style for this clan. Choices are:\n\r^N");
 												{
 													int longest=0;
@@ -134,12 +135,12 @@ public class ClanCreate extends StdCommand
 														if(CMProps.isPublicClanGvtCategory(gvt.getCategory()))
 															promptmsg.append("^H"+CMStrings.padRight(gvt.getName(), longest))
 																	 .append("^N:").append(gvt.getShortDesc()).append("\n\r");
-													
+
 												}
 												session.promptPrint(promptmsg.toString()+": ");
 											}
 											@Override public void timedOut() { }
-											@Override public void callBack() 
+											@Override public void callBack()
 											{
 												String govt=this.input;
 												if(govt.length()==0){ mob.tell("Aborted."); return;}
@@ -203,5 +204,5 @@ public class ClanCreate extends StdCommand
 		return false;
 	}
 
-	public boolean canBeOrdered(){return false;}
+	@Override public boolean canBeOrdered(){return false;}
 }

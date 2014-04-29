@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Fertilize extends Prayer
 {
-	public String ID() { return "Prayer_Fertilize"; }
-	public String name(){return "Fertilize";}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Prayer_Fertilize"; }
+	@Override public String name(){return "Fertilize";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -65,6 +66,7 @@ public class Prayer_Fertilize extends Prayer
 
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

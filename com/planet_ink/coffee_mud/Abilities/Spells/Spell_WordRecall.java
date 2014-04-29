@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_WordRecall extends Spell
 {
-	public String ID() { return "Spell_WordRecall"; }
-	public String name(){ return "Word of Recall";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	protected int overrideMana(){return Ability.COST_ALL-90;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override public String ID() { return "Spell_WordRecall"; }
+	@Override public String name(){ return "Word of Recall";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override protected int overrideMana(){return Ability.COST_ALL-90;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 
+	@Override
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
 	{
 		int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
@@ -50,6 +51,7 @@ public class Spell_WordRecall extends Spell
 		return affectType;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -72,7 +74,7 @@ public class Spell_WordRecall extends Spell
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
-					
+
 					msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?"<S-NAME> disappear(s) into the Java Plane!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
 					if((follower!=null)
 					&&(follower.isMonster())

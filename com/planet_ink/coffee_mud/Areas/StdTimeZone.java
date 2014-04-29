@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class StdTimeZone extends StdArea
 {
-	public String ID(){	return "StdTimeZone";}
+	@Override public String ID(){	return "StdTimeZone";}
 
 	public StdTimeZone()
 	{
@@ -42,6 +42,7 @@ public class StdTimeZone extends StdArea
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		CMObject O=super.copyOf();
@@ -49,14 +50,16 @@ public class StdTimeZone extends StdArea
 		return O;
 	}
 
-	public TimeClock getTimeObj(){return myClock;}
+	@Override public TimeClock getTimeObj(){return myClock;}
+	@Override
 	public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
 
-	public void addChild(Area area) 
+	@Override
+	public void addChild(Area area)
 	{
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());

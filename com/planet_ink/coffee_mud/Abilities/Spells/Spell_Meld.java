@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Meld extends Spell
 {
-	public String ID() { return "Spell_Meld"; }
-	public String name(){return "Meld";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_Meld"; }
+	@Override public String name(){return "Meld";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
 	{
@@ -75,6 +75,7 @@ public class Spell_Meld extends Spell
 		return 99;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// add something to disable traps
@@ -113,7 +114,7 @@ public class Spell_Meld extends Spell
 				mob.tell("Those items are too different to meld together.");
 				return false;
 			}
-			
+
 			if(shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_NECK)
 			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_EARS)
 			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_EYES)
@@ -203,7 +204,7 @@ public class Spell_Meld extends Spell
 
 				if((msg.value()>0)||(msg2.value()>0))
 					return false;
-				
+
 				String itemOneName=itemOne.Name();
 				String itemTwoName=itemTwo.Name();
 				int x=itemOneName.indexOf("melded together");
@@ -214,7 +215,7 @@ public class Spell_Meld extends Spell
 				int material=itemOne.material();
 				if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(itemTwo.material()&RawMaterial.MATERIAL_MASK))
 					material=itemTwo.material();
-				
+
 				String newName=itemOneName+" and "+itemTwoName+" melded together";
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{

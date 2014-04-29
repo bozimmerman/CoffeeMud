@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SummonMarker extends Spell
 {
-	public String ID() { return "Spell_SummonMarker"; }
-	public String name(){return "Summon Marker";}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_SummonMarker"; }
+	@Override public String name(){return "Summon Marker";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void unInvoke()
 	{
 
@@ -50,6 +51,7 @@ public class Spell_SummonMarker extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		try

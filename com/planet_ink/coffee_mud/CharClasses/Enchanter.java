@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,16 +32,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Enchanter extends SpecialistMage
 {
-	public String ID(){return "Enchanter";}
-	public String name(){return "Enchanter";}
-	public int domain(){return Ability.DOMAIN_ENCHANTMENT;}
-	public int opposed(){return Ability.DOMAIN_ABJURATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Enchanter";}
+	@Override public String name(){return "Enchanter";}
+	@Override public int domain(){return Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int opposed(){return Ability.DOMAIN_ABJURATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_ResistMagicMissiles");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);

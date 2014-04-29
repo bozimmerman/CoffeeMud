@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Bleeding extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Bleeding"; }
-	public String name(){ return "Bleeding";}
-	public String displayText(){ return "(Bleeding)";}
-	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Bleeding"; }
+	@Override public String name(){ return "Bleeding";}
+	@Override public String displayText(){ return "(Bleeding)";}
+	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected int hpToKeep=-1;
 	protected int lastDir=-1;
 	protected Room lastRoom=null;
@@ -52,7 +52,8 @@ public class Bleeding extends StdAbility implements HealthCondition
 	{
 		return "Bleeding externally and excessively.";
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)
@@ -63,6 +64,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		super.unInvoke();
 	}
 
+	@Override
 	public void  executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -107,6 +109,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 			lastRoom=R;
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -134,6 +137,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(target==null) target=mob;

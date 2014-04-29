@@ -19,7 +19,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,26 +37,27 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger extends StdCharClass
 {
-	public String ID(){return "Ranger";}
-	public String name(){return "Ranger";}
-	public String baseClass(){return "Fighter";}
-	public int getBonusPracLevel(){return 0;}
-	public int getBonusAttackLevel(){return 0;}
-	public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public int getPracsFirstLevel(){return 3;}
-	public int getTrainsFirstLevel(){return 4;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
-	public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?3))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	
+	@Override public String ID(){return "Ranger";}
+	@Override public String name(){return "Ranger";}
+	@Override public String baseClass(){return "Fighter";}
+	@Override public int getBonusPracLevel(){return 0;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public int getPracsFirstLevel(){return 3;}
+	@Override public int getTrainsFirstLevel(){return 4;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?3))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+
 	public Ranger()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -76,117 +77,118 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Ranger_Track",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_ArmorTweaking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_BestowName",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Farsight",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_VenomWard",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Ranger_WoodlandLore",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalBalance",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_ColdWard",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_CharmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_LightningWard",false);
-		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_WaterWalking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Ranger_Hide",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Sunray",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_RegionalAwareness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Ranger_WoodlandCreep",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_NeutralizePoison",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
-	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
-	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
-	
+	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
+	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
+	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Troll-kin","Elf"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -210,7 +212,8 @@ public class Ranger extends StdCharClass
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -231,6 +234,7 @@ public class Ranger extends StdCharClass
 		}
 	}
 
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -243,7 +247,8 @@ public class Ranger extends StdCharClass
 			return true;
 		return false;
 	}
-	
+
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -254,5 +259,5 @@ public class Ranger extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
 }

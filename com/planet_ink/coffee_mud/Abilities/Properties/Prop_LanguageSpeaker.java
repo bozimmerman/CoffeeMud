@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,24 @@ import java.util.*;
 */
 public class Prop_LanguageSpeaker extends Property
 {
-	public String ID() { return "Prop_LanguageSpeaker"; }
-	public String name(){ return "Forces language speaking";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_LanguageSpeaker"; }
+	@Override public String name(){ return "Forces language speaking";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected boolean doPlayers=false;
 	protected boolean noMobs=false;
 	protected boolean homeOnly=false;
 	protected MaskingLibrary.CompiledZapperMask mobMask = null;
 	protected Language lang = null;
 	protected String langStr = "";
-	
+
 	private Room homeRoom = null;
 	private Area homeArea = null;
 	private CMClass.CMObjectType affectedType = CMClass.CMObjectType.AREA;
-	
+
+	@Override
 	public void setMiscText(String txt)
 	{
-		
+
 		doPlayers=CMParms.getParmBool(txt,"PLAYERS",false);
 		noMobs=CMParms.getParmBool(txt,"NOMOBS",false);
 		homeOnly=CMParms.getParmBool(txt,"HOMEONLY",false);
@@ -64,12 +65,13 @@ public class Prop_LanguageSpeaker extends Property
 		super.setMiscText(txt);
 	}
 
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		affectedType = CMClass.getType(P);
 		super.setAffectedOne(P);
 	}
-	
+
 	public Language getLanguage()
 	{
 		if((lang == null)&&(langStr.trim().length()>0))
@@ -79,7 +81,8 @@ public class Prop_LanguageSpeaker extends Property
 		}
 		return lang;
 	}
-	
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Forces speaking the language: "+((lang!=null)?lang.name():"?");
@@ -128,7 +131,8 @@ public class Prop_LanguageSpeaker extends Property
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)

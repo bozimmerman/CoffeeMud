@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 */
 public class StdClanContainer extends StdContainer implements ClanItem
 {
-	public String ID(){	return "StdClanContainer";}
+	@Override public String ID(){	return "StdClanContainer";}
 	private Environmental riteOwner=null;
-	public Environmental rightfulOwner(){return riteOwner;}
-	public void setRightfulOwner(Environmental E){riteOwner=E;}	protected String myClan="";
+	@Override public Environmental rightfulOwner(){return riteOwner;}
+	@Override public void setRightfulOwner(Environmental E){riteOwner=E;}	protected String myClan="";
 	protected int ciType=0;
 	private long lastClanCheck=0;
-	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}
+	@Override public int ciType(){return ciType;}
+	@Override public void setCIType(int type){ ciType=type;}
 	public StdClanContainer()
 	{
 		super();
@@ -59,9 +59,10 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		recoverPhyStats();
 	}
 
-	public String clanID(){return myClan;}
-	public void setClanID(String ID){myClan=ID;}
+	@Override public String clanID(){return myClan;}
+	@Override public void setClanID(String ID){myClan=ID;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
@@ -90,6 +91,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		if(StdClanItem.stdExecuteMsg(this,msg))
 			super.executeMsg(myHost,msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(StdClanItem.stdOkMessage(this,msg))
@@ -97,6 +99,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))

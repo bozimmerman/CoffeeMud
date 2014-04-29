@@ -35,9 +35,10 @@ import java.util.*;
 */
 public class Song_Inebriation extends Song
 {
-	public String ID() { return "Song_Inebriation"; }
-	public String name(){ return "Drunkenness";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Song_Inebriation"; }
+	@Override public String name(){ return "Drunkenness";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -49,6 +50,7 @@ public class Song_Inebriation extends Song
 	}
 
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -65,6 +67,7 @@ public class Song_Inebriation extends Song
 			mob.location().send(mob,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -87,6 +90,7 @@ public class Song_Inebriation extends Song
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

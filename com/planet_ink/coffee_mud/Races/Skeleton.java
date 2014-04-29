@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Skeleton extends Undead
 {
-	public String ID(){	return "Skeleton"; }
-	public String name(){ return "Skeleton"; }
+	@Override public String ID(){	return "Skeleton"; }
+	@Override public String name(){ return "Skeleton"; }
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(myHost instanceof MOB)
@@ -59,6 +60,7 @@ public class Skeleton extends Undead
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

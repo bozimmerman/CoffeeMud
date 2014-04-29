@@ -4,7 +4,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/* 
+/*
    Copyright 2001 Thomas Neumann
    Copyright 2009-2014 Bo Zimmerman
 
@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 */
 public class Driver implements java.sql.Driver
 {
-   static 
+   static
    {
-	  try 
+	  try
 	  {
 		 java.sql.DriverManager.registerDriver(new Driver());
-	  } 
-	  catch (java.sql.SQLException E) 
+	  }
+	  catch (java.sql.SQLException E)
 	  {
 		 E.printStackTrace();
 	  }
@@ -38,40 +38,46 @@ public class Driver implements java.sql.Driver
    {
    }
 
-   public synchronized java.sql.Connection connect(String url, Properties info) throws java.sql.SQLException 
+   @Override
+public synchronized java.sql.Connection connect(String url, Properties info) throws java.sql.SQLException
    {
 	  Properties p=parseUrl(url,info);
 	  if (p==null) return null;
 	  return new Connection(p.getProperty("PATH"));
    }
 
-   public synchronized boolean acceptsURL(String url) throws java.sql.SQLException 
+   @Override
+public synchronized boolean acceptsURL(String url) throws java.sql.SQLException
    {
 	  return parseUrl(url,null)!=null;
    }
 
-   public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws java.sql.SQLException 
+   @Override
+public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws java.sql.SQLException
    {
 	  return new java.sql.DriverPropertyInfo[0];
    }
 
-   public int getMajorVersion() 
-   { 
-	   return 3; 
+   @Override
+public int getMajorVersion()
+   {
+	   return 3;
    }
-   
-   public int getMinorVersion() 
-   { 
-	   return 0; 
+
+   @Override
+public int getMinorVersion()
+   {
+	   return 0;
    }
-   
-   public boolean jdbcCompliant() 
-   { 
-	   return false; 
+
+   @Override
+public boolean jdbcCompliant()
+   {
+	   return false;
    }
 
    /**
-	* 
+	*
 	* @param url
 	* @param defaults
 	* @return

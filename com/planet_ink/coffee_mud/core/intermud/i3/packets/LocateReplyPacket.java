@@ -81,6 +81,7 @@ public class LocateReplyPacket extends Packet {
 		status = stat;
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( target_name == null || located_mud_name == null ||
 			located_visible_name == null || status == null )
@@ -90,6 +91,7 @@ public class LocateReplyPacket extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		return "({\"locate-reply\",5,\"" + I3Server.getMudName() +

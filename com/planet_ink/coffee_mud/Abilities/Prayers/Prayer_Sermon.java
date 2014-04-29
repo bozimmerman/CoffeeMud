@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Sermon extends Prayer
 {
-	public String ID() { return "Prayer_Sermon"; }
-	public String name(){return "Sermon";}
-	public String displayText(){return "(Sermon)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Sermon"; }
+	@Override public String name(){return "Sermon";}
+	@Override public String displayText(){return "(Sermon)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int overridemana(){return Ability.COST_ALL;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -56,7 +57,8 @@ public class Prayer_Sermon extends Prayer
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -76,6 +78,7 @@ public class Prayer_Sermon extends Prayer
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -121,6 +124,7 @@ public class Prayer_Sermon extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

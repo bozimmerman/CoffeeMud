@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Prophecy extends Prayer
 {
-	public String ID() { return "Prayer_Prophecy"; }
-	public String name(){ return "Prophecy";}
-	public String displayText(){ return "(In a Prophetic Trance)";}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public String ID() { return "Prayer_Prophecy"; }
+	@Override public String name(){ return "Prophecy";}
+	@Override public String displayText(){ return "(In a Prophetic Trance)";}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -59,7 +60,7 @@ public class Prayer_Prophecy extends Prayer
 			super.unInvoke();
 			return;
 		}
-		
+
 		int numProphesies=super.getXLEVELLevel(mob) + 2;
 		if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 			numProphesies += (super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this));
@@ -159,6 +160,7 @@ public class Prayer_Prophecy extends Prayer
 		super.unInvoke();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -210,7 +212,8 @@ public class Prayer_Prophecy extends Prayer
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))
@@ -218,13 +221,13 @@ public class Prayer_Prophecy extends Prayer
 			mob.tell("Not while you're fighting!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

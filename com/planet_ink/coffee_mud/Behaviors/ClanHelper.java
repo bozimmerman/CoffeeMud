@@ -34,17 +34,19 @@ import java.util.*;
 */
 public class ClanHelper extends StdBehavior
 {
-	public String ID(){return "ClanHelper";}
+	@Override public String ID(){return "ClanHelper";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(parms.length()>0)
 			return "fellow '"+parms+"' protecting";
 		else
 			return "fellow clan members protecting";
 	}
-	
+
 	protected boolean mobKiller=false;
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
@@ -63,6 +65,7 @@ public class ClanHelper extends StdBehavior
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

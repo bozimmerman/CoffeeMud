@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public interface CombatLibrary extends CMLibrary
 	public static final int COMBAT_QUEUE=1;
 	public static final int COMBAT_MANUAL=2;
 	public static final int COMBAT_TURNBASED=3;
-	
+
 	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless);
 	public Set<MOB> properTargets(Ability A, MOB caster, boolean beRuthless);
 	public int adjustedArmor(MOB mob);
@@ -84,15 +84,15 @@ public interface CombatLibrary extends CMLibrary
 	public void recoverTick(MOB mob);
 	public boolean doTurnBasedCombat(final MOB mob, final Room R, final Area A);
 	public void expendEnergy(final MOB mob, final boolean expendMovement);
-	
+
 	/**
 	 * For a valid set of killers who are benefitting from having killed the given killed mob,
 	 * this method will make repeated postExperience calls after having calculated their
-	 * exp bounty for the kill. 
+	 * exp bounty for the kill.
 	 * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
 	 * @param killers a set of mobs to benefit from the kill
 	 * @param dividers a set of mobs who must divide the xp.. usually subset of killers
-	 * @param killed the mob killed 
+	 * @param killed the mob killed
 	 */
 	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed);
 }

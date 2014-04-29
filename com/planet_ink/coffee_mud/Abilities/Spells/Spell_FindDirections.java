@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,19 +37,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FindDirections extends Spell
 {
-	public String ID() { return "Spell_FindDirections"; }
-	public String name(){return "Find Directions";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return Ability.CAN_AREAS;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_FindDirections"; }
+	@Override public String name(){return "Find Directions";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return Ability.CAN_AREAS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room targetR=mob.location();
 		if(targetR==null)
 			return false;
-		
+
 		if((commands.size()>0)
 		&&(commands.firstElement() instanceof String)
 		&&(((String)commands.firstElement()).toLowerCase().startsWith("direction")))
@@ -76,16 +77,16 @@ public class Spell_FindDirections extends Spell
 				}
 			}
 		}
-		
+
 		if(A==null)
 		{
 			mob.tell("You know of nowhere called \""+CMParms.combine(commands)+"\".");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{

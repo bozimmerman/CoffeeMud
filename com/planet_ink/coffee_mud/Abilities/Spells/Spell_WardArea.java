@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_WardArea extends Spell implements Trap
 {
-	public String ID() { return "Spell_WardArea"; }
-	public String name(){return "Ward Area";}
-	public String displayText(){return "(Ward Area spell)";}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Spell_WardArea"; }
+	@Override public String name(){return "Ward Area";}
+	@Override public String displayText(){return "(Ward Area spell)";}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	private Ability shooter=null;
 	protected Vector parameters=null;
-	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected boolean sprung=false;
 
 	public MOB theInvoker()
@@ -54,20 +54,22 @@ public class Spell_WardArea extends Spell implements Trap
 		return invoker();
 	}
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public boolean disabled(){return sprung;}
-	public void disable(){unInvoke();}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public boolean disabled(){return sprung;}
+	@Override public void disable(){unInvoke();}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
 
-	public boolean sprung(){return sprung;}
+	@Override public boolean sprung(){return sprung;}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung) return super.okMessage(myHost,msg);
@@ -92,6 +94,7 @@ public class Spell_WardArea extends Spell implements Trap
 	}
 
 
+	@Override
 	public void spring(MOB mob)
 	{
 		if(affected==null)
@@ -131,6 +134,7 @@ public class Spell_WardArea extends Spell implements Trap
 		sprung=true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -145,6 +149,7 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -156,6 +161,7 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -168,7 +174,8 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

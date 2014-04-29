@@ -33,7 +33,7 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class MudAuthRequest extends Packet 
+public class MudAuthRequest extends Packet
 {
 	public MudAuthRequest()
 	{
@@ -41,7 +41,7 @@ public class MudAuthRequest extends Packet
 		type = Packet.MAUTH_REQUEST;
 		target_mud=I3Server.getMudName();
 	}
-	
+
 	public MudAuthRequest(Vector v)
 	{
 		super(v);
@@ -56,12 +56,14 @@ public class MudAuthRequest extends Packet
 		this.target_mud=target_mud;
 	}
 
-	public void send() throws InvalidPacketException 
+	@Override
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}
 
-	public String toString() 
+	@Override
+	public String toString()
 	{
 		return "({\"auth-mud-req\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,})";
 	}

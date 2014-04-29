@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 
 public class MasterDrilling extends Drilling
 {
-	public String ID() { return "MasterDrilling"; }
-	public String name(){ return "Master Drilling";}
+	@Override public String ID() { return "MasterDrilling"; }
+	@Override public String name(){ return "Master Drilling";}
 	private static final String[] triggerStrings = {"MDRILL","MDRILLING","MASTERDRILL","MASTERDRILLING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected int getDuration(MOB mob, int level)
 	{
 		return getDuration(90,mob,level,25);
 	}
-	protected int baseYield() { return 3; }
+	@Override protected int baseYield() { return 3; }
 }

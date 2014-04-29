@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,11 +32,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Abjurer extends SpecialistMage
 {
-	public String ID(){return "Abjurer";}
-	public String name(){return "Abjurer";}
-	public int domain(){return Ability.DOMAIN_ABJURATION;}
-	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Abjurer";}
+	@Override public String name(){return "Abjurer";}
+	@Override public int domain(){return Ability.DOMAIN_ABJURATION;}
+	@Override public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();

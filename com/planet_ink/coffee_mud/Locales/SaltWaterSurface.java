@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,16 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class SaltWaterSurface extends WaterSurface
 {
-	public String ID(){return "SaltWaterSurface";}
+	@Override public String ID(){return "SaltWaterSurface";}
 	public SaltWaterSurface()
 	{
 		super();
 	}
-	protected String UnderWaterLocaleID(){return "UnderSaltWaterGrid";}
+	@Override protected String UnderWaterLocaleID(){return "UnderSaltWaterGrid";}
 
-	public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
-	protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderSaltWaterGrid)||(thatSea instanceof UnderSaltWaterThinGrid);}
-	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
+	@Override protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	@Override protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderSaltWaterGrid)||(thatSea instanceof UnderSaltWaterThinGrid);}
+	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 
 }

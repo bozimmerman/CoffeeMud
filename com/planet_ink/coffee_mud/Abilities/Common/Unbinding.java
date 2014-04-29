@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Unbinding extends CommonSkill
 {
-	public String ID() { return "Unbinding"; }
-	public String name(){ return "Unbinding";}
+	@Override public String ID() { return "Unbinding"; }
+	@Override public String name(){ return "Unbinding";}
 	private static final String[] triggerStrings = {"UNBIND","UNTIE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	MOB found=null;
 	Ability removing=null;
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -97,6 +98,7 @@ public class Unbinding extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -118,6 +120,7 @@ public class Unbinding extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -141,12 +144,12 @@ public class Unbinding extends CommonSkill
 			return false;
 		}
 		Ability A=affects.get(0);
-		
+
 		verb="unbinding";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=4;
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
@@ -160,6 +163,6 @@ public class Unbinding extends CommonSkill
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;
-		
+
 	}
 }

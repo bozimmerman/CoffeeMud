@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
-	public String ID(){return "CoffeeLevels";}
+	@Override public String ID(){return "CoffeeLevels";}
 
 	public int getManaBonusNextLevel(MOB mob)
 	{
@@ -54,7 +54,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula(), variables));
 	}
-	
+
+	@Override
 	public int getLevelMana(MOB mob)
 	{
 		return CMProps.getIntVar(CMProps.Int.STARTMANA)+
@@ -64,7 +65,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getAttackBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		int rawAttStat = mob.charStats().getStat(charClass.getAttackAttribute()); 
+		int rawAttStat = mob.charStats().getStat(charClass.getAttackAttribute());
 		int attStat= rawAttStat;
 		int maxAttStat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
@@ -75,22 +76,26 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(attStat>=22)attGain+=1;
 		return attGain;
 	}
-	
+
+	@Override
 	public int getLevelAttack(MOB mob)
 	{
 		return ((mob.basePhyStats().level()-1)*getAttackBonusNextLevel(mob)) + mob.basePhyStats().level();
 	}
 
+	@Override
 	public int getLevelMOBArmor(MOB mob)
 	{
 		return 100-(int)Math.round(CMath.mul(mob.basePhyStats().level(),3.0));
 	}
 
+	@Override
 	public int getLevelMOBDamage(MOB mob)
 	{
 		return (mob.basePhyStats().level());
 	}
 
+	@Override
 	public double getLevelMOBSpeed(MOB mob)
 	{
 		return 1.0+Math.floor(CMath.div(mob.basePhyStats().level(),30.0));
@@ -112,7 +117,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getMovementFormula(), variables));
 	}
-	
+
+	@Override
 	public int getLevelMove(MOB mob)
 	{
 		int move=CMProps.getIntVar(CMProps.Int.STARTMOVE);
@@ -144,13 +150,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		return newHitPointGain;
 	}
-	
+
+	@Override
 	public int getPlayerHitPoints(MOB mob)
 	{
 		int hp=CMProps.getIntVar(CMProps.Int.STARTHP);
 		return hp+((mob.phyStats().level()-1)*getPlayerHPBonusNextLevel(mob));
 	}
 
+	@Override
 	public MOB fillOutMOB(CharClass C, int level)
 	{
 		MOB mob=CMClass.getFactoryMOB();
@@ -163,15 +171,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		fillOutMOB(mob,level);
 		return mob;
 	}
-	
+
 	public boolean isFilledOutMOB(MOB mob)
 	{
 		if(!mob.isMonster()) return false;
 		PhyStats mobP=mob.basePhyStats();
-		
+
 		MOB filledM=fillOutMOB((MOB)null,mobP.level());
 		PhyStats filP=filledM.basePhyStats();
-		if((mobP.speed()==filP.speed()) 
+		if((mobP.speed()==filP.speed())
 		&&(mobP.armor()==filP.armor())
 		&&(mobP.damage()==filP.damage())
 		&&(mobP.attackAdjustment()==filP.attackAdjustment()))
@@ -182,7 +190,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		filledM.destroy();
 		return false;
 	}
-	
+
+	@Override
 	public MOB fillOutMOB(MOB mob, int level)
 	{
 		if(mob==null) mob=CMClass.getFactoryMOB();
@@ -206,6 +215,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return mob;
 	}
 
+	@Override
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
 	{
 		mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
@@ -256,6 +266,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return theNews;
 	}
 
+	@Override
 	public void unLevel(MOB mob)
 	{
 		if((mob.basePhyStats().level()<2)
@@ -316,9 +327,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		fixMobStatsIfNecessary(mob,-1);
 	}
 
+	@Override
 	public void loseExperience(MOB mob, int amount)
 	{
-		if((mob==null)||(mob.soulMate()!=null)) 
+		if((mob==null)||(mob.soulMate()!=null))
 			return;
 		if(Log.combatChannelOn())
 		{
@@ -364,6 +376,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 	}
 
+	@Override
 	public boolean postExperience(MOB mob,MOB victim,String homage,int amount,boolean quiet)
 	{
 		if((mob==null)
@@ -389,6 +402,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return true;
 	}
 
+	@Override
 	public int getLevelExperience(int level)
 	{
 		if(level<0) return 0;
@@ -399,6 +413,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return levelingChart[levelingChart.length-1] + ((1+(level-levelingChart.length)) * lastDiff);
 	}
 
+	@Override
 	public int getLevelExperienceJustThisLevel(int level)
 	{
 		if(level<0) return 0;
@@ -411,7 +426,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];
 		return ((1+(level-levelingChart.length)) * lastDiff);
 	}
-	
+
+	@Override
 	public void level(MOB mob)
 	{
 		if((CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -513,9 +529,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					mob.tell("^NYou have learned the "+type+" ^H"+A.name()+"^?.^N");
 				}
 			}
-		
+
 		fixMobStatsIfNecessary(mob,1);
-		
+
 		// wrap it all up
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
@@ -543,7 +559,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		return false;
 	}
-	
+
+	@Override
 	public int adjustedExperience(MOB mob, MOB victim, int amount)
 	{
 		int highestLevelPC = 0;
@@ -555,11 +572,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				if((M!=null)&&(M!=mob)&&(M!=victim)&&(!M.isMonster())&&(M.phyStats().level()>highestLevelPC))
 					highestLevelPC = M.phyStats().level();
 			}
-			
+
 		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;
-		
+
 		for(Iterator<MOB> i=group.iterator();i.hasNext();)
 		{
 			MOB allyMOB=i.next();
@@ -591,6 +608,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return amount;
 	}
 
+	@Override
 	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
 	{
 		if(mob==null) return;
@@ -642,6 +660,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			level(mob);
 	}
 
+	@Override
 	public void handleExperienceChange(CMMsg msg)
 	{
 		MOB mob=msg.source();

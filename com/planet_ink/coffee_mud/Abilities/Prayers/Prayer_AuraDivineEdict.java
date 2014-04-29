@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,19 +36,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraDivineEdict extends Prayer
 {
-	public String ID() { return "Prayer_AuraDivineEdict"; }
-	public String name(){ return "Aura of the Divine Edict";}
-	public String displayText(){ return "(Edict Aura)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Prayer_AuraDivineEdict"; }
+	@Override public String name(){ return "Aura of the Divine Edict";}
+	@Override public String displayText(){ return "(Edict Aura)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int overridemana(){return Ability.COST_ALL;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 	protected String godName="the gods";
 	protected boolean noRecurse=false;
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -62,6 +63,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The divine edict aura around <S-NAME> fades.");
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -108,6 +110,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
@@ -129,7 +132,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -139,7 +143,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

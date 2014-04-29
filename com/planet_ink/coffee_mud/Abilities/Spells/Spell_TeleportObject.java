@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_TeleportObject extends Spell
 {
-	public String ID() { return "Spell_TeleportObject"; }
-	public String name(){return "Teleport Object";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_TeleportObject"; }
+	@Override public String name(){return "Teleport Object";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
@@ -127,7 +128,7 @@ public class Spell_TeleportObject extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		
+
 		CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?");
 		if(oldRoom.okMessage(mob,msg))
 		{

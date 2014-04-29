@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SummonCompanion extends Spell
 {
-	public String ID() { return "Spell_SummonCompanion"; }
-	public String name(){return "Summon Companion";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_SummonCompanion"; }
+	@Override public String name(){return "Summon Companion";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room oldRoom=null;
@@ -60,12 +61,12 @@ public class Spell_SummonCompanion extends Spell
 		{
 			MOB M=(MOB)i.next();
 			if((M!=mob)&&(M.location()!=mob.location())&&(M.location()!=null))
-			{ 
+			{
 				allHere=false;
 				if((CMLib.flags().canAccess(mob,M.location())))
 				{
 					target=M;
-					oldRoom=M.location(); 
+					oldRoom=M.location();
 					break;
 				}
 			}
@@ -87,7 +88,7 @@ public class Spell_SummonCompanion extends Spell
 
 		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
-		
+
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");

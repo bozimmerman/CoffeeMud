@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,44 +34,46 @@ import java.util.*;
 */
 public class Bullywug extends StdRace
 {
-	public String ID(){	return "Bullywug"; }
-	public String name(){ return "Bullywug"; }
-	public int shortestMale(){return 55;}
-	public int shortestFemale(){return 50;}
-	public int heightVariance(){return 8;}
-	public int lightestWeight(){return 80;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	public String racialCategory(){return "Amphibian";}
+	@Override public String ID(){	return "Bullywug"; }
+	@Override public String name(){ return "Bullywug"; }
+	@Override public int shortestMale(){return 55;}
+	@Override public int shortestFemale(){return 50;}
+	@Override public int heightVariance(){return 8;}
+	@Override public int lightestWeight(){return 80;}
+	@Override public int weightVariance(){return 50;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Amphibian";}
 	private String[]culturalAbilityNames={"Goblinese","Skill_Hunting"};
 	private int[]culturalAbilityProficiencies={100,50};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  						   		   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -79,9 +81,11 @@ public class Bullywug extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
-	
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -91,11 +95,12 @@ public class Bullywug extends StdRace
 				return name().toLowerCase()+" tadpole";
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" polliwog";
-			default : 
+			default :
 				return super.makeMobName(gender, age);
 		}
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -132,6 +137,7 @@ public class Bullywug extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

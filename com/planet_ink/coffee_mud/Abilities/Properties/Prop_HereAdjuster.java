@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,19 @@ import java.util.*;
 */
 public class Prop_HereAdjuster extends Prop_HaveAdjuster
 {
-	public String ID() { return "Prop_HereAdjuster"; }
-	public String name(){ return "Adjustments to stats when here";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	
+	@Override public String ID() { return "Prop_HereAdjuster"; }
+	@Override public String name(){ return "Adjustments to stats when here";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+
+	@Override
 	public String accountForYourself()
 	{
 		return super.fixAccoutingsWithMask("Affects on those here: "+parameters[0],parameters[1]);
 	}
 
-	public int triggerMask() { return TriggeredAffect.TRIGGER_ENTER; }
-	
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_ENTER; }
+
+	@Override
 	public boolean canApply(MOB mob)
 	{
 		if(affected==null) return true;

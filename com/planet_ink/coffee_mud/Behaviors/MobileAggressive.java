@@ -34,15 +34,15 @@ import java.util.*;
 */
 public class MobileAggressive extends Mobile
 {
-	public String ID(){return "MobileAggressive";}
+	@Override public String ID(){return "MobileAggressive";}
 	protected int tickWait=0;
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected boolean mobkill=false;
 	protected boolean misbehave=false;
 	protected String attackMsg=null;
 	protected int aggressiveTickDown=0;
 	protected VeryAggressive veryA=new VeryAggressive();
-	
+
 	public MobileAggressive()
 	{
 		super();
@@ -51,14 +51,16 @@ public class MobileAggressive extends Mobile
 		aggressiveTickDown = 0;
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().trim().length()>0)
 			return "wandering aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
 			return "wandering aggressiveness";
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -70,18 +72,21 @@ public class MobileAggressive extends Mobile
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
 	}
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return true;
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 		veryA.executeMsg(affecting, msg);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC+0;

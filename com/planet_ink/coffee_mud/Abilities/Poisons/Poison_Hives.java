@@ -34,25 +34,25 @@ import java.util.*;
 
 public class Poison_Hives extends Poison
 {
-	public String ID() { return "Poison_Hives"; }
-	public String name(){ return "Hives";}
-	public String displayText(){ return "(Hives)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Poison_Hives"; }
+	@Override public String name(){ return "Hives";}
+	@Override public String displayText(){ return "(Hives)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
 	private static final String[] triggerStrings = {"POISONHIVES"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
-	protected int POISON_TICKS(){return 60;} // 0 means no adjustment!
-	protected int POISON_DELAY(){return 5;}
-	protected String POISON_DONE(){return "The hives clear up.";}
-	protected String POISON_START(){return "^G<S-NAME> break(s) out in hives!^?";}
-	protected String POISON_AFFECT(){return "^G<S-NAME> scratch(es) <S-HIM-HERSELF> as more hives break out.";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return 0;}
+	@Override protected int POISON_TICKS(){return 60;} // 0 means no adjustment!
+	@Override protected int POISON_DELAY(){return 5;}
+	@Override protected String POISON_DONE(){return "The hives clear up.";}
+	@Override protected String POISON_START(){return "^G<S-NAME> break(s) out in hives!^?";}
+	@Override protected String POISON_AFFECT(){return "^G<S-NAME> scratch(es) <S-HIM-HERSELF> as more hives break out.";}
+	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
+	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
+	@Override protected int POISON_DAMAGE(){return 0;}
 
 	public Poison_Hives()
 	{
@@ -61,6 +61,7 @@ public class Poison_Hives extends Poison
 		poisonTick = 0;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -77,6 +78,7 @@ public class Poison_Hives extends Poison
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;

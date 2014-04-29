@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class BankChainNext extends StdWebMacro
 {
-	public String name() { return "BankChainNext"; }
+	@Override public String name() { return "BankChainNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		MOB playerM=null;
@@ -49,7 +50,7 @@ public class BankChainNext extends StdWebMacro
 		String player=httpReq.getUrlParameter("PLAYER");
 		if((player==null)||(player.length()==0)) player=httpReq.getUrlParameter("CLAN");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("BANKCHAIN");
 			return "";
 		}
@@ -87,7 +88,7 @@ public class BankChainNext extends StdWebMacro
 		else
 		if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 			return "";
-		
+
 		for(Iterator j=CMLib.map().bankChains(null);j.hasNext();)
 		{
 			String bankChain=(String)j.next();
@@ -119,7 +120,7 @@ public class BankChainNext extends StdWebMacro
 		{
 			if((destroyPlayer)&&(playerM!=null))
 			{
-				playerM.setLocation(null); 
+				playerM.setLocation(null);
 				playerM.destroy();
 			}
 		}

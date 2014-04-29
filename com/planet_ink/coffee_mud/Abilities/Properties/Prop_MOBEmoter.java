@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,37 +34,40 @@ import java.util.*;
 */
 public class Prop_MOBEmoter extends Property
 {
-	public String ID(){return "Prop_MOBEmoter";}
-	
+	@Override public String ID(){return "Prop_MOBEmoter";}
+
 	Behavior emoter=null;
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{ 
+	{
 		super.executeMsg(myHost,msg);
-		if(emoter==null) 
+		if(emoter==null)
 		{
 			emoter=CMClass.getBehavior("Emoter");
 			emoter.setParms(text());
 		}
 		emoter.executeMsg(myHost,msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{ 
+	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(emoter==null) 
+		if(emoter==null)
 		{
 			emoter=CMClass.getBehavior("Emoter");
 			emoter.setParms(text());
 		}
 		return emoter.okMessage(myHost,msg);
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(emoter==null) 
+			if(emoter==null)
 			{
 				emoter=CMClass.getBehavior("Emoter");
 				emoter.setParms(text());

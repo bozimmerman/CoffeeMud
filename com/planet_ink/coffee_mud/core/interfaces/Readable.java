@@ -20,17 +20,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* 
+*
 * Something that can potentially be read, because it may or may not
 * have writing on it.
-* 
+*
 * @see com.planet_ink.coffee_mud.core.interfaces.Physical
 * @author Bo Zimmerman
 *
 */
 public interface Readable extends Physical
 {
-	
+
 	/**
 	 * For things that are readable, this returns the readable string
 	 * for this thing.  That is to say, what the player sees when they
@@ -41,7 +41,7 @@ public interface Readable extends Physical
 	 * @return the readable string
 	 */
 	public String readableText();
-	
+
 	/**
 	 * Returns whether this thing is readable when the player uses the READ command
 	 * and targets it.
@@ -51,7 +51,7 @@ public interface Readable extends Physical
 	 * @return true if the thing is readable.
 	 */
 	public boolean isReadable();
-	
+
 	/**
 	 * Returns whether this thing is readable when the player uses the READ command
 	 * and targets it.  Readable text should also be set or unset.
@@ -61,7 +61,7 @@ public interface Readable extends Physical
 	 * @param isTrue true if the thing is readable, and false otherwise
 	 */
 	public void setReadable(boolean isTrue);
-	
+
 	/**
 	 * For things that are readable, this set the readable string
 	 * for this thing.  That is to say, what the player sees when they

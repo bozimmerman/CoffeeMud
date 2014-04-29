@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Play extends StdAbility
 {
-	public String ID() { return "Play"; }
-	public String name(){ return "a song played";}
-	public String displayText(){ return "("+songOf()+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Play"; }
+	@Override public String name(){ return "a song played";}
+	@Override public String displayText(){ return "("+songOf()+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"PLAY","PL","PLA"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
-	public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 	protected int requiredInstrumentType(){return -1;}
 	protected boolean skipStandardSongInvoke(){return false;}
@@ -67,6 +67,7 @@ public class Play extends StdAbility
 		return "something";
 	}
 
+	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
 		int level=super.adjustedLevel(mob,asLevel);
@@ -74,7 +75,7 @@ public class Play extends StdAbility
 			level+=instrument.phyStats().ability();
 		return level;
 	}
-	
+
 	public int invokerLevel()
 	{
 		if(invoker()!=null)
@@ -104,6 +105,7 @@ public class Play extends StdAbility
 		return mob.isMine(I)&&(!I.amWearingAt(Wearable.IN_INVENTORY));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
@@ -140,13 +142,13 @@ public class Play extends StdAbility
 			&&(CMLib.flags().canBeSeenBy(invoker(),mob)))
 				CMLib.combat().postAttack(mob,invoker(),mob.fetchWieldedItem());
 		}
-		
+
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
 			return unplayMe(mob,null);
-		
+
 		if(skipStandardSongTick())
 			return true;
 
@@ -158,6 +160,7 @@ public class Play extends StdAbility
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -172,13 +175,15 @@ public class Play extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		if((this.invoker()==affectedEnv)&&(instrument!=null))
 			affectableStats.addAmbiance("(?)playing "+songOf().toLowerCase()+" on "+instrument.name()+":playing "+instrument.name());
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -241,7 +246,7 @@ public class Play extends StdAbility
 		{
 			Play P=(Play)A;
 			if(P.timeOut==0)
-				P.timeOut = System.currentTimeMillis() 
+				P.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
 			if(System.currentTimeMillis() >= P.timeOut)
 			{
@@ -337,7 +342,7 @@ public class Play extends StdAbility
 		}
 		return dir;
 	}
-	
+
 	protected String getCorrectMsgString(Room R, String str, int v)
 	{
 		String msgStr=null;
@@ -356,7 +361,7 @@ public class Play extends StdAbility
 		}
 		return msgStr;
 	}
-	
+
 	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
 	{
 		if(originRoom==R)
@@ -374,14 +379,15 @@ public class Play extends StdAbility
 		if(h==null) return null;
 		if(R==originRoom)
 		{
-			if(!h.contains(mob)) 
+			if(!h.contains(mob))
 				h.add(mob);
 		}
 		else
 			h.remove(mob);
 		return h;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -461,22 +467,22 @@ public class Play extends StdAbility
 				if(R.okMessage(mob,msg))
 				{
 					Play newOne=(Play)this.copyOf();
-	
+
 					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
 						Room R2=follower.location();
-	
+
 						// malicious songs must not affect the invoker!
 						int msgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.TYP_CAST_SPELL;
 						int mndMsgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND;
 						if(auto){ msgType|=CMMsg.MASK_ALWAYS; mndMsgType|=CMMsg.MASK_ALWAYS;}
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							msgType=msgType|CMMsg.MASK_MALICIOUS;
-	
+
 						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)
 						&&(follower.fetchEffect(this.ID())==null))
 						{

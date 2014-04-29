@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class QuestNext extends StdWebMacro
 {
-	public String name() { return "QuestNext"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "QuestNext"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("QUEST");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.removeUrlParameter("QUEST");
 			return "";
 		}
 		if(last!=null) last=CMStrings.replaceAll(last,"*","@");
 		String lastID="";
-		
+
 		Vector V=new Vector();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 			V.addElement(CMLib.quests().fetchQuest(q));
@@ -63,7 +64,7 @@ public class QuestNext extends StdWebMacro
 			V.remove(lowQ);
 			sortedV.addElement(lowQ);
 		}
-		
+
 		for(int q=0;q<sortedV.size();q++)
 		{
 			Quest Q=(Quest)sortedV.elementAt(q);

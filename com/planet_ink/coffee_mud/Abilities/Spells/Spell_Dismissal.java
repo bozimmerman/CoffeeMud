@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Dismissal extends Spell
 {
-	public String ID() { return "Spell_Dismissal"; }
-	public String name(){return "Dismissal";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
+	@Override public String ID() { return "Spell_Dismissal"; }
+	@Override public String name(){return "Dismissal";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((target instanceof MOB)
@@ -49,6 +50,7 @@ public class Spell_Dismissal extends Spell
 			return Ability.QUALITY_INDIFFERENT;
 		return super.castingQuality(mob,target);
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

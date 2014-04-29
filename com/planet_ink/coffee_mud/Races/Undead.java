@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,30 +33,31 @@ import java.util.*;
 */
 public class Undead extends StdRace
 {
-	public String ID(){	return "Undead"; }
-	public String name(){ return "Undead"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 100;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Undead";}
-	public boolean fertile(){return false;}
-	public boolean uncharmable(){return true;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "Undead"; }
+	@Override public String name(){ return "Undead"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 100;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Undead";}
+	@Override public boolean fertile(){return false;}
+	@Override public boolean uncharmable(){return true;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		super.affectCharState(affectedMOB, affectableState);
@@ -65,12 +66,14 @@ public class Undead extends StdRace
 		affectableState.setThirst((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -80,7 +83,8 @@ public class Undead extends StdRace
 		&&(ID().equals("Undead")))
 			msg.source().tell(name()+" stinks of grime and decay.");
 	}
-	
+
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -91,11 +95,12 @@ public class Undead extends StdRace
 				return name().toLowerCase()+" of a toddler";
 			case Race.AGE_CHILD:
 				return name().toLowerCase()+" of a child";
-			default : 
+			default :
 				return super.makeMobName('N', age);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))
@@ -156,6 +161,7 @@ public class Undead extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -166,6 +172,7 @@ public class Undead extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		DeadBody body=super.getCorpseContainer(mob,room);
@@ -191,6 +198,7 @@ public class Undead extends StdRace
 		return body;
 	}
 
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -227,6 +235,7 @@ public class Undead extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_StripItem extends ThiefSkill
 {
-	public String ID() { return "Thief_StripItem"; }
-	public String name(){ return "Strip Item";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+	@Override public String ID() { return "Thief_StripItem"; }
+	@Override public String name(){ return "Strip Item";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"STRIPITEM"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -63,6 +64,7 @@ public class Thief_StripItem extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String itemToSteal="all";
@@ -77,7 +79,7 @@ public class Thief_StripItem extends ThiefSkill
 		}
 
 		MOB target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
@@ -133,7 +135,7 @@ public class Thief_StripItem extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
+
 				if((!target.isMonster())&&(mob.isMonster())&&(!alreadyFighting))
 				{
 					if(target.getVictim()==mob)

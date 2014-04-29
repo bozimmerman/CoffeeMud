@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,13 +38,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WarningWinds extends Chant
 {
-	public String ID() { return "Chant_WarningWinds"; }
-	public String name(){ return "Warning Winds";}
-	public String displayText(){return "(Warning Winds)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_WarningWinds"; }
+	@Override public String name(){ return "Warning Winds";}
+	@Override public String displayText(){return "(Warning Winds)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	Room lastRoom=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -56,6 +57,7 @@ public class Chant_WarningWinds extends Chant
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer attuned to the winds.");
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -125,6 +127,7 @@ public class Chant_WarningWinds extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

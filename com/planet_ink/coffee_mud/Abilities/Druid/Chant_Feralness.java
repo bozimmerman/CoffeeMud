@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Feralness extends Chant
 {
-	public String ID() { return "Chant_Feralness"; }
-	public String name(){ return "Feralness";}
-	public String displayText(){return "(Feralness)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Chant_Feralness"; }
+	@Override public String name(){ return "Feralness";}
+	@Override public String displayText(){return "(Feralness)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	int hpAdjustment=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -63,6 +64,7 @@ public class Chant_Feralness extends Chant
 		}
 	}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
@@ -70,6 +72,7 @@ public class Chant_Feralness extends Chant
 			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment+(2*getXLEVELLevel(invoker())));
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -79,6 +82,7 @@ public class Chant_Feralness extends Chant
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -97,6 +101,7 @@ public class Chant_Feralness extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -109,7 +114,8 @@ public class Chant_Feralness extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

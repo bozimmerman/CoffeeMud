@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class ItemRefitter extends StdBehavior
 {
-	public String ID(){return "ItemRefitter";}
+	@Override public String ID(){return "ItemRefitter";}
 
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "item refitting for a price";
 	}
 
@@ -60,6 +61,7 @@ public class ItemRefitter extends StdBehavior
 		}
 	}
 
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
@@ -77,6 +79,7 @@ public class ItemRefitter extends StdBehavior
 			}
 		}
 	}
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -117,6 +120,7 @@ public class ItemRefitter extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

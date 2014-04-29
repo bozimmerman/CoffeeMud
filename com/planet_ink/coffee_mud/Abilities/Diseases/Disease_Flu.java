@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Flu extends Disease
 {
-	public String ID() { return "Disease_Flu"; }
-	public String name(){ return "Flu";}
-	public String displayText(){ return "(Flu Virus)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Flu"; }
+	@Override public String name(){ return "Flu";}
+	@Override public String displayText(){ return "(Flu Virus)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 30;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your flu clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 1;}
+	@Override protected int DISEASE_TICKS(){return 30;}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your flu clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 1;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -76,6 +77,7 @@ public class Disease_Flu extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
@@ -87,6 +89,7 @@ public class Disease_Flu extends Disease
 			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

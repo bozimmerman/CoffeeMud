@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_StoreSpell extends Spell
 {
-	public String ID() { return "Spell_StoreSpell"; }
-	public String Name(){return "Store Spell";}
+	@Override public String ID() { return "Spell_StoreSpell"; }
+	@Override public String Name(){return "Store Spell";}
+	@Override
 	public String name()
 	{
 		if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
@@ -56,10 +57,10 @@ public class Spell_StoreSpell extends Spell
 		}
 		return Name();
 	}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	protected int overrideMana(){return overridemana;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override protected int overrideMana(){return overridemana;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public String spellName="";
 	protected int overridemana=-1;
 
@@ -119,6 +120,7 @@ public class Spell_StoreSpell extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -157,6 +159,7 @@ public class Spell_StoreSpell extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

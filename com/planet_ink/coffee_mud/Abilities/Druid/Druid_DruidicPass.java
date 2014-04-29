@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Druid_DruidicPass extends StdAbility
 {
-	public String ID() { return "Druid_DruidicPass"; }
-	public String name(){ return "Druidic Pass";}
-	public String displayText(){return "(druidic passage)";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Druid_DruidicPass"; }
+	@Override public String name(){ return "Druidic Pass";}
+	@Override public String displayText(){return "(druidic passage)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"PASS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
-	
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -54,6 +55,7 @@ public class Druid_DruidicPass extends StdAbility
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

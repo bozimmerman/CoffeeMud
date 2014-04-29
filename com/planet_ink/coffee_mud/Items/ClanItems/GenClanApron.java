@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenClanApron extends StdClanApron
 {
-	public String ID(){ return "GenClanApron";}
+	@Override public String ID(){ return "GenClanApron";}
 	protected String readableText="";
 	public GenClanApron()
 	{
@@ -49,15 +49,17 @@ public class GenClanApron extends StdClanApron
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -65,6 +67,7 @@ public class GenClanApron extends StdClanApron
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLANID","CITYPE"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -77,6 +80,7 @@ public class GenClanApron extends StdClanApron
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -91,6 +95,7 @@ public class GenClanApron extends StdClanApron
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -98,6 +103,7 @@ public class GenClanApron extends StdClanApron
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -111,6 +117,7 @@ public class GenClanApron extends StdClanApron
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenClanApron)) return false;

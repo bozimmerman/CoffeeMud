@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import java.util.*;
 */
 public class StdLockedDoorway extends StdClosedDoorway
 {
-	public String ID(){	return "StdLockedDoorway";}
-	public boolean hasALock(){return true;}
-	public boolean defaultsLocked(){return true;}
-	public String closedText(){return "a closed, locked door";}
+	@Override public String ID(){	return "StdLockedDoorway";}
+	@Override public boolean hasALock(){return true;}
+	@Override public boolean defaultsLocked(){return true;}
+	@Override public String closedText(){return "a closed, locked door";}
 }

@@ -33,26 +33,27 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Disease_Anthrax extends Disease
 {
-	public String ID() { return "Disease_Anthrax"; }
-	public String name(){ return "Anthrax";}
-	public String displayText(){ return "(Anthrax)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 2;}
+	@Override public String ID() { return "Disease_Anthrax"; }
+	@Override public String name(){ return "Anthrax";}
+	@Override public String displayText(){ return "(Anthrax)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 2;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
-	protected int DISEASE_DELAY(){return 15;}
+	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
+	@Override protected int DISEASE_DELAY(){return 15;}
 	protected int lastHP=Integer.MAX_VALUE;
-	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) ill.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
+	@Override protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) ill.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
 	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int conTickDown=60;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -82,6 +83,7 @@ public class Disease_Anthrax extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

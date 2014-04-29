@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class CorpseEater extends ActiveTicker
 {
-	public String ID(){return "CorpseEater";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override public String ID(){return "CorpseEater";}
+	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private boolean EatItems=false;
 	public CorpseEater()
 	{
@@ -44,12 +44,14 @@ public class CorpseEater extends ActiveTicker
 		tickReset();
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "corpse eating";
 	}
-	
-	public void setParms(String newParms) 
+
+	@Override
+	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
 		EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
@@ -81,6 +83,7 @@ public class CorpseEater extends ActiveTicker
 		return mob;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -118,7 +121,7 @@ public class CorpseEater extends ActiveTicker
 					else
 					if(((DeadBody)I).playerCorpse())
 						continue;
-						
+
 					if((I instanceof Container)&&(!EatItems))
 						((Container)I).emptyPlease(false);
 					thisRoom.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");

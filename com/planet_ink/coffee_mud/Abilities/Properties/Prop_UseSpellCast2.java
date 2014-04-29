@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import java.util.*;
 */
 public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 {
-	public String ID() { return "Prop_UseSpellCast2"; }
-	public String name(){ return "Casting spells when used";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	
+	@Override public String ID() { return "Prop_UseSpellCast2"; }
+	@Override public String name(){ return "Casting spells when used";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(processing) return;

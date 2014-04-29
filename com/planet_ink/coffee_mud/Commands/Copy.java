@@ -37,8 +37,9 @@ public class Copy extends StdCommand
 	public Copy(){}
 
 	private final String[] access={"COPY"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -144,15 +145,15 @@ public class Copy extends StdCommand
 			try
 			{
 				E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
-				if(E==null) 
+				if(E==null)
 					E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
-				if(E==null) 
+				if(E==null)
 					E=CMLib.map().findFirstInventory(null, mob, name, 50);
-				if(E==null) 
+				if(E==null)
 					E=CMLib.map().findFirstShopStock(null, mob, name, 50);
-				if(E==null) 
+				if(E==null)
 					E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
-				if(E==null) 
+				if(E==null)
 					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
 			}catch(NoSuchElementException e){}
 		}
@@ -384,9 +385,9 @@ public class Copy extends StdCommand
 			room.recoverRoomStats();
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_COPY_GROUP);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_COPY_GROUP);}
+
+
 }

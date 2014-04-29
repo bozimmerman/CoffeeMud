@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 */
 public class Specialization_Natural extends Specialization_Weapon
 {
-	public String ID() { return "Specialization_Natural"; }
-	public String name(){ return "Hand to hand combat";}
+	@Override public String ID() { return "Specialization_Natural"; }
+	@Override public String name(){ return "Hand to hand combat";}
 	public Specialization_Natural()
 	{
 		super();
 		weaponClass=Weapon.CLASS_NATURAL;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)
@@ -54,6 +55,7 @@ public class Specialization_Natural extends Specialization_Weapon
 	}
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		activated=false;
@@ -66,11 +68,11 @@ public class Specialization_Natural extends Specialization_Weapon
 					+(10*(getXLEVELLevel((MOB)affected))));
 		}
 	}
-	
+
 	@Override
 	protected boolean canDamage(MOB mob, Weapon W)
 	{
 		return (W.weaponClassification()==Weapon.CLASS_NATURAL) || (!W.amWearingAt(Wearable.IN_INVENTORY));
 	}
-	
+
 }

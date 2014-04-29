@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,9 @@ import java.util.*;
 */
 public class PrideStat extends StdWebMacro
 {
-	public String name() { return "PrideStat"; }
+	@Override public String name() { return "PrideStat"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -88,7 +89,7 @@ public class PrideStat extends StdWebMacro
 			return " [error missing value type, try name or value]";
 		if(which<1)
 			return " [error missing number, try 1-10]";
-		
+
 		List<Pair<String,Integer>> list=player?CMLib.players().getTopPridePlayers(period, stat):CMLib.players().getTopPrideAccounts(period, stat);
 		if(which>list.size())
 			return "";

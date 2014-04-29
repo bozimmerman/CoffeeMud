@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
-	public String ID() { return "Chant_NeutralizePoison"; }
-	public String name(){ return "Neutralize Poison";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public String ID() { return "Chant_NeutralizePoison"; }
+	@Override public String name(){ return "Neutralize Poison";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
-	
+
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
@@ -63,6 +64,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		return offenders;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -76,7 +78,8 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

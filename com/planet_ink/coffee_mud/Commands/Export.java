@@ -37,12 +37,12 @@ public class Export extends StdCommand
 	public Export(){}
 
 	private final String[] access={"EXPORT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{
 		{String.class,String.class,String.class,Integer.class,null,Area.class,Room.class}
 	};
-	
+
 	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{
 		if(fileName==null) return;
@@ -95,6 +95,7 @@ public class Export extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -117,7 +118,7 @@ public class Export extends StdCommand
 		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
-			if(S!=null) 
+			if(S!=null)
 			{
 				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 					mob.tell("Export what?  Room, World, Player, Account, or Area?");
@@ -228,11 +229,12 @@ public class Export extends StdCommand
 	 * args[6] = room
 	 * @return xml document, with filenameType=4, or null
 	 */
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return null;
-		
+
 		String commandType=(String)args[0];
 		String subType=(String)args[1];
 		String fileName=(String)args[2];
@@ -240,10 +242,10 @@ public class Export extends StdCommand
 		Session S = (Session)args[4];
 		Area area = (Area)args[5];
 		Room room = (Room)args[6];
-		
+
 		Set<CMObject> custom=new HashSet<CMObject>();
 		Set<String> files=new HashSet<String>();
-		
+
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
 		{
@@ -523,8 +525,8 @@ public class Export extends StdCommand
 		return null;
 	}
 
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_EXPORT_GROUP);}
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_EXPORT_GROUP);}
 
 
 }

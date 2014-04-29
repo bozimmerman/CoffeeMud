@@ -34,7 +34,7 @@ import java.util.Map;
  * @author George Reese (borg@imaginary.com), Bo Zimmerman
  * @version 1.1
  * @see com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server
- * 
+ *
  * Modified in 2013 to cut down on thread use
  */
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -51,7 +51,7 @@ public class ServerThread implements Tickable
 	private Map<String,ServerObject> objects;
 	private Map<String,ServerUser>   interactives;
 
-	protected ServerThread(String mname, 
+	protected ServerThread(String mname,
 						   int mport,
 						   ImudServices imud)
 						   {
@@ -67,7 +67,7 @@ public class ServerThread implements Tickable
 	@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
 	@Override public String name() { return "I3UserThread"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 	@Override public int getTickStatus() { return tickStatus; }
-	
+
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
 		ServerObject ob;
 
@@ -142,14 +142,14 @@ public class ServerThread implements Tickable
 	 *  	interactive object for each.
 	 * </ul>
 	 */
-	public void start() 
+	public void start()
 	{
 		if( boot_time != null )
 		{
 			Log.errOut("I3Server","Illegal attempt to invoke run().");
 			return;
 		}
-		
+
 		try
 		{
 			listen_thread = new ListenThread(port);
@@ -159,7 +159,7 @@ public class ServerThread implements Tickable
 			Log.errOut("I3Server",e);
 			return;
 		}
-		
+
 		try
 		{
 			Intermud.setup(intermuds,
@@ -170,26 +170,26 @@ public class ServerThread implements Tickable
 			Log.errOut("I3Server",e);
 			return;
 		}
-		
+
 		boot_time = new java.util.Date();
 		Log.sysOut("I3Server", "InterMud3 Server started on port "+port);
-		
-		synchronized( this ) 
+
+		synchronized( this )
 		{
 			objects = new Hashtable(1000, 100);
 			interactives = new Hashtable(50, 20);
 		}
-		
+
 		running = true;
 		CMLib.threads().deleteTick(this, Tickable.TICKID_SUPPORT);
 		CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT, 250, 1);
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID) 
+	@Override public boolean tick(Tickable ticking, int tickID)
 	{
 		if(CMSecurity.isDisabled(DisFlag.I3))
 			return running;
-		
+
 		tickStatus=Tickable.STATUS_ALIVE;
 		ServerObject[] things;
 		ServerUser[] users;
@@ -282,7 +282,7 @@ public class ServerThread implements Tickable
 		tickStatus=Tickable.STATUS_NOT;
 		return running;
 	}
-	
+
 	protected Date getBootTime()
 	{
 		return boot_time;
@@ -323,7 +323,7 @@ public class ServerThread implements Tickable
 		boot_time = null;
 		CMLib.threads().deleteTick(this, Tickable.TICKID_SUPPORT);
 	}
-	
+
 	protected synchronized ServerObject[] getObjects()
 	{
 		ServerObject[] tmp = new ServerObject[objects.size()];

@@ -36,16 +36,17 @@ import java.util.*;
 
 public class Chant_VineMass extends Chant_SummonVine
 {
-	public String ID() { return "Chant_VineMass"; }
-	public String name(){ return "Vine Mass";}
-	public String displayText(){return "(Vine Mass)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override public String ID() { return "Chant_VineMass"; }
+	@Override public String name(){ return "Vine Mass";}
+	@Override public String displayText(){return "(Vine Mass)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+	@Override
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();

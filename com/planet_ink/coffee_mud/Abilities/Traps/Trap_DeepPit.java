@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,14 @@ import java.util.*;
 */
 public class Trap_DeepPit extends Trap_RoomPit
 {
-	public String ID() { return "Trap_DeepPit"; }
-	public String name(){ return "deep pit";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 14;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_DeepPit"; }
+	@Override public String name(){ return "deep pit";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 14;}
+	@Override public String requiresToSet(){return "";}
 
+	@Override
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
@@ -48,7 +49,7 @@ public class Trap_DeepPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),15,1);
-			int maxDamage = (int)Math.round(CMath.mul(target.baseState().getHitPoints(), .95)); 
+			int maxDamage = (int)Math.round(CMath.mul(target.baseState().getHitPoints(), .95));
 			if(damage >= maxDamage) damage=maxDamage;
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}

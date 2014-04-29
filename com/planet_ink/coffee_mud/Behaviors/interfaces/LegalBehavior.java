@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,11 @@ import java.util.*;
 */
 /**
  * A LegalBehavior is a Behavior that provides functionality related to law and
- * order within a given geographic sphere, which is usually an Area with a 
+ * order within a given geographic sphere, which is usually an Area with a
  * LegalBehavior behavior.  A LegalBehavior keeps track of Warrants against
  * players and mobs which persist only in memory.  It also controls the behavior
  * of arresting officers and judges, and dispenses justice by taking mobs and
- * players to jail, putting them on parole, or issuing warnings or other 
+ * players to jail, putting them on parole, or issuing warnings or other
  * punishments.
  * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
  * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
@@ -61,13 +61,13 @@ public interface LegalBehavior extends Behavior
 	 * @return whether the given warrant is still a valid, timely crime.
 	 */
 	public boolean isStillACrime(LegalWarrant W, boolean debugging);
-	
+
 	/**
 	 * Inspects the circumstances of, and if necessary, assigns a warrant to
 	 * be handled by local law enforcement and judges.  Call this method
 	 * if you want to add a warrant for a custom crime with your own qualifying
 	 * flags.  For recognized crimes with crime keys, however, use the accuse
-	 * command. 
+	 * command.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#accuse(Area, MOB, MOB, String[])
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#PUNISHMENTMASK_DESCS
@@ -91,7 +91,7 @@ public interface LegalBehavior extends Behavior
 								  String crime,
 								  String sentence,
 								  String warnMsg);
-	
+
 	/**
 	 * A method that transfers a warrant out on the accused to a different
 	 * framed individual
@@ -101,7 +101,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether warrants were actually transferred from the accused to the framed
 	 */
 	public boolean frame(Area myArea, MOB accused, MOB framed);
-	
+
 	/**
 	 * Assigns an officer and begins the automated arresting procedure. The
 	 * target criminal must have a warrant out for this to end well for the
@@ -112,7 +112,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether the arrest began successfully.
 	 */
 	public boolean arrest(Area myArea, MOB officer, MOB mob);
-	
+
 	/**
 	 * Returns the set of laws governing the given geographic legal area,
 	 * assuming that this LegalBehavior is the behavior governing the same.
@@ -121,16 +121,16 @@ public interface LegalBehavior extends Behavior
 	 * @return the Law object that governs the area and behavior
 	 */
 	public Law legalInfo(Area myArea);
-	
+
 	/**
 	 * Returns whether the given mob is both an officer of the law, and not
 	 * otherwise engaged in an arrest, and so is available to make one
 	 * @param myArea the geographic legal area
-	 * @param mob the pc/npc to test 
+	 * @param mob the pc/npc to test
 	 * @return whether the mob is an officer of the law
 	 */
 	public boolean isElligibleOfficer(Area myArea, MOB mob);
-	
+
 	/**
 	 * Returns whether the given mob has a valid warrant out for his/her arrest.
 	 * @param myArea the geographic legal area
@@ -138,7 +138,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether a warrant is available for the accused
 	 */
 	public boolean hasWarrant(Area myArea, MOB accused);
-	
+
 	/**
 	 * Returns whether the given mob qualifies as an arresting officer of any
 	 * sort in the given legal area.
@@ -147,7 +147,7 @@ public interface LegalBehavior extends Behavior
 	 * @return true if the mob is an officer, false otherwise
 	 */
 	public boolean isAnyOfficer(Area myArea, MOB mob);
-	
+
 	/**
 	 * Returns whether the given mob qualifies as the judge in the given legal
 	 * area.
@@ -156,38 +156,38 @@ public interface LegalBehavior extends Behavior
 	 * @return true if the mob is a judge, false otherwise
 	 */
 	public boolean isJudge(Area myArea, MOB mob);
-	
+
 	/**
-	 * A method to change the amount of base currency currently 
+	 * A method to change the amount of base currency currently
 	 * listed as fines owed by the given mob.  A value of 0 erases.
 	 * @param d the amount of base currency the mob owes
 	 * @param mob the mob who owes money to the state
 	 */
 	public void modifyAssessedFines(double d, MOB mob);
-	
+
 	/**
 	 * Returns the amount of base currency owed by the given mob, if any.
 	 * @param mob the mob who might owe money
 	 * @return the amount owed, or 0 if none.
 	 */
 	public double finesOwed(MOB mob);
-	
+
 	/**
-	 * This method notifies the legal behavior that its laws have changed 
+	 * This method notifies the legal behavior that its laws have changed
 	 * and need to be updated.  Call this method whenever the behaviors/
-	 * areas laws have changed.  
+	 * areas laws have changed.
 	 * @param myArea the geographic legal area
 	 * @return Whether the update was necessary due to the legal parameters
 	 */
 	public boolean updateLaw(Area myArea);
-	
+
 	/**
 	 * Get the name of the clan that currently rules this area, if applicable.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @return Empty string if the area is unruled, or ruled by the system. ClanID otherwise.
 	 */
 	public String rulingOrganization();
-	
+
 	/**
 	 * If the legal behavior and area are conquerable by clans or foreign organizations,
 	 * this method will return the name of the current controlling clan, and some information
@@ -196,15 +196,15 @@ public interface LegalBehavior extends Behavior
 	 * @return information about the conquest of this area, in readable form.
 	 */
 	public String conquestInfo(Area myArea);
-	
+
 	/**
-	 * Returns whether this legalbehavior governs an area that is presently 
+	 * Returns whether this legalbehavior governs an area that is presently
 	 * legally stable.  Unconquerable areas are always stable, and areas conquered
 	 * and controlled for a sufficient amount of time are also stable.
 	 * @return Whether order has been restored.
 	 */
 	public boolean isFullyControlled();
-	
+
 	/**
 	 * Returns the number of control points necessary to conquer the area governed
 	 * by this legal behavior.  Not applicable if the legal behavior doesn't permit
@@ -214,36 +214,36 @@ public interface LegalBehavior extends Behavior
 	 * @return the number of control points needed to control this legal behavior
 	 */
 	public int controlPoints();
-	
+
 	/**
-	 * The present chance (percent) that the area may collapse into revolt and 
+	 * The present chance (percent) that the area may collapse into revolt and
 	 * remove itself from control.  Not applicable if the legal behavior doesn't permit
 	 * government changes or conquest.
 	 * @return the percent chance of revolt
 	 */
 	public int revoltChance();
-	
+
 	/**
-	 * Modify the number of control points earned by the given clanID. Not 
-	 * applicable if the legal behavior doesn't permit government changes or conquest. 
+	 * Modify the number of control points earned by the given clanID. Not
+	 * applicable if the legal behavior doesn't permit government changes or conquest.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#controlPoints()
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#getControlPoints(String)
 	 * @param clanID the clan to assign the control points to
 	 * @param newControlPoints the number of points to assign
 	 */
 	public void setControlPoints(String clanID, int newControlPoints);
-	
-	
+
+
 	/**
-	 * Returns the number of control points earned by the given clanID. Not 
-	 * applicable if the legal behavior doesn't permit government changes or conquest. 
+	 * Returns the number of control points earned by the given clanID. Not
+	 * applicable if the legal behavior doesn't permit government changes or conquest.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#controlPoints()
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#setControlPoints(String, int)
 	 * @param clanID the clan to assign the control points to
 	 * @return The number of control points earned by this clan/organization
 	 */
 	public int getControlPoints(String clanID);
-	
+
 	/**
 	 * Searches the list of warrants, returning those criminal mobs whose names
 	 * match the search string, and still have legal warrants available for them.
@@ -254,7 +254,7 @@ public interface LegalBehavior extends Behavior
 	 * @return a Vector of MOB objects
 	 */
 	public List<MOB> getCriminals(Area myArea, String searchStr);
-	
+
 	/**
 	 * Returns a Vector of all active legal warrants available on the given
 	 * mob.
@@ -264,7 +264,7 @@ public interface LegalBehavior extends Behavior
 	 * @return a Vector of LegalWarrant objects
 	 */
 	public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused);
-	
+
 	/**
 	 * Puts a warrant on the official docket so that officers can act
 	 * on them.  This method is called by other methods to finish off
@@ -277,7 +277,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether the warrant was successfully added
 	 */
 	public boolean addWarrant(Area myArea, LegalWarrant W);
-	
+
 	/**
 	 * Fills out and, if possible, issues a warrant for arrest using the given
 	 * crime data.  Calls fillOutWarrant to do its work.
@@ -293,7 +293,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether or not the warrant was successfully issued
 	 */
 	public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg);
-	
+
 	/**
 	 * Removes the given warrants from the list of issued warrants.  Does not update
 	 * the old-warrants (prior convictions) record, but erases the warrant completely.
@@ -303,7 +303,7 @@ public interface LegalBehavior extends Behavior
 	 * @return true if the warrant was found to remove, false otherwise
 	 */
 	public boolean deleteWarrant(Area myArea, LegalWarrant W);
-	
+
 	/**
 	 * Removes the first warrant for the given accused criminal, for any one of
 	 * the given list of official crime KEYS.  Crime KEYS are the key names of
@@ -314,7 +314,7 @@ public interface LegalBehavior extends Behavior
 	 * @return whether an acquittable crime was found, and removed
 	 */
 	public boolean aquit(Area myArea, MOB accused, String[] acquittableLaws);
-	
+
 	/**
 	 * Returns whether any of the given Room objects in the jails Vector
 	 * is indeed an official Jail room as defined by this legal behavior.
@@ -324,17 +324,17 @@ public interface LegalBehavior extends Behavior
 	 * @return whether any one of the room objects is, in fact, a jail
 	 */
 	public boolean isJailRoom(Area myArea, List<Room> jails);
-	
+
 	/**
-	 * Issues a LegalWarrant against the accused on behalf of the given 
-	 * victim, for a crime listed in the list of crime keys.  
+	 * Issues a LegalWarrant against the accused on behalf of the given
+	 * victim, for a crime listed in the list of crime keys.
 	 * Calls fillOutWarrant after retreiving the remaining information about
 	 * the crime key described by the parameter accusableLaws.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#fillOutWarrant(MOB, Law, Area, Environmental, String, String, String, String, String)
 	 * @param myArea the geographic legal area
 	 * @param accused the accused mob
 	 * @param victim the victim of the crime
-	 * @param accusableLaws a crime key, such as TAXEVASION 
+	 * @param accusableLaws a crime key, such as TAXEVASION
 	 * @return whether one of the laws was found, and a warrant successfully filled out
 	 */
 	public boolean accuse(Area myArea, MOB accused, MOB victim, String[] accusableLaws);

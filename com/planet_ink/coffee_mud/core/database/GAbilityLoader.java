@@ -76,7 +76,7 @@ public class GAbilityLoader
 		 +"'"+classID+"',"
 		 +"?,"
 		 +"'"+typeClass+"'"
-		 +")", 
+		 +")",
 		 data+" ");
 	}
 	public void DBDeleteAbility(String classID)

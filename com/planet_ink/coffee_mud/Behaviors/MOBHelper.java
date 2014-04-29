@@ -34,13 +34,15 @@ import java.util.*;
 */
 public class MOBHelper extends StdBehavior
 {
-	public String ID(){return "MOBHelper";}
+	@Override public String ID(){return "MOBHelper";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "friend protecting";
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

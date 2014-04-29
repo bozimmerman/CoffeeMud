@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_GroupStatus extends Spell
 {
-	public String ID() { return "Spell_GroupStatus"; }
-	public String name(){return "Group Status";}
-	public String displayText(){return "(Group Status)";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_GroupStatus"; }
+	@Override public String name(){return "Group Status";}
+	@Override public String displayText(){return "(Group Status)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	protected List<Pair<MOB,Ability>> groupMembers=null;
-	
+
 	protected HashSet<String> reporteds=new HashSet<String>();
 	protected HashSet<String> affects=new HashSet<String>();
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -95,8 +96,8 @@ public class Spell_GroupStatus extends Spell
 				}
 				else
 					reporteds.remove("LOWHITPOINTS");
-				
-				
+
+
 				for(final Iterator<String> i=affects.iterator();i.hasNext();)
 				{
 					final String affectName=i.next();
@@ -118,6 +119,7 @@ public class Spell_GroupStatus extends Spell
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -134,6 +136,7 @@ public class Spell_GroupStatus extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -154,6 +157,7 @@ public class Spell_GroupStatus extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -164,7 +168,7 @@ public class Spell_GroupStatus extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

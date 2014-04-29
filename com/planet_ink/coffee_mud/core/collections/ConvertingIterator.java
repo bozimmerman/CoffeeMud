@@ -24,18 +24,20 @@ public class ConvertingIterator<K, L> implements Iterator<L>
 	private K currObj = null;
 	Converter<K, L> converter;
 
-	public ConvertingIterator(Iterator<K> eset, Converter<K, L> conv) 
+	public ConvertingIterator(Iterator<K> eset, Converter<K, L> conv)
 	{
 		iterer=eset;
 		converter=conv;
 	}
-	
-	public boolean hasNext() 
-	{ 
+
+	@Override
+	public boolean hasNext()
+	{
 		return (converter!=null) && iterer.hasNext();
 	}
-	
-	public L next() 
+
+	@Override
+	public L next()
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
@@ -43,6 +45,7 @@ public class ConvertingIterator<K, L> implements Iterator<L>
 		return converter.convert(currObj);
 	}
 
+	@Override
 	public void remove()
 	{
 		iterer.remove();

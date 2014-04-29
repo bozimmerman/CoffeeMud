@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqLevels extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqLevels"; }
-	public String name(){ return "Level Limitations";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_ReqLevels"; }
+	@Override public String name(){ return "Level Limitations";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private boolean allFlag=false;
 	private boolean sysopFlag=false;
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		noFollow=false;
@@ -80,7 +82,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		if(mob==null) return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-		
+
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 
@@ -146,6 +148,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		}
 		return false;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

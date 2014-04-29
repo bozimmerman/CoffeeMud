@@ -38,7 +38,7 @@ import java.util.*;
  */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdPowder extends StdItem implements MagicDust {
-	public String ID(){	return "StdPowder";}
+	@Override public String ID(){	return "StdPowder";}
 
 	public StdPowder()
 	{
@@ -53,12 +53,13 @@ public class StdPowder extends StdItem implements MagicDust {
 		material=RawMaterial.RESOURCE_ASH;
 		recoverPhyStats();
 	}
-	
+
+	@Override
 	public void spreadIfAble(MOB mob, Physical target)
 	{
 		List<Ability> spells = getSpells();
 		if (spells.size() > 0)
-			for (int i = 0; i < spells.size(); i++) 
+			for (int i = 0; i < spells.size(); i++)
 			{
 				Ability thisOne = (Ability) spells.get(i).copyOf();
 				if(thisOne.canTarget(target))
@@ -74,11 +75,12 @@ public class StdPowder extends StdItem implements MagicDust {
 
 
 // That which makes Powders work.  They're an item that when successfully dusted on a target, are 'cast' on the target
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.sourceMinor()==CMMsg.TYP_THROW ) 
+		if(msg.sourceMinor()==CMMsg.TYP_THROW )
 		{
-			if((msg.tool()==this)&&(msg.target() instanceof Physical)) 
+			if((msg.tool()==this)&&(msg.target() instanceof Physical))
 				spreadIfAble(msg.source(),(Physical)msg.target());
 			else
 				super.executeMsg(myHost,msg);
@@ -87,18 +89,20 @@ public class StdPowder extends StdItem implements MagicDust {
 			super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public String getSpellList()
 	{ return miscText;}
-	public void setSpellList(String list){miscText=list;}
+	@Override public void setSpellList(String list){miscText=list;}
 
 	public boolean malicious(SpellHolder me)
 	{
 		List<Ability> spells=getSpells();
-		for(Ability checking : spells) 
+		for(Ability checking : spells)
 			if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
 				return true;
 		return false;
 	}
+	@Override
 	public List<Ability> getSpells()
 	{
 		String names=getSpellList();
@@ -127,6 +131,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		return theSpells;
 	}
 
+	@Override
 	public String secretIdentity()
 	{
 		return description()+"\n\r"+super.secretIdentity();

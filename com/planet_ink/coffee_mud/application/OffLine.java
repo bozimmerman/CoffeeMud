@@ -69,8 +69,8 @@ public class OffLine extends Thread implements MudHost
 	{
 		super("MUD-OffLineServer");
 	}
-	
-	public ThreadGroup threadGroup() { return Thread.currentThread().getThreadGroup(); }
+
+	@Override public ThreadGroup threadGroup() { return Thread.currentThread().getThreadGroup(); }
 
 	public static void fatalStartupError(Thread t, int type)
 	{
@@ -122,7 +122,7 @@ public class OffLine extends Thread implements MudHost
 		System.out.println("Initialization complete.");
 		return true;
 	}
-	
+
 	private void closeSocks(Socket sock, BufferedReader in, PrintWriter out)
 	{
 		try
@@ -180,6 +180,7 @@ public class OffLine extends Thread implements MudHost
 		return offLineText;
 	}
 
+	@Override
 	public void acceptConnection(Socket sock)
 	throws SocketException, IOException
 {
@@ -293,7 +294,8 @@ public class OffLine extends Thread implements MudHost
 			sock = null;
 		}
 	}
-	
+
+	@Override
 	public void run()
 	{
 		int q_len = 6;
@@ -370,11 +372,13 @@ public class OffLine extends Thread implements MudHost
 
 		System.out.println("Off-Line Server on port "+port+" stopped!");
 	}
+	@Override
 	public String getStatus()
 	{
 		return "OFFLINE";
 	}
 
+	@Override
 	public void shutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		interrupt(); // kill the damn archon thread.
@@ -383,6 +387,7 @@ public class OffLine extends Thread implements MudHost
 	public static void defaultShutdown()
 	{
 	}
+	@Override
 	public void interrupt()
 	{
 		if(servsock!=null)
@@ -398,10 +403,12 @@ public class OffLine extends Thread implements MudHost
 		}
 		super.interrupt();
 	}
+	@Override
 	public String getHost()
 	{
 		return host;
 	}
+	@Override
 	public int getPort()
 	{
 		return port;
@@ -496,12 +503,13 @@ public class OffLine extends Thread implements MudHost
 			e.printStackTrace();
 		}
 	}
-	public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
-	public boolean isAcceptingConnections(){ return acceptConnections;}
-	public List<Runnable> getOverdueThreads(){return new Vector<Runnable>();}
-	public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
-	public String getLanguage() { return "English";}
+	@Override public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+	@Override public boolean isAcceptingConnections(){ return acceptConnections;}
+	@Override public List<Runnable> getOverdueThreads(){return new Vector<Runnable>();}
+	@Override public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
+	@Override public String getLanguage() { return "English";}
 
+	@Override
 	public String executeCommand(String cmd)
 		throws Exception
 	{

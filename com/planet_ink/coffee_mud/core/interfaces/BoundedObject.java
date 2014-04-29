@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,12 +41,12 @@ public interface BoundedObject
 	{
 		public long lx,ty,iz=0;
 		public long rx,by,oz=0;
-		
+
 		public BoundedCube()
 		{
 			super();
 		}
-		
+
 		public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
 		{
 			super();
@@ -54,7 +54,7 @@ public interface BoundedObject
 			this.ty=ty; this.by=by;
 			this.iz=iz; this.oz=oz;
 		}
-		
+
 		public BoundedCube(long[] coords, long radius)
 		{
 			super();
@@ -62,13 +62,13 @@ public interface BoundedObject
 			this.ty=coords[1]-radius; this.by=coords[1]+radius;
 			this.iz=coords[2]-radius; this.oz=coords[2]+radius;
 		}
-		
+
 		public BoundedCube(BoundedCube l)
 		{
 			super();
 			set(l);
 		}
-		
+
 		public void set(BoundedCube l)
 		{
 			this.lx=l.lx; this.rx=l.rx;
@@ -84,7 +84,7 @@ public interface BoundedObject
 			if(l.iz < iz) iz=l.iz;
 			if(l.oz > oz) oz=l.oz;
 		}
-		
+
 		public BoundedCube expand(double[] direction, long distance)
 		{
 			BoundedCube cube=new BoundedCube(this);
@@ -110,22 +110,22 @@ public interface BoundedObject
 				cube.oz+=newCenter[2]-oldCenter[2];
 			return cube;
 		}
-		
+
 		public boolean intersects(BoundedCube two)
 		{
 			if(two==null) return false;
-			return (rx >=two.lx) && (lx <=two.rx) 
+			return (rx >=two.lx) && (lx <=two.rx)
 				&& (by >= two.ty) && (ty <= two.by)
 				&& (oz >= two.iz) && (iz <= two.oz);
 		}
-		
+
 		public boolean contains(long x, long y, long z)
 		{
 			return ((x>=lx)&&(x<=rx)
 			&&(y>=ty)&&(y<=by)
 			&&(z>=iz)&&(z<=oz));
 		}
-		
+
 		public long width() { return rx-lx; }
 		public long height() { return by-ty; }
 		public long depth() { return oz-iz; }

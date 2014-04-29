@@ -5,7 +5,7 @@ import java.util.Arrays;
 import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ public class Directions
 		return d;
 	}
 	private static final Directions[] dirs=new Directions[256];
-	
+
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
 	public static final int EAST=2;
 	public static final int WEST=3;
 	public static final int UP=4;
 	public static final int DOWN=5;
-	
+
 	public static final int GATE=6;
 
 	public static final int NORTHEAST=7;
@@ -65,11 +65,11 @@ public class Directions
 	private String DIRECTION_LETTERS=DIRECTION_7_LETTERS;
 	private String DIRECTION_NAMES=DIRECTION_7_NAMES;
 	private String DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
-	
+
 	private int NUM_DIRECTIONS=7;
 
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
-	
+
 	public static final Object[][] DIRECTIONS_COMPASS_CHART={
 		{"UP",Integer.valueOf(UP)},
 		{"ABOVE",Integer.valueOf(UP)},
@@ -112,14 +112,14 @@ public class Directions
 		{"THERE",Integer.valueOf(GATE)},
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
-	
+
 	private static <T> T[] concat(T[] first, T[] second)
 	{
 		T[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
-	
+
 	public static final Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
 
 	public static final int NUM_DIRECTIONS()
@@ -131,22 +131,22 @@ public class Directions
 	{
 		return d().DIRECTIONS_CODES;
 	}
-	
+
 	public static final String LETTERS()
 	{
 		return d().DIRECTION_LETTERS;
 	}
-	
+
 	public static final String NAMES_LIST()
 	{
 		return d().DIRECTION_NAMES;
 	}
-	
+
 	public static final String SHIP_NAMES_LIST()
 	{
 		return d().DIRECTION_SHIPNAMES;
 	}
-	
+
 	public static final String getDirectionName(final String theDir)
 	{
 		return getDirectionName(getDirectionCode(theDir));
@@ -170,7 +170,7 @@ public class Directions
 			DIRECTION_SHIPNAMES=DIRECTION_11_SHIPNAMES;
 		}
 	}
-	
+
 	public static final String getDirectionName(final int code)
 	{
 		switch(code)
@@ -250,12 +250,12 @@ public class Directions
 		}
 		return code;
 	}
-	
+
 	public static final int getShipDirectionCode(final String theDir)
 	{
 		return getGoodShipDirectionCode(theDir);
 	}
-	
+
 	public static final int getCompassDirectionCode(final String theDir)
 	{
 		final int code=getGoodCompassDirectionCode(theDir);
@@ -268,7 +268,7 @@ public class Directions
 		}
 		return code;
 	}
-	
+
 	public static final int getGoodDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0) return -1;
@@ -276,10 +276,10 @@ public class Directions
 		for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
 			if((DIRECTIONS_FULL_CHART[i][0].toString().startsWith(upDir))
 			&&(((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue(); 
+				return ((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue();
 		return -1;
 	}
-	
+
 	public static final int getGoodCompassDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0) return -1;
@@ -287,10 +287,10 @@ public class Directions
 		for(int i=0;i<DIRECTIONS_COMPASS_CHART.length;i++)
 			if((DIRECTIONS_COMPASS_CHART[i][0].toString().startsWith(upDir))
 			&&(((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue(); 
+				return ((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue();
 		return -1;
 	}
-	
+
 	public static final int getGoodShipDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0) return -1;
@@ -298,10 +298,10 @@ public class Directions
 		for(int i=0;i<DIRECTIONS_SHIP_CHART.length;i++)
 			if((DIRECTIONS_SHIP_CHART[i][0].toString().startsWith(upDir))
 			&&(((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
-				return ((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue(); 
+				return ((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue();
 		return -1;
 	}
-	
+
 	public static final int[] adjustXYByDirections(int x, int y, final int direction)
 	{
 		switch(direction)
@@ -320,7 +320,7 @@ public class Directions
 		xy[1]=y;
 		return xy;
 	}
-	
+
 
 	public static final String getFromDirectionName(final int code)
 	{
@@ -351,7 +351,7 @@ public class Directions
 		}
 		return "";
 	}
-	
+
 	public static final String getShipFromDirectionName(final int code)
 	{
 		switch(code)
@@ -381,7 +381,7 @@ public class Directions
 		}
 		return "";
 	}
-	
+
 	public static final String getInDirectionName(final int code)
 	{
 		switch(code)
@@ -411,7 +411,7 @@ public class Directions
 		}
 		return "";
 	}
-	
+
 	public static final String getShipInDirectionName(final int code)
 	{
 		switch(code)
@@ -441,7 +441,7 @@ public class Directions
 		}
 		return "";
 	}
-	
+
 	public static final int getOpDirectionCode(final int code)
 	{
 		switch(code)
@@ -476,5 +476,5 @@ public class Directions
 		int code=getDirectionCode(theDir);
 		return getOpDirectionCode(code);
 	}
-	
+
 }

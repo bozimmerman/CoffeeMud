@@ -35,23 +35,24 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_HideOther extends ThiefSkill
 {
-	public String ID() { return "Thief_HideOther"; }
-	public String name(){ return "Hide Other";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String ID() { return "Thief_HideOther"; }
+	@Override public String name(){ return "Hide Other";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"OTHERHIDE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 	private int bonus=0;
 	private int prof=0;
-	
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -114,11 +115,13 @@ public class Thief_HideOther extends ThiefSkill
 		return;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,prof+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -127,6 +130,7 @@ public class Thief_HideOther extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,false,false);

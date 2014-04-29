@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_RepairingAura extends Spell
 {
-	public String ID() { return "Spell_RepairingAura"; }
-	public String name(){return "Repairing Aura";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int overrideMana(){ return 50;}
+	@Override public String ID() { return "Spell_RepairingAura"; }
+	@Override public String name(){return "Repairing Aura";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int overrideMana(){ return 50;}
 	public static final int REPAIR_MAX=30;
 	public int repairDown=REPAIR_MAX;
 	public int adjustedLevel=1;
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -73,8 +75,9 @@ public class Spell_RepairingAura extends Spell
 		}
 		return true;
 	}
-	
-	
+
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

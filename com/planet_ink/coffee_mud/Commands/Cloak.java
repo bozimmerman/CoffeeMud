@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Cloak extends StdCommand
 	public Cloak(){}
 
 	private final String[] access={"CLOAK"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -79,7 +80,7 @@ public class Cloak extends StdCommand
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
 			if(A!=null) A.setAbilityCode(abilityCode);
-			
+
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
 			mob.tell("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'.");
@@ -88,9 +89,9 @@ public class Cloak extends StdCommand
 		mob.tell("Cloaking is not available!");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CLOAK);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CLOAK);}
+
+
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenTriCorder extends StdTriCorder
 {
-	public String ID(){	return "GenTriCorder";}
-	
+	@Override public String ID(){	return "GenTriCorder";}
+
 	public GenTriCorder()
 	{
 		super();
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -56,6 +58,7 @@ public class GenTriCorder extends StdTriCorder
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -70,6 +73,7 @@ public class GenTriCorder extends StdTriCorder
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -86,6 +90,7 @@ public class GenTriCorder extends StdTriCorder
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -93,6 +98,7 @@ public class GenTriCorder extends StdTriCorder
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -106,6 +112,7 @@ public class GenTriCorder extends StdTriCorder
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenTriCorder)) return false;

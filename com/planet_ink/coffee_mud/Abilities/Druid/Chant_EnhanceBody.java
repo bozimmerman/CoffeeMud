@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_EnhanceBody extends Chant
 {
-	public String ID() { return "Chant_EnhanceBody"; }
-	public String name(){ return "Enhance Body";}
-	public String displayText(){return "(Enhanced Body)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Chant_EnhanceBody"; }
+	@Override public String name(){ return "Enhance Body";}
+	@Override public String displayText(){return "(Enhanced Body)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -55,6 +56,7 @@ public class Chant_EnhanceBody extends Chant
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,6 +69,7 @@ public class Chant_EnhanceBody extends Chant
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

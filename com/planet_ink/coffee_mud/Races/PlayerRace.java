@@ -31,12 +31,12 @@ limitations under the License.
 */
 public class PlayerRace extends Human
 {
-	public String ID(){ return "PlayerRace"; }
-	public String name(){ return "PlayerRace"; }
-	public String[] culturalAbilityNames(){return null;}
-	public int[] culturalAbilityProficiencies(){return null;}
-	public int availabilityCode(){return 0;}
-	
+	@Override public String ID(){ return "PlayerRace"; }
+	@Override public String name(){ return "PlayerRace"; }
+	@Override public String[] culturalAbilityNames(){return null;}
+	@Override public int[] culturalAbilityProficiencies(){return null;}
+	@Override public int availabilityCode(){return 0;}
+
 	public PlayerRace()
 	{
 		super();

@@ -40,7 +40,7 @@ import java.util.Vector;
  * programmatically set to change due to events that occur to/around the mob,
  * and adjust themselves relative to other factions. Subsets of the faction can
  * be given readable names for display to the user.
- * 
+ *
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#fetchFaction(String)
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addFaction(String, int)
  */
@@ -55,7 +55,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void initializeFaction(String aname);
 
 	/**
-	 * Initializes a new faction from a faction.ini properties formatted document, 
+	 * Initializes a new faction from a faction.ini properties formatted document,
 	 * and a given new faction ID
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factionID()
@@ -66,7 +66,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void initializeFaction(StringBuffer file, String fID);
 
 	/**
-	 * Returns the value of a given internal faction variable.  
+	 * Returns the value of a given internal faction variable.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
 	 * @param tag the tag to get the value of
 	 * @return the value of the given tag
@@ -86,7 +86,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns a FactionData object for the given mob to store his faction
-	 * information in.  It will contain all the affects and behaviors, 
+	 * information in.  It will contain all the affects and behaviors,
 	 * and other information necessary to maintain a relationship between
 	 * the given mob and this faction.
 	 * Any parameters should be set on the affects or behaviors before returning them.
@@ -95,10 +95,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return a FactionData object with all the appropriate affects and behaviors
 	 */
 	public FData makeFactionData(MOB mob);
-	
+
 	/**
 	 * Updates the given FactionData object that the given mob to store his faction
-	 * information in.  It will contain all the affects and behaviors, 
+	 * information in.  It will contain all the affects and behaviors,
 	 * and other information necessary to maintain a relationship between
 	 * the given mob and this faction.
 	 * Any parameters should be set on the affects or behaviors before returning them.
@@ -107,7 +107,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param data the old faction data object
 	 */
 	public void updateFactionData(MOB mob, FData data);
-	
+
 	/**
 	 * Checks to see if the given mob has this faction.  Same as checking if
 	 * mob.fetchFaction(this.factionID())!=Integer.MAX_VALUE.
@@ -131,7 +131,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return true if its pre-loaded, false otherwise.
 	 */
 	public boolean isPreLoaded();
-	
+
 	/**
 	 * Returns the given value faction value, as a percent from average of the
 	 * range values of this faction.
@@ -171,6 +171,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setName(String)
 	 * @return the name of this faction
 	 */
+	@Override
 	public String name();
 
 	/**
@@ -201,7 +202,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void setChoiceIntro(String newStr);
 
 	/**
-	 * Gets the lowest absolute range value 
+	 * Gets the lowest absolute range value
 	 * @return the lowest absolute range value
 	 */
 	public int minimum();
@@ -304,7 +305,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns the default faction value that applies to the given mob.
-	 * This method is called when a Faction Change event applies a 
+	 * This method is called when a Faction Change event applies a
 	 * Faction Add command. Returns Integer.MAX_VALUE if no default
 	 * value applies to this mob.
 	 * Each list item is a string.
@@ -328,10 +329,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void setDefaults(List<String> v);
 
 	/**
-	 * Returns the automatic default faction mask/value list, which is 
+	 * Returns the automatic default faction mask/value list, which is
 	 * possibly applied whenever a mob or player is brought to life for
-	 * the first time. An automatic default faction mask/value is defined 
-	 * as a number, along with an optional Zapper mask describing to whom 
+	 * the first time. An automatic default faction mask/value is defined
+	 * as a number, along with an optional Zapper mask describing to whom
 	 * the value is applied. Each list item is a string.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(List)
@@ -342,7 +343,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	/**
 	 * Returns the automatic default faction value that applies to the
 	 * given mob.  This method is called when a mob is brought into the
-	 * world.  Returns Integer.MAX_VALUE if no default value applies 
+	 * world.  Returns Integer.MAX_VALUE if no default value applies
 	 * to this mob.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
 	 * @param mob the mob to find a default value of this faction for.
@@ -351,10 +352,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public int findAutoDefault(MOB mob);
 
 	/**
-	 * Sets the automatic default faction mask/value list, which is 
+	 * Sets the automatic default faction mask/value list, which is
 	 * possibly applied whenever a mob or player is brought to life for
-	 * the first time. An automatic default faction mask/value is defined 
-	 * as a number, along with an optional Zapper mask describing to whom 
+	 * the first time. An automatic default faction mask/value is defined
+	 * as a number, along with an optional Zapper mask describing to whom
 	 * the value is applied. Each list item is a string.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -377,9 +378,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void setRateModifier(double d);
 
 	/**
-	 * Returns the player choosable faction mask/value list, which is 
+	 * Returns the player choosable faction mask/value list, which is
 	 * possibly presented whenever a player creates a new character.
-	 * An faction mask/value is defined as a number, along with an 
+	 * An faction mask/value is defined as a number, along with an
 	 * optional Zapper mask describing to whom the value is applied.
 	 * Each list item is a string.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -390,7 +391,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns a vector of Integer objects representing the choosable
-	 * faction values available to the given mob when they create 
+	 * faction values available to the given mob when they create
 	 * a new character.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#choices()
 	 * @param mob the player mob to evaluate
@@ -399,9 +400,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public List<Integer> findChoices(MOB mob);
 
 	/**
-	 * Sets the player choosable faction mask/value list, which is 
+	 * Sets the player choosable faction mask/value list, which is
 	 * possibly presented whenever a player creates a new character.
-	 * An faction mask/value is defined as a number, along with an 
+	 * An faction mask/value is defined as a number, along with an
 	 * optional Zapper mask describing to whom the value is applied.
 	 * Each list item is a string.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -422,7 +423,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns the Faction.FactionRange object that applies to the given faction
-	 * value.  
+	 * value.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
 	 * @param faction the value to find a matching range object for
@@ -431,8 +432,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public FRange fetchRange(int faction);
 
 	/**
-	 * Returns the name of the Faction.FactionRange object that applies to 
-	 * the given faction value.  
+	 * Returns the name of the Faction.FactionRange object that applies to
+	 * the given faction value.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
 	 * @param faction the value to find a matching range object for
 	 * @return the name of the given faction object
@@ -458,17 +459,17 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether a removal was necessary
 	 */
 	public boolean delRange(FRange FR);
-	
+
 	/**
-	 * Returns the Faction.FactionRange object that applies to 
-	 * the given faction range code name.  
+	 * Returns the Faction.FactionRange object that applies to
+	 * the given faction range code name.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#codeName()
 	 * @param codeName the code name to find a matching range object for
 	 * @return the correct faction range object, or null
 	 */
 	public Faction.FRange fetchRange(String codeName);
-	
+
 	/**
 	 * Returns an enumeration of change event keys, which are the code names of
 	 * the triggers that cause faction values to change automatically.
@@ -510,7 +511,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * name, or fully encoded event string.  The key must be either a single event
 	 * trigger code (an ability name, event code name), or a fully encoded string
 	 * which is a semicolon delimited field consisting of event (trigger) id, direction
-	 * code, and amount 
+	 * code, and amount
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
@@ -542,8 +543,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void clearChangeEvents();
 
 	/**
-	 * Executes a Faction change event for the given event source and target, and the 
-	 * applicable FactionChangeEvent event object for this faction 
+	 * Executes a Faction change event for the given event source and target, and the
+	 * applicable FactionChangeEvent event object for this faction
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
@@ -552,7 +553,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param event the applicable event object for this faction
 	 */
 	public void executeChange(MOB source, MOB target, FactionChangeEvent event);
-	
+
 
 	/**
 	 * Computed completed at runtime, this method returns all possible valid FactionChangeEvent
@@ -562,7 +563,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return a list of all valid event trigger ids.
 	 */
 	public String ALL_CHANGE_EVENT_TYPES();
-	
+
 	/**
 	 * Returns an enumeration of Object arrays referring to the a factor to multiply
 	 * times the base amount (100) of faction change (up or down) for particular
@@ -576,7 +577,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return the enumeration of change factor object arrays
 	 */
 	public Enumeration<Faction.FZapFactor> factors();
-	
+
 	/**
 	 * Removes the given change factor from this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
@@ -592,7 +593,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return the given factor, or null.
 	 */
 	public Faction.FZapFactor getFactor(int x);
-	
+
 	/**
 	 * Adds a new change factor to this Faction.  A change factor is a state
 	 * dependent multiplier by a change in faction.  It consists of a Zapper
@@ -606,7 +607,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return the newly created factor Object[] array
 	 */
 	public Faction.FZapFactor addFactor(double gain, double loss, String mask);
-	
+
 	/**
 	 * Returns the applicable change factor for the given mob, and the
 	 * whether the faction change was a gain or loss (not a gain).
@@ -641,7 +642,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether the faction id was found and removed
 	 */
 	public boolean delRelation(String factionID);
-	
+
 	/**
 	 * Adds a new faction relation factor to this faction.  The faction id is the id
 	 * of another complementary or rival faction, and the relation is a number multiplied
@@ -655,7 +656,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether the new faction id was successfully added
 	 */
 	public boolean addRelation(String factionID, double relation);
-	
+
 	/**
 	 * Returns the relation factor of the given faction id.  See addRelation for
 	 * more information.
@@ -665,11 +666,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param factionID the other factions faction id
 	 * @return the factor to multiply a change in the other faction by
 	 */
-	public double getRelation(String factionID); 
-	
+	public double getRelation(String factionID);
+
 	/**
 	 * Returns an enumeration of Abilities or Behavior IDs that are
-	 * automatically but conditionally added to mobs (not players) with this faction. 
+	 * automatically but conditionally added to mobs (not players) with this faction.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addAffectBehav(String, String, String)
@@ -689,13 +690,13 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether the Abilities or Behavior ID was found and removed
 	 */
 	public boolean delAffectBehav(String ID);
-	
+
 	/**
-	 * Adds a new Ability or Behavior to this Faction.  The ID must match a 
+	 * Adds a new Ability or Behavior to this Faction.  The ID must match a
 	 * Behavior or, if one is not found, an Ability.  The parms are any
 	 * parameters required by the Behavior or Ability.  The gainMask is
-	 * a simple mask to further narrow what kind of mobs receive the 
-	 * given Ability or Behavior when first receiving this Faction.  It 
+	 * a simple mask to further narrow what kind of mobs receive the
+	 * given Ability or Behavior when first receiving this Faction.  It
 	 * will require the mob be reset or rejuved in order for this to take affect.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
@@ -707,9 +708,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether the new Abilities or Behavior ID was successfully added
 	 */
 	public boolean addAffectBehav(String ID, String parms, String gainMask);
-	
+
 	/**
-	 * Returns a string array containing the parms at index 0, and the gainMask at 1.  
+	 * Returns a string array containing the parms at index 0, and the gainMask at 1.
 	 * See addAffectBehav for more information.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
@@ -718,8 +719,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param ID the Abilities or Behavior ID
 	 * @return a string array containing the parms at index 0, and the gainMask at 1
 	 */
-	public String[] getAffectBehav(String ID); 
-	
+	public String[] getAffectBehav(String ID);
+
 	/**
 	 * Returns an enumeration of Faction.FactionReaction items associated
 	 * with this faction.  These are automatically added to mobs in the presence
@@ -732,23 +733,23 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns an enumeration of Faction.FactionReaction items associated
-	 * with this faction and the given range code.  These are automatically 
+	 * with this faction and the given range code.  These are automatically
 	 * added to mobs in the presence of one with this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FReactionItem)
 	 * @return an enumeration of Faction.FactionReaction items
 	 */
 	public Enumeration<Faction.FReactionItem> reactions(String rangeCode);
-	
+
 	/**
-	 * Removes the given reaction from this Faction.  
+	 * Removes the given reaction from this Faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactions()
 	 * @param item the faction reaction item to remove
 	 * @return whether the reaction was found and removed
 	 */
 	public boolean delReaction(Faction.FReactionItem item);
-	
+
 	/**
 	 * Adds a new reaction to this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FReactionItem)
@@ -763,7 +764,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return whether the new reaction was successfully added
 	 */
 	public boolean addReaction(String range, String mask, String abilityID, String parms);
-	
+
 	/**
 	 * Set this faction to use the light-reaction system, which is easier on resources, but
 	 * not as powerful.
@@ -771,7 +772,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param truefalse true to use the light reaction system, false otherwise
 	 */
 	public void setLightReactions(boolean truefalse);
-	
+
 	/**
 	 * Return whether this faction uses the light-reaction system, which is easier on resources, but
 	 * not as powerful.
@@ -779,7 +780,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return true if this faction to use the light-reaction system
 	 */
 	public boolean useLightReactions();
-	
+
 	/**
 	 * Returns an enumeration of Faction.FactionAbilityUsage objects for this Faction.
 	 * A FactionAbilityUsage object defines restrictions on the use of a mob or players
@@ -793,16 +794,16 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return an enumeration of Faction.FactionAbilityUsage objects for this Faction
 	 */
 	public Enumeration<Faction.FAbilityUsage> abilityUsages();
-	
+
 	/**
-	 * Returns the list of faction ranges that apply based on Faction.FactionAbilityUsage 
+	 * Returns the list of faction ranges that apply based on Faction.FactionAbilityUsage
 	 * usage factor that apply to the given ability.  An empty string means it does not
 	 * apply.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#abilityUsages()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange
 	 * @param A the ability to find a usage factor for, and then use to find applicable ranges
-	 * @return the list of faction range names that apply to this ability from usage factors 
+	 * @return the list of faction range names that apply to this ability from usage factors
 	 */
 	public String usageFactorRangeDescription(Ability A);
 
@@ -818,7 +819,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 	/**
 	 * Returns whether the given player/mob is prevented from using the given Ability
-	 * based on any of the Faction.FactionAbilityUsage (faction ability usage) 
+	 * based on any of the Faction.FactionAbilityUsage (faction ability usage)
 	 * criterium defined for this Faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#abilityUsages()
@@ -833,7 +834,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * given definitional key.  The key is NULL to create an empty usage, or
 	 * a definitional string that consists of one or more ability names, domains,
 	 * flags, etc followed by a semicolon and a minimum faction value, and another
-	 * semicolon and a maximum faction value. 
+	 * semicolon and a maximum faction value.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#abilityUsages()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delAbilityUsage(com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage)
@@ -850,7 +851,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return the Faction.FactionAbilityUsage object at that index
 	 */
 	public FAbilityUsage getAbilityUsage(int x);
-	
+
 	/**
 	 * Removes the given Faction.FactionAbilityUsage object from this faction
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage
@@ -860,29 +861,29 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return true if the object was found and removed
 	 */
 	public boolean delAbilityUsage(FAbilityUsage usage);
-	
-	
+
+
 	/**
 	 * Return the bitmap of internal-use flags for this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setInternalFlags(long)
 	 * @return the bitmap of internal-use flags for this faction.
 	 */
 	public long getInternalFlags();
-	
+
 	/**
 	 * Set the bitmap of internal-use flags for this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getInternalFlags()
 	 * @param bitmap the bitmap of internal-use flags for this faction.
 	 */
 	public void setInternalFlags(long bitmap);
-	
+
 	/**
-	 * A Faction Change Event is an event that triggers an automatic change in 
+	 * A Faction Change Event is an event that triggers an automatic change in
 	 * a mob or players faction value.  Triggers can be the use of abilities,
 	 * or certain specific coded events (such as killing another mob).
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -910,11 +911,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return true if the event id is valid
 		 */
 		public boolean setEventID(String newID);
-		
-		
+
+
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
-		 * if the event id was of a particular Ability ACODE_.  Returns -1 if 
+		 * if the event id was of a particular Ability ACODE_.  Returns -1 if
 		 * this value does not apply, or an index into ACODE_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
@@ -926,7 +927,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
-		 * if the event id was of a particular Ability FLAG_.  Returns -1 if 
+		 * if the event id was of a particular Ability FLAG_.  Returns -1 if
 		 * this value does not apply, or an index into FLAG_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
@@ -938,7 +939,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
-		 * if the event id was of a particular Ability DOMAIN_.  Returns -1 if 
+		 * if the event id was of a particular Ability DOMAIN_.  Returns -1 if
 		 * this value does not apply, or an index into DOMAIN_DESCS.
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
@@ -969,8 +970,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newFlagCache the new list of applicable flags
 		 */
 		public void setFlags(String newFlagCache);
-		
-		
+
+
 		/**
 		 * A derivative of the flag cache, this method returns whether the flag was set that
 		 * allows this event to trigger when the target of the event does not have any value
@@ -1002,7 +1003,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return true to NOT take level into account when determining amount of faction change
 		 */
 		public boolean just100();
-		
+
 		/**
 		 * Returns a code for a description of how an event, if applicable, will affect this
 		 * factions value.  The direction is an index into CHANGE_DIRECTION_DESCS, or one of the
@@ -1022,7 +1023,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newVal a new FactionChangeEvent#CHANGE_DIRECTION_ constant
 		 */
 		public void setDirection(int newVal);
-		
+
 		/**
 		 * Returns the factor to multiply the base faction change amount (100) by, to determine
 		 * the amount of this faction changed by this event, in accordance with the given direction.
@@ -1040,7 +1041,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newVal
 		 */
 		public void setFactor(double newVal);
-		
+
 		/**
 		 * Returns the zapper mask that is used to see if the target of the event qualifies in
 		 * order to trigger a faction change by this defined event.
@@ -1058,7 +1059,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the zapper mask compiled
 		 */
 		public MaskingLibrary.CompiledZapperMask compiledTargetZapper();
-		
+
 		/**
 		 * Returns the zapper mask that is used to see if the source of the event qualifies in
 		 * order to trigger a faction change by this defined event.
@@ -1067,7 +1068,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the zapper mask compiled
 		 */
 		public MaskingLibrary.CompiledZapperMask compiledSourceZapper();
-		
+
 		/**
 		 * Sets the zapper mask that is used to see if the target of the event qualifies in
 		 * order to trigger a faction change by this defined event.
@@ -1085,19 +1086,19 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public String triggerParameters();
 
 		/**
-		 * Returns the named trigger parameters defined 
+		 * Returns the named trigger parameters defined
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTriggerParameters(String)
 		 * @return the specific named trigger parameter
 		 */
 		public String getTriggerParm(String parmName);
-		
+
 		/**
 		 * Sets any trigger parameters defined that modify the way the trigger behaves.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#triggerParameters()
 		 * @param newVal the trigger parameters
 		 */
 		public void setTriggerParameters(String newVal);
-		
+
 		/**
 		 * Returns the internal state variable stored for this change event.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setStateVariable(int,Object)
@@ -1113,12 +1114,13 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newVal the state variable
 		 */
 		public void setStateVariable(int x, Object newVal);
-		
+
 		/**
 		 * Returns a semicolon delimited list of all the settings in this change event
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String)
 		 * @return a semicolon delimited list of all the settings in this change event
 		 */
+		@Override
 		public String toString();
 
 		/**
@@ -1128,13 +1130,13 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return true if this event applies to the mobs, false otherwise
 		 */
 		public boolean applies(MOB source, MOB target);
-		
+
 		/**
 		 * Return the parent faction for which this data stands.
 		 * @return this data objects parent faction.
 		 */
 		public Faction getFaction();
-		
+
 		/** a direction constant meaning this event changes the factions value upward */
 		public static final int CHANGE_DIRECTION_UP=0;
 		/** a direction constant meaning this event changes the factions value downward */
@@ -1160,7 +1162,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/** some non-ability-related event trigger ids */
 		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED"};
 	}
-	
+
 
 	/**
 	 * The foundation of any Faction, the Faction Range represents a range of values that constitutes
@@ -1168,10 +1170,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * by the high value of the highest range and the low value of the lowest range.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addRange(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
-	 */    
+	 */
 	public static interface FRange
 	{
 		/**
@@ -1179,7 +1181,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the unique code name that describes this range of faction values
 		 */
 		public String codeName();
-		
+
 		/**
 		 * Returns the numerically low value of this faction range
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#setLow(int)
@@ -1225,7 +1227,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public void setName(String newVal);
 
 		/**
-		 * Returns a constant reflecting whether this range of faction value is 
+		 * Returns a constant reflecting whether this range of faction value is
 		 * equivalent to one of the legacy alignment constant values.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.Align
 		 * @return an alignment constant
@@ -1233,7 +1235,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public Align alignEquiv();
 
 		/**
-		 * Sets a constant reflecting whether this range of faction value is 
+		 * Sets a constant reflecting whether this range of faction value is
 		 * equivalent to one of the legacy alignment constant values.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.Align
 		 * @param newVal a new alignment constant
@@ -1246,6 +1248,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addRange(String)
 		 * @return a semicolon-delimited range
 		 */
+		@Override
 		public String toString();
 
 		/**
@@ -1253,7 +1256,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return a random numeric value within this faction range
 		 */
 		public int random();
-		
+
 		/**
 		 * Returns the faction of which this is a range
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addRange(String)
@@ -1261,7 +1264,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public Faction getFaction();
 	}
-	
+
 	/**
 	 * A FactionData object is stored inside other objects that keep track
 	 * of their own faction.  The object stores the faction value, any
@@ -1284,7 +1287,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return true if an update is necessary, false otherwise.
 		 */
 		public boolean requiresUpdating();
-		
+
 		/**
 		 * A mirror implementation of Tickable
 		 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
@@ -1292,25 +1295,25 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param tickID the id code of the tick being done
 		 */
 		public boolean tick(Tickable ticking, int tickID);
-		
+
 		/**
 		 * Return the parent faction for which this data stands.
 		 * @return this data objects parent faction.
 		 */
 		public Faction getFaction();
-		
+
 		/**
 		 * Returns the actual value that the holding object has in this faction.
 		 * @return the faction value
 		 */
 		public int value();
-		
+
 		/**
 		 * Sets the actual value that the holding object has in this faction.
 		 * @param newValue the faction value
 		 */
 		public void setValue(int newValue);
-		
+
 		/**
 		 * Clears and re-adds all the necessary message listeners and tickers
 		 * and stat affecting objects for this faction data reference.
@@ -1319,7 +1322,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public void addHandlers(Vector<Ability> abilities, Vector<Behavior> behaviors);
 	}
-	
+
 	/**
 	 * A Faction Ability Usage object represents a set of criterium that can be used
 	 * to determine whether this faction allows a mob or player to use a particular
@@ -1338,10 +1341,10 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the unconverted ability mask
 		 */
 		public String abilityFlags();
-		
+
 		/**
 		 * Sets the ability usage masks and methods from an ability id, domain, flags, etc.
-		 * Parses the string sent to set many of the methods below. 
+		 * Parses the string sent to set many of the methods below.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notflag()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#possibleAbilityID()
@@ -1368,9 +1371,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#notflag()
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @return a bitmask of Ability flags that must be set by the ability
-		 */ 	   
+		 */
 		public int flag();
-		
+
 		/**
 		 * Whether the abilityFlags() method is possibly a specific Ability ID
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FAbilityUsage#abilityFlags()
@@ -1430,18 +1433,19 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newVal a new maximum faction value
 		 */
 		public void setHigh(int newVal);
-		
+
 		/**
 		 * Returns a semicolon-delimited string of the values of this ability usage, suitable for
 		 * using to create a new one later.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addAbilityUsage(String)
 		 * @return a semicolon-delimited string of the values of this ability usage
 		 */
+		@Override
 		public String toString();
 	}
-	
+
 	/**
-	 * A factor defines how modifications of faction value, up or down, are modified on a 
+	 * A factor defines how modifications of faction value, up or down, are modified on a
 	 * mob by mob basis.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double, double, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
@@ -1456,43 +1460,43 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the gain factor (0-1)
 		 */
 		public double gainFactor();
-		
+
 		/**
 		 * Set the gain factor (0-1)
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#gainFactor()
 		 * @param val the gain factor (0-1)
 		 */
 		public void setGainFactor(double val);
-		
+
 		/**
 		 * Set the loss factor (0-1)
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#setGainFactor(double)
 		 * @return the loss factor (0-1)
 		 */
 		public double lossFactor();
-		
+
 		/**
 		 * Set the loss factor (0-1)
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#gainFactor()
 		 * @param val the loss factor (0-1)
 		 */
 		public void setLossFactor(double val);
-		
+
 		/**
 		 * The mask to tell which mobs to apply this factor to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#setMOBMask(String)
 		 * @return mask to tell which mobs to apply this reaction to
 		 */
 		public String MOBMask();
-		
-		
+
+
 		/**
 		 * The compiled mask to tell which mobs to apply this factor to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#setMOBMask(String)
 		 * @return the compiled mask to tell which mobs to apply this reaction to
 		 */
 		public MaskingLibrary.CompiledZapperMask compiledMOBMask();
-		
+
 		/**
 		 * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
 		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -1500,16 +1504,17 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param str the mask to determine which mobs in the players presence will be affected
 		 */
 		public void setMOBMask(String str);
-		
+
 		/**
 		 * Returns a semicolon-delimited string of the values of this factpr, suitable for
 		 * using to create a new one later.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double,double,String)
 		 * @return a string of the values of this factor
 		 */
+		@Override
 		public String toString();
 	}
-	
+
 	/**
 	 * Adds very temporary affects and behaviors to mobs who match the reaction zapper
 	 * mask, and who are in the same room as someone with standing in this faction.
@@ -1526,29 +1531,29 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the ability/behavior/command id
 		 */
 		public String reactionObjectID();
-		
+
 		/**
 		 * Set the ability/behavior/command id.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#reactionObjectID()
 		 * @param str the ability/behavior/command id
 		 */
 		public void setReactionObjectID(String str);
-		
+
 		/**
 		 * The mask to tell which mobs to apply this reaction to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setPresentMOBMask(String)
 		 * @return mask to tell which mobs to apply this reaction to
 		 */
 		public String presentMOBMask();
-		
-		
+
+
 		/**
 		 * The compiled mask to tell which mobs to apply this reaction to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setPresentMOBMask(String)
 		 * @return the compiled mask to tell which mobs to apply this reaction to
 		 */
 		public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask();
-		
+
 		/**
 		 * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
 		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -1556,21 +1561,21 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param str the mask to determine which mobs in the players presence will be affected
 		 */
 		public void setPresentMOBMask(String str);
-		
+
 		/**
 		 * The code name of the range which determines which folks with this faction get a reaction
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setRangeName(String)
 		 * @return the range which determines which folks with this faction get a reaction
 		 */
 		public String rangeCodeName();
-		
+
 		/**
 		 * Set the code name of the range which determines which folks with this faction get a reaction
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeCodeName()
 		 * @param str the range which determines which folks with this faction get a reaction
 		 */
 		public void setRangeName(String str);
-		
+
 		/**
 		 * The parameters for the ability/behavior/command above.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setRangeName(String)
@@ -1583,33 +1588,34 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param str the parameters for the ability/behavior/command above
 		 */
 		public void setParameters(String str);
-		
+
 		/**
 		 * Returns a semicolon-delimited string of the values of this reaction, suitable for
 		 * using to create a new one later.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
 		 * @return a semicolon-delimited string of the values of this reaction
 		 */
+		@Override
 		public String toString();
 	}
-	
+
 	/** internal flag masks meaning to skip standard auto system, retrieved by {@link Faction#getInternalFlags()} */
 	public static final long IFLAG_IGNOREAUTO=1;
 	/** internal flag masks meaning to never save to a file, retrieved by {@link Faction#getInternalFlags()} */
 	public static final long IFLAG_NEVERSAVE=2;
 	/** internal flag masks meaning to skip normal ticking, retrieved by {@link Faction#getInternalFlags()} */
 	public static final long IFLAG_CUSTOMTICK=4;
-	
+
 	/** legacy enumerator constant for {@link FRange#alignEquiv()} denoting that the range does not reflect alignment */
 	public enum Align {
 		INDIFF, EVIL, NEUTRAL, GOOD
 	}
-	
+
 	/** String list for the valid {@link Faction#experienceFlag()} constants */
 	public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
 	/** String descriptions for the valid {@link Faction#experienceFlag()} constants */
 	public final static String[] EXPAFFECT_DESCS={"None","Proportional (Extreme)","Higher (mine)","Lower (mine)","Higher (other)","Lower (other)"};
-	
+
 	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the NAME tag */
 	public final static int TAG_NAME=0;
 	/** index constant for tag names in {@link Faction#TAG_NAMES} denoting the MINIMUM tag */

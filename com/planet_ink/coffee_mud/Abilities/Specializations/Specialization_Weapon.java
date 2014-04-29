@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,20 @@ import java.util.*;
 */
 public class Specialization_Weapon extends StdAbility
 {
-	public String ID() { return "Specialization_Weapon"; }
-	public String name(){ return "Weapon Specialization";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Specialization_Weapon"; }
+	@Override public String name(){ return "Weapon Specialization";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 
 	protected boolean activated=false;
 	protected int weaponClass=-1;
 	protected int secondWeaponClass=-1;
-	
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
+
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 
 	protected int getDamageBonus(MOB mob, int dmgType)
 	{
@@ -61,7 +61,7 @@ public class Specialization_Weapon extends StdAbility
 			return 0;
 		}
 	}
-	
+
 	protected boolean isWeaponMatch(Weapon W)
 	{
 		if((W.weaponClassification()==weaponClass)
@@ -70,17 +70,18 @@ public class Specialization_Weapon extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	protected boolean canDamage(MOB mob, Weapon W)
 	{
 		return !W.amWearingAt(Wearable.IN_INVENTORY);
 	}
-	
+
 	protected boolean isWearableItem(Item I)
 	{
 		return (I instanceof Weapon) && isWeaponMatch((Weapon)I);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(activated && (msg.source()==affected))
@@ -103,6 +104,7 @@ public class Specialization_Weapon extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -117,11 +119,12 @@ public class Specialization_Weapon extends StdAbility
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 						+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
 						+(10*(getXLEVELLevel((MOB)affected))));
-					
+
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -134,5 +137,5 @@ public class Specialization_Weapon extends StdAbility
 			((Item)msg.target()).phyStats().setLevel(((Item)msg.target()).phyStats().level()-((1+getX4Level(msg.source()))/2));
 		return true;
 	}
-	
+
 }

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,20 +37,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Cleanliness extends Prayer
 {
-	public String ID() { return "Prayer_Cleanliness"; }
-	public String name(){ return "Cleanliness";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Cleanliness"; }
+	@Override public String name(){ return "Cleanliness";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target instanceof MOB))
 			return Ability.QUALITY_INDIFFERENT;
 		return super.castingQuality(mob,target);
 	}
-	
-   public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+
+   @Override
+public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

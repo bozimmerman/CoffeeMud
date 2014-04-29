@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,16 +37,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanItem extends StdItem implements ClanItem
 {
-	public String ID(){	return "StdClanItem";}
+	@Override public String ID(){	return "StdClanItem";}
 	protected String myClan="";
 	protected int ciType=0;
-	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}
+	@Override public int ciType(){return ciType;}
+	@Override public void setCIType(int type){ ciType=type;}
 	private long lastClanCheck=System.currentTimeMillis();
 	private Environmental riteOwner=null;
-	public Environmental rightfulOwner(){return riteOwner;}
-	public void setRightfulOwner(Environmental E){riteOwner=E;}
-	
+	@Override public Environmental rightfulOwner(){return riteOwner;}
+	@Override public void setRightfulOwner(Environmental E){riteOwner=E;}
+
 	public StdClanItem()
 	{
 		super();
@@ -61,9 +61,10 @@ public class StdClanItem extends StdItem implements ClanItem
 		recoverPhyStats();
 	}
 
-	public String clanID(){return myClan;}
-	public void setClanID(String ID){myClan=ID;}
+	@Override public String clanID(){return myClan;}
+	@Override public void setClanID(String ID){myClan=ID;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -86,14 +87,16 @@ public class StdClanItem extends StdItem implements ClanItem
 			lastClanCheck=System.currentTimeMillis();
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(StdClanItem.stdOkMessage(this,msg))
 			return super.okMessage(myHost,msg);
 		return false;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))
@@ -115,7 +118,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return false;
 	}
-	
+
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLANITEM)
@@ -278,7 +281,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return true;
 	}
-	
+
 	public static boolean stdOkMessage(Environmental myHost, CMMsg msg)
 	{
 		if(((msg.tool()==myHost)||(msg.tool()==((ClanItem)myHost).ultimateContainer(null)))

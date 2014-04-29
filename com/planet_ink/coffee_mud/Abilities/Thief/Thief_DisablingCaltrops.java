@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Thief_DisablingCaltrops extends Thief_Caltrops
 {
-	public String ID() { return "Thief_DisablingCaltrops"; }
-	public String name(){ return "Disabling Caltrops";}
+	@Override public String ID() { return "Thief_DisablingCaltrops"; }
+	@Override public String name(){ return "Disabling Caltrops";}
 	private static final String[] triggerStrings = {"DISABLINGCALTROPS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String caltropTypeName(){return "disabling ";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String caltropTypeName(){return "disabling ";}
+	@Override
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))

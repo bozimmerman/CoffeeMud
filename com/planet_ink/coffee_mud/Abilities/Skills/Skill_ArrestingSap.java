@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +36,28 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
-	public String ID() { return "Skill_ArrestingSap"; }
-	public String name(){ return "Arresting Sap";}
-	public String displayText(){ return "(Knocked out: "+tickDown+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_ArrestingSap"; }
+	@Override public String name(){ return "Arresting Sap";}
+	@Override public String displayText(){ return "(Knocked out: "+tickDown+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"ASAP"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected int enhancement=0;
-	public int abilityCode(){return enhancement;}
-	public void setAbilityCode(int newCode){enhancement=newCode;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int abilityCode(){return enhancement;}
+	@Override public void setAbilityCode(int newCode){enhancement=newCode;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected boolean utterSafety=false;
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Unconscious";
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -96,6 +97,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -106,6 +108,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -121,6 +124,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -157,6 +161,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean safety=false;
@@ -179,7 +184,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 				}
 			}
 		}
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -226,7 +231,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(target.riding()!=null) 
+				if(target.riding()!=null)
 					target.setRiding(null);
 				success=maliciousAffect(mob,target,asLevel,ticks,-1);
 				if(mob.getVictim()==target) mob.setVictim(null);

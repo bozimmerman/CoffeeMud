@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 {
-	public String ID(){	return "GenLiquidResource";}
+	@Override public String ID(){	return "GenLiquidResource";}
 	public GenLiquidResource()
 	{
 		super();
@@ -50,12 +50,14 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 	protected static Ability rot=null;
 
+	@Override
 	public void setMaterial(int newValue)
 	{
 		super.setMaterial(newValue);
 		decayTime=0;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -68,6 +70,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		rot.executeMsg(this,msg);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(rot==null)
@@ -82,8 +85,8 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	protected String domainSource=null;
-	public String domainSource(){return domainSource;}
-	public void setDomainSource(String src){domainSource=src;}
-	public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
-	public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+	@Override public String domainSource(){return domainSource;}
+	@Override public void setDomainSource(String src){domainSource=src;}
+	@Override public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
+	@Override public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 
 public class Prayer_DoomAura extends Prayer_BladeBarrier
 {
-	public String ID() { return "Prayer_DoomAura"; }
-	public String name(){ return "Doom Aura";}
-	public String displayText(){ return "(Doom Aura)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	
-	protected String startStr() { return "An aura of doom appears around <T-NAME>!^?"; }
-	
-	protected void doDamage(MOB srcM, MOB targetM, int damage) 
+	@Override public String ID() { return "Prayer_DoomAura"; }
+	@Override public String name(){ return "Doom Aura";}
+	@Override public String displayText(){ return "(Doom Aura)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override protected String startStr() { return "An aura of doom appears around <T-NAME>!^?"; }
+
+	@Override
+	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{
 		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,"The aura of doom around <S-NAME> <DAMAGE> <T-NAME>.");
 	}

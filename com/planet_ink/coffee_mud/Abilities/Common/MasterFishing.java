@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 
 public class MasterFishing extends Fishing
 {
-	public String ID() { return "MasterFishing"; }
-	public String name(){ return "Master Fishing";}
+	@Override public String ID() { return "MasterFishing"; }
+	@Override public String name(){ return "Master Fishing";}
 	private static final String[] triggerStrings = {"MFISH","MASTERFISH"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected int getDuration(MOB mob, int level)
 	{
 		return getDuration(113,mob,level,37);
 	}
-	protected int baseYield() { return 3; }
+	@Override protected int baseYield() { return 3; }
 }

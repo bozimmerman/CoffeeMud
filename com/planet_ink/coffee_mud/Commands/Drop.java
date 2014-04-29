@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,10 +39,10 @@ public class Drop extends StdCommand
 	public Drop(){}
 
 	private final String[] access={"DROP","DRO"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class,Boolean.class}};
-	
+
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
 	{
 		final Room R=mob.location();
@@ -67,24 +67,25 @@ public class Drop extends StdCommand
 
 	/**
 	 * This method actually performs the drop, when the given parsed
-	 * set of command-line words.  
-	 * 
+	 * set of command-line words.
+	 *
 	 * The commands list is almost always the
 	 * set of strings, starting with the access word that triggered the
-	 * command.  This command does have a custom API however, that allows an Item, 
+	 * command.  This command does have a custom API however, that allows an Item,
 	 * and two Boolean objects to be substitued for the normal command strings.
-	 * 
-	 * This method is not allowed to be called until the player or mob has 
+	 *
+	 * This method is not allowed to be called until the player or mob has
 	 * satisfied the actionsCost requirements and the securityCheck
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, List)
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
-	 * 
+	 *
 	 * @param mob the mob or player issueing the command
 	 * @param commands usually the command words and parameters; a set of strings
 	 * @param metaFlags flags denoting how the command is being executed
 	 * @return whether the command was successfully executed.  true if it was successfully dropped, false otherwise
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -112,14 +113,14 @@ public class Drop extends StdCommand
 		commands.removeElementAt(0);
 
 		// uncommenting this allows dropping directly from containers
-		// "drop all sack" will no longer drop all of your "sack", but will drop 
+		// "drop all sack" will no longer drop all of your "sack", but will drop
 		// all of the contents of your 1.sack, leaving the sack in inventory.
 		//container=CMLib.english().possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 
 
 		int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0) return false;
-		
+
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
@@ -182,15 +183,16 @@ public class Drop extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
 		return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue(),((Boolean)args[3]).booleanValue()));
 	}
-	
+
 }

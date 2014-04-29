@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PaperMaking extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "PaperMaking"; }
-	public String name(){ return "Paper Making";}
+	@Override public String ID() { return "PaperMaking"; }
+	@Override public String name(){ return "Paper Making";}
 	private static final String[] triggerStrings = {"PAPERMAKE","PAPERMAKING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tSTATUE||\tN_A\tCODED_SPELL_LIST";}
 
@@ -60,8 +61,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	//protected static final int RCP_MISCTEXT=8;
 	protected static final int RCP_SPELL=9;
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -72,9 +74,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "papermaking.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "papermaking.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -95,18 +98,20 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
 		final Session session=mob.session();
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -194,7 +199,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			}
 		}
 
-		if(materialDesc.length()==0) 
+		if(materialDesc.length()==0)
 			materialDesc="WOODEN";
 
 		if(foundRecipe==null)
@@ -208,7 +213,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
-		
+
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,materialDesc,null,
 											0,null,null,
@@ -217,7 +222,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
-		
+
 		String misctype=(foundRecipe.size()>RCP_MISCTYPE)?foundRecipe.get(RCP_MISCTYPE).trim():"";
 		if((misctype.equalsIgnoreCase("statue"))
 		&&(session!=null)

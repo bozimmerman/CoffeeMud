@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,24 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_Lycanthropy extends Disease
 {
-	public String ID() { return "Disease_Lycanthropy"; }
-	public String name(){ return "Lycanthropy";}
-	public String displayText(){ return "(Lycanthropy)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Lycanthropy"; }
+	@Override public String name(){ return "Lycanthropy";}
+	@Override public String displayText(){ return "(Lycanthropy)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 9999999;}
-	protected int DISEASE_DELAY(){return 50;}
-	protected String DISEASE_DONE(){return "Your lycanthropy is cured.";}
-	protected String DISEASE_START(){return "^G<S-NAME> feel(s) different.^?";}
-	protected String DISEASE_AFFECT(){return "";}
+	@Override protected int DISEASE_TICKS(){return 9999999;}
+	@Override protected int DISEASE_DELAY(){return 50;}
+	@Override protected String DISEASE_DONE(){return "Your lycanthropy is cured.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> feel(s) different.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
-	public int difficultyLevel(){return 8;}
-	
+	@Override public int difficultyLevel(){return 8;}
+
 	protected boolean changed=false;
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	protected List<Room> deathTrail=null;
 	protected Race theRace=null;
 	protected Race lycanRace()
@@ -63,6 +63,7 @@ public class Disease_Lycanthropy extends Disease
 		return theRace;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -76,6 +77,7 @@ public class Disease_Lycanthropy extends Disease
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -191,6 +193,7 @@ public class Disease_Lycanthropy extends Disease
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

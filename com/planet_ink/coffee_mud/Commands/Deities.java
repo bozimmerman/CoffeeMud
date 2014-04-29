@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,10 @@ public class Deities extends StdCommand
 	public Deities(){}
 
 	private final String[] access={"DEITIES","GODS","DEITY"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Deity.class}};
-	
+
 	public String getDeityInformation(MOB mob, Deity D)
 	{
 		StringBuffer msg = new StringBuffer("");
@@ -99,14 +99,16 @@ public class Deities extends StdCommand
 		}
 		return msg.toString();
 	}
-	
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE.toString();
 		return this.getDeityInformation(mob, (Deity)args[0]);
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -136,8 +138,8 @@ public class Deities extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

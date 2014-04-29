@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SummonFlyer extends Spell
 {
-	public String ID() { return "Spell_SummonFlyer"; }
-	public String name(){return "Summon Flyer";}
-	public String displayText(){return "(Summon Flyer)";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_SUMMONING;}
-	protected int overrideMana(){return 50;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_SummonFlyer"; }
+	@Override public String name(){return "Summon Flyer";}
+	@Override public String displayText(){return "(Summon Flyer)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override protected int overrideMana(){return 50;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -57,6 +58,7 @@ public class Spell_SummonFlyer extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -70,6 +72,7 @@ public class Spell_SummonFlyer extends Spell
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -102,6 +105,7 @@ public class Spell_SummonFlyer extends Spell
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

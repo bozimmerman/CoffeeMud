@@ -33,7 +33,7 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class ErrorPacket extends Packet 
+public class ErrorPacket extends Packet
 {
 	public String error_code="";
 	public String error_message = "";
@@ -44,8 +44,8 @@ public class ErrorPacket extends Packet
 		super();
 		type = Packet.ERROR_PACKET;
 	}
-	
-	public ErrorPacket(String to_whom, String mud, String error_code, String error_message, String packetStr) 
+
+	public ErrorPacket(String to_whom, String mud, String error_code, String error_message, String packetStr)
 	{
 		super();
 		type = Packet.ERROR_PACKET;
@@ -55,8 +55,8 @@ public class ErrorPacket extends Packet
 		this.error_message=error_message;
 		this.packetStr=packetStr;
 	}
-	
-	public ErrorPacket(Vector v) throws InvalidPacketException 
+
+	public ErrorPacket(Vector v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -75,12 +75,14 @@ public class ErrorPacket extends Packet
 		}
 	}
 
-	public void send() throws InvalidPacketException 
+	@Override
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}
 
-	public String toString() 
+	@Override
+	public String toString()
 	{
 		String str = "({\"error\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +

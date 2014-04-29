@@ -40,12 +40,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Sculpting"; }
-	public String name(){ return "Sculpting";}
+	@Override public String ID() { return "Sculpting"; }
+	@Override public String name(){ return "Sculpting";}
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "ROCK-BONE|STONE";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "ROCK-BONE|STONE";}
+	@Override
+	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
@@ -63,6 +64,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	protected Item key=null;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -73,9 +75,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "sculpting.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "sculpting.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -128,6 +131,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -137,12 +141,13 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		return true;
 	}
 
-	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -156,17 +161,19 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
@@ -303,13 +310,13 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to sculpt a '"+recipeName+"'.  Try \"sculpt list\" for a list.");
 				return false;
 			}
-			
+
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");

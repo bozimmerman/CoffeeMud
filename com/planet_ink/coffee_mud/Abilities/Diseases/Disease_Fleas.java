@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Fleas extends Disease
 {
-	public String ID() { return "Disease_Fleas"; }
-	public String name(){ return "Fleas";}
-	public String displayText(){ return "(Fleas)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 1;}
+	@Override public String ID() { return "Disease_Fleas"; }
+	@Override public String name(){ return "Fleas";}
+	@Override public String displayText(){ return "(Fleas)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 1;}
 
-	protected int DISEASE_TICKS(){return 35;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your problem with fleas clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> fleas!^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD|DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override protected int DISEASE_TICKS(){return 35;}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your problem with fleas clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> fleas!^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD|DiseaseAffect.SPREAD_PROXIMITY;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -67,6 +68,7 @@ public class Disease_Fleas extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;

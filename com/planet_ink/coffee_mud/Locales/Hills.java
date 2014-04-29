@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Hills extends StdRoom
 {
-	public String ID(){return "Hills";}
+	@Override public String ID(){return "Hills";}
 	public Hills()
 	{
 		super();
@@ -43,7 +43,7 @@ public class Hills extends StdRoom
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_GRAPES),
@@ -65,5 +65,5 @@ public class Hills extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_POTATOES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Hills.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Hills.roomResources;}
 }

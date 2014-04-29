@@ -34,22 +34,25 @@ import java.util.*;
 */
 public class ObjectGuardian extends StdBehavior
 {
-	public String ID(){return "ObjectGuardian";}
+	@Override public String ID(){return "ObjectGuardian";}
 
 	protected boolean sentinal=false;
-	
+
+	@Override
 	public void setParms(String parameters)
 	{
 		super.setParms(parameters);
 		List<String> parts=CMParms.parse(parameters.toUpperCase());
 		sentinal=parts.contains("SENTINAL")||parts.contains("SENTINEL");
 	}
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "valuable object guarding";
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if(!super.okMessage(oking,msg)) return false;

@@ -37,7 +37,7 @@ public class MSDP
 	{
 		return 0;
 	}
-	
+
 	protected Object msdpStringify(Object o)
 	{
 		if(o instanceof StringBuilder)
@@ -62,7 +62,7 @@ public class MSDP
 		else
 			return o;
 	}
-	
+
 	protected Map<String,Object> buildMsdpMap(byte[] data, int dataSize)
 	{
 		Stack<Object> stack=new Stack<Object>();
@@ -133,7 +133,7 @@ public class MSDP
 		}
 		return (Map<String,Object>)msdpStringify(stack.firstElement());
 	}
-	
+
 	public String msdpOutput(Object o, int indentions)
 	{
 		String spaces=new String(new char[indentions*2]).replace('\0', ' ');
@@ -162,13 +162,13 @@ public class MSDP
 		}
 		return "";
 	}
-	
+
 	public String msdpReceive(byte[] buffer)
 	{
 		Map<String,Object> map=buildMsdpMap(buffer,buffer.length);
 		return msdpOutput(map,0);
 	}
-	
+
 	private byte[] getMsdpFromJsonObject(JSONObject obj) throws IOException
 	{
 		ByteArrayOutputStream bout=new ByteArrayOutputStream();
@@ -182,7 +182,7 @@ public class MSDP
 		}
 		return bout.toByteArray();
 	}
-	
+
 	private byte[] getMsdpFromJsonArray(Object[] obj) throws IOException
 	{
 		ByteArrayOutputStream bout=new ByteArrayOutputStream();
@@ -193,7 +193,7 @@ public class MSDP
 		}
 		return bout.toByteArray();
 	}
-	
+
 	private byte[] getMsdpFromJsonSomething(Object obj) throws IOException
 	{
 		ByteArrayOutputStream bout=new ByteArrayOutputStream();
@@ -215,8 +215,8 @@ public class MSDP
 		}
 		return bout.toByteArray();
 	}
-	
-	
+
+
 	public byte[] convertStringToMsdp(String data) throws MJSONException
 	{
 		try

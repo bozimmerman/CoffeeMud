@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Smiles extends Disease
 {
-	public String ID() { return "Disease_Smiles"; }
-	public String name(){ return "Contagious Smiles";}
-	public String displayText(){ return "(The Smiles)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Smiles"; }
+	@Override public String name(){ return "Contagious Smiles";}
+	@Override public String displayText(){ return "(The Smiles)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 10;}
-	protected int DISEASE_DELAY(){return 2;}
-	protected String DISEASE_DONE(){return "You feel more serious.";}
-	protected String DISEASE_START(){return "^G<S-NAME> start(s) smiling.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> smile(s) happily.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	public int difficultyLevel(){return 2;}
+	@Override protected int DISEASE_TICKS(){return 10;}
+	@Override protected int DISEASE_DELAY(){return 2;}
+	@Override protected String DISEASE_DONE(){return "You feel more serious.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> start(s) smiling.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> smile(s) happily.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int difficultyLevel(){return 2;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

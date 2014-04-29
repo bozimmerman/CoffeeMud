@@ -42,12 +42,12 @@ public class WillQualify  extends Skills
 {
 	public WillQualify() {}
 	private final String[] access={"WILLQUALIFY"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
-											  MOB ableM, 
+											  MOB ableM,
 											  String classID,
-											  int maxLevel, 
+											  int maxLevel,
 											  String prefix,
 											  HashSet<Object> types)
 	{
@@ -59,10 +59,10 @@ public class WillQualify  extends Skills
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
 		List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
-		for (int l = 0; l <= highestLevel; l++) 
+		for (int l = 0; l <= highestLevel; l++)
 		{
 			StringBuffer thisLine = new StringBuffer("");
-			for (Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); ) 
+			for (Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
 			{
 				AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
 				if((cimable.qualLevel ==l)&&(!cimable.isSecret))
@@ -74,7 +74,7 @@ public class WillQualify  extends Skills
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
 					&&(CMLib.ableMapper().getCommonSkillLimit(ableM, A).specificSkillLimit > 0))
 					{
-						if ( (++col) > 2) 
+						if ( (++col) > 2)
 						{
 							thisLine.append("\n\r");
 							col = 1;
@@ -103,7 +103,7 @@ public class WillQualify  extends Skills
 						||types.contains(E.ID.toUpperCase())
 						||types.contains(E.name.toUpperCase())))
 					{
-						if ( (++col) > 2) 
+						if ( (++col) > 2)
 						{
 							thisLine.append("\n\r");
 							col = 1;
@@ -114,7 +114,7 @@ public class WillQualify  extends Skills
 					}
 				}
 			}
-			if (thisLine.length() > 0) 
+			if (thisLine.length() > 0)
 			{
 				if (msg.length() == 0)
 						msg.append("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
@@ -128,6 +128,7 @@ public class WillQualify  extends Skills
 		return msg;
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 					throws java.io.IOException
 	{
@@ -181,7 +182,7 @@ public class WillQualify  extends Skills
 			}
 			commands.removeElementAt(0);
 		}
-		
+
 		msg.append("At level "+level+" of class '"+C.name()+"', you could qualify for:\n\r");
 		msg.append(getQualifiedAbilities(mob,mob,C.ID(),level,"",types));
 		if(!mob.isMonster())

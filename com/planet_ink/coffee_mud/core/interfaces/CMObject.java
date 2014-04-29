@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,9 +42,9 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 * this object.  Unlike the Java Class name, this method
 	 * does not include package information.  However, it must
 	 * return a String value unique to its class category in
-	 * the ClassLoader.  Class categories include Libraries, Common, 
+	 * the ClassLoader.  Class categories include Libraries, Common,
 	 * Areas, Abilities, Behaviors, CharClasses, Commands, Exits
-	 * Locales, MOBS, Races, WebMacros, Basic Items, Armor, 
+	 * Locales, MOBS, Races, WebMacros, Basic Items, Armor,
 	 * Weapons, ClanItems, Tech.  The name is typically identical
 	 * to the class name.
 	 * @return the name of this class
@@ -68,7 +68,7 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 * @return a clone of this object
 	 */
 	public CMObject copyOf();
-	
+
 	/**
 	 * Called ONCE after all objects are loaded, but before the map is read in
 	 * during initialization.

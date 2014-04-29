@@ -27,10 +27,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class LayoutSet 
+public class LayoutSet
 {
 	Random r = new Random();
-	
+
 	private long total  = 0;
 	private final Hashtable<Long, LayoutNode> used = new Hashtable<Long, LayoutNode>();
 	private Vector<LayoutNode> set = null;
@@ -51,7 +51,7 @@ public class LayoutSet
 	}
 	public boolean use(LayoutNode n, LayoutTypes nodeType)
 	{
-		if(isUsed(n.coord())) 
+		if(isUsed(n.coord()))
 			return false;
 		used.put(getHashCode(n.coord()[0],n.coord()[1]),n);
 		set.add(n);
@@ -62,7 +62,7 @@ public class LayoutSet
 	public LayoutNode getNode(long[] xy) { return getNode(xy[0],xy[1]);}
 	public LayoutNode getNode(long x, long y) { return used.get(getHashCode(x,y));}
 	public boolean spaceAvailable() { return set.size() < total; }
-	
+
 	public long[] makeNextCoord(long[] n, int dir)
 	{
 		switch(dir)
@@ -78,20 +78,20 @@ public class LayoutSet
 		}
 		return null;
 	}
-	
+
 	public LayoutNode makeNextNode(LayoutNode n, int dir)
 	{
 		long[] l = makeNextCoord(n.coord(),dir);
 		if(l!=null) return new DefaultLayoutNode(l);
 		return null;
 	}
-	
+
 	public LayoutNode getNextNode(LayoutNode n, int dir)
 	{
 		LayoutNode next = makeNextNode(n,dir);
 		return getNode(next.coord());
 	}
-	
+
 
 	public void drawABox(int width, int height)
 	{
@@ -148,7 +148,7 @@ public class LayoutSet
 		n.flag(LayoutFlags.corner);
 		use(n,LayoutTypes.surround);
 	}
-	
+
 	public boolean fillMaze(LayoutNode p)
 	{
 		Vector<Integer> dirs = new Vector<Integer>();
@@ -172,11 +172,11 @@ public class LayoutSet
 				p.crossLink(p2);
 				use(p2,LayoutTypes.interior);
 				fillMaze(p2);
-			} 
+			}
 		}
 		return true;
 	}
-	
+
 	public void clipLongStreets()
 	{
 		@SuppressWarnings("unchecked")
@@ -188,7 +188,7 @@ public class LayoutSet
 				for(int d=0;d<4;d++)
 					if(p.getLink(d)==null)
 					{
-						LayoutNode p2 =getNextNode(p, d); 
+						LayoutNode p2 =getNextNode(p, d);
 						if((p2!=null)
 						&&(!p.links().containsValue(p2)))
 						{
@@ -206,7 +206,7 @@ public class LayoutSet
 					}
 		}
 	}
-	
+
 	public void fillInFlags()
 	{
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)

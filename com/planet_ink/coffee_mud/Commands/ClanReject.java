@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,23 +39,24 @@ public class ClanReject extends StdCommand
 	public ClanReject(){}
 
 	private final String[] access={"CLANREJECT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
 		String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
-		
+
 		Clan C=null;
 		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
-			
+
 		if(C==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.REJECT)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
-		
+
 		commands.clear();
 		commands.addElement(getAccessWords()[0]);
 		commands.addElement(memberStr);
@@ -124,8 +125,8 @@ public class ClanReject extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

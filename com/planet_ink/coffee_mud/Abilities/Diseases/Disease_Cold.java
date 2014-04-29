@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Cold extends Disease
 {
-	public String ID() { return "Disease_Cold"; }
-	public String name(){ return "Cold";}
-	public String displayText(){ return "(Cold Virus)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 0;}
+	@Override public String ID() { return "Disease_Cold"; }
+	@Override public String name(){ return "Cold";}
+	@Override public String displayText(){ return "(Cold Virus)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 0;}
 
-	protected int DISEASE_TICKS(){return 24;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your cold clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a cold.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override protected int DISEASE_TICKS(){return 24;}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your cold clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a cold.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -85,6 +86,7 @@ public class Disease_Cold extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,10 +37,10 @@ import java.io.IOException;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdJournal extends StdItem
 {
-	public String ID(){	return "StdJournal";}
+	@Override public String ID(){	return "StdJournal";}
 	protected MOB lastReadTo=null;
 	protected long[] lastDateRead={-1,0};
-	
+
 	public StdJournal()
 	{
 		super();
@@ -52,6 +52,7 @@ public class StdJournal extends StdItem
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -75,6 +76,7 @@ public class StdJournal extends StdItem
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -227,8 +229,8 @@ public class StdJournal extends StdItem
 								if(s.equalsIgnoreCase("T"))
 								{
 									String journal;
-									try { 
-										journal=mob.session().prompt("Enter the journal to transfer this msg to: ","",30000); 
+									try {
+										journal=mob.session().prompt("Enter the journal to transfer this msg to: ","",30000);
 									}
 									catch(IOException e)
 									{
@@ -525,11 +527,11 @@ public class StdJournal extends StdItem
 			String to=entry.to;
 			String subject=entry.subj;
 			String message=entry.msg;
-			
+
 			fakeEntry.key=entry.key;
 			fakeEntry.from=entry.from;
 			fakeEntry.subj=entry.subj;
-			
+
 			boolean allMine=(to.equalsIgnoreCase(reader.Name())
 							||from.equalsIgnoreCase(reader.Name()));
 			if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
@@ -568,11 +570,11 @@ public class StdJournal extends StdItem
 		if(req==null) req="";
 		return req;
 	}
-	
+
 	protected String getReadReq() { return getParm("READ");}
 	protected String getWriteReq() {return getParm("WRITE");}
 	private String getReplyReq() { return getParm("REPLY");}
 	private String getAdminReq() { return getParm("ADMIN");}
-	
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

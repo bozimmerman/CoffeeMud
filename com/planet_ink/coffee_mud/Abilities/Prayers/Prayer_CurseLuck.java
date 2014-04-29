@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CurseLuck extends Prayer
 {
-	public String ID() { return "Prayer_CurseLuck"; }
-	public String name(){return "Curse Luck";}
-	public String displayText(){return "(Cursed Luck)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Prayer_CurseLuck"; }
+	@Override public String name(){return "Curse Luck";}
+	@Override public String displayText(){return "(Cursed Luck)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	protected HashSet permProts=new HashSet();
 	protected int prots=4;
 	boolean notAgain=false;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Prayer_CurseLuck extends Prayer
 			mob.tell("Your cursed luck fades.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		int amt=100+(10*super.getXLEVELLevel(invoker()));
@@ -66,6 +68,7 @@ public class Prayer_CurseLuck extends Prayer
 			affectableStats.setStat(i,-amt);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 
@@ -96,6 +99,7 @@ public class Prayer_CurseLuck extends Prayer
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

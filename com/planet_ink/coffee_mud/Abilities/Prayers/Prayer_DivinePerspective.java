@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_DivinePerspective extends Prayer
 {
-	public String ID() { return "Prayer_DivinePerspective"; }
-	public String name(){return "Divine Perspective";}
-	public String displayText(){return "(Perspective)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Prayer_DivinePerspective"; }
+	@Override public String name(){return "Divine Perspective";}
+	@Override public String displayText(){return "(Perspective)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String mobName="";
 	public boolean noRecurse=false;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,6 +58,7 @@ public class Prayer_DivinePerspective extends Prayer
 
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -87,6 +89,7 @@ public class Prayer_DivinePerspective extends Prayer
 		noRecurse=false;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)

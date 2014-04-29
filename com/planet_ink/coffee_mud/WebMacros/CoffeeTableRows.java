@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CoffeeTableRows extends StdWebMacro
 {
-	public String name() { return "CoffeeTableRows"; }
+	@Override public String name() { return "CoffeeTableRows"; }
 
-	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES, PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, LOGINS, 
+	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES, PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, LOGINS,
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
@@ -54,7 +55,7 @@ public class CoffeeTableRows extends StdWebMacro
 		if(days<=0) days=0;
 		String code=httpReq.getUrlParameter("CODE");
 		if((code==null)||(code.length()==0)) code="*";
-		
+
 		Calendar ENDQ=Calendar.getInstance();
 		ENDQ.add(Calendar.DATE,-days);
 		ENDQ.set(Calendar.HOUR_OF_DAY,23);

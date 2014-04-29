@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,26 @@ import java.util.*;
 */
 public class Prop_HaveZapper extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_HaveZapper"; }
-	public String name(){ return "Restrictions to ownership";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	
+	@Override public String ID() { return "Prop_HaveZapper"; }
+	@Override public String name(){ return "Restrictions to ownership";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+
 	protected boolean actual=false;
 	protected int percent=100;
 	protected String msgStr="";
 	protected MaskingLibrary.CompiledZapperMask mask=null;
-	
+
 	protected String defaultMessage() { return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";}
 
-	public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -78,12 +80,14 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
 		mask=CMLib.masking().getPreCompiledMask(text);
 	}
-	
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return false;

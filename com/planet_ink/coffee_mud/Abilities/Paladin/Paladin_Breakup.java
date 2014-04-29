@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Paladin_Breakup extends StdAbility
 {
-	public String ID() { return "Paladin_Breakup"; }
-	public String name(){ return "Breakup Fight";}
+	@Override public String ID() { return "Paladin_Breakup"; }
+	@Override public String name(){ return "Breakup Fight";}
 	private static final String[] triggerStrings = {"BREAKUP"};
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())

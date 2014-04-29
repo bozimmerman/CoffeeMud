@@ -34,14 +34,16 @@ import java.util.*;
 */
 public class Guard extends StdBehavior
 {
-	public String ID(){return "Guard";}
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
+	@Override public String ID(){return "Guard";}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "protective of particular friends";
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

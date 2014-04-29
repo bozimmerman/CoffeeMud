@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_PoisonIvy extends Disease
 {
-	public String ID() { return "Disease_PoisonIvy"; }
-	public String name(){ return "Poison Ivy";}
-	public String displayText(){ return "(Poison Ivy)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_PoisonIvy"; }
+	@Override public String name(){ return "Poison Ivy";}
+	@Override public String displayText(){ return "(Poison Ivy)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 35;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your poison ivy clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	public int difficultyLevel(){return 3;}
+	@Override protected int DISEASE_TICKS(){return 35;}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your poison ivy clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	@Override public int difficultyLevel(){return 3;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -66,6 +67,7 @@ public class Disease_PoisonIvy extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;

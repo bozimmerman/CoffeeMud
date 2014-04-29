@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Play_Ballad extends Play
 {
-	public String ID() { return "Play_Ballad"; }
-	public String name(){ return "Ballad";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return "a "+name();}
+	@Override public String ID() { return "Play_Ballad"; }
+	@Override public String name(){ return "Ballad";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return "a "+name();}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -89,12 +90,14 @@ public class Play_Ballad extends Play
 			}
 		}
 	}
+	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+adjustedLevel(invoker(),0));
 	}
+	@Override
 	public void affectPhyStats(Physical mob, PhyStats stats)
 	{
 		super.affectPhyStats(mob,stats);

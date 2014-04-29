@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,15 +38,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CommonSkill extends StdAbility
 {
-	public String ID() { return "CommonSkill"; }
-	public String name(){ return "Common Skill";}
+	@Override public String ID() { return "CommonSkill"; }
+	@Override public String name(){ return "Common Skill";}
 	private static final String[] triggerStrings = empty;
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "";}
 	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
 	protected static Item fakeFire=null;
 	protected static final List<String> uninvokeEmpties=new ReadOnlyList<String>(new ArrayList<String>(0));
-	
+
 	protected volatile Room activityRoom=null;
 	protected boolean aborted=false;
 	protected boolean helping=false;
@@ -58,28 +58,29 @@ public class CommonSkill extends StdAbility
 	protected int yield=baseYield();
 
 	protected int baseYield() { return 1; }
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
-	public String displayText(){return displayText;}
+	@Override public String displayText(){return displayText;}
 
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
-	protected int iniPracticesToPractice(){return 1;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
+	@Override protected int iniPracticesToPractice(){return 1;}
 
 	protected boolean allowedWhileMounted(){return true;}
-	
-	public int usageType(){return USAGE_MOVEMENT;}
 
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
 	protected List<String> getUninvokeException() { return uninvokeEmpties; }
-	public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
+	@Override public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
 	protected boolean canBeDoneSittingDown() { return false; }
 	protected int getActivityMessageType() { return canBeDoneSittingDown()?CMMsg.MSG_HANDS|CMMsg.MASK_SOUND:CMMsg.MSG_NOISYMOVEMENT; }
 
-	public int abilityCode(){return yield;}
-	public void setAbilityCode(int newCode){yield=newCode;}
+	@Override public int abilityCode(){return yield;}
+	@Override public void setAbilityCode(int newCode){yield=newCode;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -95,7 +96,8 @@ public class CommonSkill extends StdAbility
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -105,8 +107,8 @@ public class CommonSkill extends StdAbility
 			||(mob.location()!=activityRoom)
 			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
 			{
-				aborted=true; 
-				unInvoke(); 
+				aborted=true;
+				unInvoke();
 				return false;
 			}
 			String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
@@ -127,7 +129,7 @@ public class CommonSkill extends StdAbility
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
-		
+
 		int preTickDown=tickDown;
 		if(!super.tick(ticking,tickID))
 			return false;
@@ -135,6 +137,7 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -161,19 +164,20 @@ public class CommonSkill extends StdAbility
 		int level=mob.phyStats().level() - itemLevel;
 		double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
-		
-		double quickPct = getXTIMELevel(mob) * 0.05; 
+
+		double quickPct = getXTIMELevel(mob) * 0.05;
 		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
 		if(ticks<minDuration) ticks=minDuration;
 		return ticks;
 	}
-	
+
+	@Override
 	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
 	{
 		// common skills tend to SUBTRACT time -- not add to it!
 		return 0;
 	}
-	
+
 	protected String getBrand(MOB mob)
 	{
 		if(mob==null)
@@ -242,7 +246,7 @@ public class CommonSkill extends StdAbility
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)
 	{
-		if((autoGenerate>0) 
+		if((autoGenerate>0)
 		||((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired)))
 		{
 			if(fakeFire != null)
@@ -270,12 +274,13 @@ public class CommonSkill extends StdAbility
 		}
 		return fire;
 	}
-	
+
+	@Override
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
-		if(mob==null) 
+		if(mob==null)
 			return super.usageCost(null, ignoreClassOverride);
-		if(usageType()==Ability.USAGE_NADA) 
+		if(usageType()==Ability.USAGE_NADA)
 			return super.usageCost(mob, ignoreClassOverride);
 
 		final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
@@ -296,7 +301,7 @@ public class CommonSkill extends StdAbility
 			consumed=25;
 			int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
 			Integer[] costOverrides=null;
-			if(!ignoreClassOverride) 
+			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 			if(diff>0)
 			switch(diff)
@@ -326,12 +331,12 @@ public class CommonSkill extends StdAbility
 		}
 		return usageCost;
 	}
-	
+
 	public int xlevel(MOB mob)
-	{ 
+	{
 		return mob.phyStats().level()+(2*getXLEVELLevel(mob));
 	}
-	
+
 	public boolean confirmPossibleMaterialLocation(int resource, Room room)
 	{
 		if(room==null) return false;
@@ -380,7 +385,7 @@ public class CommonSkill extends StdAbility
 					}
 					RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(setMat);
 					if(m!=null)
-					{ 
+					{
 						x=m.mask();
 						if((restV!=null)&&(restV.size()>0))
 						{
@@ -407,7 +412,7 @@ public class CommonSkill extends StdAbility
 			return finalArray;
 		}
 	}
-	
+
 	public boolean isMadeOfSupportedResource(Item I)
 	{
 		if(I==null) return false;
@@ -424,7 +429,8 @@ public class CommonSkill extends StdAbility
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean canBeLearnedBy(MOB teacherM, MOB studentM)
 	{
 		if(!super.canBeLearnedBy(teacherM,studentM))
@@ -451,6 +457,7 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void teach(MOB teacher, MOB student)
 	{
 		super.teach(teacher, student);
@@ -473,18 +480,19 @@ public class CommonSkill extends StdAbility
 				student.tell(student.name()+" may learn "+remainders.specificSkillLimit+" more "+(crafting?"":"non-") +"crafting common skills.");
 		}
 	}
-	
+
 	public void bumpTickDown(long byThisMuch)
 	{
 		tickDown+=byThisMuch;
 	}
-	
+
+	@Override
 	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
 		super.startTickDown(invokerMOB, affected, tickTime);
 		tickUp=0;
 	}
-	
+
 	public boolean checkStop(MOB mob, Vector commands)
 	{
 		if((commands!=null)
@@ -504,7 +512,8 @@ public class CommonSkill extends StdAbility
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		aborted=false;
@@ -518,7 +527,7 @@ public class CommonSkill extends StdAbility
 			commonEmote(mob,"You can't do that while "+mob.riding().stateString(mob)+" "+mob.riding().name()+".");
 			return false;
 		}
-		
+
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
 			commonTell(mob,"<S-NAME> can't see to do that!");

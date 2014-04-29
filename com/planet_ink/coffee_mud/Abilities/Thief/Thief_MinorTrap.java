@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,11 @@ import java.util.*;
 */
 public class Thief_MinorTrap extends Thief_Trap
 {
-	public String ID() { return "Thief_MinorTrap"; }
-	public String name(){ return "Lay Minor Traps";}
+	@Override public String ID() { return "Thief_MinorTrap"; }
+	@Override public String name(){ return "Lay Minor Traps";}
 	private static final String[] triggerStrings = {"MTRAP","MINORTRAP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	protected int maxLevel(){return 3;}
+	@Override protected int maxLevel(){return 3;}
 }

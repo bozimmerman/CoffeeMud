@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityGainReport extends StdWebMacro
 {
-	public String name()	{return "AbilityGainReport";}
+	@Override public String name()	{return "AbilityGainReport";}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String className=httpReq.getUrlParameter("CLASS");
@@ -74,7 +75,7 @@ public class AbilityGainReport extends StdWebMacro
 				if((qualifiesFor)&&(A.proficiency()>bestProf))
 				{
 					long[] stats=(long[])profSpent.get(A.ID());
-					if(stats==null) 
+					if(stats==null)
 					{
 						stats=new long[3];
 						profSpent.put(A.ID(),stats);

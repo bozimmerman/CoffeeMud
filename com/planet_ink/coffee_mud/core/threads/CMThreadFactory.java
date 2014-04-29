@@ -9,7 +9,7 @@ import java.nio.channels.*;
 
 import com.planet_ink.coffee_mud.core.collections.SLinkedList;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,13 +24,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class CMThreadFactory implements ThreadFactory  
+public class CMThreadFactory implements ThreadFactory
 {
 	private String 						serverName;
 	private final AtomicInteger 		counter		=new AtomicInteger();
 	private final SLinkedList<Thread> 	active 		= new SLinkedList<Thread>();
 	private final ThreadGroup			threadGroup;
-	
+
 	public CMThreadFactory(String serverName)
 	{
 		this.serverName=serverName;
@@ -40,14 +40,15 @@ public class CMThreadFactory implements ThreadFactory
 	{
 		this.serverName=newName;
 	}
-	public Thread newThread(Runnable r) 
+	@Override
+	public Thread newThread(Runnable r)
 	{
 		final Thread t = new CMFactoryThread(threadGroup,r,serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}
-	public Collection<Thread> getThreads() 
-	{ 
+	public Collection<Thread> getThreads()
+	{
 		return active;
 	}
 }

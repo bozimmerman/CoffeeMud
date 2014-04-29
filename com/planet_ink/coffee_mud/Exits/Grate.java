@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Grate extends StdClosedDoorway
 {
-	public String ID(){	return "Grate";}
-	public String Name(){return "a barred grate";}
-	public String doorName(){return "grate";}
-	public String closedText(){return "a closed grate";}
-	public String description(){return "A metal grate of thick steel bars is inset here.";}
-	public String closeWord(){return "close";}
-	public String openWord(){return "remove";}
+	@Override public String ID(){	return "Grate";}
+	@Override public String Name(){return "a barred grate";}
+	@Override public String doorName(){return "grate";}
+	@Override public String closedText(){return "a closed grate";}
+	@Override public String description(){return "A metal grate of thick steel bars is inset here.";}
+	@Override public String closeWord(){return "close";}
+	@Override public String openWord(){return "remove";}
 }

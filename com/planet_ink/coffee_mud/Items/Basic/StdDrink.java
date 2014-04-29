@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdDrink extends StdContainer implements Drink,Item
 {
-	public String ID(){    return "StdDrink";}
+	@Override public String ID(){    return "StdDrink";}
 	protected int amountOfThirstQuenched=250;
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
@@ -58,23 +58,24 @@ public class StdDrink extends StdContainer implements Drink,Item
 
 
 
-	public long decayTime(){return decayTime;}
-	public void setDecayTime(long time){decayTime=time;}
-	public int thirstQuenched(){return amountOfThirstQuenched;}
-	public int liquidHeld(){return amountOfLiquidHeld;}
-	public int liquidRemaining(){return amountOfLiquidRemaining;}
-	public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
+	@Override public long decayTime(){return decayTime;}
+	@Override public void setDecayTime(long time){decayTime=time;}
+	@Override public int thirstQuenched(){return amountOfThirstQuenched;}
+	@Override public int liquidHeld(){return amountOfLiquidHeld;}
+	@Override public int liquidRemaining(){return amountOfLiquidRemaining;}
+	@Override public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;
 	}
-	public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
+	@Override public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
 
-	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
-	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
-	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+	@Override public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
+	@Override public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
+	@Override public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
 
 	protected int totalDrinkContained()
 	{
@@ -86,7 +87,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 				total += ((Drink)V.get(v)).liquidRemaining();
 		return total;
 	}
-	
+
+	@Override
 	public boolean containsDrink()
 	{
 		if((!CMLib.flags().isGettable(this))
@@ -107,6 +109,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -193,6 +196,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		return true;
 	}
 
+	@Override
 	public int amountTakenToFillMe(Drink theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-totalDrinkContained();
@@ -203,6 +207,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		return amountToTake;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

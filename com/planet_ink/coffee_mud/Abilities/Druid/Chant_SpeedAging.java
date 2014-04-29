@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SpeedAging extends Chant
 {
-	public String ID() { return "Chant_SpeedAging"; }
-	public String name(){ return "Speed Aging";}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Chant_SpeedAging"; }
+	@Override public String name(){ return "Speed Aging";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override
 	protected int overrideMana()
 	{
 		return Ability.COST_ALL;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,true);
@@ -79,7 +81,7 @@ public class Chant_SpeedAging extends Chant
 		{
 			type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 		}
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{

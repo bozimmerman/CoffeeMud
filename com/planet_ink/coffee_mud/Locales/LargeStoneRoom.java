@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,12 +34,12 @@ import java.util.*;
 */
 public class LargeStoneRoom extends StoneRoom
 {
-	public String ID(){return "LargeStoneRoom";}
+	@Override public String ID(){return "LargeStoneRoom";}
 	public LargeStoneRoom()
 	{
 		super();
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	public int maxRange(){return 5;}
+	@Override public int maxRange(){return 5;}
 }

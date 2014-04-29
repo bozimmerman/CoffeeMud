@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenBanker extends StdBanker
 {
-	public String ID(){return "GenBanker";}
+	@Override public String ID(){return "GenBanker";}
 	protected String PrejudiceFactors="";
 	protected String bankChain="GenBank";
 	private String IgnoreMask="";
@@ -48,8 +48,9 @@ public class GenBanker extends StdBanker
 		basePhyStats().setAbility(11); // his only off-default
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
@@ -59,19 +60,21 @@ public class GenBanker extends StdBanker
 		return super.text();
 	}
 
-	public String prejudiceFactors(){return PrejudiceFactors;}
-	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	public String ignoreMask(){return IgnoreMask;}
-	public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	public String bankChain(){return bankChain;}
-	public void setBankChain(String name){bankChain=name;}
+	@Override public String prejudiceFactors(){return PrejudiceFactors;}
+	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
+	@Override public String ignoreMask(){return IgnoreMask;}
+	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
+	@Override public String bankChain(){return bankChain;}
+	@Override public void setBankChain(String name){bankChain=name;}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -90,6 +93,7 @@ public class GenBanker extends StdBanker
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
@@ -117,6 +121,7 @@ public class GenBanker extends StdBanker
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -124,6 +129,7 @@ public class GenBanker extends StdBanker
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -137,6 +143,7 @@ public class GenBanker extends StdBanker
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenBanker)) return false;

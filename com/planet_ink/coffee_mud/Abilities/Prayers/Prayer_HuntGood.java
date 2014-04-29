@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 
 public class Prayer_HuntGood extends Prayer_HuntEvil
 {
-	public String ID() { return "Prayer_HuntGood"; }
-	public String name(){ return "Hunt Good";}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public String displayText(){return "(Hunting Good)";}
-	protected String word(){return "good";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Prayer_HuntGood"; }
+	@Override public String name(){ return "Hunt Good";}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+	@Override public String displayText(){return "(Hunting Good)";}
+	@Override protected String word(){return "good";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
+	@Override
 	protected MOB gameHere(Room room)
 	{
 		if(room==null) return null;

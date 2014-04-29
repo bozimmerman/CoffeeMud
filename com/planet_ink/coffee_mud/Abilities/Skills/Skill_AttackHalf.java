@@ -33,11 +33,11 @@ import java.util.*;
 */
 public class Skill_AttackHalf extends Skill_Attack2
 {
-	public String ID() { return "Skill_AttackHalf"; }
-	public String name(){ return "Half Attack";}
-	protected int attackToNerf(){ return 2;}
-	protected int roundToNerf(){ return 2;}
-	protected double nerfAmount(){ return .8;}
-	protected double numberOfFullAttacks(){ return 0.5;}
-	
+	@Override public String ID() { return "Skill_AttackHalf"; }
+	@Override public String name(){ return "Half Attack";}
+	@Override protected int attackToNerf(){ return 2;}
+	@Override protected int roundToNerf(){ return 2;}
+	@Override protected double nerfAmount(){ return .8;}
+	@Override protected double numberOfFullAttacks(){ return 0.5;}
+
 }

@@ -19,7 +19,7 @@ limitations under the License.
 public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>>, SPairList<T,K>
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1672867955945287259L;
 
@@ -75,7 +75,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	{
 		add(new Pair<T,K>(t,k));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override public boolean contains(Object o)
 	{
@@ -85,7 +85,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 			return true;
 		return containsSecond((K)o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override public int indexOf(Object o)
 	{
@@ -96,7 +96,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 			return x;
 		return indexOfSecond((K)o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override public synchronized int indexOf(Object o, int index)
 	{
@@ -107,7 +107,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 			return x;
 		return indexOfSecond((K)o, index);
 	}
-	
+
 	public boolean containsFirst(T t)
 	{
 		for(Iterator<Pair<T,K>> i=iterator();i.hasNext();)
@@ -135,7 +135,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -145,7 +145,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -155,7 +155,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -165,7 +165,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -198,7 +198,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 		for(final Iterator<Pair<T,K>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((k==null ? pair.second==null : k.equals(pair.second))) 
+			if((k==null ? pair.second==null : k.equals(pair.second)))
 			{
 				i.remove();
 				return true;

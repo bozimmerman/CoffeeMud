@@ -29,7 +29,7 @@ import javax.naming.directory.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 */
 public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
-	public String ID(){return "SMTPclient";}
+	@Override public String ID(){return "SMTPclient";}
 
 	/** Reply buffer */
 	public BufferedReader reply = null;
@@ -54,10 +54,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	public PrintWriter send = null;
 	/** Socket to use */
 	public Socket sock = null;
-	
+
 	private SMTPHostAuth auth = null;
 
-	Attribute doMXLookup( String hostName ) 
+	Attribute doMXLookup( String hostName )
 	{
 		try
 		{
@@ -75,18 +75,20 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		return null;
 	}
-  
-	public SMTPClient getClient(String SMTPServerInfo, int port) 
-		throws UnknownHostException,IOException 
+
+	@Override
+	public SMTPClient getClient(String SMTPServerInfo, int port)
+		throws UnknownHostException,IOException
 	{
 		return new SMTPclient(SMTPServerInfo,port);
 	}
-	public SMTPClient getClient(String emailAddress) 
-		throws IOException, BadEmailAddressException 
+	@Override
+	public SMTPClient getClient(String emailAddress)
+		throws IOException, BadEmailAddressException
 	{
 		return new SMTPclient(emailAddress);
 	}
-	
+
 	public SMTPclient()
 	{
 		super();
@@ -99,7 +101,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 *   @exception UnknownHostException
 	 *   @exception IOException
 	 */
-	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException 
+	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException
 	{
 		auth = new SMTPHostAuth(SMTPServerInfo);
 		int portIndex=auth.host.lastIndexOf(':');
@@ -124,7 +126,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 	}
 
-	public SMTPclient (String emailAddress) throws IOException, 
+	public SMTPclient (String emailAddress) throws IOException,
 												   BadEmailAddressException
 	{
 		int x=this.getEmailAddressError(emailAddress);
@@ -176,7 +178,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
 	}
-	
+
+	@Override
 	public boolean emailIfPossible(String fromName, String toName, String subj, String msg)
 	{
 		try
@@ -192,7 +195,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 			else
 				SC=CMLib.smtp().getClient(toEmail);
-	
+
 			String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 			SC.sendMessage(fromName+"@"+domain,
 						   fromName+"@"+domain,
@@ -208,8 +211,9 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			return false;
 		}
 	}
-	
-	public boolean emailIfPossible(String SMTPServerInfo, 
+
+	@Override
+	public boolean emailIfPossible(String SMTPServerInfo,
 								   String from,
 								   String replyTo,
 								   String to,
@@ -223,7 +227,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				SC=new SMTPclient(SMTPServerInfo,DEFAULT_PORT);
 			else
 				SC=new SMTPclient(to);
-			
+
 			SC.sendMessage(from,
 						   replyTo,
 						   to,
@@ -237,7 +241,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		return false;
 	}
-	
+
+	@Override
 	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
 	{
 		String fromEmail=makeValidEmailAddress(from);
@@ -246,21 +251,21 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(!this.emailIfPossible(SMTPServerInfo, fromEmail, replyToEmail, toEmail, subject, message))
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), from, to, subject, message);
 	}
-	
+
 	/** private constants for chars that are valid in email addy names */
 	private final static String EMAIL_VALID_LOCAL_CHARS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&'*+-/=?^_`{|}~.";
 	/** private constants for chars that are valid in email addy domain names */
 	private final static String EMAIL_VALID_DOMAIN_CHARS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.";
 
 	/*
-	 * Checks to see if the given string is a valid email address. 
+	 * Checks to see if the given string is a valid email address.
 	 * @param addy the email address
 	 * @return true if all is good, false otherwise.
 	 */
-	public boolean isValidEmailAddress(String addy){ return getEmailAddressError(addy)<0;}
-	
+	@Override public boolean isValidEmailAddress(String addy){ return getEmailAddressError(addy)<0;}
+
 	/*
-	 * Checks to see if the given string is a valid email address. 
+	 * Checks to see if the given string is a valid email address.
 	 * If it is not, it returns the location from 0-length+1 where
 	 * the problem occurs.
 	 * @param addy the email address
@@ -296,7 +301,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(network.length()>255) return addy.length();
 		return -1;
 	}
-	
+
 	public String makeValidEmailAddress(String name)
 	{
 		if(!isValidEmailAddress(name))
@@ -317,36 +322,37 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		send.print(EOL);
 		send.flush();
 	}
-	
+
 	/**
 	* Send a message
-	* 
+	*
 	* <br><br><b>Usage:</b>  Mailer.sendmsg(S, From, To, Subject, Message);
 	* @param froaddress  Address sending from
-	* @param reply_address Address reply to 
-	* @param to_address Address sending to 
-	* @param mockto_address Address sending to 
+	* @param reply_address Address reply to
+	* @param to_address Address sending to
+	* @param mockto_address Address sending to
 	* @param subject Subject line
 	* @param message Message content
 	*/
-	public synchronized void sendMessage(String froaddress, 
+	@Override
+	public synchronized void sendMessage(String froaddress,
 										 String reply_address,
-										 String to_address, 
+										 String to_address,
 										 String mockto_address,
-										 String subject, 
+										 String subject,
 										 String message)
 		throws IOException
 	{
 		froaddress=froaddress.replace(' ','_');
 		reply_address=reply_address.replace(' ','_');
 		to_address=to_address.replace(' ','_');
-		
+
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
 		{
 			Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
 			return;
 		}
-		
+
 		String rstr;
 		boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 		StringBuffer fixMsg=new StringBuffer(message);
@@ -404,7 +410,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
-		
+
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
 			if(auth.getAuthType().equalsIgnoreCase("login"))
@@ -451,11 +457,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 		// Sending a blank line ends the header part.
 		send.print(EOL);
-		
+
 		// Now send the message proper
 		sendLine(debug,message);
 		sendLine(debug,".");
-		
+
 		rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
@@ -464,7 +470,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	/**
 	* return members of a list on an email server.
 	* 250-First Last <emailaddress>\r
-	* 
+	*
 	* <br><br><b>Usage:</b>  List=Mailer.getListMembers(List);
 	* @param list member list
 	* @return String List of members
@@ -504,7 +510,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			}
 		}
 		catch(java.io.InterruptedIOException x)
-		{ // not really an error, just a control break			
+		{ // not really an error, just a control break
 		}
 		sock.setSoTimeout(DEFAULT_TIMEOUT);
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
@@ -513,7 +519,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	/**
 	* close this socket
-	* 
+	*
 	* <br><br><b>Usage:</b>  this.close();
 	*/
 	public void close()
@@ -533,9 +539,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	/**
 	* close this socket
-	* 
+	*
 	* <br><br><b>Usage:</b>  finalize();
 	*/
+	@Override
 	protected void finalize() throws Throwable {
 		this.close();
 		super.finalize();
@@ -565,8 +572,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		private String password="";
 		public String getHost(){ return host;}
 		public String getAuthType(){ return authType;}
-		
-		public String getPlainLogin() 
+
+		public String getPlainLogin()
 		{
 			byte[] buffer = new byte[2 + login.length() + password.length()];
 			int bufDex=0;
@@ -578,8 +585,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				buffer[bufDex++]=(byte)password.charAt(i);
 			return B64Encoder.B64encodeBytes(buffer);
 		}
-		
-		public String getLogin() 
+
+		public String getLogin()
 		{
 			byte[] buffer = new byte[login.length()];
 			int bufDex=0;
@@ -587,8 +594,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				buffer[bufDex++]=(byte)login.charAt(i);
 			return B64Encoder.B64encodeBytes(buffer);
 		}
-		
-		public String getPassword() 
+
+		public String getPassword()
 		{
 			byte[] buffer = new byte[password.length()];
 			int bufDex=0;

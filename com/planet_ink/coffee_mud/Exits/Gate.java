@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Gate extends StdClosedDoorway
 {
-	public String ID(){	return "Gate";}
-	public String Name(){return "a gate";}
-	public String doorName(){return "gate";}
-	public String closedText(){return "a closed gate";}
+	@Override public String ID(){	return "Gate";}
+	@Override public String Name(){return "a gate";}
+	@Override public String doorName(){return "gate";}
+	@Override public String closedText(){return "a closed gate";}
 }

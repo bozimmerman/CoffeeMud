@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class IceRoom extends StdRoom
 {
-	public String ID(){return "IceRoom";}
+	@Override public String ID(){return "IceRoom";}
 	public IceRoom()
 	{
 		super();
@@ -42,5 +42,5 @@ public class IceRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_COLD;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 }

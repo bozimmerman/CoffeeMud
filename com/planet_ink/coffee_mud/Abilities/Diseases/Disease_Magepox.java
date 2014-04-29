@@ -34,22 +34,23 @@ import java.util.*;
 
 public class Disease_Magepox extends Disease
 {
-	public String ID() { return "Disease_Magepox"; }
-	public String name(){ return "Magepox";}
-	public String displayText(){ return "(Magepox)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Magepox"; }
+	@Override public String name(){ return "Magepox";}
+	@Override public String displayText(){ return "(Magepox)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	protected int DISEASE_DELAY(){return 15;}
-	protected String DISEASE_DONE(){return "Your magepox clears up.";}
-	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
-	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	public int difficultyLevel(){return 9;}
+	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
+	@Override protected int DISEASE_DELAY(){return 15;}
+	@Override protected String DISEASE_DONE(){return "Your magepox clears up.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
+	@Override protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override public int difficultyLevel(){return 9;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -67,6 +68,7 @@ public class Disease_Magepox extends Disease
 		return true;
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;

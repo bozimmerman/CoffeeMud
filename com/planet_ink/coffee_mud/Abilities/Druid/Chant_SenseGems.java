@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,16 @@ import java.util.*;
 
 public class Chant_SenseGems extends Chant_SensePlants
 {
-	public String ID() { return "Chant_SenseGems"; }
-	public String name(){ return "Sense Gems";}
-	public String displayText(){return "(Sensing Gems)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "gems";}
+	@Override public String ID() { return "Chant_SenseGems"; }
+	@Override public String name(){ return "Sense Gems";}
+	@Override public String displayText(){return "(Sensing Gems)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override protected String word(){return "gems";}
 
 	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
 						  RawMaterial.MATERIAL_GLASS};
-	protected int[] okMaterials(){	return myMats;}
-	protected int[] okResources(){	return null;}
+	@Override protected int[] okMaterials(){	return myMats;}
+	@Override protected int[] okResources(){	return null;}
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogMobNext extends StdWebMacro
 {
-	public String name() { return "CatalogMobNext"; }
-	public boolean isAdminMacro()   {return true;}
+	@Override public String name() { return "CatalogMobNext"; }
+	@Override public boolean isAdminMacro()   {return true;}
 
 	final static String[] DATA={
 						"CATALOG_MOB_USAGE"
@@ -47,10 +47,10 @@ public class CatalogMobNext extends StdWebMacro
 					   ,"CATALOG_MOB_LEVEL"
 					   ,"CATALOG_MOB_CLASS"
 	};
-	
+
 	public static String getCataStat(MOB M, CatalogLibrary.CataData data, int x, String optionalColumn)
 	{
-		if((M==null)||(data==null)) 
+		if((M==null)||(data==null))
 			return "";
 		switch(x)
 		{
@@ -77,7 +77,8 @@ public class CatalogMobNext extends StdWebMacro
 		}
 		return "";
 	}
-		
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -100,7 +101,7 @@ public class CatalogMobNext extends StdWebMacro
 		else
 			optionalColumn=optCol.trim().toUpperCase();
 		if(parms.containsKey("RESET"))
-		{   
+		{
 			if(last!=null)
 				httpReq.removeUrlParameter("MOB");
 			for(int d=0;d<DATA.length;d++)
@@ -128,11 +129,12 @@ public class CatalogMobNext extends StdWebMacro
 					Object[] sortifiable=new Object[names.length];
 					for(int s=0;s<names.length;s++)
 						sortifiable[s]=new Object[]{
-							names[s], 
-							CMLib.catalog().getCatalogMob(names[s]), 
+							names[s],
+							CMLib.catalog().getCatalogMob(names[s]),
 							CMLib.catalog().getCatalogMobData(names[s])};
 					Arrays.sort(sortifiable,new Comparator()
 					{
+						@Override
 						public int compare(Object o1, Object o2)
 						{
 							Object[] O1=(Object[])o1;

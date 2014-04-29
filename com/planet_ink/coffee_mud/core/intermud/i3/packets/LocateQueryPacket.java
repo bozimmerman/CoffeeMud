@@ -62,6 +62,7 @@ public class LocateQueryPacket extends Packet {
 		user_name = who;
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( sender_name == null || user_name == null )
 		{
@@ -70,6 +71,7 @@ public class LocateQueryPacket extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		String str="({\"locate-req\",5,\"" + I3Server.getMudName() +

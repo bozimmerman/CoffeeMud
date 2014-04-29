@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import java.util.*;
 
 public class SignLanguage extends StdLanguage
 {
-	public String ID() { return "SignLanguage"; }
-	public String name(){ return "Sign Language";}
-	public String writtenName() { return "Braille";}
+	@Override public String ID() { return "SignLanguage"; }
+	@Override public String name(){ return "Sign Language";}
+	@Override public String writtenName() { return "Braille";}
 	public static List<String[]> wordLists=null;
 	public SignLanguage()
 	{
 		super();
 	}
 
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		return wordLists;
 	}
 
+	@Override
 	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
 	{
 		if(msg.sourceMessage()==null) return true;
@@ -70,13 +72,13 @@ public class SignLanguage extends StdLanguage
 		if(oldStartFullMsg.equals(startFullMsg))
 		{
 			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
-			if(x<0) 
+			if(x<0)
 				x=startFullMsg.trim().length();
 			else
 				x+=3;
 			startFullMsg = startFullMsg.substring(0,x)+" in sign" +startFullMsg.substring(x);
 		}
-		
+
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
@@ -88,7 +90,8 @@ public class SignLanguage extends StdLanguage
 				   msg.othersMessage());
 		return true;
 	}
-	
+
+	@Override
 	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
 	{
 		String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
@@ -115,7 +118,7 @@ public class SignLanguage extends StdLanguage
 		if(oldStartFullMsg.equals(startFullMsg))
 		{
 			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
-			if(x<0) 
+			if(x<0)
 				x=startFullMsg.trim().length();
 			else
 				x+=3;
@@ -132,7 +135,8 @@ public class SignLanguage extends StdLanguage
 				   startFullMsg.trim() + ".");
 		return true;
 	}
-	
+
+	@Override
 	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
 	{
 		if((msg.othersMessage()!=null)&&(sourceWords!=null))
@@ -147,7 +151,8 @@ public class SignLanguage extends StdLanguage
 		}
 		return false;
 	}
-	
+
+	@Override
 	protected boolean translateTargetMessage(CMMsg msg, String sourceWords)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
@@ -163,6 +168,7 @@ public class SignLanguage extends StdLanguage
 		return false;
 	}
 
+	@Override
 	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
@@ -175,5 +181,5 @@ public class SignLanguage extends StdLanguage
 		}
 		return false;
 	}
-	
+
 }

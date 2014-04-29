@@ -35,23 +35,24 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Evesdrop extends ThiefSkill
 {
-	public String ID() { return "Thief_Evesdrop"; }
-	public String name(){ return "Evesdrop";}
+	@Override public String ID() { return "Thief_Evesdrop"; }
+	@Override public String name(){ return "Evesdrop";}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"EVESDROP"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -77,6 +78,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		}
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -87,6 +89,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

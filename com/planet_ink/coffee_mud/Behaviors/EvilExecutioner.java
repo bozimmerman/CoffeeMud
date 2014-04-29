@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class EvilExecutioner  extends StdBehavior
 {
-	public String ID(){return "EvilExecutioner";}
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
+	@Override public String ID(){return "EvilExecutioner";}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 	protected boolean doPlayers=false;
 	protected long deepBreath=System.currentTimeMillis();
 	protected boolean noRecurse=true;
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -49,11 +50,13 @@ public class EvilExecutioner  extends StdBehavior
 		doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "aggression to goodness and paladins";
 	}
 
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return false;
@@ -69,6 +72,7 @@ public class EvilExecutioner  extends StdBehavior
 		return ((CMLib.flags().isGood(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Paladin")));
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -37,12 +37,12 @@ import java.util.Map.Entry;
 @SuppressWarnings("rawtypes")
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "EnhancedCraftingSkill"; }
-	public String name(){ return "Enhanced Crafting Skill";}
+	@Override public String ID() { return "EnhancedCraftingSkill"; }
+	@Override public String name(){ return "Enhanced Crafting Skill";}
 
 	public Hashtable parametersFields(){ return new Hashtable();}
-	public String parametersFormat(){ return ""; }
-	
+	@Override public String parametersFormat(){ return ""; }
+
 	protected int materialAdjustments=0;
 	protected static final int TYPE_LITECRAFT=0;
 	protected static final int TYPE_DURACRAFT=1;
@@ -51,8 +51,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	protected static final int TYPE_CNTRCRAFT=4;
 	protected final static String[] STAGE_KEY={"LITE","DURA","QUAL","LTHL","CNTR"};
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,
@@ -152,7 +153,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		if((componentsFoundList==null)||(componentsFoundList.size()==0))
 			return;
-		
+
 		if((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0))
 		{
 			final List<Integer> rscs=myResources();
@@ -172,7 +173,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-	
+
 	private final static int atLeast1(int value, double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));
@@ -239,6 +240,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return V;
 	}
 
+	@Override
 	protected List<List<String>> loadList(StringBuffer str)
 	{
 		final List<List<String>> lists=super.loadList(str);
@@ -269,7 +271,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		return sortedLists;
 	}
-	
+
 	public void enhanceList(MOB mob)
 	{
 		StringBuffer extras=new StringBuffer("");
@@ -334,12 +336,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 		return defs;
 	}
-	
+
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
-	
+
 	public PairVector<Integer,Integer> enhancedTypes(MOB mob, Vector commands)
 	{
 		String cmd=null;

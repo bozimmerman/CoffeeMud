@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 
 public class Chant_SummonFlower extends Chant_SummonPlants
 {
-	public String ID() { return "Chant_SummonFlower"; }
-	public String name(){ return "Summon Flower";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonFlower"; }
+	@Override public String name(){ return "Summon Flower";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected boolean processing=false;
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(littlePlants))
@@ -121,6 +122,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		return newItem;
 	}
 
+	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
 	{
 		return buildFlower(mob,room);

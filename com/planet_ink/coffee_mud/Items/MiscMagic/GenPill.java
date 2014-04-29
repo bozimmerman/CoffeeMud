@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPill extends StdPill
 {
-	public String ID(){	return "GenPill";}
+	@Override public String ID(){	return "GenPill";}
 	protected String readableText="";
-	
+
 	public GenPill()
 	{
 		super();
@@ -52,24 +52,28 @@ public class GenPill extends StdPill
 		decayTime=0;
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
-	
+
+	@Override
 	public String getSpellList()
 	{ return readableText;}
-	public void setSpellList(String list){readableText=list;}
-	public String readableText(){return readableText;}
+	@Override public void setSpellList(String list){readableText=list;}
+	@Override public String readableText(){return readableText;}
+	@Override
 	public void setReadableText(String text)
 	{
 		readableText=text;
 		setSpellList(readableText);
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -77,6 +81,7 @@ public class GenPill extends StdPill
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"NOURISHMENT"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -88,6 +93,7 @@ public class GenPill extends StdPill
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -101,6 +107,7 @@ public class GenPill extends StdPill
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -108,6 +115,7 @@ public class GenPill extends StdPill
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -121,6 +129,7 @@ public class GenPill extends StdPill
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPill)) return false;

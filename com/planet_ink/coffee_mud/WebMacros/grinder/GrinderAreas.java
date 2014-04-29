@@ -78,7 +78,7 @@ public class GrinderAreas
 		}
 		return "";
 	}
-	
+
 	public static String doAffects(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.delAllEffects(false);
@@ -185,7 +185,7 @@ public class GrinderAreas
 		}
 		else
 			A.setClimateType(-1);
-		
+
 		// atmosphere
 		if(httpReq.isUrlParameter("ATMOSPHERE"))
 			A.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
@@ -276,18 +276,18 @@ public class GrinderAreas
 		if(IGNOREMASK==null)IGNOREMASK="";
 		A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
 
-		
+
 		if(A instanceof AutoGenArea)
 		{
 			String AGXMLPATH=httpReq.getUrlParameter("AGXMLPATH");
 			if(AGXMLPATH==null)AGXMLPATH="";
 			((AutoGenArea) A).setGeneratorXmlPath(CMLib.coffeeFilter().safetyFilter(AGXMLPATH));
-			
+
 			String AGAUTOVAR=httpReq.getUrlParameter("AGAUTOVAR");
 			if(AGAUTOVAR==null)AGAUTOVAR="";
 			((AutoGenArea) A).setAutoGenVariables(CMLib.coffeeFilter().safetyFilter(AGAUTOVAR));
 		}
-		
+
 		// PRICEFACTORS
 		num=1;
 		if(httpReq.isUrlParameter("IPRIC1"))

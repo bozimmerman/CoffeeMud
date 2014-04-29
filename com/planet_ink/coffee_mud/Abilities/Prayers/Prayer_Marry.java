@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,12 +38,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Marry extends Prayer
 {
-	public String ID() { return "Prayer_Marry"; }
-	public String name(){ return "Marry";}
-	public long flags(){return Ability.FLAG_HOLY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	@Override public String ID() { return "Prayer_Marry"; }
+	@Override public String name(){ return "Marry";}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)

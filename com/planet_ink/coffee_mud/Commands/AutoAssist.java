@@ -38,8 +38,9 @@ public class AutoAssist extends StdCommand
 	public AutoAssist(){}
 
 	private final String[] access={"AUTOASSIST"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -55,9 +56,9 @@ public class AutoAssist extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

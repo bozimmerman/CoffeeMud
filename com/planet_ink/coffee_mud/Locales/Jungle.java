@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Jungle extends StdRoom
 {
-	public String ID(){return "Jungle";}
+	@Override public String ID(){return "Jungle";}
 	public Jungle()
 	{
 		super();
@@ -44,8 +44,9 @@ public class Jungle extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
@@ -88,5 +89,5 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return Jungle.roomResources;}
+	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

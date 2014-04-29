@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ExitData extends StdWebMacro
 {
-	public String name() { return "ExitData"; }
+	@Override public String name() { return "ExitData"; }
 
 	private static final String[] okparms={
 		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -65,6 +65,7 @@ public class ExitData extends StdWebMacro
 		return str.toString();
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -239,7 +240,7 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 25: // open ticks
-				if((firstTime)||(old.length()==0)) 
+				if((firstTime)||(old.length()==0))
 					old=Integer.toString(X.openDelayTicks());
 				str.append(old);
 				break;

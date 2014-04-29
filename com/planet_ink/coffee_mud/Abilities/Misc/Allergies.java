@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,19 +37,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Allergies extends StdAbility implements HealthCondition
 {
-	public String ID() { return "Allergies"; }
-	public String name(){ return "Allergies";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
+	@Override public String ID() { return "Allergies"; }
+	@Override public String name(){ return "Allergies";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
 	protected Set<Integer> resourceAllergies=new HashSet<Integer>();
 	protected Set<Race> raceAllergies=new HashSet<Race>();
 	protected int allergicCheckDown=0;
-	
+
 	@Override
 	public String getHealthConditionDesc()
 	{
@@ -61,8 +61,9 @@ public class Allergies extends StdAbility implements HealthCondition
 		if(list.size()==0) return "";
 		return "Suffers from allergies to "+CMLib.english().toEnglishStringList(list)+".";
 	}
-	
-	
+
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -81,7 +82,8 @@ public class Allergies extends StdAbility implements HealthCondition
 				raceAllergies.add(R);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -134,7 +136,8 @@ public class Allergies extends StdAbility implements HealthCondition
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -172,7 +175,8 @@ public class Allergies extends StdAbility implements HealthCondition
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
@@ -191,10 +195,10 @@ public class Allergies extends StdAbility implements HealthCondition
 				commands.removeElementAt(1);
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
-		
+
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
@@ -224,7 +228,7 @@ public class Allergies extends StdAbility implements HealthCondition
 				&&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
 					allergies+=" "+(String)allChoices.elementAt(i);
 			if(allergies.length()==0) return false;
-			
+
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(target.location()!=null)
 			{

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class GenAbsorbantShield extends GenPersonalShield
 {
-	public String ID(){	return "GenAbsorbantShield";}
+	@Override public String ID(){	return "GenAbsorbantShield";}
 
 	public GenAbsorbantShield()
 	{
@@ -43,27 +43,27 @@ public class GenAbsorbantShield extends GenPersonalShield
 		setDescription("The absorption shield generator is worn about the body and activated to use. It absorbs all manner of weapon types. ");
 		setDescription("The integrity shield generator is worn about the body and activated to use. It protects against disruption and disintegration beams. ");
 	}
-	
-	@Override 
-	protected String fieldOnStr(MOB viewerM) 
-	{ 
+
+	@Override
+	protected String fieldOnStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"A sparkling field of energy surrounds <O-NAME>.":
-			"A sparkling field of energy surrounds <T-NAME>."; 
+			"A sparkling field of energy surrounds <T-NAME>.";
 	}
-	
-	@Override 
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+
+	@Override
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"The sparkling field around <O-NAME> flickers and dies out.":
-			"The sparkling field around <T-NAME> flickers and dies out."; 
+			"The sparkling field around <T-NAME> flickers and dies out.";
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
-		if(msg.value()<=0) 
+		if(msg.value()<=0)
 			return true;
 		if((successFactor>=1.0)||((successFactor>0.0)&&(msg.value()==1)))
 		{
@@ -88,8 +88,8 @@ public class GenAbsorbantShield extends GenPersonalShield
 		}
 		return true;
 	}
-	
-	@Override 
+
+	@Override
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		return activated();

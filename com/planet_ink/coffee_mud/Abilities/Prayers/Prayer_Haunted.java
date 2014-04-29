@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Haunted extends Prayer
 {
-	public String ID() { return "Prayer_Haunted"; }
-	public String name(){ return "Haunted";}
-	public String displayText(){ return "(Haunted)";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Haunted"; }
+	@Override public String name(){ return "Haunted";}
+	@Override public String displayText(){ return "(Haunted)";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int level=14;
 	protected int numDone=0;
 	protected int numMax=Integer.MAX_VALUE;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -64,6 +65,7 @@ public class Prayer_Haunted extends Prayer
 		   R.showHappens(CMMsg.MSG_OK_VISUAL,"The haunted aura fades.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room)&&(numDone<numMax))
@@ -95,6 +97,7 @@ public class Prayer_Haunted extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

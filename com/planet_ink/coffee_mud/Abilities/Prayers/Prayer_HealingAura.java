@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_HealingAura extends Prayer
 {
-	public String ID() { return "Prayer_HealingAura"; }
-	public String name(){ return "Healing Aura";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "(Healing Aura)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean  canBeUninvoked(){return false;}
-	public boolean  isAutoInvoked(){return true;}
+	@Override public String ID() { return "Prayer_HealingAura"; }
+	@Override public String name(){ return "Healing Aura";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String displayText(){ return "(Healing Aura)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean  canBeUninvoked(){return false;}
+	@Override public boolean  isAutoInvoked(){return true;}
 	protected int fiveDown=5;
 	protected int tenDown=10;
 	protected int twentyDown=20;
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -59,7 +60,8 @@ public class Prayer_HealingAura extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,23 @@ import java.util.*;
 */
 public class Prop_WearZapper extends Prop_HaveZapper
 {
-	public String ID() { return "Prop_WearZapper"; }
-	public String name(){ return "Restrictions to wielding/wearing/holding";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_WearZapper"; }
+	@Override public String name(){ return "Restrictions to wielding/wearing/holding";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 
+	@Override
 	public String accountForYourself()
 	{
 		return "Wearing restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
-	public int triggerMask() 
-	{ 
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost, msg);

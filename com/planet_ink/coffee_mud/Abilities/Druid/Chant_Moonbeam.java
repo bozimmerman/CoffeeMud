@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Moonbeam extends Chant
 {
-	public String ID() { return "Chant_Moonbeam"; }
-	public String name(){ return "Moonbeam";}
-	public String displayText(){return "(Moonbeam)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_Moonbeam"; }
+	@Override public String name(){ return "Moonbeam";}
+	@Override public String displayText(){return "(Moonbeam)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
@@ -50,6 +51,7 @@ public class Chant_Moonbeam extends Chant
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -63,6 +65,7 @@ public class Chant_Moonbeam extends Chant
 		room.recoverRoomStats();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -72,7 +75,8 @@ public class Chant_Moonbeam extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,14 @@ import java.util.*;
 */
 public class Prop_StayAboard extends Property
 {
-	public String ID() { return "Prop_StayAboard"; }
-	public String name(){ return "Stays on mounted thing";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_StayAboard"; }
+	@Override public String name(){ return "Stays on mounted thing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	protected Rideable rideable=null;
-	public String accountForYourself() { return "Stays on anything mounted to.";}
+	@Override public String accountForYourself() { return "Stays on anything mounted to.";}
 	protected boolean noRepeat=false;
-	
+
+	@Override
 	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
@@ -48,7 +49,8 @@ public class Prop_StayAboard extends Property
 			rideable = ((Rider)P).riding();
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -72,7 +74,7 @@ public class Prop_StayAboard extends Property
 		}
 		return true;
 	}
-	
+
 	public void stayAboard(Rider R)
 	{
 		Room rideR=CMLib.map().roomLocation(rideable);
@@ -91,7 +93,8 @@ public class Prop_StayAboard extends Property
 			R.setRiding(rideable);
 		}
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
 		super.affectPhyStats(E, affectableStats);

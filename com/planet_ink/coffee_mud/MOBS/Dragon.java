@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,14 @@ import java.util.*;
 */
 public class Dragon extends StdMOB
 {
-	public String ID(){return "Dragon";}
+	@Override public String ID(){return "Dragon";}
 	protected int breatheDown=4;
 	protected int swallowDown=5;
 	protected int digestDown=4;
 
 	protected int birthColor=0;
 	protected int birthAge=0;
-	
+
 	protected Ability dragonbreath = null;
 
 
@@ -108,12 +108,12 @@ public class Dragon extends StdMOB
 			return;
 		if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
 			return;
-		int colorValue=DragonColor(); 
+		int colorValue=DragonColor();
 		int ageValue=DragonAge();
 
 		birthAge=ageValue;
 		birthColor=colorValue;
-		
+
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -140,7 +140,7 @@ public class Dragon extends StdMOB
 			ClawTwo.basePhyStats().setLevel(basePhyStats().level());
 			ClawOne.basePhyStats().setDamage(basePhyStats().level());
 			ClawTwo.recoverPhyStats();
-			
+
 			ClawOne.wearAt(Wearable.WORN_WIELD);
 			ClawTwo.wearAt(Wearable.WORN_WIELD);
 
@@ -254,6 +254,7 @@ public class Dragon extends StdMOB
 		return returnVal;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
@@ -318,7 +319,7 @@ public class Dragon extends StdMOB
 			// ===== if you can't breathe, you can't breathe fire
 			return false;
 		}
-		
+
 		// ===== Tell What the Beast is doing
 		switch (DragonColor())
 		{
@@ -457,11 +458,13 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
 		setupDragonIfNecessary();
 	}
+	@Override
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
@@ -523,6 +526,7 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
+	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
 		// ===== move all inhabitants to the dragons location
@@ -539,7 +543,7 @@ public class Dragon extends StdMOB
 				if(TastyMorsel!=null)
 					room.bringMobHere(TastyMorsel,false);
 			}
-	
+
 			// =====move the inventory of the stomach to the room
 			int itemCount = Stomach.numItems();
 			for (int y=itemCount-1;y>=0;y--)

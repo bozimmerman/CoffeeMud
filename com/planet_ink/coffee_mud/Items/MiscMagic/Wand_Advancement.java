@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class Wand_Advancement extends StdWand implements ArchonOnly
 {
-	public String ID(){	return "Wand_Advancement";}
+	@Override public String ID(){	return "Wand_Advancement";}
 	public Wand_Advancement()
 	{
 		super();
@@ -50,11 +50,13 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	}
 
 
+	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="LEVEL UP";
 	}
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -62,6 +64,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

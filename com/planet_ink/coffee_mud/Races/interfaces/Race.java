@@ -39,6 +39,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * Return a nice, displayable name for this race
 	 * @return the races name
 	 */
+	@Override
 	public String name();
 	/**
 	 * Which racial category this race falls in.
@@ -131,14 +132,14 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return an array of body parts
 	 */
 	public int[] bodyMask();
-	
+
 	/**
 	 * Converts this race to a generic race (if it isn't already)
 	 * and returns it.  Returns itself if its already generic.
 	 * @return the generic race.
 	 */
 	public Race makeGenRace();
-	
+
 	/**
 	 * Converts this race to a generic race (if it isn't already)
 	 * and mixes its attributes with the race passed it.  A new
@@ -146,7 +147,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the generic race.
 	 */
 	public Race mixRace(Race race, String newRaceID, String newRaceName);
-	
+
 	/**
 	 * Returns a vector of Item objects representing the standard
 	 * clothing, weapons, or other objects commonly given to players
@@ -168,13 +169,13 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/**
 	 * Sends back a generic mob name appropriate to a mob of this
 	 * race, at the given gender and age-group.
-	 * 
+	 *
 	 * @param gender the gender of the mob
 	 * @param age the age category
 	 * @return a good name
 	 */
 	public String makeMobName(char gender, int age);
-	
+
 	/**
 	 * Returns a Weapon object representing what a member of this
 	 * race fights with when unarmed.  This method may change what it
@@ -255,7 +256,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
 	 * to modify the amount before the gain actually occurs.
-	 * @param host the player or mob whose race object this is  
+	 * @param host the player or mob whose race object this is
 	 * @param mob the player or mob gaining experience
 	 * @param victim if applicable, the mob or player who died to give the exp
 	 * @param amount the amount of exp on track for gaining
@@ -313,16 +314,16 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a vector of the Ability objects
 	 */
 	public ChameleonList<Ability> racialEffects(MOB mob);
-	
+
 	/**
-	 * Returns the number of racial effects elligible to the given lob. Must 
+	 * Returns the number of racial effects elligible to the given lob. Must
 	 * faster and more efficient than getting the whole list and checking its
 	 * size.
 	 * @param mob the mob to grant the abilities to
 	 * @return number of entries in the ability object vector
 	 */
 	public int numRacialEffects(MOB mob);
-	
+
 	/**
 	 * Apply any affects of the given mob at the given age to the given base and/or
 	 * current char stats.
@@ -332,7 +333,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param charStats temporary charstats changes
 	 */
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
-	
+
 	/**
 	 * Returns a list of the stat adjustments made by this race
 	 * @return a list of the stat adjustments made by this race

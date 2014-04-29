@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Common extends StdLanguage
 {
-	public String ID() { return "Common"; }
-	public String name(){ return "Common";}
-	public boolean isAutoInvoked(){return false;}
-	public boolean canBeUninvoked(){return canBeUninvoked;}
+	@Override public String ID() { return "Common"; }
+	@Override public String name(){ return "Common";}
+	@Override public boolean isAutoInvoked(){return false;}
+	@Override public boolean canBeUninvoked(){return canBeUninvoked;}
 	public Common()
 	{
 		super();
 		proficiency=100;
 	}
-	public int proficiency(){return 100;}
+	@Override public int proficiency(){return 100;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean anythingDone=false;

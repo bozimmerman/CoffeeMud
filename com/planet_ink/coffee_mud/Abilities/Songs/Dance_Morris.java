@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Dance_Morris extends Dance
 {
-	public String ID() { return "Dance_Morris"; }
-	public String name(){ return "Morris";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Morris"; }
+	@Override public String name(){ return "Morris";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 	private boolean missedLastOne=false;
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -49,6 +50,7 @@ public class Dance_Morris extends Dance
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*adjustedLevel(invoker(),0)));
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))

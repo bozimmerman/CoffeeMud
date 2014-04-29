@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class DrinkCmd extends StdCommand
 	public DrinkCmd(){}
 
 	private final String[] access={"DRINK","DR","DRI"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -49,7 +50,7 @@ public class DrinkCmd extends StdCommand
 		commands.removeElementAt(0);
 		if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
 			commands.removeElementAt(0);
-		
+
 		Environmental thisThang=null;
 		if((commands.size()==0)&&(mob.location() instanceof Drink))
 			thisThang=mob.location();
@@ -91,9 +92,9 @@ public class DrinkCmd extends StdCommand
 			mob.location().send(mob,newMsg);
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

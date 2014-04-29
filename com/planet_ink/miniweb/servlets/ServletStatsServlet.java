@@ -40,7 +40,7 @@ public class ServletStatsServlet implements SimpleServlet
 		str.append("Average time (ns): ").append(stats.getAverageEllapsedNanos()).append("<br>");
 		str.append("In progress: ").append(stats.getNumberOfRequestsInProcess()).append("<br>");
 	}
-	
+
 	@Override
 	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
 	{
@@ -49,7 +49,7 @@ public class ServletStatsServlet implements SimpleServlet
 			response.setMimeType(MIMEType.html.getType());
 			StringBuilder str = new StringBuilder("");
 			str.append("<html><body>");
-			
+
 			MWRequestStats stats;
 			for(Class<? extends SimpleServlet> servletClass : request.getServletManager().getServlets())
 			{

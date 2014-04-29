@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,19 +39,21 @@ import java.util.*;
 public class MasterBaking extends Baking
 {
 	private String cookingID="";
-	public String ID() { return "MasterBaking"+cookingID; }
-	public String name(){ return "Master Baking"+cookingID;}
+	@Override public String ID() { return "MasterBaking"+cookingID; }
+	@Override public String name(){ return "Master Baking"+cookingID;}
 	private static final String[] triggerStrings = {"MBAKE","MBAKING","MASTERBAKE","MASTERBAKING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected List<String> noUninvokes=new ArrayList<String>(0);
-	protected List<String> getUninvokeException() { return noUninvokes; }
-	
+	@Override protected List<String> getUninvokeException() { return noUninvokes; }
+
+	@Override
 	protected int getDuration(MOB mob, int level)
 	{
 		return getDuration(60,mob,1,8);
 	}
-	protected int baseYield() { return 2; }
+	@Override protected int baseYield() { return 2; }
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -41,6 +41,7 @@ public interface Tickable extends CMObject
 	 * The nice displayable name of this instance of this object
 	 * @return the displayable name of this object instance
 	 */
+	@Override
 	public String name();
 	/**
 	 * A coded status for this object during the period where

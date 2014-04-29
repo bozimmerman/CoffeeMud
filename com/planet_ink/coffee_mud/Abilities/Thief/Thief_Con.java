@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Con extends ThiefSkill
 {
-	public String ID() { return "Thief_Con"; }
-	public String name(){ return "Con";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Thief_Con"; }
+	@Override public String name(){ return "Con";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings = {"CON"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
-	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		if(commands!=null) commands=new XVector<String>(commands);
@@ -82,7 +83,7 @@ public class Thief_Con extends ThiefSkill
 		V.addElement(commands.get(0));
 		MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
-		
+
 		commands.remove(0);
 
 		if((!target.mayIFight(mob))
@@ -117,7 +118,7 @@ public class Thief_Con extends ThiefSkill
 			mob.tell("You can't con someone into following you.");
 			return false;
 		}
-		
+
 		CMObject O=CMLib.english().findCommand(target,commands);
 		if(O instanceof Command)
 		{
@@ -142,7 +143,8 @@ public class Thief_Con extends ThiefSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands!=null) commands=new XVector(commands);

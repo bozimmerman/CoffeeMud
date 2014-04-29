@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 */
 public class Qualifier extends StdCharClass
 {
-	public String ID(){return "Qualifier";}
-	public String name(){return "Qualifier";}
-	public String baseClass(){return ID();}
+	@Override public String ID(){return "Qualifier";}
+	@Override public String name(){return "Qualifier";}
+	@Override public String baseClass(){return ID();}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
-	
+
 	public Qualifier()
 	{
 		super();
@@ -49,16 +49,18 @@ public class Qualifier extends StdCharClass
 			maxStatAdj[i]=7;
 	}
 
-	public int availabilityCode(){return 0;}
+	@Override public int availabilityCode(){return 0;}
 
-	public String getStatQualDesc(){return "Must be granted by an Archon.";}
+	@Override public String getStatQualDesc(){return "Must be granted by an Archon.";}
+	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
 			mob.tell("This class cannot be learned.");
 		return false;
 	}
-	
+
+	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!loaded())
@@ -74,7 +76,8 @@ public class Qualifier extends StdCharClass
 		}
 		super.startCharacter(mob, false, verifyOnly);
 	}
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

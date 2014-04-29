@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class StdShipEngine extends StdCompGenerator implements ShipComponent.ShipEngine
 {
-	public String ID(){	return "StdShipEngine";}
-	
+	@Override public String ID(){	return "StdShipEngine";}
+
 	protected float 	installedFactor	= 1.0F;
 	protected int		maxThrust		= 1000;
 	protected int		thrust			= 0;
@@ -54,6 +54,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdShipEngine)) return false;
@@ -70,9 +71,10 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	@Override public long getSpecificImpulse() { return specificImpulse; }
 	@Override public void setSpecificImpulse(long amt) { specificImpulse = amt; }
 	@Override public TechType getTechType() { return TechType.SHIP_ENGINE; }
-	
+
 	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
-	
+
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);

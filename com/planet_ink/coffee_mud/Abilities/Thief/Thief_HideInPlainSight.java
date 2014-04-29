@@ -35,21 +35,21 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_HideInPlainSight extends ThiefSkill
 {
-	public String ID() { return "Thief_HideInPlainSight"; }
-	public String name(){ return "Hide In Plain Sight";}
-	public String displayText(){ return "(Hiding in plain sight)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Thief_HideInPlainSight"; }
+	@Override public String name(){ return "Hide In Plain Sight";}
+	@Override public String displayText(){ return "(Hiding in plain sight)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"HIDEINPLAINSITE","HIPS"};
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 	public Ability obscureAbility=null;
-	
+
 	public Ability makeObscurinator(MOB mob)
 	{
 		if(obscureAbility!=null) return obscureAbility;
@@ -59,6 +59,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		return obscureAbility;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -86,8 +87,9 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		}
 		return true;
 	}
-	
-	
+
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -150,6 +152,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		return;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -157,7 +160,8 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You are no longer hiding in plain site.");
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

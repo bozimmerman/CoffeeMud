@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CharClassData extends StdWebMacro
 {
-	public String name() { return "CharClassData"; }
+	@Override public String name() { return "CharClassData"; }
 
 
 	private String classDropDown(String old)
@@ -242,6 +242,7 @@ public class CharClassData extends StdWebMacro
 	// parameters include help, playable, max stats, pracs, trains, hitpoints,
 	// mana, movement, attack, weapons, armorlimits, limits, bonuses,
 	// prime, quals, startingeq
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -958,11 +959,11 @@ public class CharClassData extends StdWebMacro
 								avgs[0][0]+=avgMath(10,10,sh,f);
 								avgs[0][1]+=avgMath(18,10,sh,f);
 								avgs[0][2]+=avgMath(maxCon,10,sh,f);
-								
+
 								avgs[1][0]+=avgMath(10,50,sh,f);
 								avgs[1][1]+=avgMath(18,50,sh,f);
 								avgs[1][2]+=avgMath(maxCon,50,sh,f);
-								
+
 								avgs[2][0]+=avgMath(10,90,sh,f);
 								avgs[2][1]+=avgMath(18,90,sh,f);
 								avgs[2][2]+=avgMath(maxCon,90,sh,f);
@@ -1000,11 +1001,11 @@ public class CharClassData extends StdWebMacro
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
 								avgs[0][2]+=avgMath(maxInt,10,sm,f);
-								
+
 								avgs[1][0]+=avgMath(10,50,sm,f);
 								avgs[1][1]+=avgMath(18,50,sm,f);
 								avgs[1][2]+=avgMath(maxInt,50,sm,f);
-								
+
 								avgs[2][0]+=avgMath(10,90,sm,f);
 								avgs[2][1]+=avgMath(18,90,sm,f);
 								avgs[2][2]+=avgMath(maxInt,90,sm,f);
@@ -1041,11 +1042,11 @@ public class CharClassData extends StdWebMacro
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
 								avgs[0][2]+=avgMath(maxStrength,10,sm,f);
-								
+
 								avgs[1][0]+=avgMath(10,50,sm,f);
 								avgs[1][1]+=avgMath(18,50,sm,f);
 								avgs[1][2]+=avgMath(maxStrength,50,sm,f);
-								
+
 								avgs[2][0]+=avgMath(10,90,sm,f);
 								avgs[2][1]+=avgMath(18,90,sm,f);
 								avgs[2][2]+=avgMath(maxStrength,90,sm,f);
@@ -1067,10 +1068,10 @@ public class CharClassData extends StdWebMacro
 
 				if(parms.containsKey("PRIME"))
 					str.append(C.getPrimeStatDesc()+", ");
-				
+
 				if(parms.containsKey("ATTACK"))
 					str.append(C.getAttackDesc()+", ");
-				
+
 				if(parms.containsKey("WEAPONS"))
 					if(C.getWeaponLimitDesc().length()>0)
 						str.append(C.getWeaponLimitDesc()+", ");

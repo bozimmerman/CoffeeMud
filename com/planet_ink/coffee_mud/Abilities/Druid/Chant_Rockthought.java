@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Rockthought extends Chant
 {
-	public String ID() { return "Chant_Rockthought"; }
-	public String name(){ return "Rockthought";}
-	public String displayText(){ return "(Rockthought)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Chant_Rockthought"; }
+	@Override public String name(){ return "Rockthought";}
+	@Override public String displayText(){ return "(Rockthought)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	CMMsg stubb=null;
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -58,6 +59,7 @@ public class Chant_Rockthought extends Chant
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -65,12 +67,13 @@ public class Chant_Rockthought extends Chant
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
 		&&(!stubb.equals(msg))))
 		{
-			// this can cause all kinds of potential problems .. 
+			// this can cause all kinds of potential problems ..
 			// the number of checks to get around them probably isn't worth the cost.
 		}
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
@@ -81,6 +84,7 @@ public class Chant_Rockthought extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

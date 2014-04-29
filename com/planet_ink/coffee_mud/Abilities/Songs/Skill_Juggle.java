@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,25 +34,26 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Juggle extends BardSkill
 {
-	public String ID() { return "Skill_Juggle"; }
-	public String name(){ return "Juggle";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Juggle"; }
+	@Override public String name(){ return "Juggle";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"JUGGLE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected SVector<Item> juggles=new SVector<Item>();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		juggles=new SVector();
 	}
-	
+
 	public int maxJuggles()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -68,6 +69,7 @@ public class Skill_Juggle extends BardSkill
 		return 1;
 	}
 
+	@Override
 	public String displayText()
 	{
 		if(juggles.size()>0)
@@ -99,6 +101,7 @@ public class Skill_Juggle extends BardSkill
 		return "(Juggling??)";
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -244,6 +247,7 @@ public class Skill_Juggle extends BardSkill
 		M.location().recoverRoomStats();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!pause)
@@ -269,6 +273,7 @@ public class Skill_Juggle extends BardSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!pause)
@@ -323,6 +328,7 @@ public class Skill_Juggle extends BardSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -340,6 +346,7 @@ public class Skill_Juggle extends BardSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -349,7 +356,8 @@ public class Skill_Juggle extends BardSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whatToJuggle=(mob.isMonster()&&(givenTarget instanceof MOB))?"all":CMParms.combine(commands,0);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,8 @@ public class Group extends StdCommand
 	public Group(){}
 
 	private final String[] access={"GROUP","GR"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
 
@@ -60,7 +60,7 @@ public class Group extends StdCommand
 			else
 				msg.append(CMStrings.padRight(who.charStats().raceName(),cols[0])+" ");
 		}
-			
+
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
@@ -86,7 +86,8 @@ public class Group extends StdCommand
 		msg.append("\n\r");
 		return msg;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -101,8 +102,8 @@ public class Group extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

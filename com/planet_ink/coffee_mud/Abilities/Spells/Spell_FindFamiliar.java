@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FindFamiliar extends Spell
 {
-	public String ID() { return "Spell_FindFamiliar"; }
-	public String name(){return "Find Familiar";}
-	public String displayText(){return "(Find Familiar)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return Ability.FLAG_NOORDERING;}
+	@Override public String ID() { return "Spell_FindFamiliar"; }
+	@Override public String name(){return "Find Familiar";}
+	@Override public String displayText(){return "(Find Familiar)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overridemana(){return Ability.COST_ALL;}
 	public int castingQuality(MOB mob, MOB target)
 	{
@@ -53,6 +53,7 @@ public class Spell_FindFamiliar extends Spell
 		return abstractQuality();
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -66,6 +67,7 @@ public class Spell_FindFamiliar extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.numFollowers()>0)||(mob.isMonster()))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Blademouth extends Spell
 {
-	public String ID() { return "Spell_Blademouth"; }
-	public String name(){return "Blademouth";}
-	public String displayText(){return "(blades in your mouth)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public String ID() { return "Spell_Blademouth"; }
+	@Override public String name(){return "Blademouth";}
+	@Override public String displayText(){return "(blades in your mouth)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public Vector limbsToRemove=new Vector();
 	protected boolean noRecurse=false;
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -61,7 +62,8 @@ public class Spell_Blademouth extends Spell
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -74,7 +76,8 @@ public class Spell_Blademouth extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -86,7 +89,7 @@ public class Spell_Blademouth extends Spell
 				mob.tell("There is no mouth on "+target.name(mob)+" to fill with blades!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

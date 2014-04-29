@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -108,7 +108,7 @@ public class GrinderPlayers extends GrinderMobs
 		"ACCTEXP",
 		"ACCOUNT"
 	};
-	
+
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
@@ -167,7 +167,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 22: break; //if(CMLib.clans().getClan(old)!=null) M.setClan(old); break;
 			case 23: break; //M.setClanRole(CMath.s_int(old)); break;
 			case 24: // fall through
-			case 25: 
+			case 25:
 			{
 				if(CMath.isInteger(old))
 				{
@@ -214,7 +214,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 54: M.basePhyStats().setArmor(CMath.s_int(old)); break;
 			case 55: M.phyStats().setSpeed(CMath.s_double(old)); break;
 			case 56: M.basePhyStats().setSpeed(CMath.s_double(old)); break;
-			case 57: 
+			case 57:
 			{
 				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				M.delAllExpertises();
@@ -223,7 +223,7 @@ public class GrinderPlayers extends GrinderMobs
 						M.addExpertise(V.get(v));
 				break;
 			}
-			case 58: 
+			case 58:
 			{
 				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
@@ -232,7 +232,7 @@ public class GrinderPlayers extends GrinderMobs
 					M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
 				break;
 			}
-			case 59: 
+			case 59:
 			{
 				if(M.playerStats()!=null)
 				{
@@ -275,11 +275,11 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case 64: 
+			case 64:
 			{
 				if(M.playerStats()!=null)
 				{
-					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().getAccountName() : ""; 
+					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().getAccountName() : "";
 					if(!old.equals(oldAccountName))
 					{
 						PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
@@ -345,7 +345,7 @@ public class GrinderPlayers extends GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static String editPlayer(MOB whom, HTTPRequest httpReq, java.util.Map<String,String> parms, MOB M)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -358,7 +358,7 @@ public class GrinderPlayers extends GrinderMobs
 			allitems.addElement(I);
 			M.delItem(I);
 		}
-		
+
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
 			if(httpReq.isUrlParameter(MOB.AUTODESC[i]))

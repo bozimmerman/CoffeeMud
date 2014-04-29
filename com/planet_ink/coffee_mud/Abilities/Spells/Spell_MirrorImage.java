@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,18 +36,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_MirrorImage extends Spell
 {
-	public String ID() { return "Spell_MirrorImage"; }
-	public String name(){return "Mirror Image";}
-	public String displayText(){return "(Mirror Image spell)";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public String ID() { return "Spell_MirrorImage"; }
+	@Override public String name(){return "Mirror Image";}
+	@Override public String displayText(){return "(Mirror Image spell)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
 	private	Random randomizer = new Random(System.currentTimeMillis());
 	protected int numberOfImages = 0;
 	protected boolean notAgain=false;
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -66,7 +67,7 @@ public class Spell_MirrorImage extends Spell
 			}
 			int intAdjustment = (mob.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) - mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
 			if(intAdjustment < 1) intAdjustment = 1;
-			
+
 			int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
@@ -77,6 +78,7 @@ public class Spell_MirrorImage extends Spell
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -134,6 +136,7 @@ public class Spell_MirrorImage extends Spell
 		notAgain=false;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -141,6 +144,7 @@ public class Spell_MirrorImage extends Spell
 			affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -155,6 +159,7 @@ public class Spell_MirrorImage extends Spell
 			mob.tell("Your mirror images fade away.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

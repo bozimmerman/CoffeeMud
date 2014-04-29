@@ -35,15 +35,15 @@ import java.util.*;
 
 public class TemporaryImmunity extends StdAbility
 {
-	public String ID() { return "TemporaryImmunity"; }
-	public String name(){ return "Temporary Immunity";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public boolean canBeUninvoked(){return true;}
-	public boolean isAutoInvoked(){return true;}
+	@Override public String ID() { return "TemporaryImmunity"; }
+	@Override public String name(){ return "Temporary Immunity";}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public boolean canBeUninvoked(){return true;}
+	@Override public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=36000000;
 	protected PairVector<String,Long> set=new PairVector<String,Long>();
 
@@ -54,6 +54,7 @@ public class TemporaryImmunity extends StdAbility
 		tickDown = 10;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
@@ -74,6 +75,7 @@ public class TemporaryImmunity extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public String text()
 	{
 		if(set.size()==0) return "";
@@ -83,6 +85,7 @@ public class TemporaryImmunity extends StdAbility
 		return str.toString();
 	}
 
+	@Override
 	public void setMiscText(String str)
 	{
 		if(str.startsWith("+"))
@@ -107,6 +110,7 @@ public class TemporaryImmunity extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

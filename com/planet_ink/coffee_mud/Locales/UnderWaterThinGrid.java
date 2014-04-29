@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class UnderWaterThinGrid extends StdThinGrid
 {
-	public String ID(){return "UnderWaterThinGrid";}
+	@Override public String ID(){return "UnderWaterThinGrid";}
 	public UnderWaterThinGrid()
 	{
 		super();
@@ -57,25 +57,28 @@ public class UnderWaterThinGrid extends StdThinGrid
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 
-	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	protected int baseThirst(){return 0;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	@Override protected int baseThirst(){return 0;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new UnderWaterGrid().newInstance();
 	}
-	
-	public String getGridChildLocaleID(){return "UnderWater";}
 
+	@Override public String getGridChildLocaleID(){return "UnderWater";}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
@@ -85,16 +88,18 @@ public class UnderWaterThinGrid extends StdThinGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+	@Override
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);
-		
-		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
+
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
@@ -126,7 +131,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
 		}
-		
+
 		if(R.rawDoors()[Directions.DOWN]==null)
 		{
 			if((y==yGridSize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(exits[Directions.DOWN]!=null))
@@ -146,7 +151,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 					linkRoom(R,R2,Directions.DOWN,ox,ox);
 			}
 		}
-		
+
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,yGridSize()-1);
@@ -160,8 +165,8 @@ public class UnderWaterThinGrid extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
-		
-		
+
+
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
 			R2=getMakeSingleGridRoom(xGridSize()-1,y);

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,10 @@ import java.util.*;
 */
 public class ComponentData extends StdWebMacro
 {
-	public String name() { return "ComponentData"; }
-	public boolean isAdminMacro()   {return true;}
+	@Override public String name() { return "ComponentData"; }
+	@Override public boolean isAdminMacro()   {return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

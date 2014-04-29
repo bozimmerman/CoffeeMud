@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Thief_SlickCaltrops extends Thief_Caltrops
 {
-	public String ID() { return "Thief_SlickCaltrops"; }
-	public String name(){ return "Slick Caltrops";}
+	@Override public String ID() { return "Thief_SlickCaltrops"; }
+	@Override public String name(){ return "Slick Caltrops";}
 	private static final String[] triggerStrings = {"SLICKCALTROPS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String caltropTypeName(){return "slick ";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String caltropTypeName(){return "slick ";}
+	@Override
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
@@ -46,7 +47,7 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
 		else
-			
+
 		{
 			Ability A=CMClass.getAbility("Slip");
 			if((A!=null)&&(A.castingQuality(invoker(),mob)==Ability.QUALITY_MALICIOUS))

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Modifiable 
+public interface Modifiable
 {
 	/**
 	 * Returns an array of the string names of those fields which are modifiable on this object at run-time by
@@ -44,7 +44,7 @@ public interface Modifiable
 	 * @return list of the fields which may be set.
 	 */
 	public String[] getStatCodes();
-	
+
 	/**
 	 * Returns the index into the stat codes array where extra savable fields begins.
 	 * This number is always the same as getStatCodes().length unless there are extra
@@ -56,7 +56,7 @@ public interface Modifiable
 	 * @return the index into getStatCodes()
 	 */
 	public int getSaveStatIndex();
-	
+
 	/**
 	 * An alternative means of retreiving the values of those fields on this object which are modifiable at
 	 * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.

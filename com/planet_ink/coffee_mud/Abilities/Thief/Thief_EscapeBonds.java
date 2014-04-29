@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,17 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_EscapeBonds extends ThiefSkill
 {
-	public String ID() { return "Thief_EscapeBonds"; }
-	public String name(){ return "Escape Bonds";}
-	public String displayText(){return "(Slipping from your bonds)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_EscapeBonds"; }
+	@Override public String name(){ return "Escape Bonds";}
+	@Override public String displayText(){return "(Slipping from your bonds)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -73,6 +74,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -86,6 +88,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -102,7 +105,8 @@ public class Thief_EscapeBonds extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

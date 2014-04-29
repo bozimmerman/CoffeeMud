@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_BlessItem extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_BlessItem"; }
-	public String name(){ return "Bless Item";}
-	public String displayText(){ return "(Blessed)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_BlessItem"; }
+	@Override public String name(){ return "Bless Item";}
+	@Override public String displayText(){ return "(Blessed)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +61,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -78,12 +80,14 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 	}
 
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		return (item instanceof Item)
 					&&(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -98,7 +102,8 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
@@ -110,7 +115,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
-		
+
 		if(target instanceof Coins)
 		{
 			mob.tell("You can not bless that.");

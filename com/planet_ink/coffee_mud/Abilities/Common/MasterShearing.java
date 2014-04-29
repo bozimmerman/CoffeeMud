@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 
 public class MasterShearing extends Shearing
 {
-	public String ID() { return "MasterShearing"; }
-	public String name(){ return "Master Shearing";}
+	@Override public String ID() { return "MasterShearing"; }
+	@Override public String name(){ return "Master Shearing";}
 	private static final String[] triggerStrings = {"MSHEAR","MSHEARING","MASTERSHEAR","MASTERSHEARING"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected int getDuration(MOB mob, int weight)
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))))*2;
@@ -46,5 +47,5 @@ public class MasterShearing extends Shearing
 		if(duration>100) duration=100;
 		return duration;
 	}
-	protected int baseYield() { return 3; }
+	@Override protected int baseYield() { return 3; }
 }

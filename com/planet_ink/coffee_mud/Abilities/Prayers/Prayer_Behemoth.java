@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Behemoth extends Prayer
 {
-	public String ID() { return "Prayer_Behemoth"; }
-	public String name(){ return "Behemoth";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	public String displayText(){return "(Behemoth)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Prayer_Behemoth"; }
+	@Override public String name(){ return "Behemoth";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String displayText(){return "(Behemoth)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,6 +60,7 @@ public class Prayer_Behemoth extends Prayer
 			mob.tell("Your behemoth size has subsided.");
 	}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -70,6 +72,7 @@ public class Prayer_Behemoth extends Prayer
 		affectedStats.setStat(CharStats.STAT_WEIGHTADJ,(int)newWeight);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
@@ -79,6 +82,7 @@ public class Prayer_Behemoth extends Prayer
 			affectedStats.setWeight(affectedStats.weight()*4);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

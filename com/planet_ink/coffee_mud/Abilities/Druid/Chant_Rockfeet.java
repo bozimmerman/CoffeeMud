@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Rockfeet extends Chant
 {
-	public String ID() { return "Chant_Rockfeet"; }
-	public String name(){return "Rockfeet";}
-	public String displayText(){return "(Rockfeet)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int maxRange(){return adjustedMaxInvokerRange(10);}
-	public int minRange(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public boolean bubbleAffect(){return true;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_Rockfeet"; }
+	@Override public String name(){return "Rockfeet";}
+	@Override public String displayText(){return "(Rockfeet)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override public int minRange(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean bubbleAffect(){return true;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=null;
@@ -56,6 +57,7 @@ public class Chant_Rockfeet extends Chant
 			M.tell("Your hands and feet don't seem so heavy any more.");
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -74,7 +76,8 @@ public class Chant_Rockfeet extends Chant
 		return;
 	}
 
-   public int castingQuality(MOB mob, Physical target)
+   @Override
+public int castingQuality(MOB mob, Physical target)
    {
 		if(mob!=null)
 		{
@@ -90,8 +93,9 @@ public class Chant_Rockfeet extends Chant
 			}
 		}
 		return super.castingQuality(mob,target);
-	}    
-   
+	}
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

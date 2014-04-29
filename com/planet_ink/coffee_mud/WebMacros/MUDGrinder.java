@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,9 +39,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MUDGrinder extends StdWebMacro
 {
-	public String name() { return "MUDGrinder"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "MUDGrinder"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -263,7 +264,7 @@ public class MUDGrinder extends StdWebMacro
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
 			String which=httpReq.getUrlParameter("ALLQUALWHICH");
 			if(parms.containsKey("WHICH"))
-				which=parms.get("WHICH");	
+				which=parms.get("WHICH");
 			if((which==null)||(which.length()==0))
 				return " @break@";
 			Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
@@ -329,7 +330,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().findClan(last);
-			if((C!=null) 
+			if((C!=null)
 			||CMLib.players().playerExists(last)
 			||(last.equalsIgnoreCase("All")))
 				return "@break@";
@@ -354,7 +355,7 @@ public class MUDGrinder extends StdWebMacro
 			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
 			if(G==null) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
-			if(!CMLib.clans().removeGovernment(G)) 
+			if(!CMLib.clans().removeGovernment(G))
 				return "Unable to remove last government.";
 			Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
 			return "The clan government "+G.getName()+" has been successfully destroyed.";
@@ -1031,7 +1032,7 @@ public class MUDGrinder extends StdWebMacro
 			String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			Room copyRoom=CMLib.map().getRoom(copyThisOne);
 			Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
-			if(newRoom==null) 
+			if(newRoom==null)
 				httpReq.addFakeUrlParameter("ERRMSG","An error occurred trying to create your room.");
 			else
 			{
@@ -1048,14 +1049,14 @@ public class MUDGrinder extends StdWebMacro
 		String roomID=A.Name()+"#";
 		String xy=""+y;
 		if(x>0)
-		{ 
+		{
 			while(xy.length()<(((GridZones)A).yGridSize()+"").length())
 				xy="0"+xy;
 			xy=x+xy;
 		}
 		return roomID+xy;
 	}
-	
+
 	protected int[] getAppropriateXY(Area A, String mapStyle)
 	{
 		if((mapStyle==null)
@@ -1096,7 +1097,7 @@ public class MUDGrinder extends StdWebMacro
 			return A;
 		return null;
 	}
-	
+
 	protected String quickfind(Area A, String find)
 	{
 		Room R=A.getRoom(find);

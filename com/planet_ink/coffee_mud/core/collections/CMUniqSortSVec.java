@@ -10,28 +10,28 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
-	
+
 	public CMUniqSortSVec(int size)
 	{
 		super();
 	}
-	
+
 	public CMUniqSortSVec()
 	{
 	}
-	
+
 	private int compareTo(CMObject arg0, String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
-	
+
 	private int compareTo(CMObject arg0, CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
 	}
-	
+
 	@Override
-	public synchronized boolean add(T arg0) 
+	public synchronized boolean add(T arg0)
 	{
 		if(arg0==null) return false;
 		if(size()==0)
@@ -131,7 +131,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 					end=mid-1;
 				else
 					start=mid+1;
-	
+
 			}
 		}
 		else
@@ -148,13 +148,14 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 					end=mid-1;
 				else
 					start=mid+1;
-	
+
 			}
 		}
 		return -1;
 	}
 
-	public synchronized T find(String arg0) 
+	@Override
+	public synchronized T find(String arg0)
 	{
 		if(arg0==null) return null;
 		if(size()==0) return null;
@@ -174,8 +175,9 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		}
 		return null;
 	}
-	
-	public synchronized T find(CMObject arg0) 
+
+	@Override
+	public synchronized T find(CMObject arg0)
 	{
 		if(arg0==null) return null;
 		if(size()==0) return null;
@@ -196,7 +198,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		}
 		return null;
 	}
-	
+
 	@Override
 	public synchronized int lastIndexOf(Object arg0)
 	{
@@ -207,7 +209,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	public synchronized boolean remove(Object arg0)
 	{
 		final int index=indexOf(arg0);
-		if(index >= 0) 
+		if(index >= 0)
 			return remove(index)==arg0;
 		return false;
 	}

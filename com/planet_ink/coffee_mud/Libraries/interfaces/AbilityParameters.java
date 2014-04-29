@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,8 +41,8 @@ public interface AbilityParameters extends CMLibrary
 	public static final int PARMTYPE_ONEWORD=4;
 	public static final int PARMTYPE_MULTICHOICES=5;
 	public static final int PARMTYPE_SPECIAL=6;
-	
-	public static interface AbilityParmEditor 
+
+	public static interface AbilityParmEditor
 	{
 		public String ID();
 		public int parmType();
@@ -62,7 +62,7 @@ public interface AbilityParameters extends CMLibrary
 		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal);
 		public String convertFromItem(final ItemCraftor A, final Item I);
 	}
-	
+
 	public String encodeCodedSpells(Affectable I);
 	public List<Ability> getCodedSpells(String spells);
 	public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
@@ -74,8 +74,8 @@ public interface AbilityParameters extends CMLibrary
 	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveVFS);
 	public StringBuffer getRecipeList(ItemCraftor iA);
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
-	
-	public static interface AbilityRecipeData 
+
+	public static interface AbilityRecipeData
 	{
 		public String recipeFilename();
 		public String recipeFormat();
@@ -91,5 +91,5 @@ public interface AbilityParameters extends CMLibrary
 		public DVector blankRow();
 		public boolean wasVFS();
 	}
-	
+
 }

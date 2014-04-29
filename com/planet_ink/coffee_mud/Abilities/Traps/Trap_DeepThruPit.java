@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import java.util.*;
 */
 public class Trap_DeepThruPit extends Trap_DeepPit
 {
-	public String ID() { return "Trap_DeepThruPit"; }
-	public String name(){ return "small deep pit";}
-	protected int trapLevel(){return 13;}
-	public boolean getTravelThroughFlag() { return true; }
+	@Override public String ID() { return "Trap_DeepThruPit"; }
+	@Override public String name(){ return "small deep pit";}
+	@Override protected int trapLevel(){return 13;}
+	@Override public boolean getTravelThroughFlag() { return true; }
 }

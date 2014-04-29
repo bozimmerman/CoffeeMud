@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class WimpyAggressive extends Aggressive
 {
-	public String ID(){return "WimpyAggressive";}
-	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	@Override public String ID(){return "WimpyAggressive";}
+	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 
 	public WimpyAggressive()
 	{
@@ -45,20 +45,23 @@ public class WimpyAggressive extends Aggressive
 		tickDown = 0;
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		if(getParms().trim().length()>0)
 			return "wimpy aggression against "+CMLib.masking().maskDesc(getParms(),true).toLowerCase();
 		else
 			return "wimpy aggressiveness";
 	}
-	
+
+	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
 			CMLib.masking().maskCheck(getParms(),M,false);
 	}
-	
+
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -93,7 +96,8 @@ public class WimpyAggressive extends Aggressive
 
 		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg,zapStr);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MOB) return true;

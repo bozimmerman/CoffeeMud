@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Capoeira extends Dance
 {
-	public String ID() { return "Dance_Capoeira"; }
-	public String name(){ return "Capoeira";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Capoeira"; }
+	@Override public String name(){ return "Capoeira";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -49,7 +50,8 @@ public class Dance_Capoeira extends Dance
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

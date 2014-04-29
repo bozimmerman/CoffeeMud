@@ -55,6 +55,7 @@ public class ChannelWhoRequest extends Packet {
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( sender_name == null || target_mud == null || sender_mud == null  || channel == null)
 		{
@@ -64,6 +65,7 @@ public class ChannelWhoRequest extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +

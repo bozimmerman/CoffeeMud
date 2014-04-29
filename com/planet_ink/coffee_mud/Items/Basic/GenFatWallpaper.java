@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 */
 public class GenFatWallpaper extends GenWallpaper
 {
-	public String ID(){	return "GenFatWallpaper";}
+	@Override public String ID(){	return "GenFatWallpaper";}
 	protected String	displayText="";
-	public String displayText(){ return displayText;}
-	public void setDisplayText(String newText){displayText=newText;}
+	@Override public String displayText(){ return displayText;}
+	@Override public void setDisplayText(String newText){displayText=newText;}
 	protected long expirationDate=0;
-	public long expirationDate(){return expirationDate;}
-	public void setExpirationDate(long time){expirationDate=time;}
+	@Override public long expirationDate(){return expirationDate;}
+	@Override public void setExpirationDate(long time){expirationDate=time;}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)
@@ -52,6 +53,7 @@ public class GenFatWallpaper extends GenWallpaper
 			return false;
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)
@@ -60,6 +62,7 @@ public class GenFatWallpaper extends GenWallpaper
 		super.executeMsg(myHost,msg);
 	}
 	private static final String[] CODES={"DISPLAY"};
+	@Override
 	public String[] getStatCodes()
 	{
 		String[] THINCODES=super.getStatCodes();
@@ -75,16 +78,18 @@ public class GenFatWallpaper extends GenWallpaper
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		if(getMyCodeNum(code)<0) return super.getStat(code);
 		switch(getMyCodeNum(code))
 		{
-		case 0: 
+		case 0:
 			return displayText();
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(getMyCodeNum(code)<0)
@@ -95,6 +100,7 @@ public class GenFatWallpaper extends GenWallpaper
 		case 0: setDisplayText(val); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenFatWallpaper)) return false;

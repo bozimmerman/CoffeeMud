@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdPersonalShield extends StdElecItem implements Armor
 {
-	public String ID(){	return "StdPersonalShield";}
+	@Override public String ID(){	return "StdPersonalShield";}
 
 	short layer=0;
 	short layerAttributes=0;
@@ -55,21 +55,21 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}
-	
-	protected String fieldOnStr(MOB viewerM) 
-	{ 
+
+	protected String fieldOnStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?
 			"A field of energy surrounds <O-NAME>.":
-			"A field of energy surrounds <T-NAME>."; 
+			"A field of energy surrounds <T-NAME>.";
 	}
-	
-	protected String fieldDeadStr(MOB viewerM) 
-	{ 
+
+	protected String fieldDeadStr(MOB viewerM)
+	{
 		return (owner() instanceof MOB)?"" +
 			"The field around <O-NAME> flickers and dies out.":
-			"The field around <T-NAME> flickers and dies out."; 
+			"The field around <T-NAME> flickers and dies out.";
 	}
-	
+
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -92,25 +92,28 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		}
 		return false;
 	}
-	
+
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		return (Math.random() >= successFactor) && activated();
 	}
-	
+
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdPersonalShield)) return false;
 		return super.sameAs(E);
 	}
-	
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		if(CMath.isInteger(newText))
 			this.setPowerCapacity(CMath.s_int(newText));
 		super.setMiscText(newText);
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -126,7 +129,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 					msg.addTrailerMsg(CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source())));
 				break;
 			case CMMsg.TYP_DAMAGE: // remember 50% miss rate
-				if((activated())&&(powerRemaining()>0)&&(!amWearingAt(Item.IN_INVENTORY)))
+				if((activated())&&(powerRemaining()>0)&&(!amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();
@@ -163,6 +166,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -216,7 +220,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				break;
 			}
 		}
-		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
+		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			switch(msg.targetMinor())
 			{
@@ -235,7 +239,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	@Override public short getLayerAttributes(){return layerAttributes;}
 	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
 
-	@Override 
+	@Override
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
@@ -243,5 +247,5 @@ public class StdPersonalShield extends StdElecItem implements Armor
 			return false;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
-	
+
 }

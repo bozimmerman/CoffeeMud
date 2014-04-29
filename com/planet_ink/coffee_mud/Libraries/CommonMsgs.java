@@ -37,7 +37,7 @@ import java.lang.ref.WeakReference;
 */
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
-	public String ID(){return "CommonMsgs";}
+	@Override public String ID(){return "CommonMsgs";}
 
 	protected final static int LOOK_LONG=0;
 	protected final static int LOOK_NORMAL=1;
@@ -46,11 +46,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	// this needs to be global to work right
 	protected final List<WeakReference<MsgMonitor>>
 			globalMonitors = new SLinkedList<WeakReference<MsgMonitor>>();
-	
+
 	protected String unknownCommand(){return "Huh?";}
 	protected String unknownInvoke(){return "You don't know how to @x1 that.";}
 	protected Ability awarenessA=null;
-	
+
+	@Override
 	public boolean handleUnknownCommand(MOB mob, List<String> command)
 	{
 		if(mob==null) return false;
@@ -69,6 +70,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return true;
 	}
 
+	@Override
 	public Object unforcedInternalCommand(MOB mob, String command, Object... parms)
 	{
 		try
@@ -83,7 +85,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		return Boolean.FALSE;
 	}
-	
+
+	@Override
 	public Object forceInternalCommand(MOB mob, String command, Object... parms)
 	{
 		try
@@ -99,6 +102,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return Boolean.FALSE;
 	}
 
+	@Override
 	public boolean forceStandardCommand(MOB mob, String command, Vector<Object> parms)
 	{
 		try
@@ -114,6 +118,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return false;
 	}
 
+	@Override
 	public void monitorGlobalMessage(Room room, CMMsg msg)
 	{
 		MsgMonitor M;
@@ -127,10 +132,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				globalMonitors.remove(M);
 		}
 	}
-	
+
+	@Override
 	public void addGlobalMonitor(MsgMonitor M)
 	{
-		if(M==null) 
+		if(M==null)
 			return;
 		for(final Iterator<WeakReference<MsgMonitor>> w=globalMonitors.iterator();w.hasNext();)
 		{
@@ -140,10 +146,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		globalMonitors.add(new WeakReference<MsgMonitor>(M));
 	}
-	
+
+	@Override
 	public void delGlobalMonitor(MsgMonitor M)
 	{
-		if(M==null) 
+		if(M==null)
 			return;
 		for(final Iterator<WeakReference<MsgMonitor>> w=globalMonitors.iterator();w.hasNext();)
 		{
@@ -152,7 +159,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				globalMonitors.remove(W);
 		}
 	}
-	
+
+	@Override
 	public StringBuilder getScore(MOB mob)
 	{
 		Vector<Object> V=new Vector<Object>();
@@ -161,11 +169,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return (StringBuilder)V.firstElement();
 		return new StringBuilder("");
 	}
+	@Override
 	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{
 		return (StringBuilder)forceInternalCommand(mob,"Equipment",viewer);
 	}
 
+	@Override
 	public StringBuilder getInventory(MOB viewer, MOB mob)
 	{
 		Vector<Object> V=new Vector<Object>();
@@ -176,13 +186,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return new StringBuilder("");
 	}
 
+	@Override
 	public void postChannel(MOB mob, String channelName, String message, boolean systemMsg)
 	{
 		forceInternalCommand(mob,"Channel",Boolean.valueOf(systemMsg),channelName,message);
 	}
 
 	public MOB nonClanTalker = null;
-	
+
+	@Override
 	public void postChannel(String channelName, Iterable<Pair<Clan,Integer>> clanList, String message, boolean systemMsg)
 	{
 		MOB talker;
@@ -213,14 +225,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		postChannel(talker,channelName,message,systemMsg);
 	}
 
+	@Override
 	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized, boolean intermediate)
 	{
 		return ((Boolean)forceInternalCommand(mob,"Drop",dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized),Boolean.valueOf(intermediate))).booleanValue();
 	}
+	@Override
 	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet)
 	{
 		return ((Boolean)forceInternalCommand(mob,"Open",openThis,Boolean.valueOf(quiet))).booleanValue();
 	}
+	@Override
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
@@ -228,6 +243,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return forceStandardCommand(mob,"Get",new XVector<Object>(getThis,container,Boolean.valueOf(quiet)));
 	}
 
+	@Override
 	public boolean postRemove(MOB mob, Item item, boolean quiet)
 	{
 		if(quiet)
@@ -235,6 +251,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return forceStandardCommand(mob,"Remove",new XVector<Object>("REMOVE",item));
 	}
 
+	@Override
 	public void postLook(MOB mob, boolean quiet)
 	{
 		if(quiet)
@@ -243,16 +260,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK"));
 	}
 
+	@Override
 	public void postRead(MOB mob, Physical target, String readOff, boolean quiet)
 	{
 		forceInternalCommand(mob,"Read",target,readOff,Boolean.valueOf(quiet));
 	}
 
+	@Override
 	public void postFlee(MOB mob, String whereTo)
 	{
 		forceStandardCommand(mob,"Flee",new XVector<Object>("FLEE",whereTo));
 	}
 
+	@Override
 	public void postSheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
@@ -261,6 +281,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Sheath",new XVector<Object>("SHEATH"));
 	}
 
+	@Override
 	public void postDraw(MOB mob, boolean doHold, boolean ifNecessary)
 	{
 		if(ifNecessary)
@@ -274,6 +295,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW"));
 	}
 
+	@Override
 	public void postStand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
@@ -282,11 +304,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Stand",new XVector<Object>("STAND"));
 	}
 
+	@Override
 	public void postSleep(MOB mob)
 	{
 		forceStandardCommand(mob,"Sleep",new XVector<Object>("SLEEP"));
 	}
 
+	@Override
 	public void postFollow(MOB follower, MOB leader, boolean quiet)
 	{
 		if(leader!=null)
@@ -305,14 +329,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public void postSay(MOB mob, MOB target,String text)
-	{ 
+	{
 		postSay(mob,target,text,false,false);
 	}
+	@Override
 	public void postSay(MOB mob, String text)
-	{ 
+	{
 		postSay(mob,null,text,false,false);
 	}
+	@Override
 	public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
 		Room location=mob.location();
@@ -432,7 +459,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 		}
 	}
-	
+
+	@Override
 	public void handleBeingSniffed(CMMsg msg)
 	{
 		if(msg.target() instanceof Room)
@@ -470,17 +498,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				sniffingmob.tell(sniffedmob.name(sniffingmob)+" reeks of noxious odors.");
 		}
 	}
-	
+
+	@Override
 	public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg)
 	{
-		
+
 	}
 
+	@Override
 	public void handleComeToLife(MOB mob, CMMsg msg)
 	{
-		
+
 	}
 
+	@Override
 	public void handleSit(CMMsg msg)
 	{
 		MOB sittingmob=msg.source();
@@ -492,6 +523,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		sittingmob.recoverMaxState();
 		sittingmob.tell(sittingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
+	@Override
 	public void handleSleep(CMMsg msg)
 	{
 		MOB sleepingmob=msg.source();
@@ -503,6 +535,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		sleepingmob.recoverMaxState();
 		sleepingmob.tell(sleepingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
+	@Override
 	public void handleStand(CMMsg msg)
 	{
 		MOB standingmob=msg.source();
@@ -515,6 +548,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		standingmob.tell(standingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
 
+	@Override
 	public void handleRecall(CMMsg msg)
 	{
 		MOB recallingmob=msg.source();
@@ -523,7 +557,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		&&(recallingmob.location() != msg.target()))
 		{
 			recallingmob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
-			
+
 			recallingmob.location().delInhabitant(recallingmob);
 			((Room)msg.target()).addInhabitant(recallingmob);
 			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plane.");
@@ -550,6 +584,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public int tickManaConsumption(MOB mob, int manaConsumeCounter)
 	{
 		if((CMProps.getIntVar(CMProps.Int.MANACONSUMETIME)>0)
@@ -621,15 +656,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return manaConsumeCounter;
 	}
 
+	@Override
 	public void tickAging(MOB mob, long millisSinceLast)
 	{
-		if((mob==null)||(CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))) 
+		if((mob==null)||(CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			return;
 		final long minutesEllapsed=(millisSinceLast / 60000);
 		mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
 		if(minutesEllapsed>0)
 			CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
-			
+
 		final PlayerStats stats = mob.playerStats();
 		if(stats==null) return;
 		final int[] birthDay = stats.getBirthday();
@@ -718,6 +754,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return "";
 	}
 
+	@Override
 	public void handleBeingLookedAt(CMMsg msg)
 	{
 		if(msg.target() instanceof Room)
@@ -809,7 +846,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(item instanceof Ammunition)
 				response.append("It is "+((Ammunition)item).usesRemaining()+" ammunition of type '"+((Ammunition)item).ammunitionType()+"'.  ");
 			else
-			if(item instanceof Weapon) 
+			if(item instanceof Weapon)
 			{
 				if((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)
 				{
@@ -970,6 +1007,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			msg.source().tell(msg.source(),item,null,"<T-NAME> has a "+s+" smell.");
 	}
 
+	@Override
 	public void handleIntroductions(MOB speaker, MOB me, String msg)
 	{
 		if((me.playerStats()!=null)
@@ -1052,7 +1090,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		MOB mob=msg.source();
 		final Session sess = mob.session();
-		if(sess==null) 
+		if(sess==null)
 			return; // no need for monsters to build all this data
 
 		Room room=(Room)msg.target();
@@ -1143,7 +1181,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)==1)||(CMProps.getIntVar(CMProps.Int.EXVIEW)==2))
 					roomDesc += getRoomExitsParagraph(mob,room);
 				Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
-				
+
 				if((!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 					Say.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
@@ -1218,7 +1256,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				if(awarenessA==null)
 					awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
-				if(awarenessA!=null) 
+				if(awarenessA!=null)
 				{
 					sess.colorOnlyPrintln("", true);
 					final Vector<Object> list=new Vector<Object>();
@@ -1263,7 +1301,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((R!=null)&&(R.displayText(mob).equalsIgnoreCase(title)))
 				continues.addElement(exitDirs.remove(i));
 		}
-		
+
 		if(continues.size()>0)
 		{
 			str.append("  ^L"+CMStrings.capitalizeFirstLetter(room.displayText(mob)).trim()+" continues ");
@@ -1315,7 +1353,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		else
 			return exit.viewableText(mob, room.getRoomInDir(dir)).toString().trim()   +" is " + inDirName;
 	}
-		
+
+	@Override
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
@@ -1325,7 +1364,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				return (msg.source().playerStats()!=null)&&(msg.source().soulMate()==null);
 		return false;
 	}
-	
+
+	@Override
 	public void handleHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
 		if(isHygienicMessage(msg,minHygiene,adjHygiene))
@@ -1349,7 +1389,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				mob.tell("You can't get any cleaner here.");
 		}
 	}
-	
+
 	private static boolean isAClearExitView(MOB mob, Room room, Exit exit)
 	{
 		if((room!=null)
@@ -1544,6 +1584,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public void handleBeingGivenTo(CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB)) return;
@@ -1558,6 +1599,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public void handleBeingRead(CMMsg msg)
 	{
 		if((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
@@ -1613,6 +1655,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public void handleBeingGetted(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1672,6 +1715,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMLib.flags().isCataloged(item))
 			CMLib.catalog().bumpDeathPickup(item);
 	}
+	@Override
 	public void handleBeingDropped(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1702,6 +1746,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				((RawMaterial)item).rebundle();
 		}
 	}
+	@Override
 	public void handleBeingRemoved(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1716,6 +1761,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 			mob.location().recoverRoomStats();
 	}
+	@Override
 	public void handleBeingWorn(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1733,6 +1779,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.recoverMaxState();
 		}
 	}
+	@Override
 	public void handleBeingWielded(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1745,6 +1792,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.recoverMaxState();
 		}
 	}
+	@Override
 	public void handleBeingHeld(CMMsg msg)
 	{
 		if(!(msg.target() instanceof Item)) return;
@@ -1758,13 +1806,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
+	@Override
 	public void lookAtExits(Room room, MOB mob)
 	{
 		if((mob==null)
 		||(room==null)
-		||(mob.isMonster())) 
+		||(mob.isMonster()))
 			return;
-		
+
 		if(!CMLib.flags().canSee(mob))
 		{
 			mob.tell("You can't see anything!");
@@ -1815,6 +1864,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		mob.tell(buf.toString());
 	}
 
+	@Override
 	public void lookAtExitsShort(Room room, MOB mob)
 	{
 		if((mob==null)||(room==null)||(mob.isMonster())) return;

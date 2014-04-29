@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,31 +35,33 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Caltrops extends ThiefSkill implements Trap
 {
-	public String ID() { return "Thief_Caltrops"; }
-	public String name(){ return "Caltrops";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Thief_Caltrops"; }
+	@Override public String name(){ return "Caltrops";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"CALTROPS"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String caltropTypeName(){return "";}
 
-	public boolean isABomb(){return false;}
-	public void activateBomb(){}
-	public boolean disabled(){return false;}
-	public void disable(){ unInvoke();}
-	public void setReset(int Reset){}
-	public int getReset(){return 0;}
-	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	public List<Item> getTrapComponents() { return new Vector(); }
-	public String requiresToSet(){return "";}
+	@Override public boolean isABomb(){return false;}
+	@Override public void activateBomb(){}
+	@Override public boolean disabled(){return false;}
+	@Override public void disable(){ unInvoke();}
+	@Override public void setReset(int Reset){}
+	@Override public int getReset(){return 0;}
+	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
+	@Override public List<Item> getTrapComponents() { return new Vector(); }
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
 
-	public boolean sprung(){return false;}
+	@Override public boolean sprung(){return false;}
+	@Override
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
@@ -72,6 +74,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -84,7 +87,8 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);
@@ -102,6 +106,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=(givenTarget!=null)?givenTarget:mob.location();

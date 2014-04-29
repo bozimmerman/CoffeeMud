@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Swim extends StdSkill
 {
-	public String ID() { return "Skill_Swim"; }
-	public String name(){ return "Swim";}
-	public String displayText(){ return "(Swimming)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Swim"; }
+	@Override public String name(){ return "Swim";}
+	@Override public String displayText(){ return "(Swimming)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SWIM"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
-	public int usageType(){return USAGE_MOVEMENT;}
-	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0),1.0));}
-	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0),1.0));}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0),1.0));}
+	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0),1.0));}
 
 	public boolean placeToSwim(Room r2)
 	{
@@ -60,12 +60,14 @@ public class Skill_Swim extends StdSkill
 	public boolean placeToSwim(Environmental E)
 	{ return placeToSwim(CMLib.map().roomLocation(E));}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		if(secondsElapsed==0)
@@ -93,7 +95,7 @@ public class Skill_Swim extends StdSkill
 				mob.tell("There is no water to swim on that way.");
 				return false;
 			}
-	
+
 			if((mob.riding()!=null)
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
@@ -110,6 +112,7 @@ public class Skill_Swim extends StdSkill
 		}
 		return true;
 	}
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));

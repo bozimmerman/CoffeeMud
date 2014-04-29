@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,19 +37,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Barbarian extends StdCharClass
 {
-	public String ID(){return "Barbarian";}
-	public String name(){return "Barbarian";}
-	public String baseClass(){return "Fighter";}
-	public int getBonusPracLevel(){return -1;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public int getPracsFirstLevel(){return 3;}
-	public int getTrainsFirstLevel(){return 4;}
-	public String getMovementFormula(){return "13*((@x2<@x3)/18)"; }
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	@Override public String ID(){return "Barbarian";}
+	@Override public String name(){return "Barbarian";}
+	@Override public String baseClass(){return "Fighter";}
+	@Override public int getBonusPracLevel(){return -1;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public int getPracsFirstLevel(){return 3;}
+	@Override public int getTrainsFirstLevel(){return 4;}
+	@Override public String getMovementFormula(){return "13*((@x2<@x3)/18)"; }
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 
 	public Barbarian()
 	{
@@ -57,6 +57,7 @@ public class Barbarian extends StdCharClass
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -77,88 +78,89 @@ public class Barbarian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_Charge",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Scalp",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_Battlecry",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Disarm",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_Berzerk",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_ArmorTweaking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Spring",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Apothecary",0,"ANTIDOTES",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_JungleTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_Intimidate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_SwampTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_Warcry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_DesertTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_ImprovedThrowing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_MountainTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_WeaponBreak",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Sweep",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_Rallycry",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_MountedCombat",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_HillsTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Endurance",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",true,CMParms.parseSemicolons("Apothecary",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Scrapping",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_Roll",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_ForestTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_BullRush",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Fragmentation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_PlainsTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_Stonebody",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getOtherBonusDesc(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest experience.";}
-	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	
+	@Override public String getOtherBonusDesc(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest experience.";}
+	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -193,7 +195,8 @@ public class Barbarian extends StdCharClass
 		return super.okMessage(myChar,msg);
 	}
 
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -214,6 +217,7 @@ public class Barbarian extends StdCharClass
 		}
 	}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

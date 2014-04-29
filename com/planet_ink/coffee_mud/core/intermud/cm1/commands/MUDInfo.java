@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.concurrent.atomic.*;
 */
 public class MUDInfo extends CM1Command
 {
-	public String getCommandWord(){ return "MUDINFO";}
+	@Override public String getCommandWord(){ return "MUDINFO";}
 	public MUDInfo(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
 
+	@Override
 	public void run()
 	{
 		try
@@ -73,7 +74,8 @@ public class MUDInfo extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: MUDINFO STATUS, PORTS, VERSION, DOMAIN, NAME";

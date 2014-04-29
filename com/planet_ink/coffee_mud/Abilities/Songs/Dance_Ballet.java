@@ -35,10 +35,11 @@ import java.util.*;
 */
 public class Dance_Ballet extends Dance
 {
-	public String ID() { return "Dance_Ballet"; }
-	public String name(){ return "Ballet";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public String ID() { return "Dance_Ballet"; }
+	@Override public String name(){ return "Ballet";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

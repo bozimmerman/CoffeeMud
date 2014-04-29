@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Heresy extends Prayer
 {
-	public String ID() { return "Prayer_Heresy"; }
-	public String name(){return "Heresy";}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int overrideMana(){return 100;}
+	@Override public String ID() { return "Prayer_Heresy"; }
+	@Override public String name(){return "Heresy";}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int overrideMana(){return 100;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
@@ -73,12 +74,12 @@ public class Prayer_Heresy extends Prayer
 					String crime="heresy against <T-NAME>";
 					String desc=null;
 					if(D==null)
-					{ 
+					{
 						Enumeration deities = CMLib.map().deities();
 						if(deities.hasMoreElements())
 							D=(MOB)deities.nextElement();
 					}
-					if(D==null) 
+					if(D==null)
 					{
 						crime="heresy against the gods";
 						desc="Angering the gods will bring doom upon us all!";

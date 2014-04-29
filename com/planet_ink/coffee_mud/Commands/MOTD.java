@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,9 +42,10 @@ public class MOTD extends StdCommand
 	public MOTD(){}
 
 	private final String[] access={"MOTD","NEWS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -81,7 +82,7 @@ public class MOTD extends StdCommand
 						msg=new String(CMLib.webMacroFilter().virtualPageFilter(msg.substring(6).getBytes()));
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
-		
+
 				List<JournalsLibrary.JournalEntry> journal=new LinkedList<JournalsLibrary.JournalEntry>();
 				journal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News")); // deprecated
 				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
@@ -158,7 +159,7 @@ public class MOTD extends StdCommand
 					if((res.size()>0)||(res2.size()>0))
 						buf.append("\n\r--------------------------------------\n\r");
 				}
-				
+
 				Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
 				for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 				{
@@ -189,7 +190,7 @@ public class MOTD extends StdCommand
 				}
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
-				
+
 				if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
@@ -207,7 +208,7 @@ public class MOTD extends StdCommand
 					if(mymsgs>0)
 						buf.append("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r");
 				}
-				
+
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
 				&&(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)))
 				{
@@ -218,7 +219,7 @@ public class MOTD extends StdCommand
 						buf.append(".  Enter LIST EXPIRED to view them.^?^.\n\r");
 					}
 				}
-				
+
 				List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 				if(mob.session()!=null)
 					if(buf.length()>0)
@@ -269,7 +270,7 @@ public class MOTD extends StdCommand
 		}
 		return false;
 	}
-	
+
 	private String report(String whom, PostOffice P, int[] ct)
 	{
 		String branchName=P.postalBranch();
@@ -284,7 +285,7 @@ public class MOTD extends StdCommand
 			return whom+" "+ct[0]+" new of "+ct[1]+" items at the "+branchName+" branch of the "+P.postalChain()+" post office.";
 		return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
 	}
-	
+
 	private Map<PostOffice,int[]> getPostalResults(List<PlayerData> mailData, long newTimeDate)
 	{
 		Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
@@ -312,9 +313,9 @@ public class MOTD extends StdCommand
 		}
 		return results;
 	}
-	
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,16 +32,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Alterer extends SpecialistMage
 {
-	public String ID(){return "Alterer";}
-	public String name(){return "Alterer";}
-	public int domain(){return Ability.DOMAIN_ALTERATION;}
-	public int opposed(){return Ability.DOMAIN_EVOCATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String ID(){return "Alterer";}
+	@Override public String name(){return "Alterer";}
+	@Override public int domain(){return Ability.DOMAIN_ALTERATION;}
+	@Override public int opposed(){return Ability.DOMAIN_EVOCATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_Shield");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);

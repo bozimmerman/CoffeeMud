@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,8 +67,8 @@ public interface ClanManager extends CMLibrary
 
 	/**
 	 * This method is used to determine the basic relationship between two clan members.  The
-	 * two mobs first rivalrous clans are evaluated, based on their declared relationship to 
-	 * each other, and the relations they inherit from allys.  It is then compared with the 
+	 * two mobs first rivalrous clans are evaluated, based on their declared relationship to
+	 * each other, and the relations they inherit from allys.  It is then compared with the
 	 * passed the War status.  If they match, true is returned, and false otherwise.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
 	 * @param M1 the first mobs first rivalrous clan to evaluate
@@ -85,7 +85,7 @@ public interface ClanManager extends CMLibrary
 	 * @return true if they share a clan, false otherwise
 	 */
 	public boolean isAnyCommonClan(MOB M1, MOB M2);
-	
+
 	/**
 	 * This method is used to determine the basic relationship between two mobs clans. The
 	 * two sets of clans are evaluated, based on their declared relationship to each other, and
@@ -98,7 +98,7 @@ public interface ClanManager extends CMLibrary
 	 * @return true if any clans relate in the given way, false otherwise
 	 */
 	public boolean findAnyClanRelations(MOB M1, MOB M2, int relation);
-	
+
 	/**
 	 * This method is used to determine the basic relationship between two clans.  The
 	 * two clans are evaluated, based on their declared relationship to each other, and
@@ -116,7 +116,7 @@ public interface ClanManager extends CMLibrary
 	 * @return time in ms
 	 */
 	public long getLastGovernmentLoad();
-	
+
 
 	/**
 	 * Returns the clan which may or may not be assigned to the absolute file path specified.
@@ -133,7 +133,7 @@ public interface ClanManager extends CMLibrary
 	 * @return true if allowed, false otherwise
 	 */
 	public boolean checkClanPrivilege(MOB mob, Clan.Function func);
-	
+
 	/**
 	 * Returns whether the given mob belongs to the given clan, and if
 	 * so, whether they can do the given function in the clan.
@@ -143,9 +143,9 @@ public interface ClanManager extends CMLibrary
 	 * @return true if allowed, false otherwise
 	 */
 	public boolean checkClanPrivilege(MOB mob, String clanID, Clan.Function func);
-	
+
 	/**
-	 * If the given mob belongs to a clan, and if they can do the 
+	 * If the given mob belongs to a clan, and if they can do the
 	 * given function in a clan, this will return that clan object
 	 * and the integer.
 	 * @param mob the mob to check the clans of
@@ -153,9 +153,9 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan and role integer
 	 */
 	public Pair<Clan,Integer> findPrivilegedClan(MOB mob, Clan.Function func);
-	
+
 	/**
-	 * If the given mob belongs to a clan, and if they can do the 
+	 * If the given mob belongs to a clan, and if they can do the
 	 * given function in a clan, this will return those clan objects
 	 * and their role integer.
 	 * @param mob the mob to check the clans of
@@ -163,7 +163,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan and role integers
 	 */
 	public List<Pair<Clan,Integer>> findPrivilegedClans(MOB mob, Clan.Function func);
-	
+
 	/**
 	 * Returns a list of clans that the source mob belongs to which the filter
 	 * mob does NOT also belong.  The clans will be rivalrous only.
@@ -172,7 +172,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan and role integers
 	 */
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB clanSourceMob, MOB filterMob);
-	
+
 	/**
 	 * Searches for all clans that can be rivalrous with other clans that are
 	 * commonly shared between two mobs, along with their two roles
@@ -181,30 +181,30 @@ public interface ClanManager extends CMLibrary
 	 * @return potentially rivalrous clans and the mobs roles in them
 	 */
 	public List<Triad<Clan,Integer,Integer>> findCommonRivalrousClans(MOB mob1, MOB mob2);
-	
+
 	/**
-	 * Searches for a clan in the list that can be rivalrous with other clans.  
+	 * Searches for a clan in the list that can be rivalrous with other clans.
 	 * First one found is returned.
 	 * @param mob the mob to check the clans of
 	 * @return First clan of the mobs that is rivalrous
 	 */
 	public Clan findRivalrousClan(MOB mob);
-	
+
 	/**
-	 * Searches for a clan in the list that can be conquerable with other clans.  
+	 * Searches for a clan in the list that can be conquerable with other clans.
 	 * First one found is returned.
 	 * @param mob the mob to check the clans of
 	 * @return First clan of the mobs that is conquerable of others
 	 */
 	public Clan findConquerableClan(MOB mob);
-	
+
 	/**
-	 * Searches for all clans that can be rivalrous with other clans.  
+	 * Searches for all clans that can be rivalrous with other clans.
 	 * @param mob the mob to check the clans of
 	 * @return List of the mobs clans that are rivalrous
 	 */
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB mob);
-	
+
 	/**
 	 * Returns the Clan object associated with the given clan name
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
@@ -212,7 +212,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan getClan(String id);
-	
+
 	/**
 	 * Returns the Clan object associated with the given clan name, or
 	 * if the name is not found, the name that most closely matches it.
@@ -221,9 +221,9 @@ public interface ClanManager extends CMLibrary
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan findClan(String id);
-	
+
 	/**
-	 * Returns an enumeration of all the Clans in the game 
+	 * Returns an enumeration of all the Clans in the game
 	 * @return an enumeration of all the Clans in the game
 	 */
 	public Enumeration<Clan> clans();
@@ -234,19 +234,19 @@ public interface ClanManager extends CMLibrary
 	 * @return all clans and their last-cached accept-positions
 	 */
 	public Iterable<Pair<Clan,Integer>> clanRoles();
-	
+
 	/**
 	 * Adds the given clan to the games list
 	 * @param C the clan to add
 	 */
 	public void addClan(Clan C);
-	
+
 	/**
 	 * Removes the given clan from the games list
 	 * @param C the clan to remove
 	 */
 	public void removeClan(Clan C);
-	
+
 	/**
 	 * Returns the clan associated with a given specific web path.
 	 * It is derived from the clanwebsites entry in coffeemud.ini file.
@@ -254,30 +254,30 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan associated with the path, or null
 	 */
 	public Clan getWebPathClanMapping(String webPath);
-	
+
 	/**
-	 * Returns the template vfs path associated with a given specific 
-	 * web path. It is derived from the clanwebsites entry in 
+	 * Returns the template vfs path associated with a given specific
+	 * web path. It is derived from the clanwebsites entry in
 	 * coffeemud.ini file.
 	 * @param webPath a full vfs resource path
 	 * @return the template path associated with the resource path, or null
 	 */
 	public String getClanWebTemplateDir(String webPath);
-	
+
 	/**
 	 * Forces all clans to go through their maintenance process, which
 	 * normally only occurs infrequently.  This does things like handle
 	 * automatic promotions, manage votes, and clean out inactive clans.
 	 */
 	public void tickAllClans();
-	
+
 	/**
 	 * Sends a message to the games official CLAN chat channel.  This
 	 * is normally for messages that may interest all clans.
 	 * @param msg the message to send
 	 */
 	public void clanAnnounceAll(String msg);
-	
+
 	/**
 	 * Returns a descriptive name for the given trophy code number.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy
@@ -285,7 +285,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the descriptive name
 	 */
 	public String translatePrize(Trophy trophy);
-	
+
 	/**
 	 * Returns whether this mud has activated its trophy system for clans.
 	 * @return whether this mud has activated its trophy system for clans.
@@ -299,7 +299,7 @@ public interface ClanManager extends CMLibrary
 	 * @return true if the mob is a family member, and false otherwise
 	 */
 	public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
-	
+
 	/**
 	 * Returns the list of clans this mob belongs to in the given category.
 	 * @param M the mob to evaluate
@@ -307,7 +307,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the list of clans this mob belongs to
 	 */
 	public List<Pair<Clan,Integer>> getClansByCategory(MOB M, String category);
-	
+
 	/**
 	 * Returns help on the government type named, if it is available
 	 * @param mob the viewer of the government type
@@ -316,7 +316,7 @@ public interface ClanManager extends CMLibrary
 	 * @return null, or the help for the government named
 	 */
 	public String getGovernmentHelp(MOB mob, String named, boolean exact);
-	
+
 	/**
 	 * Returns a government definition object of the given internal
 	 * stock clangovernments.xml id.  See /resources/clangovernments.xml
@@ -326,22 +326,22 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan government object
 	 */
 	public ClanGovernment getStockGovernment(int typeid);
-	
+
 	/**
-	 * Returns the default government definition object.  
+	 * Returns the default government definition object.
 	 * See /resources/clangovernments.xml
 	 * Also:
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
 	 * @return the clan government object
 	 */
 	public ClanGovernment getDefaultGovernment();
-	
+
 	/**
 	 * Creates, but does not add, a sample government object
 	 * @return a sample government object
 	 */
 	public ClanGovernment createSampleGovernment();
-	
+
 	/**
 	 * Returns all government definition objects from internal
 	 * stock clangovernments.xml file.  See /resources/clangovernments.xml
@@ -350,7 +350,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan government object
 	 */
 	public ClanGovernment[] getStockGovernments();
-	
+
 	/**
 	 * Converts a given clan government object into xml.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
@@ -360,7 +360,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the xml
 	 */
 	public String makeGovernmentXML(ClanGovernment gvt);
-	
+
 	/**
 	 * Converts a given clan government objects into xml.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
@@ -370,7 +370,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the xml
 	 */
 	public String makeGovernmentXML(ClanGovernment gvts[]);
-	
+
 	/**
 	 * Converts xml into clan government objects.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ClanGovernment
@@ -380,42 +380,42 @@ public interface ClanManager extends CMLibrary
 	 * @return the clan government objects
 	 */
 	public ClanGovernment[] parseGovernmentXML(StringBuffer xml);
-	
+
 	/**
 	 * Forces the stock governments to be re-saved to clangovernments.xml.
 	 */
 	public void reSaveGovernmentsXML();
-	
+
 	/**
 	 * Creates the new stock government
 	 * @param name governmentname
 	 * @return new stock government
 	 */
 	public ClanGovernment createGovernment(String name);
-	
+
 	/**
 	 * Deletes the stock government.. confusing all the clans that
 	 * currently use it.
 	 * @param government the government to delete
 	 */
 	public boolean removeGovernment(ClanGovernment government);
-	
+
 	/**
 	 * Makes an announcement to the clan announcement channel from
 	 * the given mob.  These are channels marked in the coffeemud.ini file
 	 * as receiving clan info messages.  These messages are only seen
 	 * by the authors clan members.
-	 * @param mob the mob who is announcing the message 
+	 * @param mob the mob who is announcing the message
 	 * @param msg string message to send to the clan info channels
 	 */
 	public void clanAnnounce(MOB mob, String msg);
-	
+
 	/**
 	 * Examines the given command string, which is based on the given clan function code.
 	 * If the given Clan requires a vote to accomplish it, the vote will be created. If
 	 * the given clan forbids the given mob from performing the given function, or from
 	 * even starting a vote on it, the method will return false. If the mob is allowed
-	 * to perform 
+	 * to perform
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function#ACCEPT
 	 * @param mob the player who wants to perform the function
 	 * @param C the clan that the player belongs to
@@ -425,7 +425,7 @@ public interface ClanManager extends CMLibrary
 	 * @return true to execute the given command, and false not to.
 	 */
 	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary);
-	
+
 	/**
 	 * Force the clans maintenance thread
 	 */

@@ -5,7 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.naming.OperationNotSupportedException;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ limitations under the License.
  * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
  */
-public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
+public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 
@@ -44,7 +44,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if(E!=null)
 			this.addAll(E);
 	}
-	
+
 	public SVector(T[] E)
 	{
 		super();
@@ -52,7 +52,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 			for(T o : E)
 				add(o);
 	}
-	
+
 	public SVector(Enumeration<T> E)
 	{
 		super();
@@ -60,7 +60,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
 	}
-	
+
 	public SVector(Iterator<T> E)
 	{
 		super();
@@ -68,7 +68,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 			for(;E.hasNext();)
 				add(E.next());
 	}
-	
+
 	public SVector(Set<T> E)
 	{
 		super();
@@ -76,49 +76,49 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 			for(T o : E)
 				add(o);
 	}
-	
+
 	public synchronized void addAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
 	}
-	
+
 	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
 			for(T e : E)
 				add(e);
 	}
-	
+
 	public synchronized void addAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				add(E.next());
 	}
-	
+
 	public synchronized void removeAll(Enumeration<T> E)
 	{
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				remove(E.nextElement());
 	}
-	
+
 	public synchronized void removeAll(Iterator<T> E)
 	{
 		if(E!=null)
 			for(;E.hasNext();)
 				remove(E.next());
 	}
-	
+
 	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
 			for(T o : E)
 				remove(o);
 	}
-	
+
 	public int capacity()
 	{
 		return size();
@@ -128,7 +128,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	{
 		return new XVector<T>(this);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized SVector<T> copyOf()
 	{
@@ -157,10 +157,12 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		return new Enumeration<T>()
 		{
 			final Iterator<T> i=iterator();
+			@Override
 			public boolean hasMoreElements()
 			{
 				return i.hasNext();
 			}
+			@Override
 			public T nextElement()
 			{
 				return i.next();
@@ -199,28 +201,28 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	public synchronized void trimToSize()
 	{
 	}
-	
-	public synchronized void addElement(T obj) 
+
+	public synchronized void addElement(T obj)
 	{
 		add(obj);
 	}
 
-	public synchronized void insertElementAt(T obj, int index) 
+	public synchronized void insertElementAt(T obj, int index)
 	{
 		add(index, obj);
 	}
 
-	public synchronized void removeAllElements() 
+	public synchronized void removeAllElements()
 	{
 		clear();
 	}
 
-	public synchronized boolean removeElement(Object obj) 
+	public synchronized boolean removeElement(Object obj)
 	{
 		return remove(obj);
 	}
 
-	public synchronized void removeElementAt(int index) 
+	public synchronized void removeElementAt(int index)
 	{
 		remove(index);
 	}

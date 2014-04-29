@@ -35,14 +35,14 @@ import java.util.*;
 */
 public class StdBehavior implements Behavior
 {
-	public String ID(){return "StdBehavior";}
-	public String name(){return ID();}
+	@Override public String ID(){return "StdBehavior";}
+	@Override public String name(){return ID();}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public long flags(){return 0;}
-	public boolean grantsAggressivenessTo(MOB M){return false;}
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
-	public void initializeClass(){}
-	public String accountForYourself(){ return "";}
+	@Override public long flags(){return 0;}
+	@Override public boolean grantsAggressivenessTo(MOB M){return false;}
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override public void initializeClass(){}
+	@Override public String accountForYourself(){ return "";}
 	protected boolean isSavableBehavior=true;
 
 	public StdBehavior()
@@ -54,6 +54,7 @@ public class StdBehavior implements Behavior
 	protected String parms="";
 
 	/** return a new instance of the object*/
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -67,6 +68,7 @@ public class StdBehavior implements Behavior
 		return new StdBehavior();
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -81,13 +83,13 @@ public class StdBehavior implements Behavior
 			return new StdBehavior();
 		}
 	}
-	public void registerDefaultQuest(String questName){}
-	public void startBehavior(PhysicalAgent forMe){}
+	@Override public void registerDefaultQuest(String questName){}
+	@Override public void startBehavior(PhysicalAgent forMe){}
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.BEHAVIOR);}//removed for perf
-	public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
-	public boolean isSavable(){return isSavableBehavior;}
-	public boolean amDestroyed(){ return false;}
-	public void destroy() {parms="";}
+	@Override public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
+	@Override public boolean isSavable(){return isSavableBehavior;}
+	@Override public boolean amDestroyed(){ return false;}
+	@Override public void destroy() {parms="";}
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;
@@ -122,23 +124,26 @@ public class StdBehavior implements Behavior
 		return null;
 	}
 
-	public String getParms(){return parms;}
-	public void setParms(String parameters){parms=parameters;}
-	public String parmsFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public List<String> externalFiles(){return null;}
+	@Override public String getParms(){return parms;}
+	@Override public void setParms(String parameters){parms=parameters;}
+	@Override public String parmsFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public List<String> externalFiles(){return null;}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		return;
 	}
 
+	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		return true;
 	}
 
-	public boolean canImprove(int can_code){return CMath.bset(canImproveCode(),can_code);}
+	@Override public boolean canImprove(int can_code){return CMath.bset(canImproveCode(),can_code);}
+	@Override
 	public boolean canImprove(PhysicalAgent E)
 	{
 		if((E==null)&&(canImproveCode()==0)) return true;
@@ -151,15 +156,16 @@ public class StdBehavior implements Behavior
 		return false;
 	}
 	public static boolean canActAtAll(Tickable affecting)
-	{ 
+	{
 		return CMLib.flags().canActAtAll(affecting);
 	}
 
 	public static boolean canFreelyBehaveNormal(Tickable affecting)
-	{ 
+	{
 		return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof Environmental) && (((Environmental)ticking).amDestroyed()))
@@ -168,13 +174,14 @@ public class StdBehavior implements Behavior
 	}
 
 	protected static final String[] CODES={"CLASS","TEXT"};
-	public String[] getStatCodes(){return CODES;}
+	@Override public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -184,6 +191,7 @@ public class StdBehavior implements Behavior
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -192,8 +200,8 @@ public class StdBehavior implements Behavior
 		case 1: setParms(val); break;
 		}
 	}
-	public int getSaveStatIndex(){return getStatCodes().length;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	public boolean sameAs(Behavior E)
 	{
 		if(!(E instanceof StdBehavior)) return false;

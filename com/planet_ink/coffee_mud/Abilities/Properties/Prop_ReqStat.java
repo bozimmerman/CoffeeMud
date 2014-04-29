@@ -35,28 +35,30 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_ReqStat extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_ReqStat"; }
-	public String name(){ return "Require stat values";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_ReqStat"; }
+	@Override public String name(){ return "Require stat values";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	private boolean noSneak=false;
-	
-	public long flags(){return Ability.FLAG_ZAPPER;}
 
+	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+
+	@Override
 	public int triggerMask()
-	{ 
-		if((affected instanceof Room)||(affected instanceof Area)||(affected instanceof Exit)) 
+	{
+		if((affected instanceof Room)||(affected instanceof Area)||(affected instanceof Exit))
 			return TriggeredAffect.TRIGGER_ENTER;
-		if((affected instanceof Armor)||(affected instanceof Weapon)) 
+		if((affected instanceof Armor)||(affected instanceof Weapon))
 			return TriggeredAffect.TRIGGER_WEAR_WIELD;
-		if((affected instanceof Drink)||(affected instanceof Food)) 
+		if((affected instanceof Drink)||(affected instanceof Food))
 			return TriggeredAffect.TRIGGER_USE;
-		if((affected instanceof Room)||(affected instanceof Area)||(affected instanceof Exit)) 
+		if((affected instanceof Room)||(affected instanceof Area)||(affected instanceof Exit))
 			return TriggeredAffect.TRIGGER_ENTER;
 		if(affected instanceof Container)
 			return TriggeredAffect.TRIGGER_DROP_PUTIN;
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
+	@Override
 	public void setMiscText(String txt)
 	{
 		noSneak=false;
@@ -70,13 +72,14 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		}
 		super.setMiscText(txt);
 	}
-	
 
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
-	
+
 	public boolean passesMuster(MOB mob, String msg)
 	{
 		if(mob==null) return false;
@@ -108,7 +111,8 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected!=null)

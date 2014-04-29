@@ -36,8 +36,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Dueler extends StdAbility
 {
-	public String ID() { return "Dueler"; }
-	public String name(){ return "Dueler";}
+	@Override public String ID() { return "Dueler"; }
+	@Override public String name(){ return "Dueler";}
 	protected Dueler otherDueler = null;
 	protected MOB otherDuelPartner=null;
 	protected long lastTimeISawYou=System.currentTimeMillis();
@@ -46,16 +46,18 @@ public class Dueler extends StdAbility
 	protected List<Ability> oldEffects = new LinkedList<Ability>();
 	protected Hashtable<Item,Item> oldEq = new Hashtable<Item,Item>();
 	protected int autoWimp=0;
-	
+
+	@Override
 	public String displayText()
-	{ 
+	{
 		if(otherDueler != null)
 			return "(Dueling "+otherDueler.affecting().name()+")";
 		return "";
 	}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(affected instanceof MOB)
@@ -74,7 +76,7 @@ public class Dueler extends StdAbility
 				&&(!mob.amDead())
 				&&(CMLib.flags().isInTheGame(mob,true)))
 					mob.tell("Your duel has ended.");
-				if(!oldPVPStatus) 
+				if(!oldPVPStatus)
 					mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
 				oldCurState.copyInto(mob.curState());
 				LinkedList<Ability> cleanOut=new LinkedList<Ability>();
@@ -86,7 +88,7 @@ public class Dueler extends StdAbility
 				}
 				for(Ability A : cleanOut)
 				{
-					if(!(A instanceof Dueler)) 
+					if(!(A instanceof Dueler))
 						A.unInvoke();
 					mob.delEffect(A);
 					A.destroy();
@@ -117,6 +119,7 @@ public class Dueler extends StdAbility
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -146,7 +149,8 @@ public class Dueler extends StdAbility
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -179,7 +183,7 @@ public class Dueler extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public void init(MOB mob)
 	{
 		oldPVPStatus=CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL);
@@ -199,6 +203,7 @@ public class Dueler extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(target==null) target=mob;

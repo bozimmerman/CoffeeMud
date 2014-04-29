@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,28 +33,29 @@ import java.util.*;
 */
 public class Vine extends StdRace
 {
-	public String ID(){	return "Vine"; }
-	public String name(){ return "Vine"; }
-	public int shortestMale(){return 34;}
-	public int shortestFemale(){return 30;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 50;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCategory(){return "Vegetation";}
-	public boolean uncharmable(){return true;}
-	public int[] getBreathables() { return breatheAnythingArray; }
+	@Override public String ID(){	return "Vine"; }
+	@Override public String name(){ return "Vine"; }
+	@Override public int shortestMale(){return 34;}
+	@Override public int shortestFemale(){return 30;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 50;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	@Override public String racialCategory(){return "Vegetation";}
+	@Override public boolean uncharmable(){return true;}
+	@Override public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,2,4,8,14,30,40,41,42};
-	public int[] getAgingChart(){return agingChart;}
-	
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int[] getAgingChart(){return agingChart;}
 
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
@@ -62,12 +63,14 @@ public class Vine extends StdRace
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.phyStats().level()));
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/2));
 	}
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		affectableState.setHitPoints(affectableState.getHitPoints()*4);
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
@@ -78,14 +81,17 @@ public class Vine extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "slithers in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "slithers";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -99,6 +105,7 @@ public class Vine extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)
@@ -118,11 +125,13 @@ public class Vine extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return makeMobName('N',Race.AGE_MATURE);
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -159,6 +168,7 @@ public class Vine extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

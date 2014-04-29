@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_RoomPit extends StdTrap
 {
-	public String ID() { return "Trap_RoomPit"; }
-	public String name(){ return "pit trap";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 1;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_RoomPit"; }
+	@Override public String name(){ return "pit trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 1;}
+	@Override public String requiresToSet(){return "";}
 	protected Vector pit=null;
 
+	@Override
 	public void unInvoke()
 	{
 		if((pit!=null)
@@ -92,6 +93,7 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 
+	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -105,7 +107,8 @@ public class Trap_RoomPit extends StdTrap
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
@@ -154,6 +157,7 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		boolean unSpring=false;
@@ -189,6 +193,7 @@ public class Trap_RoomPit extends StdTrap
 		CMLib.commands().postLook(target,true);
 	}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(!CMLib.flags().isInFlight(target)))

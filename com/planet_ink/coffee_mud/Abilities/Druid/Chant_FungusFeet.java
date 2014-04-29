@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_FungusFeet extends Chant implements DiseaseAffect
 {
-	public String ID() { return "Chant_FungusFeet"; }
-	public String name(){ return "Fungus Feet";}
-	public String displayText(){return "(Fungus Feet)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int abilityCode(){return 0;}
-	public int spreadBitmap() { return 0; }
-	public int difficultyLevel(){return 4;}
+	@Override public String ID() { return "Chant_FungusFeet"; }
+	@Override public String name(){ return "Fungus Feet";}
+	@Override public String displayText(){return "(Fungus Feet)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int abilityCode(){return 0;}
+	@Override public int spreadBitmap() { return 0; }
+	@Override public int difficultyLevel(){return 4;}
 	int plagueDown=8;
 	double drawups=1.0;
 
@@ -52,7 +52,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	{
 		return "A rotting foot condition.";
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -89,6 +90,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		return true;
 	}
 
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -96,6 +98,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		affectableState.setMovement((int)Math.round(CMath.div(affectableState.getMovement(),drawups+(0.1*super.getX1Level(invoker())))));
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -113,6 +116,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -125,7 +129,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

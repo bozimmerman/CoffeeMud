@@ -55,7 +55,8 @@ public class Expire extends StdCommand
 			A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
 		}
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -71,7 +72,7 @@ public class Expire extends StdCommand
 				mob.tell("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS/NEVER/NOW]");
 			return false;
 		}
-		else 
+		else
 		if(commands.size()==1)
 		{
 			String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
@@ -97,7 +98,7 @@ public class Expire extends StdCommand
 				mob.tell("Player/Account '"+playerName+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
 			return false;
 		}
-		else 
+		else
 		{
 			long days;
 			String howLong=(String)commands.elementAt(1);
@@ -165,11 +166,11 @@ public class Expire extends StdCommand
 	}
 
 	private final String[] access={"EXPIRE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS);}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS);}
+
+
 }

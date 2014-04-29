@@ -41,8 +41,8 @@ limitations under the License.
 /**
  * Handler of http request reading duties.  Instances of this class will handle
  * reading a request from the first byte to the last, populating an HTTPRequest
- * object with the help of that classes internal parsers.  
- * 
+ * object with the help of that classes internal parsers.
+ *
  * An internal state of high level request reading is maintained throughout
  * the process, as well as statistical information about the age of this request,
  * whether it is still running, whether it is being cancelled, etc.
@@ -52,7 +52,7 @@ limitations under the License.
 public class HTTPReader implements HTTPIOHandler, Runnable
 {
 	private static final AtomicLong 	idCounter		 = new AtomicLong(0);
-	
+
 	private volatile boolean 	 		isRunning 		 = false; // the request is currently getting active thread/read time
 	private volatile boolean 	 		closeMe 		 = false; // the request is closed, along with its channel
 	private volatile boolean 	 		closeRequested 	 = false; // the request is closed, along with its channel
@@ -65,19 +65,19 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	protected final MiniWebServer		server;		  	  	 	  // mini web server managing this request
 
 	private volatile long		 		idleTime 	 	 = System.currentTimeMillis();  // the last time this handler went idle
-	
+
 	private volatile MWHTTPRequest 		currentReq;			  	  // the parser and pojo of the current request
 	private volatile ParseState  		currentState	 = ParseState.REQ_INLINE;	// the current parse state of this request
-	
+
 	private volatile HTTPForwarder		forwarder		 = null;  // in the off chance everything is just being forwarded, it goes here
-	
+
 	private final LinkedList<DataBuffers>writeables		 = new LinkedList<DataBuffers>();
-	
+
 	private final static String			EOLN			 = HTTPIOHandler.EOLN;
 	private static final Charset		utf8			 = Charset.forName("UTF-8");
-	
+
 	private enum ParseState { REQ_INLINE, REQ_EOLN, HDR_INLINE, HDR_EOLN, BODY, FORWARD, DONE } // state enum for high level parsing
-	
+
 
 	/**
 	 * Constructor takes the server managing this request, and the channel to read from and write to.
@@ -106,7 +106,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	}
 
 	/**
-	 * Returns a descriptive string for whether this is 
+	 * Returns a descriptive string for whether this is
 	 * an ssl or http reader
 	 * @return
 	 */
@@ -114,7 +114,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	{
 		return "http";
 	}
-	
+
 	/**
 	 * Returns the name of this handler.
 	 * @return the name of this handler
@@ -124,7 +124,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	{
 		return name;
 	}
-	
+
 	/**
 	 * Closes the IO channel and marks this handler as closed
 	 */
@@ -149,11 +149,12 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				forwarder.closeChannels();
 		}
 	}
-	
+
 	/**
 	 * Closes the IO channel and marks this handler as closed
 	 * Also waits until this runnable is no longer in progress
 	 */
+	@Override
 	public void closeAndWait()
 	{
 		closeChannels();
@@ -170,13 +171,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * Returns true if this request is currently reading/processing the request
 	 * @return true if in progress
 	 */
-	public boolean isRunning() { return isRunning && ((forwarder==null) || forwarder.isRunning());}
+	@Override public boolean isRunning() { return isRunning && ((forwarder==null) || forwarder.isRunning());}
 
 	/**
 	 * Returns true if this handler is either closed, or needs to be
 	 * due to timing out in one way or another.
 	 * @return true if this handler is done
 	 */
+	@Override
 	public boolean isCloseable()
 	{
 		if(closeMe)
@@ -202,7 +204,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		return false;
 	}
 
-	
+
 	/**
 	 * Starts port forwarding for a normal httpreader
 	 * @param address the address to forward it to.
@@ -213,9 +215,9 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		forwarder=null;
 		try
 		{
-			
+
 			SocketChannel forwarderChannel = SocketChannel.open(address.getAddress());
-			if (forwarderChannel == null) 
+			if (forwarderChannel == null)
 				throw new IOException("Unable to create channel.");
 			synchronized(forwarderChannel)
 			{
@@ -270,23 +272,23 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			throw new HTTPException(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 	}
-	
+
 	/**
 	 * Here it is, the mighty mighty state machine.
 	 * This ginormous function handles high level state for request reading.
 	 * It is handed a ByteBuffer recently written to, which it then flips
 	 * and reads out of (in the case of a request state) or simply checks
-	 * for errors in the case of a body read state.  
-	 * 
+	 * for errors in the case of a body read state.
+	 *
 	 * The buffer may be modified if an actionable request piece is portioned
 	 * off of it.  It will also modify the internal state of parsing as needed.
 	 * It will help populate the HTTPRequest object as needed, but will not
 	 * generate the output.  It may, however, mark the request as complete
 	 * if the state warrants.
-	 * 
+	 *
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
-	 * 
+	 *
 	 * @param buffer the bytebuffer to process data from
 	 * @throws HTTPException
 	 */
@@ -368,7 +370,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						{
 							final String headerLine = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8);
 							lastEOLIndex=buffer.position();
-							if(headerLine.length()>0) 
+							if(headerLine.length()>0)
 							{
 								String host = currentReq.parseHeaderLine(headerLine);
 								state=ParseState.HDR_INLINE;
@@ -464,14 +466,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						}
 						break;
 					}
-					case FORWARD: // you can't get there from here 
-					case BODY: // you can't get there from here 
+					case FORWARD: // you can't get there from here
+					case BODY: // you can't get there from here
 						break;
 					case DONE: // if done, we're done
 						break;
 					}
 				}
-				
+
 				// check the new state
 				switch(state)
 				{
@@ -482,7 +484,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					break;
 				default:
 				{
-					// nothing to do .. 
+					// nothing to do ..
 					if(lastEOLIndex==0)
 					{
 						buffer.position(buffer.limit());
@@ -498,7 +500,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						buffer.position(lastEOLIndex);
 						buffer.compact();
 					}
-					
+
 					if(state==ParseState.REQ_EOLN)
 						state=ParseState.REQ_INLINE;
 					else
@@ -521,7 +523,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			currentState = state; // the state was cached local, so copy back to memory when done
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the local channel into the given buffer, returning
 	 * the number of bytes read.  This code is parsed out here so that it
@@ -542,6 +544,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * @return the number of bytes written
 	 * @throws IOException
 	 */
+	@Override
 	public int writeBlockingBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		int written=0;
@@ -573,13 +576,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			return written;
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the given buffer into the local channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
 	 * @param buffers source buffer for the data write
 	 * @throws IOException
 	 */
+	@Override
 	public void writeBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		synchronized(this.writeables)
@@ -588,7 +592,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		}
 		handleWrites();
 	}
-	
+
 	protected void handleWrites() throws IOException
 	{
 		DataBuffers bufs = null;
@@ -617,10 +621,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * Main handler for the request reading and processing.  For a single request, it all happens here.
 	 * The bytes are read out of the channel until there's none left to read.  processBuffer above is called
 	 * to manage the state of parsing.
-	 * 
+	 *
 	 * When parsing is complete, if the request is done, output is generated and written to the channel.
 	 * Otherwise, we fall out and wait to be called again when more data is available to be read.
 	 */
+	@Override
 	public void run()
 	{
 		synchronized(this) // don't let mulitple readers in at the same time, ever.
@@ -648,13 +653,13 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							HTTPReqProcessor processor = new HTTPReqProcessor(config);
 							final DataBuffers bufs = processor.generateOutput(currentReq);
 							if(accessLog != null)
-								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(),
 									currentReq.getClientAddress().getHostAddress()
 									+" "+currentReq.getHost()
 									+" \""+currentReq.getFullRequest()+" \" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
 							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
-							final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+							final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName());
 							if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 								closeRequested = true;
 							else
@@ -670,7 +675,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					final DataBuffers bufs=me.generateOutput(currentReq);
 					writeBytesToChannel(bufs);
 					if(accessLog != null)
-						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(),
 							currentReq.getClientAddress().getHostAddress()
 							+" "+currentReq.getHost()
 							+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
@@ -678,7 +683,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
 					{
-						final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+						final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName());
 						if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 							closeRequested = true;
 						else
@@ -704,8 +709,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				 // if eof is reached, close this channel and mark it for deletion by the web server
 				if(!closeMe)
 				{
-					if ((bytesRead < 0) 
-					|| (!chan.isConnected()) 
+					if ((bytesRead < 0)
+					|| (!chan.isConnected())
 					|| (!chan.isOpen())
 					|| (closeRequested && (writeables.size()==0)))
 					{
@@ -713,7 +718,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						currentState=ParseState.DONE;
 					}
 				}
-				
+
 			}
 			catch(IOException e)
 			{

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,20 @@ import java.util.*;
 */
 public class Prop_Resistance extends Prop_HaveResister
 {
-	public String ID() { return "Prop_Resistance"; }
-	public String name(){ return "Resistance to Stuff";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public boolean bubbleAffect(){return false;}
-	
-	public long flags(){return Ability.FLAG_RESISTER;}
+	@Override public String ID() { return "Prop_Resistance"; }
+	@Override public String name(){ return "Resistance to Stuff";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public boolean bubbleAffect(){return false;}
 
+	@Override public long flags(){return Ability.FLAG_RESISTER;}
+
+	@Override
 	public String accountForYourself()
 	{ return "Have resistances: "+describeResistance(text());}
-	
-	public int triggerMask() { return TriggeredAffect.TRIGGER_ALWAYS; }
 
+	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_ALWAYS; }
+
+	@Override
 	public boolean canResist(Environmental E)
 	{
 		return ((E instanceof MOB)

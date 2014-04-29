@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StoneGrid extends StdGrid
 {
-	public String ID(){return "StoneGrid";}
+	@Override public String ID(){return "StoneGrid";}
 	public StoneGrid()
 	{
 		super();
@@ -42,7 +42,7 @@ public class StoneGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 
-	public String getGridChildLocaleID(){return "StoneRoom";}
+	@Override public String getGridChildLocaleID(){return "StoneRoom";}
 }

@@ -19,7 +19,7 @@ import com.planet_ink.miniweb.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,22 @@ import java.util.*;
 */
 public class AccountCreate extends StdWebMacro
 {
-	public String name() { return "AccountCreate"; }
+	@Override public String name() { return "AccountCreate"; }
 
-	private enum AccountCreateErrors 
+	private enum AccountCreateErrors
 	{
 		NO_NAME, NO_PASSWORD, NO_PASSWORDAGAIN, BAD_PASSWORDMATCH, NO_VERIFYKEY, NO_VERIFY,
 		BAD_EMAILADDRESS, BAD_VERIFY
 	}
 	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 		boolean emailDisabled=CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE");
-		
+
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("SHOWPASSWORD"))
 			return Boolean.toString(!emailPassword);
@@ -58,7 +59,7 @@ public class AccountCreate extends StdWebMacro
 			return Boolean.toString(!emailDisabled);
 		if(!parms.containsKey("CREATE"))
 			return " @break@";
-		
+
 		String name=httpReq.getUrlParameter("ACCOUNTNAME");
 		if(name==null) name=httpReq.getUrlParameter("LOGIN");
 		if((name==null)||(name.length()==0)) return AccountCreateErrors.NO_NAME.toString();
@@ -89,7 +90,7 @@ public class AccountCreate extends StdWebMacro
 			emailAddress=httpReq.getUrlParameter("EMAILADDRESS");
 			if(emailReq)
 			{
-				if((emailAddress==null)||(emailAddress.length()==0)||!CMLib.smtp().isValidEmailAddress(emailAddress)) 
+				if((emailAddress==null)||(emailAddress.length()==0)||!CMLib.smtp().isValidEmailAddress(emailAddress))
 					return AccountCreateErrors.BAD_EMAILADDRESS.toString();
 			}
 		}

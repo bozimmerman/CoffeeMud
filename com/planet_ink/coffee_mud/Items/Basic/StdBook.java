@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2006-2011 Rob McClellan, Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ import java.io.IOException;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdBook extends StdItem
 {
-	public String ID(){    return "StdBook";}
+	@Override public String ID(){    return "StdBook";}
 	public StdBook()
 	{
 		super();
@@ -53,6 +53,7 @@ public class StdBook extends StdItem
 	protected MOB lastReadTo=null;
 	protected long lastDateRead=-1;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -75,6 +76,7 @@ public class StdBook extends StdItem
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -269,10 +271,10 @@ public class StdBook extends StdItem
 			String to=entry.to;
 			String subject=entry.subj;
 			String message=entry.msg;
-			
+
 			reply.addElement(entry.from);
 			reply.addElement(entry.subj);
-			
+
 			//String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
 							||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
@@ -306,9 +308,9 @@ public class StdBook extends StdItem
 		if(req==null) req="";
 		return req;
 	}
-	
+
 	protected String getReadReq() { return getParm("READ");}
 	protected String getWriteReq() { return getParm("WRITE");}
 	private String getAdminReq() { return getParm("ADMIN");}
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

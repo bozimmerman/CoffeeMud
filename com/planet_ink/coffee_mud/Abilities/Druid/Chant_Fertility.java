@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Fertility extends Chant
 {
-	public String ID() { return "Chant_Fertility"; }
-	public String name(){ return "Fertility";}
-	public String displayText(){return "(Fertility)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public String ID() { return "Chant_Fertility"; }
+	@Override public String name(){ return "Fertility";}
+	@Override public String displayText(){return "(Fertility)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,6 +56,7 @@ public class Chant_Fertility extends Chant
 			mob.tell("Your extreme fertility subsides.");
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -99,6 +101,7 @@ public class Chant_Fertility extends Chant
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -121,7 +124,7 @@ public class Chant_Fertility extends Chant
 				Ability A=target.fetchEffect("Chant_StrikeBarren");
 				if(A!=null)
 				{
-					if(A.invoker()==null) 
+					if(A.invoker()==null)
 						A.unInvoke();
 					else
 					if(A.invoker().phyStats().level()<adjustedLevel(mob,asLevel))

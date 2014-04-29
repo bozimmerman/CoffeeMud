@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,11 +40,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Smelting extends CraftingSkill
 {
-	public String ID() { return "Smelting"; }
-	public String name(){ return "Smelting";}
+	@Override public String ID() { return "Smelting"; }
+	@Override public String name(){ return "Smelting";}
 	private static final String[] triggerStrings = {"SMELT","SMELTING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "METAL|MITHRIL";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 	public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -58,6 +58,7 @@ public class Smelting extends CraftingSkill
 
 	protected int amountMaking=0;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -74,9 +75,10 @@ public class Smelting extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "smelting.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "smelting.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -104,6 +106,7 @@ public class Smelting extends CraftingSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

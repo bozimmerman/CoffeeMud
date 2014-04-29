@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,21 +35,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Advancement extends Spell
 {
-	public String ID() { return "Spell_Advancement"; }
-	public String name(){ return "Advancement";}
-	public String displayText(){ return "(Advancement)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	protected int overrideMana(){return 100;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public String ID() { return "Spell_Advancement"; }
+	@Override public String name(){ return "Advancement";}
+	@Override public String displayText(){ return "(Advancement)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override protected int overrideMana(){return 100;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setLevel(affectableStats.level() + 1);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -57,6 +59,7 @@ public class Spell_Advancement extends Spell
 		affectableStats.setClassLevel(C,affectableStats.getClassLevel(C)+1);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -69,6 +72,7 @@ public class Spell_Advancement extends Spell
 			mob.tell("Your temporary advancement has receded.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

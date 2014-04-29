@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,17 @@ import java.util.*;
 */
 public class Clericness extends CombatAbilities
 {
-	public String ID(){return "Clericness";}
+	@Override public String ID(){return "Clericness";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "clericliness";
 	}
 
 	boolean confirmedSetup=false;
 
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);

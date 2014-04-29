@@ -24,29 +24,29 @@ limitations under the License.
 public class MultiListEnumeration<K> implements Enumeration<K>
 {
 	private final LinkedList<Iterable<K>> lists=new LinkedList<Iterable<K>>();
-	private volatile Iterator<Iterable<K>> listIter = null; 
-	private volatile Iterator<K> iter = null; 
-	
-	public MultiListEnumeration(final Iterable<K>[] esets) 
+	private volatile Iterator<Iterable<K>> listIter = null;
+	private volatile Iterator<K> iter = null;
+
+	public MultiListEnumeration(final Iterable<K>[] esets)
 	{
 		if((esets!=null)&&(esets.length>0))
 			lists.addAll(Arrays.asList(esets));
 		setup(false);
 	}
-	
-	public MultiListEnumeration(final List<List<K>> esetss, final boolean diffMethodSignature) 
+
+	public MultiListEnumeration(final List<List<K>> esetss, final boolean diffMethodSignature)
 	{
 		if((esetss!=null)&&(esetss.size()>0))
 			lists.addAll(esetss);
 		setup(false);
 	}
-	
-	public MultiListEnumeration(final Iterable<K> eset) 
+
+	public MultiListEnumeration(final Iterable<K> eset)
 	{
 		lists.add(eset);
 		setup(false);
 	}
-	
+
 	private void setup(final boolean startOver)
 	{
 		if(startOver||(listIter==null))
@@ -57,24 +57,26 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 				iter=listIter.next().iterator();
 		}
 	}
-	
+
 	public void addEnumeration(List<K> set)
 	{
 		if(set != null)
 			lists.add(set);
 		setup(true);
 	}
-	
-	public boolean hasMoreElements() 
-	{ 
+
+	@Override
+	public boolean hasMoreElements()
+	{
 		if(iter==null) return false;
 		if(iter.hasNext()) return true;
 		while((!iter.hasNext())&&(listIter.hasNext()))
 			iter = listIter.next().iterator();
 		return iter.hasNext();
 	}
-	
-	public K nextElement() 
+
+	@Override
+	public K nextElement()
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();

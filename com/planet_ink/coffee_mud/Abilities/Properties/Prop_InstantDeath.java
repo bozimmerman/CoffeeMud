@@ -37,18 +37,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_InstantDeath extends Property
 {
-	public String ID(){return "Prop_InstantDeath";}
-	public long flags() { return super.flags()|Ability.FLAG_POTENTIALLY_DEADLY; }
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override public String ID(){return "Prop_InstantDeath";}
+	@Override public long flags() { return super.flags()|Ability.FLAG_POTENTIALLY_DEADLY; }
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	protected CompiledZapperMask mask=null;
 	protected volatile boolean[] killTrigger={false};
-	
-	
+
+
 	public Prop_InstantDeath()
 	{
 		super();
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -58,8 +59,9 @@ public class Prop_InstantDeath extends Property
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "instant killing";
 	}
 
@@ -158,7 +160,8 @@ public class Prop_InstantDeath extends Property
 		}
 		return new HashSet<MOB>();
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MISCELLANEOUS)
@@ -178,7 +181,8 @@ public class Prop_InstantDeath extends Property
 		}
 		return false;
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

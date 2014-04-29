@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import java.util.*;
 */
 public class StdOpenDoorway extends StdExit
 {
-	public String ID(){	return "StdOpenDoorway";}
-	public String Name(){ return "a walkway";}
-	public String displayText(){ return "";}
-	public String description(){ return "";}
+	@Override public String ID(){	return "StdOpenDoorway";}
+	@Override public String Name(){ return "a walkway";}
+	@Override public String displayText(){ return "";}
+	@Override public String description(){ return "";}
 }

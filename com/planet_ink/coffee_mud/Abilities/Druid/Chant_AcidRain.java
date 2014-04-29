@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_AcidRain extends Chant
 {
-	public String ID() { return "Chant_AcidRain"; }
-	public String name(){ return "Acid Rain";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public long flags(){return Ability.FLAG_EARTHBASED;}
-	
+	@Override public String ID() { return "Chant_AcidRain"; }
+	@Override public String name(){ return "Acid Rain";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public long flags(){return Ability.FLAG_EARTHBASED;}
+
 	public boolean isRaining(Room R)
 	{
 		if((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_RAIN)
@@ -54,6 +54,7 @@ public class Chant_AcidRain extends Chant
 		return false;
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -81,6 +82,7 @@ public class Chant_AcidRain extends Chant
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -90,7 +92,8 @@ public class Chant_AcidRain extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

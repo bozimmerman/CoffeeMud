@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,10 @@ import java.util.*;
 */
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
-	public String ID(){return "CoffeeFilter";}
+	@Override public String ID(){return "CoffeeFilter";}
 	public Hashtable<String,Pronoun> tagTable=null;
-	
+
+	@Override
 	public Map<String, Pronoun> getTagTable()
 	{
 		if(tagTable==null)
@@ -48,8 +49,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		return tagTable;
 	}
-	
-	
+
+
+	@Override
 	public String simpleOutFilter(String msg)
 	{
 		if(msg==null) return null;
@@ -93,7 +95,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			Log.debugOut("CoffeeFilter","OUTPUT: ?: "+buf.toString());
 		return buf.toString();
 	}
-	
+
+	@Override
 	public String[] wrapOnlyFilter(String msg, int wrap)
 	{
 		int loop=0;
@@ -304,11 +307,11 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return buf.toString().split("\n\r");
 	}
 
-	protected int convertEscape(final Session S, final StringBuffer str, final int index) 
+	protected int convertEscape(final Session S, final StringBuffer str, final int index)
 	{
 		int enDex = index + 1;
 		final char c = str.charAt(enDex);
-		switch (c) 
+		switch (c)
 		{
 		case '?':
 		{
@@ -389,7 +392,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if(finalNum >=0)
 			{
 				final boolean isFg=(c==ColorLibrary.COLORCODE_FANSI256);
-				String escapeSequence; 
+				String escapeSequence;
 				if(isFg)
 				{
 					escapeSequence="\033[38;5;"+finalNum+"m";
@@ -455,7 +458,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		case '>':
 			/* why was this here?
-			if (currentColor > 0) 
+			if (currentColor > 0)
 			{
 				if (clookup()[c] == null)
 					escapeCodes = clookup()[currentColor];
@@ -463,7 +466,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					escapeCodes = clookup[c];
 				else
 					escapeCodes = clookup()[c] + clookup()[currentColor];
-			} 
+			}
 			else
 			*/
 			str.delete(index, index+1);
@@ -516,8 +519,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		case '"':
 			str.delete(index, index+1);
 			return index;
-		case '0': case '1': case '2': case '3': case '4': 
-		case '5': case '6': case '7': case '8': case '9': 
+		case '0': case '1': case '2': case '3': case '4':
+		case '5': case '6': case '7': case '8': case '9':
 			if((S==null)||(S.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				final int escOrd=CMProps.Str.ESC0.ordinal() + (c - ('0'));
@@ -575,6 +578,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	// (it's not a member of the interface either so probably shouldn't be public)
+	@Override
 	public String colorOnlyFilter(String msg, Session S)
 	{
 		if(msg==null) return null;
@@ -656,8 +660,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
 		return buf.toString();
 	}
-	
-	
+
+
+	@Override
 	public String getLastWord(StringBuffer buf, int lastSp, int lastSpace)
 	{
 		String lastWord="";
@@ -680,7 +685,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		return lastWord;
 	}
-	
+
+	@Override
 	public String fullOutFilter(Session S,
 								MOB mob,
 								Physical source,
@@ -694,7 +700,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(msg.length()==0) return msg;
 		String newMsg=(S==null)?null:CMLib.lang().sessionTranslation(msg);
 		if(newMsg!=null) msg=newMsg;
-		
+
 		boolean doSagain=false;
 		boolean firstSdone=false;
 		StringBuffer buf=new StringBuffer(msg);
@@ -705,7 +711,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int lastSpace=0;
 		int firstAlpha=-1;
 		int amperStop = -1;
-		
+
 		int loopDebugCtr=0;
 		int lastLoop=-1;
 
@@ -725,7 +731,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				lastLoop=loop;
 				loopDebugCtr=0;
 			}
-			
+
 			int lastSp=-1;
 			while((loop<len)&&(buf.length()>loop))
 			{
@@ -931,7 +937,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						for(;(ldex<buf.length())&&(cmd!=null);ldex++)
 						{
 							lc=buf.charAt(ldex);
-							if(lc=='>') 
+							if(lc=='>')
 								break;
 							switch(lc)
 							{
@@ -1340,11 +1346,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 
+	@Override
 	public String simpleInFilter(StringBuilder input)
 	{
 		return simpleInFilter(input, false);
 	}
-	
+
+	@Override
 	public String simpleInFilter(StringBuilder input, boolean permitMXPTags)
 	{
 		if(input==null) return null;
@@ -1385,6 +1393,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return input.toString();
 	}
 
+	@Override
 	public String fullInFilter(String input)
 	{
 		if(input==null) return null;
@@ -1405,11 +1414,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		return simpleInFilter(buf,false).toString();
 	}
-	
+
+	@Override
 	public String safetyFilter(String s)
 	{
 		StringBuffer s1=new StringBuffer(s);
-		
+
 		int x=-1;
 		while((++x)<s1.length())
 		{

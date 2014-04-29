@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPotion extends StdPotion
 {
-	public String ID(){	return "GenPotion";}
+	@Override public String ID(){	return "GenPotion";}
 	protected String readableText="";
 	public GenPotion()
 	{
@@ -52,22 +52,26 @@ public class GenPotion extends StdPotion
 
 
 
-	public boolean isGeneric(){return true;}
-	
+	@Override public boolean isGeneric(){return true;}
+
+	@Override
 	public String getSpellList()
 	{ return readableText;}
-	public void setSpellList(String list){readableText=list;}
-	public String readableText(){return readableText;}
+	@Override public void setSpellList(String list){readableText=list;}
+	@Override public String readableText(){return readableText;}
+	@Override
 	public void setReadableText(String text)
 	{
 		readableText=text;
 		setSpellList(readableText);
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
@@ -75,6 +79,7 @@ public class GenPotion extends StdPotion
 		return super.liquidType();
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -83,6 +88,7 @@ public class GenPotion extends StdPotion
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -100,6 +106,7 @@ public class GenPotion extends StdPotion
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -116,14 +123,15 @@ public class GenPotion extends StdPotion
 		case 6:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setLiquidType(x); 
+				setLiquidType(x);
 				break;
-			   } 
+			   }
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -131,6 +139,7 @@ public class GenPotion extends StdPotion
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -144,6 +153,7 @@ public class GenPotion extends StdPotion
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPotion)) return false;

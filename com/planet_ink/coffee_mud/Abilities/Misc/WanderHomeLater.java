@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,13 @@ import java.util.*;
 
 public class WanderHomeLater extends StdAbility
 {
-	public String ID() { return "WanderHomeLater"; }
-	public String name(){ return "WanderHomeLater";}
-	public String displayText(){ return "(Waiting til you're clear to go home)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
+	@Override public String ID() { return "WanderHomeLater"; }
+	@Override public String name(){ return "WanderHomeLater";}
+	@Override public String displayText(){ return "(Waiting til you're clear to go home)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof MOB)

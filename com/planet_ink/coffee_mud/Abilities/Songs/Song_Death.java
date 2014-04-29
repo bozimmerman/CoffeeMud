@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ import java.util.*;
 */
 public class Song_Death extends Song
 {
-	public String ID() { return "Song_Death"; }
-	public String name(){ return "Death";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
+	@Override public String ID() { return "Song_Death"; }
+	@Override public String name(){ return "Death";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

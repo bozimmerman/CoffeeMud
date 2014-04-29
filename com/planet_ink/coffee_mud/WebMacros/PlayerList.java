@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,9 @@ import java.util.*;
 */
 public class PlayerList extends StdWebMacro
 {
-	public String name()	{return "PlayerList";}
+	@Override public String name()	{return "PlayerList";}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		StringBuffer s = new StringBuffer("");
@@ -43,14 +44,14 @@ public class PlayerList extends StdWebMacro
 		{
 			MOB m = S.mob();
 			if((m!=null)&&(CMLib.flags().isCloaked(m))) continue;
-			
+
 			s.append("<li class=\"cmPlayerListEntry");
-			
+
 			if((m!=null)&&(m.soulMate()!=null))
 				m=m.soulMate();
 
 			if ( (m!=null) && (m.name() != null)
-				&& (m.name().length() > 0) 
+				&& (m.name().length() > 0)
 				&& (!S.getStatus().toString().startsWith("LOGOUT")))
 			{
 				// jef: nb - only shows full sysops, not subops

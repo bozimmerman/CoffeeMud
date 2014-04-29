@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,10 +37,10 @@ public class Open extends StdCommand
 	public Open(){}
 
 	private final String[] access={"OPEN","OP","O"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class}};
-	
+
 	public boolean open(MOB mob, Environmental openThis, String openableWord, int dirCode, boolean quietly)
 	{
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
@@ -86,7 +86,8 @@ public class Open extends StdCommand
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -111,17 +112,18 @@ public class Open extends StdCommand
 		open(mob,openThis,whatToOpen,dirCode,false);
 		return false;
 	}
-	
+
+	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
 		return Boolean.valueOf(open(mob,(Environmental)args[0],((Environmental)args[0]).name(),-1,((Boolean)args[1]).booleanValue()));
 	}
-	
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

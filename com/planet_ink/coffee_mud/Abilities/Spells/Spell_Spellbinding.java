@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,9 +40,10 @@ import java.io.ObjectOutputStream;
 @SuppressWarnings("rawtypes")
 public class Spell_Spellbinding extends Spell
 {
-	public String ID() { return "Spell_Spellbinding"; }
-	public String name(){return "Spellbinding";}
-	protected int overrideMana(){return 0;}
+	@Override public String ID() { return "Spell_Spellbinding"; }
+	@Override public String name(){return "Spellbinding";}
+	@Override protected int overrideMana(){return 0;}
+	@Override
 	public String displayText()
 	{
 		if(spellbindings.size()==0)
@@ -52,15 +53,16 @@ public class Spell_Spellbinding extends Spell
 			bindings.append(" "+((String)spellbindings.elementAt(i,1)));
 		return "(Bindings: "+bindings.toString()+")";
 	}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public boolean isAutoInvoked(){ return spellbindings.size()>0; }
-	
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public boolean isAutoInvoked(){ return spellbindings.size()>0; }
+
 	protected DVector spellbindings=new DVector(2);
 	protected final static int COST_STATIC=50;
-	
+
+	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -78,6 +80,7 @@ public class Spell_Spellbinding extends Spell
 			affectableState.setMana(0);
 	}
 
+	@Override
 	public String text()
 	{
 		if(spellbindings.size()==0)
@@ -95,6 +98,7 @@ public class Spell_Spellbinding extends Spell
 		return super.text();
 	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		if(text.length()==0)
@@ -113,6 +117,7 @@ public class Spell_Spellbinding extends Spell
 		}
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -166,6 +171,7 @@ public class Spell_Spellbinding extends Spell
 		super.executeMsg(host,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class IMC2 extends StdCommand
 	public IMC2(){}
 
 	private final String[] access={"IMC2"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public void IMC2Error(MOB mob)
 	{
@@ -47,6 +47,7 @@ public class IMC2 extends StdCommand
 			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE");
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -89,8 +90,8 @@ public class IMC2 extends StdCommand
 
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DisassembleTrap extends ThiefSkill
 {
-	public String ID() { return "Thief_DisassembleTrap"; }
-	public String name(){ return "Disassemble Traps";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_DisassembleTrap"; }
+	@Override public String name(){ return "Disassemble Traps";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"DISTRAP","DISASSEMBLETRAPS"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Vector lastDone=new Vector();
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Ability A=mob.fetchAbility("Thief_RemoveTraps");
@@ -56,7 +57,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			mob.tell("You don't know how to remove traps.");
 			return false;
 		}
-		
+
 		Vector cmds=new XVector(commands);
 		cmds.addElement(new Boolean(true));
 		CharState oldState=(CharState)mob.curState().copyOf();
@@ -75,7 +76,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			mob.tell("Your attempt was unsuccessful.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -120,7 +121,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 		}
 		else
 			beneficialVisualFizzle(mob,T,"<S-NAME> attempt(s) to disassemble the <T-NAME> trap, but fail(s).");
-		
+
 		return success;
 	}
 }

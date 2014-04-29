@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 
 public class Goblinese extends StdLanguage
 {
-	public String ID() { return "Goblinese"; }
-	public String name(){ return "Goblinese";}
+	@Override public String ID() { return "Goblinese"; }
+	@Override public String name(){ return "Goblinese";}
 	public static List<String[]> wordLists=null;
 	public Goblinese()
 	{
 		super();
 	}
+	@Override
 	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
@@ -61,8 +62,9 @@ public class Goblinese extends StdLanguage
 		}
 		return wordLists;
 	}
-	
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	@Override
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

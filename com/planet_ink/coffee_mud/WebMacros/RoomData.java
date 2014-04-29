@@ -43,9 +43,9 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RoomData extends StdWebMacro
 {
-	public String name() { return "RoomData"; }
+	@Override public String name() { return "RoomData"; }
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
-	
+
 	public static List<MOB> getMOBCache()
 	{
 		List<MOB> mobSet=(List<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
@@ -56,7 +56,7 @@ public class RoomData extends StdWebMacro
 		}
 		return mobSet;
 	}
-	
+
 	public static List<Item> getItemCache()
 	{
 		List<Item> itemSet=(List<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
@@ -376,7 +376,7 @@ public class RoomData extends StdWebMacro
 		}
 		return getItemCache();
 	}
-	
+
 	public static final String getObjIDSuffix(Environmental E)
 	{
 		if((E.expirationDate() > (System.currentTimeMillis() - TimeManager.MILI_DAY))
@@ -401,7 +401,7 @@ public class RoomData extends StdWebMacro
 		public RoomStuff()
 		{
 		}
-		
+
 		public RoomStuff(Room R)
 		{
 			for(Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
@@ -446,7 +446,7 @@ public class RoomData extends StdWebMacro
 		}
 		return x;
 	}
-	
+
 	public static Pair<String,String> findPair(final List<Pair<String,String>> fixtures, final String varStart, final String value)
 	{
 		Pair<String,String> p;
@@ -455,7 +455,7 @@ public class RoomData extends StdWebMacro
 				return p;
 		return null;
 	}
-	
+
 	public static List<Pair<String,String>> findPairs(final List<Pair<String,String>> fixtures, final String varStart, final String value)
 	{
 		List<Pair<String,String>> pairs=new LinkedList<Pair<String,String>>();
@@ -465,7 +465,7 @@ public class RoomData extends StdWebMacro
 				pairs.add(p);
 		return pairs;
 	}
-	
+
 	public static Pair<String,String> getPair(final List<Pair<String,String>> fixtures, final String var)
 	{
 		for(final Pair<String,String> p : fixtures)
@@ -473,7 +473,7 @@ public class RoomData extends StdWebMacro
 				return p;
 		return null;
 	}
-	
+
 	public static String getPairValue(final List<Pair<String,String>> fixtures, final String var)
 	{
 		Pair<String,String> p = getPair(fixtures,var);
@@ -487,9 +487,9 @@ public class RoomData extends StdWebMacro
 		for(final String key : map.keySet())
 			pairList.add(new Pair(key.trim(),map.get(key)));
 		return pairList;
-			
+
 	}
-	
+
 	public RoomStuff makeRoomStuff(final Room R, final List<Pair<String,String>> fixtures)
 	{
 		final RoomStuff stuff=new RoomStuff();
@@ -542,7 +542,7 @@ public class RoomData extends StdWebMacro
 		}
 		return stuff;
 	}
-	
+
 	public static Pair<String,String>[] makePairs(final RoomStuff stuff, final List<Pair<String,String>> fixtures)
 	{
 		contributeItems(stuff.items);
@@ -586,7 +586,7 @@ public class RoomData extends StdWebMacro
 		fixtures.add(new Pair<String,String>("BDATA"+(stuff.behavs.size()+1),null));
 		return fixtures.toArray(new Pair[0]);
 	}
-	
+
 	public static Pair<String,String>[] makeMergableRoomFields(Room R, List<String> multiRoomList)
 	{
 		List<Pair<String,String>> fixtures=new Vector<Pair<String,String>>();
@@ -825,7 +825,7 @@ public class RoomData extends StdWebMacro
 			}
 		}
 	}
-	
+
 	public static HTTPRequest mergeRoomFields(final HTTPRequest httpReq, Pair<String,String> setPairs[], Room R)
 	{
 		final Hashtable<String,String> mergeParams=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
@@ -882,7 +882,8 @@ public class RoomData extends StdWebMacro
 		if(!mergeParams.containsKey("ITEM1")) mergeParams.put("ITEM1", "");
 		return mergeReq;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -904,7 +905,7 @@ public class RoomData extends StdWebMacro
 			if(R==null)
 				return "No Room?!";
 			CMLib.map().resetRoom(R);
-			if(multiFlag 
+			if(multiFlag
 			&&(multiRoomList.size()>1)
 			&&(httpReq.getUrlParameter("MOB1")==null)
 			&&(httpReq.getUrlParameter("ITEM1")==null))
@@ -1020,9 +1021,9 @@ public class RoomData extends StdWebMacro
 					}
 				}
 				str.append("<OPTION VALUE=-1 "+((climate<0)?"SELECTED":"")+">Inherited");
-				for(int i=1;i<Area.NUM_CLIMATES;i++)
+				for(int i=1;i<Places.NUM_CLIMATES;i++)
 				{
-					String climstr=Area.CLIMATE_DESCS[i];
+					String climstr=Places.CLIMATE_DESCS[i];
 					int mask=(int)CMath.pow(2,i-1);
 					str.append("<OPTION VALUE="+mask);
 					if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");

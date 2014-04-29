@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.List;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.Vector;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 {
-	public String ID(){	return "BagOfEndlessness";}
+	@Override public String ID(){	return "BagOfEndlessness";}
 	public BagOfEndlessness()
 	{
 		super();
@@ -52,6 +52,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 		recoverPhyStats();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -71,7 +72,8 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this)&&(msg.tool() instanceof Item))

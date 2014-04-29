@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class DesertGrid extends StdGrid
 {
-	public String ID(){return "DesertGrid";}
+	@Override public String ID(){return "DesertGrid";}
 	public DesertGrid()
 	{
 		super();
@@ -44,8 +44,8 @@ public class DesertGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
 
-	public String getGridChildLocaleID(){return "Desert";}
-	public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override public String getGridChildLocaleID(){return "Desert";}
+	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

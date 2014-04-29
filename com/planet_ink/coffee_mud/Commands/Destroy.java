@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,14 +41,14 @@ public class Destroy extends StdCommand
 	public Destroy(){}
 
 	private final String[] access={"DESTROY","JUNK"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)
 	{
 		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
-	
+
 	public boolean mobs(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -100,7 +100,7 @@ public class Destroy extends StdCommand
 		}
 
 		String manufacturerID=CMParms.combine(commands,2);
-		
+
 		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
@@ -121,8 +121,8 @@ public class Destroy extends StdCommand
 	throws IOException
 	{
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
-		if(commands.size()<3) 
-		{ 
+		if(commands.size()<3)
+		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ACCOUNT ([NAME])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
@@ -162,7 +162,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		
+
 		String name=CMStrings.capitalizeAndLower(CMParms.combine(commands,2));
 		boolean found=CMLib.players().playerExists(name);
 
@@ -184,8 +184,8 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-	
-	
+
+
 	public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
@@ -308,7 +308,7 @@ public class Destroy extends StdCommand
 			}
 
 			if(!confirmed)
-				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) 
+				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N"))
 					return;
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
@@ -419,7 +419,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		
+
 		String itemID=CMParms.combine(commands,2);
 		MOB srchMob=mob;
 		Item srchContainer=null;
@@ -454,7 +454,7 @@ public class Destroy extends StdCommand
 				}
 			}
 		}
-		
+
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
@@ -533,7 +533,7 @@ public class Destroy extends StdCommand
 				}
 			}
 		}
-		
+
 		for(String areaName : areaNames)
 		{
 			if(CMLib.map().getArea(areaName)==null)
@@ -549,7 +549,7 @@ public class Destroy extends StdCommand
 				errorOut(mob);
 				return;
 			}
-				
+
 			if(!confirmed)
 				if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 				{
@@ -628,7 +628,7 @@ public class Destroy extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 		return true;
 	}
-	
+
 	public boolean expertises(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -649,7 +649,7 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-	
+
 	public boolean titles(MOB mob, Vector commands)
 	{
 		mob.tell("Destroying a title will not remove the title from all players who may have it.");
@@ -680,7 +680,7 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-	
+
 	public boolean classes(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -794,7 +794,7 @@ public class Destroy extends StdCommand
 		else
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 	}
-	
+
 	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		String msgstr=null;
@@ -842,7 +842,7 @@ public class Destroy extends StdCommand
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
-		}	
+		}
 		String classD=CMParms.combine(commands,3);
 		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
@@ -857,6 +857,7 @@ public class Destroy extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -881,7 +882,7 @@ public class Destroy extends StdCommand
 
 			Vector V=new Vector();
 			int maxToDrop=Integer.MAX_VALUE;
-			
+
 			if((commands.size()>1)
 			&&(CMath.s_int((String)commands.firstElement())>0))
 			{
@@ -916,7 +917,7 @@ public class Destroy extends StdCommand
 							mob.tell(dropThis.Name()+" can not be easily destroyed.");
 							return false;
 						}
-						else	
+						else
 						if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 						{
 							mob.tell("You must remove that first.");
@@ -962,7 +963,7 @@ public class Destroy extends StdCommand
 			mob.location().recoverRoomStats();
 			return false;
 		}
-		
+
 		String commandType="";
 
 		if(commands.size()>1)
@@ -979,7 +980,7 @@ public class Destroy extends StdCommand
 				if(commands.size()>2)
 					which=CMath.s_int((String)commands.elementAt(2));
 				List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
-				
+
 				if((which<=0)||(which>entries.size()))
 					mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
 				else
@@ -987,7 +988,7 @@ public class Destroy extends StdCommand
 					JournalsLibrary.JournalEntry entry = entries.get(which-1);
 					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
 					mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
-					
+
 				}
 				return true;
 			}
@@ -1090,7 +1091,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("DISABLEFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
@@ -1105,7 +1106,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
@@ -1301,7 +1302,7 @@ public class Destroy extends StdCommand
 					try
 					{
 						CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
-						if(F2.exists()) 
+						if(F2.exists())
 							F2.deleteAll();
 						else
 							throw new IOException("Could not delete "+F2.getAbsolutePath());
@@ -1500,9 +1501,9 @@ public class Destroy extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return false;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return false;}
 
-	
+
 }

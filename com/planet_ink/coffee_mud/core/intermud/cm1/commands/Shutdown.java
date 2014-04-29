@@ -23,7 +23,7 @@ import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,12 +40,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Shutdown extends CM1Command
 {
-	public String getCommandWord(){ return "SHUTDOWN";}
+	@Override public String getCommandWord(){ return "SHUTDOWN";}
 	public Shutdown(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
 	}
 
+	@Override
 	public void run()
 	{
 		try
@@ -60,7 +61,8 @@ public class Shutdown extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.SHUTDOWN);}
+	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.SHUTDOWN);}
+	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: SHUTDOWN: Shuts down the mud.";

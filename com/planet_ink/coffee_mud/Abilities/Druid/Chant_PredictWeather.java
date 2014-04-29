@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_PredictWeather extends Chant
 {
-	public String ID() { return "Chant_PredictWeather"; }
-	public String name(){ return "Predict Weather";}
-	public String displayText(){return "(Predict Weather)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Chant_PredictWeather"; }
+	@Override public String name(){ return "Predict Weather";}
+	@Override public String displayText(){return "(Predict Weather)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	String lastPrediction="";
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -55,6 +56,7 @@ public class Chant_PredictWeather extends Chant
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer sensitive to the weather.");
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -76,6 +78,7 @@ public class Chant_PredictWeather extends Chant
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

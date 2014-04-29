@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class GrinderAbilities {
 	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
 	{
 		String replaceCommand=httpReq.getUrlParameter("REPLACE");
-		if((replaceCommand != null) 
+		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
 		{
@@ -80,13 +80,13 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
-		} 
+		}
 		A.setStat("FLAGS",CMParms.toStringList(V));
 		old=httpReq.getUrlParameter("GENHELP");
 		A.setStat("HELP", old==null?"":old);
 		old=httpReq.getUrlParameter("OVERRIDEMANA");
 		x1=CMath.s_int(old);
-		if(((x1>0)&&(x1<Ability.COST_PCT))) 
+		if(((x1>0)&&(x1<Ability.COST_PCT)))
 			old=httpReq.getUrlParameter("CUSTOMOVERRIDEMANA");
 		A.setStat("OVERRIDEMANA",(old==null)?"-1":old);
 		V.clear();
@@ -96,7 +96,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("USAGEMASK"+id));
-		} 
+		}
 		A.setStat("USAGEMASK",CMParms.toStringList(V));
 		V.clear();
 		if(httpReq.isUrlParameter("MATLIST"))
@@ -105,7 +105,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("MATLIST"+id));
-		} 
+		}
 		A.setStat("MATLIST",CMParms.toStringList(V));
 		V.clear();
 		if(httpReq.isUrlParameter("CANAFFECTMASK"))
@@ -114,7 +114,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("CANAFFECTMASK"+id));
-		} 
+		}
 		A.setStat("CANAFFECTMASK",CMParms.toStringList(V));
 		V.clear();
 		if(httpReq.isUrlParameter("CANTARGETMASK"))
@@ -123,7 +123,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
-		} 
+		}
 		A.setStat("CANTARGETMASK",CMParms.toStringList(V));
 		old=httpReq.getUrlParameter("CANMEND");
 		A.setStat("CANMEND",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
@@ -168,7 +168,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("POSTCASTAFFECT"+id));
-		} 
+		}
 		A.setStat("POSTCASTAFFECT",CMParms.toSemicolonList(V));
 		V.clear();
 		if(httpReq.isUrlParameter("POSTCASTABILITY"))
@@ -177,7 +177,7 @@ public class GrinderAbilities {
 			int num=0;
 			for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("POSTCASTABILITY"+id));
-		} 
+		}
 		A.setStat("POSTCASTABILITY",CMParms.toSemicolonList(V));
 		if(A instanceof Language)
 		{

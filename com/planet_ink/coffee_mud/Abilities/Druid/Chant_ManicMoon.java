@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_ManicMoon extends Chant
 {
-	public String ID() { return "Chant_ManicMoon"; }
-	public String name(){ return "Manic Moon";}
-	public String displayText(){return "(Manic Moon)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	@Override public String ID() { return "Chant_ManicMoon"; }
+	@Override public String name(){ return "Manic Moon";}
+	@Override public String displayText(){return "(Manic Moon)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof Room)&&(canBeUninvoked()))
@@ -54,6 +55,7 @@ public class Chant_ManicMoon extends Chant
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -110,7 +112,8 @@ public class Chant_ManicMoon extends Chant
 		}
 		return true;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -136,8 +139,9 @@ public class Chant_ManicMoon extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
 
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

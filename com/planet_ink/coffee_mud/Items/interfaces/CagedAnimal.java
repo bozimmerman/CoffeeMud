@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ public interface CagedAnimal extends Item
 {
 	public static final int ABILITY_MOBONPICKUP=0;
 	public static final int ABILITY_MOBPROGRAMMATICALLY=1;
-	
+
 	public boolean cageMe(MOB M);
 	public MOB unCageMe();
 	public String cageText();

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,15 +35,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_ClanDonate extends Spell
 {
-	public String ID() { return "Spell_ClanDonate"; }
-	public String name(){return "Clan Donate";}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
-	protected int overrideMana(){return 5;}
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String ID() { return "Spell_ClanDonate"; }
+	@Override public String name(){return "Clan Donate";}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
+	@Override protected int overrideMana(){return 5;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
@@ -53,7 +54,7 @@ public class Spell_ClanDonate extends Spell
 			mob.tell("You aren't holding that!");
 			return false;
 		}
-		
+
 		if(!mob.clans().iterator().hasNext())
 		{
 			mob.tell("You aren't even a member of a clan.");

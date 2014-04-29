@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_IncreaseGravity extends Spell
 {
-	public String ID() { return "Spell_IncreaseGravity"; }
-	public String name(){return "Increase Gravity";}
-	public String displayText(){return "(Gravity is Increased)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Spell_IncreaseGravity"; }
+	@Override public String name(){return "Increase Gravity";}
+	@Override public String displayText(){return "(Gravity is Increased)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Room theGravityRoom=null;
 	protected Room gravityRoom()
 	{
@@ -50,8 +50,9 @@ public class Spell_IncreaseGravity extends Spell
 			theGravityRoom=(Room)affected;
 		return theGravityRoom;
 	}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -76,6 +77,7 @@ public class Spell_IncreaseGravity extends Spell
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -99,6 +101,7 @@ public class Spell_IncreaseGravity extends Spell
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -133,6 +136,7 @@ public class Spell_IncreaseGravity extends Spell
 		return true;
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -147,6 +151,7 @@ public class Spell_IncreaseGravity extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

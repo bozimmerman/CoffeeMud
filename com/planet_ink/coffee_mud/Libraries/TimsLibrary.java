@@ -34,8 +34,9 @@ import java.util.*;
 */
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
-	public String ID(){return "TimsLibrary";}
+	@Override public String ID(){return "TimsLibrary";}
 
+	@Override
 	public int timsLevelCalculator(Item I)
 	{
 		int[] castMul=new int[1];
@@ -45,6 +46,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		Ability CAST=RET[2];
 		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 	}
+	@Override
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul)
 	{
 		int level=0;
@@ -186,6 +188,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
+	@Override
 	public boolean fixRejuvItem(Item I)
 	{
 		Ability A=I.fetchEffect("ItemRejuv");
@@ -200,6 +203,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return false;
 	}
 
+	@Override
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul)
 	{
 		Ability A;
@@ -212,15 +216,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				final long flags=A.flags();
 				final int triggers=((TriggeredAffect) A).triggerMask();
-				if( CMath.bset( flags, Ability.FLAG_ADJUSTER ) 
+				if( CMath.bset( flags, Ability.FLAG_ADJUSTER )
 				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					RET[0]=A;
 				else
-				if( CMath.bset( flags, Ability.FLAG_RESISTER ) 
+				if( CMath.bset( flags, Ability.FLAG_RESISTER )
 				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
 					RET[1]=A;
 				else
-				if( CMath.bset( flags, Ability.FLAG_CASTER ) 
+				if( CMath.bset( flags, Ability.FLAG_CASTER )
 				&& (triggers > 0))
 				{
 					RET[2]=A;
@@ -241,7 +245,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		Ability CAST=RET[2];
 		int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
 		int TLVL2=totalLevels(LVLS);
-		
+
 		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
 		for(int i=0;i<oldI.getStatCodes().length;i++)
 			if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
@@ -249,12 +253,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		changes.append("\n\r");
 		oldI.destroy(); // this was a copy
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
 	{
 		Item oldI = (changes!=null)?(Item)I.copyOf():null;
-		
+
 		if((I instanceof SpellHolder)
 		||((I instanceof Wand)&&(lvlOr0<=0)))
 		{
@@ -387,6 +392,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return false;
 	}
 
+	@Override
 	public boolean toneDownValue(Item I)
 	{
 		int hands=0;
@@ -410,6 +416,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return false;
 	}
 
+	@Override
 	public void balanceItemByLevel(Item I)
 	{
 		int hands=0;
@@ -437,6 +444,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 	}
 
+	@Override
 	public Map<String, String> timsItemAdjustments(Item I,
 										 int level,
 										 int material,
@@ -481,7 +489,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			else
 			if(reach>basereach)
 				basereach=reach;
-			
+
 			int damage=(int)Math.round(((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0));
 			int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
 
@@ -724,6 +732,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return vals;
 	}
 
+	@Override
 	public void toneDownWeapon(Weapon W, Ability ADJ)
 	{
 		boolean fixdam=true;
@@ -770,6 +779,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			W.basePhyStats().setAttackAdjustment(W.basePhyStats().attackAdjustment()-1);
 		W.recoverPhyStats();
 	}
+	@Override
 	public void toneDownArmor(Armor A, Ability ADJ)
 	{
 		boolean fixit=true;
@@ -796,6 +806,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		A.recoverPhyStats();
 	}
 
+	@Override
 	public void toneDownAdjuster(Item I, Ability ADJ)
 	{
 		String s=ADJ.text();
@@ -879,6 +890,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return lvl;
 	}
 
+	@Override
 	public int timsBaseLevel(Item I)
 	{
 		Ability[] RET=getTimsAdjResCast(I,new int[1]);
@@ -954,9 +966,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
+	@Override
 	public int levelsFromAbility(Item savedI)
 	{ return savedI.basePhyStats().ability()*5;}
 
+	@Override
 	public int levelsFromAdjuster(Item savedI, Ability ADJ)
 	{
 		int level=0;
@@ -999,6 +1013,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
+	@Override
 	public int levelsFromCaster(Item savedI, Ability CAST)
 	{
 		int level=0;
@@ -1073,6 +1088,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return null;
 	}
 
+	@Override
 	public Item enchant(Item I, int pct)
 	{
 		if(CMLib.dice().rollPercentage()>pct) return I;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_MysticShine extends Spell
 {
-	public String ID() { return "Spell_MysticShine"; }
-	public String name(){return "Mystic Shine";}
-	public String displayText(){return "(Mystic Shine)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public String ID() { return "Spell_MysticShine"; }
+	@Override public String name(){return "Mystic Shine";}
+	@Override public String displayText(){return "(Mystic Shine)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
@@ -51,6 +52,7 @@ public class Spell_MysticShine extends Spell
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -62,6 +64,7 @@ public class Spell_MysticShine extends Spell
 			room.recoverRoomStats();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);

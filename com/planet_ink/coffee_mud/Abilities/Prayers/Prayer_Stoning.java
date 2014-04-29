@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,23 +37,25 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Stoning extends Prayer
 {
-	public String ID() { return "Prayer_Stoning"; }
-	public String name(){ return "Stoning";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prayer_Stoning"; }
+	@Override public String name(){ return "Stoning";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String displayText(){ return "";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected Vector cits=new Vector();
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		cits=new Vector();
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -109,6 +111,7 @@ public class Prayer_Stoning extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -123,7 +126,7 @@ public class Prayer_Stoning extends Prayer
 			mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
 			return false;
 		}
-		
+
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(target.name(mob)+" must be bound first.");

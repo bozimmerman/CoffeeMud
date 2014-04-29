@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.File; // does some cmfile type stuff
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,20 +36,20 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * 
+ *
 Supported: (see SecFlag)
 ORDER includes TAKE, GIVE, DRESS, mob passivity, all follow
-ABOVELAW (also law books), 
-WIZINV (includes see WIZINV), 
+ABOVELAW (also law books),
+WIZINV (includes see WIZINV),
 CMDMOBS (also prevents walkaways)
-SUPERSKILL (never fails skills), 
+SUPERSKILL (never fails skills),
 IMMORT (never dies),
 KILL* for deleting journal entries
 FS:relative path from /coffeemud/ -- read/write access to regular file sys
 VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
 LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 	   cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat)
-*/ 
+*/
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMSecurity
 {
@@ -60,16 +60,16 @@ public class CMSecurity
 	protected final static Set<DbgFlag> 	dbgVars 		 = new HashSet<DbgFlag>();
 	protected final static Set<String>  	saveFlags   	 = new HashSet<String>();
 	protected final static Set<String>  	journalFlags	 = new HashSet<String>(); // global, because of cross-library issues
-	
+
 	protected final long						startTime	 = System.currentTimeMillis();
 	protected MaskingLibrary.CompiledZapperMask compiledSysop= null;
 	protected final Map<String,SecGroup> 		groups  	 = new Hashtable<String,SecGroup>();
-	
+
 	protected static boolean					debuggingEverything=false;
 
 	private final static CMSecurity[]   		secs=new CMSecurity[256];
 	private final static Iterator<SecFlag>		EMPTYSECFLAGS=new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
-	
+
 	public CMSecurity()
 	{
 		super();
@@ -85,10 +85,10 @@ public class CMSecurity
 	}
 
 	public static final CMSecurity instance(char c){ return secs[c];}
-	
-	private static final CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
-	
-	public final void markShared() 
+
+	private static final CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+
+	public final void markShared()
 	{
 		final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(threadCode==MudHost.MAIN_HOST)
@@ -98,7 +98,7 @@ public class CMSecurity
 		else
 			secs[threadCode]=secs[MudHost.MAIN_HOST];
 	}
-	
+
 	public static final void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
@@ -106,7 +106,7 @@ public class CMSecurity
 		instance().compiledSysop=CMLib.masking().maskCompile(zapCheck);
 	}
 
-	
+
 	public static final void registerJournal(String journalName)
 	{
 		journalName=journalName.toUpperCase().trim();
@@ -117,7 +117,7 @@ public class CMSecurity
 	{
 		instance().groups.clear();
 	}
-	
+
 	public static final void parseGroups(final Properties page)
 	{
 		clearGroups();
@@ -157,7 +157,7 @@ public class CMSecurity
 			}
 			while(s.startsWith("/")) s=s.substring(1).trim();
 			return new SecPath(s,false,isAreaOnly);
-			
+
 		}
 		else
 		if(s.startsWith("VFS:"))
@@ -232,12 +232,12 @@ public class CMSecurity
 	{
 		return new IteratorEnumeration<SecGroup>(instance().groups.values().iterator());
 	}
-	
+
 	public static Enumeration<String> getJournalSecurityFlags()
 	{
 		return new IteratorEnumeration<String>(journalFlags.iterator());
 	}
-	
+
 	private static final void addGroup(String name, final String set)
 	{
 		SecGroup newGroup=instance().createGroup(name,CMParms.parseCommas(set,true));
@@ -247,7 +247,7 @@ public class CMSecurity
 		else
 			group.reset(newGroup.flags,newGroup.groups,newGroup.paths,newGroup.jFlags);
 	}
-	
+
 	public static final boolean isASysOp(final MOB mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
@@ -256,32 +256,32 @@ public class CMSecurity
 					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));
 	}
-	
+
 	public static final boolean isASysOp(final PlayerLibrary.ThinPlayer mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob);
 	}
-	
+
 	public static final boolean isStaff(final MOB mob)
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		if((mob.playerStats().getSecurityFlags().size()==0)
 		&&(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).size()==0))
 			return false;
 		return true;
 	}
-	
+
 	public static final List<String> getAccessibleDirs(final MOB mob, final Room room)
 	{
 		final List<String> DIRSV=new Vector<String>();
 		if(isASysOp(mob)){ DIRSV.add("/"); return DIRSV; }
 		if(mob==null) return DIRSV;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return DIRSV;
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
@@ -308,8 +308,8 @@ public class CMSecurity
 					int x=dir.indexOf('/');
 					subPath=dir;
 					if(x>0)
-					{ 
-						subPath=dir.substring(0,x).trim(); 
+					{
+						subPath=dir.substring(0,x).trim();
 						dir=dir.substring(x+1).trim();
 					}
 					else
@@ -336,13 +336,13 @@ public class CMSecurity
 		}
 		return DIRSV;
 	}
-	
+
 	public static final boolean hasAccessibleDir(final MOB mob, final Room room)
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
@@ -355,13 +355,13 @@ public class CMSecurity
 		}
 		return false;
 	}
-	
+
 	public static final boolean canTraverseDir(MOB mob, Room room, String path)
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
@@ -382,13 +382,13 @@ public class CMSecurity
 		}
 		return false;
 	}
-	
+
 	public static final boolean canAccessFile(final MOB mob, final Room room, String path, final boolean isVFS)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
@@ -407,7 +407,7 @@ public class CMSecurity
 		}
 		return false;
 	}
-	
+
 	public static final Iterator<SecFlag> getSecurityCodes(final MOB mob, final Room room)
 	{
 		if((mob==null)||(mob.playerStats()==null)) return EMPTYSECFLAGS;
@@ -424,15 +424,15 @@ public class CMSecurity
 		}
 		return flags.iterator();
 	}
-	
-	
+
+
 	public static boolean isJournalAccessAllowed(MOB mob, String journalFlagName)
 	{
 		journalFlagName=journalFlagName.trim().toUpperCase();
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		if(mob.playerStats().getSecurityFlags().contains(journalFlagName))
 			return true;
@@ -440,13 +440,13 @@ public class CMSecurity
 			return true;
 		return false;
 	}
-	
+
 	public static final boolean isAllowedContainsAny(final MOB mob, final Room room, final SecGroup secGroup)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		if(mob.playerStats().getSecurityFlags().containsAny(secGroup, subop))
@@ -455,13 +455,13 @@ public class CMSecurity
 			return true;
 		return false;
 	}
-	
+
 	public static final boolean isAllowed(final MOB mob, final Room room, final SecFlag flag)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		if(mob.playerStats().getSecurityFlags().contains(flag, subop))
@@ -470,13 +470,13 @@ public class CMSecurity
 			return true;
 		return false;
 	}
-	
+
 	public static final boolean isAllowedContainsAny(final MOB mob, final SecGroup secGroup)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
@@ -496,13 +496,13 @@ public class CMSecurity
 			return true;
 		return false;
 	}
-	
+
 	public static final boolean isAllowedEverywhere(final MOB mob, final SecFlag flag)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		if(mob.playerStats().getSecurityFlags().contains(flag, false))
 			return true;
@@ -510,13 +510,13 @@ public class CMSecurity
 			return true;
 		return false;
 	}
-	
+
 	public static final boolean isAllowedAnywhere(final MOB mob, final SecFlag flag)
 	{
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
+		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
 			return false;
 		if(isAllowedEverywhere(mob,flag.getRegularAlias()))
 			return true;
@@ -535,13 +535,13 @@ public class CMSecurity
 			}
 		return isAllowedEverywhere(mob,flag.getRegularAlias());
 	}
-	
+
 
 	public static final boolean isSaveFlag(final String key)
-	{ 
+	{
 		return (saveFlags.size()>0) && saveFlags.contains(key);
 	}
-	
+
 	public static final void approveJScript(final String approver, final long hashCode)
 	{
 		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
@@ -559,7 +559,7 @@ public class CMSecurity
 		}
 		Resources.saveFileResource("::jscripts.ini",null,newApproved);
 	}
-	
+
 	public static final Map<Long,String> getApprovedJScriptTable()
 	{
 		Map<Long,String> approved=(Map<Long, String>)Resources.getResource("APPROVEDJSCRIPTS");
@@ -581,7 +581,7 @@ public class CMSecurity
 		}
 		return approved;
 	}
-	
+
 	public static final boolean isApprovedJScript(final StringBuffer script)
 	{
 		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==2)
@@ -598,24 +598,24 @@ public class CMSecurity
 		}
 		return approver instanceof String;
 	}
-	
-	public static Enumeration<DbgFlag> getDebugEnum() 
-	{ 
+
+	public static Enumeration<DbgFlag> getDebugEnum()
+	{
 		return new IteratorEnumeration<DbgFlag>(dbgVars.iterator());
 	}
-	
+
 	public static final boolean isDebugging(final DbgFlag key)
-	{ 
+	{
 		return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;
 	}
-	
+
 	public static final boolean isDebuggingSearch(final String key)
-	{ 
+	{
 		final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),key.toUpperCase().trim());
 		if(flag==null) return false;
 		return isDebugging(flag);
 	}
-	
+
 	public static final DbgFlag setDebugVar(final DbgFlag var, final boolean delete)
 	{
 		if((var!=null)&&(delete)&&(dbgVars.size()>0))
@@ -625,7 +625,7 @@ public class CMSecurity
 			dbgVars.add(var);
 		return var;
 	}
-	
+
 	public static final DbgFlag setDebugVar(final String anyFlag, final boolean delete)
 	{
 		String flag = anyFlag.toUpperCase().trim();
@@ -634,7 +634,7 @@ public class CMSecurity
 			return setDebugVar(dbgFlag,delete);
 		return null;
 	}
-	
+
 	public static final void setDebugVars(final String vars)
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
@@ -649,29 +649,29 @@ public class CMSecurity
 		}
 		debuggingEverything = dbgVars.contains(DbgFlag.EVERYTHING);
 	}
-	
+
 	public static Enumeration<DisFlag> getDisablesEnum() { return new IteratorEnumeration<DisFlag>(disVars.iterator());}
-	
+
 	public static final boolean isDisabled(final DisFlag ID)
-	{ 
-		return disVars.contains(ID); 
+	{
+		return disVars.contains(ID);
 	}
-	
+
 	public static final boolean isCommandDisabled(final String ID)
-	{ 
-		return cmdDisVars.contains(ID); 
+	{
+		return cmdDisVars.contains(ID);
 	}
-	
+
 	public static final boolean isAbilityDisabled(final String ID)
-	{ 
-		return ablDisVars.contains(ID); 
+	{
+		return ablDisVars.contains(ID);
 	}
-	
+
 	public static final boolean isExpertiseDisabled(final String ID)
-	{ 
-		return expDisVars.contains(ID); 
+	{
+		return expDisVars.contains(ID);
 	}
-	
+
 	public static final boolean isDisabledSearch(final String anyFlag)
 	{
 		final Set<String> set;
@@ -695,7 +695,7 @@ public class CMSecurity
 			return false;
 		return set.contains(flag);
 	}
-	
+
 	public static final void setDisableVars(final String vars)
 	{
 		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
@@ -720,7 +720,7 @@ public class CMSecurity
 			}
 		}
 	}
-	
+
 	public static final boolean setDisableVar(final String anyFlag, final boolean delete)
 	{
 		final Set<String> set;
@@ -753,7 +753,7 @@ public class CMSecurity
 			set.add(flag);
 		return true;
 	}
-	
+
 	public static final void setDisableVar(final DisFlag flag, final boolean delete)
 	{
 		if((flag!=null)&&(delete)&&(disVars.size()>0))
@@ -762,7 +762,7 @@ public class CMSecurity
 		if((flag!=null)&&(!delete))
 			disVars.add(flag);
 	}
-	
+
 	public static final void setSaveFlags(final String flags)
 	{
 		final List<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
@@ -770,7 +770,7 @@ public class CMSecurity
 		for(int v=0;v<V.size();v++)
 			saveFlags.add(V.get(v));
 	}
-	
+
 	public static final void setSaveFlag(final String flag, final boolean delete)
 	{
 		if((flag!=null)&&(delete)&&(saveFlags.size()>0))
@@ -779,12 +779,12 @@ public class CMSecurity
 		if((flag!=null)&&(!delete))
 			saveFlags.add(flag);
 	}
-	
+
 	public static final long getStartTime()
 	{
 		return i().startTime;
 	}
-	
+
 	public static final boolean isBanned(final String login)
 	{
 		if((login==null)||(login.length()<=0))
@@ -809,7 +809,7 @@ public class CMSecurity
 		return false;
 	}
 
-	
+
 	public static final void unban(final String unBanMe)
 	{
 		if((unBanMe==null)||(unBanMe.length()<=0))
@@ -827,7 +827,7 @@ public class CMSecurity
 			Resources.updateFileResource("::banned.ini",newBanned);
 		}
 	}
-	
+
 	public static final void unban(final int unBanMe)
 	{
 		final StringBuffer newBanned=new StringBuffer("");
@@ -843,7 +843,7 @@ public class CMSecurity
 			Resources.updateFileResource("::banned.ini",newBanned);
 		}
 	}
-	
+
 	public static final int ban(final String banMe)
 	{
 		if((banMe==null)||(banMe.length()<=0))
@@ -861,25 +861,25 @@ public class CMSecurity
 		Resources.updateFileResource("::banned.ini",str);
 		return -1;
 	}
-	
+
 	public static enum SecFlag
 	{
-		ABILITIES, ABOVELAW, AFTER, AHELP, ALLSKILLS, ANNOUNCE, AS, AT, BAN, BEACON, BOOT, CARRYALL, CATALOG, CHARGEN, CLOAK, CMD, CMDABILITIES, 
-		CMDAREAS, CMDCLANS, CMDCLASSES, CMDEXITS, CMDFACTIONS, CMDITEMS, CMDMOBS, CMDPLAYERS, CMDQUESTS, CMDRACES, CMDRECIPES, CMDROOMS, 
-		CMDSOCIALS, COMPONENTS, COPY, COPYITEMS, COPYMOBS, COPYROOMS, DUMPFILE, EXPERTISE, EXPERTISES, EXPORT, EXPORTFILE, EXPORTPLAYERS, 
-		GMODIFY, GOTO, I3, IDLEOK, IMC2, IMMORT, IMPORT, IMPORTITEMS, IMPORTMOBS, IMPORTPLAYERS, IMPORTROOMS, JOURNALS, JSCRIPTS, KILL, KILLDEAD, 
-		LISTADMIN, LOADUNLOAD, MERGE, MXPTAGS, NEWS, NOEXPIRE, NOPURGE, ORDER, PAUSE, PKILL, POLLS, POSSESS, PURGE, RESET, RESETUTILS, RESTRING, 
-		SESSIONS, SHUTDOWN, SNOOP, STAT, SUPERSKILL, SYSMSGS, TICKTOCK, TITLES, TRAILTO, TRANSFER, WHERE, WIZEMOTE, WIZINV, MISC, 
-		
-		AREA_ABILITIES, AREA_ABOVELAW, AREA_AFTER, AREA_AHELP, AREA_ALLSKILLS, AREA_ANNOUNCE, AREA_AS, AREA_AT, AREA_BAN, AREA_BEACON, AREA_BOOT, 
-		AREA_CARRYALL, AREA_CATALOG, AREA_CHARGEN, AREA_CLOAK, AREA_CMD, AREA_CMDABILITIES, AREA_CMDAREAS, AREA_CMDCLANS, AREA_CMDCLASSES, 
-		AREA_CMDEXITS, AREA_CMDFACTIONS, AREA_CMDITEMS, AREA_CMDMOBS, AREA_CMDPLAYERS, AREA_CMDQUESTS, AREA_CMDRACES, AREA_CMDRECIPES, 
-		AREA_CMDROOMS, AREA_CMDSOCIALS, AREA_COMPONENTS, AREA_COPY, AREA_COPYITEMS, AREA_COPYMOBS, AREA_COPYROOMS, AREA_DUMPFILE, AREA_EXPERTISE, 
-		AREA_EXPERTISES, AREA_EXPORT, AREA_EXPORTFILE, AREA_EXPORTPLAYERS, AREA_GMODIFY, AREA_GOTO, AREA_I3, AREA_IDLEOK, AREA_IMC2, AREA_IMMORT, 
-		AREA_IMPORT, AREA_IMPORTITEMS, AREA_IMPORTMOBS, AREA_IMPORTPLAYERS, AREA_IMPORTROOMS, AREA_JOURNALS, AREA_JSCRIPTS, AREA_KILL, 
-		AREA_KILLDEAD, AREA_LISTADMIN, AREA_LOADUNLOAD, AREA_MERGE, AREA_MXPTAGS, AREA_NEWS, AREA_NOEXPIRE, AREA_NOPURGE, AREA_ORDER, 
-		AREA_PAUSE, AREA_PKILL, AREA_POLLS, AREA_POSSESS, AREA_PURGE, AREA_RESET, AREA_RESETUTILS, AREA_RESTRING, AREA_SESSIONS, 
-		AREA_SHUTDOWN, AREA_SNOOP, AREA_STAT, AREA_SUPERSKILL, AREA_SYSMSGS, AREA_TICKTOCK, AREA_TITLES, AREA_TRAILTO, AREA_TRANSFER, AREA_WHERE, 
+		ABILITIES, ABOVELAW, AFTER, AHELP, ALLSKILLS, ANNOUNCE, AS, AT, BAN, BEACON, BOOT, CARRYALL, CATALOG, CHARGEN, CLOAK, CMD, CMDABILITIES,
+		CMDAREAS, CMDCLANS, CMDCLASSES, CMDEXITS, CMDFACTIONS, CMDITEMS, CMDMOBS, CMDPLAYERS, CMDQUESTS, CMDRACES, CMDRECIPES, CMDROOMS,
+		CMDSOCIALS, COMPONENTS, COPY, COPYITEMS, COPYMOBS, COPYROOMS, DUMPFILE, EXPERTISE, EXPERTISES, EXPORT, EXPORTFILE, EXPORTPLAYERS,
+		GMODIFY, GOTO, I3, IDLEOK, IMC2, IMMORT, IMPORT, IMPORTITEMS, IMPORTMOBS, IMPORTPLAYERS, IMPORTROOMS, JOURNALS, JSCRIPTS, KILL, KILLDEAD,
+		LISTADMIN, LOADUNLOAD, MERGE, MXPTAGS, NEWS, NOEXPIRE, NOPURGE, ORDER, PAUSE, PKILL, POLLS, POSSESS, PURGE, RESET, RESETUTILS, RESTRING,
+		SESSIONS, SHUTDOWN, SNOOP, STAT, SUPERSKILL, SYSMSGS, TICKTOCK, TITLES, TRAILTO, TRANSFER, WHERE, WIZEMOTE, WIZINV, MISC,
+
+		AREA_ABILITIES, AREA_ABOVELAW, AREA_AFTER, AREA_AHELP, AREA_ALLSKILLS, AREA_ANNOUNCE, AREA_AS, AREA_AT, AREA_BAN, AREA_BEACON, AREA_BOOT,
+		AREA_CARRYALL, AREA_CATALOG, AREA_CHARGEN, AREA_CLOAK, AREA_CMD, AREA_CMDABILITIES, AREA_CMDAREAS, AREA_CMDCLANS, AREA_CMDCLASSES,
+		AREA_CMDEXITS, AREA_CMDFACTIONS, AREA_CMDITEMS, AREA_CMDMOBS, AREA_CMDPLAYERS, AREA_CMDQUESTS, AREA_CMDRACES, AREA_CMDRECIPES,
+		AREA_CMDROOMS, AREA_CMDSOCIALS, AREA_COMPONENTS, AREA_COPY, AREA_COPYITEMS, AREA_COPYMOBS, AREA_COPYROOMS, AREA_DUMPFILE, AREA_EXPERTISE,
+		AREA_EXPERTISES, AREA_EXPORT, AREA_EXPORTFILE, AREA_EXPORTPLAYERS, AREA_GMODIFY, AREA_GOTO, AREA_I3, AREA_IDLEOK, AREA_IMC2, AREA_IMMORT,
+		AREA_IMPORT, AREA_IMPORTITEMS, AREA_IMPORTMOBS, AREA_IMPORTPLAYERS, AREA_IMPORTROOMS, AREA_JOURNALS, AREA_JSCRIPTS, AREA_KILL,
+		AREA_KILLDEAD, AREA_LISTADMIN, AREA_LOADUNLOAD, AREA_MERGE, AREA_MXPTAGS, AREA_NEWS, AREA_NOEXPIRE, AREA_NOPURGE, AREA_ORDER,
+		AREA_PAUSE, AREA_PKILL, AREA_POLLS, AREA_POSSESS, AREA_PURGE, AREA_RESET, AREA_RESETUTILS, AREA_RESTRING, AREA_SESSIONS,
+		AREA_SHUTDOWN, AREA_SNOOP, AREA_STAT, AREA_SUPERSKILL, AREA_SYSMSGS, AREA_TICKTOCK, AREA_TITLES, AREA_TRAILTO, AREA_TRANSFER, AREA_WHERE,
 		AREA_WIZEMOTE, AREA_WIZINV, AREA_MISC
 		;
 		private SecFlag regularAlias=null;
@@ -914,7 +914,7 @@ public class CMSecurity
 			return areaAlias;
 		}
 	}
-	
+
 	public static class SecPath
 	{
 		private String	path;
@@ -937,7 +937,7 @@ public class CMSecurity
 			return (isVfs?"VFS:":"FS:")+(isAreaOnly?"AREA ":"")+path;
 		}
 	}
-	
+
 	public static class SecGroup
 	{
 		private String				name;
@@ -978,7 +978,7 @@ public class CMSecurity
 		//public SecGroup copyOf() // NOT ALLOWED -- flags are ok, but groups MUST be unmutable for internal changes!!
 		public boolean contains(String journalFlag)
 		{
-			if(jFlags.contains(journalFlag)) 
+			if(jFlags.contains(journalFlag))
 				return true;
 			for(SecGroup group : groups)
 				if(group.contains(journalFlag))
@@ -987,9 +987,9 @@ public class CMSecurity
 		}
 		public boolean contains(SecFlag flag, boolean isSubOp)
 		{
-			if(flags.contains(flag.getRegularAlias())) 
+			if(flags.contains(flag.getRegularAlias()))
 				return true;
-			if(isSubOp && flags.contains(flag.getAreaAlias())) 
+			if(isSubOp && flags.contains(flag.getAreaAlias()))
 				return true;
 			for(SecGroup group : groups)
 				if(group.contains(flag, isSubOp))
@@ -1058,20 +1058,19 @@ public class CMSecurity
 					return true;
 				}
 				@Override
-				public boolean hasNext() 
+				public boolean hasNext()
 				{
 					if((p==null)||(!p.hasNext()))
 						return doNext();
 					return p.hasNext();
 				}
 				@Override
-				public SecPath next() 
+				public SecPath next()
 				{
 					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
 				}
-				@Override
-				public void remove() {}
+				@Override public void remove() {}
 			};
 		}
 		public Iterator<SecFlag> flags(){return new Iterator<SecFlag>()
@@ -1095,99 +1094,98 @@ public class CMSecurity
 					return true;
 				}
 				@Override
-				public boolean hasNext() 
+				public boolean hasNext()
 				{
 					if((p==null)||(!p.hasNext()))
 						return doNext();
 					return p.hasNext();
 				}
 				@Override
-				public SecFlag next() 
+				public SecFlag next()
 				{
 					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
 				}
-				@Override
-				public void remove() {}
+				@Override public void remove() {}
 			};
 		}
 	}
-	
-	public static final SecGroup SECURITY_COPY_GROUP=new SecGroup(new SecFlag[]{ 
+
+	public static final SecGroup SECURITY_COPY_GROUP=new SecGroup(new SecFlag[]{
 			SecFlag.COPY, SecFlag.COPYITEMS, SecFlag.COPYMOBS, SecFlag.COPYROOMS,
-			
+
 			SecFlag.AREA_COPY, SecFlag.AREA_COPYITEMS, SecFlag.AREA_COPYMOBS, SecFlag.AREA_COPYROOMS
 	});
-	
-	public static final SecGroup SECURITY_GOTO_GROUP=new SecGroup(new SecFlag[]{ 
-			SecFlag.GOTO, 
-			
+
+	public static final SecGroup SECURITY_GOTO_GROUP=new SecGroup(new SecFlag[]{
+			SecFlag.GOTO,
+
 			SecFlag.AREA_GOTO
 	});
-	
-	public static final SecGroup SECURITY_KILL_GROUP=new SecGroup(new SecFlag[]{ 
-			SecFlag.KILL, SecFlag.KILLDEAD, 
-			
-			SecFlag.AREA_KILL, SecFlag.AREA_KILLDEAD, 
+
+	public static final SecGroup SECURITY_KILL_GROUP=new SecGroup(new SecFlag[]{
+			SecFlag.KILL, SecFlag.KILLDEAD,
+
+			SecFlag.AREA_KILL, SecFlag.AREA_KILLDEAD,
 	});
-	
-	public static final SecGroup SECURITY_IMPORT_GROUP=new SecGroup(new SecFlag[]{ 
-			SecFlag.IMPORT, SecFlag.IMPORTITEMS, SecFlag.IMPORTMOBS, SecFlag.IMPORTPLAYERS, 
-			SecFlag.IMPORTROOMS, 
-			
-			SecFlag.AREA_IMPORT, SecFlag.AREA_IMPORTITEMS, SecFlag.AREA_IMPORTMOBS, 
+
+	public static final SecGroup SECURITY_IMPORT_GROUP=new SecGroup(new SecFlag[]{
+			SecFlag.IMPORT, SecFlag.IMPORTITEMS, SecFlag.IMPORTMOBS, SecFlag.IMPORTPLAYERS,
+			SecFlag.IMPORTROOMS,
+
+			SecFlag.AREA_IMPORT, SecFlag.AREA_IMPORTITEMS, SecFlag.AREA_IMPORTMOBS,
 			SecFlag.AREA_IMPORTPLAYERS,	SecFlag.AREA_IMPORTROOMS,
 	});
-	
-	public static final SecGroup SECURITY_EXPORT_GROUP=new SecGroup(new SecFlag[]{ 
+
+	public static final SecGroup SECURITY_EXPORT_GROUP=new SecGroup(new SecFlag[]{
 			SecFlag.EXPORT, SecFlag.EXPORTFILE, SecFlag.EXPORTPLAYERS,
-			
+
 			SecFlag.AREA_EXPORT, SecFlag.AREA_EXPORTFILE, SecFlag.AREA_EXPORTPLAYERS
 	});
-	
-	public static final SecGroup SECURITY_CMD_GROUP=new SecGroup(new SecFlag[]{ 
-			SecFlag.CMD, SecFlag.CMDABILITIES, SecFlag.CMDAREAS, SecFlag.CMDCLANS, SecFlag.CMDCLASSES, 
-			SecFlag.CMDEXITS, SecFlag.CMDFACTIONS, SecFlag.CMDITEMS, SecFlag.CMDMOBS, SecFlag.CMDPLAYERS, 
+
+	public static final SecGroup SECURITY_CMD_GROUP=new SecGroup(new SecFlag[]{
+			SecFlag.CMD, SecFlag.CMDABILITIES, SecFlag.CMDAREAS, SecFlag.CMDCLANS, SecFlag.CMDCLASSES,
+			SecFlag.CMDEXITS, SecFlag.CMDFACTIONS, SecFlag.CMDITEMS, SecFlag.CMDMOBS, SecFlag.CMDPLAYERS,
 			SecFlag.CMDQUESTS, SecFlag.CMDRACES, SecFlag.CMDRECIPES, SecFlag.CMDROOMS, SecFlag.CMDSOCIALS,
-			
-			SecFlag.AREA_CMD, SecFlag.AREA_CMDABILITIES, SecFlag.AREA_CMDAREAS, SecFlag.AREA_CMDCLANS, 
-			SecFlag.AREA_CMDCLASSES, SecFlag.AREA_CMDEXITS, SecFlag.AREA_CMDFACTIONS, SecFlag.AREA_CMDITEMS, 
-			SecFlag.AREA_CMDMOBS, SecFlag.AREA_CMDPLAYERS, SecFlag.AREA_CMDQUESTS, SecFlag.AREA_CMDRACES, 
+
+			SecFlag.AREA_CMD, SecFlag.AREA_CMDABILITIES, SecFlag.AREA_CMDAREAS, SecFlag.AREA_CMDCLANS,
+			SecFlag.AREA_CMDCLASSES, SecFlag.AREA_CMDEXITS, SecFlag.AREA_CMDFACTIONS, SecFlag.AREA_CMDITEMS,
+			SecFlag.AREA_CMDMOBS, SecFlag.AREA_CMDPLAYERS, SecFlag.AREA_CMDQUESTS, SecFlag.AREA_CMDRACES,
 			SecFlag.AREA_CMDRECIPES, SecFlag.AREA_CMDROOMS, SecFlag.AREA_CMDSOCIALS
 	});
-	
+
 	public static enum DbgFlag
 	{
-		PROPERTY("room ownership"), ARREST("law enforcement"), CONQUEST("area conquering"), MUDPERCOLATOR("random area generation"), GMODIFY("global modify command"), 
-		MERGE("global object merging"), BADSCRIPTS("bad mobprog practices"), TELNET("telnet code negotiation"), CLASSLOADER("java class loading"), DBROOMPOP("room loading"), 
-		DBROOMS("room db activity"), CMROIT("room item db activity"), CMROEX("room exit db activity"), CMROCH("room mob db activity"), CMAREA("area db activity"), 
-		CMSTAT("stats db activity"), HTTPMACROS("web macro scripts"), I3("intermud3 communication"), HTTPACCESS("web access logging"), IMC2("intermud chat2 communication"), 
-		SMTPSERVER("email reception"), UTILITHREAD("session and tech maint"), MISSINGKIDS("babies"), FLAGWATCHING("clan flags"), CATALOGTHREAD("global obj catalog"), 
-		JOURNALTHREAD("journal msg maint"), MAPTHREAD("room maint"), VACUUM("room/obj expiration"), AUTOPURGE("player/account purging"), PLAYERTHREAD("player maint"), 
-		OUTPUT("all raw session output"), EXPORT("area exporting"), STATSTHREAD("stats maint"), GEAS("geas/slavery parsing"), SMTPCLIENT("email sending"), 
+		PROPERTY("room ownership"), ARREST("law enforcement"), CONQUEST("area conquering"), MUDPERCOLATOR("random area generation"), GMODIFY("global modify command"),
+		MERGE("global object merging"), BADSCRIPTS("bad mobprog practices"), TELNET("telnet code negotiation"), CLASSLOADER("java class loading"), DBROOMPOP("room loading"),
+		DBROOMS("room db activity"), CMROIT("room item db activity"), CMROEX("room exit db activity"), CMROCH("room mob db activity"), CMAREA("area db activity"),
+		CMSTAT("stats db activity"), HTTPMACROS("web macro scripts"), I3("intermud3 communication"), HTTPACCESS("web access logging"), IMC2("intermud chat2 communication"),
+		SMTPSERVER("email reception"), UTILITHREAD("session and tech maint"), MISSINGKIDS("babies"), FLAGWATCHING("clan flags"), CATALOGTHREAD("global obj catalog"),
+		JOURNALTHREAD("journal msg maint"), MAPTHREAD("room maint"), VACUUM("room/obj expiration"), AUTOPURGE("player/account purging"), PLAYERTHREAD("player maint"),
+		OUTPUT("all raw session output"), EXPORT("area exporting"), STATSTHREAD("stats maint"), GEAS("geas/slavery parsing"), SMTPCLIENT("email sending"),
 		MESSAGES("internal core msgs"), EVERYTHING("everything"), CMROOM("room db creation"), HTTPREQ("web requests"), CMJRNL("journal db activity"), IMPORT("area importing"),
 		PLAYERSTATS("player stat loading"), CLANS("clan maint"), BINOUT("binary telnet input"), BININ("binary telnet output"),BOOTSTRAPPER("Bootstrapper");
 		private final String desc;
 		DbgFlag(final String description){this.desc=description;}
 		public String description() { return desc;}
 	}
-	
+
 	public static enum DisFlag
 	{
-		LEVELS("player leveling"), EXPERIENCE("player XP gains"), PROPERTYOWNERCHECKS("confirm property ownership"), AUTODISEASE("diseases from races, weather, age, etc.."), 
-		DBERRORQUE("save SQL errors"), DBERRORQUESTART("retry SQL errors on boot"), CONNSPAMBLOCK("connection spam blocker"), FATAREAS("standard non-thin cached areas"), 
-		PASSIVEAREAS("inactive area sleeping"), DARKWEATHER("weather causing room darkness"), DARKNIGHTS("time causing room darkness"), ARREST("legal system"), 
-		EMOTERS("emoter behaviors"), CONQUEST("area clan conquest"), RANDOMITEMS("random item behavior"), MOBILITY("mobile behaviors"), MUDCHAT("MOB chat behavior"), 
-		RANDOMMONSTERS("random monster behaviors"), RACES("player races"), CLASSES("player classes"), MXP("MXP system"), MSP("MSP system"), QUITREASON("early quitting prompt"), 
-		CLASSTRAINING("class training"), ROOMVISITS("room visits"), THIRST("player thirst"), HUNGER("player hunger"), WEATHER("area weather"), WEATHERCHANGES("weather changes"), 
-		WEATHERNOTIFIES("notification of weather changes"), QUESTS("quest system"), SCRIPTABLEDELAY("script event delay"), SCRIPTING("MOBPROG scripting"), 
-		SCRIPTABLE("MOBProg scripting"), MCCP("MCCP compression"), LOGOUTS("player logouts"), THINAREAS("thin uncached areas"), UTILITHREAD("thread & session monitoring"), 
-		THREADTHREAD("thread monitoring"), EQUIPSIZE("armor size fitting"), RETIREREASON("early char delete prompt"), MAXCONNSPERACCOUNT("connections per account limit"), 
-		ALLERGIES("auto player allergies"), LOGINS("non-archin player logins"), NEWPLAYERS("new player creation"), MAXNEWPERIP("new character per ip limit"), 
+		LEVELS("player leveling"), EXPERIENCE("player XP gains"), PROPERTYOWNERCHECKS("confirm property ownership"), AUTODISEASE("diseases from races, weather, age, etc.."),
+		DBERRORQUE("save SQL errors"), DBERRORQUESTART("retry SQL errors on boot"), CONNSPAMBLOCK("connection spam blocker"), FATAREAS("standard non-thin cached areas"),
+		PASSIVEAREAS("inactive area sleeping"), DARKWEATHER("weather causing room darkness"), DARKNIGHTS("time causing room darkness"), ARREST("legal system"),
+		EMOTERS("emoter behaviors"), CONQUEST("area clan conquest"), RANDOMITEMS("random item behavior"), MOBILITY("mobile behaviors"), MUDCHAT("MOB chat behavior"),
+		RANDOMMONSTERS("random monster behaviors"), RACES("player races"), CLASSES("player classes"), MXP("MXP system"), MSP("MSP system"), QUITREASON("early quitting prompt"),
+		CLASSTRAINING("class training"), ROOMVISITS("room visits"), THIRST("player thirst"), HUNGER("player hunger"), WEATHER("area weather"), WEATHERCHANGES("weather changes"),
+		WEATHERNOTIFIES("notification of weather changes"), QUESTS("quest system"), SCRIPTABLEDELAY("script event delay"), SCRIPTING("MOBPROG scripting"),
+		SCRIPTABLE("MOBProg scripting"), MCCP("MCCP compression"), LOGOUTS("player logouts"), THINAREAS("thin uncached areas"), UTILITHREAD("thread & session monitoring"),
+		THREADTHREAD("thread monitoring"), EQUIPSIZE("armor size fitting"), RETIREREASON("early char delete prompt"), MAXCONNSPERACCOUNT("connections per account limit"),
+		ALLERGIES("auto player allergies"), LOGINS("non-archin player logins"), NEWPLAYERS("new player creation"), MAXNEWPERIP("new character per ip limit"),
 		MAXCONNSPERIP("connections per ip limit"), CLANTICKS("clan ticks/automation"), CATALOGTHREAD("catalog house-cleaning"), NEWCHARACTERS("new character creation"),
-		CATALOGCACHE("catalog instance caching"), SAVETHREAD("Player/Journal/Map/Table maintenance"), JOURNALTHREAD("journal house-cleaning"), MAPTHREAD("map house-cleaning"), 
-		AUTOPURGE("player purging"), PURGEACCOUNTS("account purging"), PLAYERTHREAD("player maintenance/house cleaning"), MSSP("MSSP protocol support"), 
-		STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"), 
+		CATALOGCACHE("catalog instance caching"), SAVETHREAD("Player/Journal/Map/Table maintenance"), JOURNALTHREAD("journal house-cleaning"), MAPTHREAD("map house-cleaning"),
+		AUTOPURGE("player purging"), PURGEACCOUNTS("account purging"), PLAYERTHREAD("player maintenance/house cleaning"), MSSP("MSSP protocol support"),
+		STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"),
 		THINGRIDS("Thin uncached grids"), FATGRIDS("Standard cached grids"), STDRACES("Standard Player Races"), STDCLASSES("Standard Player Classes"),
 		CHANNELAUCTION("Auction Channel"), ELECTRICTHREAD("Electric Threads"), MOBTEACHER("MOBTeacher"),MSDP("MSDP variables"),GMCP("GMCP variables"), ATTRIBS("Char Stats"),
 		TECHLEVEL("TechLeveling"),AUTOLANGUAGE("Auto language switching"), I3("InterMud3"),IMC2("InterMud2"),SLOW_AGEING("Real Ageing"),ALL_AGEING("Age System")

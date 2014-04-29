@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,26 +35,28 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Subdue extends StdSkill
 {
-	public String ID() { return "Skill_Subdue"; }
-	public String name(){ return "Subdue";}
-	public String displayText(){ return "(Subdueing "+whom+")";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Skill_Subdue"; }
+	@Override public String name(){ return "Subdue";}
+	@Override public String displayText(){ return "(Subdueing "+whom+")";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings = {"SUBDUE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
-	public int usageType(){return USAGE_MOVEMENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB whom=null;
 	protected int whomDamage=0;
 	protected int asLevel=0;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.attackAdjustment() - 10 + super.getXLEVELLevel(invoker()));
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -77,7 +79,8 @@ public class Skill_Subdue extends StdSkill
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -90,7 +93,7 @@ public class Skill_Subdue extends StdSkill
 				double actualHitPct = CMath.div(whom.curState().getHitPoints()-whomDamage,whom.baseState().getHitPoints());
 				msg.source().tell(msg.source(),whom,null,"<T-NAME> is "+CMath.toPct(actualHitPct)+" health away from being overcome.");
 			}
-				
+
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(affected !=null)
 			&&(msg.source()==affected)
@@ -105,19 +108,22 @@ public class Skill_Subdue extends StdSkill
 			}
 		}
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected instanceof MOB))
 			((MOB)affected).tell("You are no longer trying to subdue "+whom.name());
 		super.unInvoke();
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Ability A=mob.fetchEffect(ID());

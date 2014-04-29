@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class GenUndead extends GenMob
 {
-	public String ID(){return "GenUndead";}
+	@Override public String ID(){return "GenUndead";}
 	protected final Race undeadRace;
 	public GenUndead()
 	{
@@ -73,6 +73,7 @@ public class GenUndead extends GenMob
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharState(this, maxState);
 	}
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
@@ -80,13 +81,15 @@ public class GenUndead extends GenMob
 			undeadRace.affectPhyStats(this, phyStats);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.executeMsg(this, msg);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -96,12 +99,14 @@ public class GenUndead extends GenMob
 		return true;
 	}
 
+	@Override
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharStats(this, charStats);
 	}
+	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
 		DeadBody body=super.killMeDead(createBody);
@@ -124,5 +129,5 @@ public class GenUndead extends GenMob
 		return body;
 	}
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,9 +33,9 @@ import java.util.*;
 */
 public class Prop_TattooAdder extends Property
 {
-	public String ID() { return "Prop_TattooAdder"; }
-	public String name(){ return "A TattooAdder";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;}
+	@Override public String ID() { return "Prop_TattooAdder"; }
+	@Override public String name(){ return "A TattooAdder";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;}
 	int tattooCode=-1;
 
 	public int tattooCode()
@@ -95,7 +95,7 @@ public class Prop_TattooAdder extends Property
 			tattooMinus=true;
 			tattooName=tattooName.substring(1);
 		}
-		
+
 		boolean silent=tattooName.startsWith("~");
 		if(silent) tattooName=tattooName.substring(1);
 
@@ -125,6 +125,7 @@ public class Prop_TattooAdder extends Property
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((tattooCode()==CMMsg.TYP_DEATH)&&(msg.sourceMinor()==tattooCode()))

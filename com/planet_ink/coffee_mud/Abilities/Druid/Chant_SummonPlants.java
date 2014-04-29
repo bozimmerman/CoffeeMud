@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonPlants extends Chant
 {
-	public String ID() { return "Chant_SummonPlants"; }
-	public String name(){ return "Summon Plants";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Chant_SummonPlants"; }
+	@Override public String name(){ return "Summon Plants";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Room PlantsLocation=null;
 	protected Item littlePlants=null;
 	protected static Hashtable plantBonuses=new Hashtable();
 
+	@Override
 	public void unInvoke()
 	{
 		if(PlantsLocation==null)
@@ -65,6 +66,7 @@ public class Chant_SummonPlants extends Chant
 		}
 	}
 
+	@Override
 	public String text()
 	{
 		if((miscText.length()==0)
@@ -73,6 +75,7 @@ public class Chant_SummonPlants extends Chant
 		return super.text();
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(littlePlants))
@@ -182,7 +185,7 @@ public class Chant_SummonPlants extends Chant
 		}
 		return I;
 	}
-	
+
 	protected Item buildMyPlant(MOB mob, Room room){ return buildPlant(mob,room);}
 
 	public boolean rightPlace(MOB mob,boolean auto)
@@ -205,6 +208,7 @@ public class Chant_SummonPlants extends Chant
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -217,7 +221,8 @@ public class Chant_SummonPlants extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!rightPlace(mob,auto)) return false;

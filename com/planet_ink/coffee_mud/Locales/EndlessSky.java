@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class EndlessSky extends StdGrid
 {
-	public String ID(){return "EndlessSky";}
+	@Override public String ID(){return "EndlessSky";}
 	protected boolean crossLinked=false;
 
 	public EndlessSky()
@@ -55,8 +55,9 @@ public class EndlessSky extends StdGrid
 			ysize=3;
 		}
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -64,20 +65,23 @@ public class EndlessSky extends StdGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);
 	}
-	public String getGridChildLocaleID(){return "InTheAir";}
+	@Override public String getGridChildLocaleID(){return "InTheAir";}
 
+	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
 		if(dirCode!=Directions.DOWN)
 			return super.findCenterRoom(dirCode);
 		return subMap[subMap.length-1][subMap[0].length-1];
 	}
-	
+
+	@Override
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
@@ -133,6 +137,7 @@ public class EndlessSky extends StdGrid
 		}
 	}
 
+	@Override
 	public void buildGrid()
 	{
 		clearGrid(null);
@@ -154,13 +159,13 @@ public class EndlessSky extends StdGrid
 						}
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
-						
+
 						if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS()))
 							linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
-						
+
 						if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS()))
 							linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
-						
+
 					}
 				}
 			buildFinalLinks();

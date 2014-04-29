@@ -43,7 +43,7 @@ public class GCClassLoader
 	{
 		DB=newDB;
 	}
-	
+
 	public List<DatabaseEngine.AckRecord> DBReadClasses()
 	{
 		DBConnection D=null;
@@ -72,12 +72,12 @@ public class GCClassLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public void DBDeleteClass(String classID)
 	{
 		DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
 	}
-	
+
 	public void DBCreateClass(String classID, String data)
 	{
 		DB.updateWithClobs(
@@ -87,7 +87,7 @@ public class GCClassLoader
 		 +") values ("
 		 +"'"+classID+"',"
 		 +"?"
-		 +")", 
+		 +")",
 		 data+" ");
 	}
 }

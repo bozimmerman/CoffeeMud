@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_EndureRust extends Chant
 {
-	public String ID() { return "Chant_EndureRust"; }
-	public String name(){ return "Endure Rust";}
-	public String displayText(){return "(Endure Rust)";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public String ID() { return "Chant_EndureRust"; }
+	@Override public String name(){ return "Endure Rust";}
+	@Override public String displayText(){return "(Endure Rust)";}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	protected HashSet dontbother=new HashSet();
 
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
@@ -53,6 +54,7 @@ public class Chant_EndureRust extends Chant
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((((msg.target()==affected)&&(affected instanceof Item))
@@ -71,6 +73,7 @@ public class Chant_EndureRust extends Chant
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);

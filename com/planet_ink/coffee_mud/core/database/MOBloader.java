@@ -297,7 +297,7 @@ public class MOBloader
 		if(oldLoc!=null)
 		{
 			mob.setLocation(oldLoc);
-			if(inhab&&(!oldLoc.isInhabitant(mob))) 
+			if(inhab&&(!oldLoc.isInhabitant(mob)))
 				oldLoc.addInhabitant(mob);
 		}
 		// now grab the abilities
@@ -465,7 +465,7 @@ public class MOBloader
 		}
 		return null;
 	}
-	
+
 	public PlayerLibrary.ThinPlayer getThinUser(String name)
 	{
 		DBConnection D=null;
@@ -487,7 +487,7 @@ public class MOBloader
 		}
 		return thisUser;
 	}
-	
+
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
 	{
 		DBConnection D=null;
@@ -532,7 +532,7 @@ public class MOBloader
 		}
 		return new MOB.Tattoo(tattoo, tickDown);
 	}
-	
+
 	public void vassals(MOB mob, String liegeID)
 	{
 		DBConnection D=null;
@@ -675,7 +675,7 @@ public class MOBloader
 		}
 		return V;
 	}
-	
+
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{
 		Room location=mob.location();
@@ -730,7 +730,7 @@ public class MOBloader
 	}
 
 	public MemberRecord DBGetClanMember(String clan, String name)
-	{ 
+	{
 		DBConnection D=null;
 		try
 		{
@@ -822,7 +822,7 @@ public class MOBloader
 		||(clan==null)
 		||(name==null))
 			return;
-		
+
 		DBConnection D=null;
 		try
 		{
@@ -851,12 +851,12 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public void DBUpdate(MOB mob)
 	{
 		DBUpdateJustMOB(mob);
 		PlayerStats pStats = mob.playerStats();
-		if((mob.Name().length()==0)||(pStats==null)) 
+		if((mob.Name().length()==0)||(pStats==null))
 			return;
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
@@ -897,7 +897,7 @@ public class MOBloader
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
 		return pfxml.toString();
 	}
-	
+
 	public void DBUpdateJustPlayerStats(MOB mob)
 	{
 		if(mob.Name().length()==0)
@@ -910,7 +910,7 @@ public class MOBloader
 		String pfxml=getPlayerStatsXML(mob);
 		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
 	}
-	
+
 	public void DBUpdateJustMOB(MOB mob)
 	{
 		if(mob.Name().length()==0)
@@ -922,13 +922,13 @@ public class MOBloader
 		if(pstats==null) return;
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
-		
+
 		if((mob.location()!=null)
 		&&(mob.location().getArea()!=null)
 		&&(CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_PARENT)
 			||CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
 			strOtherRoomID=strStartRoomID;
-		
+
 		String pfxml=getPlayerStatsXML(mob);
 		StringBuilder cleanXML=new StringBuilder();
 		cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
@@ -1029,7 +1029,7 @@ public class MOBloader
 		+thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
 		+thisItem.basePhyStats().height()+")";
 	}
-	
+
 	private List<DBPreparedBatchEntry> getDBItemUpdateStrings(MOB mob)
 	{
 		HashSet<String> done=new HashSet<String>();
@@ -1098,7 +1098,7 @@ public class MOBloader
 		statements.addAll(getDBItemUpdateStrings(mob));
 		DB.updateWithClobs(statements);
 	}
-	
+
 	protected List<Pair<String,Integer>>[][] DBFindPrideWinners(int topThisMany, short scanCPUPercent, boolean players)
 	{
 		@SuppressWarnings("unchecked")
@@ -1113,7 +1113,7 @@ public class MOBloader
 		{
 			long nextWaitAfter=System.currentTimeMillis() + msWait;
 			final long now=System.currentTimeMillis();
-			
+
 			D=DB.DBFetch();
 			ResultSet R;
 			if(players)
@@ -1182,12 +1182,12 @@ public class MOBloader
 		}
 		return top;
 	}
-	
+
 	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent)
 	{
 		return DBFindPrideWinners(topThisMany,scanCPUPercent,true);
 	}
-	
+
 	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent)
 	{
 		return DBFindPrideWinners(topThisMany,scanCPUPercent,false);
@@ -1254,14 +1254,14 @@ public class MOBloader
 		DB.update("UPDATE CMCHAR SET CMWORS='"+newName+"' WHERE CMWORS='"+oldName+"'");
 		DB.update("UPDATE CMCHAR SET CMLEIG='"+newName+"' WHERE CMLEIG='"+oldName+"'");
 		DB.update("UPDATE CMCHCL SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
-			
+
 		DB.update("UPDATE CMCHFO SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMCHIT SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMJRNL SET CMFROM='"+newName+"' WHERE CMFROM='"+oldName+"'");
 		DB.update("UPDATE CMJRNL SET CMTONM='"+newName+"' WHERE CMTONM='"+oldName+"'");
 		DB.update("UPDATE CMPDAT SET CMPLID='"+newName+"' WHERE CMPLID='"+oldName+"'");
 	}
-	
+
 	public void DBDelete(MOB mob, boolean deleteAssets)
 	{
 		if(mob.Name().length()==0) return;
@@ -1413,7 +1413,7 @@ public class MOBloader
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
 				+"VALUES ('"+account.getAccountName()+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
 	}
-	
+
 	public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
 	{
 		PlayerAccount account = null;
@@ -1438,7 +1438,7 @@ public class MOBloader
 		{
 			// why in the hell is this a memory scan?
 			// case insensitivity from databases configured almost
-			// certainly by amateurs is the answer. That, and fakedb 
+			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.replaceAll(CMStrings.capitalizeAndLower(Login),"\'", "n")+"'");
@@ -1459,7 +1459,7 @@ public class MOBloader
 		}
 		return account;
 	}
-	
+
 	public List<PlayerAccount> DBListAccounts(String mask)
 	{
 		DBConnection D=null;
@@ -1470,7 +1470,7 @@ public class MOBloader
 		{
 			// why in the hell is this a memory scan?
 			// case insensitivity from databases configured almost
-			// certainly by amateurs is the answer. That, and fakedb 
+			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMACCT");
@@ -1494,7 +1494,7 @@ public class MOBloader
 		}
 		return accounts;
 	}
-	
+
 	public List<String> DBExpiredCharNameSearch(Set<String> skipNames)
 	{
 		DBConnection D=null;
@@ -1538,7 +1538,7 @@ public class MOBloader
 		}
 		return expiredPlayers;
 	}
-	
+
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
 	{
 		DBConnection D=null;
@@ -1548,7 +1548,7 @@ public class MOBloader
 		{
 			// why in the hell is this a memory scan?
 			// case insensitivity from databases configured almost
-			// certainly by amateurs is the answer. That, and fakedb 
+			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+CMStrings.capitalizeAndLower(Login).replace('\'', 'n')+"'");
@@ -1652,7 +1652,7 @@ public class MOBloader
 				R=D.query("SELECT * FROM CMCHAR WHERE CMEMAL LIKE '"+email+"'");
 			if((R==null)||(!R.next()))
 				R=D.query("SELECT * FROM CMCHAR");
-			if(R!=null) 
+			if(R!=null)
 				while(R.next())
 				{
 					String username=DB.getRes(R,"CMUSERID");

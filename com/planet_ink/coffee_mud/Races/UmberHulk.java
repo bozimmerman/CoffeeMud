@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,30 +34,31 @@ import java.util.*;
 */
 public class UmberHulk extends StdRace
 {
-	public String ID(){	return "UmberHulk"; }
-	public String name(){ return "Umber Hulk"; }
-	public int shortestMale(){return 96;}
-	public int shortestFemale(){return 90;}
-	public int heightVariance(){return 24;}
-	public int lightestWeight(){return 800;}
-	public int weightVariance(){return 200;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Giant-kin";}
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public String ID(){	return "UmberHulk"; }
+	@Override public String name(){ return "Umber Hulk"; }
+	@Override public int shortestMale(){return 96;}
+	@Override public int shortestFemale(){return 90;}
+	@Override public int heightVariance(){return 24;}
+	@Override public int lightestWeight(){return 800;}
+	@Override public int weightVariance(){return 200;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Giant-kin";}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
 	private int[]racialAbilityProficiencies={100,50};
 	private boolean[]racialAbilityQuals={false,false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -65,14 +66,17 @@ public class UmberHulk extends StdRace
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,8);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,9);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "thunders in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "leaves";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -85,6 +89,7 @@ public class UmberHulk extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -98,6 +103,7 @@ public class UmberHulk extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -134,6 +140,7 @@ public class UmberHulk extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

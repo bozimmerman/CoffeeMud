@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,21 +34,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_FakeArmor extends Spell
 {
-	public String ID() { return "Spell_FakeArmor"; }
-	public String name(){return "Fake Armor";}
-	protected int canAffectCode(){return CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Spell_FakeArmor"; }
+	@Override public String name(){return "Fake Armor";}
+	@Override protected int canAffectCode(){return CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
 	protected Item myItem=null;
 	private static boolean notAgainThisRound=false;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(notAgainThisRound) notAgainThisRound=false;
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
@@ -67,6 +69,7 @@ public class Spell_FakeArmor extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
+	@Override
 	public void unInvoke()
 	{
 		if(myItem==null) return;
@@ -79,6 +82,7 @@ public class Spell_FakeArmor extends Spell
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String[] choices={"plate","chain","leather", "studded"};

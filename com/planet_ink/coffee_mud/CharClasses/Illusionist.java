@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,12 +32,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Illusionist extends SpecialistMage
 {
-	public String ID(){return "Illusionist";}
-	public String name(){return "Illusionist";}
-	public int domain(){return Ability.DOMAIN_ILLUSION;}
-	public int opposed(){return Ability.DOMAIN_DIVINATION;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
-	
+	@Override public String ID(){return "Illusionist";}
+	@Override public String name(){return "Illusionist";}
+	@Override public int domain(){return Ability.DOMAIN_ILLUSION;}
+	@Override public int opposed(){return Ability.DOMAIN_DIVINATION;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();

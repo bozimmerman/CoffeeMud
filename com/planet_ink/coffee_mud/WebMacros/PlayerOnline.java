@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,11 @@ import java.util.*;
 */
 public class PlayerOnline extends StdWebMacro
 {
-	public String name() { return "PlayerOnline"; }
+	@Override public String name() { return "PlayerOnline"; }
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -54,8 +55,8 @@ public class PlayerOnline extends StdWebMacro
 			{
 				MOB M = CMLib.players().getPlayer(last);
 				return String.valueOf((M!=null)&&(M.session()!=null)&&(!M.session().isStopped()));
-			} 
-			else 
+			}
+			else
 			{
 				MOB M=CMLib.players().getLoadPlayer(last);
 				if(M==null)
@@ -72,7 +73,7 @@ public class PlayerOnline extends StdWebMacro
 						boolean canBan=false;
 						boolean canModify=false;
 						boolean canBoot=false;
-						
+
 						MOB authM=CMLib.players().getLoadPlayer(login);
 						if((authM!=null)&&(authM.Name().equals(M.Name())))
 						{
@@ -90,7 +91,7 @@ public class PlayerOnline extends StdWebMacro
 							if(CMSecurity.isAllowedEverywhere(authM,CMSecurity.SecFlag.BOOT))
 								canBoot=true;
 						}
-						
+
 						if(canBan&&(parms.containsKey("BANBYNAME")))
 							CMSecurity.ban(last);
 						if(canBan&&(parms.containsKey("BANBYIP")))
@@ -141,7 +142,7 @@ public class PlayerOnline extends StdWebMacro
 							byte[] buf=null;
 							for(MultiPartData data : httpReq.getMultiParts())
 							{
-								if(data.getVariables().containsKey("filename") 
+								if(data.getVariables().containsKey("filename")
 								&& (data.getContentType().startsWith("image")))
 								{
 									file=data.getVariables().get("filename");
@@ -166,7 +167,7 @@ public class PlayerOnline extends StdWebMacro
 							}
 							return "File not uploaded -- wrong type!";
 						}
-						
+
 						if(M.session()!=null)
 						{
 							if(canBoot&&(parms.containsKey("BOOT")))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Avatar extends Prayer
 {
-	public String ID() { return "Prayer_Avatar"; }
-	public String name(){ return "Avatar";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Avatar"; }
+	@Override public String name(){ return "Avatar";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
 	public String displayText()
 	{
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
 			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
 		return "(You are the AVATAR of the gods)";
 	}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -64,12 +66,14 @@ public class Prayer_Avatar extends Prayer
 			mob.tell("Your unholy alliance has been severed.");
 	}
 
+	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		super.affectCharState(affectedMOB,affectedState);
 		affectedState.setHitPoints(affectedState.getHitPoints()+200);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
@@ -87,6 +91,7 @@ public class Prayer_Avatar extends Prayer
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -116,7 +121,7 @@ public class Prayer_Avatar extends Prayer
 				{
 					int dir=-1;
 					Vector<Integer> dirs=new Vector<Integer>();
-					
+
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.getRoomInDir(d);
@@ -156,6 +161,7 @@ public class Prayer_Avatar extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -169,7 +175,7 @@ public class Prayer_Avatar extends Prayer
 		}
 
 		int levels=mob.charStats().getClassLevel("Avatar");
-		if(levels<0) 
+		if(levels<0)
 			levels=mob.phyStats().level();
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))

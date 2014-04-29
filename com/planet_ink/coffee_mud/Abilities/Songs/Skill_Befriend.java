@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Skill_Befriend extends BardSkill
 {
-	public String ID() { return "Skill_Befriend"; }
-	public String name(){ return "Befriend";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Skill_Befriend"; }
+	@Override public String name(){ return "Befriend";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"BEFRIEND"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;}
-	public int usageType(){return USAGE_MANA;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;}
+	@Override public int usageType(){return USAGE_MANA;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
@@ -54,7 +55,7 @@ public class Skill_Befriend extends BardSkill
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(target==mob)
 		{
 			mob.tell("You are already your own friend.");
@@ -70,19 +71,19 @@ public class Skill_Befriend extends BardSkill
 			mob.tell("You can only befriend fellow travellers.");
 			return false;
 		}
-		
+
 		if(!target.isMonster())
 		{
 			mob.tell("You need to ask "+target.charStats().himher());
 			return false;
 		}
-		
+
 		if(target.amFollowing()!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> is already someone elses friend.");
 			return false;
 		}
-		
+
 		if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
 		{
 			mob.tell(target,null,null,"<S-NAME> is not a fellow "+mob.charStats().getMyRace().racialCategory()+".");
@@ -100,7 +101,7 @@ public class Skill_Befriend extends BardSkill
 				return false;
 			}
 		}
-		
+
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
 			mob.tell("You can't speak!");
@@ -114,12 +115,12 @@ public class Skill_Befriend extends BardSkill
 			mob.tell(target.charStats().HeShe()+" can't hear your words.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=mob.phyStats().level()-target.phyStats().level();
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=(-(levelDiff*levelDiff))/(1+super.getXLEVELLevel(mob));
 		else
 			levelDiff=(levelDiff*(-levelDiff))/(1+super.getXLEVELLevel(mob));

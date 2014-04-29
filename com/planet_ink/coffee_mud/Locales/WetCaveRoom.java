@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class WetCaveRoom extends CaveRoom
 {
-	public String ID(){return "WetCaveRoom";}
+	@Override public String ID(){return "WetCaveRoom";}
 	public WetCaveRoom()
 	{
 		super();
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int maxRange(){return 5;}
-	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override public int maxRange(){return 5;}
+	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

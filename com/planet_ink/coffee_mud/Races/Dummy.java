@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import java.util.*;
 */
 public class Dummy extends Doll
 {
-	public String ID(){	return "Dummy"; }
-	public String name(){ return "Dummy"; }
-	public int shortestMale(){return 68;}
-	public int shortestFemale(){return 64;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 150;}
-	public int weightVariance(){return 50;}
+	@Override public String ID(){	return "Dummy"; }
+	@Override public String name(){ return "Dummy"; }
+	@Override public int shortestMale(){return 68;}
+	@Override public int shortestFemale(){return 64;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 150;}
+	@Override public int weightVariance(){return 50;}
 
+	@Override
 	public void affectCharState(MOB mob, CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
 		affectableMaxState.setHitPoints(99999);
 	}
 
+	@Override
 	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
 		super.affectPhyStats(E,affectableStats);
@@ -55,9 +57,10 @@ public class Dummy extends Doll
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) 
+		if(!super.okMessage(myHost,msg))
 			return false;
 		if((myHost instanceof MOB)
 		&&(msg.amISource((MOB)myHost)))
@@ -93,7 +96,8 @@ public class Dummy extends Doll
 		}
 		return true;
 	}
-	
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

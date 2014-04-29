@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Play_Ditty extends Play
 {
-	public String ID() { return "Play_Ditty"; }
-	public String name(){ return "Ditty";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected String songOf(){return "a "+name();}
-	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Play_Ditty"; }
+	@Override public String name(){ return "Ditty";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected String songOf(){return "a "+name();}
+	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

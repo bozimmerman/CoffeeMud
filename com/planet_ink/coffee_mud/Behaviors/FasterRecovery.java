@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class FasterRecovery extends StdBehavior
 {
-	public String ID(){return "FasterRecovery";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
+	@Override public String ID(){return "FasterRecovery";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
 	protected int burst=0;
 	protected int health=0;
 	protected int hits=0;
 	protected int mana=0;
 	protected int move=0;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "faster recovering";
 	}
 
-	
+
+	@Override
 	public void setParms(String parameters)
 	{
 		super.setParms(parameters);
@@ -89,7 +91,7 @@ public class FasterRecovery extends StdBehavior
 		}
 		return defaultValue;
 	}
-	
+
 	public void doBe(MOB M, int burst, int health, int hits, int mana, int move)
 	{
 		if(M==null) return;
@@ -144,6 +146,7 @@ public class FasterRecovery extends StdBehavior
 			doBe(R,burst,health,hits,mana,move);
 		}
 	}
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticking instanceof Room)

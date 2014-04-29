@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Prop_RoomUnmappable extends Property
 {
-	public String ID() { return "Prop_RoomUnmappable"; }
-	public String name(){ return "Unmappable Room/Area";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_RoomUnmappable"; }
+	@Override public String name(){ return "Unmappable Room/Area";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
 	private int bitStream=PhyStats.SENSE_ROOMUNMAPPABLE;
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -48,10 +49,12 @@ public class Prop_RoomUnmappable extends Property
 		if(CMParms.parse(newText.toUpperCase().trim()).contains("NOEXPLORE"))
 			bitStream=bitStream|PhyStats.SENSE_ROOMUNEXPLORABLE;
 	}
+	@Override
 	public String accountForYourself()
 	{ return "Unmappable";    }
 
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|bitStream);

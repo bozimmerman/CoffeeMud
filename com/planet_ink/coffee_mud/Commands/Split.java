@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,8 @@ public class Split extends StdCommand
 	public Split(){}
 
 	private final String[] access={"SPLIT"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,10 +53,10 @@ public class Split extends StdCommand
 		{
 			String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
 			double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
-	
+
 			int num=0;
 			Set<MOB> H=mob.getGroupMembers(new SHashSet<MOB>());
-			
+
 			for(Iterator<MOB> i=H.iterator();i.hasNext();)
 			{
 				final MOB recipientM=i.next();
@@ -74,7 +75,7 @@ public class Split extends StdCommand
 				mob.tell("No one appears to be eligible to receive any of your money.");
 				return false;
 			}
-	
+
 			double totalAbsoluteValue=CMath.mul(numGold,denom);
 			totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
 			if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
@@ -120,9 +121,9 @@ public class Split extends StdCommand
 		}
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
-	public boolean canBeOrdered(){return true;}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public boolean canBeOrdered(){return true;}
 
-	
+
 }

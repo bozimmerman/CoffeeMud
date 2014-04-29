@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Earthpocket extends Chant
 {
-	public String ID() { return "Chant_Earthpocket"; }
-	public String name(){return "Earthpocket";}
-	public String displayText(){return "(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+	@Override public String ID() { return "Chant_Earthpocket"; }
+	@Override public String name(){return "Earthpocket";}
+	@Override public String displayText(){return "(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	private Container pocket=null;
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -66,6 +67,7 @@ public class Chant_Earthpocket extends Chant
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.source()!=affected)
@@ -81,12 +83,14 @@ public class Chant_Earthpocket extends Chant
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		movePocket();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -133,6 +137,7 @@ public class Chant_Earthpocket extends Chant
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

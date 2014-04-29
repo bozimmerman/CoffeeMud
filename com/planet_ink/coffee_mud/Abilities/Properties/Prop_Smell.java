@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_Smell extends Property
 {
-	public String ID() { return "Prop_Smell"; }
-	public String name(){ return "A Smell";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_Smell"; }
+	@Override public String name(){ return "A Smell";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected DVector smells=null;
 	protected final static int FLAG_EMOTE=512;
 	protected final static int FLAG_BROADCAST=1024;
 	protected boolean lastWasBroadcast=false;
-	
-	public String accountForYourself(){ return "";	}
+
+	@Override public String accountForYourself(){ return "";	}
+	@Override
 	public void setMiscText(String newStr)
 	{
 		if(newStr.startsWith("+"))
@@ -147,7 +148,8 @@ public class Prop_Smell extends Property
 		}
 		return "";
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -156,7 +158,7 @@ public class Prop_Smell extends Property
 		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,selectSmell(false));
 	}
-	
+
 	public void emoteHere(Room room, MOB emoter, String str)
 	{
 		CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
@@ -164,11 +166,12 @@ public class Prop_Smell extends Property
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
-			if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M))) 
+			if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
 				M.executeMsg(M,msg);
 		}
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)&&(CMLib.dice().rollPercentage()<=20))

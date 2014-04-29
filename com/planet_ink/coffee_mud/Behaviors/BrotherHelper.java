@@ -34,24 +34,26 @@ import java.util.*;
 */
 public class BrotherHelper extends StdBehavior
 {
-	public String ID(){return "BrotherHelper";}
+	@Override public String ID(){return "BrotherHelper";}
 
 	//protected boolean mobKiller=false;
 	protected boolean nameOnly = true;
 	protected int num=-1;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "neighbor protecting";
 	}
-	
+
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
 		nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
 		num=-1;
 	}
-	
+
 	public int numAllowed()
 	{
 		if(num<0)
@@ -61,7 +63,7 @@ public class BrotherHelper extends StdBehavior
 			for(int v=0;v<V.size();v++)
 				if(CMath.isInteger(V.elementAt(v)))
 					num=CMath.s_int(V.elementAt(v));
-			
+
 		}
 		return num;
 	}
@@ -82,6 +84,7 @@ public class BrotherHelper extends StdBehavior
 		return false;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

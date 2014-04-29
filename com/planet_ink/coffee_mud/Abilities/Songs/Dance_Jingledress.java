@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Dance_Jingledress extends Dance
 {
-	public String ID() { return "Dance_Jingledress"; }
-	public String name(){ return "Jingledress";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected String danceOf(){return name()+" Dance";}
-	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Dance_Jingledress"; }
+	@Override public String name(){ return "Jingledress";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected String danceOf(){return name()+" Dance";}
+	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

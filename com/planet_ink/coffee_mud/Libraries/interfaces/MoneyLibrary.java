@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,7 +112,7 @@ public interface MoneyLibrary extends CMLibrary
 	public void delAllDebt(String name, String owedTo);
 	public void dropMoney(Room R, Container container, String currency, double absoluteValue);
 	public void removeMoney(Room R, Container container, String currency, double absoluteValue);
-	
+
 	public static class MoneyDenomination
 	{
 		public double value=0.0;

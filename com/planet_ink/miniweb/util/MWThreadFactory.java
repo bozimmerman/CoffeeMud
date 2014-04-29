@@ -25,13 +25,13 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-public class MWThreadFactory implements ThreadFactory  
+public class MWThreadFactory implements ThreadFactory
 {
 	private String 						serverName;
 	private final AtomicInteger 		counter		= new AtomicInteger();
 	private final LinkedList<Thread> 	active 		= new LinkedList<Thread>();
 	private final MiniWebConfig			config;
-	
+
 	public MWThreadFactory(String serverName, MiniWebConfig config)
 	{
 		this.serverName=serverName;
@@ -41,14 +41,15 @@ public class MWThreadFactory implements ThreadFactory
 	{
 		this.serverName=newName;
 	}
-	public Thread newThread(Runnable r) 
+	@Override
+	public Thread newThread(Runnable r)
 	{
 		final Thread t = new MWThread(config, r,"mweb-"+serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}
-	public Collection<Thread> getThreads() 
-	{ 
+	public Collection<Thread> getThreads()
+	{
 		return active;
 	}
 }

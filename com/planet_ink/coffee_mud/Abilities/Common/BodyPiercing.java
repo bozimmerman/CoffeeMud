@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class BodyPiercing extends CommonSkill
 {
-	public String ID() { return "BodyPiercing"; }
-	public String name(){ return "Body Piercing";}
+	@Override public String ID() { return "BodyPiercing"; }
+	@Override public String name(){ return "Body Piercing";}
 	private static final String[] triggerStrings = {"BODYPIERCE","BODYPIERCING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	protected String writing="";
 	MOB target=null;
 	public BodyPiercing()
@@ -50,6 +50,7 @@ public class BodyPiercing extends CommonSkill
 		verb="piercing";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -69,6 +70,7 @@ public class BodyPiercing extends CommonSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -82,6 +84,7 @@ public class BodyPiercing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -103,7 +106,7 @@ public class BodyPiercing extends CommonSkill
 				part=CMParms.combine(commands,2);
 			}
 		}
-		
+
 		MOB target=super.getTarget(mob,new XVector(name),givenTarget);
 		if(target==null) return false;
 		if((target.isMonster())
@@ -113,7 +116,7 @@ public class BodyPiercing extends CommonSkill
 			mob.tell(target.Name()+" doesn't want any piercings.");
 			return false;
 		}
-		
+
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
 		String[][] piercables={{"lip", "nose"},
@@ -136,7 +139,7 @@ public class BodyPiercing extends CommonSkill
 					{
 						if(piercables[ii][iii].startsWith(part.toLowerCase()))
 						{
-							partNum=i; 
+							partNum=i;
 							fullPartName=piercables[ii][iii];
 							wearLocName=codes.name(partNum).toUpperCase();
 						}
@@ -159,7 +162,7 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,"That location is not available for piercing. Make sure no clothing is being worn there.");
 			return false;
 		}
-		
+
 		int numTattsDone=0;
 		for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 		{
@@ -181,7 +184,7 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,"That location is already decorated.");
 			return false;
 		}
-		
+
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(wornName==null))
 			return false;
 		if(wornName.toLowerCase().endsWith("s"))

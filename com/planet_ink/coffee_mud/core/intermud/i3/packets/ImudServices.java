@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
- * 
+ *
  * The interface for a intermud services daemon
  */
 
@@ -78,28 +78,28 @@ public interface ImudServices {
 	 * @return the name of this mud
 	 */
 	public abstract String getMudName();
-	
+
 	/**
 	 * Returns the mask of a remote channel
 	 * @param str the remote channel
 	 * @return the mask;
 	 */
 	public String getRemoteMask(String str);
-	
+
 	/**
 	 * Add a new channel
 	 * @param chan the channel to add
 	 * @return true if no conflicts
 	 */
 	public boolean addChannel(CMChannel chan);
-	
+
 	/**
 	 * Remove a channel
 	 * @param remoteChannelName the i3 channel to remove
 	 * @return true if remove worked
 	 */
 	public boolean delChannel(String remoteChannelName);
-	
+
 	/**
 	 * @return the status of this mud
 	 */

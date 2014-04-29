@@ -17,7 +17,7 @@ import com.planet_ink.miniweb.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class AccountOnline extends StdWebMacro
 {
-	public String name() { return "AccountOnline"; }
+	@Override public String name() { return "AccountOnline"; }
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -59,7 +60,7 @@ public class AccountOnline extends StdWebMacro
 			}
 			if(parms.size()==0)
 				return Boolean.toString(onlineM != null);
-			else 
+			else
 			{
 				String login=Authenticate.getLogin(httpReq);
 				if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
@@ -87,7 +88,7 @@ public class AccountOnline extends StdWebMacro
 						if(CMSecurity.isAllowedEverywhere(authM, CMSecurity.SecFlag.CMDPLAYERS))
 							canModify=true;
 					}
-					
+
 					if(canBan&&(parms.containsKey("BANBYNAME")))
 						CMSecurity.ban(last);
 					if(canBan&&(parms.containsKey("BANBYIP")))

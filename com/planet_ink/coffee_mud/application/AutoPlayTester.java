@@ -37,7 +37,7 @@ public class AutoPlayTester
 	private String 				host="localhost";
 	private int 				port = 5555;
 	private String				filename="resources/autoplayer/autoplay.js";
-	
+
 	public AutoPlayTester(String host, int port, String charName, String script)
 	{
 		this.host=host;
@@ -45,13 +45,13 @@ public class AutoPlayTester
 		this.name=charName;
 		this.filename=script;
 	}
-	
+
 	public LinkedList<String> bufferFill() throws IOException
 	{
 		int c;
 		StringBuffer buf=new StringBuffer("");
 		int lastc=0;
-		
+
 		try
 		{
 			while((c=in.read()) >=0)
@@ -72,19 +72,19 @@ public class AutoPlayTester
 		}
 		catch(Exception e)
 		{
-			
+
 		}
 		if(buf.length()>0)
 			inbuffer.add(globalReactionary(buf.toString()));
 		return inbuffer;
 	}
-	
+
 	public String globalReactionary(String s)
 	{
 		System.out.println(s);
 		return s;
 	}
-	
+
 	public String[] waitFor(String regEx, int num) throws IOException
 	{
 		long waitUntil = System.currentTimeMillis() + (60 * 1000);
@@ -124,7 +124,7 @@ public class AutoPlayTester
 		}
 		throw new IOException("wait for "+regEx+" timed out.");
 	}
-	
+
 	public void writeln(String s) throws IOException
 	{
 		System.out.println(s);
@@ -132,7 +132,7 @@ public class AutoPlayTester
 		out.write(s+"\n");
 		out.flush();
 	}
-	
+
 	public boolean login()
 	{
 		try
@@ -175,12 +175,12 @@ public class AutoPlayTester
 		}
 		return js.toString();
 	}
-	
+
 	public void run()
 	{
 		System.out.println("Executing: "+filename);
 		String js=getJavaScript(filename);
-		
+
 		Context cx = Context.enter();
 		try
 		{
@@ -196,14 +196,14 @@ public class AutoPlayTester
 		}
 		Context.exit();
 	}
-	
+
 	protected static class JScriptEvent extends ScriptableObject
 	{
-		public String getClassName(){ return "JScriptEvent";}
+		@Override public String getClassName(){ return "JScriptEvent";}
 		static final long serialVersionUID=43;
 		protected AutoPlayTester testObj;
-		public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout", 
-												 "stderr", "waitFor", "waitForMultiMatch", "startsWith", 
+		public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout",
+												 "stderr", "waitFor", "waitForMultiMatch", "startsWith",
 												 "name","rand","sleep"};
 		public AutoPlayTester tester() { return testObj;}
 		public String toJavaString(Object O){return Context.toString(O);}
@@ -230,7 +230,7 @@ public class AutoPlayTester
 			}
 			catch(Exception e) { return null; }
 		}
-		public boolean writeLine(Object O) 
+		public boolean writeLine(Object O)
 		{
 			try
 			{
@@ -239,19 +239,19 @@ public class AutoPlayTester
 			}
 			catch(Exception e) { return false; }
 		}
-		
+
 		public JScriptEvent(AutoPlayTester testObj)
 		{
 			this.testObj=testObj;
 		}
 	}
-	
+
 	public final static int s_int(final String INT)
 	{
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return 0;}
 	}
-	
+
 	public static void main(String[] args)
 	{
 		if(args.length<4)

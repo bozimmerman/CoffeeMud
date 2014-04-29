@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Trap_Enter extends Trap_Trap
 {
-	public String ID() { return "Trap_Enter"; }
-	public String name(){ return "Entry Trap";}
-	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
+	@Override public String ID() { return "Trap_Enter"; }
+	@Override public String name(){ return "Entry Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(sprung) return super.okMessage(myHost,msg);
@@ -60,6 +61,7 @@ public class Trap_Enter extends Trap_Trap
 		}
 		return true;
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

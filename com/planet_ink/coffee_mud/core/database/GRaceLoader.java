@@ -56,7 +56,7 @@ public class GRaceLoader
 		 +") values ("
 		 +"'"+raceID+"',"
 		 +"?"
-		 +")", 
+		 +")",
 		 data+" ");
 	}
 	public List<DatabaseEngine.AckRecord> DBReadRaces()

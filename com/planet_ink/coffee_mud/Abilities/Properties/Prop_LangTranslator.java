@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,16 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_LangTranslator extends Property implements Language
 {
-	public String ID() { return "Prop_LangTranslator"; }
-	public String name(){return "Language Translator";}
-	public String writtenName(){return "Language Translator";}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
+	@Override public String ID() { return "Prop_LangTranslator"; }
+	@Override public String name(){return "Language Translator";}
+	@Override public String writtenName(){return "Language Translator";}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
 	protected DVector langs=new DVector(2);
 
+	@Override
 	public String accountForYourself()
 	{ return "Translates spoken language";	}
 
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
@@ -65,14 +67,17 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 	}
 
-	public List<String> languagesSupported() 
+	@Override
+	public List<String> languagesSupported()
 	{
 		return langs.getDimensionVector(1);
 	}
+	@Override
 	public boolean translatesLanguage(String language)
 	{
 		return langs.containsIgnoreCase(language);
 	}
+	@Override
 	public int getProficiency(String language)
 	{
 		for(int i=0;i<langs.size();i++)
@@ -80,12 +85,13 @@ public class Prop_LangTranslator extends Property implements Language
 				return ((Integer)langs.elementAt(i,2)).intValue();
 		return 0;
 	}
-	public boolean beingSpoken(String language) { return true; }
-	public void setBeingSpoken(String language, boolean beingSpoken) {}
-	public Map<String, String> translationHash(String language) { return new Hashtable();}
-	public List<String[]> translationVector(String language) { return new Vector();}
-	public String translate(String language, String word) { return word;}
-	
+	@Override public boolean beingSpoken(String language) { return true; }
+	@Override public void setBeingSpoken(String language, boolean beingSpoken) {}
+	@Override public Map<String, String> translationHash(String language) { return new Hashtable();}
+	@Override public List<String[]> translationVector(String language) { return new Vector();}
+	@Override public String translate(String language, String word) { return word;}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

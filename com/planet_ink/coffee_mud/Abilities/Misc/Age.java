@@ -39,14 +39,15 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Age extends StdAbility
 {
-	public String ID() { return "Age"; }
-	public String name(){ return "Age";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	public String accountForYourself(){return displayText();}
+	@Override public String ID() { return "Age"; }
+	@Override public String name(){ return "Age";}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
+	@Override public String accountForYourself(){return displayText();}
+	@Override
 	public String displayText()
 	{
 		long start=CMath.s_long(text());
@@ -102,7 +103,7 @@ public class Age extends StdAbility
 		}
 		return myRace;
 	}
-	
+
 	protected MOB getFollowing(Environmental babe)
 	{
 		MOB following=null;
@@ -579,7 +580,7 @@ public class Age extends StdAbility
 					babe.setName(name);
 					babe.setDisplayText(name+" stands here.");
 				}
-				
+
 				babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 				babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
 				babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,10);
@@ -615,11 +616,12 @@ public class Age extends StdAbility
 				babe.text();
 			}
 		}
-		
-		
+
+
 		norecurse=false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -734,11 +736,13 @@ public class Age extends StdAbility
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		doThang();
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

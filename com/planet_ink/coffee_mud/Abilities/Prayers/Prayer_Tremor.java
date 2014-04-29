@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Tremor extends Prayer
 {
-	public String ID() { return "Prayer_Tremor"; }
-	public String name(){ return "Tremor";}
-	public String displayText(){return "(Tremor)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public String ID() { return "Prayer_Tremor"; }
+	@Override public String name(){ return "Tremor";}
+	@Override public String displayText(){return "(Tremor)";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected boolean oncePerRd=false;
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{ oncePerRd=false; return super.tick(ticking,tickID);}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -59,6 +61,7 @@ public class Prayer_Tremor extends Prayer
 	}
 
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
@@ -79,6 +82,7 @@ public class Prayer_Tremor extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -103,6 +107,7 @@ public class Prayer_Tremor extends Prayer
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);

@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Emoter extends ActiveTicker
 {
-	public String ID(){return "Emoter";}
+	@Override public String ID(){return "Emoter";}
 	protected int expires=0;
 	public Emoter()
 	{
@@ -46,6 +46,7 @@ public class Emoter extends ActiveTicker
 	}
 
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -71,8 +72,9 @@ public class Emoter extends ActiveTicker
 	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL }
 	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "emoting";
 	}
 
@@ -168,6 +170,7 @@ public class Emoter extends ActiveTicker
 		return emotes;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -221,7 +224,7 @@ public class Emoter extends ActiveTicker
 		}
 		return true;
 	}
-	
+
 	protected void emoteHere(Room room,
 							 MOB emoter,
 							 EmoteObj emote,
@@ -275,6 +278,7 @@ public class Emoter extends ActiveTicker
 		if(oldLoc!=null) emoter.setLocation(oldLoc);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

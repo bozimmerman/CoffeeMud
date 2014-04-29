@@ -39,54 +39,54 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdCharClass implements CharClass
 {
-	public String ID(){return "StdCharClass";}
-	public String name(){return "mob";}
+	@Override public String ID(){return "StdCharClass";}
+	@Override public String name(){return "mob";}
 
-	public String name(int classLevel){return name();}
-	public String baseClass(){return ID();}
-	public int getLevelCap() {return -1;}
-	public int getBonusPracLevel(){return 0;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getPracsFirstLevel(){return 5;}
-	public int getTrainsFirstLevel(){return 3;}
-	public int getLevelsPerBonusDamage(){ return 1;}
-	public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
+	@Override public String name(int classLevel){return name();}
+	@Override public String baseClass(){return ID();}
+	@Override public int getLevelCap() {return -1;}
+	@Override public int getBonusPracLevel(){return 0;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getPracsFirstLevel(){return 5;}
+	@Override public int getTrainsFirstLevel(){return 3;}
+	@Override public int getLevelsPerBonusDamage(){ return 1;}
+	@Override public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
 	public String movementDesc=null;
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?6))"; }
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?6))"; }
 	public String hitPointsDesc=null;
-	public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?6))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?6))"; }
 	public String manaDesc=null;
-	
+
 	protected String[] names=null;
-	
+
 	protected int maxStatAdj[]=new int[CharStats.CODES.TOTAL()];
 	protected Vector outfitChoices=null;
-	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
 	protected HashSet disallowedWeaponClasses(MOB mob){return null;}
 	protected HashSet requiredWeaponMaterials(){return null;}
 	protected int requiredArmorSourceMinor(){return -1;}
 	protected String armorFailMessage(){return "<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!";}
-	public boolean raceless(){return false;}
-	public boolean leveless(){return false;}
-	public boolean expless(){return false;}
-	public SubClassRule getSubClassRule() { return SubClassRule.BASEONLY; }
-	public boolean showThinQualifyList(){return false;}
-	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXNONCRAFTINGSKILLS); }
-	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXCRAFTINGSKILLS); }
-	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.Int.MAXCOMMONSKILLS); }
-	public int maxLanguages() { return CMProps.getIntVar(CMProps.Int.MAXLANGUAGES); }
+	@Override public boolean raceless(){return false;}
+	@Override public boolean leveless(){return false;}
+	@Override public boolean expless(){return false;}
+	@Override public SubClassRule getSubClassRule() { return SubClassRule.BASEONLY; }
+	@Override public boolean showThinQualifyList(){return false;}
+	@Override public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXNONCRAFTINGSKILLS); }
+	@Override public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXCRAFTINGSKILLS); }
+	@Override public int maxCommonSkills() { return CMProps.getIntVar(CMProps.Int.MAXCOMMONSKILLS); }
+	@Override public int maxLanguages() { return CMProps.getIntVar(CMProps.Int.MAXLANGUAGES); }
 	private static final CMSecurity.SecGroup empty=new CMSecurity.SecGroup(new CMSecurity.SecFlag[]{});
-	public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
+	@Override public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
 	private final String[] raceRequiredList=new String[0];
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
-	public CMObject newInstance(){return this;}
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public CMObject newInstance(){return this;}
 
 	protected String getShortAttackAttribute() { return CharStats.CODES.SHORTNAME(getAttackAttribute()); }
-	
+
 	protected final static String[][] hitPointDescReplacePairs={
 		{"@x1","Lvl"},{"(@x2<@x3)","Str"},{"@x2<@x3","Str"},{"(@x4<@x5)","Dex"},{"@x4<@x5","Dex"},
 		{"(@x6<@x7)","Con"},{"@x6<@x7","Con"},{"@x2","Str"},{"@x3","Str"},{"@x4","Dex"},{"@x5","Dex"},
@@ -103,7 +103,8 @@ public class StdCharClass implements CharClass
 		{"(@x6<@x7)","Con"},{"@x6<@x7","Con"},{"@x2","Str"},{"@x3","Str"},{"@x4","Dex"},{"@x5","Dex"},
 		{"@x6", "Con"},{"@x7", "Con"},{"@x8", "Int"},{"@x9", "Wis"},{"1?", "d"},{"*", "X"}
 	};
-	
+
+	@Override
 	public String[] nameSet()
 	{
 		if(names!=null) return names;
@@ -111,17 +112,19 @@ public class StdCharClass implements CharClass
 		names[0]=name();
 		return names;
 	}
+	@Override
 	public void initializeClass()
 	{
 	}
 
-	public boolean isGeneric(){return false;}
-	public int availabilityCode(){return 0;}
+	@Override public boolean isGeneric(){return false;}
+	@Override public int availabilityCode(){return 0;}
 
 	public void cloneFix(CharClass C)
 	{
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -137,24 +140,28 @@ public class StdCharClass implements CharClass
 		}
 	}
 
+	@Override
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
+	@Override
 	public int classLevelModifier(MOB myChar, Ability skill, int level)
 	{ return level;}
 
-	public int getTickStatus(){return Tickable.STATUS_NOT;}
-	
+	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+
+	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		return true;
 	}
 
+	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STDCLASSES) && (!isGeneric()))
 			return false;
-		
+
 		String multiClassRule=CMProps.getVar(CMProps.Str.MULTICLASS);
 		String multiClassFirstRule=multiClassRule;
 		String multiClassSecondRule="";
@@ -164,11 +171,11 @@ public class StdCharClass implements CharClass
 			multiClassFirstRule=multiClassRule.substring(0, x);
 			multiClassSecondRule=multiClassRule.substring(x+1);
 		}
-		
+
 		String changeToBaseClassID=baseClass();
 		String changeToClassID=ID();
 		SubClassRule changeToSubClassRule = getSubClassRule();
-		
+
 		String canOnlyBeClassID="";
 		String canOnlyBeBaseClassID="";
 		if(multiClassSecondRule.length()>0)
@@ -188,7 +195,7 @@ public class StdCharClass implements CharClass
 				multiClassSecondRule="NO";
 			}
 		}
-		
+
 		if(mob == null)
 		{
 			if(multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("SUB"))
@@ -200,11 +207,11 @@ public class StdCharClass implements CharClass
 			else
 				return true;
 		}
-		
+
 		CharClass curClass = mob.baseCharStats().getCurrentClass();
 		String currentClassID=curClass.ID();
 		String currentBaseClassID=curClass.baseClass();
-		
+
 		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
 		{
 			int statCode=CharStats.CODES.findWhole(minReq.first, true);
@@ -326,7 +333,7 @@ public class StdCharClass implements CharClass
 		}
 		return true;
 	}
-	
+
 	private StringBuilder getRaceList(String[] raceList)
 	{
 		StringBuilder str=new StringBuilder();
@@ -345,12 +352,15 @@ public class StdCharClass implements CharClass
 		}
 		return str;
 	}
+	@Override
 	public String getWeaponLimitDesc()
 	{ return WEAPONS_LONGDESC[allowedWeaponLevel()];}
+	@Override
 	public String getArmorLimitDesc()
 	{ return ARMOR_LONGDESC[allowedArmorLevel()];}
-	public String getOtherLimitsDesc(){return "";}
-	public String getOtherBonusDesc(){return "";}
+	@Override public String getOtherLimitsDesc(){return "";}
+	@Override public String getOtherBonusDesc(){return "";}
+	@Override
 	public String getStatQualDesc()
 	{
 		Pair<String,Integer>[] reqs=getMinimumStatRequirements();
@@ -366,13 +376,15 @@ public class StdCharClass implements CharClass
 		}
 		return str.toString();
 	}
-	
+
+	@Override
 	public String getRaceQualDesc()
 	{
 		final String[] raceList=getRequiredRaceList();
 		if(raceList.length==0) return "All";
 		return getRaceList(raceList).toString();
 	}
+	@Override
 	public String getMaxStatDesc()
 	{
 		StringBuilder str=new StringBuilder("");
@@ -382,6 +394,7 @@ public class StdCharClass implements CharClass
 		str.append("Others ("+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+")");
 		return str.toString();
 	}
+	@Override
 	public String getPracticeDesc()
 	{
 		StringBuilder str=new StringBuilder("");
@@ -393,15 +406,18 @@ public class StdCharClass implements CharClass
 			str.append(""+getBonusPracLevel());
 		return str.toString()+" per level";
 	}
-	public String getTrainDesc() 
-	{ 
+	@Override
+	public String getTrainDesc()
+	{
 		return getTrainsFirstLevel()+" +1 per level";
 	}
+	@Override
 	public String getDamageDesc()
 	{
 		return "+1 damage per "+getLevelsPerBonusDamage()+" level(s)";
 	}
 
+	@Override
 	public String getHitPointDesc()
 	{
 		if(hitPointsDesc==null)
@@ -420,6 +436,7 @@ public class StdCharClass implements CharClass
 		return hitPointsDesc;
 	}
 
+	@Override
 	public String getManaDesc()
 	{
 		if(manaDesc==null)
@@ -438,6 +455,7 @@ public class StdCharClass implements CharClass
 		return manaDesc;
 	}
 
+	@Override
 	public String getMovementDesc()
 	{
 		if(movementDesc==null)
@@ -456,10 +474,12 @@ public class StdCharClass implements CharClass
 		return movementDesc;
 	}
 
+	@Override
 	public String getPrimeStatDesc()
 	{
 		return CMStrings.capitalizeAndLower(CharStats.CODES.DESC(getAttackAttribute()));
 	}
+	@Override
 	public String getAttackDesc()
 	{
 		StringBuilder str=new StringBuilder("");
@@ -472,7 +492,7 @@ public class StdCharClass implements CharClass
 		str.append(" per level");
 		return str.toString();
 	}
-	
+
 	protected HashSet buildDisallowedWeaponClasses(){return buildDisallowedWeaponClasses(allowedWeaponLevel());}
 	protected HashSet buildDisallowedWeaponClasses(int lvl)
 	{
@@ -539,7 +559,7 @@ public class StdCharClass implements CharClass
 			return false;
 		return true;
 	}
-	
+
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
@@ -557,7 +577,7 @@ public class StdCharClass implements CharClass
 	}
 
 	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass)
-	{ 
+	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);
 	}
 
@@ -577,11 +597,13 @@ public class StdCharClass implements CharClass
 		return false;
 	}
 
+	@Override
 	public int[] maxStatAdjustments()
 	{
 		return maxStatAdj;
 	}
 
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
@@ -642,6 +664,7 @@ public class StdCharClass implements CharClass
 		}
 	}
 
+	@Override
 	public CharClass makeGenCharClass()
 	{
 		if(isGeneric()) return this;
@@ -856,9 +879,11 @@ public class StdCharClass implements CharClass
 	}
 
 
+	@Override
 	public void endCharacter(MOB mob)
 	{
 	}
+	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!verifyOnly)
@@ -869,12 +894,14 @@ public class StdCharClass implements CharClass
 		}
 	}
 
-	public List<Item> outfit(MOB myChar){return outfitChoices;}
+	@Override public List<Item> outfit(MOB myChar){return outfitChoices;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
@@ -882,10 +909,12 @@ public class StdCharClass implements CharClass
 			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
 	}
 
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==myHost)
@@ -907,6 +936,7 @@ public class StdCharClass implements CharClass
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==myHost)
@@ -939,19 +969,21 @@ public class StdCharClass implements CharClass
 			}
 		}
 	}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public void unLevel(MOB mob){}
+	@Override public void unLevel(MOB mob){}
 
-	public void level(MOB mob, List<String> gainedAbilityIDs){}
+	@Override public void level(MOB mob, List<String> gainedAbilityIDs){}
 
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
+	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		return isValidClassBeneficiary(killer,killed,mob,followers);
 	}
 
+	@Override
 	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -964,10 +996,11 @@ public class StdCharClass implements CharClass
 		return false;
 	}
 
-	public String classParms(){ return "";}
-	public void setClassParms(String parms){}
+	@Override public String classParms(){ return "";}
+	@Override public void setClassParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -977,6 +1010,7 @@ public class StdCharClass implements CharClass
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
@@ -985,8 +1019,8 @@ public class StdCharClass implements CharClass
 		case 1: setClassParms(val); break;
 		}
 	}
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)

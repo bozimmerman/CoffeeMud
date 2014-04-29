@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Tattooing extends CommonSkill
 {
-	public String ID() { return "Tattooing"; }
-	public String name(){ return "Tattooing";}
+	@Override public String ID() { return "Tattooing"; }
+	@Override public String name(){ return "Tattooing";}
 	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected String writing="";
 	MOB target=null;
 	public Tattooing()
@@ -50,6 +50,7 @@ public class Tattooing extends CommonSkill
 		verb="tattooing";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -69,6 +70,7 @@ public class Tattooing extends CommonSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -82,6 +84,7 @@ public class Tattooing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<3)
@@ -96,7 +99,7 @@ public class Tattooing extends CommonSkill
 		String message=CMParms.combine(commands,0);
 		commands.clear();
 		commands.addElement(whom);
-		
+
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
 		long[] tattoable={Wearable.WORN_ARMS,
@@ -128,7 +131,7 @@ public class Tattooing extends CommonSkill
 		}
 		long wornCode=codes.get(partNum);
 		String wornName=codes.name(partNum);
-		
+
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -142,7 +145,7 @@ public class Tattooing extends CommonSkill
 			commonTell(mob,"That location is currently covered by something.");
 			return false;
 		}
-		
+
 		int numTattsDone=0;
 		MOB.Tattoo tatToRemove=null;
 		for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
@@ -169,7 +172,7 @@ public class Tattooing extends CommonSkill
 			commonTell(mob,"That location is already completely decorated.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=wornName.toUpperCase()+":A tattoo of "+message;
@@ -180,7 +183,7 @@ public class Tattooing extends CommonSkill
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		if("REMOVE".startsWith(message.toUpperCase()))
 			str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
-		
+
 		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))
 		{

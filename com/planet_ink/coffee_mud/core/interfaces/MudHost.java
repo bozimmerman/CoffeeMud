@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-/** 
+/**
  * The interface implemented by the main mud application.  Includes several timing constants.
  * @author Bo Zimmerman
  *
@@ -48,19 +48,19 @@ public interface MudHost
 	public final static long TIME_UTILTHREAD_SLEEP=10 * 60000;
 	/** for multi-host systems, the thread code denoting the main/first mud host */
 	public final static char MAIN_HOST='0';
-	
+
 	/**
 	 * the hostname of the mud server
-	 * @return hostname or ip address 
+	 * @return hostname or ip address
 	 */
 	public String getHost();
-	
+
 	/**
 	 * the port a given MUD server instance is listening on
 	 * @return the port numbered listened on by this mud instance
 	 */
 	public int getPort();
-	
+
 	/**
 	 * An order to permanently shutdown the entire mud system
 	 * @param S a player session to send status messages to.  May be null.
@@ -68,31 +68,31 @@ public interface MudHost
 	 * @param externalCommand if keepItDown is false, an external command to execute
 	 */
 	public void shutdown(Session S, boolean keepItDown, String externalCommand);
-	
+
 	/**
 	 * Retreive a string telling the status of mud startup or shutdown
 	 * @return status of mud startup or shutdown
 	 */
 	public String getStatus();
-	
+
 	/**
 	 * Retreive the number of seconds since startup
 	 * @return number of seconds since startup
 	 */
 	public long getUptimeSecs();
-	
+
 	/**
 	 * Return any internal threads that are a source of troubles
 	 * @return a list of threads that need service or killing
 	 */
 	public List<Runnable> getOverdueThreads();
-	
+
 	/**
 	 * Return the viewable name of the language supported by this host.
 	 * @return the language supported by this host.
 	 */
 	public String getLanguage();
-	
+
 	/**
 	 * Flexible interface for tinkering with mud-host settings.
 	 * Commands to be defined later, or now, or whatever.
@@ -102,27 +102,27 @@ public interface MudHost
 	 */
 	public String executeCommand(String cmd)
 		throws Exception;
-	
+
 	/**
 	 * Because thread groups are used to track configurations,
 	 * here is a way to get it.
 	 * @return the thread group this host was created under.
 	 */
 	public ThreadGroup threadGroup();
-	
+
 	/**
 	 * Sets whether this mud is accepting connections
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MudHost#isAcceptingConnections()
 	 * @param truefalse whether it is accepting connections
 	 */
 	public void setAcceptConnections(boolean truefalse);
-	
+
 	/**
 	 * Handles a connection from a user, and internal states
 	 * @param sock the socket the connection was made on
 	 */
 	public void acceptConnection(Socket sock) throws SocketException, IOException;
-	
+
 	/**
 	 * Sets whether this mud is accepting connections
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MudHost#setAcceptConnections(boolean)

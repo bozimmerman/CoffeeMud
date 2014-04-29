@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SensePlants extends Chant
 {
-	public String ID() { return "Chant_SensePlants"; }
-	public String name(){return "Sense Plants";}
-	public String displayText(){return "(Sensing Plants)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Chant_SensePlants"; }
+	@Override public String name(){return "Sense Plants";}
+	@Override public String displayText(){return "(Sensing Plants)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	protected String word(){return "plants";}
 	private int[] myMats={RawMaterial.MATERIAL_VEGETATION,
@@ -52,6 +52,7 @@ public class Chant_SensePlants extends Chant
 						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -105,6 +106,7 @@ public class Chant_SensePlants extends Chant
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -121,6 +123,7 @@ public class Chant_SensePlants extends Chant
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

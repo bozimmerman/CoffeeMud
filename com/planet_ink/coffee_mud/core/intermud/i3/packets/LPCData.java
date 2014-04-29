@@ -263,7 +263,7 @@ public class LPCData {
 			{
 				return Integer.valueOf(x);
 			}
-				
+
 			data.setElementAt(Integer.valueOf(x), 0);
 			data.setElementAt(str, 1);
 			return data;

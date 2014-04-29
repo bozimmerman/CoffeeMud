@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,13 @@ import java.util.*;
 */
 public class Trap_AcidPit extends Trap_RoomPit
 {
-	public String ID() { return "Trap_AcidPit"; }
-	public String name(){ return "acid pit";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 18;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_AcidPit"; }
+	@Override public String name(){ return "acid pit";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 18;}
+	@Override public String requiresToSet(){return "";}
+	@Override
 	public int baseRejuvTime(int level)
 	{
 		int time=super.baseRejuvTime(level);
@@ -46,6 +47,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 		return time;
 	}
 
+	@Override
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
@@ -60,6 +62,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 		CMLib.commands().postLook(target,true);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Prop_Adjuster extends Prop_HaveAdjuster
 {
-	public String ID() { return "Prop_Adjuster"; }
-	public String name(){ return "Adjustments to stats";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public boolean bubbleAffect(){return false;}
-	public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override public String ID() { return "Prop_Adjuster"; }
+	@Override public String name(){ return "Adjustments to stats";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public boolean bubbleAffect(){return false;}
+	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
 	public boolean canApply(MOB mob)
 	{
 		if((affected!=null)
@@ -47,12 +48,14 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 			return true;
 		return false;
 	}
-	
-	public int triggerMask() 
-	{ 
+
+	@Override
+	public int triggerMask()
+	{
 		return TriggeredAffect.TRIGGER_ALWAYS;
 	}
 
+	@Override
 	public String accountForYourself()
 	{
 		return fixAccoutingsWithMask("Effects: "+parameters[0],parameters[1]);

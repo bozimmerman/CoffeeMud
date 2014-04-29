@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface SPairList<T,K> extends List<Pair<T,K>> 
+public interface SPairList<T,K> extends List<Pair<T,K>>
 {
-	
+
 }

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Taxidermy extends CraftingSkill
 {
-	public String ID() { return "Taxidermy"; }
-	public String name(){ return "Taxidermy";}
+	@Override public String ID() { return "Taxidermy"; }
+	@Override public String name(){ return "Taxidermy";}
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "BODIES";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "BODIES";}
 	public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}
 
 	protected String foundShortName="";
@@ -52,6 +52,7 @@ public class Taxidermy extends CraftingSkill
 		verb="stuffing";
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -71,6 +72,7 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
+	@Override
 	protected List<List<String>> loadRecipes()
 	{
 		String filename="taxidermy.txt";
@@ -110,6 +112,7 @@ public class Taxidermy extends CraftingSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -122,7 +125,7 @@ public class Taxidermy extends CraftingSkill
 			for(int p=0;p<POSES.size();p++)
 			{
 				List<String> PP=POSES.get(p);
-				if(PP.size()>1) 
+				if(PP.size()>1)
 					str.append((PP.get(0))+"\n");
 			}
 			mob.tell(str.toString());

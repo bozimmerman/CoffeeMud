@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,11 +34,12 @@ import java.util.*;
 
 public class MasterButchering extends Butchering
 {
-	public String ID() { return "MasterButchering"; }
-	public String name(){ return "Master Butchering";}
+	@Override public String ID() { return "MasterButchering"; }
+	@Override public String name(){ return "Master Butchering";}
 	private static final String[] triggerStrings = {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
+	@Override
 	protected int getDuration(MOB mob, int weight)
 	{
 		int duration=(int)Math.round(((weight/(10+getXLEVELLevel(mob))))*2.5);
@@ -46,5 +47,5 @@ public class MasterButchering extends Butchering
 		if(duration>100) duration=100;
 		return duration;
 	}
-	protected int baseYield() { return 3; }
+	@Override protected int baseYield() { return 3; }
 }

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,17 +41,17 @@ public class Regeneration extends StdAbility implements HealthCondition
 	private static final int maxTickDown=3;
 	protected int regenTick=maxTickDown;
 
-	public String ID() { return "Regeneration"; }
-	public String name(){ return "Stat Regeneration";}
-	public String displayText(){ return "(Stat Regeneration)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Regeneration"; }
+	@Override public String name(){ return "Stat Regeneration";}
+	@Override public String displayText(){ return "(Stat Regeneration)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"REGENERATE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected int permanentDamage=0;
 
 	@Override
@@ -59,7 +59,8 @@ public class Regeneration extends StdAbility implements HealthCondition
 	{
 		return "Possesses regenerative cells.";
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -82,6 +83,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -158,11 +160,13 @@ public class Regeneration extends StdAbility implements HealthCondition
 		return true;
 	}
 
+	@Override
 	public void affectCharState(MOB mob, CharState state)
 	{
 		super.affectCharState(mob,state);
 		state.setHitPoints(state.getHitPoints()-permanentDamage);
 	}
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -174,6 +178,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 			mob.tell("You feel less regenerative.");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

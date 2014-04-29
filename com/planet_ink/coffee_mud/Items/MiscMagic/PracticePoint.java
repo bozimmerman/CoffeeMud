@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class PracticePoint extends StdItem implements MiscMagic
 {
-	public String ID(){ return "PracticePoint";}
+	@Override public String ID(){ return "PracticePoint";}
 	public PracticePoint()
 	{
 		super();
@@ -51,6 +51,7 @@ public class PracticePoint extends StdItem implements MiscMagic
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

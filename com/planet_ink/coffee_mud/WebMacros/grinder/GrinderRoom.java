@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,7 +54,7 @@ public class GrinderRoom
 		roomCache=null;
 		roomID=newRoomID;
 	}
-	
+
 	public void fixExits(Room R)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

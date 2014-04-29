@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_PolymorphSelf extends Spell
 {
-	public String ID() { return "Spell_PolymorphSelf"; }
-	public String name(){return "Polymorph Self";}
-	public String displayText(){return "(Polymorph Self)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public String ID() { return "Spell_PolymorphSelf"; }
+	@Override public String name(){return "Polymorph Self";}
+	@Override public String displayText(){return "(Polymorph Self)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	Race newRace=null;
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -60,6 +61,7 @@ public class Spell_PolymorphSelf extends Spell
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -73,6 +75,7 @@ public class Spell_PolymorphSelf extends Spell
 	}
 
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -87,6 +90,7 @@ public class Spell_PolymorphSelf extends Spell
 
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -125,7 +129,7 @@ public class Spell_PolymorphSelf extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already polymorphed.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Scatter extends Spell
 {
-	public String ID() { return "Spell_Scatter"; }
-	public String name(){return "Scatter";}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override public String ID() { return "Spell_Scatter"; }
+	@Override public String name(){return "Scatter";}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	private Item getItem(MOB mobTarget)
 	{
@@ -64,7 +64,8 @@ public class Spell_Scatter extends Spell
 			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 		return null;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -78,6 +79,7 @@ public class Spell_Scatter extends Spell
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Vector areas=new Vector();

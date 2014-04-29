@@ -36,26 +36,27 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Bard extends StdCharClass
 {
-	public String ID(){return "Bard";}
-	public String name(){return "Bard";}
-	public String baseClass(){return ID();}
-	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	public int getLevelsPerBonusDamage(){ return 10;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
-	public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?2))"; }
-	protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	@Override public String ID(){return "Bard";}
+	@Override public String name(){return "Bard";}
+	@Override public String baseClass(){return ID();}
+	@Override public int getBonusPracLevel(){return 1;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
+	@Override public int getLevelsPerBonusDamage(){ return 10;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?2))"; }
+	@Override protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Bard()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=7;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -123,7 +124,7 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 	}
 
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
+	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
 	public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
 	{
 		double theAmount=amount;
@@ -156,8 +157,9 @@ public class Bard extends StdCharClass
 		return (int)Math.round(theAmount);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -255,7 +257,8 @@ public class Bard extends StdCharClass
 		}
 	}
 
-	
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -276,26 +279,28 @@ public class Bard extends StdCharClass
 		}
 	}
 
+	@Override
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if(E instanceof MusicalInstrument)
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-	
-	
+
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Dwarf","Halfling","Elf-kin"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
-	
-	public String getOtherLimitsDesc(){return "";}
-	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override public String getOtherLimitsDesc(){return "";}
+	@Override public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

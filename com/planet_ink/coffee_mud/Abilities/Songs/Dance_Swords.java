@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Dance_Swords extends Dance
 {
-	public String ID() { return "Dance_Swords"; }
-	public String name(){ return "Swords";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected String danceOf(){return name()+" Dance";}
-	protected boolean skipStandardDanceInvoke(){return true;}
+	@Override public String ID() { return "Dance_Swords"; }
+	@Override public String name(){ return "Swords";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	@Override protected String danceOf(){return name()+" Dance";}
+	@Override protected boolean skipStandardDanceInvoke(){return true;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((!super.okMessage(myHost,msg))
@@ -71,6 +72,7 @@ public class Dance_Swords extends Dance
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		Environmental E=affected;
@@ -84,6 +86,7 @@ public class Dance_Swords extends Dance
 		}
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -91,6 +94,7 @@ public class Dance_Swords extends Dance
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)&&(!super.tick(ticking,tickID)))
@@ -180,6 +184,7 @@ public class Dance_Swords extends Dance
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -214,13 +219,13 @@ public class Dance_Swords extends Dance
 					invoker=mob;
 					Dance newOne=(Dance)this.copyOf();
 					newOne.invokerManaCost=-1;
-	
+
 					MOB follower=mob;
-	
+
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
-	
+
 					if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{
 						CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

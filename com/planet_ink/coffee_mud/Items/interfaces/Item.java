@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,17 +39,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Readable
 {
-	/** 
+	/**
 	 * Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
-	 * point to the container object 
+	 * point to the container object
 	 * @return The item in which  it is contained, or null.
 	 */
 	public Container container();
-	/** 
+	/**
 	 * Change  the container where the item is located.  Either null for
 	 * plain site (or contained on person), or will
-	 * point to the Container item. 
+	 * point to the Container item.
 	 * @see Container
 	 * @param newLocation Container item in which this item is contained.
 	 */
@@ -57,7 +57,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	/**
 	 * If an item is in a container, which is in a container, etc, this will
 	 * return the "highest" or ultimate container in which this item is located.
-	 * If an item is in a container which is in plain view, it will simply 
+	 * If an item is in a container which is in plain view, it will simply
 	 * return container().  If the item is not in a container, it will return itself.
 	 * @param stopAtC if contained in this object, it will return this object.. default null.
 	 * @see Container
@@ -66,13 +66,13 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	public Item ultimateContainer(Physical stopAtC);
 	/**
 	 * This method basically calls setContainer(null), and then removes this item
-	 * from its owner().  It effectively removes the item from the map.  This is 
+	 * from its owner().  It effectively removes the item from the map.  This is
 	 * generally assumed to be a temporary condition.  To really destroy the item
 	 * permanently, the destroy() method is used.  The unWear() method is also called.
 	 * @see Container
 	 */
 	public void removeFromOwnerContainer();
-	
+
 	/**
 	 * How many items this Item object represents.  When an item is Packaged, this
 	 * method will return a number greater than 1, otherwise it always returns 1.
@@ -91,9 +91,9 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	public String secretIdentity();
 	/**
 	 * This method returns those secret properties of the item which are entered directly
-	 * by the builder when the item is designed.  It is the string saved to the database, 
+	 * by the builder when the item is designed.  It is the string saved to the database,
 	 * and is used by the secretIdentity() method to construct a full secret description
-	 * of the Item. 
+	 * of the Item.
 	 * @return the string entered by the builder as the item secret properties or name.
 	 */
 	public String rawSecretIdentity();
@@ -113,11 +113,11 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * @return whether this item has a valid condition
 	 */
 	public boolean subjectToWearAndTear();
-	/** 
+	/**
 	 * Uses remaining is a general use numeric value whose meaning differs for different Item
 	 * types.  For instance, Wands use it to represent charges, Weapons and Armor use it to
 	 * represent Condition, Ammunition uses it to represent quantity, etc.
-	 * @return the general numeric value of this field. 
+	 * @return the general numeric value of this field.
 	 */
 	public int usesRemaining();
 	/**
@@ -126,7 +126,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * @param newUses a new  general numeric value for this field.
 	 */
 	public void setUsesRemaining(int newUses);
-	
+
 	/**
 	 * If this Item is current Ticking due to its having Behaviors or other properties which
 	 * might grant it the ability to Tick, this method will cause that ticking to cease and
@@ -135,7 +135,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * The whole idea is to make the item 'dormant' for storage.
 	 */
 	public void stopTicking();
-	/** 
+	/**
 	 * The default value of the item, represented in the base CoffeeMud currency.  This
 	 * method starts with baseGoldValue, which is a user-entered value, and adjusts
 	 * according to magical enhancements and the condition of the  item.
@@ -146,7 +146,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * The user/builder-entered value of the item, represented in base CoffeeMud currency.
 	 * It is used as a basis for the value returned by the value() method.
 	 * @return the raw user-entered value of item.
-	 */    
+	 */
 	public int baseGoldValue();
 	/**
 	 * Changes the base value of the item, represented in base CoffeeMud currency.
@@ -154,7 +154,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * @param newValue the new raw value of the item
 	 */
 	public void setBaseValue(int newValue);
-	
+
 	/**
 	 * The resource code representing the material out of which this item is principally made.
 	 * The resource codes are composed of an integer where the highest order bits represent
@@ -172,7 +172,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * @see RawMaterial
 	 */
 	public void setMaterial(int newValue);
-	
+
 	/**
 	 * For a normal item, this method returns the same as phyStats().weight().  For
 	 * a Container, it returns the weight of the container plus the recursive weight

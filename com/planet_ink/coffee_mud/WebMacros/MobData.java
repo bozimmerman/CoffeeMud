@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MobData extends StdWebMacro
 {
-	public String name() { return "MobData"; }
+	@Override public String name() { return "MobData"; }
 
 	private static final String[] okparms={
 	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -55,7 +55,7 @@ public class MobData extends StdWebMacro
 	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
 	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY",
 	  "CATACAT"};
-	
+
 	public static int getShopCardinality(ShopKeeper SK, Environmental O)
 	{
 		int x=0;
@@ -1003,6 +1003,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

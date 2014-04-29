@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class EndlessThinOcean extends StdThinGrid
 {
-	public String ID(){return "EndlessThinOcean";}
+	@Override public String ID(){return "EndlessThinOcean";}
 	public EndlessThinOcean()
 	{
 		super();
@@ -45,19 +45,22 @@ public class EndlessThinOcean extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new EndlessOcean().newInstance();
 	}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
@@ -67,20 +70,21 @@ public class EndlessThinOcean extends StdThinGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public String getGridChildLocaleID(){return "SaltWaterThinSurface";}
-	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override public String getGridChildLocaleID(){return "SaltWaterThinSurface";}
+	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);
-		
-		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) 
+
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return;
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT
 		if(ox==null) ox=CMClass.getExit("Open");
 		Room R2=null;
-		
+
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,yGridSize()/2);

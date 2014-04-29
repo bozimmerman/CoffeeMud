@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,14 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_CharmAnimal extends Chant
 {
-	public String ID() { return "Chant_CharmAnimal"; }
-	public String name(){ return "Charm Animal";}
-	public String displayText(){return "(Charmed)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_CHARMING;}
+	@Override public String ID() { return "Chant_CharmAnimal"; }
+	@Override public String name(){ return "Charm Animal";}
+	@Override public String displayText(){return "(Charmed)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_CHARMING;}
 
 	protected MOB charmer=null;
 	protected MOB getCharmer()
@@ -63,6 +63,7 @@ public class Chant_CharmAnimal extends Chant
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -75,7 +76,8 @@ public class Chant_CharmAnimal extends Chant
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -120,6 +122,7 @@ public class Chant_CharmAnimal extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
@@ -137,6 +140,7 @@ public class Chant_CharmAnimal extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -166,6 +170,7 @@ public class Chant_CharmAnimal extends Chant
 		}
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -174,12 +179,13 @@ public class Chant_CharmAnimal extends Chant
 			{
 				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
-				
+
 			}
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

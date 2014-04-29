@@ -40,8 +40,8 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Packet {
 	/*
-		Transmissions are LPC arrays with a predefined set of six initial elements: 
-	({ type, ttl, originator mudname, originator username, target mudname, target username, ... }). 
+		Transmissions are LPC arrays with a predefined set of six initial elements:
+	({ type, ttl, originator mudname, originator username, target mudname, target username, ... }).
 	*/
 	final static public int CHAN_MESSAGE = 1;
 	final static public int CHAN_EMOTE   = 2;

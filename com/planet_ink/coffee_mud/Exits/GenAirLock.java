@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,14 +33,14 @@ import java.util.*;
 */
 public class GenAirLock extends GenExit
 {
-	public String ID(){	return "GenAirLock";}
-	public String Name(){ return "an air lock";}
-	public String displayText(){ return "";}
-	public boolean hasADoor(){return true;}
-	public boolean hasALock(){return false;}
-	public boolean defaultsLocked(){return false;}
-	public boolean defaultsClosed(){return true;}
-	public String closedText(){return "a closed air lock door";}
+	@Override public String ID(){	return "GenAirLock";}
+	@Override public String Name(){ return "an air lock";}
+	@Override public String displayText(){ return "";}
+	@Override public boolean hasADoor(){return true;}
+	@Override public boolean hasALock(){return false;}
+	@Override public boolean defaultsLocked(){return false;}
+	@Override public boolean defaultsClosed(){return true;}
+	@Override public String closedText(){return "a closed air lock door";}
 	public GenAirLock()
 	{
 		super();

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,25 +35,26 @@ import java.util.*;
 */
 public class DefaultCoffeeTableRow implements CoffeeTableRow
 {
-	public String ID(){return "DefaultCoffeeTableRow";}
-	public String name() { return ID();}
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+	@Override public String ID(){return "DefaultCoffeeTableRow";}
+	@Override public String name() { return ID();}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
 	public SHashtable<String,long[]> stats=new SHashtable<String,long[]>();
 	public long highestOnline=0;
 	public long numberOnlineTotal=0;
 	public long numberOnlineCounter=0;
 	public long startTime=0;
 	public long endTime=0;
-	
-	
-	public void setStartTime(long time){startTime=time;}
-	public void setEndTime(long time){endTime=time;}
-	public long startTime(){return startTime;}
-	public long endTime(){return endTime;}
-	public long highestOnline(){return highestOnline;}
-	public long numberOnlineTotal(){return numberOnlineTotal;}
-	public long numberOnlineCounter(){return numberOnlineCounter;}
+
+
+	@Override public void setStartTime(long time){startTime=time;}
+	@Override public void setEndTime(long time){endTime=time;}
+	@Override public long startTime(){return startTime;}
+	@Override public long endTime(){return endTime;}
+	@Override public long highestOnline(){return highestOnline;}
+	@Override public long numberOnlineTotal(){return numberOnlineTotal;}
+	@Override public long numberOnlineCounter(){return numberOnlineCounter;}
+	@Override
 	public String data()
 	{
 		StringBuffer data=new StringBuffer("");
@@ -70,7 +71,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		data.append("</STATS>");
 		return data.toString();
 	}
-	
+
+	@Override
 	public void bumpVal(String s, int type)
 	{
 		long[] stat=null;
@@ -86,7 +88,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		}
 		stat[type]++;
 	}
-	
+
+	@Override
 	public void totalUp(String code, long[] tot)
 	{
 		code=tagFix(code);
@@ -103,20 +106,22 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		}
 	}
 
+	@Override
 	public String tagFix(String s)
 	{
 		return s.trim().replaceAll(" ","_").toUpperCase();
 	}
-	
+
+	@Override
 	public void bumpVal(CMObject E, int type)
 	{
 		if((E instanceof MOB)&&(((MOB)E).isMonster())) return;
-		
+
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
 			int ct=0;
 			for(Session S : CMLib.sessions().localOnlineIterable())
-				if(S!=null) 
+				if(S!=null)
 					ct++;
 			numberOnlineCounter++;
 			numberOnlineTotal+=ct;
@@ -151,7 +156,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		if(E instanceof Quest)
 			bumpVal("U"+tagFix(((Quest)E).name()),type);
 	}
-	
+
+	@Override
 	public void populate(long start, long end, String data)
 	{
 		synchronized(stats)
@@ -189,9 +195,10 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			}
 		}
 	}
-	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
-	public void initializeClass(){}
-	
+	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
+	@Override public void initializeClass(){}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try

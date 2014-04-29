@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,12 +32,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoCharm extends Property
 {
-	public String ID() { return "Prop_NoCharm"; }
-	public String name(){ return "Charm Spell Neutralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_NoCharm"; }
+	@Override public String name(){ return "Charm Spell Neutralizing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 
-	public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override public long flags(){return Ability.FLAG_IMMUNER;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

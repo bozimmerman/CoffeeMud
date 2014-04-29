@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,21 +36,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonTornado extends Chant
 {
-	public String ID() { return "Chant_SummonTornado"; }
-	public String name(){return renderedMundane?"tornado":"Summon Tornado";}
-	public String displayText(){return "(Inside a Tornado)";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
+	@Override public String ID() { return "Chant_SummonTornado"; }
+	@Override public String name(){return renderedMundane?"tornado":"Summon Tornado";}
+	@Override public String displayText(){return "(Inside a Tornado)";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		 if(mob!=null)
@@ -71,7 +73,8 @@ public class Chant_SummonTornado extends Chant
 		 }
 		 return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

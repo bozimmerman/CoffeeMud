@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class Quit extends StdCommand
 	public Quit(){}
 
 	private final String[] access={"QUIT","QUI","Q"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public static void dispossess(MOB mob, boolean force)
 	{
@@ -56,6 +56,7 @@ public class Quit extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -80,8 +81,7 @@ public class Quit extends StdCommand
 					{
 						session.promptPrint("\n\rQuit -- are you sure (y/N)?");
 					}
-					@Override
-					public void timedOut() {}
+					@Override public void timedOut() {}
 					@Override
 					public void callBack()
 					{
@@ -89,7 +89,7 @@ public class Quit extends StdCommand
 						{
 							CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 							Room R=mob.location();
-							if((R!=null)&&(R.okMessage(mob,msg))) 
+							if((R!=null)&&(R.okMessage(mob,msg)))
 							{
 								CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null));
 								session.stopSession(false,false, false);
@@ -102,8 +102,8 @@ public class Quit extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

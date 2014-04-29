@@ -39,7 +39,8 @@ public class Areas extends StdCommand
 	public Areas(){}
 
 	private final String[] access={"AREAS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -47,7 +48,7 @@ public class Areas extends StdCommand
 		Enumeration<Area> a=CMLib.map().areas();
 		int addStat=-1;
 		String append="";
-		
+
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
@@ -62,6 +63,7 @@ public class Areas extends StdCommand
 			{
 				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
+					@Override
 					public int compare(Area arg0, Area arg1)
 					{
 						return arg1.Name().compareTo(arg0.Name());
@@ -78,6 +80,7 @@ public class Areas extends StdCommand
 			{
 				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
+					@Override
 					public int compare(Area arg0, Area arg1)
 					{
 						int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
@@ -108,6 +111,7 @@ public class Areas extends StdCommand
 				final int sortStat=statVal;
 				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
 				{
+					@Override
 					public int compare(Area arg0, Area arg1)
 					{
 						int lvl1=arg0.getAreaIStats()[sortStat];
@@ -124,7 +128,7 @@ public class Areas extends StdCommand
 				i--;
 			}
 		}
-		
+
 		StringBuffer msg=new StringBuffer("^HComplete areas list"+append+":^?^N\n\r");
 		if(commands.size()>1)
 		{
@@ -187,8 +191,8 @@ public class Areas extends StdCommand
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

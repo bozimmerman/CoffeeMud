@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Observation extends ThiefSkill
 {
-	public String ID() { return "Thief_Observation"; }
-	public String name(){ return "Observe";}
-	public String displayText(){return "(Observing)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_Observation"; }
+	@Override public String name(){ return "Observe";}
+	@Override public String displayText(){return "(Observing)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"OBSERVE"};
-	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_SNEAKERS);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -62,6 +64,7 @@ public class Thief_Observation extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -69,7 +72,8 @@ public class Thief_Observation extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You stop observing.");
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

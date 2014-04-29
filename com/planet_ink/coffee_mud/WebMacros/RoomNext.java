@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class RoomNext extends StdWebMacro
 {
-	public String name() { return "RoomNext"; }
+	@Override public String name() { return "RoomNext"; }
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -46,12 +47,12 @@ public class RoomNext extends StdWebMacro
 		Area A=CMLib.map().getArea(area);
 		String last=httpReq.getUrlParameter("ROOM");
 		if(parms.containsKey("RESET"))
-		{   
+		{
 			if(last!=null) httpReq.removeUrlParameter("ROOM");
 			return "";
 		}
 		String lastID="";
-		
+
 		for(Enumeration d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
 		{
 			String roomid=(String)d.nextElement();

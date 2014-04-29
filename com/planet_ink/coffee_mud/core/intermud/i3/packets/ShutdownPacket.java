@@ -33,14 +33,14 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class ShutdownPacket extends Packet 
+public class ShutdownPacket extends Packet
 {
 	public ShutdownPacket()
 	{
 		super();
 		type = Packet.SHUTDOWN;
 	}
-	
+
 	public ShutdownPacket(Vector v)
 	{
 		super(v);
@@ -48,12 +48,14 @@ public class ShutdownPacket extends Packet
 		target_mud=Intermud.getNameServer().name;
 	}
 
-	public void send() throws InvalidPacketException 
+	@Override
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}
 
-	public String toString() 
+	@Override
+	public String toString()
 	{
 		return "({\"shutdown\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,0,})";
 	}

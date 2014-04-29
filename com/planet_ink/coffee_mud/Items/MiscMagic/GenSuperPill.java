@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenSuperPill extends GenPill implements ArchonOnly
 {
-	public String ID(){	return "GenSuperPill";}
+	@Override public String ID(){	return "GenSuperPill";}
 	public GenSuperPill()
 	{
 		super();
@@ -50,8 +50,9 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String secretIdentity()
 	{
 		String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells());
@@ -183,6 +184,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		if(redress)	CMLib.utensils().confirmWearability(mob);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))

@@ -26,9 +26,9 @@ limitations under the License.
 public enum HTTPMethod
 {
 	GET, HEAD, POST, PUT, DELETE, OPTIONS;
-	
-	public static String getAllowedList() 
-	{ 
-		return "GET, HEAD, POST, PUT, DELETE, OPTIONS"; 
+
+	public static String getAllowedList()
+	{
+		return "GET, HEAD, POST, PUT, DELETE, OPTIONS";
 	}
 }

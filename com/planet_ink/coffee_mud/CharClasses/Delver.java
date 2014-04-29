@@ -37,21 +37,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Delver extends StdCharClass
 {
-	public String ID(){return "Delver";}
-	public String name(){return "Delver";}
-	public String baseClass(){return "Druid";}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
-	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	public int getLevelsPerBonusDamage(){ return 30;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
-	public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_ROCKY;}
+	@Override public String ID(){return "Delver";}
+	@Override public String name(){return "Delver";}
+	@Override public String baseClass(){return "Druid";}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return 0;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
+	@Override public int getLevelsPerBonusDamage(){ return 30;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
+	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ROCKY;}
 	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Delver()
 	{
@@ -59,6 +59,7 @@ public class Delver extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -152,8 +153,9 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 	}
 
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -179,6 +181,7 @@ public class Delver extends StdCharClass
 	}
 
 
+	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
@@ -191,22 +194,23 @@ public class Delver extends StdCharClass
 			return true;
 		return false;
 	}
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Dwarf","Gnome","Goblinoids","Troll-kin",
 		"HalfElf","Halfling"
 	};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String getOtherBonusDesc(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
+	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	@Override public String getOtherBonusDesc(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -218,13 +222,15 @@ public class Delver extends StdCharClass
 		return outfitChoices;
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		Druid.doAnimalFreeingCheck(this,host,msg);
 	}
-	
-	
+
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -245,6 +251,7 @@ public class Delver extends StdCharClass
 		}
 	}
 
+	@Override
 	public int classDurationModifier(MOB myChar,
 									 Ability skill,
 									 int duration)

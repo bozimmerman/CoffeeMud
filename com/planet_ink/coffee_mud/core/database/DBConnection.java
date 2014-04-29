@@ -19,7 +19,7 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,49 +38,49 @@ public class DBConnection
 {
 	/** Connection object being used*/
 	private Connection myConnection=null;
-	
+
 	/** (new) resultset being used currently */
 	private ResultSet myResultSet=null;
-	
+
 	/** (new) statement object being used currently */
 	private Statement myStatement=null;
-	
+
 	/** (new) statement object being used currently */
 	private PreparedStatement myPreparedStatement=null;
-	
+
 	/** Whether this dbconnection is being used */
 	protected boolean inUse;
-	
+
 	/** if any SQL errors occur, they are here.**/
 	protected String lastError=null;
-	
+
 	/** last time the connection was queried/executed.**/
 	private long lastQueryTime=System.currentTimeMillis();
-	
+
 	/** when this connection was put into use**/
 	private long lastPutInUseTime=System.currentTimeMillis();
-	
+
 	/** number of failures in a row */
 	protected int failuresInARow=0;
-	
+
 	protected boolean sqlserver=false;
-	
+
 	protected boolean isReusable=false;
-	
+
 	/** parent container of this connection **/
-	private DBConnections myParent=null;	
-	
+	private DBConnections myParent=null;
+
 	/** for tracking the last sql statement made */
 	protected String lastSQL = "";
-	
+
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean isFakeDB = null;
-	
+
 	public static enum FetchType {EMPTY,STATEMENT,PREPAREDSTATEMENT}
-	
-	/** 
+
+	/**
 	 * construction
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> DBConnection("","","");
 	 * @param DBClass    JDBC Class
 	 * @param DBService    ODBC SERVICE
@@ -90,8 +90,8 @@ public class DBConnection
 	 */
 	public DBConnection(DBConnections parent,
 						String DBClass,
-						String DBService, 
-						String DBUser, 
+						String DBService,
+						String DBUser,
 						String DBPass,
 						boolean DBReuse)
 		throws SQLException
@@ -117,11 +117,11 @@ public class DBConnection
 		}
 		p.put("SetBigStringTryClob", "true");
 		myConnection=DriverManager.getConnection(DBService,p);
-		//Log.debugOut("New connection made to :"+DBService+" using "+DBClass); 	   
+		//Log.debugOut("New connection made to :"+DBService+" using "+DBClass);
 		sqlserver=false;
 		inUse=false;
 	}
-	
+
 	public String catalog()
 	{
 		try
@@ -131,7 +131,7 @@ public class DBConnection
 		catch(Exception e){}
 		return "";
 	}
-	
+
 	public boolean isFakeDB()
 	{
 		if(isFakeDB==null)
@@ -144,10 +144,10 @@ public class DBConnection
 		}
 		return isFakeDB.booleanValue();
 	}
-	
-	/** 
+
+	/**
 	 * shut down this connection totally
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> close()
 	 */
 	public void close()
@@ -172,10 +172,10 @@ public class DBConnection
 		myPreparedStatement=null;
 		myParent=null;
 	}
-	
-	/** 
+
+	/**
 	 * set up this connection for use
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> use("begin transaction")
 	 * @param openerSQL    Any SQL string you'd like to send
 	 * @return boolean    The connection being used
@@ -198,7 +198,7 @@ public class DBConnection
 				sqlserver=false;
 				return false;
 			}
-		
+
 			sqlserver=false;
 			try
 			{
@@ -214,18 +214,18 @@ public class DBConnection
 				return false;
 				// not a real error?!
 			}
-		
+
 			lastPutInUseTime=System.currentTimeMillis();
 			inUse=true;
 			return true;
 		}
 		return false;
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * set up this connection for use
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> useEmpty()
 	 * @return boolean    The connection being used
 	 */
@@ -244,10 +244,10 @@ public class DBConnection
 		}
 		return false;
 	}
-	
-	/** 
+
+	/**
 	 * set up this connection for use as a prepared statement
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> usePrepared("SQL String")
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
@@ -256,9 +256,9 @@ public class DBConnection
 	{
 		if((!inUse)&&(ready()))
 		{
-		
+
 			lastError=null;
-		
+
 			try
 			{
 				myStatement=null;
@@ -274,7 +274,7 @@ public class DBConnection
 				failuresInARow++;
 				return false;
 			}
-		
+
 			sqlserver=false;
 			lastPutInUseTime=System.currentTimeMillis();
 			failuresInARow=0;
@@ -283,12 +283,12 @@ public class DBConnection
 		}
 		return false;
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * set up this connection for use as a prepared statement
 	 * Requires an already in use connection.
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> rePrepare("SQL String")
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
@@ -315,7 +315,7 @@ public class DBConnection
 				failuresInARow++;
 				return false;
 			}
-		
+
 			sqlserver=false;
 			lastPutInUseTime=System.currentTimeMillis();
 			failuresInARow=0;
@@ -359,10 +359,10 @@ public class DBConnection
 			// not a real error?
 		}
 	}
-	
-	/** 
+
+	/**
 	 * report this connection as being free
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> doneUsing("roll back");
 	 * @param Closer	Any SQL string you'd like to send
 	 */
@@ -372,7 +372,7 @@ public class DBConnection
 		if(!isReusable) close();
 		inUse=false;
 	}
-	
+
 	/**
 	 * Return the time, in millis, when this connection
 	 * was last returned.
@@ -382,10 +382,10 @@ public class DBConnection
 	{
 		return lastQueryTime;
 	}
-	
-	/** 
+
+	/**
 	 * execute a query, returning the resultset
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> R=query("SELECT STATEMENT");
 	 * @param queryString    SQL query-style string
 	 * @return ResultSet	The results of the query
@@ -395,7 +395,7 @@ public class DBConnection
 	{
 		lastSQL=queryString;
 		ResultSet R=null;
-		if((inUse)&&(ready())) 
+		if((inUse)&&(ready()))
 		{
 			try
 			{
@@ -416,7 +416,7 @@ public class DBConnection
 				{
 					if(myParent!=null)
 						myParent.resetConnections();
-						
+
 				}
 				throw sqle;
 			}
@@ -429,12 +429,12 @@ public class DBConnection
 		sqlserver=false;
 		failuresInARow=0;
 		lastPutInUseTime=System.currentTimeMillis();
-		if(myParent!=null) 
+		if(myParent!=null)
 			myParent.clearErrors();
 		myResultSet=R;
 		return R;
 	}
-	
+
 	public void setPreparedClobs(String[] vals) throws SQLException
 	{
 		if(getPreparedStatement()==null)
@@ -447,10 +447,10 @@ public class DBConnection
 			else
 				getPreparedStatement().setString(t+1, vals[t]);
 	}
-	
-	/** 
+
+	/**
 	 * execute an sql update, returning the status
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> update("UPDATE STATEMENT");
 	 * @param updateString    SQL update-style string
 	 * @param retryNum    a retry number
@@ -495,18 +495,18 @@ public class DBConnection
 				throw sqle;
 			}
 		}
-		
+
 		sqlserver=false;
 		lastPutInUseTime=System.currentTimeMillis();
 		failuresInARow=0;
-		if(myParent!=null) 
+		if(myParent!=null)
 			myParent.clearErrors();
 		return responseCode;
 	}
-	
-	/** 
+
+	/**
 	 * returns whether this connection is ready for use
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> ready();
 	 * @return boolean    Whether this connection is ready
 	 */
@@ -514,10 +514,10 @@ public class DBConnection
 	{
 		return (myConnection!=null);
 	}
-	
-	/** 
+
+	/**
 	 * returns whether this connection is in use
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> inUse();
 	 * @return boolean    Whether this connection is in use
 	 */
@@ -525,25 +525,25 @@ public class DBConnection
 	{
 		return inUse;
 	}
-	
-	/** 
+
+	/**
 	 * known errors should not be a reason to report a dead state
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> clearFailures();
 	 */
 	public void clearFailures()
 	{
 		failuresInARow=0;
 	}
-	
+
 	public boolean inSQLServerCommunication()
 	{
 		return sqlserver;
 	}
-	
-	/** 
+
+	/**
 	 * returns whether this connection is *probably* dead
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> isProbablyDead();
 	 * @return boolean    Whether this connection is probably dead
 	 */
@@ -560,24 +560,24 @@ public class DBConnection
 			return true;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * returns whether this connection is *probably* locked up
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> isProbablyLockedUp();
 	 * @return boolean    Whether this connection is locked up
 	 */
 	public boolean isProbablyLockedUp()
 	{
 		long twominsAgo=System.currentTimeMillis()-(2*60*1000);
-		if((lastPutInUseTime<twominsAgo)&&inUse) 
+		if((lastPutInUseTime<twominsAgo)&&inUse)
 			return true;
 		return false;
 	}
-	
-	/** 
+
+	/**
 	 * returns an error if there was one
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> getLastError();
 	 * @return String    The last error SQL string, if any
 	 */
@@ -587,11 +587,11 @@ public class DBConnection
 			return "";
 		return lastError;
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * returns the prepared statement, if creates
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> getPreparedStatement();
 	 * @return PreparedStatement	the prepared statement
 	 */

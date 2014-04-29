@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,13 @@ import java.util.*;
 */
 public class Play_Lullabies extends Play
 {
-	public String ID() { return "Play_Lullabies"; }
-	public String name(){ return "Lullabies";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected boolean maliciousButNotAggressiveFlag(){return true;}
+	@Override public String ID() { return "Play_Lullabies"; }
+	@Override public String name(){ return "Lullabies";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
 
 	boolean asleep=false;
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -51,6 +52,7 @@ public class Play_Lullabies extends Play
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -82,6 +84,7 @@ public class Play_Lullabies extends Play
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GenKey extends GenItem implements DoorKey
 {
-	public String ID(){	return "GenKey";}
+	@Override public String ID(){	return "GenKey";}
 	public GenKey()
 	{
 		super();
@@ -46,8 +46,8 @@ public class GenKey extends GenItem implements DoorKey
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
-	public void setKey(String keyName){readableText=keyName;}
-	public String getKey(){return readableText;}
+	@Override public void setKey(String keyName){readableText=keyName;}
+	@Override public String getKey(){return readableText;}
 }

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,16 +38,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
-	public String ID() { return "ScrollScribing"; }
-	public String name(){ return "Scroll Scribing";}
+	@Override public String ID() { return "ScrollScribing"; }
+	@Override public String name(){ return "Scroll Scribing";}
 	private static final String[] triggerStrings = {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
-	public String supportedResourceString(){return "MISC";}
-	public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override public String supportedResourceString(){return "MISC";}
+	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
 
 	String oldName="";
 	protected Ability theSpell=null;
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -70,9 +71,10 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "scribing.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "scribing.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -116,9 +118,9 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		}
 	}
 
-	public boolean supportsDeconstruction() { return false; }
+	@Override public boolean supportsDeconstruction() { return false; }
 
-	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
 
 	protected Item buildItem(Ability theSpell, int level)
 	{
@@ -134,12 +136,14 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		buildingI.text();
 		return buildingI;
 	}
-	
+
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -280,7 +284,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 
 			if((resourceType>0)&&(data != null))
 				CMLib.materials().destroyResourcesValue(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null);
-			
+
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);

@@ -37,7 +37,8 @@ public class Questwins extends StdCommand
 	public Questwins(){}
 
 	private final String[] access={"QUESTS","QUESTWINS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -79,7 +80,7 @@ public class Questwins extends StdCommand
 			if(foundS!=null)
 				mob.delScript(foundS);
 			foundS=null;
-			
+
 			String rest=CMParms.combine(commands,2);
 			Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
@@ -125,7 +126,7 @@ public class Questwins extends StdCommand
 				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
 				mob.tell(msg.toString()+"\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.");
-			
+
 		}
 		else
 		{
@@ -186,8 +187,8 @@ public class Questwins extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }

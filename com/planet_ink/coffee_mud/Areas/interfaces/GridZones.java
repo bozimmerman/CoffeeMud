@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.Areas.interfaces;
 
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ limitations under the License.
 public interface GridZones extends Environmental
 {
 	/**
-	 * Returns whether the given Room is a child of this 
+	 * Returns whether the given Room is a child of this
 	 * particular Grid instance.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @param loc a Room object
@@ -68,7 +68,7 @@ public interface GridZones extends Environmental
 	 * @return the y coordinate of the room
 	 */
 	public int getGridChildY(Room loc);
-	
+
 	/**
 	 * Returns the XY coordinates of the Room with the given roomID
 	 * in XYVector format.
@@ -77,16 +77,16 @@ public interface GridZones extends Environmental
 	 * @return coordinates in XYVector format.
 	 */
 	public XYVector getRoomXY(String roomID);
-	
+
 	/**
-	 * Returns the XY coordinates of the Room, if a child of 
+	 * Returns the XY coordinates of the Room, if a child of
 	 * this gridzone, in XYVector format.
 	 * @see XYVector
 	 * @param room the room to get coordinates for
 	 * @return coordinates in XYVector format.
 	 */
 	public XYVector getRoomXY(Room room);
-	
+
 	/**
 	 * Returns the total width of this grid.
 	 * @return the width
@@ -124,7 +124,7 @@ public interface GridZones extends Environmental
 	 * @return the Room object at those coordinates
 	 */
 	public Room getGridChild(XYVector xy);
-	
+
 	/**
 	 * A class for holding x/y coordinates. Used by GridZones
 	 * as a way to hold such coordinates in a single place,

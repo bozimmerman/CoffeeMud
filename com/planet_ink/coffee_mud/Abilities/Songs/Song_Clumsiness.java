@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,10 @@ import java.util.*;
 */
 public class Song_Clumsiness extends Song
 {
-	public String ID() { return "Song_Clumsiness"; }
-	public String name(){ return "Clumsiness";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public String ID() { return "Song_Clumsiness"; }
+	@Override public String name(){ return "Clumsiness";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -48,6 +49,7 @@ public class Song_Clumsiness extends Song
 										-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
 										-(adjustedLevel(invoker(),0)*2));
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

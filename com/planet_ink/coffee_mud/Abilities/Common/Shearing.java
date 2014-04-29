@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Shearing extends CommonSkill
 {
-	public String ID() { return "Shearing"; }
-	public String name(){ return "Shearing";}
+	@Override public String ID() { return "Shearing"; }
+	@Override public String name(){ return "Shearing";}
 	private static final String[] triggerStrings = {"SHEAR","SHEARING"};
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	private MOB sheep=null;
 	protected boolean failed=false;
@@ -57,8 +57,9 @@ public class Shearing extends CommonSkill
 		if(duration>40) duration=40;
 		return duration;
 	}
-	protected int baseYield() { return 1; }
-	
+	@Override protected int baseYield() { return 1; }
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((sheep!=null)
@@ -68,7 +69,7 @@ public class Shearing extends CommonSkill
 			unInvoke();
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public Vector getMyWool(MOB M)
 	{
 		Vector wool=new Vector();
@@ -85,7 +86,8 @@ public class Shearing extends CommonSkill
 		}
 		return wool;
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -120,6 +122,7 @@ public class Shearing extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Restoration extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Restoration"; }
-	public String name(){ return "Restoration";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Prayer_Restoration"; }
+	@Override public String name(){ return "Restoration";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	protected int overridemana(){return Ability.COST_ALL;}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
-		
+
 		if(((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints()))
 			return true;
 		MOB caster=CMClass.getFactoryMOB();
@@ -71,7 +72,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		caster.destroy();
 		return false;
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -84,7 +86,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -126,7 +129,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
-				
+
 				A=target.fetchEffect("Fighter_AtemiStrike");
 				if((A!=null)&&(A.canBeUninvoked()))
 				{
@@ -136,7 +139,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
-				
+
 				A=target.fetchEffect("Undead_EnergyDrain");
 				if(A!=null)
 				{

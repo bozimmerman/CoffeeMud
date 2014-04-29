@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,8 +37,8 @@ public class Save extends StdCommand
 	public Save(){}
 
 	private final String[] access={"SAVE"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	public void clearSaveAndRestart(Room room, int taskCode)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
@@ -55,7 +55,8 @@ public class Save extends StdCommand
 		}
 	}
 
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -69,7 +70,7 @@ public class Save extends StdCommand
 			}
 			return false;
 		}
-		
+
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		String firstCommand="";
 		String lastCommand = "";
@@ -78,7 +79,7 @@ public class Save extends StdCommand
 			firstCommand=((String)commands.elementAt(1)).toUpperCase();
 			lastCommand=((String)commands.lastElement()).toUpperCase();
 		}
-		
+
 		if(lastCommand.equals("USERS")||lastCommand.equals("PLAYERS")||lastCommand.equals("CHARACTERS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
@@ -168,9 +169,9 @@ public class Save extends StdCommand
 						clearSaveAndRestart((Room)e.nextElement(),2);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
-				else 
+				else
 					return false;
-				
+
 			}
 			else
 			{
@@ -231,12 +232,13 @@ public class Save extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
+	@Override
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
 												 ||CMSecurity.isSaveFlag("NOPLAYERS");}
 
-	
+
 }

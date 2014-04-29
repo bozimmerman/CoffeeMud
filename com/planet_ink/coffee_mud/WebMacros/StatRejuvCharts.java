@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StatRejuvCharts extends StdWebMacro
 {
-	public String name()	{return "StatRejuvCharts";}
+	@Override public String name()	{return "StatRejuvCharts";}
 
 	protected String getReq(HTTPRequest httpReq, String tag)
 	{
@@ -43,6 +43,7 @@ public class StatRejuvCharts extends StdWebMacro
 		return s;
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		StringBuffer buf=new StringBuffer("");

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Tap extends Dance
 {
-	public String ID() { return "Dance_Tap"; }
-	public String name(){ return "Tap";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected String danceOf(){return name()+" Dance";}
+	@Override public String ID() { return "Dance_Tap"; }
+	@Override public String name(){ return "Tap";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected String danceOf(){return name()+" Dance";}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

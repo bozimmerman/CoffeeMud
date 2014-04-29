@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public interface CatalogLibrary extends CMLibrary
 {
 	public static final String ITEMCAT="ITEMS".intern();
 	public static final String MOBSCAT="MOBS".intern();
-	
+
 	public String[] getCatalogItemNames();
 	public String[] getCatalogItemNames(String catagory);
 	public String[] getCatalogMobNames();
@@ -70,7 +70,7 @@ public interface CatalogLibrary extends CMLibrary
 	public void newInstance(Physical P);
 	public void bumpDeathPickup(Physical P);
 	public CMFile.CMVFSDir getCatalogRoot(CMFile.CMVFSDir resourcesRoot);
-	
+
 	public static interface RoomContent
 	{
 		public Physical P();
@@ -79,8 +79,8 @@ public interface CatalogLibrary extends CMLibrary
 		public void flagDirty();
 		public boolean deleted();
 	}
-	
-	public static interface CataData 
+
+	public static interface CataData
 	{
 		public MaskingLibrary.CompiledZapperMask getMaskV();
 		public String getMaskStr();
@@ -102,9 +102,9 @@ public interface CatalogLibrary extends CMLibrary
 		public void bumpDeathPickup();
 		public String category();
 		public void setCatagory(String cat);
-		
+
 		public String data();
-		
+
 		public void build(String catadata);
 	}
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,30 +33,33 @@ import java.util.*;
 */
 public class Prop_NoChannel extends Property
 {
-	public String ID() { return "Prop_NoChannel"; }
-	public String name(){ return "Channel Neutralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override public String ID() { return "Prop_NoChannel"; }
+	@Override public String name(){ return "Channel Neutralizing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	protected List<String> channels=null;
 	protected boolean receive=true;
 	protected boolean sendOK=false;
 
+	@Override
 	public String accountForYourself()
 	{ return "No Channeling Field"; }
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		channels=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		int x=channels.indexOf("SENDOK");
 		sendOK=(x>=0);
-		if(sendOK) 
+		if(sendOK)
 			channels.remove(x);
 		x=channels.indexOf("QUIET");
 		receive=(x<0);
-		if(!receive) 
+		if(!receive)
 			channels.remove(x);
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

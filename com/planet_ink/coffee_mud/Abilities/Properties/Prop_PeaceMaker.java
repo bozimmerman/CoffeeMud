@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,14 @@ import java.util.*;
 */
 public class Prop_PeaceMaker extends Property
 {
-	public String ID() { return "Prop_PeaceMaker"; }
-	public String name(){ return "Strike Neuralizing";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_PeaceMaker"; }
+	@Override public String name(){ return "Strike Neuralizing";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))

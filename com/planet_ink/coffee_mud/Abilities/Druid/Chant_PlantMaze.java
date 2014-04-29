@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantMaze extends Chant
 {
-	public String ID() { return "Chant_PlantMaze"; }
-	public String name(){ return "Plant Maze";}
-	public String displayText(){return "(Plant Maze)";}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return CAN_ROOMS;}
+	@Override public String ID() { return "Chant_PlantMaze"; }
+	@Override public String name(){ return "Plant Maze";}
+	@Override public String displayText(){return "(Plant Maze)";}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	Room oldRoom=null;
 	Item thePlants=null;
 
+	@Override
 	public boolean tick(Tickable ticking,int tickID)
 	{
 		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
@@ -56,6 +57,7 @@ public class Chant_PlantMaze extends Chant
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -72,7 +74,8 @@ public class Chant_PlantMaze extends Chant
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -88,7 +91,8 @@ public class Chant_PlantMaze extends Chant
 		super.unInvoke();
 		room.destroy();
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -101,7 +105,8 @@ public class Chant_PlantMaze extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);

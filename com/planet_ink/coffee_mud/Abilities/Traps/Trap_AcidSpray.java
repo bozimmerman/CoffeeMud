@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,14 @@ import java.util.*;
 */
 public class Trap_AcidSpray extends StdTrap
 {
-	public String ID() { return "Trap_AcidSpray"; }
-	public String name(){ return "acid spray";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return 15;}
-	public String requiresToSet(){return "";}
+	@Override public String ID() { return "Trap_AcidSpray"; }
+	@Override public String name(){ return "acid spray";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapLevel(){return 15;}
+	@Override public String requiresToSet(){return "";}
 
+	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,10 +40,10 @@ public class Catalog extends StdCommand
 	public Catalog(){}
 
 	private final String[] access={"CATALOG"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	protected TreeMap<String,String> currentCats=new TreeMap<String,String>();
-	
+
 	public boolean catalog(Room R, MOB mob, Physical P)
 		throws java.io.IOException
 	{
@@ -113,8 +113,8 @@ public class Catalog extends StdCommand
 		R.show(mob,P,CMMsg.MSG_OK_VISUAL,msg);
 		return true;
 	}
-	
-	
+
+
 	public Physical findCatalog(int whatKind, String ID, boolean exactOnly)
 	{
 		Object[] data=new Object[]{null,null};
@@ -196,9 +196,10 @@ public class Catalog extends StdCommand
 		||(((String)commands.firstElement()).equalsIgnoreCase("WORLD")))
 			return true;
 		return false;
-		
+
 	}
-	
+
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -208,7 +209,7 @@ public class Catalog extends StdCommand
 		{
 			commands.removeElementAt(0);
 			final String[] types={"object","mobs","items"};
-			
+
 			if(checkUserRoomSetEntry(commands))
 			{
 				String which=((String)commands.firstElement()).toLowerCase();
@@ -216,7 +217,7 @@ public class Catalog extends StdCommand
 				commands.removeElementAt(0);
 				int whatKind=getObjectType(commands);
 				String type=types[whatKind];
-				
+
 				if((mob.session()!=null)
 				&&(mob.session().confirm("You are about to auto-catalog (room-reset and save) all "+which+" "+type+".\n\r"
 					+"This command, if used improperly, may alter "+type+" in this "+which+".\n\rAre you absolutely sure (y/N)?","N"))
@@ -239,7 +240,7 @@ public class Catalog extends StdCommand
 							{
 								if(catalog(R,mob,P))
 								{
-									content.flagDirty(); 
+									content.flagDirty();
 									dirty=true;
 								}
 							}
@@ -248,7 +249,7 @@ public class Catalog extends StdCommand
 							{
 								if(catalog(R,mob,P))
 								{
-									content.flagDirty(); 
+									content.flagDirty();
 									dirty=true;
 								}
 							}
@@ -329,7 +330,7 @@ public class Catalog extends StdCommand
 				MOB M=null;
 				Item I=null;
 				CatalogLibrary.CataData data;
-				if((whatKind==0)||(whatKind==1)) 
+				if((whatKind==0)||(whatKind==1))
 				{
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
@@ -364,7 +365,7 @@ public class Catalog extends StdCommand
 					}
 					list.append("\n\r\n\r");
 				}
-				if((whatKind==0)||(whatKind==2)) 
+				if((whatKind==0)||(whatKind==2))
 				{
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
@@ -546,7 +547,7 @@ public class Catalog extends StdCommand
 					String which=((String)commands.firstElement()).toLowerCase();
 					Enumeration rooms=getRoomSet(mob,which);
 					commands.removeElementAt(0);
-					
+
 					int whatKind=getObjectType(commands);
 					Physical P=null;
 					String roomID=null;
@@ -565,7 +566,7 @@ public class Catalog extends StdCommand
 									mob.tell("Check: MOB "+P.Name()+" in "+roomID+" is cataloged.");
 								else
 									mob.tell("Error: MOB "+P.Name()+" in "+roomID+" is falsely cataloged.");
-							
+
 							if((P instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(P)))
 								if(CMLib.catalog().getCatalogObj(P)!=null)
 									mob.tell("Check: Item "+P.Name()+" in "+roomID+" is cataloged.");
@@ -589,7 +590,7 @@ public class Catalog extends StdCommand
 					String which=((String)commands.firstElement()).toLowerCase();
 					Enumeration rooms=getRoomSet(mob,which);
 					commands.removeElementAt(0);
-					
+
 					int whatKind=getObjectType(commands);
 					Environmental E=null;
 					String roomID=null;
@@ -608,7 +609,7 @@ public class Catalog extends StdCommand
 									mob.tell("MOB "+E.Name()+" in "+roomID+" should be tied to the catalog.");
 								else
 									mob.tell("MOB "+E.Name()+" in "+roomID+" is not cataloged.");
-							
+
 							if((E instanceof Item)&&(whatKind!=1)&&(!CMLib.flags().isCataloged(E)))
 								if(CMLib.catalog().getCatalogItem(E.Name())!=null)
 									mob.tell("Item "+E.Name()+" in "+roomID+" should be tied to the catalog.");
@@ -652,7 +653,7 @@ public class Catalog extends StdCommand
 								{
 									if((CMLib.flags().isCataloged(P))
 									&&(CMLib.catalog().getCatalogObj(P)==null))
-									{ 
+									{
 										CMLib.catalog().changeCatalogUsage(P,false);
 										content.flagDirty();
 										dirty=true;
@@ -664,7 +665,7 @@ public class Catalog extends StdCommand
 								{
 									if((CMLib.flags().isCataloged(P))
 									&&(CMLib.catalog().getCatalogObj(P)==null))
-									{ 
+									{
 										CMLib.catalog().changeCatalogUsage(P,false);
 										content.flagDirty();
 										dirty=true;
@@ -718,7 +719,7 @@ public class Catalog extends StdCommand
 			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name].");
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG);}
+
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG);}
 }

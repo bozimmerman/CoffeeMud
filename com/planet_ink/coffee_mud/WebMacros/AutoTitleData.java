@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class AutoTitleData extends StdWebMacro
 {
-	public String name() { return "AutoTitleData"; }
+	@Override public String name() { return "AutoTitleData"; }
 
 	public String deleteTitle(String title)
 	{
@@ -54,6 +54,7 @@ public class AutoTitleData extends StdWebMacro
 		return "Unable to open titles.txt!";
 	}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -72,13 +73,13 @@ public class AutoTitleData extends StdWebMacro
 			String newMask=httpReq.getUrlParameter("MASK");
 			if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
 				return "[missing data error]";
-			
+
 			if((last!=null)&&((last.length()==0)&&(CMLib.titles().isExistingAutoTitle(newTitle))))
 			{
 				CMLib.titles().reloadAutoTitles();
 				return "[new title already exists!]";
 			}
-			
+
 			String error=CMLib.titles().evaluateAutoTitle(newTitle+"="+newMask,false);
 			if(error!=null) return "[error: "+error+"]";
 
@@ -124,7 +125,7 @@ public class AutoTitleData extends StdWebMacro
 		if(parms.containsKey("TITLE"))
 		{
 			String title=httpReq.getUrlParameter("TITLE");
-			if(title==null) 
+			if(title==null)
 				title=last;
 			if(title!=null)
 			{
@@ -136,7 +137,7 @@ public class AutoTitleData extends StdWebMacro
 		if(parms.containsKey("ISREQUIRED"))
 		{
 			String req=httpReq.getUrlParameter("ISREQUIRED");
-			if((req==null)&&(last!=null)) 
+			if((req==null)&&(last!=null))
 				req=(last.startsWith("{")&&last.endsWith("}"))?"on":"";
 			if(req!=null)
 				str.append((req.equalsIgnoreCase("on")?"CHECKED":"")+", ");

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Fighter_CoupDeGrace extends FighterSkill
 {
-	public String ID() { return "Fighter_CoupDeGrace"; }
-	public String name(){ return "Coup de Grace";}
+	@Override public String ID() { return "Fighter_CoupDeGrace"; }
+	@Override public String name(){ return "Coup de Grace";}
 	private static final String[] triggerStrings = {"COUP","COUPDEGRACE"};
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public int maxRange(){return adjustedMaxInvokerRange(0);}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	public int usageType(){return USAGE_MOVEMENT;}
-	protected int overrideMana(){return 150;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override protected int overrideMana(){return 150;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -65,7 +66,8 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())

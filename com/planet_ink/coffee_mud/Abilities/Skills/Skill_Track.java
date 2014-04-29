@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,30 +40,32 @@ public class Skill_Track extends StdSkill
 	private int tickStatus=0;
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
-	
-	public String ID() { return "Skill_Track"; }
-	public String name(){ return "Tracking";}
-	protected String displayText="(Tracking)";
-	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"TRACKTO"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode(){return Ability.ACODE_SKILL;}
-	public long flags(){return Ability.FLAG_TRACKING;}
-	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
-	public int getTickStatus(){return tickStatus;} 
-	public int abilityCode(){return cacheCode;}
-	public void setAbilityCode(int newCode){cacheCode=newCode;}
-	public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override public String ID() { return "Skill_Track"; }
+	@Override public String name(){ return "Tracking";}
+	protected String displayText="(Tracking)";
+	@Override public String displayText(){ return displayText;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	private static final String[] triggerStrings = {"TRACKTO"};
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
+	@Override public int getTickStatus(){return tickStatus;}
+	@Override public int abilityCode(){return cacheCode;}
+	@Override public void setAbilityCode(int newCode){cacheCode=newCode;}
+	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -189,6 +191,7 @@ public class Skill_Track extends StdSkill
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -203,6 +206,7 @@ public class Skill_Track extends StdSkill
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		tickStatus=Tickable.STATUS_MISC6;
@@ -219,7 +223,7 @@ public class Skill_Track extends StdSkill
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
-			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) 
+			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
 			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
@@ -263,7 +267,7 @@ public class Skill_Track extends StdSkill
 			allowWater=false;
 			commands.removeElementAt(commands.size()-1);
 		}
-		
+
 		String mobName=CMParms.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
@@ -322,7 +326,7 @@ public class Skill_Track extends StdSkill
 			}catch(NoSuchElementException nse){}
 		}
 		tickStatus=Tickable.STATUS_MISC6+6;
-		
+
 		tickStatus=Tickable.STATUS_MISC6+7;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(rooms.size()>0)

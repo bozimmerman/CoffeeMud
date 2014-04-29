@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,12 @@ import java.util.*;
 */
 public class Dance_Clog extends Dance
 {
-	public String ID() { return "Dance_Clog"; }
-	public String name(){ return "Clog Dance";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected String danceOf(){return name();}
+	@Override public String ID() { return "Dance_Clog"; }
+	@Override public String name(){ return "Clog Dance";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected String danceOf(){return name();}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -50,6 +51,7 @@ public class Dance_Clog extends Dance
 											-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
 											-(adjustedLevel(invoker(),0)*2));
 	}
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

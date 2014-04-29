@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,22 +39,23 @@ public class ClanPremise extends StdCommand
 	public ClanPremise(){}
 
 	private final String[] access={"CLANPREMISE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
-		
+
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
-		
+
 		if(chkC==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
-		
+
 		commands.setElementAt(getAccessWords()[0],0);
 
 		final Clan C=chkC;
@@ -83,7 +84,7 @@ public class ClanPremise extends StdCommand
 		{
 			@Override public void showPrompt() { session.promptPrint("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ");}
 			@Override public void timedOut() { }
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
 				final String premise=this.input;
 				if(premise.length()==0)
@@ -101,16 +102,16 @@ public class ClanPremise extends StdCommand
 		});
 		return false;
 	}
-	
+
 	public void setClanPremise(MOB mob, Clan C, String premise)
 	{
 		C.setPremise(premise);
 		C.update();
 		CMLib.clans().clanAnnounce(mob,"The premise of "+C.getGovernmentName()+" "+C.clanID()+" has been changed.");
 	}
-	
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

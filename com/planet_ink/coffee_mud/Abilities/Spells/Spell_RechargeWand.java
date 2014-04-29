@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_RechargeWand extends Spell
 {
-	public String ID() { return "Spell_RechargeWand"; }
-	public String name(){return "Recharge Wand";}
-	protected int canTargetCode(){return CAN_ITEMS;}
-	public int overrideMana(){return 100;}
-	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Spell_RechargeWand"; }
+	@Override public String name(){return "Recharge Wand";}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int overrideMana(){return 100;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -64,22 +65,22 @@ public class Spell_RechargeWand extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses()) 
+				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses())
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly then disintigrates!");
 					target.destroy();
 				}
-				else 
+				else
 				{
 					boolean willBreak = false;
 					if((((Wand)target).usesRemaining()+10) >= ((Wand)target).maxUses())
 						willBreak = true;
 					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
-					if(!(willBreak)) 
+					if(!(willBreak))
 					{
 						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly!");
 					}
-					else 
+					else
 					{
 						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic.");
 					}

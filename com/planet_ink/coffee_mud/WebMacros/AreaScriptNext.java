@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class AreaScriptNext extends StdWebMacro
 {
-	public String name() { return "AreaScriptNext"; }
-	public boolean isAdminMacro()	{return true;}
-	
+	@Override public String name() { return "AreaScriptNext"; }
+	@Override public boolean isAdminMacro()	{return true;}
+
 	protected class AreaScriptInstance
 	{
 		public ArrayList<String> path;
@@ -55,7 +55,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 
-	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list, 
+	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list,
 			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)
 	{
 		ArrayList<String> next=(ArrayList<String>)prefix.clone();
@@ -67,11 +67,11 @@ public class AreaScriptNext extends StdWebMacro
 			subList = new ArrayList<AreaScriptInstance>();
 			list.put(key,subList);
 		}
-		AreaScriptInstance inst = new AreaScriptInstance(scriptKey, next, key, file); 
+		AreaScriptInstance inst = new AreaScriptInstance(scriptKey, next, key, file);
 		subList.add(inst);
 		return inst;
 	}
-	
+
 	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
@@ -89,7 +89,7 @@ public class AreaScriptNext extends StdWebMacro
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
 				{
-					AreaScriptInstance inst = 
+					AreaScriptInstance inst =
 						addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
 					inst.customScript = nonFiles.trim();
 				}
@@ -105,13 +105,13 @@ public class AreaScriptNext extends StdWebMacro
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 			{
-				AreaScriptInstance inst = 
+				AreaScriptInstance inst =
 					addScript(list, prefix, SE.getScriptResourceKey(), null,"Custom",nonFiles);
 				inst.customScript = nonFiles.trim();
 			}
 		}
 	}
-	
+
 	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
@@ -128,7 +128,7 @@ public class AreaScriptNext extends StdWebMacro
 			}
 		}
 	}
-	
+
 	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(HTTPRequest httpReq, String area)
 	{
 		TreeMap<String,ArrayList<AreaScriptInstance>> list;
@@ -148,10 +148,10 @@ public class AreaScriptNext extends StdWebMacro
 				LP=ae.nextElement(); if(LP==null) continue;
 				AE=LP.obj(); if(AE==null) continue;
 				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
-				
+
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
-				
+
 				if(AE instanceof Area)
 				{
 					// don't add room to prefix
@@ -171,7 +171,7 @@ public class AreaScriptNext extends StdWebMacro
 					}
 					prefix.add(AE.Name());
 				}
-				
+
 				addScripts(list,prefix,AE);
 				addShopScripts(list,prefix,AE);
 			}
@@ -179,7 +179,8 @@ public class AreaScriptNext extends StdWebMacro
 		}
 		return list;
 	}
-	
+
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

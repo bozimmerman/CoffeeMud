@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class UmberHulk extends StdMOB
 {
-	public String ID(){return "UmberHulk";}
+	@Override public String ID(){return "UmberHulk";}
 	Random randomizer = new Random();
 	int confuseDown=3;
 
@@ -72,6 +72,7 @@ public class UmberHulk extends StdMOB
 	}
 
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))

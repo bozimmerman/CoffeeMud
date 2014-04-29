@@ -36,7 +36,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	{
 		return new Quad.FourthConverter<T, K, L,M>();
 	}
-	
+
 	public Enumeration<T> firstElements()
 	{
 		return new ConvertingEnumeration<Quad<T,K,L,M>,T>(
@@ -166,7 +166,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -176,7 +176,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -186,7 +186,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -196,7 +196,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i<size();i++)
-				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
+				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -206,7 +206,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
+				if((t==null ? get(i).first==null : t.equals(get(i).first)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -216,7 +216,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
+				if((k==null ? get(i).second==null : k.equals(get(i).second)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -226,7 +226,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
+				if((l==null ? get(i).third==null : l.equals(get(i).third)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -236,7 +236,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		try
 		{
 			for(int i=index;i>=0;i--)
-				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
+				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth)))
 					return i;
 		}catch(Exception e){}
 		return -1;
@@ -277,7 +277,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		for(final Iterator<Quad<T,K,L,M>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((k==null ? pair.second==null : k.equals(pair.second))) 
+			if((k==null ? pair.second==null : k.equals(pair.second)))
 			{
 				i.remove();
 				return true;
@@ -291,7 +291,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		for(final Iterator<Quad<T,K,L,M>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((l==null ? pair.third==null : l.equals(pair.third))) 
+			if((l==null ? pair.third==null : l.equals(pair.third)))
 			{
 				i.remove();
 				return true;
@@ -305,7 +305,7 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 		for(final Iterator<Quad<T,K,L,M>> i=iterator();i.hasNext();)
 		{
 			pair=i.next();
-			if((m==null ? pair.fourth==null : m.equals(pair.fourth))) 
+			if((m==null ? pair.fourth==null : m.equals(pair.fourth)))
 			{
 				i.remove();
 				return true;

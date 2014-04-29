@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,14 @@ public class Purge extends StdCommand
 	public Purge(){}
 
 	private final String[] access={"PURGE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)
 	{
 		mob.tell("You are not allowed to do that here.");
 		return false;
 	}
-	
+
 	public boolean mobs(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -94,7 +94,7 @@ public class Purge extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-		
+
 		String itemID=CMParms.combine(commands,2);
 		MOB srchMob=mob;
 		Item srchContainer=null;
@@ -129,7 +129,7 @@ public class Purge extends StdCommand
 				}
 			}
 		}
-		
+
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
@@ -158,6 +158,7 @@ public class Purge extends StdCommand
 	}
 
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -208,9 +209,9 @@ public class Purge extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PURGE);}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PURGE);}
+
+
 }

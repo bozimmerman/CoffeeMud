@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class WaterThinSurface extends WaterSurface
 {
-	public String ID(){return "WaterThinSurface";}
+	@Override public String ID(){return "WaterThinSurface";}
 	public WaterThinSurface()
 	{
 		super();
@@ -43,8 +43,9 @@ public class WaterThinSurface extends WaterSurface
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+	@Override protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))

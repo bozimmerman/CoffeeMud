@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_CurseFlames extends Prayer
 {
-	public String ID() { return "Prayer_CurseFlames"; }
-	public String name(){ return "Curse Flames";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
-	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int minRange(){return 0;}
+	@Override public String ID() { return "Prayer_CurseFlames"; }
+	@Override public String name(){ return "Curse Flames";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
+	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+	@Override public int minRange(){return 0;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -58,7 +59,7 @@ public class Prayer_CurseFlames extends Prayer
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 	private Item getFireSource(MOB target)
 	{
 		Item fireSource=null;
@@ -84,7 +85,8 @@ public class Prayer_CurseFlames extends Prayer
 		}
 		return fireSource;
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -99,7 +101,7 @@ public class Prayer_CurseFlames extends Prayer
 
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		
+
 		Item fireSource=getFireSource(target);
 
 		if((success)&&(fireSource!=null))

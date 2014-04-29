@@ -5,7 +5,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.lang.ref.WeakReference;
 
-/* 
+/*
    Copyright 2001 Thomas Neumann
    Copyright 2009-2014 Bo Zimmerman
 
@@ -30,7 +30,7 @@ public class Connection implements java.sql.Connection
    private boolean closed=false;
    private String oldPath="";
 
-   static private void log(String x) 
+   static private void log(String x)
    {
 	  System.err.println("Connection: "+x);
    }
@@ -46,15 +46,15 @@ public class Connection implements java.sql.Connection
    {
 	   return oldPath;
    }
-   
+
    private void connect(String path) throws java.sql.SQLException
    {
-	  try 
+	  try
 	  {
 		 path=(new java.io.File(path)).getCanonicalPath();
-	  } 
+	  }
 	  catch (java.io.IOException e) {}
-	  
+
 	  oldPath=path;
 	  if(!closed)
 	  {
@@ -68,13 +68,13 @@ public class Connection implements java.sql.Connection
 		  }
 	  }
 
-	  synchronized (databases) 
+	  synchronized (databases)
 	  {
 		  WeakReference ref=(WeakReference)databases.get(path);
 		  Backend   	backend=null;
 		  if (ref!=null)
 			 backend=(Backend)ref.get();
-		  if (backend==null) 
+		  if (backend==null)
 		  {
 			 backend=new Backend();
 			 if (!backend.open(new java.io.File(path)))
@@ -84,133 +84,156 @@ public class Connection implements java.sql.Connection
 		  this.backend=backend;
 	  }
    }
-   
-   public java.sql.Statement createStatement() throws java.sql.SQLException
+
+   @Override
+public java.sql.Statement createStatement() throws java.sql.SQLException
    {
 	  return new Statement(this);
    }
-   
-   public java.sql.Statement createStatement(int a, int b) throws java.sql.SQLException
-   { 
-	   return createStatement(); 
-   }
-   
-   public java.sql.Statement createStatement(int a, int b, int c) throws java.sql.SQLException
-   { 
-	   return createStatement(); 
+
+   @Override
+public java.sql.Statement createStatement(int a, int b) throws java.sql.SQLException
+   {
+	   return createStatement();
    }
 
-   public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
+   @Override
+public java.sql.Statement createStatement(int a, int b, int c) throws java.sql.SQLException
+   {
+	   return createStatement();
+   }
+
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
    {
 	  PreparedStatement p = new PreparedStatement(this);
 	  p.prepare(sql);
 	  return p;
    }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,int a) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
-   }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,int[] a) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
-   }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,String[] a) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
-   }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,int a,int b) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
-   }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,int a,int[] b) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
-   }
-   
-   public java.sql.PreparedStatement prepareStatement(String sql,int a,int b,int c) throws java.sql.SQLException
-   { 
-	   return prepareStatement(sql); 
+
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql,int a) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
    }
 
-   public java.sql.CallableStatement prepareCall(String sql) throws java.sql.SQLException
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql,int[] a) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
+   }
+
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql,String[] a) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
+   }
+
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql,int a,int b) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
+   }
+
+   public java.sql.PreparedStatement prepareStatement(String sql,int a,int[] b) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
+   }
+
+   @Override
+public java.sql.PreparedStatement prepareStatement(String sql,int a,int b,int c) throws java.sql.SQLException
+   {
+	   return prepareStatement(sql);
+   }
+
+   @Override
+public java.sql.CallableStatement prepareCall(String sql) throws java.sql.SQLException
    {
 	  log("prepareCall");
 	  throw new java.sql.SQLException("Callable statments not suppoted.", "S1C00");
    }
-   
-   public java.sql.CallableStatement prepareCall(String sql,int a,int b) throws java.sql.SQLException
-   { 
-	   return prepareCall(sql); 
-   }
-   
-   public java.sql.CallableStatement prepareCall(String sql,int a,int b,int c) throws java.sql.SQLException
-   { 
-	   return prepareCall(sql); 
-   }
-   
-   public int getHoldability()
-   {  
-	   return java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT;  
-   }
-   
-   public java.sql.Savepoint setSavepoint()
-	   throws java.sql.SQLException
-   {  
-	   throw new java.sql.SQLException("Savepoints not supported");  
-   }
-   
-   public java.sql.Savepoint setSavepoint(String S)
-	   throws java.sql.SQLException
-   {  
-	   throw new java.sql.SQLException("Savepoints not supported");  
-   }
-   
-   public void rollback(java.sql.Savepoint saved)
-	   throws java.sql.SQLException
-   {  
-	   throw new java.sql.SQLException("Savepoints not supported");  
-   }
-   
-   public void releaseSavepoint(java.sql.Savepoint saved)
-	   throws java.sql.SQLException
-   {  
-	   throw new java.sql.SQLException("Savepoints not supported");  
+
+   @Override
+public java.sql.CallableStatement prepareCall(String sql,int a,int b) throws java.sql.SQLException
+   {
+	   return prepareCall(sql);
    }
 
-   public String nativeSQL(String sql) throws java.sql.SQLException
+   @Override
+public java.sql.CallableStatement prepareCall(String sql,int a,int b,int c) throws java.sql.SQLException
+   {
+	   return prepareCall(sql);
+   }
+
+   @Override
+public int getHoldability()
+   {
+	   return java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT;
+   }
+
+   @Override
+public java.sql.Savepoint setSavepoint()
+	   throws java.sql.SQLException
+   {
+	   throw new java.sql.SQLException("Savepoints not supported");
+   }
+
+   @Override
+public java.sql.Savepoint setSavepoint(String S)
+	   throws java.sql.SQLException
+   {
+	   throw new java.sql.SQLException("Savepoints not supported");
+   }
+
+   @Override
+public void rollback(java.sql.Savepoint saved)
+	   throws java.sql.SQLException
+   {
+	   throw new java.sql.SQLException("Savepoints not supported");
+   }
+
+   @Override
+public void releaseSavepoint(java.sql.Savepoint saved)
+	   throws java.sql.SQLException
+   {
+	   throw new java.sql.SQLException("Savepoints not supported");
+   }
+
+   @Override
+public String nativeSQL(String sql) throws java.sql.SQLException
    {
 	  return sql;
    }
-   
-   public void setAutoCommit(boolean autoCommit) throws java.sql.SQLException
+
+   @Override
+public void setAutoCommit(boolean autoCommit) throws java.sql.SQLException
    {
 	  log("setAutoCommit");
 	  if (!autoCommit)
 		  throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
 	  return;
    }
-   
-   public boolean getAutoCommit() throws java.sql.SQLException
+
+   @Override
+public boolean getAutoCommit() throws java.sql.SQLException
    {
 	  return true;
    }
-   
-   public void commit() throws java.sql.SQLException
+
+   @Override
+public void commit() throws java.sql.SQLException
    {
 		//log("commit");
    }
-   
-   public void rollback() throws java.sql.SQLException
+
+   @Override
+public void rollback() throws java.sql.SQLException
    {
 		//log("rollback");
    }
-   
-   public void close() throws java.sql.SQLException
+
+   @Override
+public void close() throws java.sql.SQLException
    {
 		if(!closed)
 		{
@@ -237,134 +260,160 @@ public class Connection implements java.sql.Connection
 			}
 		}
    }
-   
-   public boolean isClosed() throws java.sql.SQLException
+
+   @Override
+public boolean isClosed() throws java.sql.SQLException
    {
 		return closed;
    }
 
-   public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
+   @Override
+public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
    {
 	  log("getMetaData");
 	  return null;
    }
-   
-   public void setReadOnly (boolean readOnly) throws java.sql.SQLException
+
+   @Override
+public void setReadOnly (boolean readOnly) throws java.sql.SQLException
    {
 	  log("setReadOnly");
    }
-   
-   public boolean isReadOnly() throws java.sql.SQLException
+
+   @Override
+public boolean isReadOnly() throws java.sql.SQLException
    {
 	  return false;
    }
-   
-   public void setCatalog(String Catalog) throws java.sql.SQLException
+
+   @Override
+public void setCatalog(String Catalog) throws java.sql.SQLException
    {
 	  log("setCatalog");
    }
-   
-   public String getCatalog() throws java.sql.SQLException
-   { 
-	   return "FAKEDB";  
+
+   @Override
+public String getCatalog() throws java.sql.SQLException
+   {
+	   return "FAKEDB";
    }
-   
-   public void setTransactionIsolation(int level) throws java.sql.SQLException
+
+   @Override
+public void setTransactionIsolation(int level) throws java.sql.SQLException
    {
 	  log("setTransactionIsolation");
 	  throw new java.sql.SQLException("Transaction Isolation Levels are not supported.", "S1C00");
    }
-   
-   public int getTransactionIsolation() throws java.sql.SQLException
+
+   @Override
+public int getTransactionIsolation() throws java.sql.SQLException
    {
 	  return java.sql.Connection.TRANSACTION_NONE;
    }
-   
-   public java.sql.SQLWarning getWarnings() throws java.sql.SQLException
+
+   @Override
+public java.sql.SQLWarning getWarnings() throws java.sql.SQLException
    {
 	  log("getWarnings");
 	  return null;
    }
-   
-   public void clearWarnings() throws java.sql.SQLException
+
+   @Override
+public void clearWarnings() throws java.sql.SQLException
    {
 	  log("clearWarnings");
    }
 
-   public void setHoldability(int holdability) throws java.sql.SQLException
+   @Override
+public void setHoldability(int holdability) throws java.sql.SQLException
    {}
-   
-   public java.util.Map getTypeMap() throws java.sql.SQLException
-   { 
-	   return new java.util.HashMap(); 
+
+   @Override
+public java.util.Map getTypeMap() throws java.sql.SQLException
+   {
+	   return new java.util.HashMap();
    }
 
-   public Array createArrayOf(String arg0, Object[] arg1) throws SQLException 
-   { 
-	   return null; 
+   @Override
+public Array createArrayOf(String arg0, Object[] arg1) throws SQLException
+   {
+	   return null;
    }
-   
-   public Blob createBlob() throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public Blob createBlob() throws SQLException
+   {
+	   return null;
    }
-   
-   public Clob createClob() throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public Clob createClob() throws SQLException
+   {
+	   return null;
    }
-   
-   public NClob createNClob() throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public NClob createNClob() throws SQLException
+   {
+	   return null;
    }
-   
-   public SQLXML createSQLXML() throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public SQLXML createSQLXML() throws SQLException
+   {
+	   return null;
    }
-   
-   public Struct createStruct(String arg0, Object[] arg1) throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public Struct createStruct(String arg0, Object[] arg1) throws SQLException
+   {
+	   return null;
    }
-   
-   public Properties getClientInfo() throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public Properties getClientInfo() throws SQLException
+   {
+	   return null;
    }
-   
-   public String getClientInfo(String arg0) throws SQLException
-   { 
-	   return null; 
+
+   @Override
+public String getClientInfo(String arg0) throws SQLException
+   {
+	   return null;
    }
-   
-   public boolean isValid(int arg0) throws SQLException 
-   { 
-	   return false; 
-   }
-   
-   public void setClientInfo(Properties arg0) throws SQLClientInfoException 
-   { 
-   }
-   
-   public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException 
-   { 
-   }
-   
-   //public void setTypeMap(Map arg0) throws SQLException { }
-   public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException 
-   { 
-   }
-   
-   public boolean isWrapperFor(Class<?> iface) throws SQLException 
-   { 
+
+   @Override
+public boolean isValid(int arg0) throws SQLException
+   {
 	   return false;
    }
-   
-   public <T> T unwrap(Class<T> iface) throws SQLException 
-   { 
-	   return null; 
+
+   @Override
+public void setClientInfo(Properties arg0) throws SQLClientInfoException
+   {
+   }
+
+   @Override
+public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException
+   {
+   }
+
+   //public void setTypeMap(Map arg0) throws SQLException { }
+   @Override
+public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException
+   {
+   }
+
+   @Override
+public boolean isWrapperFor(Class<?> iface) throws SQLException
+   {
+	   return false;
+   }
+
+   @Override
+public <T> T unwrap(Class<T> iface) throws SQLException
+   {
+	   return null;
    }
 
 	public void setSchema(String schema) throws SQLException { connect(schema); }

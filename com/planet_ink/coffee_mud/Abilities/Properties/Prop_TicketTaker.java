@@ -34,11 +34,12 @@ import java.util.*;
 */
 public class Prop_TicketTaker extends Property
 {
-	public String ID() { return "Prop_TicketTaker"; }
-	public String name(){ return "Ticket Taker";}
-	public String displayText() {return "";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override public String ID() { return "Prop_TicketTaker"; }
+	@Override public String name(){ return "Ticket Taker";}
+	@Override public String displayText() {return "";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
+	@Override
 	public String accountForYourself()
 	{
 		return "one who acts as a ticket taker";
@@ -70,6 +71,7 @@ public class Prop_TicketTaker extends Property
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -105,6 +107,7 @@ public class Prop_TicketTaker extends Property
 			}
 		}
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;

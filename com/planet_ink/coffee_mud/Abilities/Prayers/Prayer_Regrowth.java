@@ -40,11 +40,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Regrowth extends Prayer implements MendingSkill
 {
-	public String ID() { return "Prayer_Regrowth"; }
-	public String name(){ return "Regrowth";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
+	@Override public String ID() { return "Prayer_Regrowth"; }
+	@Override public String name(){ return "Regrowth";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	protected int overridemana(){return Ability.COST_ALL;}
 	private static Vector limbsToRegrow = null;
 
@@ -67,12 +67,14 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		}
 	}
 
+	@Override
 	public boolean supportsMending(Physical item)
-	{ 
+	{
 		if(!(item instanceof MOB)) return false;
 		return (item.fetchEffect("Amputation")!=null);
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -85,7 +87,8 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

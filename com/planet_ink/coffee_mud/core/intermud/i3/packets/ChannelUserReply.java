@@ -43,7 +43,7 @@ public class ChannelUserReply extends Packet {
 		super();
 		type = Packet.CHAN_USER_REP;
 	}
-	
+
 	public ChannelUserReply(Vector v) throws InvalidPacketException {
 		super(v);
 		try
@@ -68,6 +68,7 @@ public class ChannelUserReply extends Packet {
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		if( userRequested == null || userVisibleName == null )
 		{
@@ -76,6 +77,7 @@ public class ChannelUserReply extends Packet {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		int genderCode = 0;
@@ -86,8 +88,8 @@ public class ChannelUserReply extends Packet {
 		case 'N': genderCode=2; break;
 		}
 		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
-		"\",0,\"" + target_mud + "\",0,\"" + userRequested 
-		+ "\",\"" + userVisibleName 
+		"\",0,\"" + target_mud + "\",0,\"" + userRequested
+		+ "\",\"" + userVisibleName
 		+ "\"," + genderCode + ",})";
 		return str;
 

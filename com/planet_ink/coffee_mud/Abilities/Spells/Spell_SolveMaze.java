@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_SolveMaze extends Spell
 {
-	public String ID() { return "Spell_SolveMaze"; }
-	public String name(){return "Solve Maze";}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	protected int canTargetCode(){return 0;}
-	protected int canAffectCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override public String ID() { return "Spell_SolveMaze"; }
+	@Override public String name(){return "Solve Maze";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room targetR=mob.location();
@@ -52,9 +53,9 @@ public class Spell_SolveMaze extends Spell
 			mob.tell("This spell only works when you are in a maze");
 			return false;
 		}
-		
+
 		GridLocale grid = targetR.getGridParent();
-		
+
 		int direction=-1;
 		Room outRoom=null;
 		if((commands.size()>0)
@@ -91,10 +92,10 @@ public class Spell_SolveMaze extends Spell
 			if(direction>=0)
 				outRoom=grid.getRoomInDir(direction);
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (outRoom !=null) )
 		{

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenScroll extends StdScroll
 {
-	public String ID(){	return "GenScroll";}
+	@Override public String ID(){	return "GenScroll";}
 	protected String readableText="";
 
 	public GenScroll()
@@ -52,23 +52,27 @@ public class GenScroll extends StdScroll
 	}
 
 
-	public boolean isGeneric(){return true;}
+	@Override public boolean isGeneric(){return true;}
 
+	@Override
 	public String getSpellList()
 	{ return readableText;}
-	public void setSpellList(String list){readableText=list;}
-	public String readableText(){return readableText;}
+	@Override public void setSpellList(String list){readableText=list;}
+	@Override public String readableText(){return readableText;}
+	@Override
 	public void setReadableText(String text)
 	{
 		readableText=text;
 		setSpellList(readableText);
 	}
-	
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -76,12 +80,14 @@ public class GenScroll extends StdScroll
 		recoverPhyStats();
 	}
 
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -89,12 +95,14 @@ public class GenScroll extends StdScroll
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
-		return codes; 
+		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenScroll)) return false;

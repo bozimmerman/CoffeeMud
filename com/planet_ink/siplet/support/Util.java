@@ -1077,7 +1077,7 @@ public class Util
 		}
 		return commands;
 	}
-	
+
 	public static String stripBadHTMLTags(String s)
 	{
 		StringBuffer buf=new StringBuffer(s);

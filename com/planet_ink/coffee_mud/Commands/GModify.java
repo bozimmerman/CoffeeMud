@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,8 @@ public class GModify extends StdCommand
 	public GModify(){}
 
 	private final String[] access={"GMODIFY"};
-	public String[] getAccessWords(){return access;}
-	
+	@Override public String[] getAccessWords(){return access;}
+
 	private static final int FLAG_CASESENSITIVE=1;
 	private static final int FLAG_SUBSTRING=2;
 	private static final int FLAG_OR=4;
@@ -303,7 +303,7 @@ public class GModify extends StdCommand
 		}
 		return didAnything;
 	}
-	
+
 	public void sortEnumeratedList(Enumeration<? extends Environmental> e, Vector<String> allKnownFields, StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
@@ -319,6 +319,7 @@ public class GModify extends StdCommand
 		}
 	}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -474,7 +475,7 @@ public class GModify extends StdCommand
 				String equator=str.substring(eq,eq+divLen);
 				String val=str.substring(eq+divLen);
 				String key=str.substring(0,eq).trim();
-				
+
 				int divBackLen=0;
 				eq=-1;
 				while((divBackLen==0)&&((++eq)<val.length()))
@@ -660,7 +661,7 @@ public class GModify extends StdCommand
 				if(saveroom) CMLib.database().DBUpdateRoom(R);
 				if(saveitems) CMLib.database().DBUpdateItems(R);
 				if(savemobs) CMLib.database().DBUpdateMOBs(R);
-				if((mob.session()!=null)&&(changes.size()>0)) 
+				if((mob.session()!=null)&&(changes.size()>0))
 					mob.session().rawPrint(".");
 				A.setAreaState(oldFlag);
 				if(changes.size()==0) R.destroy();
@@ -682,14 +683,14 @@ public class GModify extends StdCommand
 		for(int i=0;i<placesToDo.size();i++)
 		{
 			A=((Room)placesToDo.elementAt(i)).getArea();
-			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE)) 
+			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
 				A.setAreaState(Area.State.ACTIVE);
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GMODIFY);}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GMODIFY);}
+
+
 }

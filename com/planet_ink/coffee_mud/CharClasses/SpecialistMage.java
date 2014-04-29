@@ -34,12 +34,13 @@ import java.util.*;
 */
 public class SpecialistMage extends Mage
 {
-	public String ID(){return "SpecialistMage";}
-	public String name(){return "Specialist Mage";}
-	public String baseClass(){return "Mage";}
+	@Override public String ID(){return "SpecialistMage";}
+	@Override public String name(){return "Specialist Mage";}
+	@Override public String baseClass(){return "Mage";}
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
 
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -71,18 +72,21 @@ public class SpecialistMage extends Mage
 		}
 	}
 
-	public int availabilityCode(){return 0;}
+	@Override public int availabilityCode(){return 0;}
+	@Override
 	public String getOtherBonusDesc()
 	{
 		String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5].replace('_',' '));
 		return "At 5th level, receives bonus damage from "+chosen+" as levels advance.  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
+	@Override
 	public String getOtherLimitsDesc()
 	{
 		String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
 		return "Unable to cast "+opposed+" spells.  Receives penalty damage from "+opposed+" as levels advance.  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -132,6 +136,7 @@ public class SpecialistMage extends Mage
 		return super.okMessage(myChar,msg);
 	}
 
+	@Override
 	public int classDurationModifier(MOB myChar,
 									 Ability skill,
 									 int duration)

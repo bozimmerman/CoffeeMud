@@ -34,10 +34,10 @@ public class KeyPairSearchTree<V>
 		public KeyPairNode<K,T>[] limbs=new KeyPairNode[127];
 		public Pair<K,T> value=null;
 	}
-	
+
 	/**
 	 * Store a new key/value pair
-	 * @param key 
+	 * @param key
 	 * @param value
 	 */
 	public void addEntry(String key, V value)
@@ -52,7 +52,7 @@ public class KeyPairSearchTree<V>
 		}
 		curr.value=new Pair<String,V>(key,value);
 	}
-	
+
 	/**
 	 * Retreive teh value for the longest key that
 	 * the given string starts with

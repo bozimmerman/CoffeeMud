@@ -34,16 +34,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MoneyChanger extends StdBehavior
 {
-	public String ID(){return "MoneyChanger";}
+	@Override public String ID(){return "MoneyChanger";}
 
 	public Hashtable rates=new Hashtable();
 	public double cut=0.05;
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "money changing for a fee";
 	}
-	
+
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		if(forMe==null) return;
@@ -52,6 +54,7 @@ public class MoneyChanger extends StdBehavior
 		super.startBehavior(forMe);
 	}
 
+	@Override
 	public void setParms(String newParm)
 	{
 		super.setParms(newParm);
@@ -102,6 +105,7 @@ public class MoneyChanger extends StdBehavior
 		}
 	}
 
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -147,6 +151,7 @@ public class MoneyChanger extends StdBehavior
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

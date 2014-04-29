@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class GenPiano extends GenRideable implements MusicalInstrument
 {
-	public String ID(){	return "GenPiano";}
+	@Override public String ID(){	return "GenPiano";}
 	public GenPiano()
 	{
 		super();
@@ -50,8 +50,8 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
-	public int instrumentType(){return CMath.s_int(readableText);}
-	public void setInstrumentType(int type){readableText=(""+type);}
+	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
+	@Override public int instrumentType(){return CMath.s_int(readableText);}
+	@Override public void setInstrumentType(int type){readableText=(""+type);}
 
 }

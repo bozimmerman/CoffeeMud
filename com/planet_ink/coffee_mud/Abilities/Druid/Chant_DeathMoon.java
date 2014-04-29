@@ -19,7 +19,7 @@ import java.util.Vector;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +38,15 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class Chant_DeathMoon extends Chant
 {
-	public String ID() { return "Chant_DeathMoon"; }
-	public String name(){ return "Death Moon";}
-	public String displayText(){return "(Death Moon)";}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int canAffectCode(){return CAN_ROOMS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+	@Override public String ID() { return "Chant_DeathMoon"; }
+	@Override public String name(){ return "Death Moon";}
+	@Override public String displayText(){return "(Death Moon)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canAffectCode(){return CAN_ROOMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -56,6 +57,7 @@ public class Chant_DeathMoon extends Chant
 
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -63,6 +65,7 @@ public class Chant_DeathMoon extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_HEAR);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -87,6 +90,7 @@ public class Chant_DeathMoon extends Chant
 		return true;
 	}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -107,7 +111,8 @@ public class Chant_DeathMoon extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

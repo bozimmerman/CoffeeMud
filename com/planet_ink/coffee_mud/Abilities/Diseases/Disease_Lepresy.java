@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,23 +34,24 @@ import java.util.*;
 
 public class Disease_Lepresy extends Disease
 {
-	public String ID() { return "Disease_Lepresy"; }
-	public String name(){ return "Leprosy";}
-	public String displayText(){ return "(Leprosy)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Lepresy"; }
+	@Override public String name(){ return "Leprosy";}
+	@Override public String displayText(){ return "(Leprosy)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 999999;}
-	protected int DISEASE_DELAY(){return 10;}
+	@Override protected int DISEASE_TICKS(){return 999999;}
+	@Override protected int DISEASE_DELAY(){return 10;}
 	protected int lastHP=Integer.MAX_VALUE;
-	protected String DISEASE_DONE(){return "Your leprosy is cured!";}
-	protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	public int difficultyLevel(){return 4;}
+	@Override protected String DISEASE_DONE(){return "Your leprosy is cured!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	@Override public int difficultyLevel(){return 4;}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

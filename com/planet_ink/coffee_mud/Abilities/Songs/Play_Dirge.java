@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,16 +36,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Play_Dirge extends Play
 {
-	public String ID() { return "Play_Dirge"; }
-	public String name(){ return "Dirge";}
-	protected int canAffectCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	protected boolean persistantSong(){return false;}
-	protected boolean skipStandardSongTick(){return true;}
-	protected String songOf(){return "a "+name();}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	protected boolean skipStandardSongInvoke(){return true;}
+	@Override public String ID() { return "Play_Dirge"; }
+	@Override public String name(){ return "Dirge";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+	@Override protected boolean persistantSong(){return false;}
+	@Override protected boolean skipStandardSongTick(){return true;}
+	@Override protected String songOf(){return "a "+name();}
+	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override protected boolean skipStandardSongInvoke(){return true;}
 
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -55,7 +56,8 @@ public class Play_Dirge extends Play
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
@@ -96,17 +98,17 @@ public class Play_Dirge extends Play
 				{
 					Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
-	
+
 					for(Iterator f=h.iterator();f.hasNext();)
 					{
 						MOB follower=(MOB)f.next();
-	
+
 						double exp=10.0;
 						int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 						int levelDiff=follower.phyStats().level()-target.phyStats().level();
 						if(levelDiff>levelLimit) exp=0.0;
 						int expGained=(int)Math.round(exp);
-	
+
 						// malicious songs must not affect the invoker!
 						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(expGained>0))
 							CMLib.leveler().postExperience(follower,null,null,expGained,false);

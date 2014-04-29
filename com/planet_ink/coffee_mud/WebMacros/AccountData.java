@@ -17,7 +17,7 @@ import com.planet_ink.miniweb.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AccountData extends StdWebMacro
 {
-	public String name() { return "AccountData"; }
-	public boolean isAdminMacro()	{return true;}
+	@Override public String name() { return "AccountData"; }
+	@Override public boolean isAdminMacro()	{return true;}
 
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

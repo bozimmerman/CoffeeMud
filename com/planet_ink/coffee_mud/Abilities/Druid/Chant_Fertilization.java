@@ -36,13 +36,14 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_Fertilization extends Chant
 {
-	public String ID() { return "Chant_Fertilization"; }
-	public String name(){return "Fertilization";}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Chant_Fertilization"; }
+	@Override public String name(){return "Fertilization";}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -64,6 +65,7 @@ public class Chant_Fertilization extends Chant
 
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 

@@ -22,7 +22,7 @@ import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,15 +44,15 @@ public class CM1Server extends Thread
 	private boolean 	shutdownRequested = false;
 	private boolean 	isShutdown = false;
 	private Selector	servSelector = null;
-	private ServerSocketChannel	
+	private ServerSocketChannel
 						servChan = null;
-	private SHashtable<SocketChannel,RequestHandler> 
+	private SHashtable<SocketChannel,RequestHandler>
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
 	private String		iniFile;
 	private CMProps 	page;
-	
-	
-	
+
+
+
 	public CM1Server(String serverName, String iniFile)
 	{
 		super(serverName);
@@ -65,9 +65,9 @@ public class CM1Server extends Thread
 		port=serverPort;
 		shutdownRequested = false;
 	}
-	
+
 	public String getINIFilename() { return iniFile;}
-	
+
 	protected boolean loadPropPage(String iniFile)
 	{
 		if (page==null || !page.isLoaded())
@@ -81,7 +81,8 @@ public class CM1Server extends Thread
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void run()
 	{
 		while(!shutdownRequested)
@@ -115,28 +116,28 @@ public class CM1Server extends Thread
 					{
 						int n = servSelector.select();
 						if (n == 0) continue;
-						
+
 						Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
-						while (it.hasNext()) 
+						while (it.hasNext())
 						{
 							SelectionKey key = it.next();
-							if (key.isAcceptable()) 
+							if (key.isAcceptable())
 							{
 								ServerSocketChannel server = (ServerSocketChannel) key.channel();
 								SocketChannel channel = server.accept();
-								if (channel != null) 
+								if (channel != null)
 								{
 									RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
 									channel.configureBlocking (false);
 									channel.register (servSelector, SelectionKey.OP_READ, handler);
 									handlers.put(channel,handler);
 									handler.sendMsg("CONNECTED TO "+name.toUpperCase());
-								} 
+								}
 								//sayHello (channel);
 							}
 							try
 							{
-								if (key.isReadable()) 
+								if (key.isReadable())
 								{
 									RequestHandler handler = (RequestHandler)key.attachment();
 									if((!handler.isRunning())&&(!handler.needsClosing()))
@@ -186,7 +187,7 @@ public class CM1Server extends Thread
 		}
 		isShutdown = true;
 	}
-	
+
 	public void shutdown()
 	{
 		shutdownRequested = true;

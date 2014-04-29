@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_LotsForSale extends Prop_RoomForSale
 {
-	public String ID() { return "Prop_LotsForSale"; }
-	public String name(){ return "Putting many rooms up for sale";}
+	@Override public String ID() { return "Prop_LotsForSale"; }
+	@Override public String name(){ return "Putting many rooms up for sale";}
 	protected String uniqueLotID=null;
 
-	public boolean allowsExpansionConstruction(){ return true; }
+	@Override public boolean allowsExpansionConstruction(){ return true; }
 
 	protected void fillCluster(Room R, List<Room> V)
 	{
@@ -62,8 +62,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		}
 	}
 
-	public List<Room> getConnectedPropertyRooms() 
-	{ 
+	@Override
+	public List<Room> getConnectedPropertyRooms()
+	{
 		List<Room> V=new ArrayList<Room>();
 		Room R=null;
 		if(affected instanceof Room)
@@ -87,9 +88,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		else
 			uniqueLotID="";
 		return V;
-		
+
 	}
-	
+
 	protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
 	{
 		if(theRoom==null) return true;
@@ -111,6 +112,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
+	@Override
 	public String getTitleID()
 	{
 		if(affected instanceof Room)
@@ -118,18 +120,20 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		else
 		{
 			Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) 
+			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
 		return "";
 	}
-	
+
+	@Override
 	public String getUniqueLotID()
 	{
 		if(uniqueLotID==null) getConnectedPropertyRooms();
 		return uniqueLotID;
 	}
 
+	@Override
 	public void updateLot(List optPlayerList)
 	{
 		Environmental EV=affected;
@@ -142,7 +146,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			{
 				R=CMLib.map().getRoom(R);
 				lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
-		
+
 				if(getOwnerName().length()==0)
 				{
 					boolean updateExits=false;

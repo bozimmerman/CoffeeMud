@@ -37,8 +37,9 @@ public class As extends StdCommand
 	public As(){}
 
 	private final String[] access={"AS"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -64,7 +65,7 @@ public class As extends StdCommand
 			try
 			{
 				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
-				if(targets.size()>0) 
+				if(targets.size()>0)
 					M=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
 			catch(NoSuchElementException e){}
@@ -151,9 +152,9 @@ public class As extends StdCommand
 		if(dead) M.removeFromGame(true,true);
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AS);}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AS);}
+
+
 }

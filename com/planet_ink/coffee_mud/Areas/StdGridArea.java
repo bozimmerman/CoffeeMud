@@ -34,12 +34,13 @@ import java.util.*;
 */
 public class StdGridArea extends StdArea implements Area, GridZones {
 
-	public String ID(){	return "StdGridArea";}
+	@Override public String ID(){	return "StdGridArea";}
 	public final static String ZEROES="0000000000";
 	protected int xSize=100;
 	protected int ySize=100;
 	protected int yLength=3;
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)
@@ -51,6 +52,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		return super.newInstance();
 	}
 
+	@Override
 	public String getNewRoomID(Room startRoom, int direction)
 	{
 		XYVector xy=posFromRoomID(startRoom);
@@ -102,12 +104,14 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(x>0) return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
 		return s;
 	}
+	@Override
 	public Room getGridChild(int x, int y)
 	{
 		String roomID=roomIDFromPos(x,y);
 		if(roomID==null) return null;
 		return getRoom(Name()+"#"+roomID);
 	}
+	@Override
 	public XYVector getRoomXY(String roomID)
 	{
 		if(roomID.length()==0) return null;
@@ -132,7 +136,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 			return null;
 		return xy;
 	}
-	public XYVector getRoomXY(Room room){ return posFromRoomID(room);}
+	@Override public XYVector getRoomXY(Room room){ return posFromRoomID(room);}
 	protected XYVector posFromRoomID(Room loc)
 	{
 		if(loc==null) return null;
@@ -140,16 +144,17 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(roomID.length()==0) roomID=getGridChildCode(loc);
 		return getRoomXY(roomID);
 	}
-	public int getGridChildX(Room loc){return posFromRoomID(loc).x;}
-	public int getGridChildY(Room loc){return posFromRoomID(loc).y;}
-	public String getGridChildCode(Room loc){ return CMLib.map().getExtendedRoomID(loc);}
-	public Room getRandomGridChild(){ return super.getRandomProperRoom();}
-	public Room getGridChild(String childCode){return CMLib.map().getRoom(childCode);}
-	public boolean isMyGridChild(Room loc){ return super.isRoom(loc);}
-	public int xGridSize(){ return xSize;}
-	public int yGridSize(){ return ySize;}
-	public void setXGridSize(int x){xSize=x;}
-	public void setYGridSize(int y){ySize=y; yLength=Integer.toString(ySize).length();}
+	@Override public int getGridChildX(Room loc){return posFromRoomID(loc).x;}
+	@Override public int getGridChildY(Room loc){return posFromRoomID(loc).y;}
+	@Override public String getGridChildCode(Room loc){ return CMLib.map().getExtendedRoomID(loc);}
+	@Override public Room getRandomGridChild(){ return super.getRandomProperRoom();}
+	@Override public Room getGridChild(String childCode){return CMLib.map().getRoom(childCode);}
+	@Override public boolean isMyGridChild(Room loc){ return super.isRoom(loc);}
+	@Override public int xGridSize(){ return xSize;}
+	@Override public int yGridSize(){ return ySize;}
+	@Override public void setXGridSize(int x){xSize=x;}
+	@Override public void setYGridSize(int y){ySize=y; yLength=Integer.toString(ySize).length();}
+	@Override
 	public Room getGridChild(XYVector xy)
 	{
 		if(xy==null) return null;

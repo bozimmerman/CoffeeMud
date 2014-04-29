@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,12 +37,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	public String ID() { return "Armorsmithing"; }
-	public String name(){ return "Armorsmithing";}
+	@Override public String ID() { return "Armorsmithing"; }
+	@Override public String name(){ return "Armorsmithing";}
 	private static final String[] triggerStrings = {"ARMORSMITH","ARMORSMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "METAL|MITHRIL";}
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
+	@Override
+	public String parametersFormat(){ return
 		  "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\t"
 		+ "BASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
@@ -61,6 +62,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 
 	protected String primeMaterialDesc(){return "metal";}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -76,15 +78,17 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "armorsmith.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "armorsmith.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -144,6 +148,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return true;
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -152,7 +157,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 			return false;
-		if(CMLib.flags().isDeadlyOrMaliciousEffect(I)) 
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
 		if(!(I instanceof Armor))
 			return false;
@@ -169,10 +174,11 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return true;
 	}
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
 
+	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
@@ -186,20 +192,22 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return true;
 	}
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		fireRequired=true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
-		
+
 		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
@@ -368,7 +376,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-			
+
 			if(amount>woodRequired) woodRequired=amount;
 			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};

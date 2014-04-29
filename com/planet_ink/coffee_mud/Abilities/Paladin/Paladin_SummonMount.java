@@ -37,17 +37,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Paladin_SummonMount extends StdAbility
 {
-	public String ID() { return "Paladin_SummonMount"; }
-	public String name(){ return "Call Mount";}
-	public String displayText() {return "(Mount)";}
+	@Override public String ID() { return "Paladin_SummonMount"; }
+	@Override public String name(){ return "Call Mount";}
+	@Override public String displayText() {return "(Mount)";}
 	private static final String[] triggerStrings = {"CALLMOUNT"};
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 
+	@Override
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -59,6 +60,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
@@ -82,6 +84,7 @@ public class Paladin_SummonMount extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -95,6 +98,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)

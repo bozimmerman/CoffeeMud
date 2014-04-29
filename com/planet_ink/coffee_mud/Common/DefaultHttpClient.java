@@ -20,7 +20,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2013-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,11 +38,11 @@ import java.util.*;
 
 public class DefaultHttpClient implements HttpClient, Cloneable
 {
-	public String ID(){return "DefaultHttpClient";}
-	public String name() { return ID();}
-	
+	@Override public String ID(){return "DefaultHttpClient";}
+	@Override public String name() { return ID();}
+
 	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTINCHUNK, POSTCHUNK }
-	
+
 	private volatile int tickStatus=Tickable.STATUS_NOT;
 	protected Map<String,String> reqHeaders=new CaselessTreeMap<String>();
 	protected Map<String,List<String>> respHeaders=new CaselessTreeMap<List<String>>();
@@ -55,7 +55,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	protected int maxReadBytes=0;
 	protected byte[] outBody=null;
 	protected Integer respStatus=null;
-	
+
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -67,14 +68,16 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			return new DefaultHttpClient();
 		}
 	}
-	public void initializeClass(){}
+	@Override public void initializeClass(){}
 
+	@Override
 	public HttpClient header(String key, String value)
 	{
 		reqHeaders.put(key, value);
 		return this;
 	}
-	
+
+	@Override
 	public HttpClient method(Method meth)
 	{
 		if(meth!=null)
@@ -83,7 +86,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 		return this;
 	}
-	
+
+	@Override
 	public HttpClient body(String body)
 	{
 		if(body!=null)
@@ -92,6 +96,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 		return this;
 	}
+	@Override
 	public HttpClient body(byte[] body)
 	{
 		if(body!=null)
@@ -100,7 +105,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 		return this;
 	}
-	
+
+	@Override
 	public HttpClient reset()
 	{
 		reqHeaders.clear();
@@ -108,23 +114,26 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		respStatus=null;
 		return this;
 	}
-	
-	public HttpClient connectTimeout(int ms) 
+
+	@Override
+	public HttpClient connectTimeout(int ms)
 	{
 		this.connectTimeout=ms;
 		return this;
 	}
-	public HttpClient readTimeout(int ms) 
+	@Override
+	public HttpClient readTimeout(int ms)
 	{
 		this.readTimeout=ms;
 		return this;
 	}
-	public HttpClient maxReadBytes(int bytes) 
+	@Override
+	public HttpClient maxReadBytes(int bytes)
 	{
 		this.maxReadBytes=bytes;
 		return this;
 	}
-	
+
 	protected void conditionalHeader(String key, String value, List<String> clearSet)
 	{
 		if(!reqHeaders.containsKey(key))
@@ -133,19 +142,22 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			clearSet.add(key);
 		}
 	}
-	
+
+	@Override
 	public int getResponseCode()
 	{
 		if(this.respStatus!=null)
 			return this.respStatus.intValue();
 		return -1;
 	}
-	
+
+	@Override
 	public Map<String,List<String>> getResponseHeaders()
 	{
 		return this.respHeaders;
 	}
-	
+
+	@Override
 	public HttpClient doRequest(String url) throws IOException
 	{
 		respHeaders.clear();
@@ -189,15 +201,15 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			out=sock.getOutputStream();
 		}
 		final IOException cleanException=new IOException("Connection closed by remote host");
-		try 
-		{ 
+		try
+		{
 			while(in.read()!=-1){} /* clear the stream */
 			throw cleanException;
-		} 
-		catch(IOException e) 
-		{ 
-			if(e==cleanException) 
-				throw e; 
+		}
+		catch(IOException e)
+		{
+			if(e==cleanException)
+				throw e;
 		}
 		out.write((meth.toString()+" "+rest+" HTTP/1.1\r\n").getBytes());
 		for(String key : reqHeaders.keySet())
@@ -209,7 +221,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			out.write(outBody);
 		long nextReadTimeout=(this.readTimeout>0)?(System.currentTimeMillis()+this.readTimeout):Long.MAX_VALUE;
 		int lastC=-1;
-		
+
 		HState state=HState.PREHEAD;
 		ByteArrayOutputStream bodyBuilder=new ByteArrayOutputStream();
 		StringBuilder headBuilder=new StringBuilder();
@@ -233,7 +245,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 						throw e;
 					continue;
 				}
-				else 
+				else
 					throw e;
 			}
 			switch(state)
@@ -320,7 +332,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					break;
 				}
 			case PRECHUNK: {
-					if((c=='\n')&&(lastC=='\r')) 
+					if((c=='\n')&&(lastC=='\r'))
 					{
 						state=HState.INCHUNK;
 						String szStr=headBuilder.toString().trim();
@@ -339,8 +351,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 						else
 							state=HState.POSTCHUNK;
 						headBuilder.setLength(0);
-					} 
-					else if((c!='\r')&&(c!='\n')) 
+					}
+					else if((c!='\r')&&(c!='\n'))
 					{
 						headBuilder.append((char)c);
 					}
@@ -389,51 +401,59 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				break;
 			}
 			}
-		
+
 		}
 		this.outBody=bodyBuilder.toByteArray();
 		return this;
 	}
-	
+
+	@Override
 	public byte[] getRawUrl(final String urlStr, String cookieStr)
 	{
 		return getRawUrl(urlStr, cookieStr, 1024*1024*10, 10000);
 	}
+	@Override
 	public byte[] getRawUrl(final String urlStr)
 	{
 		return getRawUrl(urlStr, null, 1024*1024*10, 10000);
 	}
+	@Override
 	public byte[] getRawUrl(final String urlStr, final int maxLength, final int readTimeout)
 	{
 		return getRawUrl(urlStr, null, maxLength, readTimeout);
 	}
-	
+
+	@Override
 	public int getResponseContentLength()
 	{
 		if(this.outBody!=null)
 			return this.outBody.length;
 		return 0;
 	}
-	
+
+	@Override
 	public InputStream getResponseBody()
 	{
 		if(this.outBody!=null)
 			return new ByteArrayInputStream(this.outBody);
 		return new ByteArrayInputStream(new byte[0]);
-		
+
 	}
-	
+
+	@Override
 	public HttpClient doGet(String url) throws IOException
 	{
 		return this.method(Method.GET).doRequest(url);
 	}
-	
+
+	@Override
 	public HttpClient doHead(String url) throws IOException
 	{
 		return this.method(Method.HEAD).doRequest(url);
 	}
 
-	
+
+	@Override
 	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout)
 	{
 		HttpClient h=null;
@@ -443,7 +463,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			if((cookieStr!=null)&&(cookieStr.length()>0))
 				h=h.header("Cookie", cookieStr);
 			h.doRequest(urlStr);
-			if (h.getResponseCode() == 302) 
+			if (h.getResponseCode() == 302)
 			{
 				InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
@@ -458,8 +478,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					return bout.toByteArray();
 				}
 			}
-				
-			if (h.getResponseCode() == 200) 
+
+			if (h.getResponseCode() == 200)
 			{
 				InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
@@ -474,8 +494,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					return bout.toByteArray();
 				}
 			}
-		} 
-		catch (Exception e) 
+		}
+		catch (Exception e)
 		{
 			if(e.getMessage()==null)
 				Log.errOut("HttpClient",e);
@@ -491,6 +511,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return null;
 	}
 
+	@Override
 	public void finished()
 	{
 		if(sock!=null)
@@ -511,17 +532,18 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 	}
 
-	
+
+	@Override
 	public Map<String,List<String>> getHeaders(final String urlStr)
 	{
 		HttpClient h=null;
-		try 
+		try
 		{
 			h=this.readTimeout(3000).connectTimeout(3000).method(Method.GET);
 			h.doRequest(urlStr);
 			return h.getResponseHeaders();
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			if(e.getMessage()==null)
 				Log.errOut("HttpClient",e);
@@ -536,18 +558,17 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 	}
 
-	@Override
-	public int getTickStatus() { return tickStatus; }
+	@Override public int getTickStatus() { return tickStatus; }
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID) 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		return false;
 	}
 
-	@Override
-	public CMObject copyOf() { try { return (CMObject)this.clone(); } catch (CloneNotSupportedException e) { return this; } }
+	@Override public CMObject copyOf() { try { return (CMObject)this.clone(); } catch (CloneNotSupportedException e) { return this; } }
 
+	@Override
 	public int compareTo(CMObject o)
 	{
 		final int comp=CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));

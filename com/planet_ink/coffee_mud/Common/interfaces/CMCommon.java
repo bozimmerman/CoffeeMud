@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ limitations under the License.
  * A common interface for common classes.  Unfortunately, they have
  * nothing in common. :(
  */
-public interface CMCommon extends CMObject 
+public interface CMCommon extends CMObject
 {
 
 }

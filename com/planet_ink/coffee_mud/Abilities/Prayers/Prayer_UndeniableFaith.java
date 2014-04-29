@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,17 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_UndeniableFaith extends Prayer
 {
-	public String ID() { return "Prayer_UndeniableFaith"; }
-	public String name(){ return "Undeniable Faith";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
-	protected int overrideMana(){return 100;}
+	@Override public String ID() { return "Prayer_UndeniableFaith"; }
+	@Override public String name(){ return "Undeniable Faith";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
+	@Override protected int overrideMana(){return 100;}
 	protected String godName="";
 	private static DVector convertStack=new DVector(2);
 
+	@Override
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -54,6 +55,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			M.tell("Your compelled faith is finally subsided.");
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -88,6 +90,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		return true;
 	}
 
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -103,6 +106,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

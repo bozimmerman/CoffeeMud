@@ -25,13 +25,13 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredEnumeration(Enumeration<K> eset, Filterer<K> fil) 
+	public FilteredEnumeration(Enumeration<K> eset, Filterer<K> fil)
 	{
 		enumer=eset;
 		filterer=fil;
 	}
-	
-	public void setFilterer(Filterer<K> fil) 
+
+	public void setFilterer(Filterer<K> fil)
 	{
 		filterer=fil;
 	}
@@ -47,7 +47,7 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 			nextElement = null;
 		}
 	}
-	
+
 	private void initialize()
 	{
 		if(!initialized)
@@ -56,15 +56,17 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 			initialized=true;
 		}
 	}
-	
-	public boolean hasMoreElements() 
-	{ 
+
+	@Override
+	public boolean hasMoreElements()
+	{
 		if(!initialized)
 			initialize();
 		return nextElement!=null;
 	}
-	
-	public K nextElement() 
+
+	@Override
+	public K nextElement()
 	{
 		if(!hasMoreElements())
 			throw new NoSuchElementException();

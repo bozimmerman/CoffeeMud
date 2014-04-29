@@ -19,8 +19,8 @@ import java.io.*;
    limitations under the License.
 */
 /**
- * A core singleton class handling various mathematical operations and 
- * functions, especially dealing with explicit type conversions, and 
+ * A core singleton class handling various mathematical operations and
+ * functions, especially dealing with explicit type conversions, and
  * special string conversions and functions.
  */
 public class CMath
@@ -131,7 +131,7 @@ public class CMath
 	{
 		return num+numAppendage(num);
 	}
-	
+
 	/**
 	 * Return true if the char is a roman numeral digit
 	 * @param c the char
@@ -183,7 +183,7 @@ public class CMath
 				return a;
 		return null;
 	}
-	
+
 	/**
 	 * Returns how many bits are set in the given 64 bit long
 	 * @param i the long to count bits in
@@ -195,7 +195,7 @@ public class CMath
 		i = (i & 0x3333333333333333L) + ((i >> 2) & 0x3333333333333333L);
 		return (int)((((i + (i >> 4)) & 0xF0F0F0F0F0F0F0FL) * 0x101010101010101L) >> 56);
 	}
-	
+
 	/**
 	 * Returns how many bits are set in the given 32 bit int
 	 * @param i the int to count bits in
@@ -207,7 +207,7 @@ public class CMath
 		i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
 		return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
 	}
-	
+
 	/**
 	 * Returns the matching enum.  Case Sensitive!
 	 * @param c the enum class to look in
@@ -227,7 +227,7 @@ public class CMath
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns the matching enum.  Case Sensitive!
 	 * @param c the enum class to look in
@@ -243,7 +243,7 @@ public class CMath
 			return def;
 		return obj;
 	}
-	
+
 	/**
 	 * Returns true if the string is a number (float or int)
 	 * @param s the string to test
@@ -583,23 +583,23 @@ public class CMath
 	 * @return the number without the bitmasks bits turned on.
 	 */
 	public final static long unsetb(final long num, final int bitmask) { return num & (~bitmask);}
-	
+
 	/**
 	 * Returns the bit index (0 based) of the first bit set in the given mask.
 	 * @param bits the bits to check
 	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
 	 */
-	public final static int firstBitSetIndex(int bits) 
+	public final static int firstBitSetIndex(int bits)
 	{
 		return ((bits & 0x80000000)!=0) ? 31 : firstBitSetIndex((bits << 1) | 1) - 1;
 	}
-	
+
 	/**
 	 * Returns the bit index (0 based) of the first bit set in the given mask.
 	 * @param bits the bits to check
 	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
 	 */
-	public final static int[] getAllBitsSet(int bits) 
+	public final static int[] getAllBitsSet(int bits)
 	{
 		List<Integer> bitsSet=new ArrayList<Integer>();
 		for(int i=0;i<32;i++)
@@ -610,9 +610,9 @@ public class CMath
 			ret[i]=bitsSet.get(i).intValue();
 		return ret;
 	}
-	
+
 	/**
-	 * Returns true if the bitnumberth bit (0...) is set 
+	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
 	 * @param number the given number
 	 * @param bitnumber the bit to check (0,1,2...)
@@ -624,7 +624,7 @@ public class CMath
 		return ((number&mask)==mask);
 	}
 	/**
-	 * Returns true if the given string represents a 
+	 * Returns true if the given string represents a
 	 * percentage in the form X% where X is any real
 	 * number.
 	 * @param s the string to check
@@ -662,7 +662,7 @@ public class CMath
 				i--;
 			}
 	}
-	
+
 	/**
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
@@ -677,7 +677,7 @@ public class CMath
 		replaceVariables(buf,values);
 		return buf.toString();
 	}
-	
+
 	/**
 	 * Converts a single hex digit to an int
 	 * @param c the hex digit, maybe
@@ -693,15 +693,15 @@ public class CMath
 		if(c<'f') return (c-'a')+10;
 		return -1;
 	}
-	
+
 	/**
 	 * Converts the given string to a floating
-	 * point number, 1>=N>=0, representing 
+	 * point number, 1>=N>=0, representing
 	 * the whole percentage of the string.  The
 	 * string format is either X or X%, where 100>=X>=0
 	 * If the format is bad, 0.0 is returned.
 	 * @param s the string to convert
-	 * @return the string converted to a real number 
+	 * @return the string converted to a real number
 	 */
 	public final static double s_pct(String s)
 	{
@@ -709,7 +709,7 @@ public class CMath
 		while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
 		return s_double(s)/100.0;
 	}
-	
+
 	/**
 	 * Converts a percentage 1>d>0 to a string.
 	 * @param d the number to convert
@@ -721,7 +721,7 @@ public class CMath
 		if(s.endsWith("%%")) return s.substring(0,s.length()-1);
 		return s;
 	}
-	
+
 	/**
 	 * Converts the string to a double percentage and then
 	 * converts that back to a percentage.
@@ -731,7 +731,7 @@ public class CMath
 	public final static String toPct(final String s) { return toPct(s_pct(s)); }
 
 	/**
-	 * Returns true if the bitnumberth bit (0...) is set 
+	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
 	 * @param number the given number
 	 * @param bitnumber the bit to check (0,1,2...)
@@ -743,7 +743,7 @@ public class CMath
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Returns whether the given string is a valid
 	 * math expression (5 + 7)/2, etc. Does this
@@ -830,7 +830,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.  
+	 * number, or a full expression using ()+-/*?<>.
 	 * Variable @xx will refer to current computed value.
 	 * Round the result to an integer.
 	 * Returns 0 on any parsing error
@@ -958,13 +958,13 @@ public class CMath
 		public double value = 0.0;
 		public char operation = ' ';
 		public LinkedList<CompiledOperation> list = null;
-		public CompiledOperation(int variableIndex) { type = OPERATION_VARIABLE; this.variableIndex = variableIndex;}  
-		public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}  
-		public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}  
-		public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}  
-		public CompiledOperation() { type = OPERATION_PREVIOUSVALUE;}  
+		public CompiledOperation(int variableIndex) { type = OPERATION_VARIABLE; this.variableIndex = variableIndex;}
+		public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}
+		public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}
+		public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}
+		public CompiledOperation() { type = OPERATION_PREVIOUSVALUE;}
 	}
-	
+
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.
 	 * @see CMath#parseMathExpression(LinkedList, double[], double)
@@ -974,12 +974,12 @@ public class CMath
 	 */
 	public final static LinkedList<CompiledOperation> compileMathExpression(final String formula)
 	{return compileMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false);}
-	
+
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.
 	 * @see CMath#parseMathExpression(String, double[])
 	 * @param st the tokenized expression
-	 * @param inParen whether or not you are in parenthesis mode 
+	 * @param inParen whether or not you are in parenthesis mode
 	 * @return the pre-compiled expression
 	 * @throws ArithmeticException
 	 */
@@ -993,7 +993,7 @@ public class CMath
 			st.ordinaryChar('X');
 		}
 		final LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
-		
+
 		try
 		{
 			int c=st.nextToken();
@@ -1089,13 +1089,13 @@ public class CMath
 			final CompiledOperation o=i.next();
 			switch(o.type)
 			{
-				case CompiledOperation.OPERATION_VALUE: 
+				case CompiledOperation.OPERATION_VALUE:
 					curValue = o.value; break;
-				case CompiledOperation.OPERATION_VARIABLE: 
+				case CompiledOperation.OPERATION_VARIABLE:
 					curValue = vars[o.variableIndex]; break;
-				case CompiledOperation.OPERATION_LIST: 
+				case CompiledOperation.OPERATION_LIST:
 					curValue = parseMathExpression(o.list,vars,finalValue); break;
-				case CompiledOperation.OPERATION_PREVIOUSVALUE: 
+				case CompiledOperation.OPERATION_PREVIOUSVALUE:
 					curValue = previous; break;
 				case CompiledOperation.OPERATION_OPERATION:
 					switch(o.operation)
@@ -1114,8 +1114,8 @@ public class CMath
 		}
 		return finalValue;
 	}
-	
-	
+
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -1265,7 +1265,7 @@ public class CMath
 				return i+1;
 		return 0;
 	}
-	
+
 	/**
 	 * Returns the absolute value (X>=0) of the
 	 * given number
@@ -1315,7 +1315,7 @@ public class CMath
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return 0;}
 	}
-	
+
 	/**
 	 * Converts the given object into an iteger, if it can
 	 * @param O the object to try and convert
@@ -1345,7 +1345,7 @@ public class CMath
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return def;}
 	}
-	
+
 	/**
 	 * Returns the short value of a string without crashing
 	 *
@@ -1367,7 +1367,7 @@ public class CMath
 	 * @return whether it is a long
 	 */
 	public final static boolean isLong(final String LONG){return isInteger(LONG);}
-	
+
 	/**
 	 * Returns whether the given string is a int value
 	 *
@@ -1390,7 +1390,7 @@ public class CMath
 				return false;
 		return true;
 	}
-	
+
 	/**
 	 * Returns whether the given string is a float value
 	 *
@@ -1399,9 +1399,9 @@ public class CMath
 	 * @return whether it is a float
 	 */
 	public final static boolean isFloat(final String DBL){return isDouble(DBL);}
-	
+
 	/**
-	 * Returns a int representing either the given value, or 
+	 * Returns a int representing either the given value, or
 	 * the 2^ power of the comma separated values in the order
 	 * they appear in the given string list.
 	 *
@@ -1414,9 +1414,9 @@ public class CMath
 	{
 		return (int)s_parseBitLongExpression(bits,val);
 	}
-	
+
 	/**
-	 * Returns a long representing either the given value, or 
+	 * Returns a long representing either the given value, or
 	 * the 2^ power of the comma separated values in the order
 	 * they appear in the given string list.
 	 *
@@ -1446,7 +1446,7 @@ public class CMath
 		}
 		return l;
 	}
-	
+
 	/**
 	 * Replaces the internal Random object with the one
 	 * passed in.  Intended to be used for debugging purposes
@@ -1457,9 +1457,9 @@ public class CMath
 	{
 		CMath.rand = rand;
 	}
-	
+
 	/**
-	 * Returns a long representing either the given value, or 
+	 * Returns a long representing either the given value, or
 	 * the index of the value in the order
 	 * they appear in the given string list.
 	 *
@@ -1477,9 +1477,9 @@ public class CMath
 				return x;
 		return 0;
 	}
-	
+
 	/**
-	 * Returns a int representing either the given value, or 
+	 * Returns a int representing either the given value, or
 	 * the index of the value in the order
 	 * they appear in the given string list.
 	 *
@@ -1490,7 +1490,7 @@ public class CMath
 	 */
 	public final static int s_parseListIntExpression(final String[] descs, final String val)
 	{ return (int)s_parseListLongExpression(descs,val);}
-	
+
 	/**
 	 * Returns whether the given string is a double value
 	 *
@@ -1548,7 +1548,7 @@ public class CMath
 				return false;
 		return true;
 	}
-	
+
 	/**
 	 * Returns a number/string pair built from a given string, if it is a string with
 	 * a number followed by one or more characters.  Returns null if the given string
@@ -1582,7 +1582,7 @@ public class CMath
 			@Override public String setValue(String value) { return value;}
 		};
 	}
-	
+
 	/**
 	 * If the given string is 1 or more characters followed by decimal digits, this will return a Map.Entry
 	 * with those parts separated.  If the string is characters followed by a roman numeral digits, it will
@@ -1636,8 +1636,8 @@ public class CMath
 			@Override public Integer setValue(Integer value) { return value;}
 		};
 	}
-	
-	
+
+
 	/**
 	 * @see java.lang.Math#round(double)
 	 * @param d the real number

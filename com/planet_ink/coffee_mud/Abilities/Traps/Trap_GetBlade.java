@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,9 +33,9 @@ import java.util.*;
 */
 public class Trap_GetBlade extends Trap_Get
 {
-	public String ID() { return "Trap_GetBlade"; }
-	public String name(){ return "Get Blade Trap";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
-	protected int trapType(){return TRAP_PIT_BLADE;}
+	@Override public String ID() { return "Trap_GetBlade"; }
+	@Override public String name(){ return "Get Blade Trap";}
+	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override protected int trapType(){return TRAP_PIT_BLADE;}
 }

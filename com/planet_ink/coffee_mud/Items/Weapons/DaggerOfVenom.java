@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DaggerOfVenom extends Dagger
 {
-	public String ID(){	return "DaggerOfVenom";}
+	@Override public String ID(){	return "DaggerOfVenom";}
 	public DaggerOfVenom()
 	{
 		super();
@@ -56,6 +56,7 @@ public class DaggerOfVenom extends Dagger
 	}
 
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

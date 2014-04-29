@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
-	public String ID(){	return "StdMap";}
+	@Override public String ID(){	return "StdMap";}
 	protected int oldLevel=0;
 
 	public StdMap()
@@ -60,15 +60,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		boolean positionedAlready=false;
 	}
 
-	public String getMapArea(){return miscText;}
+	@Override public String getMapArea(){return miscText;}
+	@Override
 	public void setMapArea(String mapName)
 	{ super.setMiscText(mapName);	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		doMapArea();
 	}
+	@Override
 	public void doMapArea()
 	{
 		List<String> V=CMParms.parseSemicolons(getMapArea(),true);
@@ -228,7 +231,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				Log.errOut("StdMap","Error finishing " + xsize +"/"+ ysize+"/"+width);
 				return map;
 			}
-			
+
 			map=new StringBuffer[xsize+1][ysize+1];
 			for(int y=0;y<grid[0].length;y++)
 			{
@@ -541,6 +544,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,42 +34,44 @@ import java.util.*;
 */
 public class Beholder extends StdRace
 {
-	public String ID(){	return "Beholder"; }
-	public String name(){ return "Beholder"; }
-	public int shortestMale(){return 64;}
-	public int shortestFemale(){return 60;}
-	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 100;}
-	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Unique";}
+	@Override public String ID(){	return "Beholder"; }
+	@Override public String name(){ return "Beholder"; }
+	@Override public int shortestMale(){return 64;}
+	@Override public int shortestFemale(){return 60;}
+	@Override public int heightVariance(){return 12;}
+	@Override public int lightestWeight(){return 100;}
+	@Override public int weightVariance(){return 100;}
+	@Override public long forbiddenWornBits(){return 0;}
+	@Override public String racialCategory(){return "Unique";}
 	private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
 	private int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
 	private int[]racialAbilityProficiencies={50,50,50,50,50,50,100,50,50,50};
 	private boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	private String[]culturalAbilityNames={"Undercommon"};
 	private int[]culturalAbilityProficiencies={100};
-	public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -78,6 +80,7 @@ public class Beholder extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,100);
 	}
 
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

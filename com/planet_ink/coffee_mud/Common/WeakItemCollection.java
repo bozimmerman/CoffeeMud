@@ -42,24 +42,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
- * Abstract collection of item objects, complete with some 
+ * Abstract collection of item objects, complete with some
  * finders and various accessors.  Also, the copyOf method
  * does a deep copy.  Also, this is a weak item collection,
  * so as items get destroyed, they disappear from here.
  */
 public class WeakItemCollection implements ItemCollection, CMCommon
 {
-	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0); 
-	private ConvertingList<WeakReference<Item>,Item> contents 
+	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0);
+	private ConvertingList<WeakReference<Item>,Item> contents
 				= new ConvertingList<WeakReference<Item>,Item>(innerContents,
 						new Converter<WeakReference<Item>,Item>()
 						{
-					public Item convert(WeakReference<Item> obj) { return obj.get();}
+					@Override public Item convert(WeakReference<Item> obj) { return obj.get();}
 				});
-	public String ID() { return "WeakItemCollection"; }
-	public String name() { return ID();}
-	
-	public CMObject copyOf() 
+	@Override public String ID() { return "WeakItemCollection"; }
+	@Override public String name() { return ID();}
+
+	@Override
+	public CMObject copyOf()
 	{
 		WeakItemCollection c=(WeakItemCollection)newInstance();
 		for(int i=0;i<contents.size();i++)
@@ -89,26 +90,29 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		}
 		return c;
 	}
-	
-	public void initializeClass() {}
-	public CMObject newInstance() { return new WeakItemCollection(); }
-	public int compareTo(CMObject o) { return o==this?0:1; }
-	
+
+	@Override public void initializeClass() {}
+	@Override public CMObject newInstance() { return new WeakItemCollection(); }
+	@Override public int compareTo(CMObject o) { return o==this?0:1; }
+
+	@Override
 	public Item findItem(String itemID)
 	{
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	public Enumeration<Item> items() { return new IteratorEnumeration<Item>(contents.iterator()); }
-	
+	@Override public Enumeration<Item> items() { return new IteratorEnumeration<Item>(contents.iterator()); }
+
+	@Override
 	public Item findItem(Item goodLocation, String itemID)
 	{
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
-	
+
+	@Override
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
 		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
@@ -116,8 +120,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
-	
-	@SuppressWarnings({"unchecked","rawtypes"})
+
+	@Override @SuppressWarnings({"unchecked","rawtypes"})
 	public List<Item> findItems(String itemID)
 	{
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
@@ -125,13 +129,15 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
 	}
-	
+
+	@Override
 	public void addItem(Item item)
 	{
 		if((item!=null)&&(!item.amDestroyed()))
 			innerContents.addElement(new WeakReference<Item>(item));
 	}
-	
+
+	@Override
 	public void delItem(Item item)
 	{
 		for(int i=contents.size()-1;i>=0;i--)
@@ -147,6 +153,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 	}
+	@Override
 	public void delAllItems(boolean destroy)
 	{
 		if(destroy)
@@ -159,30 +166,33 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		contents.clear();
 	}
 
+	@Override
 	public int numItems()
 	{
 		return contents.size();
 	}
-	
+
+	@Override
 	public boolean isContent(Item item)
 	{
 		for(int i=contents.size()-1;i>=0;i--)
 		{
 			Item I=getItem(i);
-			if(I==item) 
+			if(I==item)
 				return true;
-			if(I==null) 
+			if(I==null)
 				try { innerContents.remove(i); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		}
 		return false;
 	}
-	
+
+	@Override
 	public Item getItem(int i)
 	{
 		try
 		{
 			Item I=contents.get(i);
-			if(I==null) 
+			if(I==null)
 				innerContents.remove(i);
 			else
 				return I;
@@ -190,6 +200,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	@Override
 	public void eachItem(final EachApplicable<Item> applier)
 	{
 		final List<Item> contents=this.contents;
@@ -199,7 +210,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			for(int a=0;a<contents.size();a++)
 			{
 				final Item I=contents.get(a);
-				if(I!=null) 
+				if(I!=null)
 					applier.apply(I);
 				else
 					try { innerContents.remove(a); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
@@ -207,6 +218,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
+	@Override
 	public Item getRandomItem()
 	{
 		if(numItems()==0) return null;

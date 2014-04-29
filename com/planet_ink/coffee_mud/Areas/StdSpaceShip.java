@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.Places;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -20,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,9 +40,9 @@ import java.util.*;
 public class StdSpaceShip implements Area, SpaceShip
 {
 	private static final long STALE_AIR_INTERVAL = 5 * 60 * 1000;
-	
+
 	protected static Climate climateObj=null;
-	
+
 	protected String[]  	xtraValues  	= null;
 	protected volatile int	mass			= -1;
 	protected SpaceObject	spaceSource 	= null;
@@ -69,7 +70,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected SpaceShip		shipItem		= null;
 	protected volatile long nextStaleCheck	= System.currentTimeMillis() + STALE_AIR_INTERVAL;
 	protected volatile long nextStaleWarn	= System.currentTimeMillis() + (60 * 1000);
-	
+
 	protected SVector<Ability>  		affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
 	protected SVector<ScriptingEngine>  scripts			= new SVector<ScriptingEngine>(1);
@@ -78,11 +79,12 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
 	protected Set<String> 				staleAirList	= new HashSet<String>();
 
-	public String ID(){    return "StdSpaceShip";}
-	
-	public void initializeClass(){}
-	public LocationRoom getIsDocked(){ return (LocationRoom)CMLib.map().getRoom(savedDock);}
-	public void setClimateObj(Climate obj){climateObj=obj;}
+	@Override public String ID(){    return "StdSpaceShip";}
+
+	@Override public void initializeClass(){}
+	@Override public LocationRoom getIsDocked(){ return (LocationRoom)CMLib.map().getRoom(savedDock);}
+	@Override public void setClimateObj(Climate obj){climateObj=obj;}
+	@Override
 	public Climate getClimateObj()
 	{
 		if(climateObj==null)
@@ -93,23 +95,24 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return climateObj;
 	}
-	public double getOMLCoeff() { return omlCoeff; }
-	public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
-	public void setAuthorID(String authorID){author=authorID;}
-	public String getAuthorID(){return author;}
-	public TimeClock getTimeObj(){return localClock;}
-	public void setTimeObj(TimeClock obj){localClock=obj;}
-	public void setCurrency(String newCurrency){currency=newCurrency;}
-	public String getCurrency(){return currency;}
-	public long expirationDate(){return expirationDate;}
-	public void setExpirationDate(long time){expirationDate=time;}
-	public int getAtmosphereCode() { return atmosphere; }
-	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
-	public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
-	public long radius() { return radius; }
-	public void setRadius(long radius) { this.radius=radius; }
-	public long flags(){return 0;}
-	public SpaceObject knownSource(){return spaceSource;}
+	@Override public double getOMLCoeff() { return omlCoeff; }
+	@Override public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
+	@Override public void setAuthorID(String authorID){author=authorID;}
+	@Override public String getAuthorID(){return author;}
+	@Override public TimeClock getTimeObj(){return localClock;}
+	@Override public void setTimeObj(TimeClock obj){localClock=obj;}
+	@Override public void setCurrency(String newCurrency){currency=newCurrency;}
+	@Override public String getCurrency(){return currency;}
+	@Override public long expirationDate(){return expirationDate;}
+	@Override public void setExpirationDate(long time){expirationDate=time;}
+	@Override public int getAtmosphereCode() { return atmosphere; }
+	@Override public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
+	@Override public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
+	@Override public long radius() { return radius; }
+	@Override public void setRadius(long radius) { this.radius=radius; }
+	@Override public long flags(){return 0;}
+	@Override public SpaceObject knownSource(){return spaceSource;}
+	@Override
 	public void setKnownSource(SpaceObject O)
 	{
 		if((O instanceof SpaceShip)&&(((SpaceShip)O).getShipArea()==this))
@@ -129,13 +132,14 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override public void setSpeed(long v) { if (shipItem!=null) shipItem.setSpeed(v); }
 	@Override public SpaceObject knownTarget() { return (shipItem!=null)?shipItem.knownTarget():null; }
 	@Override public void setKnownTarget(SpaceObject O) { if (shipItem!=null) shipItem.setKnownTarget(O); }
-	
+
 	@Override
-	public BoundedCube getBounds() 
+	public BoundedCube getBounds()
 	{
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
-	
+
+	@Override
 	public long getMass()
 	{
 		long mass=this.mass;
@@ -150,13 +154,13 @@ public class StdSpaceShip implements Area, SpaceShip
 					for(int i=0;i<R.numItems();i++)
 					{
 						Item I=R.getItem(i);
-						if(I!=null) 
+						if(I!=null)
 							newMass += I.phyStats().weight();
 					}
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB M=R.fetchInhabitant(i);
-						if(M!=null) 
+						if(M!=null)
 							newMass += M.phyStats().weight();
 					}
 				}
@@ -166,6 +170,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		return mass;
 	}
 
+	@Override
 	public void destroy()
 	{
 		CMLib.map().registerWorldObjectDestroyed(this,null,this);
@@ -183,17 +188,18 @@ public class StdSpaceShip implements Area, SpaceShip
 		climateObj=null;
 		amDestroyed=true;
 	}
-	public boolean amDestroyed(){return amDestroyed;}
+	@Override public boolean amDestroyed(){return amDestroyed;}
+	@Override
 	public boolean isSavable()
 	{
-		return ((!amDestroyed) 
+		return ((!amDestroyed)
 				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 				&& (CMLib.flags().isSavable(this)));
 	}
-	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
-	public int getClimateTypeCode(){return Area.CLIMASK_NORMAL;}
-	public int getClimateType() { return Area.CLIMASK_NORMAL; }
-	public void setClimateType(int newClimateType){}
+	@Override public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
+	@Override public int getClimateTypeCode(){return Places.CLIMASK_NORMAL;}
+	@Override public int getClimateType() { return Places.CLIMASK_NORMAL; }
+	@Override public void setClimateType(int newClimateType){}
 
 	public StdSpaceShip()
 	{
@@ -202,18 +208,21 @@ public class StdSpaceShip implements Area, SpaceShip
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
+	@Override
 	public String name()
 	{
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
+	@Override
 	public void setName(String newName)
 	{
 		name=newName;
 		localClock.setLoadName(newName);
 		CMLib.map().renamedArea(this);
 	}
-	public String Name(){return name;}
+	@Override public String Name(){return name;}
+	@Override
 	public void renameSpaceShip(String newName)
 	{
 		String oldName=Name();
@@ -221,57 +230,64 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(myRooms.size()>0)
 			CMLib.map().renameRooms(this, oldName, this.myRooms);
 	}
-	
+
+	@Override
 	public PhyStats phyStats()
 	{
 		return phyStats;
 	}
+	@Override
 	public PhyStats basePhyStats()
 	{
 		return basePhyStats;
 	}
+	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			if(A!=null) A.affectPhyStats(me,phyStats);
 		}});
 	}
-	
-	
-	public Area getShipArea() { return this; }
-	public void setShipArea(String xml) {}
-	
+
+
+	@Override public Area getShipArea() { return this; }
+	@Override public void setShipArea(String xml) {}
+
+	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
-	public int getTheme(){return Area.THEME_TECHNOLOGY;}
-	public int getThemeCode(){return Area.THEME_TECHNOLOGY;}
-	public void setTheme(int level){}
+	@Override public int getTheme(){return Area.THEME_TECHNOLOGY;}
+	@Override public int getThemeCode(){return Area.THEME_TECHNOLOGY;}
+	@Override public void setTheme(int level){}
 
-	public String image(){return imageName;}
-	public String rawImage(){return imageName;}
-	public void setImage(String newImage){imageName=newImage;}
-	
-	public String getArchivePath(){return "";}
-	public void setArchivePath(String pathFile){}
-	
+	@Override public String image(){return imageName;}
+	@Override public String rawImage(){return imageName;}
+	@Override public void setImage(String newImage){imageName=newImage;}
+
+	@Override public String getArchivePath(){return "";}
+	@Override public void setArchivePath(String pathFile){}
+
+	@Override
 	public void setAreaState(State newState)
 	{
 		if((newState==State.ACTIVE)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		flag=newState;
 	}
-	public State getAreaState(){return flag;}
-	public boolean amISubOp(String username){return false;}
-	public String getSubOpList(){return "";}
-	public void setSubOpList(String list){}
-	public void addSubOp(String username){}
-	public void delSubOp(String username){}
+	@Override public State getAreaState(){return flag;}
+	@Override public boolean amISubOp(String username){return false;}
+	@Override public String getSubOpList(){return "";}
+	@Override public void setSubOpList(String list){}
+	@Override public void addSubOp(String username){}
+	@Override public void delSubOp(String username){}
+	@Override
 	public CMObject newInstance()
 	{
 		try
@@ -284,7 +300,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return new StdSpaceShip();
 	}
-	public boolean isGeneric(){return false;}
+	@Override public boolean isGeneric(){return false;}
 	protected void cloneFix(StdSpaceShip ship)
 	{
 		me=this;
@@ -317,6 +333,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 	}
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -333,18 +350,20 @@ public class StdSpaceShip implements Area, SpaceShip
 			return this.newInstance();
 		}
 	}
-	public String displayText(){return displayText;}
-	public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
-	public String displayText(MOB viewerMob) { return displayText(); }
-	public String name(MOB viewerMob) { return name(); }
+	@Override public String displayText(){return displayText;}
+	@Override public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
+	@Override public String displayText(MOB viewerMob) { return displayText(); }
+	@Override public String name(MOB viewerMob) { return name(); }
 
-	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		miscText="";
@@ -352,10 +371,11 @@ public class StdSpaceShip implements Area, SpaceShip
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 
-	public String description() { return description;}
-	public void setDescription(String newDescription) { description=newDescription;}
-	public String description(MOB viewerMob) { return description(); }
+	@Override public String description() { return description;}
+	@Override public void setDescription(String newDescription) { description=newDescription;}
+	@Override public String description(MOB viewerMob) { return description(); }
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		MsgListener N=null;
@@ -377,7 +397,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
-		
+
 		if((flag==State.FROZEN)
 		||(flag==State.STOPPED)
 		||(!CMLib.flags().allowsMovement(this)))
@@ -421,13 +441,15 @@ public class StdSpaceShip implements Area, SpaceShip
 		return multiEnum;
 	}
 
+	@Override
 	public String getBlurbFlag(String flag)
 	{
 		if((flag==null)||(flag.trim().length()==0))
 			return null;
 		return blurbFlags.get(flag.toUpperCase().trim());
 	}
-	public int numBlurbFlags(){return blurbFlags.size();}
+	@Override public int numBlurbFlags(){return blurbFlags.size();}
+	@Override
 	public int numAllBlurbFlags()
 	{
 		int num=numBlurbFlags();
@@ -435,11 +457,13 @@ public class StdSpaceShip implements Area, SpaceShip
 			num += i.next().numAllBlurbFlags();
 		return num;
 	}
+	@Override
 	public Enumeration<String> areaBlurbFlags()
 	{
 		return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
 	}
-	
+
+	@Override
 	public void addBlurbFlag(String flagPlusDesc)
 	{
 		if(flagPlusDesc==null) return;
@@ -460,6 +484,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(getBlurbFlag(flag)==null)
 			blurbFlags.put(flag,flagPlusDesc);
 	}
+	@Override
 	public void delBlurbFlag(String flagOnly)
 	{
 		if(flagOnly==null) return;
@@ -467,18 +492,22 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(flagOnly.length()==0) return;
 		blurbFlags.remove(flagOnly);
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		eachBehavior(new EachApplicable<Behavior>(){ @Override
+		public final void apply(final Behavior B)
 		{
 			B.executeMsg(me, msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+		public final void apply(final ScriptingEngine S)
 		{
 			S.executeMsg(me, msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>(){ @Override
+		public final void apply(final Ability A)
 		{
 			A.executeMsg(me,msg);
 		}});
@@ -518,9 +547,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 	}
 
-	public Enumeration<Room> getCompleteMap(){return getProperMap();}
+	@Override public Enumeration<Room> getCompleteMap(){return getProperMap();}
 	public List<Room> getMetroCollection(){return new ReadOnlyList(myRooms);}
-	
+
 	public int[] addMaskAndReturn(int[] one, int[] two)
 	{
 		if(one.length!=two.length)
@@ -531,8 +560,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		return returnable;
 	}
 
-	public int getTickStatus(){ return tickStatus;}
-	
+	@Override public int getTickStatus(){ return tickStatus;}
+
 	protected boolean changeRoomAir(Room R, Room notifyRoom, int atmoResource)
 	{
 		if(R==null)
@@ -559,7 +588,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return false;
 	}
-	
+
 	protected void moveAtmosphereOut(Set<Room> doneRooms, Room startRoom, int atmo)
 	{
 		LinkedList<Room> toDoRooms=new LinkedList<Room>();
@@ -580,7 +609,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 		}
 	}
-	
+
 	protected void doAtmosphereChanges()
 	{
 		Set<Room> doneRooms=new HashSet<Room>();
@@ -632,7 +661,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(flag==State.STOPPED) return false;
@@ -641,17 +671,20 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			eachBehavior(new EachApplicable<Behavior>(){ @Override
+			public final void apply(final Behavior B)
 			{
 				B.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
+			public final void apply(final ScriptingEngine S)
 			{
 				S.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			eachEffect(new EachApplicable<Ability>(){ @Override
+			public final void apply(final Ability A)
 			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
@@ -663,6 +696,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 
 	public String getWeatherDescription(){return "There is no weather here.";}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(phyStats().sensesMask()>0)
@@ -673,11 +707,14 @@ public class StdSpaceShip implements Area, SpaceShip
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 	}
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
+	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
 
+	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
 		if(to==null) return;
@@ -687,6 +724,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
@@ -694,6 +732,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	@Override
 	public void delEffect(Ability to)
 	{
 		int size=affects.size();
@@ -701,6 +740,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
+	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
@@ -715,6 +755,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
+	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
 		for(int a=numEffects()-1;a>=0;a--)
@@ -728,13 +769,15 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		affects.clear();
 	}
+	@Override
 	public int numEffects()
 	{
 		return affects.size();
 	}
-	
-	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
-	
+
+	@Override public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+
+	@Override
 	public Ability fetchEffect(int index)
 	{
 		try
@@ -744,6 +787,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	@Override
 	public Ability fetchEffect(String ID)
 	{
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
@@ -755,14 +799,16 @@ public class StdSpaceShip implements Area, SpaceShip
 		return null;
 	}
 
-	public void fillInAreaRooms() { }
+	@Override public void fillInAreaRooms() { }
 
+	@Override
 	public boolean inMyMetroArea(Area A)
 	{
 		if(A==this) return true;
 		return false;
 	}
-	public void fillInAreaRoom(Room R){}
+	@Override public void fillInAreaRoom(Room R){}
+	@Override
 	public void dockHere(LocationRoom roomR)
 	{
 		if(roomR==null) return;
@@ -781,6 +827,7 @@ public class StdSpaceShip implements Area, SpaceShip
 				}
 		}
 	}
+	@Override
 	public void unDock(boolean toSpace)
 	{
 		if(getIsDocked()==null) return;
@@ -805,11 +852,13 @@ public class StdSpaceShip implements Area, SpaceShip
 		savedDock=null;
 	}
 
+	@Override
 	public SpaceObject getShipSpaceObject()
 	{
 		return shipItem;
 	}
 
+	@Override
 	public RoomnumberSet getCachedRoomnumbers()
 	{
 		RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
@@ -825,13 +874,15 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return set;
 	}
+	@Override
 	public RoomnumberSet getProperRoomnumbers()
 	{
 		if(properRoomIDSet==null)
 			properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		return properRoomIDSet;
 	}
-	
+
+	@Override
 	public String getNewRoomID(Room startRoom, int direction)
 	{
 		int highest=Integer.MIN_VALUE;
@@ -919,9 +970,10 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return Name()+"#"+(int)Math.round(Math.random()*Integer.MAX_VALUE);
 	}
-	
+
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
+	@Override
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
@@ -933,10 +985,12 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		behaviors.addElement(to);
 	}
+	@Override
 	public void delBehavior(Behavior to)
 	{
 		behaviors.removeElement(to);
 	}
+	@Override
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -945,17 +999,19 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
+	@Override
 	public int numBehaviors()
 	{
 		return behaviors.size();
 	}
-	public Enumeration<Behavior> behaviors() { return behaviors.elements();}
-	public int maxRange(){return Integer.MAX_VALUE;}
-	public int minRange(){return Integer.MIN_VALUE;}
+	@Override public Enumeration<Behavior> behaviors() { return behaviors.elements();}
+	@Override public int maxRange(){return Integer.MAX_VALUE;}
+	@Override public int minRange(){return Integer.MIN_VALUE;}
 
-	public int[] getAreaIStats(){return new int[Area.Stats.values().length];}
-	public StringBuffer getAreaStats(){    return new StringBuffer(description());}
+	@Override public int[] getAreaIStats(){return new int[Area.Stats.values().length];}
+	@Override public StringBuffer getAreaStats(){    return new StringBuffer(description());}
 
+	@Override
 	public Behavior fetchBehavior(int index)
 	{
 		try
@@ -965,6 +1021,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	@Override
 	public Behavior fetchBehavior(String ID)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -975,6 +1032,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return null;
 	}
+	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -991,10 +1049,11 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 
 	/** Manipulation of the scripts list */
+	@Override
 	public void addScript(ScriptingEngine S)
 	{
 		if(S==null) return;
-		if(!scripts.contains(S)) 
+		if(!scripts.contains(S))
 		{
 			for(ScriptingEngine S2 : scripts)
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
@@ -1002,10 +1061,12 @@ public class StdSpaceShip implements Area, SpaceShip
 			scripts.addElement(S);
 		}
 	}
+	@Override
 	public void delScript(ScriptingEngine S)
 	{
 		scripts.removeElement(S);
 	}
+	@Override
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -1014,9 +1075,10 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
-	public int numScripts(){return (scripts==null)?0:scripts.size();}
-	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
+	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
+	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -1031,7 +1093,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		catch(ArrayIndexOutOfBoundsException e){}
 	}
-	
+
+	@Override
 	public void addProperRoom(Room R)
 	{
 		if(R==null) return;
@@ -1064,7 +1127,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 		}
 	}
-	
+
+	@Override
 	public void delProperRoom(Room R)
 	{
 		if(R==null) return;
@@ -1076,23 +1140,27 @@ public class StdSpaceShip implements Area, SpaceShip
 				delProperRoomnumber(R.roomID());
 		}
 	}
-	
+
+	@Override
 	public void addProperRoomnumber(String roomID)
 	{
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().add(roomID);
 	}
+	@Override
 	public void delProperRoomnumber(String roomID)
 	{
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().remove(roomID);
 	}
+	@Override
 	public boolean isRoom(Room R)
 	{
 		if(R==null) return false;
 		return myRooms.contains(R);
 	}
-	
+
+	@Override
 	public Room getRoom(String roomID)
 	{
 		if(myRooms.size()==0) return null;
@@ -1111,13 +1179,14 @@ public class StdSpaceShip implements Area, SpaceShip
 					end=mid-1;
 				else
 					start=mid+1;
-	
+
 			}
 		}
 		return null;
 	}
 
-	public int metroSize(){return properSize();}
+	@Override public int metroSize(){return properSize();}
+	@Override
 	public int properSize()
 	{
 		synchronized(myRooms)
@@ -1125,6 +1194,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			return myRooms.size();
 		}
 	}
+	@Override
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
@@ -1139,7 +1209,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return num;
 	}
-	public Room getRandomMetroRoom(){return getRandomProperRoom();}
+	@Override public Room getRandomMetroRoom(){return getRandomProperRoom();}
+	@Override
 	public Room getRandomProperRoom()
 	{
 		synchronized(myRooms)
@@ -1150,14 +1221,15 @@ public class StdSpaceShip implements Area, SpaceShip
 			return R;
 		}
 	}
-	public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
-	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
+	@Override public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
+	@Override public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
 	public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
-	public Enumeration<Room> getMetroMap(){return getProperMap();}
-	public void addMetroRoomnumber(String roomID){}
-	public void delMetroRoomnumber(String roomID){}
-	public void addMetroRoom(Room R){}
-	public void delMetroRoom(Room R){}
+	@Override public Enumeration<Room> getMetroMap(){return getProperMap();}
+	@Override public void addMetroRoomnumber(String roomID){}
+	@Override public void delMetroRoomnumber(String roomID){}
+	@Override public void addMetroRoom(Room R){}
+	@Override public void delMetroRoom(Room R){}
+	@Override
 	public Enumeration<Room> getProperMap()
 	{
 		synchronized(myRooms)
@@ -1165,22 +1237,22 @@ public class StdSpaceShip implements Area, SpaceShip
 			return myRooms.elements();
 		}
 	}
-	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
-	public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
+	@Override public Enumeration<Room> getFilledProperMap() { return getProperMap();}
+	@Override public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
 
 	// Children
-	public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
-	public Area getChild(String named) { return null;}
-	public boolean isChild(Area named) { return false;}
-	public boolean isChild(String named) { return false;}
-	public void addChild(Area area) {}
-	public void removeChild(Area area) {}
-	public boolean canChild(Area area) { return false;}
-	
-	public SLinkedList<Area> loadAreas(Collection<String> loadableSet) 
+	@Override public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
+	@Override public Area getChild(String named) { return null;}
+	@Override public boolean isChild(Area named) { return false;}
+	@Override public boolean isChild(String named) { return false;}
+	@Override public void addChild(Area area) {}
+	@Override public void removeChild(Area area) {}
+	@Override public boolean canChild(Area area) { return false;}
+
+	public SLinkedList<Area> loadAreas(Collection<String> loadableSet)
 	{
 		final SLinkedList<Area> finalSet = new SLinkedList<Area>();
-		for (final String areaName : loadableSet) 
+		for (final String areaName : loadableSet)
 		{
 			Area A = CMLib.map().getArea(areaName);
 			if (A == null)
@@ -1189,22 +1261,24 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return finalSet;
 	}
-	
+
 	protected final Iterator<Area> getParentsIterator()
 	{
 		return parents.iterator();
 	}
-	
+
 	protected final Iterator<Area> getParentsReverseIterator()
 	{
 		return parents.descendingIterator();
 	}
-	
-	public Enumeration<Area> getParents() 
-	{ 
-		return new IteratorEnumeration<Area>(parents.iterator()); 
+
+	@Override
+	public Enumeration<Area> getParents()
+	{
+		return new IteratorEnumeration<Area>(parents.iterator());
 	}
-	
+
+	@Override
 	public List<Area> getParentsRecurse()
 	{
 		final LinkedList<Area> V=new LinkedList<Area>();
@@ -1217,7 +1291,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		return V;
 	}
 
-	public Area getParent(String named) 
+	@Override
+	public Area getParent(String named)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1228,8 +1303,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return null;
 	}
-	
-	public boolean isParent(Area area) 
+
+	@Override
+	public boolean isParent(Area area)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1239,8 +1315,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return false;
 	}
-	
-	public boolean isParent(String named) 
+
+	@Override
+	public boolean isParent(String named)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1251,12 +1328,13 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return false;
 	}
-	
-	public void addParent(Area area) 
+
+	@Override
+	public void addParent(Area area)
 	{
 		if(!canParent(area))
 			return;
-		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();) 
+		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();)
 		{
 			final Area A=i.next();
 			if(A.Name().equalsIgnoreCase(area.Name()))
@@ -1267,49 +1345,52 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		parents.add(area);
 	}
-	
-	public void removeParent(Area area) 
-	{ 
+
+	@Override
+	public void removeParent(Area area)
+	{
 		if(isParent(area))
 			parents.remove(area);
 	}
-	
-	public boolean canParent(Area area) 
+
+	@Override
+	public boolean canParent(Area area)
 	{
 		return true;
 	}
 
-	public String prejudiceFactors(){return "";}
-	public void setPrejudiceFactors(String factors){}
+	@Override public String prejudiceFactors(){return "";}
+	@Override public void setPrejudiceFactors(String factors){}
 	public final static String[] empty=new String[0];
-	public String[] itemPricingAdjustments(){return empty;}
-	public void setItemPricingAdjustments(String[] factors){}
-	public String ignoreMask(){return "";}
-	public void setIgnoreMask(String factors){}
-	public String budget(){return "";}
-	public void setBudget(String factors){}
-	public String devalueRate(){return "";}
-	public void setDevalueRate(String factors){}
-	public int invResetRate(){return 0;}
-	public void setInvResetRate(int ticks){}
-	public int finalInvResetRate(){ return 0;}
-	public String finalPrejudiceFactors(){ return "";}
-	public String finalIgnoreMask(){ return "";}
-	public String[] finalItemPricingAdjustments(){ return empty;}
-	public String finalBudget(){ return "";}
-	public String finalDevalueRate(){ return "";}
-   
-	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override public String[] itemPricingAdjustments(){return empty;}
+	@Override public void setItemPricingAdjustments(String[] factors){}
+	@Override public String ignoreMask(){return "";}
+	@Override public void setIgnoreMask(String factors){}
+	@Override public String budget(){return "";}
+	@Override public void setBudget(String factors){}
+	@Override public String devalueRate(){return "";}
+	@Override public void setDevalueRate(String factors){}
+	@Override public int invResetRate(){return 0;}
+	@Override public void setInvResetRate(int ticks){}
+	@Override public int finalInvResetRate(){ return 0;}
+	@Override public String finalPrejudiceFactors(){ return "";}
+	@Override public String finalIgnoreMask(){ return "";}
+	@Override public String[] finalItemPricingAdjustments(){ return empty;}
+	@Override public String finalBudget(){ return "";}
+	@Override public String finalDevalueRate(){ return "";}
+
+	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS"};
-	public String[] getStatCodes(){return CODES;}
-	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override public String[] getStatCodes(){return CODES;}
+	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
+	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -1325,12 +1406,13 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return "";
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
+		case 1: setClimateType(CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
 		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val)); break;
@@ -1360,6 +1442,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 7: setRadius(CMath.s_long(val)); break;
 		}
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdSpaceShip)) return false;

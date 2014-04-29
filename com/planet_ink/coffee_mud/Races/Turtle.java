@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,25 +34,26 @@ import java.util.*;
 */
 public class Turtle extends StdRace
 {
-	public String ID(){	return "Turtle"; }
-	public String name(){ return "Turtle"; }
-	public int shortestMale(){return 8;}
-	public int shortestFemale(){return 8;}
-	public int heightVariance(){return 5;}
-	public int lightestWeight(){return 30;}
-	public int weightVariance(){return 20;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Reptile";}
+	@Override public String ID(){	return "Turtle"; }
+	@Override public String name(){ return "Turtle"; }
+	@Override public int shortestMale(){return 8;}
+	@Override public int shortestFemale(){return 8;}
+	@Override public int heightVariance(){return 5;}
+	@Override public int lightestWeight(){return 30;}
+	@Override public int weightVariance(){return 20;}
+	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
+	@Override public String racialCategory(){return "Reptile";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,0 ,0 ,0 };
-	public int[] bodyMask(){return parts;}
+	@Override public int[] bodyMask(){return parts;}
 
 	private int[] agingChart={0,4,8,16,28,60,80,82,84};
-	public int[] getAgingChart(){return agingChart;}
-	
+	@Override public int[] getAgingChart(){return agingChart;}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -60,14 +61,17 @@ public class Turtle extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,2);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -80,6 +84,7 @@ public class Turtle extends StdRace
 		}
 		return naturalWeapon;
 	}
+	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
@@ -93,7 +98,8 @@ public class Turtle extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
-	
+
+	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
@@ -130,6 +136,7 @@ public class Turtle extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

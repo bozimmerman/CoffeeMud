@@ -34,10 +34,11 @@ import java.util.*;
 */
 public class Mageness extends CombatAbilities
 {
-	public String ID(){return "Mageness";}
+	@Override public String ID(){return "Mageness";}
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "magliness";
 	}
 
@@ -69,7 +70,8 @@ public class Mageness extends CombatAbilities
 			}
 		}
 	}
-	
+
+	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);

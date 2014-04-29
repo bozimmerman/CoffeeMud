@@ -33,17 +33,17 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings("rawtypes")
-public class MudAuthReply extends Packet 
+public class MudAuthReply extends Packet
 {
 	public long key=0;
-	
+
 	public MudAuthReply()
 	{
 		super();
 		type = Packet.MAUTH_REPLY;
 		target_mud=I3Server.getMudName();
 	}
-	
+
 	public MudAuthReply(Vector v)
 	{
 		super(v);
@@ -59,13 +59,15 @@ public class MudAuthReply extends Packet
 		target_mud=mud;
 		this.key=key;
 	}
-	
-	public void send() throws InvalidPacketException 
+
+	@Override
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}
 
-	public String toString() 
+	@Override
+	public String toString()
 	{
 		return "({\"auth-mud-reply\",5,\""+I3Server.getMudName()+"\",0,\""+target_mud+"\",0,"+key+",})";
 	}

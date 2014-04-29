@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,20 +35,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Gaoler extends StdCharClass
 {
-	public String ID(){return "Gaoler";}
-	public String name(){return "Gaoler";}
-	public String baseClass(){return "Commoner";}
-	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return -1;}
-	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 5;}
-	public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
+	@Override public String ID(){return "Gaoler";}
+	@Override public String name(){return "Gaoler";}
+	@Override public String baseClass(){return "Commoner";}
+	@Override public int getBonusPracLevel(){return 2;}
+	@Override public int getBonusAttackLevel(){return -1;}
+	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
+	@Override public int getLevelsPerBonusDamage(){ return 5;}
+	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
+	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	public Hashtable<String,int[]> mudHourMOBXPMap=new Hashtable<String,int[]>();
 
 	public Gaoler()
@@ -58,6 +58,7 @@ public class Gaoler extends StdCharClass
 		maxStatAdj[CharStats.STAT_DEXTERITY]=6;
 	}
 
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -143,6 +144,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Costuming",0,"",false,true);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
@@ -166,7 +168,8 @@ public class Gaoler extends StdCharClass
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==host)
@@ -192,12 +195,12 @@ public class Gaoler extends StdCharClass
 				if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
 				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 				{
-					TimeClock clock =CMLib.map().getStartArea(host).getTimeObj(); 
+					TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
 					if(done[0]!=clock.getHourOfDay())
 						done[1]=0;
 					done[0]=clock.getHourOfDay();
 					done[2]=Calendar.getInstance().get(Calendar.SECOND);
-					
+
 					if(done[1]<(90+(10*((MOB)host).phyStats().level())))
 					{
 						done[1]+=xp;
@@ -212,16 +215,17 @@ public class Gaoler extends StdCharClass
 		}
 	}
 
-	
+
 	private final String[] raceRequiredList=new String[]{"All"};
-	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(5)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(5))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -233,5 +237,5 @@ public class Gaoler extends StdCharClass
 		return outfitChoices;
 	}
 
-	public String getOtherBonusDesc(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
+	@Override public String getOtherBonusDesc(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
 }

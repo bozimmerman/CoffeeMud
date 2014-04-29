@@ -48,16 +48,16 @@ public class FingerReply extends Packet {
 		super();
 		type = Packet.FINGER_REPLY;
 	}
-	
-	public FingerReply(String to_whom, String mud) 
+
+	public FingerReply(String to_whom, String mud)
 	{
 		super();
 		type = Packet.FINGER_REPLY;
 		target_mud = mud;
 		target_name = to_whom;
 	}
-	
-	public FingerReply(Vector v) throws InvalidPacketException 
+
+	public FingerReply(Vector v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -81,10 +81,12 @@ public class FingerReply extends Packet {
 		}
 	}
 
+	@Override
 	public void send() throws InvalidPacketException {
 		super.send();
 	}
 
+	@Override
 	public String toString()
 	{
 		String str = "({\"finger-reply\",5,\"" + I3Server.getMudName() +

@@ -35,14 +35,15 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_Delude extends Spell
 {
-	public String ID() { return "Spell_Delude"; }
-	public String name(){return "Delude";}
-	public String displayText(){return "(Delude spell)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	@Override public String ID() { return "Spell_Delude"; }
+	@Override public String name(){return "Delude";}
+	@Override public String displayText(){return "(Delude spell)";}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	int previousAlignment=500;
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))
@@ -63,6 +64,7 @@ public class Spell_Delude extends Spell
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
@@ -102,28 +104,28 @@ public class Spell_Delude extends Spell
 					if(success)
 					{
 						int which=0;
-						if(CMLib.flags().isEvil(target)) 
+						if(CMLib.flags().isEvil(target))
 							which=1;
-						else 
-						if(CMLib.flags().isGood(target)) 
+						else
+						if(CMLib.flags().isGood(target))
 							which=2;
 						else
-						if(CMLib.dice().rollPercentage()>50) 
+						if(CMLib.dice().rollPercentage()>50)
 							which=1;
-						else 
+						else
 							which=2;
 						Enumeration e;
-						switch(which) 
+						switch(which)
 						{
 							case 1:
 								// find a good range, set them within that
 								int newAlign=0;
 								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
 								if(e!=null)
-								for(;e.hasMoreElements();) 
+								for(;e.hasMoreElements();)
 								{
 									Faction.FRange R=(Faction.FRange)e.nextElement();
-									if(R.alignEquiv()==Faction.Align.GOOD) 
+									if(R.alignEquiv()==Faction.Align.GOOD)
 									{
 										newAlign = R.random();
 										break;
@@ -137,10 +139,10 @@ public class Spell_Delude extends Spell
 								newAlign=0;
 								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
 								if(e!=null)
-								for(;e.hasMoreElements();) 
+								for(;e.hasMoreElements();)
 								{
 									Faction.FRange R=(Faction.FRange)e.nextElement();
-									if(R.alignEquiv()==Faction.Align.EVIL) 
+									if(R.alignEquiv()==Faction.Align.EVIL)
 									{
 										newAlign = R.random();
 										break;

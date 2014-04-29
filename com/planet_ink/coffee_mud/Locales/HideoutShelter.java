@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class HideoutShelter extends MagicShelter
 {
-	public String ID(){return "HideoutShelter";}
+	@Override public String ID(){return "HideoutShelter";}
 	public HideoutShelter()
 	{
 		super();
@@ -76,5 +76,5 @@ public class HideoutShelter extends MagicShelter
 		}
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 }

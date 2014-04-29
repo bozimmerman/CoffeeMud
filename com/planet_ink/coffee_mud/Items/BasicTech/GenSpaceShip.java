@@ -27,7 +27,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, PrivateProperty
 {
-	public String ID(){	return "GenSpaceShip";}
+	@Override public String ID(){	return "GenSpaceShip";}
 	protected String 		readableText	= "";
 	protected String 		owner 			= "";
 	protected int 			price 			= 1000;
@@ -71,14 +71,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		CMLib.flags().setSavable(this, false);
 	}
 
-	public boolean isGeneric(){return true;}
-	
+	@Override public boolean isGeneric(){return true;}
+
 	@Override public TechType getTechType() { return TechType.SHIP_SPACESHIP; }
 
+	@Override
 	public Area getShipArea()
 	{
 		if(destroyed)
-			return null; 
+			return null;
 		else
 		if(area==null)
 		{
@@ -96,7 +97,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		return area;
 	}
-	
+
+	@Override
 	public void setShipArea(String xml)
 	{
 		try
@@ -120,18 +122,20 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			Log.warnOut("Unable to parse space ship xml for some reason.");
 		}
 	}
-	
-	public String keyName() { return readableText;}
-	public void setKeyName(String newKeyName) { readableText=newKeyName;}
-	
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
-	
+
+	@Override public String keyName() { return readableText;}
+	@Override public void setKeyName(String newKeyName) { readableText=newKeyName;}
+
+	@Override public String readableText(){return readableText;}
+	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -139,6 +143,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		recoverPhyStats();
 	}
 
+	@Override
 	public CMObject copyOf()
 	{
 		GenSpaceShip s=(GenSpaceShip)super.copyOf();
@@ -158,7 +163,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		*/
 		return s;
 	}
-	
+
+	@Override
 	public void stopTicking()
 	{
 		if(area!=null)
@@ -166,7 +172,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			CMLib.threads().deleteAllTicks(area);
 			String key=area.Name();
 			String registryNum=area.getBlurbFlag("REGISTRY");
-			if(registryNum!=null) 
+			if(registryNum!=null)
 				key+=registryNum;
 			CMLib.tech().unregisterAllElectronics(key);
 		}
@@ -174,7 +180,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		this.destroyed=false; // undo the weird thing
 	}
 
-	
+
 	@Override
 	protected Room getDestinationRoom()
 	{
@@ -185,14 +191,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
-	
+
+	@Override
 	public void destroy()
 	{
 		if(area!=null)
 			CMLib.map().obliterateArea(area);
 		super.destroy();
 	}
-	
+
 	@Override public long powerCapacity(){return 0;}
 	@Override public void setPowerCapacity(long capacity){}
 	@Override public long powerRemaining(){return 0;}
@@ -204,10 +211,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
-	
+
 	@Override public long getMass()
-	{ 
-		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000); 
+	{
+		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000);
 	}
 
 	@Override
@@ -221,7 +228,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		return cachedManufact;
 	}
-	
+
 	@Override public long[] coordinates(){return coordinates;}
 	@Override public double[] direction(){return direction;}
 	@Override public double roll() { return roll; }
@@ -232,22 +239,22 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	@Override public void setCoords(long[] coords)
 	{
-		if((coords!=null)&&(coords.length==3)) 
+		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
 	}
 	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
 	@Override public long speed(){return speed;}
 	@Override public void setSpeed(long v){speed=v;}
-	
+
 
 	@Override
-	public SpaceObject knownSource() 
+	public SpaceObject knownSource()
 	{
 		return (area instanceof SpaceObject)?((SpaceObject)area).knownSource():null;
 	}
 
 	@Override
-	public void setKnownSource(SpaceObject O) 
+	public void setKnownSource(SpaceObject O)
 	{
 		if (area instanceof SpaceObject)
 			((SpaceObject)area).setKnownSource(O);
@@ -279,9 +286,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).setOMLCoeff(coeff);
 	}
-	
+
 	@Override
-	public void dockHere(LocationRoom R) 
+	public void dockHere(LocationRoom R)
 	{
 		if(!R.isContent(this))
 		{
@@ -298,7 +305,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public void unDock(boolean toSpace) 
+	public void unDock(boolean toSpace)
 	{
 		LocationRoom R=getIsDocked();
 		if(R!=null)
@@ -320,14 +327,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				CMLib.map().addObjectToSpace(o,R.coordinates());
 		}
 	}
-	
+
 	@Override
 	public SpaceObject getShipSpaceObject()
 	{
 		return this;
 	}
 
-	@Override 
+	@Override
 	public LocationRoom getIsDocked()
 	{
 		if (area instanceof SpaceShip)
@@ -336,7 +343,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			return ((LocationRoom)owner());
 		return null;
 	}
-	
+
 	@Override public int getPrice() { return price; }
 	@Override public void setPrice(int price) { this.price=price; }
 	@Override public String getOwnerName() { return owner; }
@@ -352,6 +359,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 	@Override public String getTitleID() { return this.toString(); }
 
+	@Override
 	public void renameSpaceShip(String newName)
 	{
 		Area area=this.area;
@@ -382,7 +390,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			}
 		}
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -402,6 +411,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -432,14 +442,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 							case DORSEL: facing[1]-=amount; break;
 							case VENTRAL: facing[1]+=amount; break;
 							case FORWARD: break;
-							case AFT: 
+							case AFT:
 							{
 								//TODO: apply inertial dampeners and OML
 								//TODO: gravity is separate
 								//TODO: inertial dampeners are separate?
 								//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
 								//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
-								
+
 								// remember you are moving in a direction, but facing a different one.
 								/*
 								int mass=getMass();
@@ -517,7 +527,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			return null;
 		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
 	}
-	
+
 	protected void transferOwnership(final MOB buyer)
 	{
 		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
@@ -587,7 +597,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public BoundedCube getBounds() 
+	public BoundedCube getBounds()
 	{
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
@@ -599,6 +609,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 											"ROLL","DIRECTION","SPEED","FACING","OWNER",
 											"PRICE"
 										  };
+	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -628,6 +639,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	@Override
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -659,6 +671,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			break;
 		}
 	}
+	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -666,6 +679,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return -1;
 	}
 	private static String[] codes=null;
+	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
@@ -679,6 +693,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenSpaceShip)) return false;

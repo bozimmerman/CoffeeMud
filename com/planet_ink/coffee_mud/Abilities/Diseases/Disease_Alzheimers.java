@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,23 +35,24 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_Alzheimers extends Disease
 {
-	public String ID() { return "Disease_Alzheimers"; }
-	public String name(){ return "Alzheimers";}
-	public String displayText(){ return "(Alzheimers)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 9;}
+	@Override public String ID() { return "Disease_Alzheimers"; }
+	@Override public String name(){ return "Alzheimers";}
+	@Override public String displayText(){ return "(Alzheimers)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
+	@Override public int difficultyLevel(){return 9;}
 
-	protected int DISEASE_TICKS(){return 34;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your alzheimers is cured!";}
-	protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
+	@Override protected int DISEASE_TICKS(){return 34;}
+	@Override protected int DISEASE_DELAY(){return 5;}
+	@Override protected String DISEASE_DONE(){return "Your alzheimers is cured!";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
 	protected int everyTick=0;
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -74,6 +75,7 @@ public class Disease_Alzheimers extends Disease
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -111,7 +113,8 @@ public class Disease_Alzheimers extends Disease
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;

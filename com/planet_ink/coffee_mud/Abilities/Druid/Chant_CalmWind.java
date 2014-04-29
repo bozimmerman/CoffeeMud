@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_CalmWind extends Chant
 {
-	public String ID() { return "Chant_CalmWind"; }
-	public String name(){ return "Calm Wind";}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
-	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
-	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override public String ID() { return "Chant_CalmWind"; }
+	@Override public String name(){ return "Calm Wind";}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 
 	public static void xpWorthyChange(MOB mob, Climate oldC, Climate newC)
 	{
@@ -58,7 +58,8 @@ public class Chant_CalmWind extends Chant
 			CMLib.leveler().postExperience(mob,null,null,25,false);
 		}
 	}
-	
+
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if(mob!=null)
@@ -72,7 +73,8 @@ public class Chant_CalmWind extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

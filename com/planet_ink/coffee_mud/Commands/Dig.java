@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class Dig extends StdCommand
 	public Dig(){}
 
 	private final String[] access={"DIG"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
 
 	public int getDiggingDepth(Item item)
 	{
@@ -60,7 +60,7 @@ public class Dig extends StdCommand
 			return 1;
 		}
 	}
-	
+
 	public boolean isOccupiedWithOtherWork(MOB mob)
 	{
 		if(mob==null) return false;
@@ -74,7 +74,8 @@ public class Dig extends StdCommand
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
 	{
@@ -85,7 +86,7 @@ public class Dig extends StdCommand
 				mob.tell("You are too busy to dig right now.");
 				return false;
 			}
-			
+
 			String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
@@ -111,7 +112,8 @@ public class Dig extends StdCommand
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -120,10 +122,11 @@ public class Dig extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-	public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
+	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return 10.0 * mob.phyStats().speed();
 	}
-	public boolean canBeOrdered(){return true;}
+	@Override public boolean canBeOrdered(){return true;}
 }

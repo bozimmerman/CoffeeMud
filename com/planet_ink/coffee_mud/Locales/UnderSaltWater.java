@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class UnderSaltWater extends UnderWater
 {
-	public String ID(){return "UnderSaltWater";}
+	@Override public String ID(){return "UnderSaltWater";}
 	public UnderSaltWater()
 	{
 		super();
@@ -41,7 +41,7 @@ public class UnderSaltWater extends UnderWater
 	}
 
 
-	public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_SEAWEED),
 		Integer.valueOf(RawMaterial.RESOURCE_FISH),
@@ -52,5 +52,5 @@ public class UnderSaltWater extends UnderWater
 		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

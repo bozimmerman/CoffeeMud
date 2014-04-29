@@ -34,14 +34,14 @@ import java.util.*;
 */
 public class Prop_AstralSpirit extends Property
 {
-	public String ID() { return "Prop_AstralSpirit"; }
-	public String name(){ return "Astral Spirit";}
-	public String displayText(){ return "(Spirit Form)";}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public String ID() { return "Prop_AstralSpirit"; }
+	@Override public String name(){ return "Astral Spirit";}
+	@Override public String displayText(){ return "(Spirit Form)";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private Race race=null;
-	
-	
-	public long flags(){return Ability.FLAG_ADJUSTER|Ability.FLAG_IMMUNER;}
+
+
+	@Override public long flags(){return Ability.FLAG_ADJUSTER|Ability.FLAG_IMMUNER;}
 
 	public Race spiritRace()
 	{
@@ -49,6 +49,7 @@ public class Prop_AstralSpirit extends Property
 			race=CMClass.getRace("Spirit");
 		return race;
 	}
+	@Override
 	public boolean autoInvocation(MOB mob)
 	{
 		if((mob!=null)&&(mob.fetchEffect(ID())==null))
@@ -59,6 +60,7 @@ public class Prop_AstralSpirit extends Property
 		return false;
 	}
 
+	@Override
 	public String accountForYourself()
 	{ return "an astral spirit";	}
 
@@ -73,6 +75,7 @@ public class Prop_AstralSpirit extends Property
 				inhab.setVictim(null);
 		}
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -132,11 +135,13 @@ public class Prop_AstralSpirit extends Property
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setMyRace(spiritRace());
 		super.affectCharStats(affected, affectableStats);
 	}
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

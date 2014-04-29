@@ -16,17 +16,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ReadOnlyFilteredList<K> implements List<K> 
+public class ReadOnlyFilteredList<K> implements List<K>
 {
 	private List<K> 	list;
 	private Filterer<K> filterer;
-	
+
 	public ReadOnlyFilteredList(List<K> l, Filterer<K> fill)
 	{
 		list=l;
 		filterer=fill;
 	}
-	
+
 	@Override
 	public boolean add(K arg0)
 	{
@@ -103,7 +103,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0) 
+	public int lastIndexOf(Object arg0)
 	{
 		for(int x=size()-1;x>=0;x--)
 			if((arg0==null)?get(x)==null:arg0.equals(get(x)))
@@ -166,7 +166,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public Object[] toArray() 
+	public Object[] toArray()
 	{
 		final List<K> set=new ArrayList<K>(size());
 		for(final Iterator<K> i=iterator();i.hasNext();)

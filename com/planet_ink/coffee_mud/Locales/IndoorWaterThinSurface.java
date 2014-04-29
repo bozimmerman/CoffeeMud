@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class IndoorWaterThinSurface extends IndoorWaterSurface
 {
-	public String ID(){return "IndoorWaterThinSurface";}
+	@Override public String ID(){return "IndoorWaterThinSurface";}
 	public IndoorWaterThinSurface()
 	{
 		super();
@@ -43,10 +43,11 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	protected String UnderWaterLocaleID(){return "IndoorWaterThinGrid";}
-	protected int UnderWaterDomainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
+	@Override protected String UnderWaterLocaleID(){return "IndoorWaterThinGrid";}
+	@Override protected int UnderWaterDomainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
+	@Override protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);}
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))

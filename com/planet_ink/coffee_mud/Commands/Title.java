@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,8 @@ import java.util.*;
 public class Title extends StdCommand
 {
 	private final String[] access={"TITLE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,7 +55,7 @@ public class Title extends StdCommand
 		final PlayerStats ps=mob.playerStats();
 		final StringBuffer menu=new StringBuffer("^xTitles:^.^?\n\r");
 		CMLib.titles().evaluateAutoTitles(mob);
-		if(!ps.getTitles().contains("*")) 
+		if(!ps.getTitles().contains("*"))
 			ps.getTitles().add("*");
 		for(int i=0;i<ps.getTitles().size();i++)
 		{
@@ -68,14 +69,14 @@ public class Title extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
 		{
-			@Override public void showPrompt() 
+			@Override public void showPrompt()
 			{
 				mob.tell(menu.toString());
 				if(mob.session()!=null)
 					mob.session().promptPrint("Enter a selection: ");
 			}
 			@Override public void timedOut() {}
-			@Override public void callBack() 
+			@Override public void callBack()
 			{
 				int num=CMath.s_int(this.input);
 				if((num>0)&&(num<=ps.getTitles().size()))
@@ -93,7 +94,7 @@ public class Title extends StdCommand
 			mob.session().prompt(IC[0]);
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
+
+	@Override public boolean canBeOrdered(){return true;}
 }
 

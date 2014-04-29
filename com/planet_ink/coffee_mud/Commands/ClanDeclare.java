@@ -38,7 +38,8 @@ public class ClanDeclare extends StdCommand
 	public ClanDeclare(){}
 
 	private final String[] access={"CLANDECLARE"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -52,7 +53,7 @@ public class ClanDeclare extends StdCommand
 		Clan C=null;
 		Clan C2=null;
 		String clanName="";
-		
+
 		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 
@@ -77,7 +78,7 @@ public class ClanDeclare extends StdCommand
 				if(CMLib.english().containsString(c.first.getName(), clan2Name))
 				{	C2=c.first; break; }
 		}
-		
+
 		if(C2==null)
 		{
 			mob.tell(clan2Name+" is an unknown clan.");
@@ -89,7 +90,7 @@ public class ClanDeclare extends StdCommand
 			mob.tell("You aren't allowed to declare "+rel.toLowerCase()+" on behalf of "+((clanName.length()==0)?"anything":clanName)+".");
 			return false;
 		}
-		
+
 		if((!C2.isRivalrous())||(!C.isRivalrous()))
 		{
 			mob.tell("Relations between "+C.getName()+" and "+C2.getName()+" are impossible.");
@@ -156,8 +157,8 @@ public class ClanDeclare extends StdCommand
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return false;}
 
-	
+	@Override public boolean canBeOrdered(){return false;}
+
+
 }

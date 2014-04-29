@@ -38,7 +38,8 @@ public class AutoGold extends StdCommand
 	public AutoGold(){}
 
 	private final String[] access={"AUTOGOLD"};
-	public String[] getAccessWords(){return access;}
+	@Override public String[] getAccessWords(){return access;}
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -54,9 +55,9 @@ public class AutoGold extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	@Override public boolean canBeOrdered(){return true;}
+
+
 }
 

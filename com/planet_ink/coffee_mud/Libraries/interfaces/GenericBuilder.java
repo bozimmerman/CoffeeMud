@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ public interface GenericBuilder extends CMLibrary
 			"ABLES","INVENTORY","TATTS","EXPS","IMG",
 			"FACTIONS","VARMONEY"
 	};
-	
+
 	public boolean get(int x, int m);
 	public String getGenMOBTextUnpacked(MOB mob, String newText);
 	public void resetGenMOB(MOB mob, String newText);
@@ -89,7 +89,7 @@ public interface GenericBuilder extends CMLibrary
 	public MOB getMobFromXML(String xmlBuffer);
 	public Item getItemFromXML(String xmlBuffer);
 	// TYPE= 0=item, 1=weapon, 2=armor
-	public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, int type); 
+	public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, int type);
 	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, int type);
 	public StringBuffer getItemXML(Item item);
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);

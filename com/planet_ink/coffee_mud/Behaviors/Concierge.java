@@ -34,18 +34,20 @@ import java.util.*;
 */
 public class Concierge extends StdBehavior
 {
-	public String ID(){return "Concierge";}
+	@Override public String ID(){return "Concierge";}
 
 	public DVector rates=new DVector(2);
 	public DVector destinations=new DVector(3);
 	public DVector thingsToSay=new DVector(2);
 	double basePrice=0.0;
-	
+
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "direction giving and selling";
 	}
-	
+
+	@Override
 	public void setParms(String newParm)
 	{
 		super.setParms(newParm);
@@ -93,7 +95,7 @@ public class Concierge extends StdBehavior
 		if(rateIndex<0) return basePrice;
 		return ((Double)rates.elementAt(rateIndex,2)).doubleValue();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Environmental findDestination(MOB observer, MOB mob, String where)
 	{
@@ -132,7 +134,8 @@ public class Concierge extends StdBehavior
 		if(E==null)E=CMLib.english().fetchEnvironmental(rates.getDimensionVector(1),where,false);
 		return E;
 	}
-	
+
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -177,7 +180,8 @@ public class Concierge extends StdBehavior
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
@@ -212,12 +216,13 @@ public class Concierge extends StdBehavior
 		CMLib.tracking().getRadiantRooms(from.location(),set,flags,null,radius,null);
 		return CMLib.tracking().getTrailToDescription(from.location(),set,name,false,false,radius,null,1);
 	}
-	
+
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting)) return;
-		
+
 		MOB source=msg.source();
 		MOB observer=(MOB)affecting;
 		if((source!=observer)

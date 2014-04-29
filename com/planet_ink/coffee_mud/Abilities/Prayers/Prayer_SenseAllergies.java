@@ -35,13 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SenseAllergies extends Prayer
 {
-	public String ID() { return "Prayer_SenseAllergies"; }
-	public String name(){ return "Sense Allergies";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	@Override public String ID() { return "Prayer_SenseAllergies"; }
+	@Override public String name(){ return "Sense Allergies";}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -68,7 +69,7 @@ public class Prayer_SenseAllergies extends Prayer
 					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything.");
 				else
 				{
-					
+
 					Vector allergies=new Vector();
 					Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
 					for(int i=0;i<V.size();i++)

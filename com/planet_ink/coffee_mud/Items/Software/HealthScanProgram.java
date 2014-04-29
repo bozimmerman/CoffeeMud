@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,10 +43,10 @@ import java.util.*;
 */
 public class HealthScanProgram extends GenSoftware
 {
-	public String ID(){	return "HealthScanProgram";}
-	
+	@Override public String ID(){	return "HealthScanProgram";}
+
 	protected WeakReference<MOB> lastMOBChecked=null;
-	
+
 	public HealthScanProgram()
 	{
 		super();
@@ -57,16 +57,16 @@ public class HealthScanProgram extends GenSoftware
 		basePhyStats().setWeight(1); // the higher the weight, the wider the scan
 		recoverPhyStats();
 	}
-	
+
 	@Override public String getParentMenu() { return ""; }
 	@Override public String getInternalName() { return "";}
-	
+
 	public boolean isAlive(MOB M)
 	{
 		// there you have it, the definition of "life" -- is biological, and can reproduce
 		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace())));
 	}
-	
+
 	public CMMsg getScanMsg(Room R)
 	{
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
@@ -126,49 +126,49 @@ public class HealthScanProgram extends GenSoftware
 			return "No life signs detected.";
 		return str.toString().toLowerCase();
 	}
-	
-	@Override 
-	public boolean isActivationString(String word) 
-	{ 
-		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
-	}
-	
-	@Override 
-	public boolean isDeActivationString(String word) 
-	{ 
-		return false; 
-	}
-	
-	@Override 
-	public boolean isCommandString(String word, boolean isActive) 
-	{ 
+
+	@Override
+	public boolean isActivationString(String word)
+	{
 		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
-	@Override 
-	public String getActivationMenu() 
-	{ 
-		return super.getActivationMenu(); 
+	@Override
+	public boolean isDeActivationString(String word)
+	{
+		return false;
 	}
-	
-	@Override 
+
+	@Override
+	public boolean isCommandString(String word, boolean isActive)
+	{
+		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
+	}
+
+	@Override
+	public String getActivationMenu()
+	{
+		return super.getActivationMenu();
+	}
+
+	@Override
 	public boolean checkActivate(MOB mob, String message)
 	{
 		return checkTyping(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkDeactivate(MOB mob, String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
-	
+
 	protected MOB getTarget(MOB mob, String name)
 	{
 		if(name.equalsIgnoreCase("self"))
 			return mob;
 		Room R=mob.location();
-		if(R==null) 
+		if(R==null)
 			return null;
 		MOB M=R.fetchInhabitant(name);
 		if(M==null)
@@ -191,8 +191,8 @@ public class HealthScanProgram extends GenSoftware
 		}
 		return M;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkTyping(MOB mob, String message)
 	{
 		if(!super.checkTyping(mob, message))
@@ -221,26 +221,26 @@ public class HealthScanProgram extends GenSoftware
 		lastMOBChecked=new WeakReference<MOB>(M);
 		return true;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean checkPowerCurrent(int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
-	
-	@Override 
+
+	@Override
 	public void onActivate(MOB mob, String message)
 	{
 		onTyping(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public void onDeactivate(MOB mob, String message)
 	{
 		super.onDeactivate(mob, message);
 	}
-	
-	@Override 
+
+	@Override
 	public void onTyping(MOB mob, String message)
 	{
 		super.onTyping(mob, message);
@@ -254,8 +254,8 @@ public class HealthScanProgram extends GenSoftware
 				super.addScreenMessage(scan);
 		}
 	}
-	
-	@Override 
+
+	@Override
 	public void onPowerCurrent(int value)
 	{
 		super.onPowerCurrent(value);

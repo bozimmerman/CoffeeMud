@@ -35,25 +35,25 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Thief_Shadow extends ThiefSkill
 {
-	public String ID() { return "Thief_Shadow"; }
-	public String name(){ return "Shadow";}
+	@Override public String ID() { return "Thief_Shadow"; }
+	@Override public String name(){ return "Shadow";}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
-	public String displayText(){return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override public String displayText(){return "";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	private static final String[] triggerStrings = {"SHADOW"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
 	protected Room lastRoom=null;
 	private long lastTogether=0;
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
-	public int abilityCode(){return code;}
-	public void setAbilityCode(int newCode){code=newCode;}
+	@Override public int abilityCode(){return code;}
+	@Override public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean stillAShadower()
 	{
@@ -88,6 +88,7 @@ public class Thief_Shadow extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -121,6 +122,7 @@ public class Thief_Shadow extends ThiefSkill
 			lastTogether=System.currentTimeMillis();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -140,6 +142,7 @@ public class Thief_Shadow extends ThiefSkill
 		return true;
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -154,6 +157,7 @@ public class Thief_Shadow extends ThiefSkill
 					+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -166,6 +170,7 @@ public class Thief_Shadow extends ThiefSkill
 			lastTogether=System.currentTimeMillis();
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -181,6 +186,7 @@ public class Thief_Shadow extends ThiefSkill
 		super.unInvoke();
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Thief_Shadow A=(Thief_Shadow)mob.fetchEffect(ID());
@@ -258,7 +264,7 @@ public class Thief_Shadow extends ThiefSkill
 						A.lastTogether=System.currentTimeMillis();
 						mob.recoverPhyStats();
 					}
-					else 
+					else
 					{
 						A=(Thief_Shadow)mob.fetchEffect(ID());
 						if(A!=null)

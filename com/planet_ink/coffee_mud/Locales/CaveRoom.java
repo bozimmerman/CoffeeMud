@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CaveRoom extends StdRoom
 {
-	public String ID(){return "CaveRoom";}
+	@Override public String ID(){return "CaveRoom";}
 	public CaveRoom()
 	{
 		super();
@@ -45,9 +45,10 @@ public class CaveRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	public int maxRange(){return 5;}
+	@Override public int maxRange(){return 5;}
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
@@ -97,5 +98,5 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CITRINE),
 		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

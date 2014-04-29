@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Arcanist extends Thief
 {
-	public String ID(){return "Arcanist";}
-	public String name(){return "Arcanist";}
-	public int availabilityCode(){return Area.THEME_FANTASY;}
-	public String getManaFormula(){return "((@x4<@x5)/5)+(1*(1?3))"; }
+	@Override public String ID(){return "Arcanist";}
+	@Override public String name(){return "Arcanist";}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override public String getManaFormula(){return "((@x4<@x5)/5)+(1*(1?3))"; }
 
 	public Arcanist()
 	{
@@ -45,6 +45,7 @@ public class Arcanist extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+	@Override
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -142,17 +143,19 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 	}
 
-	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
-	
+	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. Can see wand charges at level 30.";
 	}
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost==null)
@@ -183,6 +186,7 @@ public class Arcanist extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public void endCharacter(MOB mob)
 	{
 		Vector otherChoices=new Vector();
@@ -217,7 +221,7 @@ public class Arcanist extends Thief
 				A.setProficiency(A.proficiency()+(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)/3));
 		}
 	}
-	
+
 	private void clearAbilityFromSpellcraftList(MOB mob, Ability A)
 	{
 		Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
@@ -235,7 +239,8 @@ public class Arcanist extends Thief
 			}
 		}
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -317,6 +322,7 @@ public class Arcanist extends Thief
 		}
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
@@ -328,6 +334,7 @@ public class Arcanist extends Thief
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

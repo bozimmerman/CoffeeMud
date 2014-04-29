@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
-/* 
+/*
 Copyright 2000-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ limitations under the License.
  * and removes by copying the underlying vector whenever those
  * operations are done.
  */
-public class STreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
+public class STreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 	private volatile Vector<T> V;
@@ -36,13 +36,13 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
 	}
-	
+
 	public STreeVector(int size)
 	{
 		V=new Vector<T>(size);
 		S=new TreeMap<String,T>();
 	}
-	
+
 	public STreeVector(List<T> E)
 	{
 		V=new Vector<T>();
@@ -50,7 +50,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		if(E!=null)
 			addAll(E);
 	}
-	
+
 	public STreeVector(T[] E)
 	{
 		V=new Vector<T>();
@@ -61,7 +61,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				addBoth(o);
 		}
 	}
-	
+
 	public STreeVector(Enumeration<T> E)
 	{
 		V=new Vector<T>();
@@ -72,7 +72,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				addBoth(E.nextElement());
 		}
 	}
-	
+
 	public STreeVector(Iterator<T> E)
 	{
 		V=new Vector<T>();
@@ -80,7 +80,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		for(;E.hasNext();)
 			addBoth(E.next());
 	}
-	
+
 	public STreeVector(Set<T> E)
 	{
 		V=new Vector<T>();
@@ -88,7 +88,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		for(T o : E)
 			addBoth(o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Enumeration<T> E)
 	{
@@ -99,7 +99,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				addBoth(E.nextElement());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(T[] E)
 	{
@@ -110,7 +110,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				addBoth(e);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Iterator<T> E)
 	{
@@ -121,7 +121,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				addBoth(E.next());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Enumeration<T> E)
 	{
@@ -132,7 +132,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				removeBoth(E.nextElement());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Iterator<T> E)
 	{
@@ -143,7 +143,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				removeBoth(E.next());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(List<T> E)
 	{
@@ -154,7 +154,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 				removeBoth(o);
 		}
 	}
-	
+
 	public synchronized int capacity()
 	{
 		return V.capacity();
@@ -165,7 +165,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	{
 		return (Vector<T>)V.clone();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public synchronized STreeVector<T> copyOf()
 	{
@@ -343,10 +343,10 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		V=(Vector<T>)V.clone();
 		V.trimToSize();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void add(int index, T element) 
+	public synchronized void add(int index, T element)
 	{
 		if(element==null) return;
 		if(!S.containsKey(element.ID().toUpperCase()))
@@ -359,7 +359,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean add(T e) 
+	public synchronized boolean add(T e)
 	{
 		if(e==null) return false;
 		if(!S.containsKey(e.ID().toUpperCase()))
@@ -380,10 +380,10 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		S.put(e.ID().toUpperCase(), e);
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean addAll(Collection<? extends T> c) 
+	public synchronized boolean addAll(Collection<? extends T> c)
 	{
 		V=(Vector<T>)V.clone();
 		boolean kaplah=false;
@@ -395,7 +395,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean addAll(int index, Collection<? extends T> c) 
+	public synchronized boolean addAll(int index, Collection<? extends T> c)
 	{
 		final int oldSize=size();
 		if(index>=size())
@@ -409,21 +409,21 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		return oldSize < size();
 	}
 
-	public synchronized void addElement(T obj) 
+	public synchronized void addElement(T obj)
 	{
 		add(obj);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void clear() 
+	public synchronized void clear()
 	{
 		V=(Vector<T>)V.clone();
 		V.clear();
 		S.clear();
 	}
 
-	public synchronized void insertElementAt(T obj, int index) 
+	public synchronized void insertElementAt(T obj, int index)
 	{
 		if(obj==null) return;
 		if(index>=size())
@@ -438,7 +438,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean remove(Object o) 
+	public synchronized boolean remove(Object o)
 	{
 		if(!(o instanceof CMObject)) return false;
 		final CMObject O=(CMObject)o;
@@ -459,7 +459,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		S.remove(OID);
 		return V.remove(o);
 	}
-	
+
 	private boolean removeBoth(CMObject o)
 	{
 		final String OID=o.ID().toUpperCase();
@@ -467,10 +467,10 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		S.remove(OID);
 		return V.remove(o);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized T remove(int index) 
+	public synchronized T remove(int index)
 	{
 		V=(Vector<T>)V.clone();
 		final T O=V.remove(index);
@@ -483,7 +483,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean removeAll(Collection<?> c) 
+	public synchronized boolean removeAll(Collection<?> c)
 	{
 		V=(Vector<T>)V.clone();
 		boolean kaplah=false;
@@ -493,7 +493,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void removeAllElements() 
+	public synchronized void removeAllElements()
 	{
 		V=(Vector<T>)V.clone();
 		V.removeAllElements();
@@ -505,14 +505,14 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		if(key==null) return null;
 		return S.get(key.toUpperCase());
 	}
-	
-	public synchronized boolean removeElement(Object obj) 
+
+	public synchronized boolean removeElement(Object obj)
 	{
 		return remove(obj);
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void removeElementAt(int index) 
+	public synchronized void removeElementAt(int index)
 	{
 		V=(Vector<T>)V.clone();
 		removeBoth(V.get(index));

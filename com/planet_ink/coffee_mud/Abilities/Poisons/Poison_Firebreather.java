@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 
 public class Poison_Firebreather extends Poison_Liquor
 {
-	public String ID() { return "Poison_Firebreather"; }
-	public String name(){ return "Firebreather";}
+	@Override public String ID() { return "Poison_Firebreather"; }
+	@Override public String name(){ return "Firebreather";}
 	private static final String[] triggerStrings = {"LIQUORFIRE"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int POISON_TICKS(){return 35;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int POISON_TICKS(){return 35;}
 
-	protected int alchoholContribution(){return 3;} 
-	protected int level(){return 3;}
-	
+	@Override protected int alchoholContribution(){return 3;}
+	@Override protected int level(){return 3;}
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

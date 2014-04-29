@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 */
 public class IndoorUnderWaterGrid extends UnderWaterGrid
 {
-	public String ID(){return "IndoorUnderWaterGrid";}
-	
-	public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	public String getGridChildLocaleID(){return "IndoorUnderWater";}
+	@Override public String ID(){return "IndoorUnderWaterGrid";}
+
+	@Override public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
+	@Override public String getGridChildLocaleID(){return "IndoorUnderWater";}
 }

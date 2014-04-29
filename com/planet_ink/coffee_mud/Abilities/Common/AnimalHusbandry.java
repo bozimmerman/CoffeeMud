@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AnimalHusbandry extends CommonSkill
 {
-	public String ID() { return "AnimalHusbandry"; }
-	public String name(){ return "Animal Husbandry";}
+	@Override public String ID() { return "AnimalHusbandry"; }
+	@Override public String name(){ return "Animal Husbandry";}
 	private static final String[] triggerStrings = {"HUSBAND","ANIMALHUSBANDRY"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
 	protected MOB[] husbanding=null;
 	protected boolean messedUp=false;
@@ -51,6 +51,7 @@ public class AnimalHusbandry extends CommonSkill
 		verb="husbanding";
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
@@ -80,6 +81,7 @@ public class AnimalHusbandry extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -125,7 +127,7 @@ public class AnimalHusbandry extends CommonSkill
 						}
 						mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),"<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>.");
 						Ability A=wifeM.fetchEffect("Pregnancy");
-						if(A!=null) 
+						if(A!=null)
 						{
 							A.makeNonUninvokable();
 							A.setSavable(true);
@@ -138,6 +140,7 @@ public class AnimalHusbandry extends CommonSkill
 	}
 
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
@@ -226,7 +229,7 @@ public class AnimalHusbandry extends CommonSkill
 					highestLevel=M.phyStats().level();
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-highestLevel+(2*getXLEVELLevel(mob)),auto);

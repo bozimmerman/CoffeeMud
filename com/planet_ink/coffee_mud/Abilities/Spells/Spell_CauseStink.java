@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,15 +36,16 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_CauseStink extends Spell
 {
-	public String ID() { return "Spell_CauseStink"; }
-	public String name(){return "Cause Stink";}
-	public String displayText(){return "(Cause Stink)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override public String ID() { return "Spell_CauseStink"; }
+	@Override public String name(){return "Cause Stink";}
+	@Override public String displayText(){return "(Cause Stink)";}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public int cycle=1;
 
+	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
@@ -52,7 +53,8 @@ public class Spell_CauseStink extends Spell
 		affectableStats.setStat(CharStats.STAT_CHARISMA, amount);
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ, affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-amount);
 	}
-	
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -105,6 +107,7 @@ public class Spell_CauseStink extends Spell
 		return true;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -114,6 +117,7 @@ public class Spell_CauseStink extends Spell
 			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely HORRIBLE!!!");
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

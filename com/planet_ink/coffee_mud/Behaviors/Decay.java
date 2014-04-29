@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class Decay extends ActiveTicker
 {
-	public String ID(){return "Decay";}
-	protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override public String ID(){return "Decay";}
+	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	public Decay()
 	{
 		super();
@@ -46,11 +46,13 @@ public class Decay extends ActiveTicker
 	boolean activated=false;
 	protected String answer=" vanishes!";
 
+	@Override
 	public String accountForYourself()
-	{ 
+	{
 		return "decaying over time";
 	}
 
+	@Override
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -61,6 +63,7 @@ public class Decay extends ActiveTicker
 			activated=true;
 	}
 
+	@Override
 	public String getParms()
 	{
 		String s=parms;
@@ -71,6 +74,7 @@ public class Decay extends ActiveTicker
 		return ("remain="+tickDown+" "+s.substring(0,x)+s.substring(y).trim()).trim();
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -118,6 +122,7 @@ public class Decay extends ActiveTicker
 		return true;
 	}
 
+	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

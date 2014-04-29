@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class MountainSurfaceThinGrid extends StdThinGrid
 {
-	public String ID(){return "MountainSurfaceThinGrid";}
+	@Override public String ID(){return "MountainSurfaceThinGrid";}
 	public MountainSurfaceThinGrid()
 	{
 		super();
@@ -44,14 +44,15 @@ public class MountainSurfaceThinGrid extends StdThinGrid
 		basePhyStats.setWeight(5);
 		recoverPhyStats();
 	}
-	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 
+	@Override
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))
 			return super.newInstance();
 		return new MountainSurfaceGrid().newInstance();
 	}
-	public String getGridChildLocaleID(){return "MountainSurface";}
-	public List<Integer> resourceChoices(){return Mountains.roomResources;}
+	@Override public String getGridChildLocaleID(){return "MountainSurface";}
+	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

@@ -29,15 +29,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * limitations under the License.
  *
  */
-public class I3Exception extends Exception 
+public class I3Exception extends Exception
 {
 	public static final long serialVersionUID=0;
-	public I3Exception() 
+	public I3Exception()
 	{
 		this("Unidentified exception.");
 	}
 
-	public I3Exception(String str) 
+	public I3Exception(String str)
 	{
 		super(str);
 	}

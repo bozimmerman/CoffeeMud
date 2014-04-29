@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2004 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +37,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
-	public String ID() { return "MasterWeaponsmithing"; }
-	public String name(){ return "Master Weaponsmithing";}
+	@Override public String ID() { return "MasterWeaponsmithing"; }
+	@Override public String name(){ return "Master Weaponsmithing";}
 	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected int displayColumns(){return 2;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int displayColumns(){return 2;}
 
-	public String parametersFile(){ return "masterweaponsmith.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "masterweaponsmith.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
+	@Override
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.name().toUpperCase().startsWith("MASTER")||(I.name().toUpperCase().indexOf(" MASTER ")>0))
@@ -55,11 +56,12 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		return true;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);

@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,12 +41,13 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Herbalism"; }
-	public String name(){ return "Herbalism";}
+	@Override public String ID() { return "Herbalism"; }
+	@Override public String name(){ return "Herbalism";}
 	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
-	public String[] triggerStrings(){return triggerStrings;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
-	public String parametersFormat(){ return 
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override
+	public String parametersFormat(){ return
 		"SPELL_ID\tITEM_LEVEL\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
@@ -59,6 +60,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	private Ability theSpell=null;
 	private static final Hashtable usage=new Hashtable();
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -81,18 +83,20 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	public String parametersFile(){ return "herbalism.txt";}
-	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override public String parametersFile(){ return "herbalism.txt";}
+	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
 
-	public boolean supportsDeconstruction() { return true; }
+	@Override public boolean supportsDeconstruction() { return true; }
 
+	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		return "Not implemented";
 	}
 
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null) return false;
@@ -144,8 +148,9 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		return false;
 	}
-	
-	
+
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -178,7 +183,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		super.unInvoke();
 	}
-	
+
 	protected Item buildItem(Ability theSpell, int level)
 	{
 		buildingI=CMClass.getItem("GenMultiPotion");
@@ -195,12 +200,13 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		return buildingI;
 	}
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
-		
+
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 		if(parsedVars.autoGenerate>0)
@@ -257,7 +263,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 							if(fillUsage)
 							{
 								Integer I=(Integer)usage.get(s.toUpperCase().trim());
-								if(I==null) 
+								if(I==null)
 									I=Integer.valueOf(0);
 								else
 									usage.remove(s.toUpperCase().trim());

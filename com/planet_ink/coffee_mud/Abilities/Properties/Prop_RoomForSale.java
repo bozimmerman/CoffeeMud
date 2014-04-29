@@ -38,9 +38,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_RoomForSale extends Property implements LandTitle
 {
-	public String ID() { return "Prop_RoomForSale"; }
-	public String name(){ return "Putting a room up for sale";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override public String ID() { return "Prop_RoomForSale"; }
+	@Override public String name(){ return "Putting a room up for sale";}
+	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 
 	public final static String SALESTR=" This lot is for sale (look id).";
 	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
@@ -50,16 +50,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	protected int lastDayDone=-1;
 	protected boolean scheduleReset=false;
 
+	@Override
 	public String accountForYourself()
 	{ return "For Sale";	}
 
-	public boolean allowsExpansionConstruction(){ return false;}
-	
+	@Override public boolean allowsExpansionConstruction(){ return false;}
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 	}
 
+	@Override
 	public int getPrice()
 	{
 		if(text().length()==0)
@@ -78,8 +81,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return price;
 	}
 
-	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
+	@Override public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
 
+	@Override
 	public void setPrice(int price)
 	{
 		setMiscText(getOwnerName()+"/"
@@ -88,6 +92,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			+price);
 	}
 
+	@Override
 	public String getOwnerName()
 	{
 		final int dex=text().indexOf('/');
@@ -95,6 +100,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return text().substring(0,dex);
 	}
 
+	@Override
 	public CMObject getOwnerObject()
 	{
 		String owner=getOwnerName();
@@ -103,7 +109,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	
+
+	@Override
 	public void setOwnerName(String owner)
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
@@ -114,6 +121,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				+getPrice());
 	}
 
+	@Override
 	public int backTaxes()
 	{
 		final int dex=text().indexOf('/');
@@ -123,6 +131,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
+	@Override
 	public void setBackTaxes(int tax)
 	{
 		setMiscText(getOwnerName()+"/"
@@ -131,6 +140,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				+getPrice());
 	}
 
+	@Override
 	public boolean rentalProperty()
 	{
 		final String upperText=text().toUpperCase();
@@ -139,6 +149,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return upperText.indexOf("RENTAL",dex)>0;
 	}
 
+	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
 		setMiscText(getOwnerName()+"/"
@@ -148,6 +159,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved
+	@Override
 	public void updateTitle()
 	{
 		if(affected instanceof Room)
@@ -159,6 +171,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	@Override
 	public String getTitleID()
 	{
 		if(affected instanceof Room)
@@ -166,14 +179,15 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		else
 		{
 			Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) 
+			if(R!=null)
 				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
 		}
 		return "";
 	}
-	
-	public String getUniqueLotID(){ return "ROOM_PROPERTY_"+landPropertyID();}
 
+	@Override public String getUniqueLotID(){ return "ROOM_PROPERTY_"+landPropertyID();}
+
+	@Override
 	public String landPropertyID()
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -181,7 +195,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "";
 	}
 
-	public void setLandPropertyID(String landID){}
+	@Override public void setLandPropertyID(String landID){}
 
 	public static boolean shopkeeperMobPresent(Room R)
 	{
@@ -238,6 +252,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return false;
 	}
 
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -273,6 +288,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -311,8 +327,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					R.setDescription(R.description().substring(0,x+theStr.trim().length()));
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
-			} 
-			else 
+			}
+			else
 			{
 				R.setDescription(R.description().substring(0,x+theStr.trim().length()));
 				if(!R.description().equals(oldDescription))
@@ -332,6 +348,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	@Override
 	public List<Room> getAllTitledRooms()
 	{
 		List<Room> V=new Vector();
@@ -606,6 +623,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
+	@Override
 	public void updateLot(List optPlayerList)
 	{
 		if(affected instanceof Room)

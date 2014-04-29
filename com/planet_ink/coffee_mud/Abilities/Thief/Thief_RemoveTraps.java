@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,18 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_RemoveTraps extends ThiefSkill
 {
-	public String ID() { return "Thief_RemoveTraps"; }
-	public String name(){ return "Remove Traps";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String ID() { return "Thief_RemoveTraps"; }
+	@Override public String name(){ return "Remove Traps";}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
-	public String[] triggerStrings(){return triggerStrings;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;
-	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
-	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Vector lastDone=new Vector();
 
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean saveTheTrap=false;
@@ -149,12 +150,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 				{
 					for(int i=0;i<permSetV.size();i++)
 					{
-						if(theTrap!=null) { 
-							theTrap.unInvoke(); 
+						if(theTrap!=null) {
+							theTrap.unInvoke();
 							permSetV.elementAt(i).delEffect(theTrap);
 						}
-						if(opTrap!=null) { 
-							opTrap.unInvoke(); 
+						if(opTrap!=null) {
+							opTrap.unInvoke();
 							permSetV.elementAt(i).delEffect(opTrap);
 						}
 					}

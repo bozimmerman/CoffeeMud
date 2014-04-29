@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,37 +39,39 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdLanguage extends StdAbility implements Language
 {
-	public String ID() { return "StdLanguage"; }
-	public String name(){ return "Languages";}
-	public String writtenName() { return name();}
+	@Override public String ID() { return "StdLanguage"; }
+	@Override public String name(){ return "Languages";}
+	@Override public String writtenName() { return name();}
 	private static final String[] triggerStrings = {"SPEAK"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
-	public int classificationCode(){return Ability.ACODE_LANGUAGE;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public boolean isAutoInvoked(){return true;}
+	@Override public boolean canBeUninvoked(){return false;}
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
+	@Override public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 
 	private static Hashtable emptyHash=new Hashtable();
 	private static Vector emptyVector=new Vector();
 	protected boolean spoken=false;
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
-	public boolean beingSpoken(String language){return spoken;}
-	public void setBeingSpoken(String language, boolean beingSpoken){spoken=beingSpoken;}
-	public Map<String, String> translationHash(String language){ return emptyHash; }
-	public List<String[]> translationVector(String language){ return emptyVector; }
-	
-	public List<String> languagesSupported() {return new XVector(ID());}
-	public boolean translatesLanguage(String language) { return ID().equalsIgnoreCase(language);}
-	public int getProficiency(String language) { 
+	@Override public boolean beingSpoken(String language){return spoken;}
+	@Override public void setBeingSpoken(String language, boolean beingSpoken){spoken=beingSpoken;}
+	@Override public Map<String, String> translationHash(String language){ return emptyHash; }
+	@Override public List<String[]> translationVector(String language){ return emptyVector; }
+
+	@Override public List<String> languagesSupported() {return new XVector(ID());}
+	@Override public boolean translatesLanguage(String language) { return ID().equalsIgnoreCase(language);}
+	@Override
+	public int getProficiency(String language) {
 		if(ID().equalsIgnoreCase(language))
 			return proficiency();
 		return 0;
 	}
-	
+
+	@Override
 	public String displayText()
 	{
 		if(beingSpoken(ID())) return "(Speaking "+name()+")";
@@ -93,6 +95,7 @@ public class StdLanguage extends StdAbility implements Language
 			return Character.toUpperCase(make);
 		return Character.toLowerCase(make);
 	}
+	@Override
 	public String translate(String language, String word)
 	{
 		if(translationHash(language).containsKey(word.toUpperCase()))
@@ -182,16 +185,16 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return newStr.toString();
 	}
-	
 
-	
-	protected Language getMyTranslator(String id, Physical P, Language winner) 
+
+
+	protected Language getMyTranslator(String id, Physical P, Language winner)
 	{
 		if(P==null) return winner;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A instanceof Language) 
+			if((A instanceof Language)
 			&& ((Language)A).translatesLanguage(id)
 			&& ((winner==null)
 					||((Language)A).getProficiency(id) > winner.getProficiency(id)))
@@ -201,8 +204,8 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return winner;
 	}
-	
-	protected Language getAnyTranslator(String id, MOB mob) 
+
+	protected Language getAnyTranslator(String id, MOB mob)
 	{
 		Language winner = null;
 		winner = getMyTranslator(id,mob,winner);
@@ -227,7 +230,7 @@ public class StdLanguage extends StdAbility implements Language
 					  msg.othersMessage());
 		return true;
 	}
-	
+
 	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
 	{
 		str=scrambleAll(ID(),str,numToMess);
@@ -260,7 +263,8 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)&&(beingSpoken(ID())))
@@ -340,7 +344,7 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	private int numLanguagesKnown(MOB student)
 	{
 		int numLanguages=0;
@@ -364,8 +368,9 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return numLanguages;
 	}
-	
-	
+
+
+	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -384,7 +389,8 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void teach(MOB teacher, MOB student)
 	{
 		super.teach(teacher, student);
@@ -403,7 +409,8 @@ public class StdLanguage extends StdAbility implements Language
 				student.tell(student.name()+" may learn "+remaining+" more languages.");
 		}
 	}
-	
+
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)
@@ -441,7 +448,7 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return false;
 	}
-	
+
 	protected boolean translateTargetMessage(CMMsg msg, String sourceWords)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
@@ -464,7 +471,8 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return false;
 	}
-	
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

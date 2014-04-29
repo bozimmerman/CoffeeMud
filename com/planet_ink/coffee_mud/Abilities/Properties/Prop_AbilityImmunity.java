@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,22 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 {
-	public String ID() { return "Prop_AbilityImmunity"; }
-	public String name(){ return "Ability Immunity";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public String accountForYourself() { return "Immunity";	}
+	@Override public String ID() { return "Prop_AbilityImmunity"; }
+	@Override public String name(){ return "Ability Immunity";}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override public String accountForYourself() { return "Immunity";	}
 	protected List<String> diseases=new Vector();
 	protected Vector messages=new Vector();
 	protected boolean owner = false;
 	protected boolean wearer = false;
 
+	@Override
 	public int triggerMask()
-	{ 
+	{
 		return TriggeredAffect.TRIGGER_ALWAYS;
 	}
 
+	@Override
 	public void setMiscText(String newText)
 	{
 		messages=new Vector();
@@ -77,6 +79,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		super.setMiscText(newText);
 	}
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if ( (msg.source() != null)

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,24 +34,25 @@ import java.util.*;
 
 public class Disease_Migraines extends Disease
 {
-	public String ID() { return "Disease_Migraines"; }
-	public String name(){ return "Migraine Headaches";}
-	public String displayText(){ return "(Migraine Headaches)";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return CAN_MOBS;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	public boolean putInCommandlist(){return false;}
+	@Override public String ID() { return "Disease_Migraines"; }
+	@Override public String name(){ return "Migraine Headaches";}
+	@Override public String displayText(){ return "(Migraine Headaches)";}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return 50;}
-	protected String DISEASE_DONE(){return "Your headaches stop.";}
-	protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
-	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
-	public int difficultyLevel(){return 4;}
+	@Override protected int DISEASE_TICKS(){return 99999;}
+	@Override protected int DISEASE_DELAY(){return 50;}
+	@Override protected String DISEASE_DONE(){return "Your headaches stop.";}
+	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
+	@Override protected String DISEASE_AFFECT(){return "";}
+	@Override public int abilityCode(){return 0;}
+	@Override public int difficultyLevel(){return 4;}
 	public HashSet<Ability> forgotten=new HashSet<Ability>();
 	public HashSet<Ability> remember=new HashSet<Ability>();
 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -83,6 +84,7 @@ public class Disease_Migraines extends Disease
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
