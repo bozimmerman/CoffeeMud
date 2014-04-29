@@ -196,7 +196,7 @@ public class Delver extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Dwarf","Gnome","Goblinoids","Troll-kin",
+		"Human","Humanoid","Dwarf","Gnome","Goblinoid","Troll-kin",
 		"HalfElf","Halfling"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
