@@ -46,7 +46,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final long			startTime;		   			  // the initial start time of the request, for overall age calculation
 	private volatile long		idleTime 	 	 	= 0;	  // the last time this handler went idle
 	private final boolean		isDebugging;			  	  // true if the log debug channel is on -- an optomization
-	private final ByteBuffer			responseBuffer;
+	private final ByteBuffer	responseBuffer;
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
 	private final MiniWebConfig config;
 	private final MiniWebServer server;

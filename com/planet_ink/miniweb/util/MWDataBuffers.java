@@ -51,11 +51,11 @@ public class MWDataBuffers implements DataBuffers
 		}
 	}
 
-	private LinkedList<FileEntry> list;
+	private LinkedList<FileEntry> 		list;
 	private final LinkedList<Closeable> closers;
-	private byte[]						   buffer=null;
-	private long						   length=0;
-	private long						   lastModifiedTime=0;
+	private byte[]						buffer=null;
+	private long						length=0;
+	private long						lastModifiedTime=0;
 
 	public MWDataBuffers()
 	{

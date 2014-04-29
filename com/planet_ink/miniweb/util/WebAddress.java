@@ -29,7 +29,7 @@ public class WebAddress
 {
 	private final String				host;
 	private final int					port;
-	private final InetSocketAddress	address;
+	private final InetSocketAddress		address;
 	private final String				context;
 
 	public WebAddress(String host, int port, String context) throws UnknownHostException

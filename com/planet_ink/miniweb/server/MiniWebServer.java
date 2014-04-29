@@ -56,15 +56,15 @@ public class MiniWebServer extends Thread
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 
-	private volatile boolean	  shutdownRequested	= false; // notice of external shutdown request
-	private Selector			  servSelector 		= null;  // server io selector
-	private final MWThreadExecutor 	  executor;					 // request handler thread pool
-	private Thread				  timeoutThread		= null;  // thread to timeout connected but idle channels
-	private final MiniWebConfig		  config;					 // list of all standard http ports to listen on
-	private SSLContext	 		  sslContext;
-	private final String				  serverName;				 // a friendly name for this server instance
-	private final LinkedList<HTTPIOHandler>  		handlers;			// list of connected channels.. managed by timeoutthread
-	private final Map<ServerSocketChannel, Boolean>	servChannels; 		// map of socket channels to an SSL boolean
+	private volatile boolean	  	shutdownRequested	= false;// notice of external shutdown request
+	private Selector			  	servSelector 		= null; // server io selector
+	private final MWThreadExecutor 	executor;					// request handler thread pool
+	private Thread				  	timeoutThread		= null; // thread to timeout connected but idle channels
+	private final MiniWebConfig		config;					 	// list of all standard http ports to listen on
+	private SSLContext	 		  	sslContext;
+	private final String			serverName;				 	// a friendly name for this server instance
+	private final LinkedList<HTTPIOHandler>  		handlers;	// list of connected channels.. managed by timeoutthread
+	private final Map<ServerSocketChannel, Boolean>	servChannels; // map of socket channels to an SSL boolean
 	private final LinkedList<Runnable>				registerOps;
 
 	public MiniWebServer(String serverName, MiniWebConfig config)

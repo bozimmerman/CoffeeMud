@@ -84,8 +84,8 @@ public class MiniWebConfig implements Cloneable
 	private Map<String,String> 	  servlets 						= new HashMap<String,String>();
 	private Map<String,String>    fileConverts					= new HashMap<String,String>();
 
-	private final Map<String,String> 	  miscFlags						= new HashMap<String,String>();
-	private final Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
+	private Map<String,String> 	  miscFlags						= new HashMap<String,String>();
+	private Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
 
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
@@ -1097,11 +1097,11 @@ public class MiniWebConfig implements Cloneable
 			fwds=new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 			for(final Entry<String,String> p : newForwards.entrySet())
 			{
-				final String key=p.getKey();
-				final Triad<String,Integer,String> from=findHostPortContext(key);
+				String key=p.getKey();
+				Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
-				final String value=p.getValue();
-				final Triad<String,Integer,String> to=findHostPortContext(value);
+				String value=p.getValue();
+				Triad<String,Integer,String> to=findHostPortContext(value);
 				if(to == null) continue;
 				if(to.second==ALL_PORTS)
 					to.second=Integer.valueOf(DEFAULT_HTP_LISTEN_PORT);
@@ -1121,7 +1121,7 @@ public class MiniWebConfig implements Cloneable
 				{
 					tree.addEntry(from.third,  new WebAddress(to.first,to.second.intValue(),to.third));
 				}
-				catch(final UnknownHostException ue)
+				catch(UnknownHostException ue)
 				{
 					getLogger().severe("Unresolved host in forward address: "+value);
 					continue;
