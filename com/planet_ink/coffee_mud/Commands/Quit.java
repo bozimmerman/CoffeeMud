@@ -73,15 +73,18 @@ public class Quit extends StdCommand
 					mob.tell("You must wait a few more minutes before you are allowed to quit.");
 					return false;
 				}
-				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000){
+				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000)
+				{
 					@Override
-					public void showPrompt() {
+					public void showPrompt()
+					{
 						session.promptPrint("\n\rQuit -- are you sure (y/N)?");
 					}
 					@Override
 					public void timedOut() {}
 					@Override
-					public void callBack() {
+					public void callBack()
+					{
 						if(this.confirmed)
 						{
 							CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);

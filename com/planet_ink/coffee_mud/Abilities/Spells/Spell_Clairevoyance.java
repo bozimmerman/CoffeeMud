@@ -131,7 +131,8 @@ public class Spell_Clairevoyance extends Spell
 			return false;
 		}
 		
-		if(mob==target) {
+		if(mob==target)
+		{
 			mob.tell("You can't cast this on yourself!");
 			return false;
 		}

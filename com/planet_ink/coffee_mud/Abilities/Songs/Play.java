@@ -61,7 +61,8 @@ public class Play extends StdAbility
 	protected Vector commonRoomSet=null;
 	protected Room originRoom=null;
 
-	public String instrumentName(){
+	public String instrumentName()
+	{
 		if(instrument!=null) return instrument.name();
 		return "something";
 	}

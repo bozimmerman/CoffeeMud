@@ -142,8 +142,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Iterator[] iters=new Iterator[]{
 				ableMap.values().iterator(),
 				new FilteredIterator(allAbleMap.values().iterator(),
-					new Filterer<Object>(){
-						public boolean passesFilter(Object obj) {
+					new Filterer<Object>()
+					{
+						public boolean passesFilter(Object obj)
+						{
 							if((obj instanceof AbilityMapping)
 							&&(ableMap.containsKey(((AbilityMapping)obj).abilityID)))
 								return false;

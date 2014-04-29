@@ -45,23 +45,27 @@ public class WhoPacket extends Packet {
 	public WhoPacket(Vector v)
 	{
 		super(v);
-		if( v.size() == 6 ) {
+		if( v.size() == 6 )
+		{
 			type = Packet.WHO_REQUEST;
 		}
-		else {
+		else
+		{
 			type = Packet.WHO_REPLY;
 			who = (Vector)v.elementAt(6);
 		}
 	}
 
 	public void send() throws InvalidPacketException {
-		if( type == Packet.WHO_REPLY && who == null ) {
+		if( type == Packet.WHO_REPLY && who == null )
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		if(type==Packet.WHO_REQUEST)
 		{
 			return "({\"who-req\",5,\"" + I3Server.getMudName() +
@@ -72,7 +76,8 @@ public class WhoPacket extends Packet {
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
 		int i;
 
-		for(i=0; i<who.size(); i++) {
+		for(i=0; i<who.size(); i++)
+		{
 			Vector v = (Vector)who.elementAt(i);
 			String nom = (String)v.elementAt(0);
 			int idle = ((Integer)v.elementAt(1)).intValue();

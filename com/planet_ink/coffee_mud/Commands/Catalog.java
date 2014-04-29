@@ -287,10 +287,12 @@ public class Catalog extends StdCommand
 								mob.tell("That is not a valid new catagory to create.");
 							else
 							if(session!=null)
-								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N"){
+								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
+								{
 									@Override public void showPrompt() { session.promptPrint("Create new category '"+newCat+"' (y/N)?");}
 									@Override public void timedOut() {}
-									@Override public void callBack() {
+									@Override public void callBack()
+									{
 										if(this.confirmed)
 										{
 											currentCats.put(mob.Name(), newCat);

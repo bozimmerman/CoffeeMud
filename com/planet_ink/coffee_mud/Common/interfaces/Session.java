@@ -1209,7 +1209,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * Only constructor is the one to tell out often to call back.
 		 * @param tickerMs the time is ms between timeouts
 		 */
-		public TickingCallback(long tickerMs) {
+		public TickingCallback(long tickerMs)
+		{
 			super(Type.PROMPT,tickerMs);
 		}
 		/**

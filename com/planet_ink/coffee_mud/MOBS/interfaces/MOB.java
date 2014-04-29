@@ -252,7 +252,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public MOB follower;
 		public int marchingOrder;
 		public Follower(MOB M, int order){follower=M; marchingOrder=order;}
-		public static final Converter<Follower,MOB> converter = new Converter<Follower,MOB>(){
+		public static final Converter<Follower,MOB> converter = new Converter<Follower,MOB>()
+		{
 			public MOB convert(Follower obj) { return obj.follower;}
 		};
 	}

@@ -202,28 +202,34 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 
 
-	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>() {
+	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>()
+	{
 		@Override public boolean hasNext() { return false; }
 		@Override public Computer next() { return null; }
 		@Override public void remove() { }
 	};
-	protected final static Iterator<Room> emptyComputerRoomIterator= new Iterator<Room>() {
+	protected final static Iterator<Room> emptyComputerRoomIterator= new Iterator<Room>()
+	{
 		@Override public boolean hasNext() { return false; }
 		@Override public Room next() { return null; }
 		@Override public void remove() { }
 	};
 
-	protected final static Filterer<WeakReference<Electronics>> computerFilterer=new Filterer<WeakReference<Electronics>>(){
-		@Override public boolean passesFilter(WeakReference<Electronics> obj) {
+	protected final static Filterer<WeakReference<Electronics>> computerFilterer=new Filterer<WeakReference<Electronics>>()
+	{
+		@Override public boolean passesFilter(WeakReference<Electronics> obj)
+		{
 			return obj.get() instanceof Electronics.Computer;
 		}
 	};
 	
-	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>(){
+	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>()
+	{
 		public Electronics.Computer convert(WeakReference<Electronics> obj) { return (Electronics.Computer)obj.get(); }
 	};
 	
-	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>(){
+	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>()
+	{
 		public Room convert(Electronics.Computer obj) 
 		{ 
 			return CMLib.map().roomLocation(obj); 
@@ -240,9 +246,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	public synchronized Iterator<Room> getComputerRooms(String key)
 	{
-		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>(){
+		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
+		{
 			private Set<Room> done=new HashSet<Room>();
-			@Override public boolean passesFilter(Room obj) {
+			@Override public boolean passesFilter(Room obj)
+			{
 				if(done.contains(obj))
 					return false;
 				done.add(obj);

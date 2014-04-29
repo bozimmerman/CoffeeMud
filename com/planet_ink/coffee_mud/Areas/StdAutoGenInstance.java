@@ -296,7 +296,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 				}
 				Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
-				for(int i=0;i<instanceChildren.size();i++) {
+				for(int i=0;i<instanceChildren.size();i++)
+				{
 					if(i!=myDex)
 					{
 						List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
@@ -516,7 +517,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		default: break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

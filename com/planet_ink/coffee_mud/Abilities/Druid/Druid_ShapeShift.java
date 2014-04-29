@@ -275,7 +275,8 @@ public class Druid_ShapeShift extends StdAbility
 				return false;
 			else
 			{
-				try{
+				try
+				{
 				if(!mob.session().confirm("You have not yet chosen your form, would you like to now (Y/n)?","Y"))
 					return false;
 				StringBuffer str=new StringBuffer("Choose from the following:\n\r");

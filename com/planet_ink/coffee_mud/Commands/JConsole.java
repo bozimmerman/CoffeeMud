@@ -93,10 +93,12 @@ public class JConsole extends StdCommand
 			final InputCallback IC[]=new InputCallback[1];
 			final boolean[] addMode=new boolean[1];
 			final StringBuilder inpBuilder=new StringBuilder("");
-			IC[0]=new InputCallback(InputCallback.Type.PROMPT){
+			IC[0]=new InputCallback(InputCallback.Type.PROMPT)
+			{
 				@Override public void showPrompt() { session.print(addMode[0]?".":">"); }
 				@Override public void timedOut() { }
-				@Override public void callBack() {
+				@Override public void callBack()
+				{
 					if(this.input.equalsIgnoreCase("exit"))
 						return;
 					if(this.input.equals("<") && !addMode[0])
@@ -159,15 +161,18 @@ public class JConsole extends StdCommand
 		{ return c.getVar(host,var);}
 		public String toJavaString(Object O){return Context.toString(O);}
 		@Override
-		public Object get(final String name, Scriptable start) {
+		public Object get(final String name, Scriptable start)
+		{
 			if (super.has(name, start))
 				return super.get(name, start);
 			if (methH.contains(name) || funcH.contains(name) 
 			|| (name.endsWith("$")&&(funcH.contains(name.substring(0,name.length()-1)))))
 			{
-				return new Function() {
+				return new Function()
+				{
 					@Override
-					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args)
+					{
 						if(methH.contains(name))
 						{
 							StringBuilder strb=new StringBuilder(name);

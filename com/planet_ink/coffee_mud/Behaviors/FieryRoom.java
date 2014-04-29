@@ -26,10 +26,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FieryRoom
 	extends ActiveTicker {
-	public String ID() {
+	public String ID()
+	{
 		return "FieryRoom"; }
 
-	protected int canImproveCode() {
+	protected int canImproveCode()
+	{
 		return Behavior.CAN_ROOMS; }
 
 	private String newDisplay = "";
@@ -55,7 +57,8 @@ public class FieryRoom
 		return "on fire";
 	}
 
-	public void setParms(String newParms) {
+	public void setParms(String newParms)
+	{
 		super.setParms(newParms);
 		newDisplay = CMParms.getParmStr(newParms, "Title", "A Charred Ruin");
 		newDesc = CMParms.getParmStr(newParms, "Description", "Whatever was once here is now nothing more than ash.");
@@ -69,7 +72,8 @@ public class FieryRoom
 		setFireTexts();
 	}
 
-	private void setFireTexts() {
+	private void setFireTexts()
+	{
 		String[] newFireTexts = {"The fire here crackles and burns.",
 								  "The intense heat of the fire here is "+(directDamage>0?"very painful":"very unpleasant")+".",
 								  "The flames dance around you"+(eqChance>0?", licking at your clothes.":"."),
@@ -87,8 +91,10 @@ public class FieryRoom
 			return super.tick(ticking, tickID);
 		
 		Room room = (Room) ticking;
-		if (canAct(ticking, tickID)) {
-			if ( (directDamage > 0) || (eqChance > 0)) {
+		if (canAct(ticking, tickID))
+		{
+			if ( (directDamage > 0) || (eqChance > 0))
+			{
 				// for each inhab, do directDamage to them.
 				for (int i = 0; i < room.numInhabitants(); i++) 
 				{
@@ -97,7 +103,8 @@ public class FieryRoom
 					if (inhab.isMonster()) 
 					{
 						boolean reallyAffect = true;
-						if (noNpc) {
+						if (noNpc)
+						{
 							reallyAffect = false;
 							Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
 							for (Iterator e = group.iterator(); e.hasNext(); ) 
@@ -110,7 +117,8 @@ public class FieryRoom
 								}
 							}
 						}
-						if (reallyAffect) {
+						if (reallyAffect)
+						{
 							dealDamage(inhab);
 							if (CMLib.dice().rollPercentage() > eqChance)
 								eqRoast(inhab);
@@ -131,7 +139,8 @@ public class FieryRoom
 			// % chance of burning each item in the room.
 			roastRoom(room);
 			// The tick happened.  If NOT NoFireText, Do flame emotes
-			if(!noFireText) {
+			if(!noFireText)
+			{
 				String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
 				room.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
 			}
@@ -164,10 +173,12 @@ public class FieryRoom
 	private void eqRoast(MOB mob) 
 	{
 		Item target = getSomething(mob);
-		if (target != null) {
+		if (target != null)
+		{
 			MOB M=CMLib.map().getFactoryMOB(mob.location());
 			M.setName("fire");
-			switch (target.material() & RawMaterial.MATERIAL_MASK) {
+			switch (target.material() & RawMaterial.MATERIAL_MASK)
+			{
 				case RawMaterial.MATERIAL_GLASS:
 				case RawMaterial.MATERIAL_METAL:
 				case RawMaterial.MATERIAL_MITHRIL:
@@ -178,14 +189,16 @@ public class FieryRoom
 					// all these we'll make get hot and be dropped.
 					int damage = CMLib.dice().roll(1, 6, 1);
 					CMLib.combat().postDamage(M, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
-					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
+					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH))
+					{
 						CMLib.commands().postDrop(mob, target, false, false, false);
 					}
 					break;
 				}
 				default: {
 					Ability burn = CMClass.getAbility("Burning");
-					if (burn != null) {
+					if (burn != null)
+					{
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
 						burn.invoke(M, target, true, 0);
 						target.recoverPhyStats();
@@ -215,11 +228,13 @@ public class FieryRoom
 		mob.destroy();
 	}
 
-	private static Item getSomething(MOB mob) {
+	private static Item getSomething(MOB mob)
+	{
 		Vector good = new Vector();
 		Vector great = new Vector();
 		Item target = null;
-		for (int i = 0; i < mob.numItems(); i++) {
+		for (int i = 0; i < mob.numItems(); i++)
+		{
 			Item I = mob.getItem(i);
 			if (I.amWearingAt(Wearable.IN_INVENTORY))
 				good.addElement(I);

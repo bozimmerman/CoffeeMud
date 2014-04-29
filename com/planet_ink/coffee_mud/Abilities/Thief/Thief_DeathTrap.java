@@ -57,7 +57,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
 	public String requiresToSet(){return "";}
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		for(int i=0;i<100;i++)
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));

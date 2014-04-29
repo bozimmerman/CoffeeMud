@@ -141,7 +141,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			}
 			if((isDebugging)&&(chan.isOpen()))
 				config.getLogger().finer("Closed request handler '"+name);
-			try {
+			try
+			{
 				chan.close();
 			}catch(Exception e){}
 			if(forwarder!=null)
@@ -181,15 +182,18 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		if(closeMe)
 			return true;
 		final long currentTime=System.currentTimeMillis();
-		if((idleTime!=0) && ((currentTime - idleTime) > config.getRequestMaxIdleMs())) {
+		if((idleTime!=0) && ((currentTime - idleTime) > config.getRequestMaxIdleMs()))
+		{
 			if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+(currentTime - idleTime) +">"+ config.getRequestMaxIdleMs());
 			return true;
 		}
-		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered())) {
+		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
+		{
 			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
 			return true;
 		}
-		if((startTime!=0) && (currentTime - startTime) > (config.getRequestMaxAliveSecs() * 1000)) {
+		if((startTime!=0) && (currentTime - startTime) > (config.getRequestMaxAliveSecs() * 1000))
+		{
 			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+(currentTime - startTime) +">"+ (config.getRequestMaxAliveSecs() * 1000));
 			return true;
 		}

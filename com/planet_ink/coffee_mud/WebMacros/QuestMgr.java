@@ -154,7 +154,8 @@ public class QuestMgr extends StdWebMacro
 
 		String postFix="";
 		int x=script.toUpperCase().indexOf("<?XML");
-		if(x>=0) {
+		if(x>=0)
+		{
 			postFix=script.substring(x);
 			script=script.substring(0,x);
 		}

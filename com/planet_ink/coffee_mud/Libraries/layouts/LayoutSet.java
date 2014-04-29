@@ -44,11 +44,13 @@ public class LayoutSet
 	public boolean isUsed(long[] xy) { return isUsed(xy[0],xy[1]); }
 	public boolean isUsed(long x, long y) { return used.containsKey(getHashCode(x,y)); }
 	public boolean isUsed(LayoutNode n) { return isUsed(n.coord())&&set.contains(n); }
-	public void unUse(LayoutNode n) {
+	public void unUse(LayoutNode n)
+	{
 		used.remove(getHashCode(n.coord()[0],n.coord()[1]));
 		set.remove(n);
 	}
-	public boolean use(LayoutNode n, LayoutTypes nodeType) {
+	public boolean use(LayoutNode n, LayoutTypes nodeType)
+	{
 		if(isUsed(n.coord())) 
 			return false;
 		used.put(getHashCode(n.coord()[0],n.coord()[1]),n);

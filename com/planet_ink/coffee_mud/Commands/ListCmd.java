@@ -55,7 +55,8 @@ public class ListCmd extends StdCommand
 				to=CMLib.time().globalClock();
 		}
 		@Override
-		public boolean passesFilter(Area obj) {
+		public boolean passesFilter(Area obj)
+		{
 			return (obj.getTimeObj()==to);
 		}
 	}
@@ -1196,7 +1197,8 @@ public class ListCmd extends StdCommand
 		head.append(CMStrings.padRight("Class",COL_LEN2)+" ");
 		head.append(CMStrings.padRight("Lvl",COL_LEN3)+" ");
 		head.append(CMStrings.padRight("Hours",COL_LEN4)+" ");
-		switch(sortBy){
+		switch(sortBy)
+		{
 		case 6: head.append(CMStrings.padRight("E-Mail",COL_LEN5)+" "); break;
 		case 7: head.append(CMStrings.padRight("IP Address",COL_LEN5)+" "); break;
 		default: head.append(CMStrings.padRight("Last",COL_LEN6)+" "); break;
@@ -1252,7 +1254,8 @@ public class ListCmd extends StdCommand
 			head.append(CMStrings.padRight(""+U.level,COL_LEN3)+" ");
 			long age=Math.round(CMath.div(CMath.s_long(""+U.age),60.0));
 			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
-			switch(showBy){
+			switch(showBy)
+			{
 			case 6: head.append(CMStrings.padRight(U.email,COL_LEN5)+" "); break;
 			case 7: head.append(CMStrings.padRight(U.ip,COL_LEN5)+" "); break;
 			default: head.append(CMStrings.padRight(CMLib.time().date2String(U.last),COL_LEN6)+" "); break;
@@ -1286,7 +1289,8 @@ public class ListCmd extends StdCommand
 		head.append("[");
 		head.append(CMStrings.padRight("Account",COL_LEN1)+" ");
 		head.append(CMStrings.padRight("Last",COL_LEN2)+" ");
-		switch(sortBy){
+		switch(sortBy)
+		{
 			default : head.append(CMStrings.padRight("E-Mail",COL_LEN3)+" "); break;
 			case 7: head.append(CMStrings.padRight("IP Address",COL_LEN3)+" "); break;
 		}
@@ -1373,7 +1377,8 @@ public class ListCmd extends StdCommand
 				players=players.substring(x).trim();
 				if(players.startsWith(",")) players=players.substring(1).trim();
 			}
-			switch(showBy){
+			switch(showBy)
+			{
 			default: line.append(CMStrings.padRight(U.getEmail(),COL_LEN3)+" "); break;
 			case 7: line.append(CMStrings.padRight(U.getLastIP(),COL_LEN3)+" "); break;
 			}
@@ -1543,7 +1548,8 @@ public class ListCmd extends StdCommand
 					if(Q.waiting())
 					{
 						long min=Q.waitRemaining();
-						if(min>0) {
+						if(min>0)
+						{
 							min=min*CMProps.getTickMillis();
 							if(min>60000)
 								buf.append("waiting ("+(min/60000)+" minutes left)");
@@ -2505,8 +2511,10 @@ public class ListCmd extends StdCommand
 		str.append("\n\r");
 		str.append(CMStrings.repeat("-", 75)).append("\n\r");
 		List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
-		Collections.sort(l,new Comparator<Manufacturer>(){
-			@Override public int compare(Manufacturer o1, Manufacturer o2) {
+		Collections.sort(l,new Comparator<Manufacturer>()
+		{
+			@Override public int compare(Manufacturer o1, Manufacturer o2)
+			{
 				return o1.name().compareToIgnoreCase(o2.name());
 			}
 		});
@@ -2912,7 +2920,8 @@ public class ListCmd extends StdCommand
 		case 70: listCurrents(mob, commands); break;
 		case 71: listManufacturers(mob, commands); break;
 		case 72: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;
-		case 73: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>(){
+		case 73: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>()
+		{
 						@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
 					})).toString()); 
 				break;

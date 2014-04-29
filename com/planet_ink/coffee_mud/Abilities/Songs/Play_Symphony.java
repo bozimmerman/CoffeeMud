@@ -38,7 +38,8 @@ public class Play_Symphony extends Play
 {
 	public String ID() { return "Play_Symphony"; }
 	public String name(){ return "Symphony";}
-	public int abstractQuality(){
+	public int abstractQuality()
+	{
 		if(toDoCode<0)
 			return Ability.QUALITY_BENEFICIAL_OTHERS;
 		else

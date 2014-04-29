@@ -183,7 +183,8 @@ public class GenAbility extends StdAbility
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
-			if(scriptObj!=null){
+			if(scriptObj!=null)
+			{
 				A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 				A.scriptObj.setScript(scriptObj.getScript());
 			}
@@ -204,7 +205,8 @@ public class GenAbility extends StdAbility
 		{
 			GenAbility A=(GenAbility)E;
 			A.scriptParmHash=scriptParmHash;
-			if(A.scriptObj!=null){
+			if(A.scriptObj!=null)
+			{
 				scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 				scriptObj.setScript(A.scriptObj.getScript());
 			}
@@ -616,12 +618,14 @@ public class GenAbility extends StdAbility
 										 "CHANNELING" //31B
 										};
 	public String[] getStatCodes(){return CODES;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

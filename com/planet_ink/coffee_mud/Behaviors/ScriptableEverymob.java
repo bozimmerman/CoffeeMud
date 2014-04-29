@@ -123,61 +123,77 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 			giveUpTheScript(determineArea(host),msg.source());
 		super.executeMsg(host,msg);
 	}
-	public String defaultQuestName() {
+	public String defaultQuestName()
+	{
 		return (sampleB==null)?"":sampleB.defaultQuestName();
 	}
-	public void dequeResponses() {
+	public void dequeResponses()
+	{
 		if(sampleB!=null) sampleB.dequeResponses();
 	}
 	public List<String> externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
-	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest) {
+	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
+	{
 		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
 	}
 	public boolean eval(PhysicalAgent scripted, MOB source,
 			Environmental target, MOB monster, Item primaryItem,
 			Item secondaryItem, String msg, Object[] tmp, String[][] eval,
-			int startEval) {
+			int startEval)
+			{
 		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
 	}
 	public String execute(PhysicalAgent scripted, MOB source,
 			Environmental target, MOB monster, Item primaryItem,
-			Item secondaryItem, DVector script, String msg, Object[] tmp) {
+			Item secondaryItem, DVector script, String msg, Object[] tmp)
+			{
 		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
 	}
-	public String getLocalVarXML() {
+	public String getLocalVarXML()
+	{
 		return (sampleB==null)?"":sampleB.getLocalVarXML();
 	}
-	public MOB getMakeMOB(Tickable ticking) {
+	public MOB getMakeMOB(Tickable ticking)
+	{
 		return (sampleB==null)?null:sampleB.getMakeMOB(ticking);
 	}
-	public String getScript() {
+	public String getScript()
+	{
 		return (sampleB==null)?"":sampleB.getScript();
 	}
-	public String getScriptResourceKey() {
+	public String getScriptResourceKey()
+	{
 		return (sampleB==null)?"":sampleB.getScriptResourceKey();
 	}
-	public String getVar(String context, String variable) {
+	public String getVar(String context, String variable)
+	{
 		return (sampleB==null)?"":sampleB.getVar(context, variable);
 	}
-	public String getVarScope() {
+	public String getVarScope()
+	{
 		return (sampleB==null)?"":sampleB.getVarScope();
 	}
-	public boolean isVar(String context, String variable) {
+	public boolean isVar(String context, String variable)
+	{
 		return (sampleB==null)?false:sampleB.isVar(context, variable);
 	}
 	public String[] parseEval(String evaluable) throws ScriptParseException {
 		return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
 	}
-	public void setLocalVarXML(String xml) {
+	public void setLocalVarXML(String xml)
+	{
 		if(sampleB!=null) sampleB.setLocalVarXML(xml);
 	}
-	public void setScript(String newParms) {
+	public void setScript(String newParms)
+	{
 		if(sampleB!=null) sampleB.setScript(newParms);
 	}
-	public void setVar(String context, String variable, String value) {
+	public void setVar(String context, String variable, String value)
+	{
 		if(sampleB!=null) sampleB.setVar(context, variable, value);
 	}
-	public void setVarScope(String scope) {
+	public void setVarScope(String scope)
+	{
 		if(sampleB!=null) sampleB.setVarScope(scope);
 	}
 	public String varify(MOB source, Environmental target,
@@ -188,7 +204,8 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 	@Override
 	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
-							Item secondaryItem, String msg, Object[] tmp, String evaluable) {
+							Item secondaryItem, String msg, Object[] tmp, String evaluable)
+							{
 		return (sampleB==null)?"":sampleB.functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}
 }

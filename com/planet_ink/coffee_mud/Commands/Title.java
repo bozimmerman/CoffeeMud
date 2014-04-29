@@ -66,7 +66,8 @@ public class Title extends StdCommand
 				menu.append(CMStrings.padRight(""+(i+1),2)+": "+CMStrings.replaceAll(title,"*",mob.Name())+"\n\r");
 		}
 		final InputCallback[] IC=new InputCallback[1];
-		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"") {
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
+		{
 			@Override public void showPrompt() 
 			{
 				mob.tell(menu.toString());

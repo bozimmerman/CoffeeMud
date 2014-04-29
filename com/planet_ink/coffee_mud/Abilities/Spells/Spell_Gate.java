@@ -96,7 +96,8 @@ public class Spell_Gate extends Spell
 
 		List<MOB> candidates=new Vector();
 		MOB target=null;
-		try{
+		try
+		{
 			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
 		}catch(NoSuchElementException nse){}
 		Room newRoom=null;

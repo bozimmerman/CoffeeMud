@@ -99,7 +99,8 @@ public class Authenticate extends StdWebMacro
 					for(int i=0;i<256;i++)
 						FILTER[i]^=Math.abs(mac[i % mac.length]);
 				}
-			} catch(Exception e) {
+			} catch(Exception e)
+			{
 				e.printStackTrace();
 			}
 		}

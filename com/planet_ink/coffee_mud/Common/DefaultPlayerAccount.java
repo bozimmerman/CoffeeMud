@@ -477,13 +477,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static String[] codes=null;
-	public String[] getStatCodes(){
+	public String[] getStatCodes()
+	{
 		if(codes==null)
 			codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

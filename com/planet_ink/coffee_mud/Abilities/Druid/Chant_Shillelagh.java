@@ -84,7 +84,8 @@ public class Chant_Shillelagh extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) {
+		if(target==null)
+		{
 			if((mob.isMonster())
 			&&(mob.fetchWieldedItem() instanceof Weapon)
 			&&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)

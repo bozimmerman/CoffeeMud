@@ -1361,7 +1361,8 @@ public class StdRace implements Race
 	
 	protected static String[] CODES={"CLASS","PARMS"};
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
@@ -1379,7 +1380,8 @@ public class StdRace implements Race
 	}
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

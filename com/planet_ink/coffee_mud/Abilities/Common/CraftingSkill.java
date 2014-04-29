@@ -264,14 +264,16 @@ public class CraftingSkill extends GatheringSkill
 	{
 		short[] layerAtt = null;
 		short[] layers = null;
-		if(I instanceof Armor) {
+		if(I instanceof Armor)
+		{
 			layerAtt = new short[1];
 			layers = new short[1];
 			long[] wornLoc = new long[1];
 			boolean[] logicalAnd = new boolean[1];
 			double[] hardBonus=new double[]{hardnessMultiplier};
 			CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
-			if(I instanceof Armor) {
+			if(I instanceof Armor)
+			{
 				Armor armor = (Armor)I;
 				armor.setClothingLayer(layers[0]);
 				armor.setLayerAttributes(layerAtt[0]);

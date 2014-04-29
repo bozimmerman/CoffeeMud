@@ -40,7 +40,8 @@ public class CrossLayout extends AbstractLayout
 		}
 	}
 	
-	public List<LayoutNode> generate(int num, int dir) {
+	public List<LayoutNode> generate(int num, int dir)
+	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (num / 3 / 2) + 1;
 		LayoutSet lSet = new LayoutSet(set,num);

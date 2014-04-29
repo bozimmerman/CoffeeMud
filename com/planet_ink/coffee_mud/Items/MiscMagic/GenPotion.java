@@ -58,7 +58,8 @@ public class GenPotion extends StdPotion
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
 	public String readableText(){return readableText;}
-	public void setReadableText(String text){
+	public void setReadableText(String text)
+	{
 		readableText=text;
 		setSpellList(readableText);
 	}
@@ -67,7 +68,8 @@ public class GenPotion extends StdPotion
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public int liquidType(){
+	public int liquidType()
+	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return super.liquidType();
@@ -122,7 +124,8 @@ public class GenPotion extends StdPotion
 			break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

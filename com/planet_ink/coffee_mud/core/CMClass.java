@@ -133,7 +133,8 @@ public class CMClass extends ClassLoader
 	LIBRARY("com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary");
 	
 		public final String ancestorName; // in meters
-		CMObjectType(String ancestorName) {
+		CMObjectType(String ancestorName)
+		{
 			this.ancestorName = ancestorName;
 		}
 	}
@@ -940,7 +941,8 @@ public class CMClass extends ClassLoader
 	{
 		for(CMObjectType o : CMObjectType.values())
 		{
-			try{
+			try
+			{
 				Class<?> ancestorCl = instance().loadClass(o.ancestorName);
 				if(CMClass.checkAncestry(O.getClass(),ancestorCl))
 					return o;
@@ -1015,7 +1017,8 @@ public class CMClass extends ClassLoader
 	{
 		if((path==null)||(path.length()==0))
 			return null;
-		try{
+		try
+		{
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return (classes.get(pathLess)).newInstance();
@@ -1047,7 +1050,8 @@ public class CMClass extends ClassLoader
 	{
 		if((path==null)||(path.length()==0))
 			return false;
-		try{
+		try
+		{
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return true;
@@ -1495,8 +1499,10 @@ public class CMClass extends ClassLoader
 	 */
 	public static final void sortCMObjectsByID(final List<CMObject> V) 
 	{
-		Collections.sort(V,new Comparator<CMObject>(){
-			public int compare(CMObject o1, CMObject o2) {
+		Collections.sort(V,new Comparator<CMObject>()
+		{
+			public int compare(CMObject o1, CMObject o2)
+			{
 				if(o1 == null) 
 				{
 					if (o2 == null)
@@ -1517,8 +1523,10 @@ public class CMClass extends ClassLoader
 	 */
 	public static final void sortEnvironmentalsByName(final List<Environmental> V) 
 	{
-		Collections.sort(V,new Comparator<Environmental>(){
-			public int compare(Environmental o1, Environmental o2) {
+		Collections.sort(V,new Comparator<Environmental>()
+		{
+			public int compare(Environmental o1, Environmental o2)
+			{
 				if(o1 == null) 
 				{
 					if (o2 == null)
@@ -1878,7 +1886,8 @@ public class CMClass extends ClassLoader
 	{
 		final URL location = C.getProtectionDomain().getCodeSource().getLocation();
 		String loc;
-		if(location == null) {
+		if(location == null)
+		{
 			return null;
 		}
 
@@ -2047,7 +2056,8 @@ public class CMClass extends ClassLoader
 		||(className.startsWith("com.planet_ink.coffee_mud.application."))
 		||(className.indexOf(".interfaces.")>=0))
 		{
-			try{
+			try
+			{
 				result=super.findSystemClass(className);
 				if(result!=null)
 				{

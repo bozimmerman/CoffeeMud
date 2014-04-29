@@ -428,7 +428,8 @@ public class CMParms
 				return s.substring(1,s.length()-1).replace('\'','`');
 			return s.substring(1).replace('\'','`');
 		}
-		if(s.charAt(0)=='`') {
+		if(s.charAt(0)=='`')
+		{
 			if(s.charAt(s.length()-1)=='`')
 				return s.substring(1,s.length()-1).replace('\'','`');
 			return s.substring(1).replace('\'','`');
@@ -1170,7 +1171,8 @@ public class CMParms
 
 	public final static String[] toStringArray(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			String[] s=new String[0];
 			return s;
 		}
@@ -1182,7 +1184,8 @@ public class CMParms
 
 	public final static Set<String> toStringSet(final List<?> V, final Set<String> S)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return S;
 		}
 		for(int v=0;v<V.size();v++)
@@ -1201,7 +1204,8 @@ public class CMParms
 
 	public final static long[] toLongArray(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			long[] s=new long[0];
 			return s;
 		}
@@ -1213,7 +1217,8 @@ public class CMParms
 	
 	public final static double[] toDoubleArray(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			double[] s=new double[0];
 			return s;
 		}
@@ -1225,7 +1230,8 @@ public class CMParms
 	
 	public final static int[] toIntArray(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			int[] s=new int[0];
 			return s;
 		}
@@ -1346,7 +1352,8 @@ public class CMParms
 
 	public final static String[] toStringArray(final Set<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			String[] s=new String[0];
 			return s;
 		}
@@ -1389,7 +1396,8 @@ public class CMParms
 	
 	public final static String toStringList(final String[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1400,7 +1408,8 @@ public class CMParms
 
 	public final static String toStringList(final Object[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1451,7 +1460,8 @@ public class CMParms
 
 	public final static String toStringList(final long[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1462,7 +1472,8 @@ public class CMParms
 
 	public final static String toStringList(final short[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Short.toString(V[0]));
@@ -1473,7 +1484,8 @@ public class CMParms
 
 	public final static String toStringList(final boolean[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1484,7 +1496,8 @@ public class CMParms
 
 	public final static String toStringList(final byte[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
@@ -1495,7 +1508,8 @@ public class CMParms
 
 	public final static String toStringList(final char[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+((long)V[0]));
@@ -1506,7 +1520,8 @@ public class CMParms
 
 	public final static String toStringList(final int[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
@@ -1517,7 +1532,8 @@ public class CMParms
 
 	public final static String toStringList(final double[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1529,7 +1545,8 @@ public class CMParms
 
 	public final static String toStringList(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(V.get(0).toString());
@@ -1540,7 +1557,8 @@ public class CMParms
 
 	public final static String toStringList(final Set<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		Iterator<?> i=V.iterator();
@@ -1552,7 +1570,8 @@ public class CMParms
 
 	public final static String toTightStringList(final long[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1563,7 +1582,8 @@ public class CMParms
 
 	public final static String toTightStringList(final short[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Short.toString(V[0]));
@@ -1574,7 +1594,8 @@ public class CMParms
 
 	public final static String toTightStringList(final boolean[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1585,7 +1606,8 @@ public class CMParms
 
 	public final static String toTightStringList(final byte[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
@@ -1596,7 +1618,8 @@ public class CMParms
 
 	public final static String toTightStringList(final char[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+((long)V[0]));
@@ -1607,7 +1630,8 @@ public class CMParms
 
 	public final static String toTightStringList(final int[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
@@ -1618,7 +1642,8 @@ public class CMParms
 
 	public final static String toTightStringList(final double[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(""+V[0]);
@@ -1630,7 +1655,8 @@ public class CMParms
 
 	public final static String toTightStringList(final List<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder(V.get(0).toString());
@@ -1641,7 +1667,8 @@ public class CMParms
 
 	public final static String toTightStringList(final Set<?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		Iterator<?> i=V.iterator();
@@ -1653,7 +1680,8 @@ public class CMParms
 
 	public final static String toStringList(final Map<String,?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		final StringBuffer s=new StringBuffer("");
@@ -1688,7 +1716,8 @@ public class CMParms
 	
 	public final static String toStringEqList(final Map<String,?> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		final StringBuffer s=new StringBuffer("");

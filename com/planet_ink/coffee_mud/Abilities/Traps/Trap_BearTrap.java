@@ -58,7 +58,8 @@ public class Trap_BearTrap extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		for(int i=0;i<30;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));

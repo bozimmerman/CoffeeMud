@@ -45,7 +45,8 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=Integer.MIN_VALUE;
 
-	public int abilityCode(){
+	public int abilityCode()
+	{
 		if(code<0) code=CMath.s_int(text());
 		return code;
 	}

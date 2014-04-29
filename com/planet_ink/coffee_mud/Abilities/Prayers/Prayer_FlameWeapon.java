@@ -69,7 +69,8 @@ public class Prayer_FlameWeapon extends Prayer
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			try{
+			try
+			{
 				notAgain=true;
 				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 				if(msg.source().location().okMessage(msg.source(),msg2))

@@ -38,7 +38,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 	private Random randomizer = null;
 	protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
 
-	public synchronized Random getRandomizer() {
+	public synchronized Random getRandomizer()
+	{
 		if(randomizer == null)
 			randomizer = new Random(System.currentTimeMillis());
 		return randomizer;

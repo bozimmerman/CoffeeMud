@@ -77,7 +77,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param p an instance of a subclass of com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet
 	 */
-	static public void sendPacket(Packet p) {
+	static public void sendPacket(Packet p)
+	{
 		if(!isConnected()) return;
 		thread.send(p);
 	}
@@ -91,8 +92,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
-	static public void setup(ImudServices imud, PersistentPeer peer) {
-		if( thread != null ) {
+	static public void setup(ImudServices imud, PersistentPeer peer)
+	{
+		if( thread != null )
+		{
 			return;
 		}
 		thread = new Intermud(imud, peer);
@@ -104,7 +107,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param mud the user entered mud name
 	 * @return the specified mud's canonical name
 	 */
-	static public String translateName(String mud) {
+	static public String translateName(String mud)
+	{
 		if(!isConnected()) return "";
 		String s=thread.getMudNameFor(mud);
 		if(s!=null) return s;
@@ -118,7 +122,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param mud the user entered mud name
 	 * @return the specified mud's canonical name
 	 */
-	static public boolean isAPossibleMUDName(String mud) {
+	static public boolean isAPossibleMUDName(String mud)
+	{
 		if(!isConnected()) return false;
 		return thread.getMudNameFor(mud) != null;
 	}
@@ -129,7 +134,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @return the local channel name for the specified new local channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
 	 */
-	static public String registerFakeChannel(String c) {
+	static public String registerFakeChannel(String c)
+	{
 		if((!isConnected())||(thread.intermud.getLocalChannel(c).length()>0))
 			return "";
 		CMChannel chan=new CMChannel();
@@ -151,7 +157,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @return the local channel name for the specified new local channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
 	 */
-	static public String removeFakeChannel(String c) {
+	static public String removeFakeChannel(String c)
+	{
 		if((!isConnected())||(thread.intermud.getLocalChannel(c).length()==0))
 			return "";
 		String mask=thread.intermud.getRemoteMask(c);
@@ -171,7 +178,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @return the local channel name for the specified remote channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
 	 */
-	static public String getLocalChannel(String c ) {
+	static public String getLocalChannel(String c )
+	{
 		if(!isConnected()) return "";
 		return thread.intermud.getLocalChannel(c);
 	}
@@ -185,7 +193,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @return the remote channel name for the specified local channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getRemoteChannel
 	 */
-	static public String getRemoteChannel(String c) {
+	static public String getRemoteChannel(String c)
+	{
 		if(!isConnected()) return "";
 		return thread.intermud.getRemoteChannel(c);
 	}
@@ -197,7 +206,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param mud the name of the mud being checked
 	 * @return true if the mud is currently up, false otherwise
 	 */
-	static public boolean isUp(String mud) {
+	static public boolean isUp(String mud)
+	{
 		if(!isConnected()) return false;
 		I3Mud m = thread.getMud(mud);
 
@@ -249,10 +259,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 				name_servers.add(new NameServer(V2.get(0),CMath.s_int(V2.get(1)), V2.get(2)));
 		}
 		modified = Persistent.UNMODIFIED;
-		try {
+		try
+		{
 			restore();
 		}
-		catch( PersistenceException e ) {
+		catch( PersistenceException e )
+		{
 			password = -1;
 			Log.errOut("Intermud",e);
 		}
@@ -260,7 +272,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 		muds = new MudList(-1);
 		if((save_thread==null)||(!CMLib.threads().isTicking(save_thread, Tickable.TICKID_SUPPORT)))
 		{
-			save_thread=CMLib.threads().startTickDown(new Tickable(){
+			save_thread=CMLib.threads().startTickDown(new Tickable()
+			{
 				private int tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "I3SaveTick"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -269,8 +282,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
 				@Override public String name() { return ID(); }
 				@Override public int getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					try {
+				@Override public boolean tick(Tickable ticking, int tickID)
+				{
+					try
+					{
 						if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
 						{
 							lastPingSentTime=System.currentTimeMillis();
@@ -282,9 +297,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 							if(ellapsedTime>(60  * 60 * 1000)) // one hour
 							{
 								Log.errOut("I3SaveTick","No I3 response received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
-								CMLib.threads().executeRunnable(new Runnable() {
-									public void run() {
-										try {
+								CMLib.threads().executeRunnable(new Runnable()
+								{
+									public void run()
+									{
+										try
+										{
 											imud.resetLastPacketReceivedTime();
 											I3Server.shutdown();
 											CMLib.hosts().get(0).executeCommand("START I3");
@@ -296,7 +314,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 						}
 						save();
 					}
-					catch( PersistenceException e ) {
+					catch( PersistenceException e )
+					{
 					}
 					return !shutdown;
 				}
@@ -306,22 +325,27 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handles an incoming channel list packet
-	private synchronized void channelList(Vector packet) {
+	private synchronized void channelList(Vector packet)
+	{
 		Hashtable list = (Hashtable)packet.elementAt(7);
 		Enumeration keys = list.keys();
 
-		synchronized( channels ) {
+		synchronized( channels )
+		{
 			channels.setChannelListId(((Integer)packet.elementAt(6)).intValue());
-			while( keys.hasMoreElements() ) {
+			while( keys.hasMoreElements() )
+			{
 				Channel c = new Channel();
 				Object ob;
 
 				c.channel = (String)keys.nextElement();
 				ob = list.get(c.channel);
-				if( ob instanceof Integer ) {
+				if( ob instanceof Integer )
+				{
 					removeChannel(c);
 				}
-				else {
+				else
+				{
 					Vector info = (Vector)ob;
 
 					c.owner = (String)info.elementAt(0);
@@ -346,10 +370,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 		return thread.name_servers.get(0);
 	}
 
-	private synchronized void connect() {
+	private synchronized void connect()
+	{
 		if(shutdown) return;
 		attempts++;
-		try {
+		try
+		{
 			if(name_servers.size()==0)
 				Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
 			else
@@ -383,7 +409,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 					input_thread.start();
 					Enumeration e = intermud.getChannels();
 
-					while( e.hasMoreElements() ) {
+					while( e.hasMoreElements() )
+					{
 						String chan = (String)e.nextElement();
 
 						send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
@@ -397,7 +424,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 						Log.errOut("Intermud",(String)connectionStatuses.elementAt(e));
 			}
 		}
-		catch( Exception e ) {
+		catch( Exception e )
+		{
 			try { Thread.sleep((attempts) * 100l); }
 			catch( InterruptedException ignore )
 			{
@@ -412,11 +440,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handles an incoming error packet
-	private synchronized void error(Vector packet) {
+	private synchronized void error(Vector packet)
+	{
 		Object target = packet.elementAt(5);
 		String msg = (String)packet.elementAt(7);
 
-		if( target instanceof Integer ) {
+		if( target instanceof Integer )
+		{
 			I3Exception e;
 
 			e = new I3Exception(msg);
@@ -426,28 +456,34 @@ public class Intermud implements Runnable, Persistent, Serializable
 				Log.errOut("InterMud","276-"+str);
 			}
 		}
-		else {
+		else
+		{
 		}
 	}
 
-	private synchronized void mudlist(Vector packet) {
+	private synchronized void mudlist(Vector packet)
+	{
 		Hashtable list;
 		Enumeration keys;
 
-		synchronized( muds ) {
+		synchronized( muds )
+		{
 			muds.setMudListId(((Integer)packet.elementAt(6)).intValue());
 			list = (Hashtable)packet.elementAt(7);
 			keys = list.keys();
-			while( keys.hasMoreElements() ) {
+			while( keys.hasMoreElements() )
+			{
 				I3Mud mud = new I3Mud();
 				Object info;
 
 				mud.mud_name = (String)keys.nextElement();
 				info = list.get(mud.mud_name);
-				if( info instanceof Integer ) {
+				if( info instanceof Integer )
+				{
 					removeMud(mud);
 				}
-				else {
+				else
+				{
 					Vector v = (Vector)info;
 					int total=0;
 					for(int vi=0;vi<v.size();vi++)
@@ -476,7 +512,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 			 // Hashtable other_info = (Hashtable)v.elementAt(12);
 
 	public void restore() throws PersistenceException {
-		if( modified != Persistent.UNMODIFIED ) {
+		if( modified != Persistent.UNMODIFIED )
+		{
 			throw new PersistenceException("Restoring over changed data.");
 		}
 		peer.restore();
@@ -503,11 +540,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 	
 	public void run() 
 	{
-		try {
+		try
+		{
 			connection.setSoTimeout(60000);
 			input = new DataInputStream(connection.getInputStream());
 		}
-		catch( java.io.IOException e ) {
+		catch( java.io.IOException e )
+		{
 			input = null;
 			connected = false;
 		}
@@ -540,8 +579,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 				if(ellapsedTime>(60  * 60 * 1000)) // one hour
 				{
 					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false)+". Connected="+Intermud.isConnected());
-					CMLib.threads().executeRunnable(new Runnable() {
-						public void run() {
+					CMLib.threads().executeRunnable(new Runnable()
+					{
+						public void run()
+						{
 							try
 							{
 								//logMemory();
@@ -610,7 +651,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				str=new String(tmp);
 			}
-			catch( java.io.IOException e ) {
+			catch( java.io.IOException e )
+			{
 				data = null;
 				str = null;
 				connected = false;
@@ -628,7 +670,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 				if(errMsg!=null) Log.errOut("InterMud","384-"+errMsg);
 				return;
 			}
-			try {
+			try
+			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
 					Log.sysOut("Intermud","Receiving: "+str);
 				final Object o=LPCData.getLPCData(str);
@@ -640,7 +683,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 					continue;
 				}
 			}
-			catch( I3Exception e ) {
+			catch( I3Exception e )
+			{
 				String errMsg=e.getMessage()==null?e.toString():e.getMessage();
 				if(errMsg!=null) Log.errOut("InterMud","389-"+errMsg);
 				continue;
@@ -648,179 +692,229 @@ public class Intermud implements Runnable, Persistent, Serializable
 			// Figure out the packet type and send it to the mudlib
 			String type = (String)data.elementAt(0);
 
-			if( type.equals("channel-m") || type.equals("channel-e") || type.equals("channel-t") ) {
-				try {
+			if( type.equals("channel-m") || type.equals("channel-e") || type.equals("channel-t") )
+			{
+				try
+				{
 					ChannelPacket p = new ChannelPacket(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud","0-"+e.getMessage());
 				}
 			}
-			else if( type.equals("chan-who-req") ) {
-				try {
+			else if( type.equals("chan-who-req") )
+			{
+				try
+				{
 					ChannelWhoRequest p = new ChannelWhoRequest(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("chan-user-req") ) {
-				try {
+			else if( type.equals("chan-user-req") )
+			{
+				try
+				{
 					ChannelUserRequest p = new ChannelUserRequest(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("channel-add") ) {
-				try {
+			else if( type.equals("channel-add") )
+			{
+				try
+				{
 					ChannelAdd p = new ChannelAdd(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("channel-remove") ) {
-				try {
+			else if( type.equals("channel-remove") )
+			{
+				try
+				{
 					ChannelDelete p = new ChannelDelete(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("channel-listen") ) {
-				try {
+			else if( type.equals("channel-listen") )
+			{
+				try
+				{
 					ChannelListen p = new ChannelListen(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("chan-who-reply") ) {
-				try {
+			else if( type.equals("chan-who-reply") )
+			{
+				try
+				{
 					ChannelWhoReply p = new ChannelWhoReply(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("chan-user-reply") ) {
-				try {
+			else if( type.equals("chan-user-reply") )
+			{
+				try
+				{
 					ChannelUserReply p = new ChannelUserReply(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("chanlist-reply") ) {
+			else if( type.equals("chanlist-reply") )
+			{
 				channelList(data);
 			}
-			else if( type.equals("locate-reply") ) {
-				try {
+			else if( type.equals("locate-reply") )
+			{
+				try
+				{
 					LocateReplyPacket p = new LocateReplyPacket(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("finger-reply") ) {
-				try {
+			else if( type.equals("finger-reply") )
+			{
+				try
+				{
 					FingerReply p = new FingerReply(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("finger-req") ) {
-				try {
+			else if( type.equals("finger-req") )
+			{
+				try
+				{
 					FingerRequest p = new FingerRequest(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("locate-req") ) {
-				try {
+			else if( type.equals("locate-req") )
+			{
+				try
+				{
 					LocateQueryPacket p = new LocateQueryPacket(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("mudlist") ) {
+			else if( type.equals("mudlist") )
+			{
 				mudlist(data);
 			}
-			else if( type.equals("startup-reply") ) {
+			else if( type.equals("startup-reply") )
+			{
 				startupReply(data);
 			}
-			else if( type.equals("tell") ) {
-				try {
+			else if( type.equals("tell") )
+			{
+				try
+				{
 					TellPacket p = new TellPacket(data);
 
 					intermud.receive(p);
 				}
-				catch( InvalidPacketException e ) {
+				catch( InvalidPacketException e )
+				{
 					Log.errOut("Intermud",type+"-"+e.getMessage());
 				}
 			}
-			else if( type.equals("who-req") ) {
+			else if( type.equals("who-req") )
+			{
 				WhoPacket p = new WhoPacket(data);
 
 				intermud.receive(p);
 			}
-			else if( type.equals("who-reply") ) {
+			else if( type.equals("who-reply") )
+			{
 				WhoPacket p = new WhoPacket(data);
 
 				intermud.receive(p);
 			}
-			else if( type.equals("auth-mud-req") ) {
+			else if( type.equals("auth-mud-req") )
+			{
 				MudAuthRequest p = new MudAuthRequest(data);
 
 				intermud.receive(p);
 			}
-			else if( type.equals("auth-mud-reply") ) {
+			else if( type.equals("auth-mud-reply") )
+			{
 				MudAuthReply p = new MudAuthReply(data);
 
 				intermud.receive(p);
 			}
-			else if( type.equals("error") ) {
+			else if( type.equals("error") )
+			{
 				error(data);
 			}
-			else if( type.equals("ucache-update") ) {
+			else if( type.equals("ucache-update") )
+			{
 				// i have NO idea what to do here
 			}
-			else {
+			else
+			{
 				Log.errOut("Intermud","Other packet: " + type);
 			}
 		}
 	}
 
 	public void save() throws PersistenceException {
-		if( modified == Persistent.UNMODIFIED ) {
+		if( modified == Persistent.UNMODIFIED )
+		{
 			return;
 		}
 		peer.save();
@@ -831,7 +925,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Sends any valid subclass of Packet to the router.
 	 * @param p the packet to send
 	 */
-	public void send(Packet p) {
+	public void send(Packet p)
+	{
 		send(p.toString());
 	}
 
@@ -858,23 +953,28 @@ public class Intermud implements Runnable, Persistent, Serializable
 			output.writeInt(packet.length);
 			output.write(packet);
 		}
-		catch( java.io.IOException e ) {
+		catch( java.io.IOException e )
+		{
 			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-			if(errMsg!=null) {
+			if(errMsg!=null)
+			{
 				Log.errOut("InterMud","557-"+errMsg);
 			}
 		}
 	}
 
 	// Handle a startup reply packet
-	private synchronized void startupReply(Vector packet) {
+	private synchronized void startupReply(Vector packet)
+	{
 		Vector router_list = (Vector)packet.elementAt(6);
 
-		if( router_list != null ) {
+		if( router_list != null )
+		{
 			Vector router = (Vector)router_list.elementAt(0);
 			NameServer name_server = name_servers.get(0);
 
-			if( !name_server.name.equals(router.elementAt(0)) ) {
+			if( !name_server.name.equals(router.elementAt(0)) )
+			{
 				// create new name server and connect
 				return;
 			}
@@ -917,7 +1017,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * @param c the channel to add to the list of known channels
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getChannels
 	 */
-	public void addChannel(Channel c) {
+	public void addChannel(Channel c)
+	{
 		channels.addChannel(c);
 	}
 
@@ -925,14 +1026,16 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Removes a channel from the channel list.
 	 * @param c the channel to remove
 	 */
-	public void removeChannel(Channel c) {
+	public void removeChannel(Channel c)
+	{
 		channels.removeChannel(c);
 	}
 
 	/**
 	 * @return the list of currently known channels
 	 */
-	public ChannelList getChannelList() {
+	public ChannelList getChannelList()
+	{
 		return channels;
 	}
 
@@ -940,7 +1043,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Sets the channel list to a new channel list.
 	 * @param list the new channel list
 	 */
-	public void setChannelList(ChannelList list) {
+	public void setChannelList(ChannelList list)
+	{
 		channels = list;
 	}
 
@@ -948,12 +1052,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Adds a mud to the list of known muds.
 	 * @param m the mud to add
 	 */
-	public void addMud(I3Mud m) {
+	public void addMud(I3Mud m)
+	{
 		muds.addMud(m);
 		modified = Persistent.MODIFIED;
 	}
 
-	private I3Mud getMud(String mud_name) {
+	private I3Mud getMud(String mud_name)
+	{
 		return muds.getMud(getMudNameFor(mud_name));
 	}
 
@@ -961,7 +1067,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Removed a mud from the list of known muds.
 	 * @param m the mud to remove
 	 */
-	public void removeMud(I3Mud m) {
+	public void removeMud(I3Mud m)
+	{
 		muds.removeMud(m);
 		modified = Persistent.MODIFIED;
 	}
@@ -969,21 +1076,24 @@ public class Intermud implements Runnable, Persistent, Serializable
 	/**
 	 * @return the list of known muds
 	 */
-	public MudList getMudList() {
+	public MudList getMudList()
+	{
 		return muds;
 	}
 
 	/**
 	 * @return the list of known muds
 	 */
-	public static MudList getAllMudsList() {
+	public static MudList getAllMudsList()
+	{
 		if(!isConnected()) return new MudList(-1);
 		return thread.muds;
 	}
 	/**
 	 * @return the list of known muds
 	 */
-	public static ChannelList getAllChannelList() {
+	public static ChannelList getAllChannelList()
+	{
 		if(!isConnected()) return new ChannelList();
 		return thread.channels;
 	}
@@ -991,20 +1101,25 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Sets the list of known muds to the specified list.
 	 * @param list the new list of muds
 	 */
-	public void setMudList(MudList list) {
+	public void setMudList(MudList list)
+	{
 		muds = list;
 	}
 
 	private String getMudNameFor(String mud)
 	{
 		mud = mud.toLowerCase().replace('.', ' ');
-		for(String str : muds.getMuds().keySet()) {
-			if( mud.equalsIgnoreCase(str) ) {
+		for(String str : muds.getMuds().keySet())
+		{
+			if( mud.equalsIgnoreCase(str) )
+			{
 				return str;
 			}
 		}
-    	for(String str : muds.getMuds().keySet()) {
-			if( CMLib.english().containsString(str,mud) ) {
+    	for(String str : muds.getMuds().keySet())
+    	{
+			if( CMLib.english().containsString(str,mud) )
+			{
 				return str;
 			}
 		}
@@ -1014,7 +1129,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	/**
 	 * @return the I3 password for this mud
 	 */
-	 public int getPassword() {
+	 public int getPassword()
+	 {
 		return password;
 	 }
 
@@ -1022,7 +1138,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Sets the Intermud 3 password.
 	 * @param pass the new password
 	 */
-	public void setPassword(int pass) {
+	public void setPassword(int pass)
+	{
 		password = pass;
 	}
 

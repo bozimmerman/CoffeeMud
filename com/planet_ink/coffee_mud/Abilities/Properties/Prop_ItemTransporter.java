@@ -272,7 +272,8 @@ public class Prop_ItemTransporter extends Property
 							mob.addItem(item);
 					}
 				if(room!=null) room.recoverRoomStats();
-				if(mob!=null){
+				if(mob!=null)
+				{
 					mob.recoverCharStats();
 					mob.recoverPhyStats();
 					mob.recoverMaxState();

@@ -299,9 +299,11 @@ public class Listen extends CM1Command
 			}
 			else
 				codeStr=null;
-			try{
+			try
+			{
 				STATTYPE.valueOf(codeStr);
-			} catch(Exception iox) {
+			} catch(Exception iox)
+			{
 				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 				return null;
 			}
@@ -310,20 +312,24 @@ public class Listen extends CM1Command
 			if(x>0)
 			{
 				parm=rest.substring(0,x).trim();
-				try{
+				try
+				{
 					STATTYPE.valueOf(parm.toUpperCase().trim());
 					parm="";
-				}catch(java.lang.IllegalArgumentException ix) {
+				}catch(java.lang.IllegalArgumentException ix)
+				{
 					rest=rest.substring(x+1).trim();
 				}
 			}
 			else
 			if(rest.trim().length()>0)
 			{
-				try{
+				try
+				{
 					STATTYPE.valueOf(rest.toUpperCase().trim());
 					parm="";
-				}catch(java.lang.IllegalArgumentException ix) {
+				}catch(java.lang.IllegalArgumentException ix)
+				{
 					parm=rest;
 					rest="";
 				}

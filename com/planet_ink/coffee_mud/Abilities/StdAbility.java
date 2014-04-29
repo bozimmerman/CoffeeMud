@@ -1746,12 +1746,14 @@ public class StdAbility implements Ability
 	private static final String[] CODES={"CLASS","TEXT","TICKDOWN"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

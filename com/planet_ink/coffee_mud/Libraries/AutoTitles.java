@@ -109,7 +109,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
 					for(int p=ptV.size()-1;p>=0;p--)
 					{
-						try {
+						try
+						{
 							String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 							if(tit.equalsIgnoreCase(fixedTitle))
 							{ pdex=p; break;}
@@ -156,7 +157,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					{
 						for(int p=ptV.size()-1;p>=0;p--)
 						{
-							try {
+							try
+							{
 								String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 								if(tit.equalsIgnoreCase(fixedTitle))
 								{ pdex=p; break;}

@@ -904,7 +904,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		int start=0;
 
-		try{
+		try
+		{
 			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
@@ -917,7 +918,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		int start=0;
 		Blob=returnXMLBlock(Blob,Tag);
-		try{
+		try
+		{
 			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
 			if((start>=Blob.length())||(Blob.charAt(start)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";

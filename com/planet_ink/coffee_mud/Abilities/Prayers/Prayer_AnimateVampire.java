@@ -142,7 +142,8 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				Ability A=CMClass.getAbility("Immunities");
-				if(A!=null){
+				if(A!=null)
+				{
 					A.setMiscText("all");
 					newMOB.addNonUninvokableEffect(A);
 				}

@@ -45,7 +45,8 @@ public class Alias extends StdCommand
 		if((pStats==null)||(session==null))
 			return false;
 		final InputCallback IC[]=new InputCallback[1];
-		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0){
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
+		{
 			@Override public void showPrompt() { 
 				StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
 				String[] aliasNames=pStats.getAliasNames();
@@ -66,7 +67,8 @@ public class Alias extends StdCommand
 				if(num<=(pStats.getAliasNames().length))
 				{
 					final String selection=pStats.getAliasNames()[num-1];
-					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0){
+					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0)
+					{
 						@Override public void showPrompt() { session.promptPrint("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
 						@Override public void timedOut() { }
 						@Override public void callBack() 
@@ -90,7 +92,8 @@ public class Alias extends StdCommand
 				}
 				else
 				{
-					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+					{
 						@Override public void showPrompt() { session.promptPrint("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
 						@Override public void timedOut() { }
 						@Override public void callBack() 
@@ -133,7 +136,8 @@ public class Alias extends StdCommand
 
 	public void modifyAlias(final MOB mob, final Session session, final PlayerStats pStats, final String aliasName, final InputCallback[] IC)
 	{
-		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+		{
 			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.promptPrint(": "); }
 			@Override public void timedOut() { }
 			@Override public void callBack() 

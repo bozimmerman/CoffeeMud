@@ -31,7 +31,8 @@ limitations under the License.
 */
 public class HerbChest extends BagOfHolding {
 	public String ID(){	return "HerbChest";}
-	public HerbChest() {
+	public HerbChest()
+	{
 		super();
 		setName("a small chest");
 		setDisplayText("a small chest with many tiny drawers stands here.");
@@ -42,7 +43,8 @@ public class HerbChest extends BagOfHolding {
 		baseGoldValue=0;
 		material=RawMaterial.RESOURCE_REDWOOD;
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
-		if(A!=null) {
+		if(A!=null)
+		{
 			A.setMiscText("+SYSOP -MOB -anyclass +alchemist");
 			addNonUninvokableEffect(A);
 		}

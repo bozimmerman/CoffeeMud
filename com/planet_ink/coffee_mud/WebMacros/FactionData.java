@@ -640,7 +640,8 @@ public class FactionData extends StdWebMacro
 							str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete This Row");
 							String name=getAbleBehavCmdName(val,false);
-							if(name!=null) {
+							if(name!=null)
+							{
 								str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 								str.append("</SELECT>");
 								str.append("</TD><TD VALIGN=TOP>");

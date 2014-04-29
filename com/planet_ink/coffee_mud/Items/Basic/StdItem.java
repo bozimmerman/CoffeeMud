@@ -129,7 +129,8 @@ public class StdItem implements Item
 		return basePhyStats;
 	}
 
-	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
+	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
+	{
 		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
 	};
 	public void recoverPhyStats()
@@ -528,11 +529,13 @@ public class StdItem implements Item
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			{
 				B.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			{
 				S.tick(ticking,tickID);
 			} });
 			if((numBehaviors()==0)&&(numScripts()==0))
@@ -542,7 +545,8 @@ public class StdItem implements Item
 		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A){
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
 			} });
@@ -1197,13 +1201,16 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		{
 			B.executeMsg(me,msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		{
 			S.executeMsg(me,msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			A.executeMsg(me, msg);
 		}});
 
@@ -1532,7 +1539,8 @@ public class StdItem implements Item
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try{
+		try
+		{
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
@@ -1595,7 +1603,8 @@ public class StdItem implements Item
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try{
+		try
+		{
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
@@ -1609,7 +1618,8 @@ public class StdItem implements Item
 		final StringBuilder identity=new StringBuilder("");
 		if(numEffects()>0)
 			identity.append("\n\rHas the following magical properties: ");
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			if(A.accountForYourself().length()>0)
 				identity.append("\n\r"+A.accountForYourself());
 		}});
@@ -1619,7 +1629,8 @@ public class StdItem implements Item
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
 	protected static String[] CODES={"CLASS","USES","LEVEL","ABILITY","TEXT"};
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
@@ -1645,7 +1656,8 @@ public class StdItem implements Item
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

@@ -65,7 +65,8 @@ public class StdTub extends StdRideable implements Drink
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
-	public int liquidType(){
+	public int liquidType()
+	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;

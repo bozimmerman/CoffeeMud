@@ -346,10 +346,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				final Ability me=this;
 				final Physical target=givenTarget;
-				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+				{
 					@Override public void showPrompt() {session.promptPrint("What is this a statue of?\n\r: ");}
 					@Override public void timedOut() {}
-					@Override public void callBack() {
+					@Override public void callBack()
+					{
 						String of=this.input;
 						if((of.trim().length()==0)||(of.indexOf('<')>=0))
 							return;

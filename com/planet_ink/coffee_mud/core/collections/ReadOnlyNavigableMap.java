@@ -30,165 +30,201 @@ public class ReadOnlyNavigableMap<K,V> implements NavigableMap<K,V>
 		map=s;
 	}
 	@Override
-	public Comparator<? super K> comparator() {
+	public Comparator<? super K> comparator()
+	{
 		return map.comparator();
 	}
 
 	@Override
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
+	public Set<java.util.Map.Entry<K, V>> entrySet()
+	{
 		return new ReadOnlySet<java.util.Map.Entry<K, V>>(map.entrySet());
 	}
 
 	@Override
-	public K firstKey() {
+	public K firstKey()
+	{
 		return map.firstKey();
 	}
 
 	@Override
-	public SortedMap<K, V> headMap(K toKey) {
+	public SortedMap<K, V> headMap(K toKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.headMap(toKey));
 	}
 
 	@Override
-	public Set<K> keySet() {
+	public Set<K> keySet()
+	{
 		return new ReadOnlySet<K>(map.keySet());
 	}
 
 	@Override
-	public K lastKey() {
+	public K lastKey()
+	{
 		return map.lastKey();
 	}
 
 	@Override
-	public SortedMap<K, V> subMap(K fromKey, K toKey) {
+	public SortedMap<K, V> subMap(K fromKey, K toKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public SortedMap<K, V> tailMap(K fromKey) {
+	public SortedMap<K, V> tailMap(K fromKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.tailMap(fromKey));
 	}
 
 	@Override
-	public Collection<V> values() {
+	public Collection<V> values()
+	{
 		return new ReadOnlyCollection<V>(map.values());
 	}
 
 	@Override
-	public void clear() {
+	public void clear()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean containsKey(Object key) {
+	public boolean containsKey(Object key)
+	{
 		return map.containsKey(key);
 	}
 
 	@Override
-	public boolean containsValue(Object value) {
+	public boolean containsValue(Object value)
+	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public V get(Object key) {
+	public V get(Object key)
+	{
 		return map.get(key);
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isEmpty()
+	{
 		return map.isEmpty();
 	}
 
 	@Override
-	public V put(K key, V value) {
+	public V put(K key, V value)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
+	public void putAll(Map<? extends K, ? extends V> m)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public V remove(Object key) {
+	public V remove(Object key)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public int size() {
+	public int size()
+	{
 		return map.size();
 	}
 	@Override
-	public java.util.Map.Entry<K, V> ceilingEntry(K key) {
+	public java.util.Map.Entry<K, V> ceilingEntry(K key)
+	{
 		return map.ceilingEntry(key);
 	}
 	@Override
-	public K ceilingKey(K key) {
+	public K ceilingKey(K key)
+	{
 		return map.ceilingKey(key);
 	}
 	@Override
-	public NavigableSet<K> descendingKeySet() {
+	public NavigableSet<K> descendingKeySet()
+	{
 		return new ReadOnlyNavigableSet<K>(map.descendingKeySet());
 	}
 	@Override
-	public NavigableMap<K, V> descendingMap() {
+	public NavigableMap<K, V> descendingMap()
+	{
 		return new ReadOnlyNavigableMap<K,V>(map.descendingMap());
 	}
 	@Override
-	public java.util.Map.Entry<K, V> firstEntry() {
+	public java.util.Map.Entry<K, V> firstEntry()
+	{
 		return map.firstEntry();
 	}
 	@Override
-	public java.util.Map.Entry<K, V> floorEntry(K key) {
+	public java.util.Map.Entry<K, V> floorEntry(K key)
+	{
 		return map.floorEntry(key);
 	}
 	@Override
-	public K floorKey(K key) {
+	public K floorKey(K key)
+	{
 		return map.floorKey(key);
 	}
 	@Override
-	public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
+	public NavigableMap<K, V> headMap(K toKey, boolean inclusive)
+	{
 		return new ReadOnlyNavigableMap<K, V>(map.headMap(toKey, inclusive));
 	}
 	@Override
-	public java.util.Map.Entry<K, V> higherEntry(K key) {
+	public java.util.Map.Entry<K, V> higherEntry(K key)
+	{
 		return map.higherEntry(key);
 	}
 	@Override
-	public K higherKey(K key) {
+	public K higherKey(K key)
+	{
 		return map.higherKey(key);
 	}
 	@Override
-	public java.util.Map.Entry<K, V> lastEntry() {
+	public java.util.Map.Entry<K, V> lastEntry()
+	{
 		return map.lastEntry();
 	}
 	@Override
-	public java.util.Map.Entry<K, V> lowerEntry(K key) {
+	public java.util.Map.Entry<K, V> lowerEntry(K key)
+	{
 		return map.lowerEntry(key);
 	}
 	@Override
-	public K lowerKey(K key) {
+	public K lowerKey(K key)
+	{
 		return map.lowerKey(key);
 	}
 	@Override
-	public NavigableSet<K> navigableKeySet() {
+	public NavigableSet<K> navigableKeySet()
+	{
 		return new ReadOnlyNavigableSet<K>(map.navigableKeySet());
 	}
 	@Override
-	public java.util.Map.Entry<K, V> pollFirstEntry() {
+	public java.util.Map.Entry<K, V> pollFirstEntry()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public java.util.Map.Entry<K, V> pollLastEntry() {
+	public java.util.Map.Entry<K, V> pollLastEntry()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
 	public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey,
-			boolean toInclusive) {
+			boolean toInclusive)
+			{
 		return new ReadOnlyNavigableMap<K,V>(map.subMap(fromKey, fromInclusive, toKey, toInclusive));
 	}
 	@Override
-	public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
+	public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive)
+	{
 		return new ReadOnlyNavigableMap<K,V>(map.tailMap(fromKey, inclusive));
 	}
 

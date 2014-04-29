@@ -42,7 +42,8 @@ public class Polls extends StdLibrary implements PollManager
 	public String ID(){return "Polls";}
 	public SVector<Poll> pollCache=null;
 	
-	public boolean shutdown(){
+	public boolean shutdown()
+	{
 		pollCache=null;
 		return true;
 	}

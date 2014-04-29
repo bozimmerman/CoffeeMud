@@ -182,7 +182,8 @@ public class Spell_Wish extends Spell
 				i++;
 			}
 			i=0;
-			while(i<redundantEnds.length){
+			while(i<redundantEnds.length)
+			{
 				if(objectWish.endsWith(" "+redundantEnds[i]+" "))
 				{	objectWish=objectWish.substring(0,objectWish.length()-(1+redundantEnds[i].length())); i=-1;}i++;}
 			String goldWish=objectWish.toUpperCase();

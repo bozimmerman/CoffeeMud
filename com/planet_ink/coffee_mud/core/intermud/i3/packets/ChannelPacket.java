@@ -48,7 +48,8 @@ public class ChannelPacket extends Packet  {
 	}
 	public ChannelPacket(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			String str = (String)v.elementAt(0);
 
 			channel = (String)v.elementAt(6);
@@ -77,13 +78,15 @@ public class ChannelPacket extends Packet  {
 				message = (String)v.elementAt(8);
 			}
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	
-	public ChannelPacket(int t, String chan, String who, String vis, String msg) {
+	public ChannelPacket(int t, String chan, String who, String vis, String msg)
+	{
 		super();
 		type = t;
 		channel = chan;
@@ -93,7 +96,8 @@ public class ChannelPacket extends Packet  {
 	}
 
 	public void send() throws InvalidPacketException {
-		if( channel == null || sender_visible_name == null ) {
+		if( channel == null || sender_visible_name == null )
+		{
 			throw new InvalidPacketException();
 		}
 		channel = Intermud.getRemoteChannel(channel);
@@ -101,7 +105,8 @@ public class ChannelPacket extends Packet  {
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str=null;
 		if(type==CHAN_TARGET)
 			 str="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +

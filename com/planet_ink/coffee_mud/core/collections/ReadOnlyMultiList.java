@@ -59,7 +59,8 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-    public boolean contains(Object o) {
+    public boolean contains(Object o)
+    {
 		for(List<K> l : lists)
 			if(l.contains(o))
 				return true;
@@ -70,7 +71,8 @@ public class ReadOnlyMultiList<K> implements List<K>
     public Iterator<K> iterator() { return new ReadOnlyIterator<K>(new MultiIterator<K>(lists));}
 
 	@Override
-    public Object[] toArray() {
+    public Object[] toArray()
+    {
 		if(lists.size()>0)
 		{
 			Iterator<List<K>> iter=lists.iterator();
@@ -91,7 +93,8 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-    public <T> T[] toArray(T[] a) {
+    public <T> T[] toArray(T[] a)
+    {
 		if(lists.size()>0)
 		{
 			Iterator<List<K>> iter=lists.iterator();
@@ -117,7 +120,8 @@ public class ReadOnlyMultiList<K> implements List<K>
     public boolean remove(Object o) {throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(Collection<?> c)
+    {
 		for(List<K> l : lists)
 			if(l.containsAll(c))
 				return true;
@@ -137,12 +141,14 @@ public class ReadOnlyMultiList<K> implements List<K>
     public boolean retainAll(Collection<?> c) {throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
-    public void clear() {
+    public void clear()
+    {
 		lists.clear();
     }
 
 	@Override
-    public K get(int index) {
+    public K get(int index)
+    {
 		for(List<K> l : lists)
 		{
 			if(index<l.size())
@@ -162,7 +168,8 @@ public class ReadOnlyMultiList<K> implements List<K>
     public K remove(int index) { throw new java.lang.UnsupportedOperationException(); }
 
 	@Override
-    public int indexOf(Object o) {
+    public int indexOf(Object o)
+    {
 		int ct=0;
 		for(List<K> l : lists)
 		{
@@ -174,7 +181,8 @@ public class ReadOnlyMultiList<K> implements List<K>
     }
 
 	@Override
-    public int lastIndexOf(Object o) {
+    public int lastIndexOf(Object o)
+    {
 		int ct=size();
 		for(int i=lists.size()-1;i>=0;i--)
 		{

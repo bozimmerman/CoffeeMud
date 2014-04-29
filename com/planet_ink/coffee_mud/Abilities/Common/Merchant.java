@@ -86,7 +86,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	private long whatIsSoldMask=ShopKeeper.DEAL_ANYTHING;
-	public boolean isSold(int mask){
+	public boolean isSold(int mask)
+	{
 		if(mask==0) return whatIsSoldMask==0;
 		if((whatIsSoldMask&255)==mask)
 			return true;
@@ -137,39 +138,46 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			factors=new String[0];
 		pricingAdjustments=factors;
 	}
-	protected Area getStartArea(){
+	protected Area getStartArea()
+	{
 		Area A=CMLib.map().getStartArea(affected);
 		if(A==null) CMLib.map().areaLocation(affected);
 		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
-	public int finalInvResetRate(){
+	public int finalInvResetRate()
+	{
 		if((invResetRate()!=0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
-	public String finalPrejudiceFactors(){
+	public String finalPrejudiceFactors()
+	{
 		if((prejudiceFactors().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
-	public String finalIgnoreMask(){
+	public String finalIgnoreMask()
+	{
 		if((ignoreMask().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
-	public String[] finalItemPricingAdjustments(){
+	public String[] finalItemPricingAdjustments()
+	{
 		if(((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
 		||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
 	}
-	public String finalBudget(){
+	public String finalBudget()
+	{
 		if((budget().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return budget();
 		return getStartArea().finalBudget();
 	}
-	public String finalDevalueRate(){
+	public String finalDevalueRate()
+	{
 		if((devalueRate().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
 			return devalueRate();
 		return getStartArea().finalDevalueRate();

@@ -60,7 +60,8 @@ public class GenFatWallpaper extends GenWallpaper
 		super.executeMsg(myHost,msg);
 	}
 	private static final String[] CODES={"DISPLAY"};
-	public String[] getStatCodes(){
+	public String[] getStatCodes()
+	{
 		String[] THINCODES=super.getStatCodes();
 		String[] codes=new String[THINCODES.length+1];
 		for(int c=0;c<THINCODES.length;c++)
@@ -68,12 +69,14 @@ public class GenFatWallpaper extends GenWallpaper
 		codes[THINCODES.length]="DISPLAY";
 		return codes;
 	}
-	protected int getMyCodeNum(String code){
+	protected int getMyCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		if(getMyCodeNum(code)<0) return super.getStat(code);
 		switch(getMyCodeNum(code))
 		{

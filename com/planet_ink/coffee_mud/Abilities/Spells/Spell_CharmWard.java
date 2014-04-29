@@ -133,7 +133,8 @@ public class Spell_CharmWard extends Spell
 		}
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
-		if(target==null) {
+		if(target==null)
+		{
 			if(mob.isMonster())
 				target=mob.location();
 			else

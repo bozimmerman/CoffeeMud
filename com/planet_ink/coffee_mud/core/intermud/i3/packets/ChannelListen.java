@@ -45,18 +45,21 @@ public class ChannelListen extends Packet  {
 	}
 	public ChannelListen(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_LISTEN;
 			channel = (String)v.elementAt(6);
 			onoff = (String)v.elementAt(7);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	
-	public ChannelListen(int t, String chan, String setonoff) {
+	public ChannelListen(int t, String chan, String setonoff)
+	{
 		super();
 		type = t;
 		channel = chan;
@@ -64,13 +67,15 @@ public class ChannelListen extends Packet  {
 	}
 
 	public void send() throws InvalidPacketException {
-		if( channel == null  ) {
+		if( channel == null  )
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-listen\",5,\"" + I3Server.getMudName() + "\",0,\""+n.name+"\",0,\"" + channel + "\"," +

@@ -81,7 +81,8 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Ability A=CMClass.getAbility("Immunities");
-		if(A!=null){
+		if(A!=null)
+		{
 			A.setMiscText("all");
 			newMOB.addNonUninvokableEffect(A);
 		}

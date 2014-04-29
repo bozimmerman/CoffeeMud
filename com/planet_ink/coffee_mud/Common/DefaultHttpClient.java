@@ -437,7 +437,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout)
 	{
 		HttpClient h=null;
-		try {
+		try
+		{
 			h=this.readTimeout(readTimeout).connectTimeout(readTimeout).method(Method.GET);
 			if((cookieStr!=null)&&(cookieStr.length()>0))
 				h=h.header("Cookie", cookieStr);
@@ -450,7 +451,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				{
 					byte[] buffer = new byte[1024];
 					ByteArrayOutputStream bout=new ByteArrayOutputStream();
-					while ((len = in.read(buffer)) != -1) {
+					while ((len = in.read(buffer)) != -1)
+					{
 					    bout.write(buffer, 0, len);
 					}
 					return bout.toByteArray();
@@ -465,7 +467,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				{
 					byte[] buffer = new byte[1024];
 					ByteArrayOutputStream bout=new ByteArrayOutputStream();
-					while ((len = in.read(buffer)) != -1) {
+					while ((len = in.read(buffer)) != -1)
+					{
 						bout.write(buffer, 0, len);
 					}
 					return bout.toByteArray();
@@ -480,7 +483,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				Log.errOut("HttpClient: "+e.getMessage()+"("+urlStr+")");
 			return null;
 		}
-		finally {
+		finally
+		{
 			if(h!=null)
 				h.finished();
 		}
@@ -525,7 +529,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				Log.errOut("HttpClient: "+e.getMessage()+"("+urlStr+")");
 			return null;
 		}
-		finally {
+		finally
+		{
 			if(h!=null)
 				h.finished();
 		}

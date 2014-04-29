@@ -301,7 +301,8 @@ public class RoomLoader
 	{
 		STreeMap<String, Room> roomSet = new STreeMap<String, Room>(new Comparator<String>()
 		{
-			public int compare(String o1, String o2) {
+			public int compare(String o1, String o2)
+			{
 				if(o1==o2) return 0;
 				if(o1==null) return -1;
 				if(o2==null) return 1;
@@ -770,7 +771,8 @@ public class RoomLoader
 						else
 							itemLocs.put(newItem,loc);
 					}
-					try {
+					try
+					{
 						if(catalog)
 						{
 							String text=DBConnections.getResQuietly(R,"CMITTX");
@@ -858,7 +860,8 @@ public class RoomLoader
 						newMOB.setStartRoom(thisRoom);
 						newMOB.setLocation(thisRoom);
 					}
-					try {
+					try
+					{
 						if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
 						&&(!catalog)
 						&&(NUMID.indexOf(MOBID+"@")>=0))
@@ -1342,7 +1345,8 @@ public class RoomLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Creating area "+A.name());
-		if((A==null)||(A.name().length()==0)) {
+		if((A==null)||(A.name().length()==0))
+		{
 			Log.errOut("RoomLoader","Unable to create area "+((A!=null)?A.name():"null"));
 			return;
 		}

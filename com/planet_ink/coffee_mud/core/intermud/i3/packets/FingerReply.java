@@ -60,9 +60,11 @@ public class FingerReply extends Packet {
 	public FingerReply(Vector v) throws InvalidPacketException 
 	{
 		super(v);
-		try {
+		try
+		{
 			type = Packet.FINGER_REPLY;
-			try{
+			try
+			{
 			visible_name = v.elementAt(6).toString();
 			title = v.elementAt(7).toString();
 			real_name = v.elementAt(8).toString();
@@ -73,7 +75,8 @@ public class FingerReply extends Packet {
 			extra = v.elementAt(13).toString();
 			}catch(Exception e){ }
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
@@ -82,12 +85,14 @@ public class FingerReply extends Packet {
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
 		String[] responses={ visible_name, title, real_name, e_mail,
 							loginout_time, idle_time, ip_time, extra };
-		for(String nom : responses) {
+		for(String nom : responses)
+		{
 			if(nom.length()==0)
 				str += "0,";
 			else

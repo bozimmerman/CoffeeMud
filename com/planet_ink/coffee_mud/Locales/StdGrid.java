@@ -65,7 +65,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 	}
 	public String getGridChildLocaleID(){return "StdRoom";}
-	public Room getGridChild(XYVector xy) {
+	public Room getGridChild(XYVector xy)
+	{
 		if(xy==null) return null;
 		return this.getGridChild(xy.x,xy.y);
 	}
@@ -290,7 +291,8 @@ public class StdGrid extends StdRoom implements GridLocale
 					}
 				}
 				public boolean hasNext() { setRoom(); return R!=null;}
-				public Room next() {
+				public Room next()
+				{
 					setRoom();
 					Room r = R;
 					y++;
@@ -327,7 +329,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		for(int d=0;d<gridexits.size();d++)
 		{
 			WorldMap.CrossExit EX=gridexits.elementAt(d);
-			try{
+			try
+			{
 				if((EX.out)&&(EX.dir==dir)
 				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
 				&&(subMap[EX.x][EX.y]==room))
@@ -467,7 +470,8 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(((xy[0]-xadjust)>=0)&&((xy[1]-yadjust)>=0))
 			{
 				moveAndCheckAgain=true;
-				try{
+				try
+				{
 					if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
 						return subMap[xy[0]-xadjust][xy[1]-yadjust];
 				}catch(Exception e){}
@@ -476,7 +480,8 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(((xy[0]+xadjust)<xGridSize())&&((xy[1]+yadjust)<yGridSize()))
 			{
 				moveAndCheckAgain=true;
-				try{
+				try
+				{
 					if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
 						return subMap[xy[0]+xadjust][xy[1]+yadjust];
 				}catch(Exception e){}
@@ -575,7 +580,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		for(int d=0;d<gridexits.size();d++)
 		{
 			WorldMap.CrossExit EX=gridexits.elementAt(d);
-			try{
+			try
+			{
 				if(EX.out)
 				switch(EX.dir)
 				{
@@ -882,7 +888,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		default: super.setStat(code, val); break;
 		}
 	}
-	protected int getStdGridCodeNum(String code){
+	protected int getStdGridCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

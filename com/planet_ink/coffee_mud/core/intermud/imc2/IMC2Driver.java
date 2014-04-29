@@ -172,11 +172,13 @@ public final class IMC2Driver extends Thread {
 	public void shutdown()
 	{
 		shutdown=true;
-		try{
+		try
+		{
 		if(c_thread!=null)
 			c_thread.shutdown();
 		}catch(Exception e){}
-		try{
+		try
+		{
 		if(c_thread2!=null)
 			c_thread2.shutdown();
 		}catch(Exception e){}
@@ -222,26 +224,31 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* connect to hub */
-	final boolean imc_connect_to() {
+	final boolean imc_connect_to()
+	{
 		String buf;
 
-		if (imc_active == IA_NONE) {
+		if (imc_active == IA_NONE)
+		{
 			tracef(0, "IMC is not active");
 			return false;
 		}
 
 		tracef(8, "Connecting to " + this_imcmud.hubname);
 
-		try {
+		try
+		{
 			setName("IMC2Client:"+this_imcmud.host+"@"+this_imcmud.port);
 			sa = new Socket(this_imcmud.host, this_imcmud.port);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			tracef(0, "Error connecting to " + this_imcmud.host + ":" +
 						  this_imcmud.port);
 			return false;
 
 		}
-		if (sa == null) {
+		if (sa == null)
+		{
 			tracef(0, "Error connecting to " + this_imcmud.host + ":" +
 						  this_imcmud.port);
 			return false;
@@ -271,8 +278,10 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* start up IMC */
-	final boolean imc_startup_network() {
-		if (imc_active != IA_CONFIG2) {
+	final boolean imc_startup_network()
+	{
+		if (imc_active != IA_CONFIG2)
+		{
 			tracef(0, "imc_startup_network: called with imc_active == "+
 						  imc_active);
 			return false;
@@ -440,7 +449,8 @@ public final class IMC2Driver extends Thread {
 
 		buf = "";
 
-		for (i = 0; i < PACKET.IMC_MAX_KEYS; i++) {
+		for (i = 0; i < PACKET.IMC_MAX_KEYS; i++)
+		{
 			if (!data.key[i].equals("") )
 			{
 
@@ -532,7 +542,8 @@ public final class IMC2Driver extends Thread {
 
 		String keys = argument.substring(pos+5, argument.length());
 
-		try {
+		try
+		{
 
 		while((keys.length() > 0) && !keys.equals(" "))
 		{
@@ -573,16 +584,19 @@ public final class IMC2Driver extends Thread {
 				}
 				else
 				{
-					if(!keys.equals(" ")) {
+					if(!keys.equals(" "))
+					{
 						int npos = keys.indexOf(' ');
-						if (npos > -1) {
+						if (npos > -1)
+						{
 							val = keys.substring(0, npos);
 							if(npos+2 > keys.length())
 								keys = "";
 							else
 								keys = keys.substring(npos + 1, keys.length());
 						}
-						else {
+						else
+						{
 							val = keys;
 							keys = "";
 						}
@@ -596,10 +610,12 @@ public final class IMC2Driver extends Thread {
 			imc_addkey(out, key, val);
 		}
 
-		} catch (StringIndexOutOfBoundsException x) {
+		} catch (StringIndexOutOfBoundsException x)
+		{
 			Log.errOut("IMC2Driver", "Stringerror: "+keys);
 			Log.errOut("IMC2Driver", x);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			Log.errOut("IMC2Driver", e);
 		}
 
@@ -680,7 +696,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* add "key=value" to "p" */
-	final void imc_addkey(PACKET p, String key, String value) {
+	final void imc_addkey(PACKET p, String key, String value)
+	{
 
 		for(int i = 0; i < value.length(); i++)
 		{
@@ -693,8 +710,10 @@ public final class IMC2Driver extends Thread {
 			}
 		}
 
-		for (int i = 0; i < PACKET.IMC_MAX_KEYS; i++) {
-			if (!p.key[i].equals("") && (key.equalsIgnoreCase(p.key[i]))) {
+		for (int i = 0; i < PACKET.IMC_MAX_KEYS; i++)
+		{
+			if (!p.key[i].equals("") && (key.equalsIgnoreCase(p.key[i])))
+			{
 				p.key[i] = "";
 				p.value[i] = "";
 				break;
@@ -703,8 +722,10 @@ public final class IMC2Driver extends Thread {
 		if (value=="")
 			return;
 
-		for (int i = 0; i < PACKET.IMC_MAX_KEYS; i++) {
-			if (p.key[i] == "") {
+		for (int i = 0; i < PACKET.IMC_MAX_KEYS; i++)
+		{
+			if (p.key[i] == "")
+			{
 				p.key[i] = key;
 				if((value.indexOf(' ') > -1))
 					value = "\""+value+"\"";
@@ -715,27 +736,32 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* add "key=value" for an integer value */
-	final void imc_addkeyi(PACKET p, String key, int value) {
+	final void imc_addkeyi(PACKET p, String key, int value)
+	{
 		String temp;
 		temp = String.valueOf(value);
 		imc_addkey(p, key, temp);
 	}
 
 	/* clear all keys in "p" */
-	final void imc_initdata(PACKET p) {
+	final void imc_initdata(PACKET p)
+	{
 		int i;
 
-		for (i = 0; i < PACKET.IMC_MAX_KEYS; i++) {
+		for (i = 0; i < PACKET.IMC_MAX_KEYS; i++)
+		{
 			p.key[i] = "";
 			p.value[i] = "";
 		}
 	}
 
 	/* convert back from 'd' to 'p' */
-	final void setdata(PACKET p, imc_char_data d) {
+	final void setdata(PACKET p, imc_char_data d)
+	{
 		imc_initdata(p);
 
-		if (d == null) {
+		if (d == null)
+		{
 			p.from = "*";
 			imc_addkeyi(p, "level", -1);
 			return;
@@ -749,7 +775,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* send a who-request to a remote mud */
-	final void imc_send_who(imc_char_data from, String to, String type) {
+	final void imc_send_who(imc_char_data from, String to, String type)
+	{
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -793,7 +820,8 @@ public final class IMC2Driver extends Thread {
 
 	final void imc_send( PACKET p)
 	{
-		if (imc_active < IA_UP) {
+		if (imc_active < IA_UP)
+		{
 			tracef(0, "imc_send when not active!");
 			return;
 		}
@@ -824,7 +852,8 @@ public final class IMC2Driver extends Thread {
 
 
 
-	final void imc_loop() {
+	final void imc_loop()
+	{
 		return;
 	}
 
@@ -834,7 +863,8 @@ public final class IMC2Driver extends Thread {
 	//
 	static LinkedList call_outs = new LinkedList();
 
-	public void imc_register_call_out(int hbeat, String function_name, Object param) {
+	public void imc_register_call_out(int hbeat, String function_name, Object param)
+	{
 		Vector call_out = new Vector();
 		call_out.add(function_name);
 		call_out.add(Long.valueOf(HeartBeat + hbeat));
@@ -843,29 +873,38 @@ public final class IMC2Driver extends Thread {
 		call_outs.add(call_out);
 	}
 
-	public void imc_process_call_outs() {
-		if (call_outs.size() < 1) {
+	public void imc_process_call_outs()
+	{
+		if (call_outs.size() < 1)
+		{
 			return;
 		}
 
-		for (int i = 0; i < call_outs.size(); i++) {
+		for (int i = 0; i < call_outs.size(); i++)
+		{
 			Vector call_out = (Vector) call_outs.get(i);
 			String fun = (String) call_out.elementAt(0);
 			long hbeat = ( (Long) call_out.elementAt(1)).longValue();
 			Object param = call_out.elementAt(2);
 
-			if (hbeat == HeartBeat) {
+			if (hbeat == HeartBeat)
+			{
 				Object o = this;
 				Class<?> cl = o.getClass();
 				java.lang.reflect.Method funcs[] = cl.getMethods();
-				if (funcs.length > 1) {
-					for (int k = 0; k < funcs.length; k++) {
+				if (funcs.length > 1)
+				{
+					for (int k = 0; k < funcs.length; k++)
+					{
 						String m_name = funcs[k].getName();
-						if (m_name.equals(fun)) {
-							try {
+						if (m_name.equals(fun))
+						{
+							try
+							{
 								funcs[k].invoke(o, new Object[] {param});
 							}
-							catch (Exception e) {
+							catch (Exception e)
+							{
 								tracef(0,
 									   "imc: call_out failed with error: "
 									   + e.toString());
@@ -1051,7 +1090,8 @@ public final class IMC2Driver extends Thread {
 	final void imc_recv_chat(imc_char_data d, String from, String channel, String text, int emote)
 	{
 		StringTokenizer st = new StringTokenizer(channel, ":");
-		if (st.countTokens() > 1) {
+		if (st.countTokens() > 1)
+		{
 			channel = st.nextToken();
 			channel = st.nextToken();
 		}
@@ -1274,11 +1314,13 @@ public final class IMC2Driver extends Thread {
 		return channels;
 	}
 
-	final public Hashtable query_muds() {
+	final public Hashtable query_muds()
+	{
 		return muds;
 	}
 
-	final public void exec_commands(PACKET p) {
+	final public void exec_commands(PACKET p)
+	{
 		if (p == null)
 			return;
 		imc_char_data d = new imc_char_data();
@@ -1298,60 +1340,71 @@ public final class IMC2Driver extends Thread {
 		d.name = imc_playerof(d.name);
 		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toStringList(p.value));
 
-		if (p.type.equals("who")) {
+		if (p.type.equals("who"))
+		{
 			tracef(8, "Who request received from " + p.i.from);
 			imc_recv_who(d, p.i.from, imc_getkey(p, "type", "who"));
 		}
 
-		if (p.type.equals("whois")) {
+		if (p.type.equals("whois"))
+		{
 			tracef(8, "Whois request received from " + p.i.from);
 			imc_recv_whois(d, p.i.from, imc_getkeyi(p, "level", 0));
 		}
 
-		if (p.type.equals("ping")) {
+		if (p.type.equals("ping"))
+		{
 			tracef(8, "Ping reply received from " + p.i.from);
 			imc_recv_ping(d, p.i.path, p.i.from);
 		}
 
-		if (p.type.equals("tell")) {
+		if (p.type.equals("tell"))
+		{
 			tracef(8, "Tell received from " + p.i.from);
 			imc_recv_tell(d, p.i.from, imc_getkey(p, "text", ""));
 		}
 
-		if (p.type.equals("keepalive-request")) {
+		if (p.type.equals("keepalive-request"))
+		{
 			tracef(8, "Keepalive request received from " + p.i.from);
 			imc_send_isalive(p.i.from);
 		}
 
-		if (p.type.equals("who-reply")) {
+		if (p.type.equals("who-reply"))
+		{
 			tracef(8, "Who reply received from " + p.i.from);
 			imc_recv_who_reply(d, imc_getkey(p, "text", ""));
 		}
 
-		if (p.type.equals("whois-reply")) {
+		if (p.type.equals("whois-reply"))
+		{
 			tracef(8, "Who-Is reply received from " + p.i.from);
 			imc_recv_whois_reply(d, p.i.from, imc_getkey(p, "text", ""));
 		}
 		
-		if (p.type.equals("ping-reply")) {
+		if (p.type.equals("ping-reply"))
+		{
 			tracef(8, "Ping-reply reply received from " + p.i.from);
 			imc_recv_ping_reply(d, p.i.from, imc_getkey(p, "path", ""));
 		}
 
-		if (p.type.equals("is-alive")) {
+		if (p.type.equals("is-alive"))
+		{
 			tracef(8, "is-alive received from " + p.i.from);
 			imc_recv_is_alive(d, p.i.from, p.i.path,
 							  imc_getkey(p, "versionid", "Unknown"),
 							  imc_getkey(p, "networkname", "None"));
 		}
 
-		if (p.type.equals("ice-msg-b")) {
+		if (p.type.equals("ice-msg-b"))
+		{
 			tracef(8, "Chat received from " + p.i.from);
 			imc_recv_chat(d, p.i.from, imc_getkey(p, "channel", "ICHAT"),
 						  imc_getkey(p, "text", ""),CMath.s_int(imc_getkey(p,"emote","0")));
 		}
 
-		if (p.type.equals("ice-update")) {
+		if (p.type.equals("ice-update"))
+		{
 			tracef(8, "Ice update reply from " + p.i.from);
 			imc_recv_update(p.from, imc_getkey(p, "channel", ""),
 							imc_getkey(p, "owner", ""),
@@ -1363,9 +1416,11 @@ public final class IMC2Driver extends Thread {
 		}
 	}
 
-	final boolean check_password(String s) {
+	final boolean check_password(String s)
+	{
 		StringTokenizer st = new StringTokenizer(s, " ");
-		if (st.countTokens() < 3) {
+		if (st.countTokens() < 3)
+		{
 			tracef(0, "Password not found in Hub reply.");
 			return false;
 		}
@@ -1383,8 +1438,10 @@ public final class IMC2Driver extends Thread {
 		return false;
 	}
 
-	final public void imc_read_from_socket(BufferedReader in) {
-		try {
+	final public void imc_read_from_socket(BufferedReader in)
+	{
+		try
+		{
 			if ((in!=null)&&(in.ready()))
 			{
 				String s = in.readLine();
@@ -1395,7 +1452,8 @@ public final class IMC2Driver extends Thread {
 					tracef(8, "imc: received '" + s + "'");
 					if (s.startsWith("PW "))
 						check_password(s);
-					else {
+					else
+					{
 						PACKET p = interpret2(s);
 						if(p!=null) exec_commands(p);
 					}
@@ -1434,8 +1492,10 @@ public final class IMC2Driver extends Thread {
 		}
 	}
 
-	final public void imc_write_to_socket(DataOutputStream out) {
-		try {
+	final public void imc_write_to_socket(DataOutputStream out)
+	{
+		try
+		{
 			if (this_imcmud.outbuf.equals(""))
 				return;
 
@@ -1443,11 +1503,13 @@ public final class IMC2Driver extends Thread {
 			out.write(this_imcmud.outbuf.getBytes());
 			this_imcmud.outbuf = "";
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			tracef(1, "write socket error: " + e.toString());
 			imc_active = IA_NONE;
 			tracef(1, "Waiting "+(reconnectBackoffTime/1000)+" seconds and try to reconnect.");
-			try {
+			try
+			{
 				sleep(reconnectBackoffTime);
 				reconnectBackoffTime=reconnectBackoffTime*2;
 			}
@@ -1466,7 +1528,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* send a keepalive to everyone */
-	final public void imc_send_isalive(String reqFrom) {
+	final public void imc_send_isalive(String reqFrom)
+	{
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -1489,7 +1552,8 @@ public final class IMC2Driver extends Thread {
 
 	
 	/* send a keepalive to everyone */
-	final public void imc_request_keepalive() {
+	final public void imc_request_keepalive()
+	{
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -1514,7 +1578,8 @@ public final class IMC2Driver extends Thread {
 		int seq = 0;
 		long lastPingReceived=System.currentTimeMillis();
 
-		public call_out(IMC2Driver _imc_client) {
+		public call_out(IMC2Driver _imc_client)
+		{
 			super("IMC2-call_out");
 			setName("IMC2-call_out");
 			imc_client = _imc_client;
@@ -1548,10 +1613,12 @@ public final class IMC2Driver extends Thread {
 //  			tracef(1, "call_out: process call outs");
 				imc_client.imc_process_call_outs();
 				imc_client.imc_write_to_socket(out);
-				try {
+				try
+				{
 					sleep(100);
 					seq++;
-					if (seq % 10 == 0) {
+					if (seq % 10 == 0)
+					{
 						imc_client.imc_sequencenumber++;
 						seq = 0;
 					}
@@ -1569,7 +1636,8 @@ public final class IMC2Driver extends Thread {
 		boolean shutdown=false;
 		public boolean isShutdown=false;
 
-		public call_in(IMC2Driver _imc_client) {
+		public call_in(IMC2Driver _imc_client)
+		{
 			super("IMC2-call_in");
 			setName("IMC2-call_in");
 			imc_client = _imc_client;
@@ -1593,7 +1661,8 @@ public final class IMC2Driver extends Thread {
 //	  			tracef(1, "call_out: process call outs");
 					imc_client.imc_read_from_socket(in);
 				}
-				try {
+				try
+				{
 					sleep(100);
 				}
 				catch (Exception e) {}
@@ -1620,7 +1689,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	final public void run_imcpinfo(String name, String mudname, String who, int level,
-							 int invis) {
+							 int invis)
+							 {
 		imc_char_data test = new imc_char_data();
 		test.name = name;
 		test.level = level;
@@ -1629,7 +1699,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	final public void run_imcminfo(String name, String mudname, String type,
-							 int level, int invis) {
+							 int level, int invis)
+							 {
 		imc_char_data test = new imc_char_data();
 		test.name = name;
 		test.level = level;
@@ -1647,7 +1718,8 @@ public final class IMC2Driver extends Thread {
 	}
 	
 	final public String imc_send_tell(String from, String to, String text, int level,
-								int invis) {
+								int invis)
+								{
 		imc_char_data chr = new imc_char_data();
 		chr.name = from;
 		chr.level = level;
@@ -1655,7 +1727,8 @@ public final class IMC2Driver extends Thread {
 		return imc_send_tell(chr, to, text, 1);
 	}
 
-	final public String imc_send_reply(String from, String text, int level, int invis) {
+	final public String imc_send_reply(String from, String text, int level, int invis)
+	{
 		imc_char_data chr = new imc_char_data();
 		chr.name = from;
 		chr.level = level;
@@ -1664,7 +1737,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	final public String imc_send_chat(String from, String to, String text, int level,
-								int emote) {
+								int emote)
+								{
 		imc_char_data chr = new imc_char_data();
 		chr.name = from;
 		chr.level = level;
@@ -1673,7 +1747,8 @@ public final class IMC2Driver extends Thread {
 
 	/* send a tell to a remote player */
 	final String imc_send_tell(imc_char_data from, String to, String argument,
-						 int isreply) {
+						 int isreply)
+						 {
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -1700,7 +1775,8 @@ public final class IMC2Driver extends Thread {
 	}
 
 	/* send a reply to a remote player */
-	final String imc_send_reply(imc_char_data from, String argument) {
+	final String imc_send_reply(imc_char_data from, String argument)
+	{
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -1728,7 +1804,8 @@ public final class IMC2Driver extends Thread {
 								String to, 
 								String argument,
 								int isreply, 
-								int emote) {
+								int emote)
+								{
 		PACKET out = new PACKET();
 
 		if (imc_active < IA_UP)
@@ -1774,7 +1851,8 @@ public final class IMC2Driver extends Thread {
 
 	}
 
-	final public void run() {
+	final public void run()
+	{
 		imc_read_from_socket(in);
 		HeartBeat = 0;
 
@@ -1791,9 +1869,11 @@ public final class IMC2Driver extends Thread {
 		Log.sysOut("IMC2","(c) 1996-2002/Java port by Istvan David");
 		Log.sysOut("IMC2","Client connected to "+this_imcmud.host.trim());
 
-		while (!shutdown) {
+		while (!shutdown)
+		{
 			HeartBeat++;
-			try {
+			try
+			{
 				sleep(2000);
 			}
 			catch (Exception e) {}

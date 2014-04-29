@@ -72,7 +72,8 @@ public class Trap_PoisonGas extends StdTrap
 		return null;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
@@ -85,7 +86,8 @@ public class Trap_PoisonGas extends StdTrap
 	{
 		if(P==null) return null;
 		Item I=getPoison(mob);
-		if(I!=null){
+		if(I!=null)
+		{
 			List<Ability> V=returnOffensiveAffects(I);
 			if(V.size()>0)
 				setMiscText(V.get(0).ID());

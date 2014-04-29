@@ -55,8 +55,10 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	public int numQuests(){return quests.size();}
-	public Quest fetchQuest(int i){
-		try{
+	public Quest fetchQuest(int i)
+	{
+		try
+		{
 			return quests.elementAt(i);
 		}catch(Exception e){}
 		return null;
@@ -529,7 +531,8 @@ public class Quests extends StdLibrary implements QuestManager
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
-		try{
+		try
+		{
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 			{
 				int showNumber=0;
@@ -1433,7 +1436,8 @@ public class Quests extends StdLibrary implements QuestManager
 		Vector<MOB> choices=new Vector<MOB>();
 		MOB baseM=((showValue!=null)?baseM=CMLib.coffeeMaker().getMobFromXML(showValue):null);
 		StringBuffer choiceDescs=new StringBuffer("");
-		if(baseM!=null){
+		if(baseM!=null)
+		{
 			choices.addElement(baseM);
 			choiceDescs.append(baseM.name()+", ");
 		}
@@ -1500,7 +1504,8 @@ public class Quests extends StdLibrary implements QuestManager
 		List<Item> choices=new Vector<Item>();
 		Item baseI=((showValue!=null)?baseI=CMLib.coffeeMaker().getItemFromXML(showValue):null);
 		StringBuffer choiceDescs=new StringBuffer("");
-		if(baseI!=null){
+		if(baseI!=null)
+		{
 			choices.add(baseI);
 			choiceDescs.append(baseI.name()+", ");
 		}

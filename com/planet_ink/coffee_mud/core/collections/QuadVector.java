@@ -20,16 +20,20 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Quad<T,K,L,M>>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
-	public Quad.FirstConverter<T,K,L,M> getFirstConverter() {
+	public Quad.FirstConverter<T,K,L,M> getFirstConverter()
+	{
 		return new Quad.FirstConverter<T, K, L,M>();
 	}
-	public Quad.SecondConverter<T,K,L,M> getSecondConverter() {
+	public Quad.SecondConverter<T,K,L,M> getSecondConverter()
+	{
 		return new Quad.SecondConverter<T, K, L,M>();
 	}
-	public Quad.ThirdConverter<T,K,L,M> getThirdConverter() {
+	public Quad.ThirdConverter<T,K,L,M> getThirdConverter()
+	{
 		return new Quad.ThirdConverter<T, K, L,M>();
 	}
-	public Quad.FourthConverter<T,K,L,M> getFourthConverter() {
+	public Quad.FourthConverter<T,K,L,M> getFourthConverter()
+	{
 		return new Quad.FourthConverter<T, K, L,M>();
 	}
 	
@@ -159,7 +163,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -168,7 +173,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -177,7 +183,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int indexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;
@@ -186,7 +193,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int indexOfFourth(M m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
 					return i;
@@ -195,7 +203,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -204,7 +213,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -213,7 +223,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int lastIndexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;
@@ -222,7 +233,8 @@ public class QuadVector<T,K,L,M> extends Vector<Quad<T,K,L,M>> implements List<Q
 	}
 	public int lastIndexOfFourth(M m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
 					return i;

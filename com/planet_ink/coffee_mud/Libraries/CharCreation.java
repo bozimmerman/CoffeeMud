@@ -355,7 +355,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			String s=extras.get(e);
 			int x=s.indexOf(':');
 			String code="END";
-			if(x>0) {
+			if(x>0)
+			{
 				code=s.substring(0,x).toUpperCase().trim();
 				boolean found=false;
 				for(int v=0;v<VALID_SCRIPT_CODES.length;v++)
@@ -552,7 +553,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	public void notifyFriends(MOB mob, String message)
 	{
-		try {
+		try
+		{
 			for(Session S : CMLib.sessions().localOnlineIterable())
 			{
 				MOB listenerM=S.mob();
@@ -2666,7 +2668,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((newClass!=null)&&(canChangeToThisClass(mob,newClass,loginObj.theme)))
 		{
 			StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
-			if(str!=null){
+			if(str!=null)
+			{
 				session.println("\n\r^N"+str.toString()+"\n\r");
 			}
 			session.promptPrint("^NIs ^H"+newClass.name()+"^N correct (Y/n)?");
@@ -2709,7 +2712,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALLERGIES)) {
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALLERGIES))
+		{
 			Ability A=CMClass.getAbility("Allergies");
 			if(A!=null) A.invoke(mob,mob,true,0);
 		}
@@ -3027,7 +3031,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		// count number of multiplays
 		int numAtAddress=0;
-		try{
+		try
+		{
 			for(Session S : CMLib.sessions().allIterable())
 				if((S!=session)&&(session.getAddress().equalsIgnoreCase(S.getAddress())))
 					numAtAddress++;

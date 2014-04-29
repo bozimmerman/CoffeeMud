@@ -2687,7 +2687,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			if(((DeadBody)E).charStats()==null)
 				((DeadBody)E).setCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
-			try{
+			try
+			{
 				((DeadBody)E).charStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
 				((DeadBody)E).setPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
 				String mobName=CMLib.xml().getValFromPieces(buf,"MDNAME");
@@ -3949,7 +3950,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getFactionXML(MOB mob)
 	{
 		StringBuilder facts=new StringBuilder();
-		for(Enumeration<String> e=mob.fetchFactions();e.hasMoreElements();) {
+		for(Enumeration<String> e=mob.fetchFactions();e.hasMoreElements();)
+		{
 			String name=e.nextElement();
 			int val=mob.fetchFaction(name);
 			if(val!=Integer.MAX_VALUE)
@@ -3960,10 +3962,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	public void setFactionFromXML(MOB mob, List<XMLpiece> xml)
 	{
-	   if(xml!=null) {
+	   if(xml!=null)
+	   {
 		   List<XMLLibrary.XMLpiece> mV = CMLib.xml().getContentsFromPieces(xml,"FACTIONS");
-		   if (mV!=null) {
-			   for (int m=0;m<mV.size();m++) {
+		   if (mV!=null)
+		   {
+			   for (int m=0;m<mV.size();m++)
+			   {
 				   XMLLibrary.XMLpiece mblk=mV.get(m);
 				   mob.addFaction(CMLib.xml().getParmValue(mblk.parms,"ID"),Integer.valueOf(mblk.value).intValue());
 			   }

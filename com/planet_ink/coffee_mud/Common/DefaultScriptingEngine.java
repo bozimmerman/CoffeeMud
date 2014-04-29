@@ -202,7 +202,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return tickStatus;
 	}
 
-	public void registerDefaultQuest(String qName){
+	public void registerDefaultQuest(String qName)
+	{
 		if((qName==null)||(qName.trim().length()==0))
 			defaultQuestName="";
 		else
@@ -872,7 +873,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		Environmental areaThing=null;
 		if(thisName.toUpperCase().trim().startsWith("FROMFILE "))
 		{
-			try{
+			try
+			{
 				List V=null;
 				if(mob)
 					V=loadMobsFromFile(null,CMParms.getCleanBit(thisName,1));
@@ -1573,9 +1575,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						found=true;
 						break;
 					}
-			if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+			if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+			{
 				found=true;
-				switch(gstatH.get(arg2.toUpperCase()).intValue()) {
+				switch(gstatH.get(arg2.toUpperCase()).intValue())
+				{
 				case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
 				case GSTATADD_CLAN: {
 					Clan C=CMLib.clans().findRivalrousClan(M);
@@ -1666,9 +1670,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							found=true;
 							break;
 						}
-				if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+				if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+				{
 					found=true;
-					switch(gstatH.get(arg2.toUpperCase()).intValue()) {
+					switch(gstatH.get(arg2.toUpperCase()).intValue())
+					{
 					case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
 					case GSTATADD_CLAN: {
 						Clan C=CMLib.clans().findRivalrousClan(M);
@@ -1824,7 +1830,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String s=null;
 		int depth=0;
 		for(int c=0;c<evalC.length;c++)
-			switch(state) {
+			switch(state)
+			{
 			case STATE_MAIN:
 			{
 				if(Character.isWhitespace(evalC[c]))
@@ -5992,9 +5999,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected MOB getRandPC(MOB monster, Object[] tmp, Room room)
 	{
-		if((tmp[SPECIAL_RANDPC]==null)||(tmp[SPECIAL_RANDPC]==monster)) {
+		if((tmp[SPECIAL_RANDPC]==null)||(tmp[SPECIAL_RANDPC]==monster))
+		{
 			MOB M=null;
-			if(room!=null) {
+			if(room!=null)
+			{
 				Vector choices = new Vector();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
@@ -6018,9 +6027,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 	protected MOB getRandAnyone(MOB monster, Object[] tmp, Room room)
 	{
-		if((tmp[SPECIAL_RANDANYONE]==null)||(tmp[SPECIAL_RANDANYONE]==monster)) {
+		if((tmp[SPECIAL_RANDANYONE]==null)||(tmp[SPECIAL_RANDANYONE]==monster))
+		{
 			MOB M=null;
-			if(room!=null) {
+			if(room!=null)
+			{
 				Vector choices = new Vector();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
@@ -6123,15 +6134,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 19: // if
 			{
-				if(tt==null){
-					try {
+				if(tt==null)
+				{
+					try
+					{
 						String[] ttParms=parseEval(s.substring(2));
 						tt=new String[ttParms.length+1];
 						tt[0]="IF";
 						for(int i=0;i<ttParms.length;i++)
 							tt[i+1]=ttParms[i];
 						script.setElementAt(si,2,tt);
-					} catch(Exception e) {
+					} catch(Exception e)
+					{
 						logError(scripted,"IF","Syntax",e.getMessage());
 						tickStatus=Tickable.STATUS_END;
 						return null;
@@ -6231,7 +6245,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 70: // switch
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -6276,7 +6291,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(cmd.equals("CASE")&&(depth==0))
 					{
-						if(tt==null){
+						if(tt==null)
+						{
 							tt=parseBits(script,si,"Ccr");
 							if(tt==null) return null;
 						}
@@ -6482,7 +6498,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return null;
 			case 1: // mpasound
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cp");
 					if(tt==null) return null;
 				}
@@ -6499,7 +6516,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 4: // mpjunk
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CR");
 					if(tt==null) return null;
 				}
@@ -6524,7 +6542,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 2: // mpecho
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cp");
 					if(tt==null) return null;
 				}
@@ -6534,7 +6553,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 13: // mpunaffect
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -6568,7 +6588,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 3: // mpslay
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -6579,7 +6600,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 73: // mpsetinternal
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCr");
 					if(tt==null) return null;
 				}
@@ -6605,7 +6627,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 74: // mpprompt
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCCr");
 					if(tt==null) return null;
 				}
@@ -6614,7 +6637,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
-					try {
+					try
+					{
 						String value=((MOB)newTarget).session().prompt(promptStr,60000);
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
@@ -6623,7 +6647,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 75: // mpconfirm
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCCCr");
 					if(tt==null) return null;
 				}
@@ -6633,7 +6658,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[4]);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
-					try {
+					try
+					{
 						String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,60000)?"Y":"N";
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
@@ -6642,7 +6668,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 76: // mpchoose
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCCCCr");
 					if(tt==null) return null;
 				}
@@ -6653,7 +6680,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[5]);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
-					try {
+					try
+					{
 						String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,60000);
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
@@ -6662,7 +6690,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 16: // mpset
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCcr");
 					if(tt==null) return null;
 				}
@@ -6740,13 +6769,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									found=true;
 									break;
 								}
-						if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+						if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+						{
 							found=true;
-							switch(gstatH.get(arg2.toUpperCase()).intValue()) {
+							switch(gstatH.get(arg2.toUpperCase()).intValue())
+							{
 							case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
 							case GSTATADD_CLAN: {
 								Pair<Clan,Integer> p=M.getClanRole(arg3);
-								if(p==null){
+								if(p==null)
+								{
 									Clan C=CMLib.clans().getClan(arg3);
 									if(C!=null)
 										p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
@@ -6790,7 +6822,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 63: // mpargset
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -6847,7 +6880,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 35: // mpgset
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -6947,13 +6981,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										found=true;
 										break;
 									}
-							if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+							if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+							{
 								found=true;
-								switch(gstatH.get(arg2.toUpperCase()).intValue()) {
+								switch(gstatH.get(arg2.toUpperCase()).intValue())
+								{
 								case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
 								case GSTATADD_CLAN: {
 									Pair<Clan,Integer> p=M.getClanRole(arg3);
-									if(p==null){
+									if(p==null)
+									{
 										Clan C=CMLib.clans().getClan(arg3);
 										if(C!=null)
 											p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
@@ -7013,7 +7050,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 11: // mpexp
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7037,7 +7075,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 77: // mpmoney
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7077,7 +7116,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 59: // mpquestpoints
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7109,7 +7149,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 65: // MPQSET
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -7151,7 +7192,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 66: // MPLOG
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CCcr");
 					if(tt==null) return null;
 				}
@@ -7169,7 +7211,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 67: // MPCHANNEL
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7185,7 +7228,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 68: // unload
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cc");
 					if(tt==null) return null;
 				}
@@ -7213,7 +7257,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 60: // trains
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7236,7 +7281,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 61: // pracs
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7259,7 +7305,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 5: // mpmload
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7292,7 +7339,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				// if not mob
 				if((scripted instanceof MOB)&&(monster != null))
 				{
-					if(tt==null){
+					if(tt==null)
+					{
 						tt=parseBits(script,si,"Cr");
 						if(tt==null) return null;
 					}
@@ -7361,7 +7409,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 41: // mpoloadroom
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7425,7 +7474,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 42: // mphide
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7440,7 +7490,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 58: // mpreset
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7527,7 +7578,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 56: // mpstop
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7568,7 +7620,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 43: // mpunhide
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7583,7 +7636,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 44: // mpopen
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7605,7 +7659,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 45: // mpclose
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7627,7 +7682,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 46: // mplock
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7649,7 +7705,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 47: // mpunlock
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7670,7 +7727,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 48: // return
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -7678,7 +7736,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 			case 7: // mpechoat
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -7731,7 +7790,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 8: // mpechoaround
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -7744,7 +7804,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 9: // mpcast
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7761,7 +7822,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 30: // mpaffect
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccp");
 					if(tt==null) return null;
 				}
@@ -7784,7 +7846,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 80: // mpspeak
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7809,7 +7872,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 81: // mpsetclan
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -7839,7 +7903,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 31: // mpbehave
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccp");
 					if(tt==null) return null;
 				}
@@ -7870,7 +7935,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 72: // mpscript
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -7934,7 +8000,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 32: // mpunbehave
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7953,7 +8020,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 33: // mptattoo
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -7979,7 +8047,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 55: // mpnotrigger
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8003,7 +8072,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 54: // mpfaction
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8056,7 +8126,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 49: // mptitle
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8083,7 +8154,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 10: // mpkill
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8094,7 +8166,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 51: // mpsetclandata
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8126,7 +8199,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 52: // mpplayerclass
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8226,7 +8300,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 14: // mpgoto
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8260,7 +8335,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 15: // mpat
 			if(lastKnownLocation!=null)
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -8295,7 +8371,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			break;
 			case 17: // mptransfer
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8412,7 +8489,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 25: // mpbeacon
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8455,7 +8533,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 18: // mpforce
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -8473,7 +8552,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 79: // mppossess
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8498,7 +8578,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 20: // mpsetvar
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8522,7 +8603,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 36: // mpsavevar
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CcR");
 					if(tt==null) return null;
 				}
@@ -8554,7 +8636,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 39: // mploadvar
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"CcR");
 					if(tt==null) return null;
 				}
@@ -8583,7 +8666,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 40: // MPM2I2M
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8623,7 +8707,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 28: // mpdamage
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccccr");
 					if(tt==null) return null;
 				}
@@ -8688,7 +8773,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 78: // mpheal
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8733,7 +8819,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 29: // mptrackto
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8749,7 +8836,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 53: // mpwalkto
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8765,7 +8853,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 21: //MPENDQUEST
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8797,7 +8886,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 69: // MPSTEPQUEST
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8810,7 +8900,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 23: //MPSTARTQUEST
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cr");
 					if(tt==null) return null;
 				}
@@ -8823,7 +8914,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 64: //MPLOADQUESTOBJ
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Cccr");
 					if(tt==null) return null;
 				}
@@ -8879,7 +8971,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 22: //MPQUESTWIN
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8904,7 +8997,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 24: // MPCALLFUNC
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -8972,7 +9066,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					String DO=conditionStr.substring(x+1).trim();
 					conditionStr=conditionStr.substring(0,x);
-					try {
+					try
+					{
 						String[] EVAL=parseEval(conditionStr);
 						V.addElement("(");
 						Vector<String> V2=new XVector<String>(EVAL);
@@ -8981,7 +9076,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						V.addElement(DO);
 						tt=CMParms.toStringArray(V);
 						script.setElementAt(si,2,tt);
-					} catch(Exception e) {
+					} catch(Exception e)
+					{
 						logError(scripted,"MPWHILE","Syntax",e.getMessage());
 						break;
 					}
@@ -9060,7 +9156,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 26: // MPALARM
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccp");
 					if(tt==null) return null;
 				}
@@ -9084,7 +9181,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 37: // mpenable
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccccp");
 					if(tt==null) return null;
 				}
@@ -9127,7 +9225,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 38: // mpdisable
 			{
-				if(tt==null){
+				if(tt==null)
+				{
 					tt=parseBits(script,si,"Ccr");
 					if(tt==null) return null;
 				}
@@ -9253,7 +9352,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
     					{
     						chk=true;
     						for(int i=0;i<x;i++)
-    							switch(command.charAt(i)) {
+    							switch(command.charAt(i))
+    							{
     								case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
     								case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
     								case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
@@ -9531,7 +9631,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
     					{
     						chk=true;
     						for(int i=0;i<x;i++)
-    							switch(command.charAt(i)) {
+    							switch(command.charAt(i))
+    							{
     								case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
     								case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
     								case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
@@ -10506,7 +10607,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	
 	public void dequeResponses()
 	{
-		try{
+		try
+		{
 			tickStatus=Tickable.STATUS_SCRIPT+100;
 			for(int q=que.size()-1;q>=0;q--)
 			{
@@ -10551,15 +10653,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		public String toJavaString(Object O){return Context.toString(O);}
 
 		@Override
-		public Object get(final String name, Scriptable start) {
+		public Object get(final String name, Scriptable start)
+		{
 			if (super.has(name, start))
 				return super.get(name, start);
 			if (methH.containsKey(name) || funcH.containsKey(name) 
 			|| (name.endsWith("$")&&(funcH.containsKey(name.substring(0,name.length()-1)))))
 			{
-				return new Function() {
+				return new Function()
+				{
 					@Override
-					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args)
+					{
 						if(methH.containsKey(name))
 						{
 							StringBuilder strb=new StringBuilder(name);

@@ -976,11 +976,13 @@ public class TelnetFilter
 				String rest=data.substring(x+1).trim();
 				if(cmd.equalsIgnoreCase("MSDP"))
 				{
-					try {
+					try
+					{
 						byte[] newOutput=this.msdpModule.convertStringToMsdp(rest);
 						if(newOutput!=null)
 							return newOutput;
-					} catch (MJSONException e) {
+					} catch (MJSONException e)
+					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());
 					}
@@ -989,11 +991,13 @@ public class TelnetFilter
 				else
 				if(cmd.equalsIgnoreCase("GMCP"))
 				{
-					try {
+					try
+					{
 						byte[] newOutput=gmcpModule.convertStringToGmcp(rest);
 						if(newOutput!=null)
 							return newOutput;
-					} catch (MJSONException e) {
+					} catch (MJSONException e)
+					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());
 					}

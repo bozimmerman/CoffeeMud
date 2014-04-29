@@ -51,10 +51,12 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized TreeMap<K,V> toTreeMap() {
+	public synchronized TreeMap<K,V> toTreeMap()
+	{
 		return (TreeMap<K,V>)T.clone();
 	}
-	public synchronized Vector<String> toStringVector(String divider) {
+	public synchronized Vector<String> toStringVector(String divider)
+	{
 		Vector<String> V=new Vector<String>(size());
 		for(Object S : navigableKeySet())
 			if(S!=null)
@@ -68,18 +70,21 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 		return V;
 	}
 	@Override
-	public synchronized java.util.Map.Entry<K, V> ceilingEntry(K key) {
+	public synchronized java.util.Map.Entry<K, V> ceilingEntry(K key)
+	{
 		return T.ceilingEntry(key);
 	}
 
 	@Override
-	public synchronized K ceilingKey(K key) {
+	public synchronized K ceilingKey(K key)
+	{
 		return T.ceilingKey(key);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void clear() {
+	public synchronized void clear()
+	{
 		T=(TreeMap<K,V>)T.clone();
 		T.clear();
 	}
@@ -93,193 +98,229 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized Comparator<? super K> comparator() {
+	public synchronized Comparator<? super K> comparator()
+	{
 		return T.comparator();
 	}
 
 	@Override
-	public synchronized boolean containsKey(Object key) {
+	public synchronized boolean containsKey(Object key)
+	{
 		return T.containsKey(key);
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object value) {
+	public synchronized boolean containsValue(Object value)
+	{
 		return T.containsValue(value);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> descendingKeySet() {
+	public synchronized NavigableSet<K> descendingKeySet()
+	{
 		return new ReadOnlyNavigableSet<K>(T.descendingKeySet());
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> descendingMap() {
+	public synchronized NavigableMap<K, V> descendingMap()
+	{
 		return new ReadOnlyNavigableMap<K,V>(T.descendingMap());
 	}
 
 	@Override
-	public synchronized Set<java.util.Map.Entry<K, V>> entrySet() {
+	public synchronized Set<java.util.Map.Entry<K, V>> entrySet()
+	{
 		return new ReadOnlySet<java.util.Map.Entry<K, V>>(T.entrySet());
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> firstEntry() {
+	public synchronized java.util.Map.Entry<K, V> firstEntry()
+	{
 		return T.firstEntry();
 	}
 
 	@Override
-	public synchronized K firstKey() {
+	public synchronized K firstKey()
+	{
 		return T.firstKey();
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> floorEntry(K key) {
+	public synchronized java.util.Map.Entry<K, V> floorEntry(K key)
+	{
 		return T.floorEntry(key);
 	}
 
 	@Override
-	public synchronized K floorKey(K key) {
+	public synchronized K floorKey(K key)
+	{
 		return T.floorKey(key);
 	}
 
 	@Override
-	public synchronized V get(Object key) {
+	public synchronized V get(Object key)
+	{
 		return T.get(key);
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
+	public synchronized NavigableMap<K, V> headMap(K toKey, boolean inclusive)
+	{
 		return new ReadOnlyNavigableMap<K,V>(T.headMap(toKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> headMap(K toKey) {
+	public synchronized SortedMap<K, V> headMap(K toKey)
+	{
 		return new ReadOnlySortedMap<K,V>(T.headMap(toKey));
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> higherEntry(K key) {
+	public synchronized java.util.Map.Entry<K, V> higherEntry(K key)
+	{
 		return T.higherEntry(key);
 	}
 
 	@Override
-	public synchronized K higherKey(K key) {
+	public synchronized K higherKey(K key)
+	{
 		return T.higherKey(key);
 	}
 
 	@Override
-	public synchronized Set<K> keySet() {
+	public synchronized Set<K> keySet()
+	{
 		return new ReadOnlySet<K>(T.keySet());
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> lastEntry() {
+	public synchronized java.util.Map.Entry<K, V> lastEntry()
+	{
 		return T.lastEntry();
 	}
 
 	@Override
-	public synchronized K lastKey() {
+	public synchronized K lastKey()
+	{
 		return T.lastKey();
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> lowerEntry(K key) {
+	public synchronized java.util.Map.Entry<K, V> lowerEntry(K key)
+	{
 		return T.lowerEntry(key);
 	}
 
 	@Override
-	public synchronized K lowerKey(K key) {
+	public synchronized K lowerKey(K key)
+	{
 		return T.lowerKey(key);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> navigableKeySet() {
+	public synchronized NavigableSet<K> navigableKeySet()
+	{
 		return new ReadOnlyNavigableSet<K>(T.navigableKeySet());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized java.util.Map.Entry<K, V> pollFirstEntry() {
+	public synchronized java.util.Map.Entry<K, V> pollFirstEntry()
+	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.pollFirstEntry();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized java.util.Map.Entry<K, V> pollLastEntry() {
+	public synchronized java.util.Map.Entry<K, V> pollLastEntry()
+	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.pollLastEntry();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized V put(K key, V value) {
+	public synchronized V put(K key, V value)
+	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.put(key, value);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void putAll(Map<? extends K, ? extends V> map) {
+	public synchronized void putAll(Map<? extends K, ? extends V> map)
+	{
 		T=(TreeMap<K,V>)T.clone();
 		T.putAll(map);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized V remove(Object key) {
+	public synchronized V remove(Object key)
+	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.remove(key);
 	}
 
 	@Override
-	public synchronized int size() {
+	public synchronized int size()
+	{
 		return T.size();
 	}
 
 	@Override
 	public synchronized NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey,
-			boolean toInclusive) {
+			boolean toInclusive)
+			{
 		return new ReadOnlyNavigableMap<K,V>(T.subMap(fromKey, fromInclusive, toKey, toInclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> subMap(K fromKey, K toKey) {
+	public synchronized SortedMap<K, V> subMap(K fromKey, K toKey)
+	{
 		return new ReadOnlySortedMap<K,V>(T.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
+	public synchronized NavigableMap<K, V> tailMap(K fromKey, boolean inclusive)
+	{
 		return new ReadOnlyNavigableMap<K, V>(T.tailMap(fromKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> tailMap(K fromKey) {
+	public synchronized SortedMap<K, V> tailMap(K fromKey)
+	{
 		return new ReadOnlySortedMap<K, V>(T.tailMap(fromKey));
 	}
 
 	@Override
-	public synchronized Collection<V> values() {
+	public synchronized Collection<V> values()
+	{
 		return new ReadOnlyCollection<V>(T.values());
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o)
+	{
 		return this==o;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return super.hashCode();
 	}
 
 	@Override
-	public synchronized boolean isEmpty() {
+	public synchronized boolean isEmpty()
+	{
 		return T.isEmpty();
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return super.toString();
 	}
 

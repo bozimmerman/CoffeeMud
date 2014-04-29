@@ -31,7 +31,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
 	@SuppressWarnings("unchecked")
-	@Override public Iterator<J> iterator() {
+	@Override public Iterator<J> iterator()
+	{
 		if(size()==0) return empty;
 		return list.iterator();
 	}

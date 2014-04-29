@@ -132,7 +132,8 @@ public class QuestLoader
 		{
 			Quest Q=quests.get(m);
 			if(Q.isCopy()) continue;
-			try{
+			try
+			{
 				D.rePrepare(
 				"INSERT INTO CMQUESTS ("
 				+"CMQUESID, "

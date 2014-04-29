@@ -136,13 +136,17 @@ public class Masonry extends CraftingSkill
 		if(returnToRoom==null) returnToRoom=room.getArea().getRandomMetroRoom();
 		if(returnToRoom==null) returnToRoom=CMLib.map().getRandomRoom();
 		final Room theRoomToReturnTo=returnToRoom;
-		room.eachInhabitant(new EachApplicable<MOB>(){
-            public void apply(MOB a) {
+		room.eachInhabitant(new EachApplicable<MOB>()
+		{
+            public void apply(MOB a)
+            {
             	theRoomToReturnTo.bringMobHere(a, false);
             }
 		});
-		room.eachItem(new EachApplicable<Item>(){
-            public void apply(Item a) {
+		room.eachItem(new EachApplicable<Item>()
+		{
+            public void apply(Item a)
+            {
             	theRoomToReturnTo.addItem(a,Expire.Player_Drop);
             }
 		});
@@ -170,7 +174,8 @@ public class Masonry extends CraftingSkill
 		for(int a=room.numEffects()-1;a>=0;a--)
 		{
 			Ability A=room.fetchEffect(a);
-			if(A!=null){
+			if(A!=null)
+			{
 				room.delEffect(A);
 				R.addEffect(A);
 			}
@@ -178,7 +183,8 @@ public class Masonry extends CraftingSkill
 		for(int i=room.numItems()-1;i>=0;i--)
 		{
 			Item I=room.getItem(i);
-			if(I!=null){
+			if(I!=null)
+			{
 				room.delItem(I);
 				R.addItem(I);
 			}
@@ -186,7 +192,8 @@ public class Masonry extends CraftingSkill
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
 			MOB M=room.fetchInhabitant(m);
-			if(M!=null){
+			if(M!=null)
+			{
 				room.delInhabitant(M);
 				R.addInhabitant(M);
 				M.setLocation(R);
@@ -317,7 +324,8 @@ public class Masonry extends CraftingSkill
 							for(int m=room.numInhabitants()-1;m>=0;m--)
 							{
 								MOB M=room.fetchInhabitant(m);
-								if(M!=null){
+								if(M!=null)
+								{
 									room.delInhabitant(M);
 									R.addInhabitant(M);
 									M.setLocation(R);

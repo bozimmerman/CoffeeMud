@@ -60,7 +60,8 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	}
 
 	@Override
-	public synchronized boolean offer(K e) {
+	public synchronized boolean offer(K e)
+	{
 		if(!contains(e))
 			return super.offer(e);
 		return true;
@@ -81,7 +82,8 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	}
 	
 	@Override
-	public synchronized boolean add(K e) {
+	public synchronized boolean add(K e)
+	{
 		if(!contains(e))
 			return super.add(e);
 		return true;

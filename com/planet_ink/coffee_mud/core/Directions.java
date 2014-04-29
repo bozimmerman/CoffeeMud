@@ -22,14 +22,16 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 */
 public class Directions
 {
-	public Directions(){
+	public Directions()
+	{
 		super();
 		char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(dirs[c]==null) dirs[c]=this;
 	}
 	private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 	public static Directions d(char c){return dirs[c];}
-	public static Directions instance(){
+	public static Directions instance()
+	{
 		final Directions d=d();
 		if(d==null) return new Directions();
 		return d;
@@ -111,7 +113,8 @@ public class Directions
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
 	
-	private static <T> T[] concat(T[] first, T[] second) {
+	private static <T> T[] concat(T[] first, T[] second)
+	{
 		T[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
@@ -119,23 +122,28 @@ public class Directions
 	
 	public static final Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
 
-	public static final int NUM_DIRECTIONS(){
+	public static final int NUM_DIRECTIONS()
+	{
 		return d().NUM_DIRECTIONS;
 	}
 
-	public static final int[] CODES(){
+	public static final int[] CODES()
+	{
 		return d().DIRECTIONS_CODES;
 	}
 	
-	public static final String LETTERS(){
+	public static final String LETTERS()
+	{
 		return d().DIRECTION_LETTERS;
 	}
 	
-	public static final String NAMES_LIST(){
+	public static final String NAMES_LIST()
+	{
 		return d().DIRECTION_NAMES;
 	}
 	
-	public static final String SHIP_NAMES_LIST(){
+	public static final String SHIP_NAMES_LIST()
+	{
 		return d().DIRECTION_SHIPNAMES;
 	}
 	

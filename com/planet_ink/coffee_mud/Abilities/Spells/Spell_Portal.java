@@ -155,13 +155,15 @@ public class Spell_Portal extends Spell
 				e.setExitParams("portal","close","open","closed.");
 				e.setName("a swirling portal");
 				Ability A1=CMClass.getAbility("Prop_RoomView");
-				if(A1!=null){
+				if(A1!=null)
+				{
 					A1.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
 					e.addNonUninvokableEffect(A1);
 				}
 				Exit e2=(Exit)e.copyOf();
 				Ability A2=CMClass.getAbility("Prop_RoomView");
-				if(A2!=null){
+				if(A2!=null)
+				{
 					A2.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
 					e2.addNonUninvokableEffect(A2);
 				}

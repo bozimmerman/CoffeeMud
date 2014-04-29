@@ -63,7 +63,8 @@ public class Play_LoveSong extends Play
 			if(choices.size()>0)
 			{
 				MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-				try{
+				try
+				{
 				if(CMLib.dice().rollPercentage()<=1)
 				{
 					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);

@@ -52,8 +52,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	public RTree<SpaceObject>	space		 			= new RTree<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 
-	protected static final Comparator<Area>	areaComparator = new Comparator<Area>(){
-		@Override public int compare(Area o1, Area o2) {
+	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
+	{
+		@Override public int compare(Area o1, Area o2)
+		{
 			if(o1==null) return (o2==null)?0:-1;
 			return o1.Name().compareToIgnoreCase(o2.Name());
 		}
@@ -196,7 +198,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		Area A=null;
 		while((numAreas()>0)&&(A==null))
 		{
-			try{
+			try
+			{
 				A=areasList.get(CMLib.dice().roll(1,numAreas(),-1));
 			}catch(ArrayIndexOutOfBoundsException e){}
 		}
@@ -477,8 +480,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
-		Collections.sort(within, new Comparator<SpaceObject>(){
-			@Override public int compare(SpaceObject o1, SpaceObject o2) {
+		Collections.sort(within, new Comparator<SpaceObject>()
+		{
+			@Override public int compare(SpaceObject o1, SpaceObject o2)
+			{
 				final long distTo1=getDistanceFrom(o1,ofObj);
 				final long distTo2=getDistanceFrom(o2,ofObj);
 				if(distTo1==distTo2)
@@ -886,7 +891,8 @@ public class CMMap extends StdLibrary implements WorldMap
 						if(I!=null)
 						{
 							SK=CMLib.coffeeShops().getShopKeeper(I);
-							if((SK!=null)&&(!stocks.contains(SK))){
+							if((SK!=null)&&(!stocks.contains(SK)))
+							{
 								stocks.add(SK);
 								Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
 								if(ei.hasNext()) 
@@ -915,7 +921,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(!areas.contains(room.getArea()))
 					areas.add(room.getArea());
 				SK=CMLib.coffeeShops().getShopKeeper(room);
-				if((SK!=null)&&(!stocks.contains(SK))) {
+				if((SK!=null)&&(!stocks.contains(SK)))
+				{
 					stocks.add(SK);
 					Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
 					if(ei.hasNext()) 
@@ -934,7 +941,8 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(M!=null)
 					{
 						SK=CMLib.coffeeShops().getShopKeeper(M);
-						if((SK!=null)&&(!stocks.contains(SK))){
+						if((SK!=null)&&(!stocks.contains(SK)))
+						{
 							stocks.add(SK);
 							Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
 							if(ei.hasNext()) 
@@ -955,7 +963,8 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(I!=null)
 					{
 						SK=CMLib.coffeeShops().getShopKeeper(I);
-						if((SK!=null)&&(!stocks.contains(SK))){
+						if((SK!=null)&&(!stocks.contains(SK)))
+						{
 							stocks.add(SK);
 							Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
 							if(ei.hasNext()) 
@@ -1333,7 +1342,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		private Enumeration<Area> curAreaEnumeration=null;
 		private Enumeration<Room> curRoomEnumeration=null;
 		private boolean addSkys = false;
-		public AreaEnumerator(boolean includeSkys) {
+		public AreaEnumerator(boolean includeSkys)
+		{
 			addSkys = includeSkys;
 		}
 		public boolean hasMoreElements()
@@ -1702,7 +1712,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); 
 	}
 	
-	protected Enumeration<Room> rightLiberalMap(Area A) {
+	protected Enumeration<Room> rightLiberalMap(Area A)
+	{
 		if(A==null) return roomsFilled();
 		return A.getProperMap();
 	}
@@ -2330,7 +2341,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new Enumeration<LocatedPair>()
 		{
 			public boolean hasMoreElements() { return me.hasMoreElements();}
-			public LocatedPair nextElement() {
+			public LocatedPair nextElement()
+			{
 				final LocatedPair W = me.nextElement();
 				final PhysicalAgent E = W.obj();
 				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
@@ -2531,7 +2543,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		catch(java.util.NoSuchElementException e){}
-		finally {
+		finally
+		{
 			if(expireM!=null)
 				expireM.destroy();
 		}
@@ -2548,8 +2561,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	// this is a beautiful idea, but im scared of the memory of all the final refs
 	protected void addMapStatFiles(final List<CMFile.CMVFSFile> rootFiles, final Room R, final Environmental E, final CMFile.CMVFSDir root)
 	{
-		rootFiles.add(new CMFile.CMVFSDir(root,root.getPath()+"stats/") {
-			@Override protected CMFile.CMVFSFile[] getFiles() {
+		rootFiles.add(new CMFile.CMVFSDir(root,root.getPath()+"stats/")
+		{
+			@Override protected CMFile.CMVFSFile[] getFiles()
+			{
 				List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 				String[] stats=E.getStatCodes();
 				final String oldName=E.Name();
@@ -2606,8 +2621,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root)
 	{
-		return new CMFile.CMVFSDir(root,root.getPath()+"map/") {
-			@Override protected CMFile.CMVFSFile[] getFiles() {
+		return new CMFile.CMVFSDir(root,root.getPath()+"map/")
+		{
+			@Override protected CMFile.CMVFSFile[] getFiles()
+			{
 				List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
@@ -2619,8 +2636,10 @@ public class CMMap extends StdLibrary implements WorldMap
 							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
 						}
 					});
-					myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(A.Name())+"/") {
-						@Override protected CMFile.CMVFSFile[] getFiles() {
+					myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(A.Name())+"/")
+					{
+						@Override protected CMFile.CMVFSFile[] getFiles()
+						{
 							List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 							for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
 							{
@@ -2637,8 +2656,10 @@ public class CMMap extends StdLibrary implements WorldMap
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
 										}
 									});
-									myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(roomID).toLowerCase()+"/") {
-										@Override protected CMFile.CMVFSFile[] getFiles() {
+									myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(roomID).toLowerCase()+"/")
+									{
+										@Override protected CMFile.CMVFSFile[] getFiles()
+										{
 											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 											myFiles.add(new CMFile.CMVFSFile(this.getPath()+"items.cmare",48,System.currentTimeMillis(),"SYS")
 											{
@@ -2654,8 +2675,10 @@ public class CMMap extends StdLibrary implements WorldMap
 													return CMLib.coffeeMaker().getRoomMobs(R, null, null, new TreeMap<String,List<MOB>>());
 												}
 											});
-											myFiles.add(new CMFile.CMVFSDir(this,this.path+"mobs/") {
-												@Override protected CMFile.CMVFSFile[] getFiles() {
+											myFiles.add(new CMFile.CMVFSDir(this,this.path+"mobs/")
+											{
+												@Override protected CMFile.CMVFSFile[] getFiles()
+												{
 													List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
 													for(int i=0;i<R2.numInhabitants();i++)
@@ -2668,8 +2691,10 @@ public class CMMap extends StdLibrary implements WorldMap
 																return CMLib.coffeeMaker().getMobXML(M);
 															}
 														});
-														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/") {
-															@Override protected CMFile.CMVFSFile[] getFiles() {
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/")
+														{
+															@Override protected CMFile.CMVFSFile[] getFiles()
+															{
 																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 																addMapStatFiles(myFiles,R,M,this);
 																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
@@ -2681,8 +2706,10 @@ public class CMMap extends StdLibrary implements WorldMap
 													return myFiles.toArray(new CMFile.CMVFSFile[0]);
 												}
 											});
-											myFiles.add(new CMFile.CMVFSDir(this,this.path+"items/") {
-												@Override protected CMFile.CMVFSFile[] getFiles() {
+											myFiles.add(new CMFile.CMVFSDir(this,this.path+"items/")
+											{
+												@Override protected CMFile.CMVFSFile[] getFiles()
+												{
 													List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
 													for(int i=0;i<R2.numItems();i++)
@@ -2695,8 +2722,10 @@ public class CMMap extends StdLibrary implements WorldMap
 																return CMLib.coffeeMaker().getItemXML(I);
 															}
 														});
-														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(I))+"/") {
-															@Override protected CMFile.CMVFSFile[] getFiles() {
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(I))+"/")
+														{
+															@Override protected CMFile.CMVFSFile[] getFiles()
+															{
 																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 																addMapStatFiles(myFiles,R,I,this);
 																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);

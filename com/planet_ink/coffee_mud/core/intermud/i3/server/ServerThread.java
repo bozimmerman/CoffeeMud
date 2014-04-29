@@ -53,7 +53,8 @@ public class ServerThread implements Tickable
 
 	protected ServerThread(String mname, 
 						   int mport,
-						   ImudServices imud) {
+						   ImudServices imud)
+						   {
 		mud_name = mname;
 		port = mport;
 		intermuds=imud;
@@ -70,14 +71,16 @@ public class ServerThread implements Tickable
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
 		ServerObject ob;
 
-		try {
+		try
+		{
 			ob = (ServerObject)Class.forName(str).newInstance();
 			count++;
 			str = str + "#" + count;
 			ob.setObjectId(str);
 			objects.put(str, ob);
 		}
-		catch( Exception e ) {
+		catch( Exception e )
+		{
 			throw new ObjectLoadException("Failed to load object: " + e.getMessage());
 		}
 		return ob;
@@ -86,36 +89,45 @@ public class ServerThread implements Tickable
 	protected synchronized ServerObject findObject(String str) throws ObjectLoadException {
 		ServerObject ob;
 
-		if( objects.containsKey(str) ) {
+		if( objects.containsKey(str) )
+		{
 			ob = objects.get(str);
-			if( ob.getDestructed() ) {
+			if( ob.getDestructed() )
+			{
 				ob = null;
 			}
 		}
-		else {
+		else
+		{
 			ob = null;
 		}
-		if( ob == null ) {
-			try {
+		if( ob == null )
+		{
+			try
+			{
 				ob = (ServerObject)Class.forName(str).newInstance();
 				ob.setObjectId(str);
 				objects.put(str, ob);
 			}
-			catch( Exception e ) {
+			catch( Exception e )
+			{
 				throw new ObjectLoadException("Failed to load object: " + e.getMessage());
 			}
 		}
 		return ob;
 	}
 
-	protected synchronized void removeObject(ServerObject ob) {
+	protected synchronized void removeObject(ServerObject ob)
+	{
 		String id = ob.getObjectId();
 
-		if( !objects.containsKey(id) ) {
+		if( !objects.containsKey(id) )
+		{
 			return;
 		}
 		objects.remove(id);
-		if( interactives.containsKey(id) ) {
+		if( interactives.containsKey(id) )
+		{
 			interactives.remove(id);
 		}
 	}
@@ -132,24 +144,29 @@ public class ServerThread implements Tickable
 	 */
 	public void start() 
 	{
-		if( boot_time != null ) {
+		if( boot_time != null )
+		{
 			Log.errOut("I3Server","Illegal attempt to invoke run().");
 			return;
 		}
 		
-		try {
+		try
+		{
 			listen_thread = new ListenThread(port);
 		}
-		catch( java.io.IOException e ) {
+		catch( java.io.IOException e )
+		{
 			Log.errOut("I3Server",e);
 			return;
 		}
 		
-		try {
+		try
+		{
 			Intermud.setup(intermuds,
 						   (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").newInstance());
 		}
-		catch( Exception e ) {
+		catch( Exception e )
+		{
 			Log.errOut("I3Server",e);
 			return;
 		}
@@ -176,24 +193,29 @@ public class ServerThread implements Tickable
 		tickStatus=Tickable.STATUS_ALIVE;
 		ServerObject[] things;
 		ServerUser[] users;
-		synchronized( this ) {
+		synchronized( this )
+		{
 			things = getObjects();
 			users = getInteractives();
 		}
 		{// Process all input
 			int i;
 
-			for(i=0; i<users.length; i++) {
+			for(i=0; i<users.length; i++)
+			{
 				ServerUser interactive = users[i];
 
 
-				if( interactive.getDestructed() ) {
+				if( interactive.getDestructed() )
+				{
 					continue;
 				}
-				try {
+				try
+				{
 					interactive.processInput();
 				}
-				catch( Exception e ) {
+				catch( Exception e )
+				{
 					Log.errOut("IMServerThread",e);
 				}
 			}
@@ -201,14 +223,18 @@ public class ServerThread implements Tickable
 		{// Check for pending object events
 			int i;
 
-			for(i=0; i<things.length; i++) {
+			for(i=0; i<things.length; i++)
+			{
 				ServerObject thing = things[i];
 
-				if( !thing.getDestructed() ) {
-					try {
+				if( !thing.getDestructed() )
+				{
+					try
+					{
 						thing.processEvent();
 					}
-					catch( Exception e ) {
+					catch( Exception e )
+					{
 						Log.errOut("IMServerThread",e);
 					}
 				}
@@ -217,7 +243,8 @@ public class ServerThread implements Tickable
 		{// Get new connections
 			int i;
 
-			for(i=0; i<5; i++) {
+			for(i=0; i<5; i++)
+			{
 				java.net.Socket s;
 				ServerUser new_user;
 
@@ -225,23 +252,29 @@ public class ServerThread implements Tickable
 					s = listen_thread.nextSocket();
 				else
 					s=null;
-				if( s == null ) {
+				if( s == null )
+				{
 					break;
 				}
-				try {
+				try
+				{
 					new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.IMudUser");
 				}
-				catch( ObjectLoadException e ) {
+				catch( ObjectLoadException e )
+				{
 					continue;
 				}
-				try {
+				try
+				{
 					new_user.setSocket(s);
-					synchronized( this ) {
+					synchronized( this )
+					{
 						interactives.put(new_user.getObjectId(), new_user);
 						new_user.connect();
 					}
 				}
-				catch( java.io.IOException e ) {
+				catch( java.io.IOException e )
+				{
 					new_user.destruct();
 				}
 			}
@@ -250,25 +283,30 @@ public class ServerThread implements Tickable
 		return running;
 	}
 	
-	protected Date getBootTime() {
+	protected Date getBootTime()
+	{
 		return boot_time;
 	}
 
-	protected synchronized ServerUser[] getInteractives() {
+	protected synchronized ServerUser[] getInteractives()
+	{
 		ServerUser[] tmp = new ServerUser[interactives.size()];
 		int i = 0;
 
-		for(ServerUser U : interactives.values()) {
+		for(ServerUser U : interactives.values())
+		{
 			tmp[i++] = U;
 		}
 		return tmp;
 	}
 
-	protected String getMudName() {
+	protected String getMudName()
+	{
 		return mud_name;
 	}
 
-	protected int getPort() {
+	protected int getPort()
+	{
 		return port;
 	}
 
@@ -286,10 +324,12 @@ public class ServerThread implements Tickable
 		CMLib.threads().deleteTick(this, Tickable.TICKID_SUPPORT);
 	}
 	
-	protected synchronized ServerObject[] getObjects() {
+	protected synchronized ServerObject[] getObjects()
+	{
 		ServerObject[] tmp = new ServerObject[objects.size()];
 		int i = 0;
-		for(ServerObject O : objects.values()) {
+		for(ServerObject O : objects.values())
+		{
 			tmp[i++] = O;
 		}
 		return tmp;

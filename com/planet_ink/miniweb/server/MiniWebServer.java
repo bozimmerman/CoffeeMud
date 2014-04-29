@@ -367,12 +367,14 @@ public class MiniWebServer extends Thread
 		
 		shutdownRequested=true;
 		executor.shutdown();
-		try {
+		try
+		{
 			servSelector.close();
 		}catch(Exception e){} // ugh, why can't there be an "i don't care" exception syntax in java
 		for(ServerSocketChannel servChan : servChannels.keySet())
 		{
-			try {
+			try
+			{
 				servChan.close();
 			}catch(Exception e){}
 		}
@@ -412,17 +414,21 @@ public class MiniWebServer extends Thread
 		synchronized(this.registerOps)
 		{
 			final Selector servSelector=this.servSelector;
-			this.registerOps.add(new Runnable(){
+			this.registerOps.add(new Runnable()
+			{
 				@Override
-				public void run() {
-					try {
+				public void run()
+				{
+					try
+					{
 						channel.configureBlocking (false);
 						channel.register (servSelector, SelectionKey.OP_READ, handler);
 						synchronized(handlers) // synched because you can't iterate and modify, and because its a linkedlist
 						{
 							handlers.add(handler);
 						}
-					} catch (Exception e) {
+					} catch (Exception e)
+					{
 						config.getLogger().throwing("", "", e);
 					}
 				}
@@ -443,9 +449,11 @@ public class MiniWebServer extends Thread
 		synchronized(this.registerOps)
 		{
 			final Selector servSelector=this.servSelector;
-			this.registerOps.add(new Runnable(){
+			this.registerOps.add(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					final SelectionKey key = channel.keyFor(servSelector);
 					if(key != null)
 					{

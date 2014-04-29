@@ -64,7 +64,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
 	public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
-	public int liquidType(){
+	public int liquidType()
+	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;

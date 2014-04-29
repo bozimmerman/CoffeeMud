@@ -44,62 +44,78 @@ public class LPCData {
 
 		data.addElement(null);
 		data.addElement("");
-		if( str == null ) {
-			if( ! flag ) {
+		if( str == null )
+		{
+			if( ! flag )
+			{
 				return "";
 			}
 			return data;
 		}
 		str = str.trim();
-		if( str.length() < 1 ) {
-			if( !flag ) {
+		if( str.length() < 1 )
+		{
+			if( !flag )
+			{
 				return "";
 			}
 			return data;
 		}
-		else if( str.length() == 1 ) {
-			try {
+		else if( str.length() == 1 )
+		{
+			try
+			{
 				int x = Integer.parseInt(str);
 
-				if( !flag ) {
+				if( !flag )
+				{
 					return Integer.valueOf(x);
 				}
 				data.setElementAt(Integer.valueOf(x), 0);
 				return data;
 			}
-			catch( NumberFormatException e ) {
+			catch( NumberFormatException e )
+			{
 				throw new I3Exception("Invalid LPC Data in string: " + str);
 			}
 		}
-		if( str.charAt(0) == '(' ) {
-			switch(str.charAt(1)) {
+		if( str.charAt(0) == '(' )
+		{
+			switch(str.charAt(1))
+			{
 				case '{':
 				{
 					Vector v = new Vector();
 
 					str = str.substring(2, str.length());
-					while( str.charAt(0) != '}' ) {
+					while( str.charAt(0) != '}' )
+					{
 						Vector tmp = (Vector)getLPCData(str, true);
 
 						v.addElement(tmp.elementAt(0));
 						str = ((String)tmp.elementAt(1)).trim();
-						if( str.length() < 1 || (str.charAt(0) != ',' && str.charAt(0) != '}') ) {
+						if( str.length() < 1 || (str.charAt(0) != ',' && str.charAt(0) != '}') )
+						{
 							throw new I3Exception("Invalid LPC Data in string: " + str);
 						}
-						else if( str.charAt(0) == ',' ) {
+						else if( str.charAt(0) == ',' )
+						{
 							str = str.substring(1, str.length());
 							str = str.trim();
 						}
 					}
-					if( str.charAt(1) != ')' ) {
+					if( str.charAt(1) != ')' )
+					{
 						str = str.substring(2, str.length());
 						str = str.trim();
-						if( str.charAt(0) != ')' ) {
+						if( str.charAt(0) != ')' )
+						{
 							throw new I3Exception("Illegal array terminator.");
 						}
 						data.setElementAt(str.substring(1, str.length()), 1);
 					}
-					else {
+					else
+					{
 						data.setElementAt(str.substring(2,str.length()), 1);
 					}
 					if( !flag ) return v;
@@ -112,13 +128,15 @@ public class LPCData {
 					Hashtable h = new Hashtable();
 
 					str = str.substring(2, str.length());
-					while( str.charAt(0) != ']' ) {
+					while( str.charAt(0) != ']' )
+					{
 						Vector tmp = (Vector)getLPCData(str, true);
 						Object key, value;
 
 						str = (String)tmp.elementAt(1);
 						str = str.trim();
-						if( str.charAt(0) != ':' ) {
+						if( str.charAt(0) != ':' )
+						{
 							throw new I3Exception("Invalid mapping format1: " + str);
 						}
 						str = str.substring(1, str.length());
@@ -128,23 +146,28 @@ public class LPCData {
 						str = (String)tmp.elementAt(1);
 						h.put(key, value);
 						str = str.trim();
-						if( str.charAt(0) != ',' && str.charAt(0) != ']' ) {
+						if( str.charAt(0) != ',' && str.charAt(0) != ']' )
+						{
 							throw new I3Exception("Invalid mapping format2: " + str);
 						}
-						else if( str.charAt(0) != ']' ) {
+						else if( str.charAt(0) != ']' )
+						{
 							str = str.substring(1, str.length());
 							str = str.trim();
 						}
 					}
-					if( str.charAt(1) != ')' ) {
+					if( str.charAt(1) != ')' )
+					{
 						str = str.substring(2, str.length()).trim();
-						if( str.charAt(0) != ')' ) {
+						if( str.charAt(0) != ')' )
+						{
 							throw new I3Exception("Invalid mapping format3: " + str);
 						}
 						data.setElementAt(str.substring(1, str.length()).trim(), 1);
 					}
 					else data.setElementAt(str.substring(2, str.length()).trim(), 1);
-					if( !flag ) {
+					if( !flag )
+					{
 						return h;
 					}
 					data.setElementAt(h, 0);
@@ -155,7 +178,8 @@ public class LPCData {
 				throw new I3Exception("Invalid LPC Data in string: " + str);
 			}
 		}
-		else if( str.charAt(0) == '"' ) {
+		else if( str.charAt(0) == '"' )
+		{
 			int x=1;
 			StringBuffer in=new StringBuffer("");
 			char c='\0';
@@ -190,34 +214,43 @@ public class LPCData {
 			data.setElementAt("",1);
 			return data;
 		}
-		else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' ) {
+		else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' )
+		{
 			String tmp;
 			int x;
-			if( str.length() > 1 && str.startsWith("0x" ) ) {
+			if( str.length() > 1 && str.startsWith("0x" ) )
+			{
 				tmp = "0x";
 				str = str.substring(2, str.length());
 			}
-			else if( str.length() > 1 && str.startsWith("-") ) {
+			else if( str.length() > 1 && str.startsWith("-") )
+			{
 				tmp = "-";
 				str = str.substring(1, str.length());
 			}
-			else {
+			else
+			{
 				tmp = "";
 			}
-			while( !str.equals("") && (Character.isDigit(str.charAt(0))) ) {
+			while( !str.equals("") && (Character.isDigit(str.charAt(0))) )
+			{
 				tmp += str.charAt(0);
 			  //  tmp += str.substring(0, 1);
-				if( str.length() > 1 ) {
+				if( str.length() > 1 )
+				{
 					str = str.substring(1, str.length());
 				}
-				else {
+				else
+				{
 					str = "";
 				}
 			}
-			try {
+			try
+			{
 				x = Integer.parseInt(tmp);
 			}
-			catch( NumberFormatException e ) {
+			catch( NumberFormatException e )
+			{
 				throw new I3Exception("Invalid number format: " + tmp);
 			}
 			if((str.length()>1)&&(str.charAt(0)=='.'))
@@ -226,7 +259,8 @@ public class LPCData {
 				while((str.length()>0)&&(Character.isDigit(str.charAt(0))))
 					str=str.substring(1);
 			}
-			if( !flag ) {
+			if( !flag )
+			{
 				return Integer.valueOf(x);
 			}
 				

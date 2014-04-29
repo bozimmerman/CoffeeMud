@@ -183,7 +183,8 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  String s=getString(columnIndex);
 	  if ((s!=null)&&(s.length()>0))
-		 switch (Character.toUpperCase(s.charAt(0))) {
+		 switch (Character.toUpperCase(s.charAt(0)))
+		 {
 			case 'T': case 'Y': case '1': return true;
 		 }
 	  return false;
@@ -194,7 +195,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).byteValue();
 	  if(o instanceof Long) return ((Long)o).byteValue();
-	  try {
+	  try
+	  {
 		 return Byte.parseByte(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -212,7 +214,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).longValue();
 	  if(o instanceof Long) return ((Long)o).longValue();
-	  try {
+	  try
+	  {
 		 return Long.parseLong(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -222,7 +225,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).floatValue();
 	  if(o instanceof Long) return ((Long)o).floatValue();
-	  try {
+	  try
+	  {
 		 return Float.parseFloat(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -232,7 +236,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return 0;
 	  if(o instanceof Integer) return ((Integer)o).doubleValue();
 	  if(o instanceof Long) return ((Long)o).doubleValue();
-	  try {
+	  try
+	  {
 		 return Double.parseDouble(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -240,7 +245,8 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  Object o = getProperValue(columnIndex);
 	  if(o==null) return new java.math.BigDecimal(0);
-	  try {
+	  try
+	  {
 		 return new java.math.BigDecimal(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -257,7 +263,8 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  Object o = getProperValue(columnIndex);
 	  if(o==null) return null;
-	  try {
+	  try
+	  {
 		 return o.toString().getBytes();
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -267,7 +274,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Date(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Date(((Long)o).longValue());
-	  try {
+	  try
+	  {
 		 return java.sql.Date.valueOf(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -277,7 +285,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Time(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Time(((Long)o).longValue());
-	  try {
+	  try
+	  {
 		 return java.sql.Time.valueOf(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -287,7 +296,8 @@ public class ResultSet implements java.sql.ResultSet
 	  if(o==null) return null;
 	  if(o instanceof Integer) return new java.sql.Timestamp(((Integer)o).longValue());
 	  if(o instanceof Long) return new java.sql.Timestamp(((Long)o).longValue());
-	  try {
+	  try
+	  {
 		 return java.sql.Timestamp.valueOf(o.toString());
 	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -323,7 +333,8 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  String s=getString(columnIndex);
 	  if(s==null) return null;
-	  try {
+	  try
+	  {
 		 return new java.net.URL(s);
 	  } catch (java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
@@ -609,11 +620,13 @@ public class ResultSet implements java.sql.ResultSet
    private boolean afterLast=false;
    public boolean last() 
    { 
-	   try{
+	   try
+	   {
 		   while(next())
 			   {}
 	   }
-	   catch(java.sql.SQLException sqle){
+	   catch(java.sql.SQLException sqle)
+	   {
 		   sqle.printStackTrace();
 	   }
 	   afterLast=true;

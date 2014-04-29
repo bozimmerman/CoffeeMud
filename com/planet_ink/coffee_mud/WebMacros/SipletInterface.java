@@ -117,7 +117,8 @@ public class SipletInterface extends StdWebMacro
 		if(!initialized)
 		{
 			initialized=true;
-			CMLib.threads().startTickDown(new Tickable(){
+			CMLib.threads().startTickDown(new Tickable()
+			{
 				private int tickStatus=Tickable.STATUS_NOT;
 				public int getTickStatus() { return tickStatus;}
 				public String name() { return "SipletInterface";}

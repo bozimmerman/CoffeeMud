@@ -309,7 +309,8 @@ public class Util
 
 	public static String[] toStringArray(Vector V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			String[] s=new String[0];
 			return s;
 		}
@@ -321,7 +322,8 @@ public class Util
 
 	public static long[] toLongArray(Vector V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			long[] s=new long[0];
 			return s;
 		}
@@ -332,7 +334,8 @@ public class Util
 	}
 	public static int[] toIntArray(Vector V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			int[] s=new int[0];
 			return s;
 		}
@@ -344,7 +347,8 @@ public class Util
 
 	public static String[] toStringArray(HashSet V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			String[] s=new String[0];
 			return s;
 		}
@@ -357,7 +361,8 @@ public class Util
 
 	public static String toStringList(String[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");
@@ -369,7 +374,8 @@ public class Util
 
 	public static String toStringList(long[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");
@@ -381,7 +387,8 @@ public class Util
 
 	public static String toStringList(int[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");
@@ -394,7 +401,8 @@ public class Util
 
 	public static String toStringList(Vector V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");
@@ -406,7 +414,8 @@ public class Util
 
 	public static String toStringList(HashSet V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");
@@ -447,7 +456,8 @@ public class Util
 
 	public static String[] toStringArray(Hashtable V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			String[] s=new String[0];
 			return s;
 		}
@@ -471,7 +481,8 @@ public class Util
 
 	public static String toStringList(Hashtable V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		StringBuffer s=new StringBuffer("");

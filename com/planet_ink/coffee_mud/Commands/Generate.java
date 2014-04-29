@@ -177,7 +177,8 @@ public class Generate extends StdCommand
 			return false;
 		}
 		Vector V = new Vector();
-		try{
+		try
+		{
 			switch(codeI)
 			{
 			case LIBRARY:
@@ -219,7 +220,8 @@ public class Generate extends StdCommand
 			default:
 				break;
 			}
-		} catch(CMException cex) {
+		} catch(CMException cex)
+		{
 			mob.tell("Unable to generate: "+cex.getMessage());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("Generate",cex);

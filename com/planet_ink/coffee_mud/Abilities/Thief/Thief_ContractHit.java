@@ -201,7 +201,8 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 
 		List<MOB> V=new Vector();
-		try {
+		try
+		{
 			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
 		}catch(NoSuchElementException nse){}
 		MOB target=null;

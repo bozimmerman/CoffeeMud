@@ -77,7 +77,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());

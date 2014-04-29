@@ -388,7 +388,8 @@ public class MUD extends Thread implements MudHost
 						for(int a=M.numAllEffects()-1;a>=0;a--) // reverse enumeration
 						{
 							Ability A=M.fetchEffect(a);
-							try {
+							try
+							{
 								if((A!=null)&&(A.canBeUninvoked()))
 									A.unInvoke();
 								if((A!=null)&&(!A.isSavable()))
@@ -627,7 +628,8 @@ public class MUD extends Thread implements MudHost
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
 			if(CMLib.hosts().get(m) instanceof Thread)
 			{
-				try{
+				try
+				{
 					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
 				} catch(Exception t){}
 			}
@@ -860,7 +862,8 @@ public class MUD extends Thread implements MudHost
 		{
 			super(G,"HOST"+grpid);
 			//threadGroup=G;
-			synchronized("HostGroupInit".intern()) {
+			synchronized("HostGroupInit".intern())
+			{
 				logName="mud"+((grpid>0)?("."+grpid):"");
 				grpid++;
 				iniFile=iniFileName;
@@ -939,7 +942,8 @@ public class MUD extends Thread implements MudHost
 			{
 				DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
 				while((!MUD.bringDown)
-				&&((baseEngine==null)||(!baseEngine.isConnected()))) {
+				&&((baseEngine==null)||(!baseEngine.isConnected())))
+				{
 					try {Thread.sleep(500);}catch(Exception e){ break;}
 					baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
 				}
@@ -994,12 +998,14 @@ public class MUD extends Thread implements MudHost
 			}
 
 			// test the database
-			try {
+			try
+			{
 				CMFile F = new CMFile("/test.the.database",null);
 				if(F.exists())
 					Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
 					
-			} catch(Exception e) {
+			} catch(Exception e)
+			{
 				Log.errOut(e);
 				Log.errOut("Database error! Panic shutdown!");
 				return false;
@@ -1211,8 +1217,10 @@ public class MUD extends Thread implements MudHost
 			Resources.shareWith(MudHost.MAIN_HOST);
 			
 			// wait for ini to be loaded, and for other matters
-			if(threadCode!=MAIN_HOST) {
-				while((CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD)==null)&&(!MUD.bringDown)) {
+			if(threadCode!=MAIN_HOST)
+			{
+				while((CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD)==null)&&(!MUD.bringDown))
+				{
 					try {Thread.sleep(500);}catch(Exception e){ break;}
 				}
 				if(MUD.bringDown)
@@ -1265,10 +1273,12 @@ public class MUD extends Thread implements MudHost
 			CMProps.setVar(CMProps.Str.MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			
 			// an arbitrary dividing line. After threadCode 0 
-			if(threadCode==MAIN_HOST) {
+			if(threadCode==MAIN_HOST)
+			{
 				CMLib.registerLibrary(serviceEngine);
 				CMLib.registerLibrary(new IMudClient());
-			} else {
+			} else
+			{
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.THREADS));
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD));
 			}
@@ -1458,8 +1468,10 @@ public class MUD extends Thread implements MudHost
 		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
 
 		
-		Thread shutdownHook=new Thread("ShutdownHook") {
-			public void run() {
+		Thread shutdownHook=new Thread("ShutdownHook")
+		{
+			public void run()
+			{
 				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 					MUD.globalShutdown(null,true,null);
 			}

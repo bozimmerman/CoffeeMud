@@ -753,7 +753,8 @@ public class CMath
 	 * @param st the possible math expression
 	 * @return true if it is a math expression
 	 */
-	public final static boolean isMathExpression(final String st){
+	public final static boolean isMathExpression(final String st)
+	{
 		if((st==null)||(st.length()==0)) return false;
 		try{ parseMathExpression(st);}catch(Exception e){ return false;}
 		return true;
@@ -768,7 +769,8 @@ public class CMath
 	 * @param vars the 0 based variables
 	 * @return true if it is a math expression
 	 */
-	public final static boolean isMathExpression(final String st, final double[] vars){
+	public final static boolean isMathExpression(final String st, final double[] vars)
+	{
 		if((st==null)||(st.length()==0)) return false;
 		try{ parseMathExpression(st,vars);}catch(Exception e){ return false;}
 		return true;
@@ -856,13 +858,15 @@ public class CMath
 	private final static double parseMathExpression(final StreamTokenizer st, final boolean inParen, final double[] vars, final double previous)
 		throws ArithmeticException
 	{
-		if(!inParen) {
+		if(!inParen)
+		{
 			st.ordinaryChar('/');
 			st.ordinaryChar('x');
 			st.ordinaryChar('X');
 		}
 		double finalValue=0;
-		try{
+		try
+		{
 			int c=st.nextToken();
 			char lastOperation='+';
 			while(c!=StreamTokenizer.TT_EOF)
@@ -982,14 +986,16 @@ public class CMath
 	private final static LinkedList<CompiledOperation> compileMathExpression(final StreamTokenizer st, final boolean inParen)
 		throws ArithmeticException
 	{
-		if(!inParen) {
+		if(!inParen)
+		{
 			st.ordinaryChar('/');
 			st.ordinaryChar('x');
 			st.ordinaryChar('X');
 		}
 		final LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
 		
-		try{
+		try
+		{
 			int c=st.nextToken();
 			char lastOperation='+';
 			while(c!=StreamTokenizer.TT_EOF)
@@ -1569,7 +1575,8 @@ public class CMath
 				return null;
 		final Integer num=Integer.valueOf(s_int(str.substring(0,endNumber)));
 		final String rest=str.substring(endNumber);
-		return new Entry<Integer,String>(){
+		return new Entry<Integer,String>()
+		{
 			@Override public Integer getKey() { return num;}
 			@Override public String getValue() { return rest;}
 			@Override public String setValue(String value) { return value;}
@@ -1622,7 +1629,8 @@ public class CMath
 				number=Integer.valueOf(s_int(str.substring(dex+1)));
 			}
 		}
-		return new Entry<String,Integer>(){
+		return new Entry<String,Integer>()
+		{
 			@Override public String getKey() { return codeStr;}
 			@Override public Integer getValue() { return number;}
 			@Override public Integer setValue(Integer value) { return value;}

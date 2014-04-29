@@ -40,7 +40,8 @@ public class DefaultPhyStats implements PhyStats
 	
 	private final static String[]	empty			= new String[0];
 	private final static int[]		DEFAULT_STATS	= {0,0,100,0,0,0,0,0,0,0};
-	private final static Comparator<String> ambiComp= new Comparator<String>() {
+	private final static Comparator<String> ambiComp= new Comparator<String>()
+	{
 		@Override public int compare(String o1, String o2) { return o1.compareToIgnoreCase(o2); }
 	};
 	
@@ -174,7 +175,8 @@ public class DefaultPhyStats implements PhyStats
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(PhyStats E){
+	public boolean sameAs(PhyStats E)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			   return false;
@@ -183,7 +185,8 @@ public class DefaultPhyStats implements PhyStats
 
 	public void setStat(String code, String val)
 	{
-		switch(getCodeNum(code)){
+		switch(getCodeNum(code))
+		{
 		case 0: setSensesMask(CMath.s_parseIntExpression(val)); break;
 		case 1: setDisposition(CMath.s_parseIntExpression(val)); break;
 		case 2: setLevel(CMath.s_parseIntExpression(val)); break;
@@ -208,7 +211,8 @@ public class DefaultPhyStats implements PhyStats
 	}
 	public String getStat(String code)
 	{
-		switch(getCodeNum(code)){
+		switch(getCodeNum(code))
+		{
 		case 0: return ""+sensesMask();
 		case 1: return ""+disposition();
 		case 2: return ""+level();

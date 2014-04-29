@@ -188,15 +188,18 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		return localItems.iterator();
 	}
 	
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 	
-	public long getTickInterval() {
+	public long getTickInterval()
+	{
 		return tickTime;
 	}
 	
-	public long getNextTickTime() {
+	public long getNextTickTime()
+	{
 		return nextTickTime;
 	}
 	

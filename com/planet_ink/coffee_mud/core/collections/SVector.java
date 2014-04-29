@@ -119,16 +119,19 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 				remove(o);
 	}
 	
-	public int capacity() {
+	public int capacity()
+	{
 		return size();
 	}
 
-	public synchronized Vector<T> toVector() {
+	public synchronized Vector<T> toVector()
+	{
 		return new XVector<T>(this);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized SVector<T> copyOf() {
+	public synchronized SVector<T> copyOf()
+	{
 		try
 		{
 			return (SVector<T>)clone();
@@ -139,51 +142,62 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		}
 	}
 
-	public synchronized void copyInto(Object[] anArray) {
+	public synchronized void copyInto(Object[] anArray)
+	{
 		toArray(anArray);
 	}
 
-	public synchronized T elementAt(int index) {
+	public synchronized T elementAt(int index)
+	{
 		return get(index);
 	}
 
-	public synchronized Enumeration<T> elements() {
+	public synchronized Enumeration<T> elements()
+	{
 		return new Enumeration<T>()
 		{
 			final Iterator<T> i=iterator();
-			public boolean hasMoreElements() {
+			public boolean hasMoreElements()
+			{
 				return i.hasNext();
 			}
-			public T nextElement() {
+			public T nextElement()
+			{
 				return i.next();
 			}
 		};
 	}
 
-	public synchronized void ensureCapacity(int minCapacity) {
+	public synchronized void ensureCapacity(int minCapacity)
+	{
 		throw new IllegalArgumentException();
 	}
 
-	public synchronized T firstElement() {
+	public synchronized T firstElement()
+	{
 		return (size()==0)?null:get(0);
 	}
 
-	public synchronized T lastElement() {
+	public synchronized T lastElement()
+	{
 		return (size()==0)?null:get(size()-1);
 	}
 
-	public synchronized void setElementAt(T obj, int index) {
+	public synchronized void setElementAt(T obj, int index)
+	{
 		set(index, obj);
 	}
 
-	public synchronized void setSize(int newSize) {
+	public synchronized void setSize(int newSize)
+	{
 		if(newSize==0)
 			clear();
 		else
 			throw new IllegalArgumentException();
 	}
 
-	public synchronized void trimToSize() {
+	public synchronized void trimToSize()
+	{
 	}
 	
 	public synchronized void addElement(T obj) 

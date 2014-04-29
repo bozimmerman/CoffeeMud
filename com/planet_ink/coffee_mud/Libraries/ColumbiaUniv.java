@@ -390,7 +390,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				WKlistMask=expertMath(WKlistMask,l);
 				WKfinalMask=expertMath(WKfinalMask,l);
 				def=addDefinition(WKID,WKname,baseName,WKlistMask,WKfinalMask,costs,data);
-				if(def!=null){
+				if(def!=null)
+				{
 					def.compiledFinalMask();
 					def.compiledListMask();
 				}

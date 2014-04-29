@@ -55,7 +55,8 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return null;
 	}
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMClass.getWeapon("Sword"));
 		return V;
@@ -66,7 +67,8 @@ public class Trap_WeaponSwing extends StdTrap
 		if(P==null) return null;
 		Item I=getPoison(mob);
 		setMiscText("3/a club");
-		if(I!=null){
+		if(I!=null)
+		{
 			setMiscText(""+I.basePhyStats().damage()+"/"+I.name());
 			I.destroy();
 		}

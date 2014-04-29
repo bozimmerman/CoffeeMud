@@ -153,7 +153,8 @@ public class OffLine extends Thread implements MudHost
 		{
 			offLineText=new StringBuffer("");
 			FileInputStream fin = null;
-			try{
+			try
+			{
 				fin = new FileInputStream(fileName);
 				while(fin.available()>0)
 					offLineText.append((char)fin.read());
@@ -198,7 +199,8 @@ public class OffLine extends Thread implements MudHost
 			long LastConnectionDelay=(5*60*1000);
 			boolean anyAtThisAddress=false;
 			int maxAtThisAddress=6;
-			try{
+			try
+			{
 				for(int a=accessed.size()-1;a>=0;a--)
 				{
 					if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())

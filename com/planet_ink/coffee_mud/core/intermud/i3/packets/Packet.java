@@ -72,46 +72,56 @@ public class Packet {
 	public String target_name = null;
 	public int    type = 0;
 
-	public Packet() {
+	public Packet()
+	{
 		super();
 		sender_mud = I3Server.getMudName();
 	}
 
-	public Packet(Vector v) {
+	public Packet(Vector v)
+	{
 		super();
 		{
 			Object ob;
 
 			ob = v.elementAt(2);
-			if( ob instanceof String ) {
+			if( ob instanceof String )
+			{
 				sender_mud = (String)ob;
 			}
 			ob = v.elementAt(3);
-			if( ob instanceof String ) {
+			if( ob instanceof String )
+			{
 				sender_name = (String)ob;
 			}
 			ob = v.elementAt(4);
-			if( ob instanceof String ) {
+			if( ob instanceof String )
+			{
 				target_mud = (String)ob;
 			}
 			ob = v.elementAt(5);
-			if( ob instanceof String ) {
+			if( ob instanceof String )
+			{
 				target_name = (String)ob;
 			}
 		}
 	}
 
-	public String convertString(String str) {
+	public String convertString(String str)
+	{
 		StringBuffer b = new StringBuffer(str);
 		int i = 0;
 
-		while( i < b.length() ) {
+		while( i < b.length() )
+		{
 			char c = b.charAt(i);
 
-			if( c != '\\' && c != '"' ) {
+			if( c != '\\' && c != '"' )
+			{
 				i++;
 			}
-			else {
+			else
+			{
 				b.insert(i, '\\');
 				i += 2;
 			}
@@ -120,7 +130,8 @@ public class Packet {
 	}
 
 	public void send() throws InvalidPacketException {
-		if( type == 0 ) {
+		if( type == 0 )
+		{
 			throw new InvalidPacketException();
 		}
 		Intermud.sendPacket(this);

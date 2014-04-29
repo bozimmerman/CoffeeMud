@@ -231,7 +231,8 @@ public class Spell_Cogniportive extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
 				beneficialAffect(mob,target,asLevel,1000);
 				A=target.fetchEffect(ID());
-				if(A!=null) {
+				if(A!=null)
+				{
 					String home=((Spell_Cogniportive)A).establishHome(mob,target,false);
 					if(home.length()==0)
 						home=((Spell_Cogniportive)A).establishHome(mob,target,true);

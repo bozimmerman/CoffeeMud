@@ -140,7 +140,8 @@ public class Spell_LimbRack extends Spell
 				{
 					super.maliciousAffect(mob,target,asLevel,12,-1);
 					Ability A2=target.fetchEffect(ID());
-					if(A2!=null){
+					if(A2!=null)
+					{
 						((Spell_LimbRack)A2).limbsToRemove=new Vector<String>();
 						((Spell_LimbRack)A2).limbsToRemove.addAll(remainingLimbList);
 					}

@@ -558,7 +558,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public String getThinSortValue(ThinPlayer player, int code) 
 	{
-		switch(code) {
+		switch(code)
+		{
 		case 0: return player.name;
 		case 1: return player.charClass;
 		case 2: return player.race;
@@ -573,7 +574,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public String getThinSortValue(PlayerAccount account, int code) 
 	{
-		switch(code) {
+		switch(code)
+		{
 		case 0: return account.getAccountName();
 		case 1: return Long.toString(account.getLastDateTime());
 		case 2: return account.getEmail();
@@ -997,7 +999,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			name="THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
-			CMLib.threads().executeRunnable(new Runnable(){
+			CMLib.threads().executeRunnable(new Runnable()
+			{
 				@Override
 				public void run() 
 				{

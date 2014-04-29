@@ -111,7 +111,8 @@ public class Prop_Artifact extends Property
 	{
 		if((affected!=null)&&(getItemID().length()>0))
 		{
-			try{
+			try
+			{
 				java.io.ByteArrayOutputStream o=new java.io.ByteArrayOutputStream();
 				new Exception().printStackTrace(new java.io.PrintStream(o));
 				o.close();

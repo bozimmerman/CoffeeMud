@@ -77,8 +77,10 @@ public class ClanDetails extends StdCommand
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
 					@SuppressWarnings("unchecked")
 	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
-					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>(){
-	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
+					{
+	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+	                    {
 	                    	return o2.second.compareTo(o1.second);
 	                    }
 					});
@@ -113,8 +115,10 @@ public class ClanDetails extends StdCommand
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
 					@SuppressWarnings("unchecked")
 	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
-					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>(){
-	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
+					{
+	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+	                    {
 	                    	return o2.second.compareTo(o1.second);
 	                    }
 					});

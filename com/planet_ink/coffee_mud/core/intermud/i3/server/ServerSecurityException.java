@@ -47,7 +47,8 @@ public class ServerSecurityException extends Exception
 	 * Constructs a new security excetption with a generic
 	 * message.
 	 */
-	public ServerSecurityException() {
+	public ServerSecurityException()
+	{
 		this("A general security exception occurred.");
 	}
 
@@ -56,7 +57,8 @@ public class ServerSecurityException extends Exception
 	 * specified error message,
 	 * @param err the error message
 	 */
-	public ServerSecurityException(String err) {
+	public ServerSecurityException(String err)
+	{
 		super(err);
 	}
 }

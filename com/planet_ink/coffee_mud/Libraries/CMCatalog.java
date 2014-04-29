@@ -1023,7 +1023,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				return;
 			}
 			Environmental o=null;
-			try {
+			try
+			{
 				for(int r=refs.size()-1;r>=0;r--)
 				{
 					o=refs.elementAt(r).get();
@@ -1037,7 +1038,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			if(noRefs) return null;
 			Physical o=null;
-			try {
+			try
+			{
 				for(int r=0;r<refs.size();r++)
 				{
 					o=refs.elementAt(r).get();
@@ -1181,10 +1183,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 	public CMFile.CMVFSDir getCatalogRoot(final CMFile.CMVFSDir root)
 	{
-		return new CMFile.CMVFSDir(root,root.getPath()+"catalog/") {
+		return new CMFile.CMVFSDir(root,root.getPath()+"catalog/")
+		{
 			private CMFile.CMVFSFile[] myFiles=null;
 			private CMFile.CMVFSFile[] oldFiles=null;
-			@Override protected CMFile.CMVFSFile[] getFiles() {
+			@Override protected CMFile.CMVFSFile[] getFiles()
+			{
 				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
 				{
 					oldFiles=super.files;

@@ -400,7 +400,8 @@ public class DefaultClan implements Clan
 
 	public int getGovernmentID(){return government;}
 	public void setGovernmentID(int type){government=type; lastGovernmentLoadTime=-1;}
-	public String getCategory(){
+	public String getCategory()
+	{
 		if(clanCategory!=null)
 			return clanCategory;
 		return govt().getCategory();
@@ -436,7 +437,8 @@ public class DefaultClan implements Clan
 		else
 			clanCategory=newCategory;
 	}
-	public boolean isRivalrous() {
+	public boolean isRivalrous()
+	{
 		if(isRivalrous==null)
 			return govt().isRivalrous();
 		return isRivalrous.booleanValue();
@@ -735,7 +737,8 @@ public class DefaultClan implements Clan
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
 					msg.append(t.codeString+" ");
-					switch(t){
+					switch(t)
+					{
 						case Areas: msg.append("("+control.size()+") "); break;
 						case Points: msg.append("("+controlPoints+") "); break;
 						case Experience: msg.append("("+getExp()+") "); break;
@@ -1179,7 +1182,8 @@ public class DefaultClan implements Clan
 			this.overrideMinClanMembers=null;
 		}
 		
-		try{
+		try
+		{
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
 			long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
@@ -1654,7 +1658,8 @@ public class DefaultClan implements Clan
 	{
 		int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
 		if(dex<0) return;
-		switch(dex) {
+		switch(dex)
+		{
 		case 0: setAcceptanceSettings(val); break;
 		case 1: break; // detail
 		case 2: setDonation(val); break;

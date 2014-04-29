@@ -386,7 +386,8 @@ public class AbilityData extends StdWebMacro
 					str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
 					str.append("<OPTION VALUE=\"\""+(((o>0)&&(o<Ability.COST_PCT))?" SELECTED":"")+"\">Custom Value");
 					str.append("<OPTION VALUE=\""+Ability.COST_ALL+"\""+((o==Ability.COST_ALL)?" SELECTED":"")+">All Mana");
-					for(int v=Ability.COST_ALL-5;v>=Ability.COST_ALL-95;v-=5) {
+					for(int v=Ability.COST_ALL-5;v>=Ability.COST_ALL-95;v-=5)
+					{
 						str.append("<OPTION VALUE=\""+v+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+(Ability.COST_ALL-v)+"%");
 					}
 					str.append(", ");
@@ -780,7 +781,8 @@ public class AbilityData extends StdWebMacro
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
 
 						int x=thang.toString().indexOf('/');
-						while(x>0){
+						while(x>0)
+						{
 							thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
 							x=thang.toString().indexOf('/',x+1);
 						}

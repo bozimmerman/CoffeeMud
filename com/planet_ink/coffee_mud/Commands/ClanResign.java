@@ -60,7 +60,8 @@ public class ClanResign extends StdCommand
 		else
 		if(S!=null)
 		{
-			S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN",0){
+			S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN",0)
+			{
 				@Override public void showPrompt() { S.promptPrint("Resign from "+C.getName()+".  Are you absolutely SURE (y/N)?");}
 				@Override public void timedOut() { }
 				@Override public void callBack() 

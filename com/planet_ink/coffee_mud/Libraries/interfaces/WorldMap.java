@@ -172,16 +172,20 @@ public interface WorldMap extends CMLibrary
 		{ this.roomW=new WeakReference<Room>(room); this.objW=new WeakReference<PhysicalAgent>(obj);}
 	}
 	
-	public static Filterer<Area> planetsAreaFilter=new Filterer<Area>() {
+	public static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
+	{
 		@Override
-		public boolean passesFilter(Area obj) {
+		public boolean passesFilter(Area obj)
+		{
 			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
 		}
 	};
 	
-	public static Filterer<Area> mundaneAreaFilter=new Filterer<Area>() {
+	public static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
+	{
 		@Override
-		public boolean passesFilter(Area obj) {
+		public boolean passesFilter(Area obj)
+		{
 			return !(obj instanceof SpaceObject);
 		}
 	};

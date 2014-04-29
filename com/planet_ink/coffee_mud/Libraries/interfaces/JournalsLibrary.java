@@ -95,7 +95,8 @@ public interface JournalsLibrary extends CMLibrary
 		public int replies=0;
 		public int views=0;
 		public boolean isLastEntry=false;
-		public int compareTo(JournalEntry o) {
+		public int compareTo(JournalEntry o)
+		{
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;
 			return 0;

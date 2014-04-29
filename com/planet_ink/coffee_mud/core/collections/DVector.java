@@ -152,7 +152,8 @@ public class DVector implements Cloneable, java.io.Serializable
 		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
-	public boolean contains(Object O){
+	public boolean contains(Object O)
+	{
 		return indexOf(O)>=0;
 	}
 	public synchronized boolean containsIgnoreCase(String S)

@@ -96,7 +96,8 @@ public class Spell_FlamingSword extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null){
+		if(target==null)
+		{
 			return false;
 		}
 		if((!(target instanceof Weapon))

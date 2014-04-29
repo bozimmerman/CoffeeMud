@@ -91,7 +91,8 @@ public class StdPowder extends StdItem implements MagicDust {
 	{ return miscText;}
 	public void setSpellList(String list){miscText=list;}
 
-	public boolean malicious(SpellHolder me) {
+	public boolean malicious(SpellHolder me)
+	{
 		List<Ability> spells=getSpells();
 		for(Ability checking : spells) 
 			if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)

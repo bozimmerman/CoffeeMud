@@ -705,7 +705,8 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("GENHELP"))
 				{
 					String old=httpReq.getUrlParameter("GENHELP");
-					if(old==null){
+					if(old==null)
+					{
 						R=R.makeGenRace();
 						old=R.getStat("HELP");
 					}
@@ -714,7 +715,8 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("HEALTHRACE"))
 				{
 					String old=httpReq.getUrlParameter("HEALTHRACE");
-					if(old==null){
+					if(old==null)
+					{
 						R=R.makeGenRace();
 						old=""+R.getStat("HEALTHRACE");
 					}
@@ -723,7 +725,8 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("WEAPONRACE"))
 				{
 					String old=httpReq.getUrlParameter("WEAPONRACE");
-					if(old==null){
+					if(old==null)
+					{
 						R=R.makeGenRace();
 						old=""+R.getStat("WEAPONRACE");
 					}
@@ -732,7 +735,8 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("EVENTRACE"))
 				{
 					String old=httpReq.getUrlParameter("EVENTRACE");
-					if(old==null){
+					if(old==null)
+					{
 						R=R.makeGenRace();
 						old=""+R.getStat("EVENTRACE");
 					}

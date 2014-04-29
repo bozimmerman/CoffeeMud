@@ -48,7 +48,8 @@ public class InvalidNameException extends Exception
 	 * the specified reason.
 	 * @param reason the reason for the exception
 	 */
-	public InvalidNameException(String reason) {
+	public InvalidNameException(String reason)
+	{
 		super(reason);
 	}
 }

@@ -47,7 +47,8 @@ public class PersistenceException extends Exception
 	public static final long serialVersionUID=0;
 	private Exception prior;
 
-	public PersistenceException() {
+	public PersistenceException()
+	{
 		this("No reason given.");
 	}
 
@@ -56,7 +57,8 @@ public class PersistenceException extends Exception
 	 * specified exception explanation.
 	 * @param reason the reason for the exception
 	 */
-	public PersistenceException(String reason) {
+	public PersistenceException(String reason)
+	{
 		this(reason, null);
 	}
 
@@ -66,7 +68,8 @@ public class PersistenceException extends Exception
 	 * persistence operation such as a save or restore.
 	 * @param e the exception causing this exception to be created
 	 */
-	public PersistenceException(Exception e) {
+	public PersistenceException(Exception e)
+	{
 		this("A persistence exception occurred: " + e.getMessage(), e);
 	}
 
@@ -77,7 +80,8 @@ public class PersistenceException extends Exception
 	 * @param reason the explanation for the exception
 	 * @param e the exception causing this exception to be created
 	 */
-	public PersistenceException(String reason, Exception e) {
+	public PersistenceException(String reason, Exception e)
+	{
 		super(reason);
 		prior = e;
 	}
@@ -85,14 +89,16 @@ public class PersistenceException extends Exception
 	/**
 	 * @return the exception which caused this one to be created
 	 */
-	public Exception getPriorException() {
+	public Exception getPriorException()
+	{
 		return prior;
 	}
 
 	/**
 	 * @return the full chain of exceptions leading to this one
 	 */
-	public Enumeration getExceptionChain() {
+	public Enumeration getExceptionChain()
+	{
 		return new PersistenceExceptionEnumeration(this);
 	}
 }
@@ -101,21 +107,25 @@ public class PersistenceException extends Exception
 final class PersistenceExceptionEnumeration implements Enumeration {
   private Exception exception;
 
-  public PersistenceExceptionEnumeration() {
+  public PersistenceExceptionEnumeration()
+  {
 	this(null);
   }
 
-  public PersistenceExceptionEnumeration(Exception e) {
+  public PersistenceExceptionEnumeration(Exception e)
+  {
 	exception = e;
   }
 
-  public boolean hasMoreElements() {
+  public boolean hasMoreElements()
+  {
 
 	if( exception == null ) return false;
 	return true;
   }
 
-  public Object nextElement() {
+  public Object nextElement()
+  {
 	Exception e;
 
 	if( exception == null ) throw new NoSuchElementException();

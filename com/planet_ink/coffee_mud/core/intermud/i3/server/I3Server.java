@@ -61,7 +61,8 @@ public class I3Server {
 	{
 		try
 		{
-			if( started ) {
+			if( started )
+			{
 				throw new ServerSecurityException("Illegal attempt to start Server.");
 			}
 			started = true;
@@ -89,21 +90,25 @@ public class I3Server {
 		return serverClient.findObject(file);
 	}
 
-	static public ServerUser[] getInteractives() {
+	static public ServerUser[] getInteractives()
+	{
 		return serverClient.getInteractives();
 	}
 
-	static public String getMudName() {
+	static public String getMudName()
+	{
 		return serverClient.getMudName();
 	}
 
-	static public int getPort() {
+	static public int getPort()
+	{
 		return serverClient.getPort();
 	}
 
 	static public void shutdown()
 	{
-		try{
+		try
+		{
 			try
 			{
 				ShutdownPacket shutdown=new ShutdownPacket();
@@ -114,8 +119,10 @@ public class I3Server {
 		}catch(Exception e){}
 	}
 	
-	static public void removeObject(ServerObject ob) {
-		if( !ob.getDestructed() ) {
+	static public void removeObject(ServerObject ob)
+	{
+		if( !ob.getDestructed() )
+		{
 			return;
 		}
 		serverClient.removeObject(ob);

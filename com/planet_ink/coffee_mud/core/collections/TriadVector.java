@@ -20,13 +20,16 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Triad<T,K,L>>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
-	public Triad.FirstConverter<T,K,L> getFirstConverter() {
+	public Triad.FirstConverter<T,K,L> getFirstConverter()
+	{
 		return new Triad.FirstConverter<T, K, L>();
 	}
-	public Triad.SecondConverter<T,K,L> getSecondConverter() {
+	public Triad.SecondConverter<T,K,L> getSecondConverter()
+	{
 		return new Triad.SecondConverter<T, K, L>();
 	}
-	public Triad.ThirdConverter<T,K,L> getThirdConverter() {
+	public Triad.ThirdConverter<T,K,L> getThirdConverter()
+	{
 		return new Triad.ThirdConverter<T, K, L>();
 	}
 	public Enumeration<T> firstElements()
@@ -126,7 +129,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -135,7 +139,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -144,7 +149,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int indexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;
@@ -153,7 +159,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -162,7 +169,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -171,7 +179,8 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	}
 	public int lastIndexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;

@@ -244,7 +244,8 @@ public class StdClanCommonItem extends StdClanItem
 								MOB possibleMOBToGoTo=null;
 								for(int i=0;i<DV.size();i++)
 								{
-									try{
+									try
+									{
 										int rand=i;
 										needs=(List)DV.elementAt(rand,2);
 										M2=(MOB)DV.elementAt(rand,1);
@@ -276,7 +277,8 @@ public class StdClanCommonItem extends StdClanItem
 							if(!getToWork)
 							for(int i=DV.size()-1;i>=0;i--)
 							{
-								try{
+								try
+								{
 									int rand=i;
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);
@@ -301,7 +303,8 @@ public class StdClanCommonItem extends StdClanItem
 							if(!getToWork)
 							for(int i=0;i<DV.size();i++)
 							{
-								try{
+								try
+								{
 									int rand=CMLib.dice().roll(1,DV.size(),-1);
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);
@@ -318,7 +321,8 @@ public class StdClanCommonItem extends StdClanItem
 							if(!getToWork)
 							for(int i=0;i<DV.size();i++)
 							{
-								try{
+								try
+								{
 									int rand=CMLib.dice().roll(1,DV.size(),-1);
 									needs=(List)DV.elementAt(rand,2);
 									M2=(MOB)DV.elementAt(rand,1);

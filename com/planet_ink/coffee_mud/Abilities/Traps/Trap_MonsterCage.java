@@ -92,7 +92,8 @@ public class Trap_MonsterCage extends StdTrap
 		super.unInvoke();
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());

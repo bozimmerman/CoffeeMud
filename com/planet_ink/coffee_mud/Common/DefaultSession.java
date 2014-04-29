@@ -166,7 +166,8 @@ public class DefaultSession implements Session
 			debugOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
 			debugInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
 			if(debugInput)
-				CMLib.threads().startTickDown(new Tickable(){
+				CMLib.threads().startTickDown(new Tickable()
+				{
 					@Override public String ID() { return "SessionTicker";}
 					@Override public CMObject newInstance() { return null; }
 					@Override public CMObject copyOf() { return null; }
@@ -174,7 +175,8 @@ public class DefaultSession implements Session
 					@Override public int compareTo(CMObject o) { return 0;}
 					@Override public String name() { return ID(); }
 					@Override public int getTickStatus() { return 0; }
-					@Override public boolean tick(Tickable ticking, int tickID) {
+					@Override public boolean tick(Tickable ticking, int tickID)
+					{
 						if(debugInputBuf.length()>0)
 						{
 							Log.sysOut("INPUT: '"+debugInputBuf.toString()+"'");
@@ -217,9 +219,11 @@ public class DefaultSession implements Session
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 
-			prompt(new TickingCallback(250){
+			prompt(new TickingCallback(250)
+			{
 				private final long firstIACIn=lastIACIn;
-				@Override public boolean tick(int counter) {
+				@Override public boolean tick(int counter)
+				{
 					try
 					{
 						if(out!=null)
@@ -247,10 +251,12 @@ public class DefaultSession implements Session
 							if(((lastIACIn>firstIACIn)&&((System.currentTimeMillis()-lastIACIn)>500))
 							||((System.currentTimeMillis()-lastIACIn)>5000))
 							{
-								if(getClientTelnetMode(TELNET_COMPRESS2)) {
+								if(getClientTelnetMode(TELNET_COMPRESS2))
+								{
 									negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 									rawout.flush();
-									if(getClientTelnetMode(TELNET_COMPRESS2)) {
+									if(getClientTelnetMode(TELNET_COMPRESS2))
+									{
 										ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 										rawout=zOut;
 										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
@@ -617,12 +623,14 @@ public class DefaultSession implements Session
 		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));
 	}
-	public synchronized int snoopSuspension(int change){
+	public synchronized int snoopSuspension(int change)
+	{
 		snoopSuspensionStack+=change;
 		return snoopSuspensionStack;
 	}
 
-	private int metaFlags() {
+	private int metaFlags()
+	{
 		return ((snoops.size()>0)?Command.METAFLAG_SNOOPED:0)
 			   |(((mob!=null)&&(mob.soulMate()!=null))?Command.METAFLAG_POSSESSED:0);
 	}
@@ -669,7 +677,8 @@ public class DefaultSession implements Session
 	}
 
 	protected long getWriteStartTime(){return writeStartTime;}
-	public boolean isLockedUpWriting(){
+	public boolean isLockedUpWriting()
+	{
 		long time=writeStartTime;
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
@@ -756,7 +765,8 @@ public class DefaultSession implements Session
 	}
 	public void snoopSupportPrint(final String msg, final boolean noCache)
 	{
-		try{
+		try
+		{
 			if((snoops.size()>0)&&(snoopSuspensionStack<=0))
 			{
 				String msgColored;
@@ -1313,7 +1323,8 @@ public class DefaultSession implements Session
 				setClientTelnetMode(last,true);
 				if(connectionComplete)
 				{
-					prompt(new TickingCallback(250){
+					prompt(new TickingCallback(250)
+					{
 						@Override public boolean tick(int counter) 
 						{
 							try
@@ -1326,7 +1337,8 @@ public class DefaultSession implements Session
 								{
 								case 3:
 								{
-									if(getClientTelnetMode(TELNET_COMPRESS2)) {
+									if(getClientTelnetMode(TELNET_COMPRESS2))
+									{
 										negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 										rawout.flush();
 										ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
@@ -1455,7 +1467,8 @@ public class DefaultSession implements Session
 		int maxBytes=inMaxBytesPerChar;
 		while((in!=null) && !in.ready() && !killFlag && (rawin!=null) &&(rawin.available()>0) && (--maxBytes>=0))
 		{
-			try{
+			try
+			{
 				return in.read();
 			} 
 			catch(java.io.InterruptedIOException e)
@@ -1802,7 +1815,8 @@ public class DefaultSession implements Session
 						setStatus(SessionStatus.LOGOUT8);
 						if(out!=null)
 						{
-							try{
+							try
+							{
 								if(!out.checkError())
 								{
 									out.write(PINGCHARS);
@@ -2002,11 +2016,15 @@ public class DefaultSession implements Session
 						callBack.setInput(input);
 						if(!callBack.waitForInput())
 						{
-							CMLib.threads().executeRunnable(groupName,new Runnable(){
-								public void run(){
-									try {
+							CMLib.threads().executeRunnable(groupName,new Runnable()
+							{
+								public void run()
+								{
+									try
+									{
 										callBack.callBack();
-									} catch(Throwable t) {
+									} catch(Throwable t)
+									{
 										Log.errOut(t);
 									}
 								}
@@ -2168,7 +2186,8 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			synchronized(sock) {
+			synchronized(sock)
+			{
 				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 					errorOut(e);
 			}
@@ -2178,7 +2197,8 @@ public class DefaultSession implements Session
 		}
 		catch(Exception t)
 		{
-			synchronized(sock) {
+			synchronized(sock)
+			{
 				if(!Log.isMaskedErrMsg(t.getMessage())
 				&&((!killFlag)
 					||(sock[0]!=null&&sock[0].isConnected())))
@@ -2407,7 +2427,8 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			synchronized(sock) {
+			synchronized(sock)
+			{
 				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 					errorOut(e);
 			}
@@ -2417,7 +2438,8 @@ public class DefaultSession implements Session
 		}
 		catch(Exception t)
 		{
-			synchronized(sock) {
+			synchronized(sock)
+			{
 				if((!Log.isMaskedErrMsg(t.getMessage()))
 				&&((!killFlag)
 					||(sock[0]!=null&&sock[0].isConnected())))
@@ -2472,7 +2494,8 @@ public class DefaultSession implements Session
 				CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=theMOB.location();
 				if(R!=null) skipRooms.remove(R);
-				try{
+				try
+				{
 					if((R!=null)&&(theMOB.location()!=null))
 						R.send(theMOB,msg);
 					for(Iterator i=skipRooms.iterator();i.hasNext();)
@@ -2494,7 +2517,8 @@ public class DefaultSession implements Session
 			{
 				CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=null;
-				try{
+				try
+				{
 					for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						R=(Room)e.nextElement();
@@ -2505,7 +2529,8 @@ public class DefaultSession implements Session
 				theMOB=null;
 			}
 		}
-		public long activeTimeMillis() {
+		public long activeTimeMillis()
+		{
 			return (activeMillis>0)?System.currentTimeMillis()-activeMillis:0;
 		}
 	}

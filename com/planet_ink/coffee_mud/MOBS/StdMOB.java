@@ -448,7 +448,7 @@ public class StdMOB implements MOB
 		expirationDate = time;
 	}
 
-	// protected void finalize() {
+	// protected void finalize()
 	// CMClass.unbumpCounter(this,CMClass.CMObjectType.MOB); }//removed for mem
 	// & perf
 	public final boolean amDestroyed() 
@@ -613,14 +613,18 @@ public class StdMOB implements MOB
 		return basePhyStats;
 	}
 
-	private final EachApplicable<Item> recoverPhyStatsItemApplier=new EachApplicable<Item>() {
-		public final void apply(final Item I) {
+	private final EachApplicable<Item> recoverPhyStatsItemApplier=new EachApplicable<Item>()
+	{
+		public final void apply(final Item I)
+		{
 			I.recoverPhyStats();
 			I.affectPhyStats(me, phyStats);
 		}
 	};
-	private final EachApplicable<Ability> recoverPhyStatsAffectApplier=new EachApplicable<Ability>() {
-		public final void apply(final Ability A) {
+	private final EachApplicable<Ability> recoverPhyStatsAffectApplier=new EachApplicable<Ability>()
+	{
+		public final void apply(final Ability A)
+		{
 			A.affectPhyStats(me, phyStats);
 		}
 	};
@@ -714,13 +718,17 @@ public class StdMOB implements MOB
 		return charStats;
 	}
 
-	private final EachApplicable<Item> recoverCharStatsItemApplier=new EachApplicable<Item>() {
-		public final void apply(final Item I) {
+	private final EachApplicable<Item> recoverCharStatsItemApplier=new EachApplicable<Item>()
+	{
+		public final void apply(final Item I)
+		{
 			I.affectCharStats(me, charStats);
 		}
 	};
-	private final EachApplicable<Ability> recoverCharStatsAffectApplier=new EachApplicable<Ability>() {
-		public final void apply(final Ability A) {
+	private final EachApplicable<Ability> recoverCharStatsAffectApplier=new EachApplicable<Ability>()
+	{
+		public final void apply(final Ability A)
+		{
 			A.affectCharStats(me, charStats);
 		}
 	};
@@ -837,13 +845,17 @@ public class StdMOB implements MOB
 		maxState.copyInto(curState);
 	}
 
-	private final EachApplicable<Item> recoverMaxStateItemApplier=new EachApplicable<Item>() {
-		public final void apply(final Item I) {
+	private final EachApplicable<Item> recoverMaxStateItemApplier=new EachApplicable<Item>()
+	{
+		public final void apply(final Item I)
+		{
 			I.affectCharState(me, maxState);
 		}
 	};
-	private final EachApplicable<Ability> recoverMaxStateAffectApplier=new EachApplicable<Ability>() {
-		public final void apply(final Ability A) {
+	private final EachApplicable<Ability> recoverMaxStateAffectApplier=new EachApplicable<Ability>()
+	{
+		public final void apply(final Ability A)
+		{
 			A.affectCharState(me, maxState);
 		}
 	};
@@ -2689,13 +2701,17 @@ public class StdMOB implements MOB
 			cStats.getMyRace().executeMsg(this, msg);
 		}
 
-		eachBehavior(new EachApplicable<Behavior>() {
-			public final void apply(final Behavior B) {
+		eachBehavior(new EachApplicable<Behavior>()
+		{
+			public final void apply(final Behavior B)
+			{
 				B.executeMsg(me, msg);
 			}
 		});
-		eachScript(new EachApplicable<ScriptingEngine>() {
-			public final void apply(final ScriptingEngine S) {
+		eachScript(new EachApplicable<ScriptingEngine>()
+		{
+			public final void apply(final ScriptingEngine S)
+			{
 				S.executeMsg(me, msg);
 			}
 		});
@@ -2956,14 +2972,18 @@ public class StdMOB implements MOB
 		}
 
 		// the order here is significant (between eff and item -- see focus)
-		eachItem(new EachApplicable<Item>() {
-			public final void apply(final Item I) {
+		eachItem(new EachApplicable<Item>()
+		{
+			public final void apply(final Item I)
+			{
 				I.executeMsg(me, msg);
 			}
 		});
 
-		eachEffect(new EachApplicable<Ability>() {
-			public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>()
+		{
+			public final void apply(final Ability A)
+			{
 				A.executeMsg(me, msg);
 			}
 		});
@@ -3176,8 +3196,10 @@ public class StdMOB implements MOB
 			}
 
 			tickStatus = Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>() {
-				public final void apply(final Ability A) {
+			eachEffect(new EachApplicable<Ability>()
+			{
+				public final void apply(final Ability A)
+				{
 					if (!A.tick(ticking, tickID))
 						A.unInvoke();
 				}
@@ -3186,14 +3208,18 @@ public class StdMOB implements MOB
 			manaConsumeCter = CMLib.commands().tickManaConsumption(this, manaConsumeCter);
 
 			tickStatus = Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>() {
-				public final void apply(final Behavior B) {
+			eachBehavior(new EachApplicable<Behavior>()
+			{
+				public final void apply(final Behavior B)
+				{
 					B.tick(ticking, tickID);
 				}
 			});
 			tickStatus = Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>() {
-				public final void apply(final ScriptingEngine S) {
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{
+				public final void apply(final ScriptingEngine S)
+				{
 					S.tick(ticking, tickID);
 				}
 			});
@@ -4105,7 +4131,8 @@ public class StdMOB implements MOB
 
 	@Override public Enumeration<String> expertises()
 	{
-		return new Enumeration<String>(){
+		return new Enumeration<String>()
+		{
 			final Iterator<Entry<String,Integer>> i=expertises.entrySet().iterator();
 			@Override public boolean hasMoreElements() { return i.hasNext(); }
 			@Override public String nextElement() 

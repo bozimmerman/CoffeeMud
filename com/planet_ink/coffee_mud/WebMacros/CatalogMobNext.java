@@ -131,8 +131,10 @@ public class CatalogMobNext extends StdWebMacro
 							names[s], 
 							CMLib.catalog().getCatalogMob(names[s]), 
 							CMLib.catalog().getCatalogMobData(names[s])};
-					Arrays.sort(sortifiable,new Comparator(){
-						public int compare(Object o1, Object o2) {
+					Arrays.sort(sortifiable,new Comparator()
+					{
+						public int compare(Object o1, Object o2)
+						{
 							Object[] O1=(Object[])o1;
 							Object[] O2=(Object[])o2;
 							String s1=getCataStat((MOB)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex,optionalColumn);

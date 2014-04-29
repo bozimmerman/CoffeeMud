@@ -75,7 +75,8 @@ public class ThinRoom implements Room
 	public boolean getMobility(){return true;}
 	private boolean recurse=false;
 	public boolean isHere(Environmental E){return false;}
-	public void setRawExit(int direction, Environmental E){
+	public void setRawExit(int direction, Environmental E)
+	{
 		if(E instanceof Room)
 			exits[direction]=((Room)E).getRawExit(direction);
 		else
@@ -282,12 +283,14 @@ public class ThinRoom implements Room
 	public String[] getStatCodes(){return CODES;}
 	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

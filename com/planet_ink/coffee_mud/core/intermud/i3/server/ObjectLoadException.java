@@ -34,11 +34,13 @@ public class ObjectLoadException extends Exception
 {
 	public static final long serialVersionUID=0;
 	
-	public ObjectLoadException() {
+	public ObjectLoadException()
+	{
 		super();
 	}
 	
-	public ObjectLoadException(String err) {
+	public ObjectLoadException(String err)
+	{
 		super(err);
 	}
 }

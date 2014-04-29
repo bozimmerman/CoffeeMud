@@ -118,7 +118,8 @@ public interface MoneyLibrary extends CMLibrary
 		public double value=0.0;
 		public String name="";
 		public String abbr="";
-		public MoneyDenomination(double value,String name,String abbr) {
+		public MoneyDenomination(double value,String name,String abbr)
+		{
 			this.value=value;
 			this.name=name;
 			this.abbr=abbr;

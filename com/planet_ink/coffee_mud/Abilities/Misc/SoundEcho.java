@@ -49,7 +49,8 @@ public class SoundEcho extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	
 	public static MOB bmob=null;
-	public synchronized MOB blindMOB(){
+	public synchronized MOB blindMOB()
+	{
 		if(bmob!=null) return bmob;
 		bmob=CMClass.getMOB("StdMOB");
 		if(bmob!=null)

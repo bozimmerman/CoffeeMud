@@ -1118,7 +1118,8 @@ public class MobData extends StdWebMacro
 			switch(o)
 			{
 			case 0: // name
-				if(firstTime) {
+				if(firstTime)
+				{
 					if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 					&&(httpReq.isUrlParameter("NEWMOBNAME")))
 						old=httpReq.getUrlParameter("NEWMOBNAME");

@@ -99,7 +99,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	
 	public void setShipArea(String xml)
 	{
-		try {
+		try
+		{
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
 			if(area instanceof SpaceShip)
 			{
@@ -113,7 +114,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				Log.warnOut("Failed to unpack a space ship area for the space ship");
 				getShipArea();
 			}
-		} catch (CMException e) {
+		} catch (CMException e)
+		{
 			Log.warnOut("Unable to parse space ship xml for some reason.");
 		}
 	}
@@ -251,24 +253,28 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public long radius() {
+	public long radius()
+	{
 		return (area instanceof SpaceObject)?((SpaceObject)area).radius():50;
 	}
 
 	@Override
-	public void setRadius(long radius) {
+	public void setRadius(long radius)
+	{
 		if (area instanceof SpaceObject)
 			((SpaceObject)area).setRadius(radius);
 	}
 
 	@Override
-	public double getOMLCoeff() {
+	public double getOMLCoeff()
+	{
 		return (area instanceof SpaceShip)?((SpaceShip)area).getOMLCoeff()
 				:SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
 	}
 
 	@Override
-	public void setOMLCoeff(double coeff) {
+	public void setOMLCoeff(double coeff)
+	{
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).setOMLCoeff(coeff);
 	}
@@ -533,10 +539,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			final GenSpaceShip me=this;
 			final InputCallback[] namer=new InputCallback[1];
-			namer[0]=new InputCallback(InputCallback.Type.PROMPT) {
+			namer[0]=new InputCallback(InputCallback.Type.PROMPT)
+			{
 				@Override public void showPrompt() { session.println("\n\rEnter a new name for your ship: "); }
 				@Override public void timedOut() { }
-				@Override public void callBack() {
+				@Override public void callBack()
+				{
 					if((this.input.trim().length()==0)
 					||(!CMLib.login().isOkName(this.input.trim(),true))
 					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
@@ -650,7 +658,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

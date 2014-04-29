@@ -261,7 +261,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						y--;
 					if(y>0)
 					{
-						try {
+						try
+						{
 							ForumJournalFlags.valueOf(rest.substring(y,x).toUpperCase().trim());
 							flagDexes.addElement(Integer.valueOf(y));
 						} catch(Exception e){}
@@ -275,7 +276,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					String piece = rest.substring(lastStart,flagDex.intValue());
 					lastStart=flagDex.intValue();
 					x=piece.indexOf('=');
-					try {
+					try
+					{
 						ForumJournalFlags flagVar = ForumJournalFlags.valueOf(piece.substring(0,x).toUpperCase().trim());
 						String flagVal = piece.substring(x+1);
 						flags.put(flagVar, flagVal);

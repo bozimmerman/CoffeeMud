@@ -39,7 +39,8 @@ public class Bomb_Smoke extends StdBomb
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "something wooden";}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
 		return V;

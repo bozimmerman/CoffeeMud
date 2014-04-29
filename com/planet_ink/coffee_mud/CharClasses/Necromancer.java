@@ -189,7 +189,8 @@ public class Necromancer extends Cleric
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)){
+		if(!(myHost instanceof MOB))
+		{
 			super.executeMsg(myHost,msg);
 		} 
 		else

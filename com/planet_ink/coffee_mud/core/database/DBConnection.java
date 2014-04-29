@@ -124,7 +124,8 @@ public class DBConnection
 	
 	public String catalog()
 	{
-		try{
+		try
+		{
 			return myConnection.getCatalog();
 		}
 		catch(Exception e){}
@@ -151,15 +152,18 @@ public class DBConnection
 	 */
 	public void close()
 	{
-		try{
+		try
+		{
 			if(myStatement!=null)
 				myStatement.close();
 		}catch(SQLException e){}
-		try{
+		try
+		{
 			if(myPreparedStatement!=null)
 				myPreparedStatement.close();
 		}catch(SQLException e){}
-		try{
+		try
+		{
 			if(myConnection!=null)
 				myConnection.close();
 		}catch(SQLException e){}

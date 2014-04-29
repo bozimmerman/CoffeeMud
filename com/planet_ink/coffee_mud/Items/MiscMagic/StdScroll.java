@@ -255,7 +255,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public boolean isReadableScrollBy(String name){return (readableScrollBy!=null) && (readableScrollBy.equalsIgnoreCase(name));}
 	public void setReadableScrollBy(String name){readableScrollBy=name;}
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
@@ -276,7 +277,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 	}
 	public String[] getStatCodes(){return CODES;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

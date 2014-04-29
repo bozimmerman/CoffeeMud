@@ -145,7 +145,8 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			this.writeables.clear();
 			if((isDebugging)&&(webServerChannel.isOpen()))
 				config.getLogger().finer("Closed request forward handler '"+name+"'");
-			try {
+			try
+			{
 				webServerChannel.close();
 			}catch(Exception e){}
 		}

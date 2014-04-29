@@ -43,23 +43,27 @@ public class ChannelUserRequest extends Packet {
 	}
 	public ChannelUserRequest(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_USER_REQ;
 			userToRequest = (String)v.elementAt(6);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	public void send() throws InvalidPacketException {
-		if( sender_name == null || target_mud == null || sender_mud == null  || userToRequest == null) {
+		if( sender_name == null || target_mud == null || sender_mud == null  || userToRequest == null)
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
 			   "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
 		return str;

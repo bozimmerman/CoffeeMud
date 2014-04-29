@@ -41,7 +41,8 @@ public class Prayer_Avatar extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public String displayText(){
+	public String displayText()
+	{
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
 			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
 		return "(You are the AVATAR of the gods)";

@@ -337,7 +337,8 @@ public class B64Encoder
 		
 		else
 		{
-			try{
+			try
+			{
 			int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
 						  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
 						  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6)
@@ -349,7 +350,8 @@ public class B64Encoder
 			destination[ destOffset + 2 ] = (byte)( outBuff 	  );
 
 			return 3;
-			}catch( Exception e){
+			}catch( Exception e)
+			{
 				Log.errOut("CMEncoder",e);
 				return -1;
 			}
@@ -682,7 +684,8 @@ public class B64Encoder
 						numSigBytes = decode4to3( b4, 0, buffer, 0 );
 						position = 0;
 					}
-					else if( i == 0 ){
+					else if( i == 0 )
+					{
 						return -1;
 					}
 					else

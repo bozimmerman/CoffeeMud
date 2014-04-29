@@ -68,7 +68,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 	}
 
 	public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
-	public void setWhatIsSoldMask(long newSellCode){
+	public void setWhatIsSoldMask(long newSellCode)
+	{
 		super.setWhatIsSoldMask(newSellCode);
 		if(!isSold(ShopKeeper.DEAL_CLANBANKER))
 			whatIsSoldMask=ShopKeeper.DEAL_BANKER;
@@ -234,7 +235,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) return true;
-		try{
+		try
+		{
 		if(tickID==Tickable.TICKID_MOB)
 		{
 			boolean proceed=false;

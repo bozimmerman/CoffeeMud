@@ -89,7 +89,8 @@ public interface PlayerLibrary extends CMLibrary
 		public MOB loadedMOB=null;
 		public Tickable toTickable()
 		{
-			return new Tickable() {
+			return new Tickable()
+			{
 				public int getTickStatus() {return 0;}
 				public String name() { return name;}
 				public boolean tick(Tickable ticking, int tickID) { return false;}

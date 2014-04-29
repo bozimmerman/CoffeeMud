@@ -83,7 +83,8 @@ public class SpacePort extends StdRoom implements LocationRoom
 		default: super.setStat(code, val); break;
 		}
 	}
-	protected int getLocCodeNum(String code){
+	protected int getLocCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

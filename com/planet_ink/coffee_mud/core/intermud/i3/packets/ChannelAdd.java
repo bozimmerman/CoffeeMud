@@ -44,17 +44,20 @@ public class ChannelAdd extends Packet  {
 	}
 	public ChannelAdd(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_ADD;
 			channel = (String)v.elementAt(6);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	
-	public ChannelAdd(int t, String chan, String who) {
+	public ChannelAdd(int t, String chan, String who)
+	{
 		super();
 		type = t;
 		channel = chan;
@@ -62,13 +65,15 @@ public class ChannelAdd extends Packet  {
 	}
 
 	public void send() throws InvalidPacketException {
-		if( channel == null  ) {
+		if( channel == null  )
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-add\",5,\"" + I3Server.getMudName() + "\",\"" +

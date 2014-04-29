@@ -245,7 +245,8 @@ public class Skill_ControlUndead extends StdSkill
 					{
 						if(!target.isMonster())
 							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);
-						if(success) {
+						if(success)
+						{
 							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> now controlled.");
 							target.makePeace();
 							CMLib.commands().postFollow(target,mob,false);

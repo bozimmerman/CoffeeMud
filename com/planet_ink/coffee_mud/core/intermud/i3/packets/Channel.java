@@ -59,7 +59,8 @@ public class Channel implements Serializable
 	/**
 	 * Constructs a new mud channel object
 	 */
-	public Channel() {
+	public Channel()
+	{
 		super();
 		modified = Persistent.UNMODIFIED;
 	}
@@ -68,7 +69,8 @@ public class Channel implements Serializable
 	 * Constructs a copy of an existing channel
 	 * @param other the other channel
 	 */
-	public Channel(Channel other) {
+	public Channel(Channel other)
+	{
 		super();
 		channel = other.channel;
 		modified = other.modified;

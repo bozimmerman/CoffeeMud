@@ -58,7 +58,8 @@ public class Sword extends StdWeapon
 	{
 		if(!ID().equals("Sword"))
 		{
-			try{
+			try
+			{
 				return this.getClass().newInstance();
 			}
 			catch(Exception e){}
@@ -75,7 +76,8 @@ public class Sword extends StdWeapon
 			case 4:	 return new Claymore();
 			case 5:	 return new Shortsword();
 			default: 
-				try{
+				try
+				{
 					return this.getClass().newInstance();
 				}
 				catch(Exception e){}

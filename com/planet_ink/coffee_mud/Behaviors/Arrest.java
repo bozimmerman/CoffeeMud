@@ -1975,7 +1975,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(getWarrantsOf(myArea,W.criminal()).size()== 0)
 				{
 					unCuff(W.criminal());
-					if(W.arrestingOfficer()!=null) {
+					if(W.arrestingOfficer()!=null)
+					{
 						dismissOfficer(W.arrestingOfficer());
 					}
 					W.setArrestingOfficer(myArea,null);
@@ -2209,7 +2210,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							CMLib.commands().postSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);
 
 						Ability A=CMClass.getAbility("Skill_ArrestingSap");
-						if(A!=null){
+						if(A!=null)
+						{
 							int curPoints=(int)Math.round(CMath.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
 							A.setProficiency(100);
 							A.setAbilityCode(10);

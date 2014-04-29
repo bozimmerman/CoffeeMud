@@ -56,7 +56,8 @@ public class Conquerable extends Arrest
 	protected boolean REVOLTNOW=false;
 	protected long waitToReload=0;
 	protected long conquestDate=0;
-	public boolean isFullyControlled(){
+	public boolean isFullyControlled()
+	{
 		return ((holdingClan.length()>0)&&((System.currentTimeMillis()-conquestDate)>CONTROLTIME));
 	}
 
@@ -153,7 +154,8 @@ public class Conquerable extends Arrest
 		return 0;
 	}
 	
-	public int getControlPoints(String clanID){
+	public int getControlPoints(String clanID)
+	{
 		if((clanID==null)||(clanID.length()==0)) return 0;
 		synchronized(clanControlPoints)
 		{
@@ -313,7 +315,8 @@ public class Conquerable extends Arrest
 		}
 		synchronized(clanItems)
 		{
-			try{
+			try
+			{
 				for(int c=clanItems.size()-1;c>=0;c--)
 				{
 					ClanItem item=(ClanItem)clanItems.elementAt(c);

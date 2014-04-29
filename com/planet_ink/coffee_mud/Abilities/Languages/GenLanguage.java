@@ -125,7 +125,8 @@ public class GenLanguage extends StdLanguage
 										 "HELP",//27I
 										};
 	public String[] getStatCodes(){return CODES;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;

@@ -365,7 +365,8 @@ public class CMFile extends File
 		protected CMVFSFile[] files=null;
 		protected CMVFSDir parent=null;
 		
-		public static Comparator<CMVFSFile> fcomparator=new Comparator<CMVFSFile>() {
+		public static Comparator<CMVFSFile> fcomparator=new Comparator<CMVFSFile>()
+		{
 			public int compare(final CMVFSFile arg0, final CMVFSFile arg1) { return arg0.uName.compareTo(arg1.uName); }
 		};
 		
@@ -1925,10 +1926,12 @@ public class CMFile extends File
 		@Override public char getFileSeparator() { 
 			return '/';
 		}
-		@Override public File createFileFromPath(String localPath) {
+		@Override public File createFileFromPath(String localPath)
+		{
 			return new CMFile(localPath,null);
 		}
-		@Override public File createFileFromPath(File parent, String localPath) {
+		@Override public File createFileFromPath(File parent, String localPath)
+		{
 			return createFileFromPath(parent.getAbsolutePath()+'/'+localPath);
 		}
 		@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
@@ -1946,7 +1949,8 @@ public class CMFile extends File
 			return getFinalFile((CMFile)file).isLocalFile();
 		}
 		@Override
-		public boolean allowedToReadData(File file) {
+		public boolean allowedToReadData(File file)
+		{
 			CMFile F=getFinalFile((CMFile)file);
 			return F.exists() && F.canRead();
 		}

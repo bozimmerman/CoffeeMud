@@ -43,25 +43,29 @@ public class ChannelWhoRequest extends Packet {
 	}
 	public ChannelWhoRequest(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_WHO_REQ;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	public void send() throws InvalidPacketException {
-		if( sender_name == null || target_mud == null || sender_mud == null  || channel == null) {
+		if( sender_name == null || target_mud == null || sender_mud == null  || channel == null)
+		{
 			throw new InvalidPacketException();
 		}
 		channel = Intermud.getRemoteChannel(channel);
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
 		return str;

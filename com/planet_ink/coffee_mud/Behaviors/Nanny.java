@@ -521,10 +521,12 @@ public class Nanny extends StdBehavior
 			if(!H.contains(msg.source())) 
 				H.add(msg.source());
 			HashSet<Environmental> H2 = null;
-			do {
+			do
+			{
 				H2 = new HashSet<Environmental>();
 				H2.addAll(H);
-				for(Iterator i = H2.iterator(); i.hasNext(); ) {
+				for(Iterator i = H2.iterator(); i.hasNext(); )
+				{
 					Environmental E = (Environmental)i.next();
 					if(E instanceof Rideable)
 					{

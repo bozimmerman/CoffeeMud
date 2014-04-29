@@ -55,10 +55,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	public LayoutManager getLayoutManager(String named) 
 	{
 		Class<LayoutManager> mgr = mgrs.get(named.toUpperCase().trim());
-		if(mgr != null){
-			try {
+		if(mgr != null)
+		{
+			try
+			{
 				return mgr.newInstance();
-			}catch(Exception e) {
+			}catch(Exception e)
+			{
 				return null;
 			}
 		}
@@ -95,7 +98,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String filePath="com/planet_ink/coffee_mud/Libraries/layouts";
 		CMProps page = CMProps.instance();
 		Vector<Object> layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
-		for(int f=0;f<layouts.size();f++) {
+		for(int f=0;f<layouts.size();f++)
+		{
 			LayoutManager lmgr= (LayoutManager)layouts.elementAt(f);
 			Class<LayoutManager> lmgrClass=(Class<LayoutManager>)lmgr.getClass();
 			mgrs.put(lmgr.name().toUpperCase().trim(),lmgrClass);
@@ -464,7 +468,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(LayoutNode node : group)
 			{
 				Room R=node.room();
-				for(Integer linkDir : node.links().keySet()) {
+				for(Integer linkDir : node.links().keySet())
+				{
 					LayoutNode linkNode=node.getLink(linkDir.intValue());
 					R.rawDoors()[linkDir.intValue()]=linkNode.room();
 				}
@@ -910,7 +915,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 		
 		String value = fillOutStatCode(M,ignoreStats,"MOB_","LEVEL",piece,defined);
-		if(value != null) {
+		if(value != null)
+		{
 			CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
 		}
 		value = fillOutStatCode(M,ignoreStats,"MOB_","GENDER",piece,defined);
@@ -1065,7 +1071,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			final String baseNumber[] = { "1" };
 			final String basePrice[] = { "-1" };
-			try{
+			try
+			{
 				String baseStr=CMLib.xml().getParmValue(shopPiece.parms, "NUMBER");
 				if(baseStr != null) baseNumber[0]=baseStr; 
 			} catch(Exception e){ }
@@ -1784,7 +1791,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected boolean testCondition(String condition, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
 		Map<String,Object> fixed=new HashMap<String,Object>();
-		try {
+		try
+		{
 			if(condition == null) return true;
 			fixed.putAll(defined);
 			List<Varidentifier> ids=parseVariables(condition);

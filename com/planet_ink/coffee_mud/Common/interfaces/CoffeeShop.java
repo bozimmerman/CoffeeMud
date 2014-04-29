@@ -278,7 +278,8 @@ public interface CoffeeShop extends CMCommon
 		public Environmental product;
 		public int number;
 		public int price;
-		public ShelfProduct(Environmental E, int number, int price){
+		public ShelfProduct(Environmental E, int number, int price)
+		{
 			this.product=E;this.number=number;this.price=price;
 		}
 	}

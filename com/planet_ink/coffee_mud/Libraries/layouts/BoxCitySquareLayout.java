@@ -79,11 +79,14 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.WEST);
 		if((n2 != null)&&(n!=null)) n.crossLink(n2);
-		for(long[] sq : square) {
+		for(long[] sq : square)
+		{
 			n = lSet.getNode(sq);
-			for(int d=0;d<4;d++) {
+			for(int d=0;d<4;d++)
+			{
 				n2 = lSet.getNextNode( n, d);
-				if(n2!=null) {
+				if(n2!=null)
+				{
 					if(n.getLink(d)==n2) continue;
 					if(!n2.isStreetLike()) continue;
 					Enumeration<LayoutNode> nodes=n2.links().elements();

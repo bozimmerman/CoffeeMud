@@ -298,7 +298,8 @@ public class RandomMonsters extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC;
 			List<MOB> monsters=getMonsters(ticking,getParms());
 			tickStatus=Tickable.STATUS_MISC+1;
-			if(monsters==null){
+			if(monsters==null)
+			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}

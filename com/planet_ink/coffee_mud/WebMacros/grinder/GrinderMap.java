@@ -391,23 +391,27 @@ public class GrinderMap extends GrinderFlatMap
 								buf.append((boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"");
 								buf.append(">");
 								String roomID = GR.roomID;
-								if (roomID.startsWith(area.Name() + "#")) {
+								if (roomID.startsWith(area.Name() + "#"))
+								{
 								  roomID = roomID.substring(roomID.indexOf('#'));
 								}
-								try {
+								try
+								{
 								  buf.append("<a name=\"" +
 											 URLEncoder.encode(GR.roomID, "UTF-8") +
 									  "\" href=\"javascript:RC('" +GR.roomID
 									  + "');\"><FONT SIZE=-1><B>" + roomID +
 									  "</B></FONT></a><BR>");
 								}
-								catch (java.io.UnsupportedEncodingException e) {
+								catch (java.io.UnsupportedEncodingException e)
+								{
 								  Log.errOut("GrinderMap", "Wrong Encoding");
 								}
 								buf.append("<FONT SIZE=-2>(" + CMClass.classID(GR.room()) +
 										   ")<BR>");
 								String displayText = GR.room().displayText();
-								if (displayText.length() > 20) {
+								if (displayText.length() > 20)
+								{
 								  displayText = displayText.substring(0, 20) + "...";
 								}
 								buf.append(displayText + "</FONT></TD>");

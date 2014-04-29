@@ -50,7 +50,8 @@ public class Thief_HideInPlainSight extends ThiefSkill
 	public void setAbilityCode(int newCode){code=newCode;}
 	public Ability obscureAbility=null;
 	
-	public Ability makeObscurinator(MOB mob){
+	public Ability makeObscurinator(MOB mob)
+	{
 		if(obscureAbility!=null) return obscureAbility;
 		obscureAbility=CMClass.getAbility("Spell_ObscureSelf");
 		if(obscureAbility==null) return null;

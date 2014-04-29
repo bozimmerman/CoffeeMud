@@ -48,7 +48,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	
 	public String toEnglishStringList(final String[] V)
 	{
-		if((V==null)||(V.length==0)){
+		if((V==null)||(V.length==0))
+		{
 			return "";
 		}
 		if(V.length==1) return V[0];
@@ -65,7 +66,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public String toEnglishStringList(final List<? extends Object> V)
 	{
-		if((V==null)||(V.size()==0)){
+		if((V==null)||(V.size()==0))
+		{
 			return "";
 		}
 		if(V.size()==1) return V.get(0).toString();
@@ -574,7 +576,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		evokableAbility.invoke(mob,commands,null,false,0);
 	}
 
-	public boolean[] PUNCTUATION_TABLE() {
+	public boolean[] PUNCTUATION_TABLE()
+	{
 		if(PUNCTUATION_TABLE==null)
 		{
 			boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
@@ -620,7 +623,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return new String(str2,0,s);
 	}
 	
-	private boolean isPunctuation(byte b) {
+	private boolean isPunctuation(byte b)
+	{
 		if((b<0)||(b>255)) return false;
 		return PUNCTUATION_TABLE[b];
 	}

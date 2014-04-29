@@ -283,7 +283,8 @@ public class StdArea implements Area
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			A.affectPhyStats(me,phyStats);
 		} });
 	}
@@ -793,13 +794,16 @@ public class StdArea implements Area
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		{
 			B.executeMsg(me,msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		{
 			S.executeMsg(me,msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			A.executeMsg(me,msg);
 		} });
 
@@ -835,15 +839,18 @@ public class StdArea implements Area
 			tickStatus=Tickable.STATUS_REBIRTH;
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			{
 				B.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			{
 				S.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
 			} });
@@ -873,19 +880,22 @@ public class StdArea implements Area
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
 		} });
 	}
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
 		}});
 	}
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
 		} });
 	}
@@ -917,7 +927,8 @@ public class StdArea implements Area
 	{
 		final List<Ability> affects=this.affects;
 		if(affects==null) return;
-		try{
+		try
+		{
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
@@ -1058,7 +1069,8 @@ public class StdArea implements Area
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try{
+		try
+		{
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
@@ -1209,7 +1221,8 @@ public class StdArea implements Area
 			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
 			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
 			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
-			try{
+			try
+			{
 				boolean blurbed=false;
 				String flag=null;
 				for(Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
@@ -1258,7 +1271,8 @@ public class StdArea implements Area
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try{
+		try
+		{
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
@@ -1764,7 +1778,8 @@ public class StdArea implements Area
 	}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){ return CMParms.indexOf(codes, code.toUpperCase());}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

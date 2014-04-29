@@ -271,7 +271,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((room.getGridParent()!=this)
 		&&(room.getGridParent()!=null)) 
 				return null;
-		try{
+		try
+		{
 			for(ThinGridEntry entry : rooms)
 				if(entry.room==room)
 					return entry.xy;
@@ -389,7 +390,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		for(int d=0;d<gridexits.size();d++)
 		{
 			WorldMap.CrossExit EX=gridexits.elementAt(d);
-			try{
+			try
+			{
 				if((EX.out)&&(EX.x==x)&&(EX.y==y))
 					switch(EX.dir)
 					{
@@ -574,7 +576,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		for(int d=0;d<gridexits.size();d++)
 		{
 			WorldMap.CrossExit EX=gridexits.elementAt(d);
-			try{
+			try
+			{
 				if((EX.out)&&(EX.dir==dir)
 				&&(getGridRoomIfExists(EX.x,EX.y)==room))
 				{
@@ -656,7 +659,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(loc==null) return false;
 		if(loc.getGridParent()==this) return true;
 		if(loc.getGridParent()!=null) return false;
-		try{
+		try
+		{
 			for(ThinGridEntry entry : rooms)
 				if(loc == entry.room)
 					return true;
@@ -680,7 +684,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public String getGridChildCode(Room loc)
 	{
 		if(roomID().length()==0) return "";
-		try{
+		try
+		{
 			for(ThinGridEntry entry : rooms)
 				if(entry.room==loc)
 					return roomID()+"#("+entry.xy.x+","+entry.xy.y+")";
@@ -689,7 +694,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 	public int getGridChildX(Room loc)
 	{
-		try{
+		try
+		{
 			for(ThinGridEntry entry : rooms)
 				if(entry.room==loc)
 					return entry.xy.x;
@@ -709,7 +715,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 
 	public int getGridChildY(Room loc)
 	{
-		try{
+		try
+		{
 			for(ThinGridEntry entry : rooms)
 				if(entry.room==loc)
 					return entry.xy.y;
@@ -741,7 +748,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			{
 				if((roomID().length()>0)&&(getArea()!=null))
 					getArea().delProperRoomnumber(getGridChildCode(R));
-				try{
+				try
+				{
 					for(ThinGridEntry entry : rooms)
 						if(entry.room==R)
 							rooms.remove(entry);
@@ -815,7 +823,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		default: super.setStat(code, val); break;
 		}
 	}
-	protected int getStdGridCodeNum(String code){
+	protected int getStdGridCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

@@ -44,7 +44,8 @@ public class CMLib
 	public final String getClassName(){return "CMLib";}
 	private static final SVector<MudHost> mudThreads=new SVector<MudHost>();
 	private static final CMLib[] libs=new CMLib[256];
-	public CMLib(){
+	public CMLib()
+	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(libs[c]==null) libs[c]=this;
@@ -141,7 +142,8 @@ public class CMLib
 	}
 	public static final Resources resources(){return Resources.instance();}
 	public static final CMProps props(){return CMProps.instance();}
-	public static final Enumeration<CMLibrary> libraries(){
+	public static final Enumeration<CMLibrary> libraries()
+	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
 		for(Library lbry : Library.values())
 			if(l().libraries[lbry.ordinal()]!=null)
@@ -237,7 +239,8 @@ public class CMLib
 		if(t==null) return;
 		if(t==Thread.currentThread())
 			throw new java.lang.ThreadDeath();
-		try{
+		try
+		{
 			
 			boolean stillAlive=false;
 			if(t instanceof CMFactoryThread)
@@ -264,7 +267,8 @@ public class CMLib
 				}
 				stillAlive=t.isAlive();
 			}
-			try {
+			try
+			{
 				if(stillAlive) 
 				{ 
 					java.lang.StackTraceElement[] s=t.getStackTrace();
@@ -279,7 +283,8 @@ public class CMLib
 
 	}
 	
-	public static final boolean s_sleep(final long millis) {
+	public static final boolean s_sleep(final long millis)
+	{
 		try{ Thread.sleep(millis); } catch(java.lang.InterruptedException ex) { return false;}
 		return true;
 	}

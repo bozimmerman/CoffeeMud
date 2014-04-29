@@ -73,12 +73,14 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		if((daggerDamages==null)||(daggerDamages.size()==0))
 			V.addElement(CMClass.getWeapon("Dagger"));
 		else
-		for(int d=0;d<daggerDamages.size();d++) {
+		for(int d=0;d<daggerDamages.size();d++)
+		{
 			Item I=CMClass.getWeapon("Dagger");
 			I.basePhyStats().setDamage(((Integer)daggerDamages.elementAt(d)).intValue());
 			I.recoverPhyStats();

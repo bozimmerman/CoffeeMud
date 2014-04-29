@@ -60,8 +60,10 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=REV"))
 			{
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
-					public int compare(Area arg0, Area arg1) {
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				{
+					public int compare(Area arg0, Area arg1)
+					{
 						return arg1.Name().compareTo(arg0.Name());
 					}
 				});
@@ -74,8 +76,10 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=LEV"))
 			{
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
-					public int compare(Area arg0, Area arg1) {
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				{
+					public int compare(Area arg0, Area arg1)
+					{
 						int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						if(lvl1==lvl2) return 1;
@@ -102,8 +106,10 @@ public class Areas extends StdCommand
 					return false;
 				}
 				final int sortStat=statVal;
-				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>(){
-					public int compare(Area arg0, Area arg1) {
+				TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				{
+					public int compare(Area arg0, Area arg1)
+					{
 						int lvl1=arg0.getAreaIStats()[sortStat];
 						int lvl2=arg1.getAreaIStats()[sortStat];
 						if(lvl1==lvl2) return 1;
@@ -151,10 +157,12 @@ public class Areas extends StdCommand
 						Hashtable H=new Hashtable();
 						for(int i=0;i<stats.length;i++)
 							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
-						try {
+						try
+						{
 							if(!CMStrings.parseStringExpression(expression, H,false))
 								continue;
-						}catch(Exception e){
+						}catch(Exception e)
+						{
 							if(mob!=null)
 								mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());
 							return false;

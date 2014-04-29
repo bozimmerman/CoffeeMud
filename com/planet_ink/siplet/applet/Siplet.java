@@ -146,22 +146,26 @@ public class Siplet
 	public void disconnectFromURL()
 	{
 		connected=false;
-		try {
+		try
+		{
 			if(out!=null)
 			{
 				out.write(new byte[]{(byte)255,(byte)253,18}); //iac, iacdo, logout 
 				out.flush();
 			}
 		} catch(Exception e) { }
-		try {
+		try
+		{
 			if((in!=null)&&(in[0]!=null))
 				in[0].close();
 		} catch(Exception e) { }
-		try {
+		try
+		{
 			if(out!=null)
 				out.close();
 		} catch(Exception e) { }
-		try {
+		try
+		{
 			if(sock!=null)
 				sock.close();
 		} catch(Exception e) { }

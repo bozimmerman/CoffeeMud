@@ -132,27 +132,31 @@ public class TrackingVector<T> extends Vector<T>
 	}
 	
 	@Override
-	public void add(int arg0, T arg1) {
+	public void add(int arg0, T arg1)
+	{
 		super.add(arg0,arg1);
 		addTrackedEntry(arg1);
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends T> arg0) {
+	public synchronized boolean addAll(Collection<? extends T> arg0)
+	{
 		for(T o : arg0)
 			addTrackedEntry(o);
 		return super.addAll(arg0);
 	}
 
 	@Override
-	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1) {
+	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1)
+	{
 		for(T o : arg1)
 			addTrackedEntry(o);
 		return super.addAll(arg0, arg1);
 	}
 
 	@Override
-	public void clear() {
+	public void clear()
+	{
 		for(T e : this)
 			removeTrackedEntry(e);
 		super.clear();
@@ -160,7 +164,8 @@ public class TrackingVector<T> extends Vector<T>
 	
 	
     @Override
-	public boolean remove(Object arg0) {
+	public boolean remove(Object arg0)
+	{
 		if(removeOnlyFromMe(arg0))
 		{
 			removeTrackedEntry(arg0);
@@ -170,7 +175,8 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@SuppressWarnings("unchecked")
-    public boolean removeOnlyFromMe(Object arg0) {
+    public boolean removeOnlyFromMe(Object arg0)
+    {
 		boolean success=super.remove(arg0);
 		if((trackBackRef!=null)&&(trackBackRef.get()!=null))
 			trackBackRef.get().removed((T)arg0);
@@ -178,7 +184,8 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized T remove(int arg0) {
+	public synchronized T remove(int arg0)
+	{
 		T x=super.remove(arg0);
 		if(x!=null)
 		{
@@ -190,7 +197,8 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0) {
+	public synchronized boolean removeAll(Collection<?> arg0)
+	{
 		for(Object e : arg0)
 			removeTrackedEntry(e);
 		return super.removeAll(arg0);

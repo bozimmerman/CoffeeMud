@@ -41,7 +41,8 @@ import java.util.concurrent.atomic.*;
 public class Logout extends CM1Command
 {
 	public String getCommandWord(){ return "LOGOUT";}
-	public Logout(RequestHandler req, String parameters) {
+	public Logout(RequestHandler req, String parameters)
+	{
 		super(req, parameters);
 	}
 

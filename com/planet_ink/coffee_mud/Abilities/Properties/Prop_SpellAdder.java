@@ -281,7 +281,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				if(makeLongLasting)
 				{
 					EA.makeLongLasting();
-					if(!uninvocable) {
+					if(!uninvocable)
+					{
 						EA.makeNonUninvokable();
 						if(unrevocableSpells == null)
 							unrevocableSpells = new Vector();
@@ -358,7 +359,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				thisAffect=(Ability)eff.elementAt(x);
 				String ID=h.get(thisAffect.ID());
 				if((ID!=null)
-				&&(thisAffect.invoker()==getInvokerMOB(P,P))) {
+				&&(thisAffect.invoker()==getInvokerMOB(P,P)))
+				{
 					thisAffect.unInvoke();
 					if((!uninvocable)&&(!thisAffect.canBeUninvoked()))
 						P.delEffect(thisAffect);
@@ -459,7 +461,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if(spellsV.size()==0) return null;
 		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
 	}
-	public Enumeration<Ability> abilities(){
+	public Enumeration<Ability> abilities()
+	{
 		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
 	}
 	public void delAllAbilities(){ setMiscText("");}

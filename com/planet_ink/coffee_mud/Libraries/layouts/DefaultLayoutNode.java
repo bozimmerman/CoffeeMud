@@ -36,10 +36,12 @@ public class DefaultLayoutNode implements LayoutNode
 	private Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
 	private HashSet<LayoutFlags> flags = new HashSet<LayoutFlags>();
 	
-	public DefaultLayoutNode(long[] coord) {
+	public DefaultLayoutNode(long[] coord)
+	{
 		this.coord = coord;
 	}
-	public DefaultLayoutNode(long x, long y) {
+	public DefaultLayoutNode(long x, long y)
+	{
 		this.coord = new long[]{x,y};
 	}
 	public Room room() { return associatedRoom;}
@@ -47,7 +49,8 @@ public class DefaultLayoutNode implements LayoutNode
 	public long[] coord(){ return coord;}
 	public Hashtable<LayoutTags,String> tags(){ return tags;}
 	public Hashtable<Integer,LayoutNode> links() { return links;}
-	public void crossLink(LayoutNode to) {
+	public void crossLink(LayoutNode to)
+	{
 		links.put(Integer.valueOf(AbstractLayout.getDirection(this,to)),to);
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to,this)),this);
 	}
@@ -57,7 +60,8 @@ public class DefaultLayoutNode implements LayoutNode
 			return LayoutRuns.valueOf(tags.get(LayoutTags.NODERUN));
 		return null;
 	}
-	public void delLink(LayoutNode linkNode) {
+	public void delLink(LayoutNode linkNode)
+	{
 		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
 		{
 			Integer key=e.nextElement();
@@ -67,7 +71,8 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 	public LayoutNode getLink(int d) { return links.get(Integer.valueOf(d));}
 	
-	public boolean isStreetLike() {
+	public boolean isStreetLike()
+	{
 		if(links.size()!=2) return false;
 		Enumeration<LayoutNode> linksE=links.elements();
 		LayoutNode n1=linksE.nextElement();
@@ -83,7 +88,8 @@ public class DefaultLayoutNode implements LayoutNode
 		}
 		return false;
 	}
-	public void deLink() {
+	public void deLink()
+	{
 		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
 		{
 			Integer key=e.nextElement();
@@ -92,13 +98,15 @@ public class DefaultLayoutNode implements LayoutNode
 		}
 		links.clear();
 	}
-	public String toString() {
+	public String toString()
+	{
 		String s= "("+coord[0]+","+coord[1]+") ->";
 		for(LayoutNode n : links.values())
 			s+= "("+n.coord()[0]+","+n.coord()[1]+"),  ";
 		return s;
 	}
-	public void flag(LayoutFlags flag) {
+	public void flag(LayoutFlags flag)
+	{
 		String s=tags.get(LayoutTags.NODEFLAGS);
 		flags.add(flag);
 		if(s==null)
@@ -107,11 +115,13 @@ public class DefaultLayoutNode implements LayoutNode
 		if(s.indexOf(","+flag.toString()+",")<0)
 			tags.put(LayoutTags.NODEFLAGS,s+flag.toString()+",");
 	}
-	public void flagRun(LayoutRuns run) {
+	public void flagRun(LayoutRuns run)
+	{
 		tags.put(LayoutTags.NODERUN,run.toString());
 	}
 	public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get(LayoutTags.NODETYPE));}
-	public void setExits(int[] dirs) {
+	public void setExits(int[] dirs)
+	{
 		StringBuffer buf=new StringBuffer(",");
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			for(int i=0;i<dirs.length;i++)
@@ -122,13 +132,16 @@ public class DefaultLayoutNode implements LayoutNode
 				}
 		tags.put(LayoutTags.NODEEXITS,buf.toString());
 	}
-	public void flagGateExit(int dir) {
+	public void flagGateExit(int dir)
+	{
 		tags.put(LayoutTags.NODEGATEEXIT,Directions.getDirectionChar(dir).toLowerCase());
 	}
-	public void reType(LayoutTypes type) {
+	public void reType(LayoutTypes type)
+	{
 		tags.put(LayoutTags.NODETYPE,type.toString());
 	}
-	public String getColorRepresentation(int line) {
+	public String getColorRepresentation(int line)
+	{
 		
 		switch(line)
 		{

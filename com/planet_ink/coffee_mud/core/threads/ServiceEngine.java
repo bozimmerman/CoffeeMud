@@ -498,8 +498,10 @@ public class ServiceEngine implements ThreadEngine
 			{
 				CMLibrary lib=e.nextElement();
 				TickClient serviceClient=lib.getServiceClient();
-				if(serviceClient!=null) {
-					if(curThreadNum==threadNum) {
+				if(serviceClient!=null)
+				{
+					if(curThreadNum==threadNum)
+					{
 						String instrCode=itemCode.substring(xend);
 						if(instrCode.equalsIgnoreCase("activeMiliTotal"))
 							return ""+serviceClient.getMilliTotal();
@@ -892,7 +894,8 @@ public class ServiceEngine implements ThreadEngine
 			if(pool != null)
 			{
 				pool.shutdown();
-				try { pool.awaitTermination(2, TimeUnit.SECONDS); } catch (InterruptedException e) {
+				try { pool.awaitTermination(2, TimeUnit.SECONDS); } catch (InterruptedException e)
+				{
 					pool.shutdownNow();
 					try { pool.awaitTermination(3, TimeUnit.SECONDS); } catch (InterruptedException e2) {}
 				}
@@ -1157,7 +1160,8 @@ public class ServiceEngine implements ThreadEngine
 		{
 			TickableGroup almostTock=(TickableGroup)orderedDeaths.elementAt(x,3);
 			Vector<TickClient> tockClients=new Vector<TickClient>();
-			try{
+			try
+			{
 				for(Iterator<TickClient> e=almostTock.tickers();e.hasNext();)
 					tockClients.addElement(e.next());
 			}catch(NoSuchElementException e){}
@@ -1207,7 +1211,8 @@ public class ServiceEngine implements ThreadEngine
 	{
 		while(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			try{Thread.sleep(1000);}catch(Exception e){}
-		while(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)) {
+		while(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		{
 			try
 			{
 				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
@@ -1221,7 +1226,8 @@ public class ServiceEngine implements ThreadEngine
 					{
 						if(!T.isAwake() && (!getPoolExecutor(T.getThreadGroupName()).isActiveOrQueued(T))) 
 						{
-							if (T.getNextTickTime() <= now) {
+							if (T.getNextTickTime() <= now)
+							{
 								if(now + T.getTickInterval() < nextWake)
 									nextWake = now + T.getTickInterval();
 								getPoolExecutor(T.getThreadGroupName()).execute(T);
@@ -1237,7 +1243,8 @@ public class ServiceEngine implements ThreadEngine
 							nextWake = now + T.getTickInterval();
 					}
 				}
-				if(nextWake > now) {
+				if(nextWake > now)
+				{
 					Thread.sleep(nextWake-now);
 				}
 			}
@@ -1260,7 +1267,8 @@ public class ServiceEngine implements ThreadEngine
 		getPoolExecutor(null); // will cause the creation
 		
 		if(supportClient==null)
-		supportClient=startTickDown(null,new Tickable(){
+		supportClient=startTickDown(null,new Tickable()
+		{
 			private int tickStatus = Tickable.STATUS_NOT;
 			@Override public String ID() { return "THThreads"; }
 			@Override public CMObject newInstance() { return this; }
@@ -1269,7 +1277,8 @@ public class ServiceEngine implements ThreadEngine
 			@Override public int compareTo(CMObject o) { return (o==this)?0:1;}
 			@Override public String name() { return ID(); }
 			@Override public int getTickStatus() { return tickStatus; }
-			@Override public boolean tick(Tickable ticking, int tickID) {
+			@Override public boolean tick(Tickable ticking, int tickID)
+			{
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.THREADTHREAD)))
 				{

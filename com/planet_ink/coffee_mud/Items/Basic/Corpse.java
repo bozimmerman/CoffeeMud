@@ -76,7 +76,8 @@ public class Corpse extends GenContainer implements DeadBody
 			charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		return charStats;
 	}
-	public void setCharStats(CharStats newStats){
+	public void setCharStats(CharStats newStats)
+	{
 		charStats=newStats;
 		if(charStats!=null) charStats=(CharStats)charStats.copyOf();
 	}

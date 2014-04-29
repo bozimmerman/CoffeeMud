@@ -20,19 +20,24 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements List<Quint<T,K,L,M,N>>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
-	public Quint.FirstConverter<T,K,L,M,N> getFirstConverter() {
+	public Quint.FirstConverter<T,K,L,M,N> getFirstConverter()
+	{
 		return new Quint.FirstConverter<T, K, L,M,N>();
 	}
-	public Quint.SecondConverter<T,K,L,M,N> getSecondConverter() {
+	public Quint.SecondConverter<T,K,L,M,N> getSecondConverter()
+	{
 		return new Quint.SecondConverter<T, K, L,M,N>();
 	}
-	public Quint.ThirdConverter<T,K,L,M,N> getThirdConverter() {
+	public Quint.ThirdConverter<T,K,L,M,N> getThirdConverter()
+	{
 		return new Quint.ThirdConverter<T, K, L,M,N>();
 	}
-	public Quint.FourthConverter<T,K,L,M,N> getFourthConverter() {
+	public Quint.FourthConverter<T,K,L,M,N> getFourthConverter()
+	{
 		return new Quint.FourthConverter<T, K, L,M,N>();
 	}
-	public Quint.FifthConverter<T,K,L,M,N> getFifthConverter() {
+	public Quint.FifthConverter<T,K,L,M,N> getFifthConverter()
+	{
 		return new Quint.FifthConverter<T, K, L,M,N>();
 	}
 	
@@ -191,7 +196,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -200,7 +206,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -209,7 +216,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int indexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;
@@ -218,7 +226,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int indexOfFourth(M m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
 					return i;
@@ -227,7 +236,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int indexOfFifth(N m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth))) 
 					return i;
@@ -236,7 +246,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -245,7 +256,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -254,7 +266,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int lastIndexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;
@@ -263,7 +276,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int lastIndexOfFourth(M m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((m==null ? get(i).fourth==null : m.equals(get(i).fourth))) 
 					return i;
@@ -272,7 +286,8 @@ public class QuintVector<T,K,L,M,N> extends Vector<Quint<T,K,L,M,N>> implements 
 	}
 	public int lastIndexOfFifth(N m, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((m==null ? get(i).fifth==null : m.equals(get(i).fifth))) 
 					return i;

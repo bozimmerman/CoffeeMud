@@ -77,19 +77,24 @@ public class FakeSession implements Session
 	
 	public String[] getColorCodes(){return new String[255];}
 	
-	public void onlyPrint(String msg, boolean noCache){
-		if(theFile != null) {
+	public void onlyPrint(String msg, boolean noCache)
+	{
+		if(theFile != null)
+		{
 			synchronized(theFile)
 			{
 				theFile.saveText(msg,true);
 			}
 		}
-		if(bout != null) {
+		if(bout != null)
+		{
 			synchronized(bout)
 			{
-				try {
+				try
+				{
 					bout.write(msg.getBytes());
-				} catch(Exception e) {
+				} catch(Exception e)
+				{
 					Log.errOut("FakeSession",e);
 				}
 			}
@@ -126,7 +131,8 @@ public class FakeSession implements Session
 		if(msg.length()==0) return Default;
 		return msg;
 	}
-	public void prompt(InputCallback callBack) {
+	public void prompt(InputCallback callBack)
+	{
 		callBack.showPrompt();
 		callBack.setInput(readlineContinue());
 		callBack.callBack();
@@ -134,7 +140,8 @@ public class FakeSession implements Session
 	public String prompt(String Message, String Default, long maxTime) { return prompt(Message,Default);}
 	public String prompt(String Message) { return prompt(Message,"");}
 	public String prompt(String Message, long maxTime) { return prompt(Message,"");}
-	public boolean confirm(String Message, String Default) {
+	public boolean confirm(String Message, String Default)
+	{
 		if(Default.toUpperCase().startsWith("T")) Default="Y";
 		String YN=choose(Message,"YN",Default,0);
 		return(YN.equals("Y"))?true:false;
@@ -152,8 +159,10 @@ public class FakeSession implements Session
 	throws IOException { return choose(Message,Choices,Default);}
 	public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
 	public String blockingIn(long timeoutMillis) { return readlineContinue();}
-	public String readlineContinue() {
-		synchronized(inputV) {
+	public String readlineContinue()
+	{
+		synchronized(inputV)
+		{
 			if(inputV.size()==0) return "";
 			String input = inputV.firstElement();
 			inputV.removeElementAt(0);
@@ -172,7 +181,8 @@ public class FakeSession implements Session
 	
 	public boolean isAfk(){return false;}
 	public void setAfkFlag(boolean truefalse){}
-	public String getAfkMessage(){
+	public String getAfkMessage()
+	{
 		if(bout!=null)
 			return new String(bout.toByteArray());
 		return "";

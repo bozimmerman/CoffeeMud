@@ -126,118 +126,153 @@ public class DefaultClanGovernment implements ClanGovernment
 		}
 	}
 
-	public int getID() {
+	public int getID()
+	{
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(int iD)
+	{
 		ID = iD;
 	}
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
-	public String getCategory() {
+	public String getCategory()
+	{
 		return category;
 	}
-	public void setCategory(String category){
+	public void setCategory(String category)
+	{
 		if(category==null) category="";
 		this.category=category.toUpperCase();
 	}
-	public int getAutoRole() {
+	public int getAutoRole()
+	{
 		return autoRole;
 	}
-	public void setAutoRole(int autoRole) {
+	public void setAutoRole(int autoRole)
+	{
 		this.autoRole = autoRole;
 	}
 	public boolean isRivalrous() { 
 		return isRivalrous; 
 	}
-	public void setRivalrous(boolean isRivalrous) {
+	public void setRivalrous(boolean isRivalrous)
+	{
 		this.isRivalrous=isRivalrous;
 	}
-	public int getAcceptPos() {
+	public int getAcceptPos()
+	{
 		return acceptPos;
 	}
-	public void setAcceptPos(int acceptPos) {
+	public void setAcceptPos(int acceptPos)
+	{
 		this.acceptPos = acceptPos;
 	}
-	public String getShortDesc() {
+	public String getShortDesc()
+	{
 		return shortDesc;
 	}
-	public void setShortDesc(String shortDesc) {
+	public void setShortDesc(String shortDesc)
+	{
 		this.shortDesc = shortDesc;
 	}
-	public String getLongDesc() {
+	public String getLongDesc()
+	{
 		return longDesc;
 	}
-	public void setLongDesc(String longDesc) {
+	public void setLongDesc(String longDesc)
+	{
 		this.longDesc = longDesc;
 		this.helpStr = null;
 	}
-	public String getRequiredMaskStr() {
+	public String getRequiredMaskStr()
+	{
 		return requiredMaskStr;
 	}
-	public void setRequiredMaskStr(String requiredMaskStr) {
+	public void setRequiredMaskStr(String requiredMaskStr)
+	{
 		this.requiredMaskStr = requiredMaskStr;
 	}
-	public boolean isPublic() {
+	public boolean isPublic()
+	{
 		return isPublic;
 	}
-	public void setPublic(boolean isPublic) {
+	public void setPublic(boolean isPublic)
+	{
 		this.isPublic = isPublic;
 	}
-	public boolean isFamilyOnly() {
+	public boolean isFamilyOnly()
+	{
 		return isFamilyOnly;
 	}
-	public void setFamilyOnly(boolean isFamilyOnly) {
+	public void setFamilyOnly(boolean isFamilyOnly)
+	{
 		this.isFamilyOnly = isFamilyOnly;
 	}
-	public Integer getOverrideMinMembers() {
+	public Integer getOverrideMinMembers()
+	{
 		return overrideMinMembers;
 	}
-	public void setOverrideMinMembers(Integer overrideMinMembers) {
+	public void setOverrideMinMembers(Integer overrideMinMembers)
+	{
 		this.overrideMinMembers = overrideMinMembers;
 	}
-	public boolean isConquestEnabled() {
+	public boolean isConquestEnabled()
+	{
 		return conquestEnabled;
 	}
-	public void setConquestEnabled(boolean conquestEnabled) {
+	public void setConquestEnabled(boolean conquestEnabled)
+	{
 		this.conquestEnabled = conquestEnabled;
 	}
-	public boolean isConquestItemLoyalty() {
+	public boolean isConquestItemLoyalty()
+	{
 		return conquestItemLoyalty;
 	}
-	public void setConquestItemLoyalty(boolean conquestItemLoyalty) {
+	public void setConquestItemLoyalty(boolean conquestItemLoyalty)
+	{
 		this.conquestItemLoyalty = conquestItemLoyalty;
 	}
-	public boolean isConquestByWorship() {
+	public boolean isConquestByWorship()
+	{
 		return conquestByWorship;
 	}
-	public void setConquestByWorship(boolean conquestByWorship) {
+	public void setConquestByWorship(boolean conquestByWorship)
+	{
 		this.conquestByWorship = conquestByWorship;
 	}
-	public int getMaxVoteDays() {
+	public int getMaxVoteDays()
+	{
 		return maxVoteDays;
 	}
-	public void setMaxVoteDays(int maxVoteDays) {
+	public void setMaxVoteDays(int maxVoteDays)
+	{
 		this.maxVoteDays = maxVoteDays;
 	}
-	public int getVoteQuorumPct() {
+	public int getVoteQuorumPct()
+	{
 		return voteQuorumPct;
 	}
-	public void setVoteQuorumPct(int voteQuorumPct) {
+	public void setVoteQuorumPct(int voteQuorumPct)
+	{
 		this.voteQuorumPct = voteQuorumPct;
 	}
-	public String getXpCalculationFormulaStr() {
+	public String getXpCalculationFormulaStr()
+	{
 		return xpCalculationFormulaStr==null?"":xpCalculationFormulaStr;
 	}
 	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula()
 	{
 		return xpCalculationFormula;
 	}
-	public void setXpCalculationFormulaStr(String newXpCalculationFormula) {
+	public void setXpCalculationFormulaStr(String newXpCalculationFormula)
+	{
 		if(newXpCalculationFormula==null) newXpCalculationFormula="";
 		xpCalculationFormulaStr = newXpCalculationFormula;
 		if(xpCalculationFormulaStr.trim().length()==0)
@@ -252,41 +287,53 @@ public class DefaultClanGovernment implements ClanGovernment
 			Log.errOut("DefaultClanGovernment",e.getMessage());
 		}
 	}
-	public boolean isDefault() {
+	public boolean isDefault()
+	{
 		return isDefault;
 	}
-	public void setDefault(boolean isDefault) {
+	public void setDefault(boolean isDefault)
+	{
 		this.isDefault = isDefault;
 	}
-	public ClanPosition[] getPositions() {
+	public ClanPosition[] getPositions()
+	{
 		return positions;
 	}
-	public void setPositions(ClanPosition[] positions) {
+	public void setPositions(ClanPosition[] positions)
+	{
 		this.positions = positions;
 	}
-	public Clan.AutoPromoteFlag getAutoPromoteBy() {
+	public Clan.AutoPromoteFlag getAutoPromoteBy()
+	{
 		return autoPromoteBy;
 	}
-	public void setAutoPromoteBy(Clan.AutoPromoteFlag autoPromoteBy) {
+	public void setAutoPromoteBy(Clan.AutoPromoteFlag autoPromoteBy)
+	{
 		this.autoPromoteBy = autoPromoteBy;
 	}
-	public int[] getLevelProgression() {
+	public int[] getLevelProgression()
+	{
 		return levelProgression;
 	}
-	public void setLevelProgression(int[] levelProgression) {
+	public void setLevelProgression(int[] levelProgression)
+	{
 		this.levelProgression = levelProgression;
 	}
 	
-	public String getEntryScript() {
+	public String getEntryScript()
+	{
 		return entryScriptParam;
 	}
-	public void setEntryScript(String scriptParm) {
+	public void setEntryScript(String scriptParm)
+	{
 		entryScriptParam=scriptParm;
 	}
-	public String getExitScript() {
+	public String getExitScript()
+	{
 		return exitScriptParam;
 	}
-	public void setExitScript(String scriptParm) {
+	public void setExitScript(String scriptParm)
+	{
 		exitScriptParam=scriptParm;
 	}
 	
@@ -486,13 +533,15 @@ public class DefaultClanGovernment implements ClanGovernment
 		}
 		case NUMRABLE: 
 				 clanAbilityMap=null;
-				 if(CMath.s_int(val)==0){
+				 if(CMath.s_int(val)==0)
+				 {
 					 clanAbilityNames=null;
 					 clanAbilityProficiencies=null;
 					 clanAbilityQuals=null;
 					 clanAbilityLevels=null;
 				 }
-				 else{
+				 else
+				 {
 					 clanAbilityNames=new String[CMath.s_int(val)];
 					 clanAbilityProficiencies=new int[CMath.s_int(val)];
 					 clanAbilityQuals=new boolean[CMath.s_int(val)];
@@ -521,12 +570,14 @@ public class DefaultClanGovernment implements ClanGovernment
 				 }
 		case NUMREFF: 
 				 clanEffectMap=null;
-				 if(CMath.s_int(val)==0){
+				 if(CMath.s_int(val)==0)
+				 {
 					 clanEffectNames=null;
 					 clanEffectParms=null;
 					 clanEffectLevels=null;
 				 }
-				 else{
+				 else
+				 {
 					 clanEffectNames=new String[CMath.s_int(val)];
 					 clanEffectParms=new String[CMath.s_int(val)];
 					 clanEffectLevels=new int[CMath.s_int(val)];
@@ -624,9 +675,11 @@ public class DefaultClanGovernment implements ClanGovernment
 					str.append("!");
 			}
 			str.append("\n\r");
-			Object lineDraw = new Object(){
+			Object lineDraw = new Object()
+			{
 				private static final String line = "----------------------------------------------------------------------------"; 
-				public String toString() {
+				public String toString()
+				{
 					StringBuilder s=new StringBuilder("");
 					s.append(line.substring(0,commandColLen-1)).append("+");
 					for(int p=0;p<posses.length;p++)

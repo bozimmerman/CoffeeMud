@@ -47,12 +47,14 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	}
 
 	@Override
-	public Iterator<K> iterator() {
+	public Iterator<K> iterator()
+	{
 		return new MultiIterator<K>(iters);
 	}
 
 	@Override
-	public int size() {
+	public int size()
+	{
 		return size;
 	}
 	

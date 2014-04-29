@@ -125,7 +125,8 @@ public class Spell_Claireaudience extends Spell
 			return false;
 		}
 
-		if(mob==target) {
+		if(mob==target)
+		{
 			mob.tell("You can't cast this on yourself!");
 			return false;
 		}

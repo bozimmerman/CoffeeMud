@@ -42,24 +42,28 @@ public class FingerRequest extends Packet
 	}
 	public FingerRequest(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.FINGER_REQUEST;
 			target_mud=(String)v.elementAt(4);
 			target_name=(String)v.elementAt(6);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	public void send() throws InvalidPacketException {
-		if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null) {
+		if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null)
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str="({\"finger-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
 		return str;

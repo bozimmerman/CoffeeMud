@@ -390,7 +390,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
 		Vector<String> oldVals = new Vector<String>();
-		if(CMath.s_int(oldVal) > 0) {
+		if(CMath.s_int(oldVal) > 0)
+		{
 			for(int c=0;c<choices.size();c++)
 				if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
 					oldVals.addElement((String)choices.elementAt(c,2));
@@ -411,7 +412,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(thisVal.length()==0)
 				newVal = oldVal;
 			else
-			if(thisVal.equalsIgnoreCase("NULL")) {
+			if(thisVal.equalsIgnoreCase("NULL"))
+			{
 				if(choices.contains(""))
 					newVal = "";
 				else
@@ -455,7 +457,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						oldVals.remove(foundChoice);
 						mob.tell("'"+foundChoice+"' removed.");
 						thisVal = "?";
-					} else {
+					} else
+					{
 						oldVals.add(foundChoice);
 						mob.tell("'"+foundChoice+"' added.");
 						thisVal = "?";
@@ -525,7 +528,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			Physical P = (Physical)E;
 			Physical cataP=CMLib.catalog().getCatalogObj(P);
-			if(cataP==null) {
+			if(cataP==null)
+			{
 				P.setName(newName);
 				CMLib.catalog().changeCatalogUsage(P,false);
 				return;
@@ -2134,7 +2138,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		boolean HasLock=E.hasALock();
 		boolean Locked=E.isLocked();
 		boolean DefaultsLocked=E.defaultsLocked();
-		if((showFlag!=showNumber)&&(showFlag>-999)){
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
 			mob.tell(showNumber+". Has a door: "+E.hasADoor()
 					+"\n\r   Has a lock  : "+E.hasALock()
 					+"\n\r   Open ticks: "+E.openDelayTicks());
@@ -3031,7 +3036,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{
 						String howMuch = mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
 								   Integer.toString(lookedUp.findDefault(E)));
-						if(CMath.isInteger(howMuch)) {
+						if(CMath.isInteger(howMuch))
+						{
 							int value =Integer.valueOf(howMuch).intValue();
 							if(value<lookedUp.minimum()) value=lookedUp.minimum();
 							if(value>lookedUp.maximum()) value=lookedUp.maximum();

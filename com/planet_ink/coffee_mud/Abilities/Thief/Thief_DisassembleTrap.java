@@ -51,7 +51,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 	{
 		Ability A=mob.fetchAbility("Thief_RemoveTraps");
 		Hashtable traps=new Hashtable();
-		if(A==null) {
+		if(A==null)
+		{
 			mob.tell("You don't know how to remove traps.");
 			return false;
 		}
@@ -69,7 +70,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 				if(!traps.containsKey(T.ID()))
 					traps.put(T.ID(),T);
 			}
-		if(traps.size()==0) {
+		if(traps.size()==0)
+		{
 			mob.tell("Your attempt was unsuccessful.");
 			return false;
 		}
@@ -91,17 +93,21 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			{
 				R.send(mob,msg);
 				List<Item> components=T.getTrapComponents();
-				if(components.size()==0) {
+				if(components.size()==0)
+				{
 					mob.tell("You don't end up with any usable components.");
-				} else {
-					for(int i=0;i<components.size();i++) {
+				} else
+				{
+					for(int i=0;i<components.size();i++)
+					{
 						Item I=components.get(i);
 						I.text();
 						I.recoverPhyStats();
 						R.addItem(I,ItemPossessor.Expire.Resource);
 					}
 					R.recoverRoomStats();
-					for(int i=0;i<components.size();i++) {
+					for(int i=0;i<components.size();i++)
+					{
 						Item I=components.get(i);
 						if(R.isContent(I))
 							if(!CMLib.commands().postGet(mob,null,I,true))

@@ -366,13 +366,16 @@ public interface XMLLibrary extends CMLibrary
 		public int innerEnd=-1;
 		public int outerEnd=-1;
 		
-		public XMLpiece copyOf() {
-			try {
+		public XMLpiece copyOf()
+		{
+			try
+			{
 				XMLpiece piece2=(XMLpiece)this.clone();
 				piece2.contents=new XVector<XMLpiece>(contents);
 				piece2.parms=new XHashtable<String,String>(parms);
 				return piece2;
-			} catch(Exception e) {
+			} catch(Exception e)
+			{
 				return this;
 			}
 		}

@@ -52,13 +52,15 @@ public class Archon_Banish extends ArchonSkill
 	protected Room prisonRoom=null;
 	protected long releaseTime=0;
 	
-	protected String timeRemaining(){
+	protected String timeRemaining()
+	{
 		if(releaseTime<=0) return "indefinitely";
 		if(releaseTime<System.currentTimeMillis()) return "until any second now.";
 		return "for another "+CMLib.english().returnTime(releaseTime-System.currentTimeMillis(),0);
 	}
 	
-	public Room prison(){
+	public Room prison()
+	{
 		if((prisonRoom!=null)&&(!prisonRoom.amDestroyed()))
 			return prisonRoom;
 		

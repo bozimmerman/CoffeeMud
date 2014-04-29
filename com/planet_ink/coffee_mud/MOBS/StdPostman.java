@@ -85,7 +85,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
 
 	public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
-	public void setWhatIsSoldMask(long newSellCode){
+	public void setWhatIsSoldMask(long newSellCode)
+	{
 		super.setWhatIsSoldMask(newSellCode);
 		if(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 			whatIsSoldMask=ShopKeeper.DEAL_POSTMAN;
@@ -563,7 +564,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												String choice=this.input.trim().toUpperCase();
 												if(choice.startsWith("C"))
 												{
-													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+													{
 														@Override public void showPrompt() { S.promptPrint("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))+"): ");}
 														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 														@Override public void callBack() 

@@ -233,7 +233,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			if(A!=null) A.affectPhyStats(me,phyStats);
 		}});
 	}
@@ -469,13 +470,16 @@ public class StdSpaceShip implements Area, SpaceShip
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		{
 			B.executeMsg(me, msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		{
 			S.executeMsg(me, msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			A.executeMsg(me,msg);
 		}});
 		if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.sourceMinor()==CMMsg.TYP_GET))
@@ -637,15 +641,18 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			{
 				B.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			{
 				S.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
 			}});
@@ -698,7 +705,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		final List<Ability> affects=this.affects;
 		if(affects==null) return;
-		try{
+		try
+		{
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
@@ -970,7 +978,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try{
+		try
+		{
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
@@ -1010,7 +1019,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try{
+		try
+		{
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
@@ -1291,12 +1301,14 @@ public class StdSpaceShip implements Area, SpaceShip
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

@@ -583,7 +583,8 @@ public class Factions extends StdLibrary implements FactionManager
 		for(;e.hasMoreElements();) 
 		{
 			Faction.FRange R=e.nextElement();
-			if(R.alignEquiv()==eq) {
+			if(R.alignEquiv()==eq)
+			{
 				if(R.low()<bottom) bottom=R.low();
 				if(R.high()>top) top=R.high();
 			}

@@ -150,7 +150,8 @@ public class BoxCityLayout extends AbstractLayout
 			}
 			if((n!=null)&&(n.type()==LayoutTypes.leaf))
 				n=null;
-			if(n==null) {
+			if(n==null)
+			{
 				if(tryDiff>0) tryDiff=-tryDiff;
 				else if(tryDiff<0) tryDiff=(-tryDiff)+1;
 				else tryDiff++;

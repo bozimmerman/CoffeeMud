@@ -41,29 +41,36 @@ public class LocateReplyPacket extends Packet {
 
 	public LocateReplyPacket(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.LOCATE_REPLY;
 			located_mud_name = (String)v.elementAt(6);
 			located_visible_name = (String)v.elementAt(7);
-			try {
+			try
+			{
 			idle_time = ((Integer)v.elementAt(8)).intValue();
 			}
-			catch( ClassCastException e ) {
+			catch( ClassCastException e )
+			{
 				idle_time=-1;
 			}
-			try {
+			try
+			{
 			status = (String)v.elementAt(9);
 			}
-			catch( ClassCastException e ) {
+			catch( ClassCastException e )
+			{
 				status="unknown";
 			}
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
-	public LocateReplyPacket(String to_whom, String mud, String who, int idl, String stat) {
+	public LocateReplyPacket(String to_whom, String mud, String who, int idl, String stat)
+	{
 		super();
 		type = Packet.LOCATE_REPLY;
 		target_mud = mud;
@@ -76,13 +83,15 @@ public class LocateReplyPacket extends Packet {
 
 	public void send() throws InvalidPacketException {
 		if( target_name == null || located_mud_name == null ||
-			located_visible_name == null || status == null ) {
+			located_visible_name == null || status == null )
+			{
 			throw new InvalidPacketException();
 		}
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		return "({\"locate-reply\",5,\"" + I3Server.getMudName() +
 			   "\",0,\"" + target_mud + "\",\"" + target_name +
 			   "\",\"" + located_mud_name + "\",\"" +

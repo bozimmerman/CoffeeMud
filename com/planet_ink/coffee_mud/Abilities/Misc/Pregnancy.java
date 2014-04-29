@@ -220,7 +220,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							char gender='F';
 							String sondat="daughter";
 							MOB babe=CMClass.getMOB("GenMOB");
-							if(CMLib.dice().rollPercentage()>50){
+							if(CMLib.dice().rollPercentage()>50)
+							{
 								gender='M';
 								sondat="son";
 							}
@@ -243,13 +244,15 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							if(CMLib.dice().rollPercentage()>5)
 							{
 								Ability A=mob.fetchEffect(ID());
-								while(A!=null){
+								while(A!=null)
+								{
 									mob.delEffect(A);
 									A.setAffectedOne(null);
 									A=mob.fetchEffect(ID());
 								}
 								A=mob.fetchAbility(ID());
-								while(A!=null){
+								while(A!=null)
+								{
 									mob.delAbility(A);
 									A.setAffectedOne(null);
 									A=mob.fetchAbility(ID());

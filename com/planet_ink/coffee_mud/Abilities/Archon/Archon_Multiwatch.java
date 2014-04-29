@@ -189,7 +189,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				&&(S.mob()!=null))
 				{
 					List V=ipes.get(S.getAddress());
-					if(V==null){
+					if(V==null)
+					{
 						V=new Vector();
 						ipes.put(S.getAddress(),V);
 					}

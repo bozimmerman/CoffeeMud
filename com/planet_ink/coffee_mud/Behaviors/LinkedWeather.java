@@ -52,7 +52,8 @@ public class LinkedWeather extends StdBehavior
 		super.tick(ticking,tickID);
 		if(tickID!=Tickable.TICKID_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
-		if(areaName==null){
+		if(areaName==null)
+		{
 			if(getParms().length()==0)
 				return true;
 			String s=getParms();

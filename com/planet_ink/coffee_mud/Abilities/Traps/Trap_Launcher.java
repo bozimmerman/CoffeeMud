@@ -56,7 +56,8 @@ public class Trap_Launcher extends StdTrap
 		return null;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMClass.getWeapon("StdBow");
 		V.addElement(I);
@@ -67,7 +68,8 @@ public class Trap_Launcher extends StdTrap
 		if(P==null) return null;
 		Item I=getPoison(mob);
 		setMiscText("3/a projectile");
-		if(I!=null){
+		if(I!=null)
+		{
 			setMiscText(""+I.basePhyStats().damage()+"/"+I.name());
 			I.destroy();
 		}

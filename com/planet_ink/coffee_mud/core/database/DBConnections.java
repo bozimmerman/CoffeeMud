@@ -285,10 +285,12 @@ public class DBConnections
 				fetched.add(DB);
 				if((System.currentTimeMillis()-DB.getLastQueryTime())> usageTimeoutMillis)
 				{
-					try {
+					try
+					{
 						DB.query(querySql);
 						numPinged++;
-					} catch (SQLException e) {
+					} catch (SQLException e)
+					{
 						Log.errOut("DBConnections",e.getMessage());
 					}
 				}
@@ -337,10 +339,12 @@ public class DBConnections
 			}
 
 			if(connections.size()<maxConnections)
-				try{
+				try
+				{
 					ThisDB=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
 					connections.addElement(ThisDB);
-				}catch(Exception e){
+				}catch(Exception e)
+				{
 					final String errMsg = e.getMessage();
 					if(errMsg!=null)
 					{
@@ -359,7 +363,8 @@ public class DBConnections
 				}
 			if((ThisDB==null)&&(reuse))
 			{
-				try{
+				try
+				{
 					for(DBConnection conn : connections)
 					{
 						if(type==DBConnection.FetchType.PREPAREDSTATEMENT)

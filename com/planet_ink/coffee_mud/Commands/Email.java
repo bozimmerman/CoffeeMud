@@ -102,10 +102,12 @@ public class Email extends StdCommand
 						return false;
 					}
 					Session S=mob.session();
-					try {
+					try
+					{
 						if(S!=null) S.snoopSuspension(1);
 						mob.tell(messages.toString());
-					} finally {
+					} finally
+					{
 						if(S!=null) S.snoopSuspension(-1);
 					}
 					if(mob.session()==null) continue;
@@ -131,10 +133,12 @@ public class Email extends StdCommand
 						messages.append("^XSubject :^?^."+subj+"\n\r");
 						messages.append("^X------------------------------------------------^?^.\n\r");
 						messages.append(message+"\n\r\n\r");
-						try {
+						try
+						{
 							if(S!=null) S.snoopSuspension(1);
 							mob.tell(messages.toString());
-						} finally {
+						} finally
+						{
 							if(S!=null) S.snoopSuspension(-1);
 						}
 						if(mob.session()==null) continue;

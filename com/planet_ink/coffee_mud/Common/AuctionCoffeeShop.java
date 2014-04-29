@@ -68,7 +68,8 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public void initializeClass(){}
 	
 	
-	public CoffeeShop build(ShopKeeper SK) {
+	public CoffeeShop build(ShopKeeper SK)
+	{
 		shopKeeper=new WeakReference(SK);
 		return this;
 	}

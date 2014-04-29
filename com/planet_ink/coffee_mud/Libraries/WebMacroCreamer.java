@@ -102,7 +102,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public StringBuffer virtualPageFilter(StringBuffer s) throws HTTPRedirectException
 	{
-		return virtualPageFilter(new HTTPRequest(){
+		return virtualPageFilter(new HTTPRequest()
+		{
 			public final Hashtable<String,String> params=new Hashtable<String,String>();
 			public final Hashtable<String,Object> objects=new Hashtable<String,Object>();
 			@Override public String getHost() { return "localhost"; }
@@ -830,7 +831,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							responseData=W.runMacro(request, "").getBytes();
 						response.getOutputStream().write(responseData);
 					} 
-					catch (HTTPServerException e){
+					catch (HTTPServerException e)
+					{
 						try
 						{
 							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
@@ -849,7 +851,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) {
+	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	{
 	}
 
 	public boolean activate()
@@ -886,7 +889,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	protected YahooGroupSession yahooSession=null;
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID) {
+	public boolean tick(Tickable ticking, int tickID)
+	{
 		try
 		{
 			tickStatus=Tickable.STATUS_ALIVE;
@@ -942,7 +946,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					yahooSession.H=null;
 				}
 				yahooSession.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
-				try {
+				try
+				{
 					String resp=this.loginToYahooSession(yahooSession);
 					if(resp.length()>0)
 					{
@@ -952,13 +957,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						return true;
 					}
 					yahooSession.numTotalTimes=CMath.s_int(timesPerRunStr);
-				} catch (UnsupportedEncodingException e) {
+				} catch (UnsupportedEncodingException e)
+				{
 					Log.errOut(Thread.currentThread().getName(),e);
 					yahooSession.H.finished();
 					yahooSession.H=null;
 					return true;
 				}
-				finally {
+				finally
+				{
 				}
 			}
 			
@@ -1266,15 +1273,18 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		sess.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
 		Arrays.sort(sess.skipList);
 		
-		try {
+		try
+		{
 			String resp=this.loginToYahooSession(sess);
 			if(resp.length()>0)
 				return resp;
 			return copyYahooGroupMsg(sess);
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e)
+		{
 			Log.errOut(Thread.currentThread().getName(),e);
 		}
-		finally {
+		finally
+		{
 			sess.H.finished();
 		}
 		return " @break@";

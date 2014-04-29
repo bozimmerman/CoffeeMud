@@ -788,7 +788,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int role;
 		public int mobpvps = 0;
 		public int playerpvps=0;
-		public MemberRecord(String name, int role, int mobpvps, int playerpvps) {
+		public MemberRecord(String name, int role, int mobpvps, int playerpvps)
+		{
 			this.name=name; this.role=role; this.mobpvps=mobpvps; this.playerpvps=playerpvps;
 		}
 		public String toString() { return name;}
@@ -802,7 +803,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		public int level;
 		public long timestamp;
-		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps) {
+		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps)
+		{
 			super(name,role,mobpvps,playerpvps); this.level=level; this.timestamp=timestamp;
 		}
 	}

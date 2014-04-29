@@ -1477,9 +1477,11 @@ public class Test extends StdCommand
 						int dist=r.nextInt(0x0fff);
 						final BoundedObject.BoundedCube cube=new BoundedObject.BoundedCube(gcenterX-dist,gcenterX+dist,gcenterY-dist,gcenterY+dist,gcenterZ-dist,gcenterZ+dist);
 						final int num=i;
-						BoundedObject obj=new BoundedObject(){
+						BoundedObject obj=new BoundedObject()
+						{
 							@Override
-							public BoundedCube getBounds() {
+							public BoundedCube getBounds()
+							{
 								return cube;
 							}
 							public String toString() { return "g"+grp+"#"+num; }

@@ -149,7 +149,8 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 	{
 		final List<Item> contents=this.contents;
 		if(contents!=null)
-		try{
+		try
+		{
 			for(int a=0;a<contents.size();a++)
 			{
 				final Item I=contents.get(a);

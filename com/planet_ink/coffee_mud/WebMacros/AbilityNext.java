@@ -86,8 +86,10 @@ public class AbilityNext extends StdWebMacro
 			for(Enumeration<Ability> aa=CMClass.abilities();aa.hasMoreElements();)
 				fullList.add(aa.nextElement());
 			Ability[] aaray=fullList.toArray(new Ability[0]);
-			Arrays.sort(aaray, new Comparator<Ability>(){
-				@Override public int compare(Ability o1, Ability o2) {
+			Arrays.sort(aaray, new Comparator<Ability>()
+			{
+				@Override public int compare(Ability o1, Ability o2)
+				{
 					return o1.Name().compareToIgnoreCase(o2.Name());
 				}
 			});

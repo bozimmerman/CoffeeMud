@@ -67,7 +67,8 @@ public class Prop_ReRollStats extends Property
 			&&(M.playerStats()!=null))
 			{
 				final Ability me=this;
-				CMLib.threads().executeRunnable(new Runnable(){
+				CMLib.threads().executeRunnable(new Runnable()
+				{
 					public void run()
 					{
 						try

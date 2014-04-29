@@ -43,7 +43,8 @@ public class Prop_StayAboard extends Property
 	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
-		if(P instanceof Rider) {
+		if(P instanceof Rider)
+		{
 			rideable = ((Rider)P).riding();
 		}
 	}
@@ -55,14 +56,16 @@ public class Prop_StayAboard extends Property
 		synchronized(this)
 		{
 			if(noRepeat) return true;
-			try {
+			try
+			{
 				noRepeat=true;
 				if((tickID==Tickable.TICKID_MOB)
 				&&(ticking instanceof Rider)
 				&&(ticking instanceof MOB)
 				&&(rideable!=null))
 					stayAboard((Rider)ticking);
-			} finally {
+			} finally
+			{
 				noRepeat=false;
 			}
 		}
@@ -94,7 +97,8 @@ public class Prop_StayAboard extends Property
 		synchronized(this)
 		{
 			if(noRepeat) return;
-			try {
+			try
+			{
 				noRepeat=true;
 				if(E instanceof Rider)
 					if(rideable==null)
@@ -105,7 +109,8 @@ public class Prop_StayAboard extends Property
 					else
 					if(E instanceof Item)
 						stayAboard((Rider)E);
-			} finally {
+			} finally
+			{
 				noRepeat=false;
 			}
 		}

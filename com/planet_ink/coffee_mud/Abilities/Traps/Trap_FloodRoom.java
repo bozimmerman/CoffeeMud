@@ -56,7 +56,8 @@ public class Trap_FloodRoom extends StdTrap
 		return num;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		for(int i=0;i<100;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
@@ -213,7 +214,8 @@ public class Trap_FloodRoom extends StdTrap
 		return super.tick(ticking,tickID);
 	}
 
-	public void disable(){
+	public void disable()
+	{
 		super.disable();
 		if((affected!=null)&&(affected instanceof Room))
 		{

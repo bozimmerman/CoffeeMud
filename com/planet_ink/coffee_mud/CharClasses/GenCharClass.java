@@ -977,7 +977,8 @@ public class GenCharClass extends StdCharClass
 		case 49:
 		{
 			statBuddy=CMClass.getCharClass(val);
-			try{
+			try
+			{
 				if(statBuddy==null)
 					statBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
 			}catch(Exception e){}
@@ -986,7 +987,8 @@ public class GenCharClass extends StdCharClass
 		case 50:
 		{
 			eventBuddy=CMClass.getCharClass(val);
-			try{
+			try
+			{
 				if(eventBuddy==null)
 					eventBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
 			}catch(Exception e){}
@@ -1028,7 +1030,8 @@ public class GenCharClass extends StdCharClass
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)

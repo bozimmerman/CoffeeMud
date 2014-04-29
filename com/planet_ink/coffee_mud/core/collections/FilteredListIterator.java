@@ -89,27 +89,32 @@ public class FilteredListIterator<K> implements ListIterator<K>
 		return element;
 	}
 
-	public void remove() {
+	public void remove()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
-	public void add(K e) {
+	public void add(K e)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
-	public boolean hasPrevious() {
+	public boolean hasPrevious()
+	{
 		if(!initialized)
 			initialize();
 		return prevElement!=null;
 	}
 
 	@Override
-	public int nextIndex() {
+	public int nextIndex()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K previous() {
+	public K previous()
+	{
 		if(!hasPrevious())
 			throw new NoSuchElementException();
 		K element = prevElement;
@@ -118,12 +123,14 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public int previousIndex() {
+	public int previousIndex()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void set(K e) {
+	public void set(K e)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 }

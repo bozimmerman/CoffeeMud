@@ -24,47 +24,56 @@ public class ReadOnlyListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void add(K arg0) {
+	public void add(K arg0)
+	{
 		iter.add(arg0);
 	}
 
 	@Override
-	public boolean hasNext() {
+	public boolean hasNext()
+	{
 		return iter.hasNext();
 	}
 
 	@Override
-	public boolean hasPrevious() {
+	public boolean hasPrevious()
+	{
 		return iter.hasPrevious();
 	}
 
 	@Override
-	public K next() {
+	public K next()
+	{
 		return iter.next();
 	}
 
 	@Override
-	public int nextIndex() {
+	public int nextIndex()
+	{
 		return iter.nextIndex();
 	}
 
 	@Override
-	public K previous() {
+	public K previous()
+	{
 		return iter.previous();
 	}
 
 	@Override
-	public int previousIndex() {
+	public int previousIndex()
+	{
 		return iter.previousIndex();
 	}
 
 	@Override
-	public void remove() {
+	public void remove()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void set(K arg0) {
+	public void set(K arg0)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 

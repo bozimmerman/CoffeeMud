@@ -53,7 +53,8 @@ public class Trap_Boulders extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		for(int i=0;i<50;i++)
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));

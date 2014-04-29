@@ -52,7 +52,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	private SVector<WeakReference<Item>> innerContents=new SVector<WeakReference<Item>>(0); 
 	private ConvertingList<WeakReference<Item>,Item> contents 
 				= new ConvertingList<WeakReference<Item>,Item>(innerContents,
-						new Converter<WeakReference<Item>,Item>(){
+						new Converter<WeakReference<Item>,Item>()
+						{
 					public Item convert(WeakReference<Item> obj) { return obj.get();}
 				});
 	public String ID() { return "WeakItemCollection"; }
@@ -193,7 +194,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	{
 		final List<Item> contents=this.contents;
 		if(contents!=null)
-		try{
+		try
+		{
 			for(int a=0;a<contents.size();a++)
 			{
 				final Item I=contents.get(a);

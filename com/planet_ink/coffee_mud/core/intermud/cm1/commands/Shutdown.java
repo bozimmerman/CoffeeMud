@@ -41,7 +41,8 @@ import java.util.concurrent.atomic.*;
 public class Shutdown extends CM1Command
 {
 	public String getCommandWord(){ return "SHUTDOWN";}
-	public Shutdown(RequestHandler req, String parameters) {
+	public Shutdown(RequestHandler req, String parameters)
+	{
 		super(req, parameters);
 	}
 

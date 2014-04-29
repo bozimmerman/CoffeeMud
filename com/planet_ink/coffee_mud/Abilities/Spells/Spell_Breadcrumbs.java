@@ -55,7 +55,8 @@ public class Spell_Breadcrumbs extends Spell
 		trail=null;
 	}
 
-	public String displayText(){
+	public String displayText()
+	{
 		StringBuffer str=new StringBuffer("(Breadcrumb Trail: ");
 		if(trail!=null)
 		synchronized(trail)

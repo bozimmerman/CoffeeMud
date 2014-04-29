@@ -28,92 +28,110 @@ public class ReadOnlySortedMap<K,V> implements SortedMap<K,V>
 		map=s;
 	}
 	@Override
-	public Comparator<? super K> comparator() {
+	public Comparator<? super K> comparator()
+	{
 		return map.comparator();
 	}
 
 	@Override
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
+	public Set<java.util.Map.Entry<K, V>> entrySet()
+	{
 		return new ReadOnlySet<java.util.Map.Entry<K, V>>(map.entrySet());
 	}
 
 	@Override
-	public K firstKey() {
+	public K firstKey()
+	{
 		return map.firstKey();
 	}
 
 	@Override
-	public SortedMap<K, V> headMap(K toKey) {
+	public SortedMap<K, V> headMap(K toKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.headMap(toKey));
 	}
 
 	@Override
-	public Set<K> keySet() {
+	public Set<K> keySet()
+	{
 		return new ReadOnlySet<K>(map.keySet());
 	}
 
 	@Override
-	public K lastKey() {
+	public K lastKey()
+	{
 		return map.lastKey();
 	}
 
 	@Override
-	public SortedMap<K, V> subMap(K fromKey, K toKey) {
+	public SortedMap<K, V> subMap(K fromKey, K toKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public SortedMap<K, V> tailMap(K fromKey) {
+	public SortedMap<K, V> tailMap(K fromKey)
+	{
 		return new ReadOnlySortedMap<K, V>(map.tailMap(fromKey));
 	}
 
 	@Override
-	public Collection<V> values() {
+	public Collection<V> values()
+	{
 		return new ReadOnlyCollection<V>(map.values());
 	}
 
 	@Override
-	public void clear() {
+	public void clear()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean containsKey(Object key) {
+	public boolean containsKey(Object key)
+	{
 		return map.containsKey(key);
 	}
 
 	@Override
-	public boolean containsValue(Object value) {
+	public boolean containsValue(Object value)
+	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public V get(Object key) {
+	public V get(Object key)
+	{
 		return map.get(key);
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isEmpty()
+	{
 		return map.isEmpty();
 	}
 
 	@Override
-	public V put(K key, V value) {
+	public V put(K key, V value)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
+	public void putAll(Map<? extends K, ? extends V> m)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public V remove(Object key) {
+	public V remove(Object key)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public int size() {
+	public int size()
+	{
 		return map.size();
 	}
 

@@ -90,21 +90,25 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public void add(int arg0, T arg1) {
+	public void add(int arg0, T arg1)
+	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1) {
+	public boolean addAll(int arg0, Collection<? extends T> arg1)
+	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 	@Override
-	public boolean contains(Object arg0) {
+	public boolean contains(Object arg0)
+	{
 		return indexOf(arg0)>=0;
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0) {
+	public boolean containsAll(Collection<?> arg0)
+	{
 		for(Object o : arg0)
 			if(!contains(o))
 				return false;
@@ -112,7 +116,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T get(int arg0) {
+	public T get(int arg0)
+	{
 		return super.get(arg0);
 	}
 
@@ -127,7 +132,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized int indexOf(Object arg0) {
+	public synchronized int indexOf(Object arg0)
+	{
 		if(arg0==null) return -1;
 		if(size()==0) return -1;
 		int start=0;
@@ -212,12 +218,14 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 	
 	@Override
-	public synchronized int lastIndexOf(Object arg0) {
+	public synchronized int lastIndexOf(Object arg0)
+	{
 		return indexOf(arg0); // only holds one-of-a-kind, so all is well!
 	}
 
 	@Override
-	public synchronized boolean remove(Object arg0) {
+	public synchronized boolean remove(Object arg0)
+	{
 		final int index=indexOf(arg0);
 		if(index >= 0) 
 			return remove(index)==arg0;
@@ -225,7 +233,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T set(int arg0, T arg1) {
+	public T set(int arg0, T arg1)
+	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 }

@@ -300,7 +300,8 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint("Reading area '"+area.Name()+"'...");
 				xml=CMLib.coffeeMaker().getAreaXML(area,S,custom,files,true).toString();
-				if(fileNameCode==2){
+				if(fileNameCode==2)
+				{
 					if(area.getArchivePath().length()>0)
 						fileName=fileName+"/"+area.getArchivePath();
 					else

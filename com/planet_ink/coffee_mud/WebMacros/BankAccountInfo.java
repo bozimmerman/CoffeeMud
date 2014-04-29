@@ -68,7 +68,8 @@ public class BankAccountInfo extends StdWebMacro
 		MOB playerM=null;
 		Area playerA=null;
 		boolean destroyPlayer=false;
-		try{
+		try
+		{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("BANKCHAIN");
 		if(last==null) return " @break@";

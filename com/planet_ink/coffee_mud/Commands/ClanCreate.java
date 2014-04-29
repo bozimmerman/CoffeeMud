@@ -76,7 +76,8 @@ public class ClanCreate extends StdCommand
 					return false;
 				}
 			}
-			session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0){
+			session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
+			{
 				@Override public void showPrompt() { session.promptPrint("Are you sure you want to found a new clan (y/N)?");}
 				@Override public void timedOut() { }
 				@Override public void callBack() 
@@ -84,7 +85,8 @@ public class ClanCreate extends StdCommand
 					String check=this.input;
 					if(!check.equalsIgnoreCase("Y"))
 						return;
-					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+					{
 						@Override public void showPrompt() { session.promptPrint("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N");}
 						@Override public void timedOut() { }
 						@Override public void callBack() 
@@ -106,7 +108,8 @@ public class ClanCreate extends StdCommand
 								mob.tell("Clan "+checkC.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
 							else
 							{
-								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0){
+								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
+								{
 									@Override public void showPrompt() { session.promptPrint("\n\rIs '"+doubleCheck+"' correct (y/N)?");}
 									@Override public void timedOut() { }
 									@Override public void callBack() 

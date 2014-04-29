@@ -467,7 +467,8 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 		}
 		if(mob.session()==null) return false;
-		try{
+		try
+		{
 			int numVotes=C.getNumVoters(function);
 			if(numVotes==1) return true;
 

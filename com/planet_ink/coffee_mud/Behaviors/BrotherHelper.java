@@ -52,7 +52,8 @@ public class BrotherHelper extends StdBehavior
 		num=-1;
 	}
 	
-	public int numAllowed() {
+	public int numAllowed()
+	{
 		if(num<0)
 		{
 			num=0;

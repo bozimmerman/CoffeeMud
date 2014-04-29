@@ -110,7 +110,8 @@ public class PollData extends StdWebMacro
 			{
 				String AP="AM";
 				int hr=CMath.s_int(httpReq.getUrlParameter("HOUR"));
-				if(hr>12){
+				if(hr>12)
+				{
 					hr-=12;
 					AP="PM";
 				}
@@ -271,7 +272,8 @@ public class PollData extends StdWebMacro
 						{
 							String AP="AM";
 							int hr=CMath.s_int(httpReq.getUrlParameter("HOUR"));
-							if(hr>12){
+							if(hr>12)
+							{
 								hr-=12;
 								AP="PM";
 							}

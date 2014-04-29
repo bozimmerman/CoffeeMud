@@ -78,7 +78,8 @@ public class Trap_SporeTrap extends StdTrap
 		if(mob!=null)
 		{
 			Item I=getPoison(mob);
-			if(I!=null){
+			if(I!=null)
+			{
 				List<Ability> V=returnOffensiveAffects(I);
 				if(V.size()>0)
 					setMiscText(V.get(0).ID());
@@ -88,7 +89,8 @@ public class Trap_SporeTrap extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
 		Ability A=CMClass.getAbility(text());

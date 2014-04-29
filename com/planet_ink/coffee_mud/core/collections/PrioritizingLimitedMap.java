@@ -142,7 +142,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 	
 	@Override
-	public synchronized boolean containsValue(Object arg0) {
+	public synchronized boolean containsValue(Object arg0)
+	{
 		for(LinkedEntry<T,K> p : map.values())
 			if(p.first==arg0)
 				return true;
@@ -150,7 +151,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized Set<java.util.Map.Entry<T, K>> entrySet() {
+	public synchronized Set<java.util.Map.Entry<T, K>> entrySet()
+	{
 		final Set<java.util.Map.Entry<T, K>> c= new TreeSet<java.util.Map.Entry<T, K>>();
 		for(T t : map.keySet())
 			c.add(new Pair<T,K>(t,map.get(t).second));
@@ -221,7 +223,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized K put(T arg0, K arg1) {
+	public synchronized K put(T arg0, K arg1)
+	{
 		LinkedEntry<T,K> p=map.get(arg0);
 		if(p == null)
 		{
@@ -252,13 +255,15 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized void putAll(Map<? extends T, ? extends K> arg0) {
+	public synchronized void putAll(Map<? extends T, ? extends K> arg0)
+	{
 		for(T t : arg0.keySet())
 			put(t,arg0.get(t));
 	}
 
 	@Override
-	public synchronized K remove(Object arg0) {
+	public synchronized K remove(Object arg0)
+	{
 		if(!map.containsKey(arg0)) return null;
 		final LinkedEntry<T,K> p=map.remove(arg0);
 		if(map.size()==0)
@@ -283,12 +288,14 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public int size() {
+	public int size()
+	{
 		return map.size();
 	}
 
 	@Override
-	public synchronized Collection<K> values() {
+	public synchronized Collection<K> values()
+	{
 		final Collection<K> c= new Vector<K>(map.size());
 		for(T t : map.keySet())
 			c.add(map.get(t).second);

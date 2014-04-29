@@ -68,7 +68,8 @@ public class CommandHandler implements Runnable
 		if (classUrl != null) 
 		{
 		   String temp = classUrl.getFile();
-		   if (temp.startsWith("file:")) {
+		   if (temp.startsWith("file:"))
+		   {
 			  temp=temp.substring(5);
 		   }
 		   x=temp.lastIndexOf('/');

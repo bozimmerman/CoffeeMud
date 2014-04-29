@@ -50,8 +50,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * <PRE>
  * MudObject some_object;
  *
- * public void doSomething() {
- *   if( some_object.getDestructed() ) {
+ * public void doSomething()
+ {
+ *   if( some_object.getDestructed() )
+ {
  *     some_object = null;
  *     return;
  *   }
@@ -63,8 +65,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * <PRE>
  * object some_object;
  *
- * void do_something() {
- *   if( !some_object ) {
+ * void do_something()
+ {
+ *   if( !some_object )
+ {
  *     return;
  *   }
  *   some_object->get_something_done_to();
@@ -117,8 +121,10 @@ public interface ServerObject {
 	  * Make sure that this can only get set once.  The proper
 	  * code for this method probably should be something like:
 	  * <PRE>
-	  * public final void setObjectId(String id) {
-	  *   if( object_id != null ) {
+	  * public final void setObjectId(String id)
+	  {
+	  *   if( object_id != null )
+	  {
 	  * 	return;
 	  *   }
 	  *   object_id = id;

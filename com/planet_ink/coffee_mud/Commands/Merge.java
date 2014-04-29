@@ -697,19 +697,24 @@ public class Merge extends StdCommand
 		for(Room R : rooms)
 			dbInterface.DBReadContent(R.roomID(),R,false);
 		mob.tell("Data loaded, starting scan.");
-		Comparator<MOB> convM=new Comparator<MOB>() {
-			public int compare(MOB arg0, MOB arg1) {
+		Comparator<MOB> convM=new Comparator<MOB>()
+		{
+			public int compare(MOB arg0, MOB arg1)
+			{
 				int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
 			}
 		};
-		Comparator<Item> convI=new Comparator<Item>() {
-			public int compare(Item arg0, Item arg1) {
+		Comparator<Item> convI=new Comparator<Item>()
+		{
+			public int compare(Item arg0, Item arg1)
+			{
 				int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
 			}
 		};
-		try {
+		try
+		{
 		for(Room dbR : rooms)
 		{
 			Room R=CMLib.map().getRoom(dbR.roomID());
@@ -949,7 +954,8 @@ public class Merge extends StdCommand
 			dbR.destroy();
 		}
 		mob.tell("Done");
-		}catch(CMException cme){
+		}catch(CMException cme)
+		{
 			mob.tell("Cancelled.");
 		}
 		dbInterface.shutdown();

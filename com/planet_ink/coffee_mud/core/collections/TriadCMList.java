@@ -21,13 +21,16 @@ limitations under the License.
 public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>> 
 {
 	private static final long serialVersionUID = -9175373358893311211L;
-	public final Triad.FirstConverter<T,K,L> getFirstConverter() {
+	public final Triad.FirstConverter<T,K,L> getFirstConverter()
+	{
 		return new Triad.FirstConverter<T, K,L>();
 	}
-	public final Triad.SecondConverter<T,K,L> getSecondConverter() {
+	public final Triad.SecondConverter<T,K,L> getSecondConverter()
+	{
 		return new Triad.SecondConverter<T, K,L>();
 	}
-	public final Triad.ThirdConverter<T,K,L> getThirdConverter() {
+	public final Triad.ThirdConverter<T,K,L> getThirdConverter()
+	{
 		return new Triad.ThirdConverter<T, K,L>();
 	}
 	public final Iterator<T> firstIterator()
@@ -115,7 +118,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
@@ -125,7 +129,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
@@ -135,7 +140,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int indexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			Log.errOut("TriadSLinkedList",new Exception());
 			for(int i=0;i<size();i++)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
@@ -145,7 +151,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -154,7 +161,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -163,7 +171,8 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	}
 	public synchronized int lastIndexOfThird(L l, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((l==null ? get(i).third==null : l.equals(get(i).third))) 
 					return i;

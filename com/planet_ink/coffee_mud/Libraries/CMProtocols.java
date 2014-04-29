@@ -829,9 +829,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{
 				Command C=CMClass.getCommand("CONSIDER");
 				if(C==null) C=CMClass.getCommand("Consider");
-				try {
+				try
+				{
 					buf.write(C.executeInternal(M, 0, M.getVictim()).toString().getBytes(Session.MSDP_CHARSET));
-				} catch (IOException e) {
+				} catch (IOException e)
+				{
 					buf.write(Integer.toString(M.getVictim().phyStats().level()).getBytes(Session.MSDP_CHARSET));
 				}
 			}
@@ -1490,7 +1492,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							.append("\"count\":").append(group.size()).append(",")
 							.append("\"members\":[");
 						boolean comma=false;
-						for(MOB M : group) {
+						for(MOB M : group)
+						{
 							if(comma) doc.append(",");
 							comma=true;
 							doc.append("{\"name\":\"").append(M.name(mob)).append("\",")

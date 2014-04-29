@@ -42,7 +42,8 @@ public class Spell_Scatter extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
-	private Item getItem(MOB mobTarget) {
+	private Item getItem(MOB mobTarget)
+	{
 		Vector goodPossibilities=new Vector();
 		Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)

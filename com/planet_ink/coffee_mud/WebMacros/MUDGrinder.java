@@ -190,7 +190,8 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getUrlParameter("DELMOB");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
-			if(last.startsWith("CATALOG-")) {
+			if(last.startsWith("CATALOG-"))
+			{
 				last=last.substring(8);
 				MOB M=CMLib.catalog().getCatalogMob(last);
 				if(M==null) return "@break@";
@@ -209,7 +210,8 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getUrlParameter("DELITEM");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
-			if(last.startsWith("CATALOG-")) {
+			if(last.startsWith("CATALOG-"))
+			{
 				last=last.substring(8);
 				Item I=CMLib.catalog().getCatalogItem(last);
 				if(I==null) return "@break@";
@@ -606,7 +608,8 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			R=CMClass.getRace(last);
 			boolean create=false;
-			if((R==null)||(!R.isGeneric())) {
+			if((R==null)||(!R.isGeneric()))
+			{
 				create=true;
 				if(R!=null) oldR=R;
 				R=(Race)CMClass.getRace("GenRace").copyOf();
@@ -667,7 +670,8 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			C=CMClass.getCharClass(last);
 			boolean create=false;
-			if((C==null)||(!C.isGeneric())) {
+			if((C==null)||(!C.isGeneric()))
+			{
 				create=true;
 				if(C!=null) oldC=C;
 				C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
@@ -722,7 +726,8 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			//boolean create=false;
-			if(F==null){
+			if(F==null)
+			{
 				//create=true;
 				StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
 				if((template==null)||(template.length()==0))
@@ -780,7 +785,8 @@ public class MUDGrinder extends StdWebMacro
 			int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
 			if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
 			if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
-			if(A==null) {
+			if(A==null)
+			{
 				create=true;
 				A=(Ability)CMClass.getAbility(type).copyOf();
 				if(A==null) return " @break@";

@@ -53,7 +53,8 @@ public class Trap_RoomPit extends StdTrap
 			while(R1.numInhabitants()>0)
 			{
 				MOB M=R1.fetchInhabitant(0);
-				if(M!=null){
+				if(M!=null)
+				{
 					M.killMeDead(false);
 					R1.delInhabitant(M);
 				}
@@ -61,7 +62,8 @@ public class Trap_RoomPit extends StdTrap
 			while(R2.numInhabitants()>0)
 			{
 				MOB M=R2.fetchInhabitant(0);
-				if(M!=null){
+				if(M!=null)
+				{
 					M.killMeDead(false);
 					R2.delInhabitant(M);
 				}

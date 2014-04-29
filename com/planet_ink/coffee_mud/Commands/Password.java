@@ -47,20 +47,26 @@ public class Password extends StdCommand
 		if(mob.isMonster()) return false;
 		final Session sess=mob.session();
 		if(sess!=null)
-		sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+		sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
+		{
 			@Override public void showPrompt() { sess.promptPrint("Enter your old password : "); }
 			@Override public void timedOut() { }
-			@Override public void callBack() {
+			@Override public void callBack()
+			{
 				final String old=this.input;
-				sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+				sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
+				{
 					@Override public void showPrompt() { sess.promptPrint("Enter a new password    : "); }
 					@Override public void timedOut() { }
-					@Override public void callBack() {
+					@Override public void callBack()
+					{
 						final String nep=this.input;
-						sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+						sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
+						{
 							@Override public void showPrompt() { sess.promptPrint("Enter new password again: "); }
 							@Override public void timedOut() { }
-							@Override public void callBack() {
+							@Override public void callBack()
+							{
 								final String ne2=this.input;
 								if(!pstats.matchesPassword(old))
 									mob.tell("Your old password was not entered correctly.");

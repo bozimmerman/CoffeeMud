@@ -183,10 +183,12 @@ public class Load extends StdCommand
 						while(name.startsWith("/")) name=name.substring(1);
 						Class<?> C=null;
 						Object CO=null;
-						try{
+						try
+						{
 							C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());
 							if(C!=null) CO=C.newInstance();
-						}catch(Exception e){
+						}catch(Exception e)
+						{
 							Log.errOut("Load",e.getMessage());
 						}
 						ByteArrayOutputStream bout=new ByteArrayOutputStream();

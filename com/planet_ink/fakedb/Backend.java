@@ -164,7 +164,8 @@ public class Backend
    public static class ComparableValue implements Comparable
    {
 	   private Comparable v;
-	   public ComparableValue(Comparable v){
+	   public ComparableValue(Comparable v)
+	   {
 		   if(v instanceof ComparableValue)
 			   this.v=((ComparableValue)v).v;
 		   else
@@ -176,7 +177,8 @@ public class Backend
 		   return 0;
 	   }
 	   public Comparable getValue(){return v;}
-	   public boolean equals(Object o){
+	   public boolean equals(Object o)
+	   {
 		   Object t=o;
 		   if(o instanceof ComparableValue)
 			   t=((ComparableValue)o).getValue();
@@ -1408,18 +1410,22 @@ public class Backend
 	  {
 	  case FakeColumn.TYPE_INTEGER:
 	  {
-		  try {
+		  try
+		  {
 			  fake.conditionValue = new ComparableValue(Integer.valueOf(value));
-		  }catch(Exception e) {
+		  }catch(Exception e)
+		  {
 			  throw new java.sql.SQLException("can't compare "+value+" to "+tableName+"."+columnName);
 		  }
 		  break;
 	  }
 	  case FakeColumn.TYPE_LONG:
 	  {
-		  try {
+		  try
+		  {
 			  fake.conditionValue = new ComparableValue(Long.valueOf(value));
-		  }catch(Exception e) {
+		  }catch(Exception e)
+		  {
 			  throw new java.sql.SQLException("can't compare "+value+" to "+tableName+"."+columnName);
 		  }
 		  break;

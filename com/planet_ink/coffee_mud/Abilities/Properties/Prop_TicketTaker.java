@@ -44,7 +44,8 @@ public class Prop_TicketTaker extends Property
 		return "one who acts as a ticket taker";
 	}
 
-	protected double cost(){
+	protected double cost()
+	{
 		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
 		return amount;

@@ -467,7 +467,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
-		if(classModelI == null) {
+		if(classModelI == null)
+		{
 			Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
 			return false;
 		} 
@@ -545,7 +546,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		try
 		{
 			testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
-		} catch(CMException e) {
+		} catch(CMException e)
+		{
 			
 			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
 			return;
@@ -597,7 +599,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		DVector dataRow = null;
-		for(int r=0;r<rowsV.size();r++) {
+		for(int r=0;r<rowsV.size();r++)
+		{
 			dataRow=rowsV.elementAt(r);
 			for(int c=0;c<dataRow.size();c++)
 			{
@@ -701,7 +704,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				editRow = recipe.blankRow();
 				int keyIndex = getClassFieldIndex(editRow);
 				String classFieldData = null;
-				if(keyIndex>=0) {
+				if(keyIndex>=0)
+				{
 					AbilityParmEditor A = editors.get(((List<String>)editRow.elementAt(keyIndex,1)).get(0));
 					if(A!=null)
 					{
@@ -969,7 +973,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return DEFAULT_EDITORS;
 		
 		Vector<AbilityParmEditorImpl> V=new XVector<AbilityParmEditorImpl>(new AbilityParmEditorImpl[] {
-				new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(CMClass.abilities());}
 					public String defaultValue(){ return "Spell_ID";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -982,7 +987,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
 					public String defaultValue(){ return "IRON";}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -990,7 +996,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return RawMaterial.CODES.NAME(I.material());
 					}
 				},
-				new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
+				new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "Item Name";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -1050,7 +1057,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return newName;
 					}
 				}, 
-				new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){
+				new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -1064,7 +1072,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+I.basePhyStats().level();
 					}
 				},
-				new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){
+				new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "20";}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -1072,7 +1081,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+(10 + (I.basePhyStats().level()/2));
 					}
 				},
-				new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){
+				new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
 					public String defaultValue(){ return "10";}
@@ -1081,10 +1091,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+Math.round(CMath.mul(I.basePhyStats().weight(),(A!=null)?A.getItemWeightMultiplier(false):1.0));
 					}
 				},
-				new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL){
+				new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
 						{
 							String which=httpReq.getUrlParameter(fieldName+"_WHICH");
@@ -1154,7 +1166,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return CMLib.ableMapper().getAbilityComponentCodedString(comps);
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						if(value.endsWith("$")) 
 							value = value.substring(0,oldVal.length()-1);
@@ -1240,7 +1253,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								if(compType==AbilityComponent.CompType.MATERIAL)
 								{
 									RawMaterial.Material[] M=RawMaterial.Material.values();
-									Arrays.sort(M,new Comparator<RawMaterial.Material>(){
+									Arrays.sort(M,new Comparator<RawMaterial.Material>()
+									{
 										@Override public int compare(Material o1, Material o2) { return o1.name().compareToIgnoreCase(o2.name()); }
 									});
 									for(RawMaterial.Material m : M)
@@ -1257,8 +1271,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									List<Pair<String,Integer>> L=new Vector<Pair<String,Integer>>();
 									for(int x=0;x<RawMaterial.CODES.TOTAL();x++)
 										L.add(new Pair<String,Integer>(RawMaterial.CODES.NAME(x),Integer.valueOf(RawMaterial.CODES.GET(x))));
-									Collections.sort(L,new Comparator<Pair<String,Integer>>(){
-										@Override public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+									Collections.sort(L,new Comparator<Pair<String,Integer>>()
+									{
+										@Override public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+										{
 											return o1.first.compareToIgnoreCase(o2.first);
 										}
 									});
@@ -1319,7 +1335,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "1";}
 				},
-				new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",PARMTYPE_NUMBER){
+				new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
 					public String defaultValue(){ return "";}
@@ -1328,7 +1345,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
+				new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "5";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -1336,7 +1354,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+I.baseGoldValue();
 					}
 				},
-				new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES)
+				{
 					public void createChoices() 
 					{ 
 						Vector<Item> V  = new Vector<Item>();
@@ -1366,12 +1385,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "GenItem";}
 				},
-				new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL)
+				{
 					public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
 					public String defaultValue(){ return "NECK";}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						short[] layerAtt = new short[1];
 						short[] layers = new short[1];
 						long[] wornLoc = new long[1];
@@ -1398,7 +1419,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						String value = webValue(httpReq,parms,oldVal,fieldName);
 						short[] layerAtt = new short[1];
 						short[] layers = new short[1];
@@ -1465,7 +1487,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final short[] layers=new short[]{A.getClothingLayer()};
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
-					public String[] fakeUserInput(String oldVal) {
+					public String[] fakeUserInput(String oldVal)
+					{
 						Vector<String> V = new Vector<String>();
 						short[] layerAtt = new short[1];
 						short[] layers = new short[1];
@@ -1507,7 +1530,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
 				},
-				new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "20";}
@@ -1518,7 +1542,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "0";
 					}
 				},
-				new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
@@ -1527,7 +1552,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+I.basePhyStats().armor();
 					}
 				},
-				new AbilityParmEditorImpl("CONTAINER_TYPE","Con.",PARMTYPE_MULTICHOICES) {
+				new AbilityParmEditorImpl("CONTAINER_TYPE","Con.",PARMTYPE_MULTICHOICES)
+				{
 					public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public String defaultValue(){ return "0";}
@@ -1546,7 +1572,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return str.toString();
 					}
 				},
-				new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",PARMTYPE_MULTICHOICES) {
+				new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",PARMTYPE_MULTICHOICES)
+				{
 					public void createChoices() { 
 						createBinaryChoices(Container.CONTAIN_DESCS);
 						choices().addElement("LID","Lid");
@@ -1572,9 +1599,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return str.toString();
 					}
 				},
-				new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() {}
-					public boolean confirmValue(String oldVal) {
+					public boolean confirmValue(String oldVal)
+					{
 						if(oldVal.length()==0) return true;
 						if(oldVal.charAt(0)=='*')
 							oldVal = oldVal.substring(1);
@@ -1596,7 +1625,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(spells.size()==1)
 							newVal.append("*" + spells.get(0).ID() + ";" + spells.get(0).text());
 						else
-							if(spells.size()>1) {
+							if(spells.size()>1)
+							{
 								for(int s=0;s<spells.size();s++)
 								{
 									String txt = spells.get(s).text().trim();
@@ -1616,7 +1646,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						Vector<String> V = new Vector<String>();
 						Vector<String> V2 = new Vector<String>();
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
-						for(int s=0;s<spells.size();s++) {
+						for(int s=0;s<spells.size();s++)
+						{
 							V.addElement(spells.get(s).ID());
 							V2.addElement(spells.get(s).ID());
 							V2.addElement(spells.get(s).text());
@@ -1650,13 +1681,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						else
 							spells = CMLib.ableParms().getCodedSpells(oldVal);
-						try {
+						try
+						{
 							return rebuild(spells);
-						} catch(Exception e) {
+						} catch(Exception e)
+						{
 							return oldVal;
 						}
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
 						StringBuffer str = new StringBuffer("");
 						str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
@@ -1700,7 +1734,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						boolean okToProceed = true;
 						++showNumber[0];
 						String newVal = null;
-						while(okToProceed) {
+						while(okToProceed)
+						{
 							okToProceed = false;
 							CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
 							StringBuffer sameCheck = new StringBuffer("");
@@ -1708,9 +1743,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								sameCheck.append(spells.get(s).ID()).append(';').append(spells.get(s).text()).append(';');
 							if(sameCheck.toString().equals(rawCheck.toString())) 
 								return oldVal;
-							try {
+							try
+							{
 								newVal = rebuild(spells);
-							} catch(CMException e) {
+							} catch(CMException e)
+							{
 								mob.tell(e.getMessage());
 								okToProceed = true;
 								break;
@@ -1719,7 +1756,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return (newVal==null)?oldVal:newVal.toString();
 					}
 				},
-				new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
@@ -1730,7 +1768,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "0";
 					}
 				},
-				new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
 					public String defaultValue(){ return "";}
@@ -1744,7 +1783,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
 					public void createChoices() { createChoices(new String[]{"","STATUE"});}
 					public String defaultValue(){ return "";}
@@ -1761,7 +1801,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "STATUE";
 					}
 				},
-				new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
 					public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
 					public String defaultValue(){ return "";}
@@ -1779,7 +1820,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 					}
 				},
-				new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "25";}
@@ -1789,7 +1831,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+((Drink)I).liquidHeld();
 					}
 				},
-				new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
 					public String defaultValue(){ return "BLUNT";}
@@ -1800,7 +1843,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "0";
 					}
 				},
-				new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
 					public void createChoices() { createChoices(new String[]{"","SMOKE"});}
 					public String defaultValue(){ return "";}
@@ -1814,7 +1858,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "1";}
@@ -1825,7 +1870,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
 					public void createChoices() {}
 					public String defaultValue(){ return "10";}
@@ -1836,7 +1882,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
 					public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
 					public String defaultValue(){ return "1";}
@@ -1847,7 +1894,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "100";}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -1862,7 +1910,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "100";
 					}
 				},
-				new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
 					public void createChoices() { createChoices(new String[]{"","AREA"});}
 					public String defaultValue(){ return "";}
@@ -1871,7 +1920,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return (I.getClass().getName().toString().indexOf("LawBook")>0)?"AREA":"";
 					}
 				},
-				new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL) {
+				new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -1881,9 +1931,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof ClanItem)?5:-1;}
-					public void createChoices() {
+					public void createChoices()
+					{
 						Vector<Object> V  = new Vector<Object>();
 						Ability A = null;
 						for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -1905,7 +1957,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("FOOD_DRINK","ETyp",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("FOOD_DRINK","ETyp",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
 					public String defaultValue(){ return "";}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -1922,7 +1975,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
+				new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
 					public String defaultValue(){ return "";}
@@ -1933,10 +1987,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resc/Itm",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resc/Itm",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
 						{
 							String which=httpReq.getUrlParameter(fieldName+"_WHICH");
@@ -1950,7 +2006,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						return "";
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						if(value.endsWith("$")) 
 							value = value.substring(0,oldVal.length()-1);
@@ -2004,12 +2061,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "";}
 				},
-				new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() {}
-					public boolean confirmValue(String oldVal) {
+					public boolean confirmValue(String oldVal)
+					{
 						if(oldVal.trim().length()==0)
 							return true;
-						if(!oldVal.endsWith("$")) {
+						if(!oldVal.endsWith("$"))
+						{
 							return CMParms.contains(RawMaterial.CODES.NAMES(),oldVal);
 						}
 						return true;
@@ -2018,12 +2078,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						return "";
 					}
-					public String[] fakeUserInput(String oldVal) {
+					public String[] fakeUserInput(String oldVal)
+					{
 						if(oldVal.endsWith("$"))
 							return new String[]{oldVal.substring(0,oldVal.length()-1)}; 
 						return new String[]{oldVal}; 
 					}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
 						String value = A.webValue(httpReq,parms,oldVal,fieldName);
@@ -2031,11 +2093,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(r>=0) return RawMaterial.CODES.NAME(r);
 						return (value.trim().length()==0)?"":(value+"$");
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						return A.webField(httpReq,parms,oldVal,fieldName);
 					}
-					public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) {
+					public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal)
+					{
 						if(oldVal.endsWith("$"))
 							return oldVal.substring(0,oldVal.length()-1);
 						return oldVal;
@@ -2071,7 +2135,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "";}
 				},
-				new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
+				new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
 					public String defaultValue(){ return "arrows";}
@@ -2082,7 +2147,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
 					public String defaultValue(){ return "1";}
@@ -2107,8 +2173,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-					public void createChoices() {
+				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES)
+				{
+					public void createChoices()
+					{
 						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
 						Collections.sort(V);
 						XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
@@ -2126,8 +2194,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "IRON";}
 				},
-				new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-					public void createChoices() {
+				new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES)
+				{
+					public void createChoices()
+					{
 						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
 						Collections.sort(V);
 						XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
@@ -2142,7 +2212,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "";}
 				},
-				new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
+				new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "Herb Name";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -2152,7 +2223,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
 					public String defaultValue(){ return "2";}
@@ -2163,7 +2235,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "0";
 					}
 				},
-				new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
 					public String defaultValue(){ return "METAL";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -2179,7 +2252,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""; // absolutely no way to determine
 					}
 				},
-				new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() { 
 						createChoices(CMClass.races());
 						choices().addElement("","");
@@ -2191,7 +2265,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""; // absolutely no way to determine
 					}
 					public String defaultValue(){ return "";}
-					public boolean confirmValue(String oldVal) {
+					public boolean confirmValue(String oldVal)
+					{
 						if(oldVal.trim().length()==0)
 							return true;
 						Vector<String> parsedVals = CMParms.parse(oldVal.toUpperCase());
@@ -2200,7 +2275,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								return false;
 						return true;
 					}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						Vector<String> raceIDs=null;
 						if(httpReq.isUrlParameter(fieldName+"_RACE"))
 						{
@@ -2213,7 +2289,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							raceIDs = CMParms.parse(oldVal.toUpperCase().trim());
 						return CMParms.combine(raceIDs,0);
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						Vector<String> raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
 						StringBuffer str = new StringBuffer("");
 						str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
@@ -2231,11 +2308,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(parsedVals.size()==0)
 							return new String[]{""};
 						Vector<String> races = new Vector<String>();
-						for(int p=0;p<parsedVals.size();p++) {
+						for(int p=0;p<parsedVals.size();p++)
+						{
 							Race R=CMClass.getRace(parsedVals.elementAt(p));
 							races.addElement(R.name());
 						}
-						for(int p=0;p<parsedVals.size();p++) {
+						for(int p=0;p<parsedVals.size();p++)
+						{
 							Race R=CMClass.getRace(parsedVals.elementAt(p));
 							races.addElement(R.name());
 						}
@@ -2289,7 +2368,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return newVal;
 					}
 				},
-				new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
 					public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
 					public String defaultValue(){ return "DRUMS";}
@@ -2300,7 +2380,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "0";
 					}
 				},
-				new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(new String[]{"","STONE"});}
 					public String defaultValue(){ return "";}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -2310,12 +2391,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "";
 					}
 				},
-				new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD) {
+				new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "New Post";}
 					public String convertFromItem(final ItemCraftor A, final Item I) { return ""; }
 				},
-				new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING) {
+				new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public String defaultValue(){ return "<S-NAME> is standing here.";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -2332,7 +2415,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return pose;
 					}
 				},
-				new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES)
+				{
 					public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
 					public String defaultValue(){ return "WOOD";}
 					public String convertFromItem(final ItemCraftor A, final Item I) 
@@ -2347,19 +2431,22 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 					}
 				},
-				new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
+				new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES)
+				{
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
 					public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
 					public String defaultValue(){ return "BASHING";}
 				},
-				new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
+				new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					public String convertFromItem(final ItemCraftor A, final Item I){ return ""+((I instanceof Weapon)?((Weapon)I).basePhyStats().attackAdjustment():0); }
 					public String defaultValue(){ return "0";}
 				},
-				new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING) {
+				new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING)
+				{
 					public void createChoices() {}
 					public int appliesToClass(Object o) { return -1;}
 					public String defaultValue(){ return "";}
@@ -2369,7 +2456,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{ return "";}
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) { return ""; }
 				},
-				new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
+				new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL)
+				{
 					public void createChoices() { 
 						createChoices(RawMaterial.CODES.NAMES()); 
 						choices().addElement("","");
@@ -2382,7 +2470,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "";}
 					public int appliesToClass(Object o) { return 0;}
-					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						if(httpReq.isUrlParameter(fieldName+"_RESOURCE"))
 						{
 							String rsc=httpReq.getUrlParameter(fieldName+"_RESOURCE");
@@ -2393,7 +2482,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return oldVal;
 					}
-					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+					{
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						String rsc = "";
 						int amt = 0;
@@ -2438,7 +2528,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						int x=oldVal.indexOf('/');
 						String oldRsc = "";
 						int oldAmt = 0;
-						if(x>0) {
+						if(x>0)
+						{
 							oldRsc = oldVal.substring(0,x);
 							oldAmt = CMath.s_int(oldVal.substring(x));
 						}
@@ -2451,7 +2542,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				
 		});
 		DEFAULT_EDITORS = new Hashtable<String,AbilityParmEditor>();
-		for(int v=0;v<V.size();v++) {
+		for(int v=0;v<V.size();v++)
+		{
 			AbilityParmEditor A = V.elementAt(v);
 			DEFAULT_EDITORS.put(A.ID(),A);
 		}
@@ -2489,7 +2581,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(columns.elementAt(c) instanceof List)
 					numberOfDataColumns++;
 			dataRows = null;
-			try {
+			try
+			{
 				dataRows = parseDataRows(str,columns,numberOfDataColumns);
 				DVector editRow = new DVector(2);
 				for(int c=0;c<columns().size();c++)
@@ -2502,7 +2595,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				else
 					classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
 				fixDataColumns(dataRows);
-			} catch(CMException e) {
+			} catch(CMException e)
+			{
 				parseError = e.getMessage();
 				return;
 			}
@@ -2515,10 +2609,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			DVector editRow = blankRow();
 			int keyIndex =classFieldIndex;
-			if((keyIndex>=0)&&(classFieldData!=null)) {
+			if((keyIndex>=0)&&(classFieldData!=null))
+			{
 				editRow.setElementAt(keyIndex,2,classFieldData);
 			}
-			try {
+			try
+			{
 				fixDataColumn(editRow,-1);
 			} catch(CMException cme) { return null;}
 			for(int i=0;i<editRow.size();i++)
@@ -2529,7 +2625,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 			return editRow;
 		}
-		public DVector blankRow() {
+		public DVector blankRow()
+		{
 			DVector editRow = new DVector(2);
 			for(int c=0;c<columns().size();c++)
 				if(columns().elementAt(c) instanceof List)
@@ -2554,7 +2651,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		private String prompt = null;
 		private String header = null;
 		
-		public AbilityParmEditorImpl(String fieldName, String shortHeader, int type) {
+		public AbilityParmEditorImpl(String fieldName, String shortHeader, int type)
+		{
 			ID=fieldName; 
 			fieldType = type;
 			header = shortHeader;
@@ -2570,7 +2668,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
 			boolean emptyOK = false;
-			switch(fieldType) {
+			switch(fieldType)
+			{
 			case PARMTYPE_STRINGORNULL:
 				emptyOK = true;
 			//$FALL-THROUGH$
@@ -2593,9 +2692,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-        public String[] fakeUserInput(String oldVal) {
+        public String[] fakeUserInput(String oldVal)
+        {
 			boolean emptyOK = false;
-			switch(fieldType) {
+			switch(fieldType)
+			{
 			case PARMTYPE_STRINGORNULL:
 				emptyOK = true;
 			//$FALL-THROUGH$
@@ -2625,7 +2726,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					for(int v=0;v<V.size();v++)
 						if(oldVal.equalsIgnoreCase(V.elementAt(v)))
 							return new String[]{(String)choices.elementAt(v,2),""};
-				} else {
+				} else
+				{
 					Vector<String> V = new Vector<String>();
 					for(int c=0;c<choices.size();c++)
 						if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
@@ -2650,7 +2752,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			String str = null;
 			boolean emptyOK = false;
 			boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
-			switch(fieldType) {
+			switch(fieldType)
+			{
 			case PARMTYPE_STRINGORNULL:
 				emptyOK = true;
 			//$FALL-THROUGH$
@@ -2659,7 +2762,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				++showNumber[0];
 				boolean proceed = true;
-				while(proceed&&(!mob.session().isStopped())) {
+				while(proceed&&(!mob.session().isStopped()))
+				{
 					str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
 					if((!spaceOK) && (str.indexOf(' ') >= 0))
 						mob.tell("Spaces are not allowed here.");
@@ -2689,9 +2793,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return str;
 		}
 		
-		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+		{
 			String webValue = httpReq.getUrlParameter(fieldName);
-			switch(fieldType) {
+			switch(fieldType)
+			{
 			case PARMTYPE_ONEWORD:
 			case PARMTYPE_STRINGORNULL:
 			case PARMTYPE_STRING:
@@ -2721,12 +2827,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		
 		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) { return oldVal; }
 		
-		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+		{
 			int textSize = 50;
 			String webValue = webValue(httpReq,parms,oldVal,fieldName);
 			String onChange = null;
 			Vector<String> choiceValues = new Vector<String>();
-			switch(fieldType) {
+			switch(fieldType)
+			{
 			case PARMTYPE_ONEWORD:
 				textSize = 10;
 			//$FALL-THROUGH$
@@ -2784,7 +2892,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(choices != null) return choices;
 			choices = new DVector(2);
 			Object o = null;
-			for(;e.hasMoreElements();) {
+			for(;e.hasMoreElements();)
+			{
 				o = e.nextElement();
 				if(o instanceof String)
 					choices.addElement(o,CMStrings.capitalizeAndLower((String)o));

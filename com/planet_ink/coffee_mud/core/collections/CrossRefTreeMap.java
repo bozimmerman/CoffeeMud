@@ -25,9 +25,11 @@ limitations under the License.
 */
 public class CrossRefTreeMap<T, K>
 {
-	final static Comparator<Object> comparator=new Comparator<Object>(){
+	final static Comparator<Object> comparator=new Comparator<Object>()
+	{
 		@Override
-        public int compare(Object o1, Object o2) {
+        public int compare(Object o1, Object o2)
+        {
 			if(o1 == null)
 			{
 				if(o2 == null)

@@ -60,7 +60,8 @@ public class IMudPeer implements PersistentPeer
 		isRestoring=true;
 		if(myobj instanceof Intermud)
 		{
-			try{
+			try
+			{
 				CMFile F=new CMFile("resources/ppeer."+myID,null);
 				if(!F.exists()) return;
 				

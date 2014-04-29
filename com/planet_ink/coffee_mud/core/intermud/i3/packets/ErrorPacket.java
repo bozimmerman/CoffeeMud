@@ -59,15 +59,18 @@ public class ErrorPacket extends Packet
 	public ErrorPacket(Vector v) throws InvalidPacketException 
 	{
 		super(v);
-		try {
+		try
+		{
 			type = Packet.ERROR_PACKET;
-			try{
+			try
+			{
 				error_code = v.elementAt(6).toString();
 				error_message = v.elementAt(7).toString();
 				packetStr=v.elementAt(8).toString();
 			}catch(Exception e){ }
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}

@@ -101,7 +101,8 @@ public class StdTrap extends StdAbility implements Trap
 		Room R=target.location();
 		if((!canBeUninvoked())
 		&&(!isABomb())
-		&&(R!=null)) {
+		&&(R!=null))
+		{
 			if((CMLib.law().getLandTitle(R)!=null)
 			&&(CMLib.law().doesHavePriviledgesHere(target,R)))
 				return true;

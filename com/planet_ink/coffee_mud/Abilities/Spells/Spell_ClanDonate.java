@@ -91,7 +91,8 @@ public class Spell_ClanDonate extends Spell
 			{
 				MOB victim=mob.getVictim();
 				boolean proceed=(target instanceof Coins);
-				if(!proceed){
+				if(!proceed)
+				{
 					Room prevRoom=mob.location();
 					clanDonateRoom.bringMobHere(mob,false);
 					proceed=CMLib.commands().postDrop(mob,target,true,false,false);

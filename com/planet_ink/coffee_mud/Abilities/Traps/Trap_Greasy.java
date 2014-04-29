@@ -58,7 +58,8 @@ public class Trap_Greasy extends StdTrap
 		return null;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMClass.getBasicItem("OilFlask"));
 		return V;

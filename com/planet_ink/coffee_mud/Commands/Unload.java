@@ -227,13 +227,15 @@ public class Unload extends StdCommand
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDFACTIONS)))
 			{
 				String which=CMParms.combine(commands,2);
-				if(which.length()==0) {
+				if(which.length()==0)
+				{
 					// No factions specified.  That's fine, they must mean ALL FACTIONS!!! hahahahaha
 					CMLib.factions().removeFaction(null);
 				}
 				else
 				{
-					if(CMLib.factions().removeFaction(which)) {
+					if(CMLib.factions().removeFaction(which))
+					{
 						mob.tell("Faction '"+which+"' unloaded.");
 						return false;
 					}

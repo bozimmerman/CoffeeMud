@@ -207,8 +207,10 @@ public class SocialData extends StdWebMacro
 				{
 					String fnam="SDAT_"+TYPE+"_"+field.charAt(f);
 					old=httpReq.getUrlParameter(fnam);
-					if(old!=null) {
-						switch(field.charAt(f)) {
+					if(old!=null)
+					{
+						switch(field.charAt(f))
+						{
 							case 'Y': S.setYou_see(old); break;
 							case 'O': S.setThird_party_sees(old); break;
 							case 'N': S.setSee_when_no_target(old); break;
@@ -217,8 +219,10 @@ public class SocialData extends StdWebMacro
 						}
 					}
 					old=httpReq.getUrlParameter(fnam+"C");
-					if(old!=null) {
-						switch(field.charAt(f)) {
+					if(old!=null)
+					{
+						switch(field.charAt(f))
+						{
 							case 'Y': S.setSourceCode(CMath.s_int(old)); 
 									  break;
 							case 'O': S.setTargetCode(CMath.s_int(old));
@@ -389,10 +393,12 @@ public class SocialData extends StdWebMacro
 							if(parms.containsKey(fnam))
 							{
 								old=httpReq.getUrlParameter(fnam);
-								if(old==null) {
+								if(old==null)
+								{
 									if(S==null) 
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
-									switch(field.charAt(f)) {
+									switch(field.charAt(f))
+									{
 										case 'Y': old=S.You_see(); break;
 										case 'O': old=S.Third_party_sees(); break;
 										case 'N': old=S.See_when_no_target(); break;
@@ -405,10 +411,12 @@ public class SocialData extends StdWebMacro
 							if(parms.containsKey(fnam+"C"))
 							{
 								old=httpReq.getUrlParameter(fnam+"C");
-								if(old==null) {
+								if(old==null)
+								{
 									if(S==null) 
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
-									switch(field.charAt(f)) {
+									switch(field.charAt(f))
+									{
 										case 'Y': old=(S==null)?null:""+S.sourceCode(); break;
 										case 'O': old=(S==null)?null:""+S.targetCode(); break;
 										case 'N': break;

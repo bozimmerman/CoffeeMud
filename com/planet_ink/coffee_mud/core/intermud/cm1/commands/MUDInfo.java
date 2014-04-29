@@ -41,7 +41,8 @@ import java.util.concurrent.atomic.*;
 public class MUDInfo extends CM1Command
 {
 	public String getCommandWord(){ return "MUDINFO";}
-	public MUDInfo(RequestHandler req, String parameters) {
+	public MUDInfo(RequestHandler req, String parameters)
+	{
 		super(req, parameters);
 	}
 

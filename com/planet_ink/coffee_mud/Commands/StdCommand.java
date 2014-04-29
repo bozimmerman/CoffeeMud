@@ -38,7 +38,8 @@ public class StdCommand implements Command
 	protected String ID=null;
 	public String ID()
 	{
-		if(ID==null){
+		if(ID==null)
+		{
 			ID=this.getClass().getName();
 			int x=ID.lastIndexOf('.');
 			if(x>=0) ID=ID.substring(x+1);

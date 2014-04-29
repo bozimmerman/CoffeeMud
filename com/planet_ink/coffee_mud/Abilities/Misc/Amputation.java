@@ -38,7 +38,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 {
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
-	public String displayText(){
+	public String displayText()
+	{
 		if(missingLimbNameSet().size()==0) return "";
 		return "(Missing your"+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
 	}
@@ -349,13 +350,15 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	{
 		if (target != null)
 		{
-			if (target instanceof MOB) {
+			if (target instanceof MOB)
+			{
 				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, "^G<S-YOUPOSS> " + gone + " miraculously regrows!!^?");
 			}
 			else
 			if ((target instanceof DeadBody)
 				&& (((Item)target).owner() != null)
-				&& (((Item)target).owner() instanceof Room)) {
+				&& (((Item)target).owner() instanceof Room))
+				{
 				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, "^G" + target.name() + "'s " + gone + " miraculously regrows!!^?");
 			}
 		}
@@ -516,7 +519,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		return limb;
 	}
 
-	private Item findFakeLimb(MOB tmob, String named) {
+	private Item findFakeLimb(MOB tmob, String named)
+	{
 		if(named.length()>0)
 		{
 			named=named.toUpperCase();
@@ -609,7 +613,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		{
 			Amputation A=(Amputation)target.fetchEffect(ID());
 			boolean newOne=false;
-			if(A==null){
+			if(A==null)
+			{
 				A=new Amputation();
 				newOne=true;
 			}

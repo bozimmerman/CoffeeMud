@@ -39,47 +39,58 @@ public class ChannelList implements Serializable {
 	private int id;
 	private Hashtable list;
 
-	public ChannelList() {
+	public ChannelList()
+	{
 		super();
 		id = -1;
 		list = new Hashtable(10, 5);
 	}
 
-	public ChannelList(int i) {
+	public ChannelList(int i)
+	{
 		this();
 		id = i;
 	}
 
-	public void addChannel(Channel c ) {
-		if( c.channel == null ) {
+	public void addChannel(Channel c )
+	{
+		if( c.channel == null )
+		{
 			return;
 		}
 		list.put(c.channel, c);
 	}
 
-	public Channel getChannel(String channel) {
-		if( !list.containsKey(channel) ) {
+	public Channel getChannel(String channel)
+	{
+		if( !list.containsKey(channel) )
+		{
 			return null;
 		}
 		return (Channel)list.get(channel);
 	}
 
-	public void removeChannel(Channel c) {
-		if( c.channel == null ) {
+	public void removeChannel(Channel c)
+	{
+		if( c.channel == null )
+		{
 			return;
 		}
 		list.remove(c.channel);
 	}
 
-	public int getChannelListId() {
+	public int getChannelListId()
+	{
 		return id;
 	}
 
-	public void setChannelListId(int x) {
+	public void setChannelListId(int x)
+	{
 		id = x;
 	}
 
-	public Hashtable getChannels() {
+	public Hashtable getChannels()
+	{
 		return list;
 	}
 }

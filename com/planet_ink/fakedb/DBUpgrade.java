@@ -417,7 +417,8 @@ public class DBUpgrade
 				java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
 				java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
-				if(R!=null){
+				if(R!=null)
+				{
 					tested=true;
 					R.close();
 					myStatement.close();
@@ -568,7 +569,8 @@ public class DBUpgrade
 						String table=(String)e.nextElement();
 						java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 						java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
-						if(R!=null){
+						if(R!=null)
+						{
 							tested=true;
 							if(R.next())
 							{

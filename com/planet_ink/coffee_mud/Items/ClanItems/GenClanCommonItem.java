@@ -58,7 +58,8 @@ public class GenClanCommonItem extends StdClanCommonItem
 	}
 
 	public String readableText(){return readableText;}
-	public void setReadableText(String text){
+	public void setReadableText(String text)
+	{
 		readableText=text;
 		glows=text.equalsIgnoreCase("Mining");
 	}
@@ -95,7 +96,8 @@ public class GenClanCommonItem extends StdClanCommonItem
 			break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

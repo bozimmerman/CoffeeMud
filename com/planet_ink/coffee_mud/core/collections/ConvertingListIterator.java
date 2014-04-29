@@ -26,47 +26,56 @@ public class ConvertingListIterator<K,L> implements ListIterator<L>
 	}
 
 	@Override
-	public void add(L arg0) {
+	public void add(L arg0)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean hasNext() {
+	public boolean hasNext()
+	{
 		return iter.hasNext();
 	}
 
 	@Override
-	public boolean hasPrevious() {
+	public boolean hasPrevious()
+	{
 		return iter.hasPrevious();
 	}
 
 	@Override
-	public L next() {
+	public L next()
+	{
 		return converter.convert(iter.next());
 	}
 
 	@Override
-	public int nextIndex() {
+	public int nextIndex()
+	{
 		return iter.nextIndex();
 	}
 
 	@Override
-	public L previous() {
+	public L previous()
+	{
 		return converter.convert(iter.previous());
 	}
 
 	@Override
-	public int previousIndex() {
+	public int previousIndex()
+	{
 		return iter.previousIndex();
 	}
 
 	@Override
-	public void remove() {
+	public void remove()
+	{
 		iter.remove();
 	}
 
 	@Override
-	public void set(L arg0) {
+	public void set(L arg0)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 

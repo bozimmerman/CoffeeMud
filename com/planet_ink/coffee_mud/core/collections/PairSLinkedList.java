@@ -20,10 +20,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implements SPairList<T,K>
 {
 	private static final long serialVersionUID = -9175373328892311411L;
-	public final Pair.FirstConverter<T,K> getFirstConverter() {
+	public final Pair.FirstConverter<T,K> getFirstConverter()
+	{
 		return new Pair.FirstConverter<T, K>();
 	}
-	public final Pair.SecondConverter<T,K> getSecondConverter() {
+	public final Pair.SecondConverter<T,K> getSecondConverter()
+	{
 		return new Pair.SecondConverter<T, K>();
 	}
 	public final Iterator<T> firstIterator()
@@ -84,7 +86,8 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 	}
 	public synchronized int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -93,7 +96,8 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 	}
 	public synchronized int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -102,7 +106,8 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 	}
 	public synchronized int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -111,7 +116,8 @@ public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implement
 	}
 	public synchronized int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;

@@ -23,10 +23,12 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	 */
     private static final long serialVersionUID = 1672867955945287259L;
 
-	public Pair.FirstConverter<T,K> getFirstConverter() {
+	public Pair.FirstConverter<T,K> getFirstConverter()
+	{
 		return new Pair.FirstConverter<T, K>();
 	}
-	public Pair.SecondConverter<T,K> getSecondConverter() {
+	public Pair.SecondConverter<T,K> getSecondConverter()
+	{
 		return new Pair.SecondConverter<T, K>();
 	}
 	public Enumeration<T> firstElements()
@@ -130,7 +132,8 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	}
 	public int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -139,7 +142,8 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	}
 	public int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -148,7 +152,8 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	}
 	public int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -157,7 +162,8 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	}
 	public int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;

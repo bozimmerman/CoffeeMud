@@ -24,17 +24,20 @@ public class ReadOnlyIterator<K> implements Iterator<K>
 	}
 	
 	@Override
-	public boolean hasNext() {
+	public boolean hasNext()
+	{
 		return iter.hasNext();
 	}
 
 	@Override
-	public K next() {
+	public K next()
+	{
 		return iter.next();
 	}
 
 	@Override
-	public void remove() {
+	public void remove()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 

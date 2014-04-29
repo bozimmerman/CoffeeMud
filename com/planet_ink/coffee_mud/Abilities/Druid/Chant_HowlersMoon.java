@@ -279,7 +279,8 @@ public class Chant_HowlersMoon extends Chant
 		Behavior B=CMClass.getBehavior("CorpseEater");
 		if(B!=null) newMOB.addBehavior(B);
 		B=CMClass.getBehavior("Emoter");
-		if(B!=null){
+		if(B!=null)
+		{
 			B.setParms("broadcast sound min=3 max=10 chance=80;howls at the moon.");
 			newMOB.addBehavior(B);
 		}

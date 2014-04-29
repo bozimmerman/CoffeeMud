@@ -46,7 +46,8 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		private static final long serialVersionUID = -4357809818979881831L;
 		public MWThreadExecutor executor = null;
 		public CMLinkedBlockingQueue(int capacity) { super(capacity);}
-		@Override public boolean offer(E o) {
+		@Override public boolean offer(E o)
+		{
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
@@ -65,8 +66,10 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		threadFactory=new MWThreadFactory(poolName, config);
 		setThreadFactory(threadFactory);
 		this.logger=config.getLogger();
-		setRejectedExecutionHandler(new RejectedExecutionHandler(){
-			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+		setRejectedExecutionHandler(new RejectedExecutionHandler()
+		{
+			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
+			{
 				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
 			}
 		});
@@ -103,7 +106,8 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 	}
 
 	@Override
-	public int getActiveCount() {
+	public int getActiveCount()
+	{
 		return active.size();
 	} 
 	

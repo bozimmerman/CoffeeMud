@@ -60,7 +60,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 	}
 
-	public void setMiscText(String newMiscText) {
+	public void setMiscText(String newMiscText)
+	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 			armorBonus=CMath.s_int(newMiscText);

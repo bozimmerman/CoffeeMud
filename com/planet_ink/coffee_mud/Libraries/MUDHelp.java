@@ -654,7 +654,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 		}
-		try{
+		try
+		{
 			if(str!=null)
 				return CMLib.webMacroFilter().virtualPageFilter(str);
 		}catch(com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x){}
@@ -785,7 +786,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(D != null)
 				{
 					Command CMD=CMClass.getCommand("Deities");
-					try {
+					try
+					{
 						thisTag=(String)CMD.executeInternal(forMOB, Command.METAFLAG_FORCED, D);
 						helpStr = D.Name().toUpperCase();
 					}catch(Exception e){}
@@ -1086,7 +1088,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return new Properties();
 	}
 	
-	public boolean shutdown() {
+	public boolean shutdown()
+	{
 		unloadHelpFile(null);
 		return true;
 	}

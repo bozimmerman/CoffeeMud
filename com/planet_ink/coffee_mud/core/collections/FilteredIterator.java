@@ -72,7 +72,8 @@ public class FilteredIterator<K> implements Iterator<K>
 		return element;
 	}
 
-	public void remove() {
+	public void remove()
+	{
 		throw new NoSuchElementException();
 	}
 }

@@ -102,7 +102,8 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(entry.instanceKey+", ");
 		
 		if(parms.containsKey("RESOURCEKEYENCODED") && (entry != null))
-			try{
+			try
+			{
 				str.append(URLEncoder.encode(entry.instanceKey,"UTF-8")+", ");
 			}catch(Exception e){}
 		
@@ -117,7 +118,8 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(CMParms.combineWith(entry.path, '.',0, entry.path.size())+", ");
 		
 		if(parms.containsKey("CUSTOMSCRIPT") && (entry != null))
-			try{
+			try
+			{
 				String s = entry.customScript;
 				if(parms.containsKey("PARSELED") && (s.trim().length()>0))
 				{
@@ -145,7 +147,8 @@ public class AreaScriptData extends AreaScriptNext
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
 			int x=path.lastIndexOf('/');
-			try{
+			try
+			{
 				str.append(URLEncoder.encode(((x<0)?"":path.substring(0,x)),"UTF-8")+", ");
 			}catch(Exception e){}
 		}
@@ -154,7 +157,8 @@ public class AreaScriptData extends AreaScriptNext
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
 			int x=path.lastIndexOf('/');
-			try{
+			try
+			{
 				str.append(URLEncoder.encode(((x<0)?path:path.substring(x+1)),"UTF-8")+", ");
 			}catch(Exception e){}
 		}

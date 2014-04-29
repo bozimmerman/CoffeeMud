@@ -20,10 +20,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,K>>, SPairList<T,K>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
-	public Pair.FirstConverter<T,K> getFirstConverter() {
+	public Pair.FirstConverter<T,K> getFirstConverter()
+	{
 		return new Pair.FirstConverter<T, K>();
 	}
-	public Pair.SecondConverter<T,K> getSecondConverter() {
+	public Pair.SecondConverter<T,K> getSecondConverter()
+	{
 		return new Pair.SecondConverter<T, K>();
 	}
 	public Enumeration<T> firstElements()
@@ -94,7 +96,8 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public synchronized int indexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -103,7 +106,8 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public synchronized int indexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i<size();i++)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;
@@ -112,7 +116,8 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public synchronized int lastIndexOfFirst(T t, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((t==null ? get(i).first==null : t.equals(get(i).first))) 
 					return i;
@@ -121,7 +126,8 @@ public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,
 	}
 	public synchronized int lastIndexOfSecond(K k, int index)
 	{
-		try{
+		try
+		{
 			for(int i=index;i>=0;i--)
 				if((k==null ? get(i).second==null : k.equals(get(i).second))) 
 					return i;

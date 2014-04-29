@@ -1626,7 +1626,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	public void auctionNotify(MOB M, String resp, String regardingItem)
 	{
-		try{
+		try
+		{
 			if(CMLib.flags().isInTheGame(M,true))
 				M.tell(resp);
 			else

@@ -39,7 +39,8 @@ public class Bomb_Noxious extends StdBomb
 	protected int trapLevel(){return 12;}
 	public String requiresToSet(){return "an egg";}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_EGGS));
 		return V;
@@ -71,7 +72,8 @@ public class Bomb_Noxious extends StdBomb
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_StinkingCloud");
-				if(A!=null){
+				if(A!=null)
+				{
 					A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
 					A=target.fetchEffect(A.ID());
 					if(A!=null)A.setInvoker(invoker());

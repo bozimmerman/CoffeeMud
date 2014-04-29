@@ -56,7 +56,8 @@ public class Disease_Lycanthropy extends Disease
 	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	protected List<Room> deathTrail=null;
 	protected Race theRace=null;
-	protected Race lycanRace(){
+	protected Race lycanRace()
+	{
 		if(!changed) return null;
 		if(theRace==null) theRace=CMClass.getRace("WereWolf");
 		return theRace;

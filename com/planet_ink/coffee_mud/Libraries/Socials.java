@@ -169,7 +169,8 @@ public class Socials extends StdLibrary implements SocialsList
 	{ 
 		name=realName(name);
 		List<Social> V2=H.get(name);
-		if(V2==null) {
+		if(V2==null)
+		{
 			V2=new Vector<Social>(4);
 			H.put(name,V2);
 		}
@@ -620,7 +621,8 @@ public class Socials extends StdLibrary implements SocialsList
 			if(S==null)
 				theRest=" <T-NAME>";
 		}
-		if(S==null){
+		if(S==null)
+		{
 			if(!tryTargets)
 				S=fetchSocial(soc,socialName+theRest,true);
 			else

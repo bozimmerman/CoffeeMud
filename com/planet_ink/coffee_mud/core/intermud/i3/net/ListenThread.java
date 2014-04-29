@@ -48,8 +48,10 @@ public class ListenThread extends Thread {
 		start();
 	}
 
-	public void run() {
-		while( listen!=null && !listen.isClosed() ) {
+	public void run()
+	{
+		while( listen!=null && !listen.isClosed() )
+		{
 			Socket client;
 			if(CMSecurity.isDisabled(DisFlag.I3))
 			{
@@ -57,9 +59,11 @@ public class ListenThread extends Thread {
 				CMLib.s_sleep(100);
 				continue;
 			}
-			try {
+			try
+			{
 				client = listen.accept();
-				synchronized( clients ) {
+				synchronized( clients )
+				{
 					clients.addElement(client);
 				}
 				if(CMSecurity.isDebugging(DbgFlag.I3))
@@ -68,7 +72,8 @@ public class ListenThread extends Thread {
 				if(clients.size()>100)
 					Log.errOut("Excessive I3 connections: "+client.getRemoteSocketAddress());
 			}
-			catch( java.io.IOException e ) {
+			catch( java.io.IOException e )
+			{
 			}
 		}
 	}
@@ -84,15 +89,19 @@ public class ListenThread extends Thread {
 		catch(Exception e){}
 	}
 	
-	public Socket nextSocket() {
+	public Socket nextSocket()
+	{
 		Socket client;
 
-		synchronized( clients ) {
-			if( clients.size() > 0 ) {
+		synchronized( clients )
+		{
+			if( clients.size() > 0 )
+			{
 				client = (Socket)clients.elementAt(0);
 				clients.removeElementAt(0);
 			}
-			else {
+			else
+			{
 				client = null;
 			}
 		}

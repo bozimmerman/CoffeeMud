@@ -60,7 +60,8 @@ public class Drow extends Elf
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affected instanceof MOB)&&(((MOB)affected).location()!=null)) {
+		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
+		{
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
 			if(room.getArea().getClimateObj().canSeeTheSun(room)
@@ -83,10 +84,12 @@ public class Drow extends Elf
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-3);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+20);
 
-		if(affectedMOB.location()!=null) {
+		if(affectedMOB.location()!=null)
+		{
 			MOB mob=affectedMOB;
 			Room room=mob.location();
-			if(room.getArea().getClimateObj().canSeeTheSun(room)) {
+			if(room.getArea().getClimateObj().canSeeTheSun(room))
+			{
 				affectableStats.setStat(CharStats.STAT_DEXTERITY, affectableStats.getStat(CharStats.STAT_DEXTERITY) /2);
 			}
 		}

@@ -54,7 +54,8 @@ public class Injury extends StdAbility implements HealthCondition
 		StringBuffer buf=new StringBuffer("");
 		Object[] O=null;
 		Vector V=null;
-		try{
+		try
+		{
 			if(injuries!=null)
 				for(int i=0;i<Race.BODY_PARTS;i++)
 				{

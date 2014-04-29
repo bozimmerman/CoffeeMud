@@ -42,7 +42,8 @@ public class BankChainNext extends StdWebMacro
 	{
 		MOB playerM=null;
 		boolean destroyPlayer=false;
-		try{
+		try
+		{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("BANKCHAIN");
 		String player=httpReq.getUrlParameter("PLAYER");

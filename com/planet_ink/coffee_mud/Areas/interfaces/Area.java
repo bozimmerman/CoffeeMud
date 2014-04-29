@@ -690,10 +690,12 @@ public interface Area extends Economics, PhysicalAgent, Places
 	{
 		private MultiEnumeration<Room> roomEnumerators=null;
 		
-		public CompleteRoomEnumerator(MultiEnumeration<Room> enums){
+		public CompleteRoomEnumerator(MultiEnumeration<Room> enums)
+		{
 			roomEnumerators=enums;
 		}
-		public CompleteRoomEnumerator(Enumeration<Room> enu){
+		public CompleteRoomEnumerator(Enumeration<Room> enu)
+		{
 			roomEnumerators=new MultiEnumeration<Room>(enu);
 		}
 		public boolean hasMoreElements(){return roomEnumerators.hasMoreElements();}
@@ -714,7 +716,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public static class RoomIDComparator implements Comparator<String> 
 	{
-		public int compare(String arg0, String arg1) {
+		public int compare(String arg0, String arg1)
+		{
 			return arg0.compareToIgnoreCase(arg1);
 		}
 	}
@@ -725,7 +728,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 */
 	public static class RoomComparator implements Comparator<Room> 
 	{
-		public int compare(Room arg0, Room arg1) {
+		public int compare(Room arg0, Room arg1)
+		{
 			return arg0.roomID().compareToIgnoreCase(arg1.roomID());
 		}
 	}

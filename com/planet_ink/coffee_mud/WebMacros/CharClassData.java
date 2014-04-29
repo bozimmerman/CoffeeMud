@@ -508,7 +508,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("GENHELP"))
 				{
 					String old=httpReq.getUrlParameter("GENHELP");
-					if(old==null){
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=C.getStat("HELP");
 					}
@@ -517,7 +518,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("ARMOR"))
 				{
 					String old=httpReq.getUrlParameter("ARMOR");
-					if(old==null) {
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=""+C.getStat("ARMOR");
 					}
@@ -529,7 +531,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("SUBRUL"))
 				{
 					String old=httpReq.getUrlParameter("SUBRUL");
-					if(old==null) {
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=""+C.getStat("SUBRUL");
 					}
@@ -552,7 +555,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("QUAL"))
 				{
 					String old=httpReq.getUrlParameter("QUAL");
-					if(old==null){
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=""+C.getStat("QUAL");
 					}
@@ -837,7 +841,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("STATCLASS"))
 				{
 					String old=httpReq.getUrlParameter("STATCLASS");
-					if(old==null){
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=""+C.getStat("STATCLASS");
 					}
@@ -846,7 +851,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("EVENTCLASS"))
 				{
 					String old=httpReq.getUrlParameter("EVENTCLASS");
-					if(old==null){
+					if(old==null)
+					{
 						C=C.makeGenCharClass();
 						old=""+C.getStat("EVENTCLASS");
 					}

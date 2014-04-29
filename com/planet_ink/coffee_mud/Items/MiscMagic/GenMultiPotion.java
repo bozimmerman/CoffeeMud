@@ -90,7 +90,8 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		return StdPotion.getSpells(this);
 	}
-	public void setReadableText(String text){
+	public void setReadableText(String text)
+	{
 		readableText=text;
 		setSpellList(readableText);
 	}

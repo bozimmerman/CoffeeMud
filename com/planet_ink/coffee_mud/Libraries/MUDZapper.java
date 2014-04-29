@@ -40,7 +40,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
 
 	protected MOB nonCrashingMOB=null;
-	protected MOB nonCrashingMOB(){
+	protected MOB nonCrashingMOB()
+	{
 		if(nonCrashingMOB!=null)
 			return nonCrashingMOB;
 		nonCrashingMOB=CMClass.getMOB("StdMOB");
@@ -48,7 +49,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	protected Item nonCrashingItem=null;
-	protected Item nonCrashingItem(final MOB mob){
+	protected Item nonCrashingItem(final MOB mob)
+	{
 		if(mob.numItems()>0)
 		{
 			Item I = mob.getItem(0);
@@ -3035,14 +3037,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								ScriptingEngine SE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 								SE.setSavable(false);
 								SE.setVarScope("*");
-								try {
+								try
+								{
 									String[] tt = SE.parseEval(str2);
 									parms.addElement(SE);
 									String[][] EVAL={tt};
 									parms.addElement(EVAL); // the compiled eval
 									Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 									parms.addElement(tmp);
-								} catch(ScriptParseException spe) {
+								} catch(ScriptParseException spe)
+								{
 									Log.errOut("MUDZapper","Script parse Exception for "+str2);
 									Log.errOut("MUDZapper",spe);
 								}

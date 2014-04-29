@@ -92,7 +92,8 @@ public class Chant_FungalBloom extends Chant
 			target=getShroomHere(mob.location());
 		else
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) {
+		if(target==null)
+		{
 			if(mob.isMonster())
 				target=getShroomHere(mob.location());
 			if(target==null)

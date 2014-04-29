@@ -592,7 +592,8 @@ public class CombatAbilities extends StdBehavior
 				preCastDown=preCastSet;
 				if(!isRightCombatAbilities(mob))
 					return true;
-				try {
+				try
+				{
 					useSkill(mob,null,null);
 				} catch(CMException cme){}
 			}
@@ -612,7 +613,8 @@ public class CombatAbilities extends StdBehavior
 		if((lastSpell!=null)&&(lastSpell.length()>0))
 			lastSpell="";
 		
-		if(!wandUseCheck[0]) {
+		if(!wandUseCheck[0])
+		{
 			wandUseCheck[0]=true;
 			Ability wandUse=mob.fetchAbility("Skill_WandUse");
 			wandUseCheck[1]=false;
@@ -741,7 +743,8 @@ public class CombatAbilities extends StdBehavior
 		final MOB leader=mob.amFollowing();
 		
 		boolean skillUsed=false;
-		try {
+		try
+		{
 			skillUsed=useSkill(mob, victim, leader)!=null;
 		} catch(CMException cme) { return true;}
 		
@@ -793,7 +796,8 @@ public class CombatAbilities extends StdBehavior
 	
 	
 	protected static String[] CODES=null;
-	public String[] getStatCodes(){
+	public String[] getStatCodes()
+	{
 		if(CombatAbilities.CODES==null)
 		{
 			String[] superCodes=super.getStatCodes();
@@ -811,13 +815,15 @@ public class CombatAbilities extends StdBehavior
 		}
 		return CODES;
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		int x=getCodeNum(code);
 		if(x<super.getStatCodes().length)
 			return super.getStat(code);

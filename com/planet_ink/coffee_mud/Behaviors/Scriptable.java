@@ -38,7 +38,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;}
 	
 	protected ScriptingEngine engine = null;
-	protected ScriptingEngine engine() {
+	protected ScriptingEngine engine()
+	{
 		if(engine==null)
 			engine=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		return engine;
@@ -56,7 +57,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return Tickable.STATUS_NOT;
 	}
 
-	public void registerDefaultQuest(String questName){
+	public void registerDefaultQuest(String questName)
+	{
 		engine().registerDefaultQuest(questName);
 	}
 	
@@ -114,7 +116,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	
 	public String getLocalVarXML(){ return engine().getLocalVarXML(); }
 	
-	public void setLocalVarXML(String xml){
+	public void setLocalVarXML(String xml)
+	{
 		if(engine().getVarScope().length()>0)
 			engine().setLocalVarXML(xml);
 	}
@@ -181,7 +184,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 	@Override
 	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
-							Item secondaryItem, String msg, Object[] tmp, String evaluable) {
+							Item secondaryItem, String msg, Object[] tmp, String evaluable)
+							{
 		return engine().functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}
 }

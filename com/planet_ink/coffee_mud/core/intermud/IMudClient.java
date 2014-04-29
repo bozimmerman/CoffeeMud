@@ -85,7 +85,8 @@ public class IMudClient implements I3Interface
 			wk.sender_name=mob.Name();
 			wk.target_mud=mudName;
 			wk.who=new Vector();
-			try{
+			try
+			{
 			wk.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -149,7 +150,8 @@ public class IMudClient implements I3Interface
 		ck.sender_name=mob.Name();
 		ck.target_mud=mudName;
 		ck.channel=channel;
-		try{
+		try
+		{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
@@ -166,7 +168,8 @@ public class IMudClient implements I3Interface
 		ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
-		try{
+		try
+		{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
@@ -190,7 +193,8 @@ public class IMudClient implements I3Interface
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="1";
-		try{
+		try
+		{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
@@ -212,7 +216,8 @@ public class IMudClient implements I3Interface
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="0";
-		try{
+		try
+		{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
@@ -228,7 +233,8 @@ public class IMudClient implements I3Interface
 		ChannelDelete ck=new ChannelDelete();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
-		try{
+		try
+		{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
@@ -269,7 +275,8 @@ public class IMudClient implements I3Interface
 			tk.message=message;
 			if(mob.playerStats()!=null) 
 				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
-			try{
+			try
+			{
 			tk.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -385,7 +392,8 @@ public class IMudClient implements I3Interface
 			}
 			else
 				ck.message=message;
-			try{
+			try
+			{
 				ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -468,7 +476,8 @@ public class IMudClient implements I3Interface
 			LocateQueryPacket ck=new LocateQueryPacket();
 			ck.sender_name=mob.Name();
 			ck.user_name=mobName;
-			try{
+			try
+			{
 			ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -483,7 +492,8 @@ public class IMudClient implements I3Interface
 		if(i3online())
 		{
 			PingPacket ck=new PingPacket(I3Server.getMudName());
-			try{
+			try
+			{
 			ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -506,7 +516,8 @@ public class IMudClient implements I3Interface
 			ck.sender_name=mob.Name();
 			ck.target_name=mobName;
 			ck.target_mud=mudName;
-			try{
+			try
+			{
 			ck.send();
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
@@ -701,10 +712,12 @@ public class IMudClient implements I3Interface
 		Hashtable channels=imc2.query_channels();
 		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
 		Enumeration e = channels.keys();
-		while (e.hasMoreElements()) {
+		while (e.hasMoreElements())
+		{
 			String key = (String) e.nextElement();
 			IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
-			if (r != null) {
+			if (r != null)
+			{
 				String policy = "final public";
 				if (r.policy == IMC2Driver.CHAN_PRIVATE)
 					policy = "(private)";

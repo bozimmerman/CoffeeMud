@@ -72,12 +72,14 @@ public class TellPacket extends Packet {
 	 */
 	public TellPacket(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.TELL;
 			sender_visible_name = (String)v.elementAt(6);
 			message = (String)v.elementAt(7);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
@@ -89,7 +91,8 @@ public class TellPacket extends Packet {
 	 * @param mud the mud the target is on
 	 * @param msg the message being sent
 	 */
-	public TellPacket(Interactive u, String who, String mud, String msg) {
+	public TellPacket(Interactive u, String who, String mud, String msg)
+	{
 		super();
 		type = Packet.TELL;
 		sender_name = u.getKeyName();
@@ -105,7 +108,8 @@ public class TellPacket extends Packet {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.Packet#send
 	 */
 	public void send() throws InvalidPacketException {
-		if( message == null || sender_visible_name == null ) {
+		if( message == null || sender_visible_name == null )
+		{
 			throw new InvalidPacketException();
 		}
 		message = convertString(message);
@@ -119,7 +123,8 @@ public class TellPacket extends Packet {
 	 * Intermud 3</A> documentation.
 	 * @return the mud mode string for this packet
 	 */
-	public String toString() {
+	public String toString()
+	{
 		return "({\"tell\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud +
 			   "\",\"" + target_name + "\",\"" +

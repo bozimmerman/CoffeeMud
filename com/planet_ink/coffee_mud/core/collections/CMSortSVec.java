@@ -12,7 +12,8 @@ public class CMSortSVec<T extends CMObject> extends SortedStrSVector<T> implemen
 	private static final long serialVersionUID = 6687178785122361992L;
 	
 	@SuppressWarnings("rawtypes")
-	private static final SortedStrSVector.Str idStringer=new SortedStrSVector.Str<CMObject>() {
+	private static final SortedStrSVector.Str idStringer=new SortedStrSVector.Str<CMObject>()
+	{
 		@Override public String toString(CMObject t) { return t.ID(); }
 	};
 	

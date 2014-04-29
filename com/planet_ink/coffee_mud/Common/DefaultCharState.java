@@ -283,7 +283,8 @@ public class DefaultCharState implements CharState
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(CharState E){
+	public boolean sameAs(CharState E)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			   return false;
@@ -292,7 +293,8 @@ public class DefaultCharState implements CharState
 
 	public void setStat(String code, String val)
 	{
-		switch(getCodeNum(code)){
+		switch(getCodeNum(code))
+		{
 		case 0: setHitPoints(CMath.s_parseIntExpression(val)); break;
 		case 1: setMana(CMath.s_parseIntExpression(val)); break;
 		case 2: setMovement(CMath.s_parseIntExpression(val)); break;
@@ -303,7 +305,8 @@ public class DefaultCharState implements CharState
 	}
 	public String getStat(String code)
 	{
-		switch(getCodeNum(code)){
+		switch(getCodeNum(code))
+		{
 		case 0: return ""+getHitPoints();
 		case 1: return ""+getMana();
 		case 2: return ""+getMovement();

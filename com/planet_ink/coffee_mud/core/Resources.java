@@ -31,8 +31,10 @@ public class Resources
 	private static Object propResourceSync=new Object();
 	private static Map<String,Map<String,String>> propResources;
 	
-	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>(){
-		public int compare(String o1, String o2) {
+	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>()
+	{
+		public int compare(String o1, String o2)
+		{
 			if(o1==null)
 			{
 				if(o2==null) return 0;
@@ -216,7 +218,8 @@ public class Resources
 	{
 		final Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
 		List<String> V=new Vector<String>();
-		try{
+		try
+		{
 			String prefix="";
 			if(filename.startsWith("::")||filename.startsWith("//"))
 			{
@@ -272,8 +275,10 @@ public class Resources
 	{
 		final String lowerSrch=srch.toLowerCase();
 		final boolean allOfThem=(lowerSrch.length()==0);
-		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>(){
-			public boolean passesFilter(String obj) {
+		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>()
+		{
+			public boolean passesFilter(String obj)
+			{
 				return (allOfThem) || (obj.toLowerCase().indexOf(lowerSrch)>=0);
 			}
 		});

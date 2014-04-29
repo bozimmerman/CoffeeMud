@@ -82,7 +82,8 @@ public class QuestData extends StdWebMacro
 			if(parms.containsKey("WAITMINSLEFT"))
 			{
 				long min=Q.waitRemaining();
-				if(min>0) {
+				if(min>0)
+				{
 					min=min*CMProps.getTickMillis();
 					if(min>60000)
 						return (min/60000)+" minutes";

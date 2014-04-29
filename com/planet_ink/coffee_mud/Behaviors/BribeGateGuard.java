@@ -387,7 +387,7 @@ public class BribeGateGuard extends StdBehavior
 				{
 					if ( (msg.targetMinor() != CMMsg.TYP_CLOSE))
 					{
-						//|| (msg.target() instanceof Room) ) {
+						//|| (msg.target() instanceof Room) )
 						if (debug)
 						{
 							CMLib.commands().postSay( (MOB) oking, msg.source(),

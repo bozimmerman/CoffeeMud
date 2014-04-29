@@ -67,9 +67,11 @@ public class Skill_Enslave extends StdSkill
 
 	public MOB getMaster()
 	{
-		if(masterMOB==null){
+		if(masterMOB==null)
+		{
 			masterMOB=CMLib.players().getLoadPlayer(masterName);
-			if(masterMOB!=null) {
+			if(masterMOB!=null)
+			{
 				oldLeige=masterMOB.getLiegeID();
 				oldClans=new Vector<Pair<Clan,Integer>>();
 				for(Pair<Clan,Integer> p : masterMOB.clans())
@@ -81,7 +83,8 @@ public class Skill_Enslave extends StdSkill
 	
 	public void unMaster(MOB mob)
 	{
-		if((masterMOB!=null) && (mob!=null)){
+		if((masterMOB!=null) && (mob!=null))
+		{
 			mob.setLiegeID(oldLeige);
 			mob.setClan("", Integer.MIN_VALUE);
 			for(Pair<Clan,Integer> p : oldClans)

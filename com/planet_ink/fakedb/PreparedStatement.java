@@ -201,9 +201,11 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			throws SQLException {
 		byte[] b = new byte[length];
 		int len=length;
-		try{
+		try
+		{
 			len=x.read(b, 0, length);
-		}catch(Exception e){
+		}catch(Exception e)
+		{
 			log(e.getMessage());
 		}
 		char[] cs=new char[len];
@@ -302,9 +304,11 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			throws SQLException {
 		char[] b = new char[length];
 		int len=length;
-		try{
+		try
+		{
 			len=reader.read(b, 0, length);
-		}catch(Exception e){
+		}catch(Exception e)
+		{
 			log(e.getMessage());
 		}
 		setObject(parameterIndex,new String(b,0,len));

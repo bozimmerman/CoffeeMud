@@ -85,7 +85,8 @@ public class RandomTraps extends ActiveTicker
 			String p=CMParms.getParmStr(oldParms,"ROOMS","NO").toUpperCase().trim();
 			if(p.startsWith("Y")) doRooms=true;
 			p=CMParms.getParmStr(oldParms,"ITEMS","NO").toUpperCase().trim();
-			if(p.startsWith("Y")){
+			if(p.startsWith("Y"))
+			{
 				doAnyItems=true;
 				doAnyContainers=true;
 				doDooredContainers=true;

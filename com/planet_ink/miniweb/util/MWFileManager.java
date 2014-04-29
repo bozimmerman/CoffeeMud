@@ -35,11 +35,13 @@ public class MWFileManager implements FileManager
 	}
 
 	@Override
-	public File createFileFromPath(String localPath) {
+	public File createFileFromPath(String localPath)
+	{
 		return new File(localPath);
 	}
 	@Override
-	public File createFileFromPath(File parent, String localPath){
+	public File createFileFromPath(File parent, String localPath)
+	{
 		return new File(parent, localPath);
 	}
 	@Override

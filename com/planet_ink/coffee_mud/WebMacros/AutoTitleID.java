@@ -42,7 +42,8 @@ public class AutoTitleID extends StdWebMacro
 		String last=httpReq.getUrlParameter("AUTOTITLE");
 		if(last==null) return " @break@";
 		java.util.Map<String,String> parms=parseParms(parm);
-		try {
+		try
+		{
 			if(parms.containsKey("ENCODED"))
 				return URLEncoder.encode(last,"UTF-8");
 		} catch(Exception e) {}

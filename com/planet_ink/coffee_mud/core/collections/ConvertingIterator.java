@@ -43,7 +43,8 @@ public class ConvertingIterator<K, L> implements Iterator<L>
 		return converter.convert(currObj);
 	}
 
-	public void remove() {
+	public void remove()
+	{
 		iterer.remove();
 	}
 }

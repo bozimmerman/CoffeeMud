@@ -43,7 +43,8 @@ public class Prop_Smell extends Property
 	protected boolean lastWasBroadcast=false;
 	
 	public String accountForYourself(){ return "";	}
-	public void setMiscText(String newStr){
+	public void setMiscText(String newStr)
+	{
 		if(newStr.startsWith("+"))
 		{
 			if(text().indexOf(newStr.substring(1).trim())>=0)

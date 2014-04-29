@@ -53,7 +53,8 @@ public class PresenceReaction extends StdAbility
 		super.savable=false;
 		super.canBeUninvoked=false;
 	}
-	protected void cloneFix(Ability E){
+	protected void cloneFix(Ability E)
+	{
 		reactToM=null;
 		previousMood=null;
 		reactToName=null;
@@ -70,7 +71,8 @@ public class PresenceReaction extends StdAbility
 		if(x>=0)
 		{
 			String nam=substr.substring(0,x);
-			if(nam.trim().length()==0) {
+			if(nam.trim().length()==0)
+			{
 				reactToName=substr.substring(1);
 				return;
 			}

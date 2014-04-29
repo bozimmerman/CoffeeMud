@@ -433,7 +433,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
 			Command C=CMClass.getCommand("GTell");
-			try{
+			try
+			{
 				if(C!=null) C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
 			}catch(Exception e){}
 		}

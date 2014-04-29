@@ -77,7 +77,8 @@ public class StdExit implements Exit
 	public String displayText(MOB viewerMob) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
 	public int getTickStatus(){return Tickable.STATUS_NOT;}
-	public short exitUsage(short change){
+	public short exitUsage(short change)
+	{
 		if(change<0)
 		{
 			if((-change)>usage)
@@ -105,7 +106,8 @@ public class StdExit implements Exit
 	{
 		return basePhyStats;
 	}
-	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
+	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
+	{
 		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
 	};
 	public void recoverPhyStats()
@@ -506,13 +508,16 @@ public class StdExit implements Exit
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+		eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+		{
 			B.executeMsg(me, msg);
 		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+		eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+		{
 			S.executeMsg(me, msg);
 		} });
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+		{
 			A.executeMsg(me,msg);
 		}});
 
@@ -582,17 +587,20 @@ public class StdExit implements Exit
 		else
 		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
-			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
+			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B)
+			{
 				B.tick(ticking, tickID);
 			} });
-			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S){
+			eachScript(new EachApplicable<ScriptingEngine>(){ public final void apply(final ScriptingEngine S)
+			{
 				S.tick(ticking, tickID);
 			} });
 			return !amDestroyed();
 		}
 		else
 		{
-			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
+			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A)
+			{
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
 	        }});
@@ -685,7 +693,8 @@ public class StdExit implements Exit
 	{
 		final List<Ability> affects=this.affects;
 		if(affects==null) return;
-		try{
+		try
+		{
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
@@ -800,7 +809,8 @@ public class StdExit implements Exit
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try{
+		try
+		{
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
@@ -814,7 +824,8 @@ public class StdExit implements Exit
 	{
 		if(scripts==null) scripts=new SVector<ScriptingEngine>(1);
 		if(S==null) return;
-		if(!scripts.contains(S)) {
+		if(!scripts.contains(S))
+		{
 			ScriptingEngine S2=null;
 			for(int s=0;s<scripts.size();s++)
 			{
@@ -856,7 +867,8 @@ public class StdExit implements Exit
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try{
+		try
+		{
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
@@ -873,12 +885,14 @@ public class StdExit implements Exit
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

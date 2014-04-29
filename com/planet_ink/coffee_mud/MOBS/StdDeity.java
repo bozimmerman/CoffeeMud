@@ -1310,7 +1310,8 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		for(Iterator<MOB> m=waitingFor.iterator();m.hasNext();)
 		{
-			try{
+			try
+			{
 				final MOB M=m.next();
 				waitingFor.remove(M);
 				executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
@@ -1377,7 +1378,8 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(blessings,new Converter<DeityPower,Ability>(){
+		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(blessings,new Converter<DeityPower,Ability>()
+		{
 			public Ability convert(DeityPower obj) { return obj.power;}
 		}),ID,false);
 	}
@@ -1745,7 +1747,8 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(curses,new Converter<DeityPower,Ability>(){
+		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(curses,new Converter<DeityPower,Ability>()
+		{
 			public Ability convert(DeityPower obj) { return obj.power;}
 		}),ID,false);
 	}
@@ -1848,7 +1851,8 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return clericPowerup;
 	}
-	public void setClericPowerup(String ritual){
+	public void setClericPowerup(String ritual)
+	{
 		clericPowerup=ritual;
 		parseTriggers(clericPowerTriggers,ritual);
 	}

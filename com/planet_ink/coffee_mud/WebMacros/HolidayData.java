@@ -130,7 +130,8 @@ public class HolidayData extends StdWebMacro
 						if((old==null)||(old.length()==0))
 							old="ALL";
 						areaNames = CMParms.parse(old.toUpperCase().trim());
-					} else {
+					} else
+					{
 						HashSet areaCodes=new HashSet();
 						String id="";
 						for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))

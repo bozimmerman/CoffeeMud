@@ -92,7 +92,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 											int maxRadius,
 											List<Room> radiant)
 	{
-		if((radiant==null)||(radiant.size()==0)){
+		if((radiant==null)||(radiant.size()==0))
+		{
 			radiant=new Vector<Room>();
 			getRadiantRooms(location,radiant,flags,destRoom,maxRadius,null);
 			if(!radiant.contains(location))

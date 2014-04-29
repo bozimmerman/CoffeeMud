@@ -240,7 +240,8 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public void setExitParams(String newDoorName,
 							  String newCloseWord,
 							  String newOpenWord,
-							  String newClosedText){
+							  String newClosedText)
+							  {
 		doorName=newDoorName;
 		closedText=newClosedText;
 	}

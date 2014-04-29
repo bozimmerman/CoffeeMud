@@ -346,7 +346,8 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return super.hashCode();
 	}
 	

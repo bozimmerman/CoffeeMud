@@ -1004,7 +1004,8 @@ public class MWHTTPRequest implements HTTPRequest
 	}
 
 	@Override
-	public void addFakeUrlParameter(String name, String value) {
+	public void addFakeUrlParameter(String name, String value)
+	{
 		if(urlParameters==null)
 			urlParameters=new HashMap<String,String>();
 		urlParameters.put(name.toLowerCase(), value);
@@ -1018,7 +1019,8 @@ public class MWHTTPRequest implements HTTPRequest
 	}
 
 	@Override
-	public Map<String,Object> getRequestObjects() {
+	public Map<String,Object> getRequestObjects()
+	{
 		if(objects==null)
 			objects=new HashMap<String,Object>();
 		return objects;

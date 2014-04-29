@@ -238,7 +238,8 @@ public class Skill_HandCuff extends StdSkill
 						if(success)
 						{
 							Skill_HandCuff A = (Skill_HandCuff)target.fetchEffect(ID());
-							if(A!=null) {
+							if(A!=null)
+							{
 								A.amountRemaining = amountToRemain;
 								if(auto) A.makeLongLasting();
 							}

@@ -39,7 +39,8 @@ public class Bomb_AcidBurst extends StdBomb
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "some lemons";}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LEMONS));
 		return V;

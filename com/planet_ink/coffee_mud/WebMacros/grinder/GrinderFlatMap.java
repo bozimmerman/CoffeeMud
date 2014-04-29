@@ -627,13 +627,15 @@ public class GrinderFlatMap
 							up=findRelGridDir(GR,GR.doors[Directions.UP].room);
 						if(GR.doors[Directions.DOWN]!=null)
 							down=findRelGridDir(GR,GR.doors[Directions.DOWN].room);
-						if(up<0){
+						if(up<0)
+						{
 							if(down==Directions.NORTH)
 								up=Directions.EAST;
 							else
 								up=Directions.NORTH;
 						}
-						if(down<0){
+						if(down<0)
+						{
 							if(up==Directions.SOUTH)
 								down=Directions.WEST;
 							else

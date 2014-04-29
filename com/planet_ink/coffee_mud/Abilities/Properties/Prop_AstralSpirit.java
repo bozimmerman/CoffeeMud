@@ -43,7 +43,8 @@ public class Prop_AstralSpirit extends Property
 	
 	public long flags(){return Ability.FLAG_ADJUSTER|Ability.FLAG_IMMUNER;}
 
-	public Race spiritRace() {
+	public Race spiritRace()
+	{
 		if(race==null)
 			race=CMClass.getRace("Spirit");
 		return race;

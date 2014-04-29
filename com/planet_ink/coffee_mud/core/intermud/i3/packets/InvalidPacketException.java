@@ -32,7 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class InvalidPacketException extends I3Exception 
 {
 	public static final long serialVersionUID=0;
-	public InvalidPacketException() {
+	public InvalidPacketException()
+	{
 		super("Invalid packet.");
 	}
 }

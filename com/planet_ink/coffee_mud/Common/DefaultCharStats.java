@@ -400,7 +400,8 @@ public class DefaultCharStats implements CharStats
 		}
 	}
 	
-	public boolean isLevelCapped(CharClass C) {
+	public boolean isLevelCapped(CharClass C)
+	{
 		if((C==null)||(C.getLevelCap()<0)||(C.getLevelCap()==Integer.MAX_VALUE))
 			return false;
 		return getClassLevel(C) >= C.getLevelCap();
@@ -802,7 +803,8 @@ public class DefaultCharStats implements CharStats
 	
 	public String[] getStatCodes() { return CharStats.CODES.NAMES();}
 	public boolean isStat(String code) { return CMParms.containsIgnoreCase(getStatCodes(),code);}
-	public void setStat(String code, String val) {
+	public void setStat(String code, String val)
+	{
 		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
 		if(dex>=0) 
 			setStat(dex,CMath.s_parseIntExpression(val));

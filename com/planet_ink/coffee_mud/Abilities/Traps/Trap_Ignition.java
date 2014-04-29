@@ -69,7 +69,8 @@ public class Trap_Ignition extends StdTrap
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		V.addElement(CMClass.getBasicItem("OilFlask"));
 		return V;

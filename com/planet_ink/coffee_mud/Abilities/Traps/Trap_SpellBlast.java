@@ -58,7 +58,8 @@ public class Trap_SpellBlast extends StdTrap
 		return null;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
 		Ability A=CMClass.getAbility(text());

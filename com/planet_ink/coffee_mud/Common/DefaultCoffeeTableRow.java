@@ -194,7 +194,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	
 	public CMObject copyOf()
 	{
-		try{
+		try
+		{
 			DefaultCoffeeTableRow CR=(DefaultCoffeeTableRow)this.clone();
 			CR.stats=stats.copyOf();
 			return CR;

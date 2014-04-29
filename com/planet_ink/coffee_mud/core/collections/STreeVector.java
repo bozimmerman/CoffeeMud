@@ -155,17 +155,20 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		}
 	}
 	
-	public synchronized int capacity() {
+	public synchronized int capacity()
+	{
 		return V.capacity();
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized Vector<T> toVector() {
+	public synchronized Vector<T> toVector()
+	{
 		return (Vector<T>)V.clone();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized STreeVector<T> copyOf() {
+	public synchronized STreeVector<T> copyOf()
+	{
 		STreeVector<T> SV=new STreeVector<T>();
 		SV.V=(Vector<T>)V.clone();
 		SV.S.putAll(S);
@@ -173,83 +176,100 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	}
 
 	@Override
-	public synchronized boolean contains(Object o) {
+	public synchronized boolean contains(Object o)
+	{
 		if(o instanceof CMObject)
 			return S.containsKey(((CMObject)o).ID().toUpperCase());
 		return V.contains(o);
 	}
 
 	@Override
-	public synchronized boolean containsAll(Collection<?> c) {
+	public synchronized boolean containsAll(Collection<?> c)
+	{
 		return V.containsAll(c);
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void copyInto(Object[] anArray) {
+	public synchronized void copyInto(Object[] anArray)
+	{
 		V=(Vector<T>)V.clone();
 		V.copyInto(anArray);
 	}
 
-	public synchronized T elementAt(int index) {
+	public synchronized T elementAt(int index)
+	{
 		return V.elementAt(index);
 	}
 
-	public synchronized Enumeration<T> elements() {
+	public synchronized Enumeration<T> elements()
+	{
 		return V.elements();
 	}
 
-	public synchronized void ensureCapacity(int minCapacity) {
+	public synchronized void ensureCapacity(int minCapacity)
+	{
 		V.ensureCapacity(minCapacity);
 	}
 
 	@Override
-	public synchronized boolean equals(Object o) {
+	public synchronized boolean equals(Object o)
+	{
 		return o==this;
 	}
 
-	public synchronized T firstElement() {
+	public synchronized T firstElement()
+	{
 		return V.firstElement();
 	}
 
 	@Override
-	public synchronized T get(int index) {
+	public synchronized T get(int index)
+	{
 		return V.get(index);
 	}
 
 	@Override
-	public synchronized int hashCode() {
+	public synchronized int hashCode()
+	{
 		return super.hashCode();
 	}
 
-	public synchronized int indexOf(Object o, int index) {
+	public synchronized int indexOf(Object o, int index)
+	{
 		return V.indexOf(o, index);
 	}
 
 	@Override
-	public synchronized int indexOf(Object o) {
+	public synchronized int indexOf(Object o)
+	{
 		return V.indexOf(o);
 	}
 
 	@Override
-	public synchronized boolean isEmpty() {
+	public synchronized boolean isEmpty()
+	{
 		return V.isEmpty();
 	}
 
-	public synchronized T lastElement() {
+	public synchronized T lastElement()
+	{
 		return V.lastElement();
 	}
 
-	public synchronized int lastIndexOf(Object o, int index) {
+	public synchronized int lastIndexOf(Object o, int index)
+	{
 		return V.lastIndexOf(o, index);
 	}
 
 	@Override
-	public synchronized int lastIndexOf(Object o) {
+	public synchronized int lastIndexOf(Object o)
+	{
 		return V.lastIndexOf(o);
 	}
 
 	@Override
-	public synchronized boolean retainAll(Collection<?> c) {
+	public synchronized boolean retainAll(Collection<?> c)
+	{
 		final int oldSize=size();
 		for(T o : V)
 			if(!c.contains(o))
@@ -259,7 +279,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized T set(int index, T element) {
+	public synchronized T set(int index, T element)
+	{
 		if(element==null) return null;
 		if(!S.containsKey(element.ID().toUpperCase()))
 		{
@@ -273,44 +294,52 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		return null;
 	}
 
-	public synchronized void setElementAt(T obj, int index) {
+	public synchronized void setElementAt(T obj, int index)
+	{
 		set(index,obj);
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void setSize(int newSize) {
+	public synchronized void setSize(int newSize)
+	{
 		V=(Vector<T>)V.clone();
 		V.setSize(newSize);
 	}
 
 	@Override
-	public synchronized int size() {
+	public synchronized int size()
+	{
 		return V.size();
 	}
 
 	@Override
-	public synchronized List<T> subList(int fromIndex, int toIndex) {
+	public synchronized List<T> subList(int fromIndex, int toIndex)
+	{
 		return V.subList(fromIndex, toIndex);
 	}
 
 	@Override
-	public synchronized Object[] toArray() {
+	public synchronized Object[] toArray()
+	{
 		return V.toArray();
 	}
 
 	@SuppressWarnings("hiding")
 	@Override
-	public synchronized <T> T[] toArray(T[] a) {
+	public synchronized <T> T[] toArray(T[] a)
+	{
 		return V.toArray(a);
 	}
 
 	@Override
-	public synchronized String toString() {
+	public synchronized String toString()
+	{
 		return super.toString();
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized void trimToSize() {
+	public synchronized void trimToSize()
+	{
 		V=(Vector<T>)V.clone();
 		V.trimToSize();
 	}
@@ -490,17 +519,20 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	}
 
 	@Override
-	public synchronized Iterator<T> iterator() {
+	public synchronized Iterator<T> iterator()
+	{
 		return new ReadOnlyIterator<T>(V.iterator());
 	}
 
 	@Override
-	public synchronized ListIterator<T> listIterator() {
+	public synchronized ListIterator<T> listIterator()
+	{
 		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 
 	@Override
-	public synchronized ListIterator<T> listIterator(int index) {
+	public synchronized ListIterator<T> listIterator(int index)
+	{
 		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 }

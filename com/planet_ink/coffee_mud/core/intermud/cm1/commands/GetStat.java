@@ -43,7 +43,8 @@ import java.util.concurrent.atomic.*;
 public class GetStat extends CM1Command
 {
 	public String getCommandWord(){ return "GETSTAT";}
-	public GetStat(RequestHandler req, String parameters) {
+	public GetStat(RequestHandler req, String parameters)
+	{
 		super(req, parameters);
 	}
 	

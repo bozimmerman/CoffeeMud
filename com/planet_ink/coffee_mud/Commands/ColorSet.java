@@ -68,10 +68,12 @@ public class ColorSet extends StdCommand
 	{
 		if(mob.session()!=null)
 		{
-			mob.session().prompt(new InputCallback(InputCallback.Type.PROMPT,""){
+			mob.session().prompt(new InputCallback(InputCallback.Type.PROMPT,"")
+			{
 				@Override public void showPrompt() { callBack.showPrompt(); }
 				@Override public void timedOut() { callBack.timedOut(); }
-				@Override public void callBack() {
+				@Override public void callBack()
+				{
 					callBack.setInput("-1");
 					if(this.input.length()>0)
 					{
@@ -143,7 +145,8 @@ public class ColorSet extends StdCommand
 		};
 		
 		final InputCallback[] IC=new InputCallback[1];
-		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"") {
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
+		{
 			@Override public void showPrompt() 
 			{
 				StringBuffer buf=new StringBuffer("");
@@ -180,10 +183,12 @@ public class ColorSet extends StdCommand
 							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
 						session.println(buf.toString()+"^N");
-						pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,""){
+						pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+						{
 							@Override public void showPrompt() { session.promptPrint("Enter Name of New Color: "); }
 							@Override public void timedOut() { }
-							@Override public void callBack() {
+							@Override public void callBack()
+							{
 								int colorNum=CMath.s_int(this.input);
 								if(colorNum<0)
 									mob.tell("That is not a valid color!");
@@ -218,10 +223,12 @@ public class ColorSet extends StdCommand
 								buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 							}
 						session.println(buf.toString()+"^N");
-						pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,""){
+						pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+						{
 							@Override public void showPrompt() { session.promptPrint("Enter Name of Background Color: "); }
 							@Override public void timedOut() { }
-							@Override public void callBack() {
+							@Override public void callBack()
+							{
 								final int colorNum1=CMath.s_int(this.input);
 								if((colorNum1<0)||(!Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
 								{
@@ -230,10 +237,12 @@ public class ColorSet extends StdCommand
 								}
 								else
 								{
-									pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,""){
+									pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+									{
 										@Override public void showPrompt() { session.promptPrint("Enter Name of Foreground Color: "); }
 										@Override public void timedOut() { }
-										@Override public void callBack() {
+										@Override public void callBack()
+										{
 											int colorNum2=CMath.s_int(this.input);
 											if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
 												mob.tell("That is not a valid Foreground color!");

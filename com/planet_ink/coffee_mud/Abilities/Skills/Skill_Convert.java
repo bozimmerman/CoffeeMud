@@ -219,7 +219,8 @@ public class Skill_Convert extends StdSkill
 		return success;
 	}
 	
-	public void makeLongLasting(){
+	public void makeLongLasting()
+	{
 		tickDown=(int)(CMProps.getTicksPerMinute()*60*24*7);
 	}
 }

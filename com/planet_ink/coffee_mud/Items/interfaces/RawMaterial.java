@@ -111,9 +111,11 @@ public interface RawMaterial extends Item
 		}
 		public static Material find(String name)
 		{
-			try {
+			try
+			{
 				return Material.valueOf(name);
-			} catch(Exception e) {
+			} catch(Exception e)
+			{
 				return null;
 			}
 		}
@@ -560,7 +562,8 @@ public interface RawMaterial extends Item
 					String stat = array[0].toUpperCase().trim();
 					String p=array[1];
 					List<String> V=CMParms.parseCommas(p, false);
-					if(V.size()!=8) {
+					if(V.size()!=8)
+					{
 						Log.errOut("RawMaterial","Bad coffeemud.ini material row (requires 8 elements, separated by ,): "+p);
 						continue;
 					}
@@ -616,7 +619,8 @@ public interface RawMaterial extends Item
 		}
 		private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 		public static CODES c(byte c){return insts[c];}
-		public static CODES instance(){
+		public static CODES instance()
+		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 			if(c==null) c=new CODES();
 			return c;
@@ -703,7 +707,8 @@ public interface RawMaterial extends Item
 		 * Returns the code of the names resource, or -1
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_CaseSensitive(String rsc) {
+		public static int FIND_CaseSensitive(String rsc)
+		{
 			if(rsc==null) return -1;
 			CODES C=c();
 			int x=CMParms.indexOf(C.descs, rsc);
@@ -714,7 +719,8 @@ public interface RawMaterial extends Item
 		 * Returns the code of the names resource, or -1
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_IgnoreCase(String rsc) {
+		public static int FIND_IgnoreCase(String rsc)
+		{
 			if(rsc==null) return -1;
 			CODES C=c();
 			int x=CMParms.indexOfIgnoreCase(C.descs, rsc);
@@ -725,7 +731,8 @@ public interface RawMaterial extends Item
 		 * Returns the code of the names resource, or -1
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_StartsWith(String rsc) {
+		public static int FIND_StartsWith(String rsc)
+		{
 			if(rsc==null) return -1;
 			CODES C=c();
 			int x=CMParms.startsWith(C.descs, rsc.toUpperCase().trim());
@@ -736,7 +743,8 @@ public interface RawMaterial extends Item
 		 * Returns whether the code is valid
 		 * @return whether the code is valid
 		 */
-		public static boolean IS_VALID(int code) {
+		public static boolean IS_VALID(int code)
+		{
 			return (code>=0) && ((code&RawMaterial.RESOURCE_MASK) < c().total());
 		}
 		/**
@@ -840,7 +848,8 @@ public interface RawMaterial extends Item
 		 * @param mat the resource code
 		 * @return a complete list of all resources of the given material
 		 */
-		public static List<Integer> COMPOSE_RESOURCES(int mat) {
+		public static List<Integer> COMPOSE_RESOURCES(int mat)
+		{
 			if(mat<=RESOURCE_MASK) mat=mat<<8;
 			List<Integer> rscs=new Vector<Integer>();
 			for(int rsc : c().allCodes)
@@ -918,7 +927,8 @@ public interface RawMaterial extends Item
 					TreeSet<Pair<Integer,Double>> newBucket=new TreeSet<Pair<Integer,Double>>(
 						new Comparator<Pair<Integer,Double>>()
 						{
-							public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2) {
+							public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2)
+							{
 								return o1.second.compareTo(o2.second);
 							}
 						});

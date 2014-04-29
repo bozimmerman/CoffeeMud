@@ -60,7 +60,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
-		if(rot==null){
+		if(rot==null)
+		{
 			rot=CMClass.getAbility("Prayer_Rot");
 			if(rot==null) return;
 			rot.setAffectedOne(null);
@@ -73,7 +74,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(rot==null){
+		if(rot==null)
+		{
 			rot=CMClass.getAbility("Prayer_Rot");
 			if(rot==null) return true;
 			rot.setAffectedOne(null);

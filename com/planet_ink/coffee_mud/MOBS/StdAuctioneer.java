@@ -66,7 +66,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	public AuctionData lastMsgData=null;
 	protected static final Hashtable lastCheckTimes=new Hashtable();
 
-	public CoffeeShop getShop(){
+	public CoffeeShop getShop()
+	{
 		CoffeeShop shop=((CoffeeShop)CMClass.getCommon("AuctionCoffeeShop")).build(this);
 		shop.addStoreInventory(null);
 		return shop;
@@ -295,7 +296,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						}
 						if(msg.source().session()!=null)
 						{
-							try{
+							try
+							{
 							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
 								return false;
 							}catch(Exception e){return false;}
@@ -369,7 +371,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						}
 						if(msg.source().session()!=null)
 						{
-							try{
+							try
+							{
 							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
 								return false;
 							}catch(Exception e){return false;}
@@ -447,7 +450,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						CMLib.commands().postSay(this,mob,"I'm confused. Please try to SELL again.",true,false);
 					}
 					else
-					try{
+					try
+					{
 						double lowestDenom=CMLib.beanCounter().getLowestDenomination(thisData.currency);
 						CMLib.commands().postSay(this,mob,"What would you like your opening price to be (in "+CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)+"?",true,false);
 						String openPrice=mob.session().prompt(": ",30000);
@@ -627,28 +631,32 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 
 	public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
-	protected Area getStartArea(){
+	protected Area getStartArea()
+	{
 		Area A=CMLib.map().getStartArea(this);
 		if(A==null) CMLib.map().areaLocation(this);
 		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
 
-	public String finalPrejudiceFactors(){
+	public String finalPrejudiceFactors()
+	{
 		if(prejudiceFactors().length()>0) return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
 	public String prejudiceFactors(){return CMStrings.bytesToStr(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=factors;}
 
-	public String finalIgnoreMask(){
+	public String finalIgnoreMask()
+	{
 		if(ignoreMask().length()>0) return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
 	public String ignoreMask(){return "";}
 	public void setIgnoreMask(String factors){}
 
-	public String[] finalItemPricingAdjustments(){
+	public String[] finalItemPricingAdjustments()
+	{
 		if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
@@ -656,21 +664,24 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	public String[] itemPricingAdjustments(){ return new String[0];}
 	public void setItemPricingAdjustments(String[] factors){}
 
-	public String finalBudget(){
+	public String finalBudget()
+	{
 		if(budget().length()>0) return budget();
 		return getStartArea().finalBudget();
 	}
 	public String budget(){return "";}
 	public void setBudget(String factors){}
 
-	public String finalDevalueRate(){
+	public String finalDevalueRate()
+	{
 		if(devalueRate().length()>0) return devalueRate();
 		return getStartArea().finalDevalueRate();
 	}
 	public String devalueRate(){return "";}
 	public void setDevalueRate(String factors){}
 
-	public int finalInvResetRate(){
+	public int finalInvResetRate()
+	{
 		if(invResetRate()!=0) return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}

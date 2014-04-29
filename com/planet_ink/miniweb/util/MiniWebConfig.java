@@ -693,25 +693,29 @@ public class MiniWebConfig implements Cloneable
 	/**
 	 * @return the fileCacheMaxFileBytes
 	 */
-	public long getFileCacheMaxFileBytes() {
+	public long getFileCacheMaxFileBytes()
+	{
 		return fileCacheMaxFileBytes;
 	}
 	/**
 	 * @param fileCacheMaxFileBytes the fileCacheMaxFileBytes to set
 	 */
-	public void setFileCacheMaxFileBytes(long fileCacheMaxFileBytes) {
+	public void setFileCacheMaxFileBytes(long fileCacheMaxFileBytes)
+	{
 		this.fileCacheMaxFileBytes = fileCacheMaxFileBytes;
 	}
 	/**
 	 * @return the fileCompMaxFileBytes
 	 */
-	public long getFileCompMaxFileBytes() {
+	public long getFileCompMaxFileBytes()
+	{
 		return fileCompMaxFileBytes;
 	}
 	/**
 	 * @param fileCompMaxFileBytes the fileCompMaxFileBytes to set
 	 */
-	public void setFileCompMaxFileBytes(long fileCompMaxFileBytes) {
+	public void setFileCompMaxFileBytes(long fileCompMaxFileBytes)
+	{
 		this.fileCompMaxFileBytes = fileCompMaxFileBytes;
 	}
 	/**
@@ -883,7 +887,8 @@ public class MiniWebConfig implements Cloneable
 			int numPorts=0;
 			defaultPorts=new int[prop.length];
 			for(int i=0;i<prop.length;i++)
-				try {
+				try
+				{
 					defaultPorts[numPorts]=Integer.parseInt(prop[i].trim());
 					numPorts++;
 				}catch(Exception e) {}

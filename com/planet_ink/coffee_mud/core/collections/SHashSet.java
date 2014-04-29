@@ -108,10 +108,12 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized HashSet<K> toHashSet() {
+	public synchronized HashSet<K> toHashSet()
+	{
 		return (HashSet<K>)T.clone();
 	}
-	public synchronized Vector<K> toVector() {
+	public synchronized Vector<K> toVector()
+	{
 		Vector<K> V=new Vector<K>(size());
 		for(Iterator<K> s=T.iterator();s.hasNext();)
 			V.add(s.next());
@@ -119,22 +121,26 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean add(K e) {
+	public synchronized boolean add(K e)
+	{
 		T=(HashSet<K>)T.clone();
 		return T.add(e);
 	}
-	public synchronized boolean addUnsafe(K e) {
+	public synchronized boolean addUnsafe(K e)
+	{
 		return T.add(e);
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean addAll(Collection<? extends K> c) {
+	public synchronized boolean addAll(Collection<? extends K> c)
+	{
 		T=(HashSet<K>)T.clone();
 		return T.addAll(c);
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void clear() {
+	public synchronized void clear()
+	{
 		T=(HashSet<K>)T.clone();
 		T.clear();
 	}
@@ -146,61 +152,74 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		return TS;
 	}
 	@Override
-	public synchronized boolean contains(Object o) {
+	public synchronized boolean contains(Object o)
+	{
 		return T.contains(o);
 	}
 	@Override
-	public synchronized boolean isEmpty() {
+	public synchronized boolean isEmpty()
+	{
 		return T.isEmpty();
 	}
 	@Override
-	public synchronized Iterator<K> iterator() {
+	public synchronized Iterator<K> iterator()
+	{
 		return new ReadOnlyIterator<K>(T.iterator());
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean remove(Object o) {
+	public synchronized boolean remove(Object o)
+	{
 		T=(HashSet<K>)T.clone();
 		return T.remove(o);
 	}
 	@Override
-	public synchronized int size() {
+	public synchronized int size()
+	{
 		return T.size();
 	}
 	@Override
-	public boolean equals(Object arg0) {
+	public boolean equals(Object arg0)
+	{
 		return this==arg0;
 	}
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return super.hashCode();
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0) {
+	public synchronized boolean removeAll(Collection<?> arg0)
+	{
 		T=(HashSet<K>)T.clone();
 		return T.removeAll(arg0);
 	}
 	@Override
-	public synchronized boolean containsAll(Collection<?> arg0) {
+	public synchronized boolean containsAll(Collection<?> arg0)
+	{
 		return T.containsAll(arg0);
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized boolean retainAll(Collection<?> arg0) {
+	public synchronized boolean retainAll(Collection<?> arg0)
+	{
 		T=(HashSet<K>)T.clone();
 		return T.retainAll(arg0);
 	}
 	@Override
-	public synchronized Object[] toArray() {
+	public synchronized Object[] toArray()
+	{
 		return T.toArray();
 	}
 	@Override
-	public synchronized <T> T[] toArray(T[] arg0) {
+	public synchronized <T> T[] toArray(T[] arg0)
+	{
 		return T.toArray(arg0);
 	}
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return super.toString();
 	}
 

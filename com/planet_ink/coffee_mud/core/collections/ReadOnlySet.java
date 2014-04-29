@@ -27,61 +27,74 @@ public class ReadOnlySet<K> implements Set<K>
 		set=s;
 	}
 	@Override
-	public boolean add(K e) {
+	public boolean add(K e)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public boolean addAll(Collection<? extends K> c) {
+	public boolean addAll(Collection<? extends K> c)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public void clear() {
+	public void clear()
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean contains(Object arg0) {
+	public boolean contains(Object arg0)
+	{
 		return set.contains(arg0);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0) {
+	public boolean containsAll(Collection<?> arg0)
+	{
 		return set.containsAll(arg0);
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isEmpty()
+	{
 		return set.isEmpty();
 	}
 
 	@Override
-	public Iterator<K> iterator() {
+	public Iterator<K> iterator()
+	{
 		return new ReadOnlyIterator<K>(set.iterator());
 	}
 	@Override
-	public boolean remove(Object o) {
+	public boolean remove(Object o)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(Collection<?> c)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(Collection<?> c)
+	{
 		throw new java.lang.IllegalArgumentException();
 	}
 	@Override
-	public int size() {
+	public int size()
+	{
 		return set.size();
 	}
 
 	@Override
-	public Object[] toArray() {
+	public Object[] toArray()
+	{
 		return set.toArray();
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0) {
+	public <T> T[] toArray(T[] arg0)
+	{
 		return set.toArray(arg0);
 	}
 }

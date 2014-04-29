@@ -484,7 +484,8 @@ public class DefaultFaction implements Faction, MsgListener
 		return b;
 	}
 	
-	public boolean addAffectBehav(String ID, String parms, String gainMask) {
+	public boolean addAffectBehav(String ID, String parms, String gainMask)
+	{
 		if(affBehavs.containsKey(ID.toUpperCase().trim())) return false;
 		if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
 			return false;
@@ -493,7 +494,8 @@ public class DefaultFaction implements Faction, MsgListener
 		return true;
 	}
 	
-	public String[] getAffectBehav(String ID) {
+	public String[] getAffectBehav(String ID)
+	{
 		if(affBehavs.containsKey(ID.toUpperCase().trim()))
 			return CMParms.toStringArray(new XVector<String>(affBehavs.get(ID.toUpperCase().trim())));
 		return null;
@@ -1361,39 +1363,48 @@ public class DefaultFaction implements Faction, MsgListener
 			if(CMath.isInteger(d))
 				direction=CMath.s_int(d);
 			else
-			if(d.startsWith("U")) {
+			if(d.startsWith("U"))
+			{
 				direction = CHANGE_DIRECTION_UP;
 			}
 			else
-			if(d.startsWith("D")) {
+			if(d.startsWith("D"))
+			{
 				direction = CHANGE_DIRECTION_DOWN;
 			}
 			else
-			if(d.startsWith("OPP")) {
+			if(d.startsWith("OPP"))
+			{
 				direction = CHANGE_DIRECTION_OPPOSITE;
 			}
 			else
-			if(d.startsWith("REM")) {
+			if(d.startsWith("REM"))
+			{
 				direction = CHANGE_DIRECTION_REMOVE;
 			}
 			else
-			if(d.startsWith("MIN")) {
+			if(d.startsWith("MIN"))
+			{
 				direction = CHANGE_DIRECTION_MINIMUM;
 			}
 			else
-			if(d.startsWith("MAX")) {
+			if(d.startsWith("MAX"))
+			{
 				direction = CHANGE_DIRECTION_MAXIMUM;
 			}
 			else
-			if(d.startsWith("ADD")) {
+			if(d.startsWith("ADD"))
+			{
 				direction = CHANGE_DIRECTION_ADD;
 			}
 			else
-			if(d.startsWith("TOW")) {
+			if(d.startsWith("TOW"))
+			{
 				direction = CHANGE_DIRECTION_TOWARD;
 			}
 			else
-			if(d.startsWith("AWA")) {
+			if(d.startsWith("AWA"))
+			{
 				direction = CHANGE_DIRECTION_AWAY;
 			}
 			else
@@ -1494,7 +1505,8 @@ public class DefaultFaction implements Faction, MsgListener
 			return high - gen.nextInt(high-low);
 		}
 		@Override
-		public int compareTo(FRange o) {
+		public int compareTo(FRange o)
+		{
 			if(low < o.low()) return -1;
 			if(high > o.high()) return 1;
 			return 0;
@@ -1802,7 +1814,8 @@ public class DefaultFaction implements Faction, MsgListener
 		public void setLossFactor(double val){lossF=val;}
 		public String MOBMask(){return mask;}
 		public MaskingLibrary.CompiledZapperMask compiledMOBMask(){return compiledMask;}
-		public void setMOBMask(String str){
+		public void setMOBMask(String str)
+		{
 			mask=str;
 			compiledMask=CMLib.masking().maskCompile(str);
 		}
@@ -1819,7 +1832,8 @@ public class DefaultFaction implements Faction, MsgListener
 		public String reactionObjectID(){return reactionObjectID;}
 		public void setReactionObjectID(String str){reactionObjectID=str;}
 		public String presentMOBMask(){return mobMask;}
-		public void setPresentMOBMask(String str){
+		public void setPresentMOBMask(String str)
+		{
 			mobMask=str;
 			if((str==null)||(str.trim().length()==0))
 				compiledMobMask=null;

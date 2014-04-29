@@ -58,20 +58,25 @@ public abstract class Interactive implements ServerUser {
 		String key = "";
 		int i;
 
-		for(i=0; i<buff.length(); i++) {
+		for(i=0; i<buff.length(); i++)
+		{
 			char c = buff.charAt(i);
 
-			if( c >= 'a' && c <= 'z' ) {
+			if( c >= 'a' && c <= 'z' )
+			{
 				key = key + c;
 			}
-			else if( c != '\'' && c != '-' && c != ' ' ) {
+			else if( c != '\'' && c != '-' && c != ' ' )
+			{
 				throw new InvalidNameException(c + " is an invalid character for names.");
 			}
 		}
-		if( key.length() < 3 ) {
+		if( key.length() < 3 )
+		{
 			throw new InvalidNameException("Your name must have at least three alphabetic characters.");
 		}
-		else if( key.length() > 29 ) {
+		else if( key.length() > 29 )
+		{
 			throw new InvalidNameException("Your name is too long.");
 		}
 		return key;
@@ -84,20 +89,25 @@ public abstract class Interactive implements ServerUser {
 	 * @param nom the name of the desired user
 	 * @return the Interactive object for the specified name or null if no such user exists
 	 */
-	static public Interactive findUser(String nom) {
+	static public Interactive findUser(String nom)
+	{
 		ServerUser[] users = I3Server.getInteractives();
 		int i;
 
-		try {
+		try
+		{
 			nom = createKeyName(nom);
 		}
-		catch( InvalidNameException e ) {
+		catch( InvalidNameException e )
+		{
 			return null;
 		}
-		for(i=0; i<users.length; i++) {
+		for(i=0; i<users.length; i++)
+		{
 			Interactive user = (Interactive)users[i];
 
-			if( user.getKeyName().equals(nom) ) {
+			if( user.getKeyName().equals(nom) )
+			{
 				return user;
 			}
 		}
@@ -125,7 +135,8 @@ public abstract class Interactive implements ServerUser {
 	 * Constructs a new interactive object and initializes
 	 * its data.
 	 */
-	public Interactive() {
+	public Interactive()
+	{
 		super();
 		destructed = false;
 		input_thread = null;
@@ -140,7 +151,8 @@ public abstract class Interactive implements ServerUser {
 	 * and ask for a user name by extending this method.
 	 * Here, the login time is set.
 	 */
-	public synchronized void connect() {
+	public synchronized void connect()
+	{
 		current_login_time = new Date();
 		last_command_time = new Date();
 	}
@@ -151,17 +163,21 @@ public abstract class Interactive implements ServerUser {
 	 * the requirements of the ServerObject interface.
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject#getDestructed
 	 */
-	public synchronized void destruct() {
+	public synchronized void destruct()
+	{
 		output_stream.flush();
-		if( input_thread != null ) {
+		if( input_thread != null )
+		{
 			input_thread.stop();
 			input_thread = null;
 		}
-		try {
+		try
+		{
 			if(socket!=null)
 				socket.close();
 		}
-		catch( java.io.IOException e ) {
+		catch( java.io.IOException e )
+		{
 			Log.errOut("IMInteractive",e);
 		}
 		destructed = true;
@@ -177,20 +193,25 @@ public abstract class Interactive implements ServerUser {
 	 * @param cmd the command to be executed
 	 * @see #processInput
 	 */
-	protected synchronized void input(String cmd) {
+	protected synchronized void input(String cmd)
+	{
 		Input ob = null;
 
-		if( redirect.size() > 0 ) {
+		if( redirect.size() > 0 )
+		{
 			ob = (Input)redirect.elementAt(0);
 			redirect.removeElementAt(0);
 		}
-		if( ob != null ) {
+		if( ob != null )
+		{
 			ob.input(this, cmd);
 		}
-		else if( body != null ) {
+		else if( body != null )
+		{
 			body.executeCommand(cmd);
 		}
-		if( redirect.size() < 1 ) {
+		if( redirect.size() < 1 )
+		{
 			sendMessage(getPrompt(), true);
 		}
 	}
@@ -635,7 +656,8 @@ class InputThread implements Runnable
 		{
 			String msg;
 
-			try {
+			try
+			{
 				msg = stream.readLine();
 			}
 			catch( java.io.IOException e ) 

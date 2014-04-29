@@ -98,7 +98,8 @@ public class ClanQual extends StdCommand
 					session.prompt(IC[0].reset());
 					return;
 				}
-				session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0){
+				session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0)
+				{
 					@Override public void showPrompt() 
 					{ 
 						session.println("Your qualifications will be as follows: "+CMLib.masking().maskDesc(qualMask)+"\n\r");

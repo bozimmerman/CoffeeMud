@@ -295,7 +295,8 @@ public class CharGen extends StdCommand
 		Hashtable failSkillCheck=null;
 	}
 	
-	public void combatRun(MOB mob, Vector commands) {
+	public void combatRun(MOB mob, Vector commands)
+	{
 		CombatStats c=new CombatStats();
 		c.mob=mob;
 		if(commands.size()==0)
@@ -461,13 +462,15 @@ public class CharGen extends StdCommand
 		final Race humanR=CMClass.getRace("Human");
 		for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 		{
-			new Thread(Thread.currentThread().getThreadGroup(),"CharGen"+Thread.currentThread().getThreadGroup().getName().charAt(0)) {
+			new Thread(Thread.currentThread().getThreadGroup(),"CharGen"+Thread.currentThread().getThreadGroup().getName().charAt(0))
+			{
 				CombatStats c;
 				int charClassDex;
 				String fileExp;
 				java.util.concurrent.CountDownLatch latch = null;
 				boolean[] aborted;
-				public void start(CombatStats c, int charClassDex, String fileExp, java.util.concurrent.CountDownLatch latch, boolean[] aborted){
+				public void start(CombatStats c, int charClassDex, String fileExp, java.util.concurrent.CountDownLatch latch, boolean[] aborted)
+				{
 					this.c=c;
 					this.charClassDex=charClassDex;
 					this.fileExp=fileExp;
@@ -694,12 +697,14 @@ public class CharGen extends StdCommand
 								l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
 								if(l1>L1) hits++;
 								if(l2>L2) ishits++;
-								try {
+								try
+								{
 									CMLib.commands().postStand(M1,true);
 									CMLib.commands().postStand(M2,true);
 									M1.tick(M1,Tickable.TICKID_MOB);
 									M2.tick(M2,Tickable.TICKID_MOB);
-								} catch(Exception t) {
+								} catch(Exception t)
+								{
 									Log.errOut("CharGen",t);
 								}
 								
@@ -856,7 +861,8 @@ public class CharGen extends StdCommand
 								{
 									String s=(String)i.nextElement();
 									int[] times=(int[])c.failSkillCheck.get(s);
-									if(times[1]>0) {
+									if(times[1]>0)
+									{
 										int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
 										if(pct>20)
 											fails.append(s+"("+pct+"%) ");
@@ -873,9 +879,11 @@ public class CharGen extends StdCommand
 				}
 			}.start(c,charClassDex,fileExp,latch,aborted);
 		}
-		try {
+		try
+		{
 			latch.await();
-		} catch(Exception e) {
+		} catch(Exception e)
+		{
 			aborted[0]=true;
 			return;
 		}

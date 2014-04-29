@@ -73,7 +73,8 @@ public class Prop_LangTranslator extends Property implements Language
 	{
 		return langs.containsIgnoreCase(language);
 	}
-	public int getProficiency(String language) {
+	public int getProficiency(String language)
+	{
 		for(int i=0;i<langs.size();i++)
 			if(((String)langs.elementAt(i,1)).equalsIgnoreCase(language))
 				return ((Integer)langs.elementAt(i,2)).intValue();

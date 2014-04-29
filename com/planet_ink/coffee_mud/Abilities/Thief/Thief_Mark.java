@@ -51,7 +51,8 @@ public class Thief_Mark extends ThiefSkill
 	public MOB mark=null;
 	public int ticks=0;
 
-	public String displayText(){
+	public String displayText()
+	{
 		if(mark!=null)
 			return "(Marked: "+mark.name()+", "+ticks+" ticks)";
 		return "";

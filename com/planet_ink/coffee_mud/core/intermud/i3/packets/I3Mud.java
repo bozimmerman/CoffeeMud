@@ -48,11 +48,13 @@ public class I3Mud implements Serializable
 	public int    tcp_port;
 	public int    udp_port;
    
-	public I3Mud() {
+	public I3Mud()
+	{
 		super();
 	}
 	
-	public I3Mud(I3Mud other) {
+	public I3Mud(I3Mud other)
+	{
 		super();
 		address = other.address;
 		admin_email = other.admin_email;

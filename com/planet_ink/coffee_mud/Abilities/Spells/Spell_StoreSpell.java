@@ -37,7 +37,8 @@ public class Spell_StoreSpell extends Spell
 {
 	public String ID() { return "Spell_StoreSpell"; }
 	public String Name(){return "Store Spell";}
-	public String name(){
+	public String name()
+	{
 		if((affected!=null)&&(CMLib.flags().isInTheGame(affected,true)))
 		{
 			if(spellName.length()==0)
@@ -90,7 +91,8 @@ public class Spell_StoreSpell extends Spell
 				x=text().indexOf('/');
 				int charges=0;
 				Ability A=null;
-				if(x>0){
+				if(x>0)
+				{
 					charges=CMath.s_int(text().substring(x+1));
 					A=CMClass.getAbility(text().substring(0,x));
 				}

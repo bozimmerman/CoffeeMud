@@ -407,7 +407,8 @@ public class Patroller extends ActiveTicker
 							
 							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
-							try {
+							try
+							{
 								rideCheckCt++;
 								if(!E.okMessage(mob,enterMsg))
 								{
@@ -546,10 +547,12 @@ public class Patroller extends ActiveTicker
 				}
 				else
 				{
-					try {
+					try
+					{
 						rideCheckCt++;
 						CMLib.tracking().walk(mob,direction,false,false);
-					} finally {
+					} finally
+					{
 						rideCheckCt--;
 					}
 				}

@@ -296,7 +296,8 @@ public class Reset extends StdCommand
 			M.basePhyStats().setDamage(M2.basePhyStats().damage());
 			M.basePhyStats().setSpeed(M2.basePhyStats().speed());
 			M.recoverPhyStats();
-			if(recordedChanges!=null){
+			if(recordedChanges!=null)
+			{
 				reportChangesDestroyNewM(oldM,M,recordedChanges);
 				return false;
 			}
@@ -599,7 +600,8 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("bankdata")&&(CMSecurity.isASysOp(mob)))
 		{
 			String bank=CMParms.combine(commands,1);
-			if(bank.length()==0){
+			if(bank.length()==0)
+			{
 				mob.tell("Which bank?");
 				return false;
 			}
@@ -1165,7 +1167,8 @@ public class Reset extends StdCommand
 			A.setAreaState(Area.State.FROZEN);
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
-			try{
+			try
+			{
 			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();

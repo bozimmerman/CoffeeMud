@@ -99,7 +99,8 @@ public class GenElecPanel extends StdElecPanel
 		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
 		case 5: activate(CMath.s_bool(val)); break;
 		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 7: try{
+		case 7: try
+		{
 					setPanelType(TechType.valueOf(val.toUpperCase().trim())); 
 				}catch(Exception e){}
 				break;
@@ -108,7 +109,8 @@ public class GenElecPanel extends StdElecPanel
 			break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

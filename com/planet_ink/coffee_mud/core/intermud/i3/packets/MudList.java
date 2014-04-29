@@ -48,27 +48,32 @@ public class MudList implements Serializable
 	private Map<String,I3Mud> list;
 	private int modified;
 
-	public MudList() {
+	public MudList()
+	{
 		super();
 		id = -1;
 		modified = Persistent.MODIFIED;
 		list = new Hashtable();
 	}
 
-	public MudList(int i) {
+	public MudList(int i)
+	{
 		this();
 		id = i;
 	}
 
-	public int getModified() {
+	public int getModified()
+	{
 		return modified;
 	}
 
-	public void setModified(int x) {
+	public void setModified(int x)
+	{
 		modified = x;
 	}
 
-	public void addMud(I3Mud mud) {
+	public void addMud(I3Mud mud)
+	{
 		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 )) 
 		{
 			return;
@@ -76,49 +81,60 @@ public class MudList implements Serializable
 		{ // temp hack
 			char c = mud.mud_name.charAt(0);
 
-			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' ) {
+			if( !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && c != '(' )
+			{
 				return;
 			}
 		}
-		if( list.containsKey(mud.mud_name) ) {
+		if( list.containsKey(mud.mud_name) )
+		{
 			mud.modified = Persistent.MODIFIED;
 		}
-		else {
+		else
+		{
 			mud.modified = Persistent.NEW;
 		}
 		list.put(mud.mud_name, mud);
 		modified = Persistent.MODIFIED;
 	}
 
-	public I3Mud getMud(String mud) {
-		if( !list.containsKey(mud) ) {
+	public I3Mud getMud(String mud)
+	{
+		if( !list.containsKey(mud) )
+		{
 			return null;
 		}
 		I3Mud tmp = list.get(mud);
 
-		if( tmp.modified == Persistent.DELETED ) {
+		if( tmp.modified == Persistent.DELETED )
+		{
 			return null;
 		}
 		return tmp;
 	}
 
-	public void removeMud(I3Mud mud) {
-		if( mud.mud_name == null ) {
+	public void removeMud(I3Mud mud)
+	{
+		if( mud.mud_name == null )
+		{
 			return;
 		}
 		mud.modified = Persistent.DELETED;
 		modified = Persistent.MODIFIED;
 	}
 
-	public int getMudListId() {
+	public int getMudListId()
+	{
 		return id;
 	}
 
-	public void setMudListId(int x) {
+	public void setMudListId(int x)
+	{
 		id = x;
 	}
 
-	public Map<String,I3Mud> getMuds() {
+	public Map<String,I3Mud> getMuds()
+	{
 		return list;
 	}
 }

@@ -105,14 +105,16 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 				remove(o);
 	}
 	
-	public LinkedList<K> toLinkedList() {
+	public LinkedList<K> toLinkedList()
+	{
 		LinkedList<K> L=new LinkedList<K>();
 		for(Iterator<K> s=iterator();s.hasNext();)
 			L.add(s.next());
 		return L;
 	}
 	
-	public Vector<K> toVector() {
+	public Vector<K> toVector()
+	{
 		Vector<K> V=new Vector<K>(size());
 		for(Iterator<K> s=iterator();s.hasNext();)
 			V.add(s.next());
@@ -294,18 +296,21 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 	
 	@Override
-	public synchronized void add(int arg0, K arg1) {
+	public synchronized void add(int arg0, K arg1)
+	{
 		addAfter(nodeBefore(arg0),arg1);
 	}
 
 	@Override
-	public synchronized boolean add(K arg0) {
+	public synchronized boolean add(K arg0)
+	{
 		addAfter(tail,arg0);
 		return true;
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends K> arg0) {
+	public synchronized boolean addAll(Collection<? extends K> arg0)
+	{
 		for(Iterator<? extends K> o=arg0.iterator();o.hasNext();)
 		 if(!add(o.next()))
 			 return false;
@@ -313,7 +318,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean addAll(int arg0, Collection<? extends K> arg1) {
+	public synchronized boolean addAll(int arg0, Collection<? extends K> arg1)
+	{
 		CMListNode curr=nodeBefore(arg0);
 		for(Iterator<? extends K> o=arg1.iterator();o.hasNext();)
 			curr=addAfter(curr,o.next());
@@ -321,17 +327,20 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized void addFirst(K arg0) {
+	public synchronized void addFirst(K arg0)
+	{
 		addAfter(null,arg0);
 	}
 
 	@Override
-	public synchronized void addLast(K arg0) {
+	public synchronized void addLast(K arg0)
+	{
 		addAfter(tail,arg0);
 	}
 
 	@Override
-	public synchronized void clear() {
+	public synchronized void clear()
+	{
 		head=null;
 		tail=null;
 		randNode=null;
@@ -373,11 +382,13 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 		return findFirstNode(arg0) != null;
 	}
 
-	public boolean containsFromEnd(Object arg0) {
+	public boolean containsFromEnd(Object arg0)
+	{
 		return findLastNode(arg0) != null;
 	}
 
-	public Enumeration<K> elements() {
+	public Enumeration<K> elements()
+	{
 		final CMListNode firstNode=nodeAt(0);
 		return new Enumeration<K>()
 		{
@@ -405,7 +416,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 	
 	@Override
-	public Iterator<K> descendingIterator() {
+	public Iterator<K> descendingIterator()
+	{
 		final CMListNode firstNode=nodeAt(size-1);
 		return new Iterator<K>()
 		{
@@ -440,19 +452,22 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public K element() {
+	public K element()
+	{
 		return getFirst();
 	}
 
 	@Override
-	public K get(int arg0) {
+	public K get(int arg0)
+	{
 		CMListNode node = nodeAt(arg0);
 		if(node == null)   throw new NoSuchElementException();
 		return node.obj;
 	}
 
 	@Override
-	public K getFirst() {
+	public K getFirst()
+	{
 		CMListNode node = nodeAt(0);
 		if(node != null)
 			return node.obj;
@@ -460,7 +475,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public K getLast() {
+	public K getLast()
+	{
 		CMListNode node = nodeAt(size-1);
 		if(node != null)
 			return node.obj;
@@ -468,7 +484,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public int indexOf(Object arg0) {
+	public int indexOf(Object arg0)
+	{
 		for(ListIterator<K> o=listIterator();o.hasNext();)
 		{
 			if(o.next()==arg0) 
@@ -478,7 +495,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0) {
+	public int lastIndexOf(Object arg0)
+	{
 		int i=size-1;
 		for(Iterator<K> o=descendingIterator();o.hasNext();)
 		{
@@ -578,74 +596,87 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean offer(K arg0) {
+	public synchronized boolean offer(K arg0)
+	{
 		return add(arg0);
 	}
 
 	@Override
-	public synchronized boolean offerFirst(K arg0) {
+	public synchronized boolean offerFirst(K arg0)
+	{
 		addFirst(arg0);
 		return true;
 	}
 
 	@Override
-	public synchronized boolean offerLast(K arg0) {
+	public synchronized boolean offerLast(K arg0)
+	{
 		addLast(arg0);
 		return true;
 	}
 
 	@Override
-	public K peek() {
+	public K peek()
+	{
 		return peekFirst();
 	}
 
 	@Override
-	public K peekFirst() {
+	public K peekFirst()
+	{
 		if(size == 0) return null;
 		return head.obj;
 	}
 
 	@Override
-	public K peekLast() {
+	public K peekLast()
+	{
 		if(size == 0) return null;
 		return head.obj;
 	}
 
 	@Override
-	public synchronized K poll() {
+	public synchronized K poll()
+	{
 		if(size == 0) return null;
 		return removeFirst();
 	}
 
 	@Override
-	public synchronized K pollFirst() {
+	public synchronized K pollFirst()
+	{
 		if(size == 0) return null;
 		return removeFirst();
 	}
 
 	@Override
-	public synchronized K pollLast() {
+	public synchronized K pollLast()
+	{
 		if(size == 0) return null;
 		return removeLast();
 	}
 
 	@Override
-	public synchronized K pop() {
+	public synchronized K pop()
+	{
 		return removeFirst();
 	}
 
 	@Override
-	public synchronized void push(K arg0) {
+	public synchronized void push(K arg0)
+	{
 		addFirst(arg0);
 	}
 
 	@Override
-	public synchronized K remove() {
+	public synchronized K remove()
+	{
 		return removeFirst();
 	}
 
 	@Override
-	public synchronized K remove(int arg0) {
+	public synchronized K remove(int arg0)
+	{
 		CMListNode node=nodeAt(arg0);
 		if(node == null) throw new NoSuchElementException();
 		removeNode(node);
@@ -653,12 +684,14 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean remove(Object arg0) {
+	public synchronized boolean remove(Object arg0)
+	{
 		return removeFirstOccurrence(arg0);
 	}
 
 	@Override
-	public synchronized K removeFirst() {
+	public synchronized K removeFirst()
+	{
 		CMListNode node=nodeAt(0);
 		if(node == null) throw new NoSuchElementException();
 		removeNode(node);
@@ -666,7 +699,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean removeFirstOccurrence(Object arg0) {
+	public synchronized boolean removeFirstOccurrence(Object arg0)
+	{
 		CMListNode node = findFirstNode(arg0);
 		if(node == null) return false;
 		removeNode(node);
@@ -674,7 +708,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized K removeLast() {
+	public synchronized K removeLast()
+	{
 		CMListNode node=nodeAt(size-1);
 		if(node == null) throw new NoSuchElementException();
 		removeNode(node);
@@ -682,7 +717,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean removeLastOccurrence(Object arg0) {
+	public synchronized boolean removeLastOccurrence(Object arg0)
+	{
 		CMListNode node = findLastNode(arg0);
 		if(node == null) return false;
 		removeNode(node);
@@ -690,7 +726,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized K set(int arg0, K arg1) {
+	public synchronized K set(int arg0, K arg1)
+	{
 		CMListNode node = nodeAt(arg0);
 		if(node == null) throw new NoSuchElementException();
 		K oldObj=node.obj;
@@ -699,7 +736,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public int size() {
+	public int size()
+	{
 		return size;
 	}
 
@@ -735,15 +773,18 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public boolean equals(Object arg0) {
+	public boolean equals(Object arg0)
+	{
 		return this==arg0;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		int hashCode = 1;
 		Iterator<K> i = iterator();
-		while (i.hasNext()) {
+		while (i.hasNext())
+		{
 			K obj = i.next();
 			hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
 		}
@@ -751,12 +792,14 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public ListIterator<K> listIterator() {
+	public ListIterator<K> listIterator()
+	{
 		return listIterator(0);
 	}
 
 	@Override
-	public List<K> subList(int arg0, int arg1) {
+	public List<K> subList(int arg0, int arg1)
+	{
 		CMList<K> newList=new CMList<K>();
 		for(ListIterator<K> l=listIterator();l.hasNext();)
 		{
@@ -768,7 +811,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public boolean containsAll(Collection<?> c)
+	{
 		for(Object o : c)
 			if(!contains(o))
 				return false;
@@ -776,12 +820,14 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isEmpty()
+	{
 		return size==0;
 	}
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> c) {
+	public synchronized boolean removeAll(Collection<?> c)
+	{
 		if(c.size()==0) return true;
 		boolean success=false;
 		for(Iterator<?> i=c.iterator();i.hasNext();)
@@ -790,7 +836,8 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public synchronized boolean retainAll(Collection<?> c) {
+	public synchronized boolean retainAll(Collection<?> c)
+	{
 		boolean modified = false;
 		for(Iterator<K> e = iterator();e.hasNext();)
 		{
@@ -805,13 +852,15 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		Iterator<K> i = iterator();
 		if (! i.hasNext())
 			return "[]";
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
-		for (;;) {
+		for (;;)
+		{
 			K e = i.next();
 			sb.append(e == this ? "(this Collection)" : e);
 			if (! i.hasNext())

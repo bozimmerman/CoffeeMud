@@ -50,7 +50,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 	
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
-		public Environmental convert(ShelfProduct obj) {
+		public Environmental convert(ShelfProduct obj)
+		{
 			return obj.product;
 		}
 	};

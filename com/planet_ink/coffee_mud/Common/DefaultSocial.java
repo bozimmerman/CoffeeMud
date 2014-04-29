@@ -50,7 +50,8 @@ public class DefaultSocial implements Social
 	public String ID() { return "DefaultSocial"; }
 	public String name(){ return Social_name;}
 	public String Name(){return name();}
-	public String baseName() {
+	public String baseName()
+	{
 		int x=name().indexOf(' ');
 		if(x<0) return name();
 		return name().substring(0,x);
@@ -314,12 +315,14 @@ public class DefaultSocial implements Social
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public String getStat(String code){
+	public String getStat(String code)
+	{
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();

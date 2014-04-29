@@ -61,7 +61,8 @@ public class GenDrink extends StdDrink
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	public int liquidType(){
+	public int liquidType()
+	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
 		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_FRESHWATER;
@@ -127,7 +128,8 @@ public class GenDrink extends StdDrink
 			break;
 		}
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;

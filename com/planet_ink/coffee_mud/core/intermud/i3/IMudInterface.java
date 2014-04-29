@@ -336,7 +336,8 @@ public class IMudInterface implements ImudServices, Serializable
 				if(name!=null)
 				{
 					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,name,0,stat);
-					try{
+					try
+					{
 					lpk.send();
 					}catch(Exception e){Log.errOut("IMudClient",e);}
 				}
@@ -379,7 +380,8 @@ public class IMudInterface implements ImudServices, Serializable
 					fpkt.visible_name=M.name();
 					fpkt.extra=M.name()+" is a "+M.charStats().raceName()+" "+M.charStats().displayClassName();
 				}
-				try{
+				try
+				{
 					pkt.send();
 				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
@@ -422,7 +424,8 @@ public class IMudInterface implements ImudServices, Serializable
 				else
 					Log.sysOut("I3","MUD "+lk.sender_mud+" wants to mud-auth.");
 				MudAuthReply pkt = new MudAuthReply(lk.sender_mud, System.currentTimeMillis());
-				try{
+				try
+				{
 					pkt.send();
 				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
@@ -510,7 +513,8 @@ public class IMudInterface implements ImudServices, Serializable
 						whoV.addElement(M.name());
 				}
 				wkr.who=whoV;
-				try{
+				try
+				{
 				wkr.send();
 				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
@@ -524,10 +528,12 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_mud=wk.sender_mud;
 				wkr.userRequested=wk.userToRequest;
 				MOB M=CMLib.players().getLoadPlayer(wk.userToRequest);
-				if(M!=null) {
+				if(M!=null)
+				{
 					wkr.userVisibleName = M.name();
 					wkr.gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
-					try{
+					try
+					{
 						wkr.send();
 					}catch(Exception e){Log.errOut("IMudClient",e);}
 				}
@@ -560,7 +566,8 @@ public class IMudInterface implements ImudServices, Serializable
 					}
 				}
 				wkr.who=whoV;
-				try{
+				try
+				{
 				wkr.send();
 				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
@@ -653,7 +660,8 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return the local channel name for a remote channel
 	 * @see #getRemoteChannel
 	 */
-	public String getLocalChannel(String str){
+	public String getLocalChannel(String str)
+	{
 		for(CMChannel chan : channels)
 			if(chan.i3name.equalsIgnoreCase(str))
 				return chan.name;
@@ -671,7 +679,8 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return the local channel mask for a remote channel
 	 * @see #getLocalMask
 	 */
-	public String getLocalMask(String str){
+	public String getLocalMask(String str)
+	{
 		for(CMChannel chan : channels)
 			if(chan.name.equalsIgnoreCase(str))
 				return chan.mask;
@@ -681,7 +690,8 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the name of this mud
 	 */
-	public String getMudName(){
+	public String getMudName()
+	{
 		return name;
 	}
 
@@ -704,7 +714,8 @@ public class IMudInterface implements ImudServices, Serializable
 	/**
 	 * @return the player port for this mud
 	 */
-	public int getMudPort(){
+	public int getMudPort()
+	{
 		return port;
 	}
 
@@ -719,7 +730,8 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @param str the remote name of the desired channel
 	 * @return the remote mask of the specified local channel
 	 */
-	public String getRemoteMask(String str){
+	public String getRemoteMask(String str)
+	{
 		for(CMChannel chan : channels)
 			if(chan.i3name.equalsIgnoreCase(str))
 				return chan.mask;
@@ -736,7 +748,8 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @param str the local name of the desired channel
 	 * @return the remote name of the specified local channel
 	 */
-	public String getRemoteChannel(String str){
+	public String getRemoteChannel(String str)
+	{
 		for(CMChannel chan : channels)
 			if(chan.name.equalsIgnoreCase(str))
 				return chan.i3name;

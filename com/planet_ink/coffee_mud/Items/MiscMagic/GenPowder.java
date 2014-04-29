@@ -40,7 +40,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenPowder extends StdPowder {
 	public String ID(){	return "GenPowder";}
 
-	public GenPowder() {
+	public GenPowder()
+	{
 		super();
 		setName("a generic powder");
 		basePhyStats.setWeight(1);

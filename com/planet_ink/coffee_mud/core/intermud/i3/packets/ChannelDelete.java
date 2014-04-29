@@ -44,18 +44,21 @@ public class ChannelDelete extends Packet  {
 	}
 	public ChannelDelete(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_REMOVE;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	
-	public ChannelDelete(int t, String chan, String who) {
+	public ChannelDelete(int t, String chan, String who)
+	{
 		super();
 		type = t;
 		channel = chan;
@@ -63,14 +66,16 @@ public class ChannelDelete extends Packet  {
 	}
 
 	public void send() throws InvalidPacketException {
-		if( channel == null ) {
+		if( channel == null )
+		{
 			throw new InvalidPacketException();
 		}
 		channel = Intermud.getRemoteChannel(channel);
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-remove\",5,\"" + I3Server.getMudName() + "\",\"" +

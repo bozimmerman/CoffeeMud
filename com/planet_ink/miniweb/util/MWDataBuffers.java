@@ -126,7 +126,8 @@ public class MWDataBuffers implements DataBuffers
 			}
 			if(buffer==null)
 				buffer=new byte[512768];
-			try {
+			try
+			{
 				int len=buffer.length;
 				if(len > p.length)
 					len=(int)p.length;
@@ -142,7 +143,8 @@ public class MWDataBuffers implements DataBuffers
 				}
 				list.addFirst(new FileEntry(b,b.limit()));
 				return b;
-			} catch (IOException e) {
+			} catch (IOException e)
+			{
 				closers.add(r);
 				length-=p.length;
 				list.removeFirst();
@@ -170,7 +172,8 @@ public class MWDataBuffers implements DataBuffers
 	private final void created() { createdStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void accessed() { lastStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void finalized() { 
-		if(this.length>0) {
+		if(this.length>0)
+		{
 			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded in "+((list!=null)?list.size():0)+" items.\n\rFirst stack trace:");
 			if(createdStackTrace!=null) for(StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
 			System.err.println("Last stack trace:");
@@ -220,7 +223,8 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void add(final RandomAccessFile file, final long lastModifiedTime)
 	{
-		try {
+		try
+		{
 			list.add(new FileEntry(file,file.length()));
 			this.length += file.length();
 			if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
@@ -231,7 +235,8 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void insertTop(final RandomAccessFile file, final long lastModifiedTime)
 	{
-		try {
+		try
+		{
 			list.addFirst(new FileEntry(file,file.length()));
 			this.length += file.length();
 			if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))

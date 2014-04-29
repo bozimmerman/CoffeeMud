@@ -2815,7 +2815,8 @@ public class Import extends StdCommand
 						continue;
 					else
 					{
-						try{
+						try
+						{
 							CMFile F2=new CMFile(areaFileName,M,CMFile.FLAG_LOGERRORS);
 							if((F2.exists())&&(!F2.isDirectory()))
 							{
@@ -2854,7 +2855,8 @@ public class Import extends StdCommand
 									}
 								}
 							}
-						}catch(Exception e){
+						}catch(Exception e)
+						{
 							returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 						}
 					}
@@ -5188,7 +5190,8 @@ public class Import extends StdCommand
 					returnAnError(session,"No data in "+areaFileName,compileErrors,commands);
 					if((prompt)&&(session!=null))
 					{
-						try{
+						try
+						{
 						if(!session.confirm("Would you like to continue (y/N)","N"))
 							return false;
 						}catch(Exception e){}

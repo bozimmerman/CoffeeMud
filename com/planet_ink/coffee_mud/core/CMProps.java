@@ -965,7 +965,8 @@ public class CMProps extends Properties
 					final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
 					if(F.exists())
 					{
-						try{
+						try
+						{
 							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
 						} catch(IOException e){}
 					}
@@ -1613,9 +1614,11 @@ public class CMProps extends Properties
 	public static final List<String> getStatCodeExtentions(final CMObject O)
 	{
 		String name;
-		try {
+		try
+		{
 			name = O.ID();
-		}catch (NullPointerException e) {
+		}catch (NullPointerException e)
+		{
 			name = O.getClass().getSimpleName();
 		}
 		return getStatCodeExtensions(O.getClass(), name);

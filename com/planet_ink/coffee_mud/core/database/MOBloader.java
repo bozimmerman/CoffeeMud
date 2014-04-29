@@ -681,7 +681,8 @@ public class MOBloader
 		Room location=mob.location();
 		if(location==null) location=mob.getStartRoom();
 		List<MOB> V=DBScanFollowers(mob);
-		for(int v=0;v<V.size();v++) {
+		for(int v=0;v<V.size();v++)
+		{
 			MOB newMOB=V.get(v);
 			Room room=(location==null)?newMOB.getStartRoom():location;
 			newMOB.setStartRoom(room);

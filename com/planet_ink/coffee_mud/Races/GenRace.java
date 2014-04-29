@@ -193,7 +193,8 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
-	public List<RawMaterial> myResources(){
+	public List<RawMaterial> myResources()
+	{
 		if(resourceChoices==null)
 			return new Vector();
 		return resourceChoices;
@@ -706,7 +707,8 @@ public class GenRace extends StdRace
 		case 12:
 		{
 			healthBuddy=CMClass.getRace(val);
-			try{
+			try
+			{
 				if(healthBuddy==null)
 					healthBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			}catch(Exception e){}
@@ -748,19 +750,22 @@ public class GenRace extends StdRace
 		case 21: naturalWeapon=null;
 				 if(val.length()>0) naturalWeapon=CMClass.getWeapon(val);
 				 break;
-		case 22: if(naturalWeapon!=null){
+		case 22: if(naturalWeapon!=null)
+		{
 					 naturalWeapon.setMiscText(val);
 					 naturalWeapon.recoverPhyStats();
 				 }
 				 break;
 		case 23: racialAbilityMap=null;
-				 if(CMath.s_int(val)==0){
+				 if(CMath.s_int(val)==0)
+				 {
 					 racialAbilityNames=null;
 					 racialAbilityProficiencies=null;
 					 racialAbilityQuals=null;
 					 racialAbilityLevels=null;
 				 }
-				 else{
+				 else
+				 {
 					 racialAbilityNames=new String[CMath.s_int(val)];
 					 racialAbilityProficiencies=new int[CMath.s_int(val)];
 					 racialAbilityQuals=new boolean[CMath.s_int(val)];
@@ -783,11 +788,13 @@ public class GenRace extends StdRace
 					 racialAbilityLevels[num]=CMath.s_parseIntExpression(val);
 					 break;
 				 }
-		case 28: if(CMath.s_int(val)==0){
+		case 28: if(CMath.s_int(val)==0)
+		{
 					 culturalAbilityNames=null;
 					 culturalAbilityProficiencies=null;
 				 }
-				 else{
+				 else
+				 {
 					 culturalAbilityNames=new String[CMath.s_int(val)];
 					 culturalAbilityProficiencies=new int[CMath.s_int(val)];
 				 }
@@ -818,12 +825,14 @@ public class GenRace extends StdRace
 				 }
 		case 34: destroyBodyAfterUse=CMath.s_bool(val); break;
 		case 35: racialEffectMap=null;
-				 if(CMath.s_int(val)==0){
+				 if(CMath.s_int(val)==0)
+				 {
 					 racialEffectNames=null;
 					 racialEffectParms=null;
 					 racialEffectLevels=null;
 				 }
-				 else{
+				 else
+				 {
 					 racialEffectNames=new String[CMath.s_int(val)];
 					 racialEffectParms=new String[CMath.s_int(val)];
 					 racialEffectLevels=new int[CMath.s_int(val)];
@@ -893,7 +902,8 @@ public class GenRace extends StdRace
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
-	protected int getCodeNum(String code){
+	protected int getCodeNum(String code)
+	{
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)

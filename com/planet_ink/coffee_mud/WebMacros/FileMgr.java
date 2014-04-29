@@ -93,7 +93,8 @@ public class FileMgr extends StdWebMacro
 		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
 		String file=httpReq.getUrlParameter("FILE");
-		if(file==null){
+		if(file==null)
+		{
 			file="";
 		}
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);

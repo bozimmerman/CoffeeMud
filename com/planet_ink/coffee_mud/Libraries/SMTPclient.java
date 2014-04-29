@@ -116,7 +116,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		String rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
-		while (rstr.indexOf('-') == 3) {
+		while (rstr.indexOf('-') == 3)
+		{
 			rstr = reply.readLine();
 			if(debug) Log.debugOut("SMTPclient",rstr);
 			if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
@@ -133,7 +134,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		Vector<String> addys=new Vector<String>();
 		Attribute mx=doMXLookup(domain);
 		boolean connected=false;
-		try{
+		try
+		{
 			if((mx!=null)&&(mx.size()>0))
 			for(NamingEnumeration<?> e=mx.getAll();e.hasMore();)
 				addys.addElement((String)e.next());
@@ -158,7 +160,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				String rstr = reply.readLine();
 				if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
-				while (rstr.indexOf('-') == 3) {
+				while (rstr.indexOf('-') == 3)
+				{
 					rstr = reply.readLine();
 					if(debug) Log.debugOut("SMTPclient",rstr);
 					if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
@@ -199,7 +202,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 						   CMLib.coffeeFilter().simpleOutFilter(msg));
 			return true;
 		}
-		catch(Exception e) {
+		catch(Exception e)
+		{
 			Log.errOut("SMTPClient",e.getMessage());
 			return false;
 		}
@@ -383,10 +387,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		message=fixMsg.toString();
 
 		InetAddress local;
-		try {
+		try
+		{
 		  local = InetAddress.getLocalHost();
 		}
-		catch (UnknownHostException ioe) {
+		catch (UnknownHostException ioe)
+		{
 		  System.err.println("No local IP address found - is your network up?");
 		  throw ioe;
 		}
@@ -469,10 +475,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		String sendString;
 
 		InetAddress local;
-		try {
+		try
+		{
 		  local = InetAddress.getLocalHost();
 		}
-		catch (UnknownHostException ioe) {
+		catch (UnknownHostException ioe)
+		{
 		  System.err.println("No local IP address found - is your network up?");
 		  throw ioe;
 		}
@@ -508,14 +516,17 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* 
 	* <br><br><b>Usage:</b>  this.close();
 	*/
-	public void close() {
-	  try {
+	public void close()
+	{
+	  try
+	  {
 		send.print("QUIT");
 		send.print(EOL);
 		send.flush();
 		sock.close();
 	  }
-	  catch (IOException ioe) {
+	  catch (IOException ioe)
+	  {
 		// As though there's anything I can dof about it now...
 	  }
 	}

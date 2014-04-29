@@ -352,11 +352,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		String nextID=null;
 		int n=0;
 		public RoomnumberSetEnumeration(){ areaNames=getAreaNames();}
-		public boolean hasMoreElements(){
+		public boolean hasMoreElements()
+		{
 			if(nextID==null) getNextID();
 			return nextID!=null;
 		}
-		public String nextElement(){
+		public String nextElement()
+		{
 			if(nextID==null) getNextID();
 			String next=nextID;
 			nextID=null;

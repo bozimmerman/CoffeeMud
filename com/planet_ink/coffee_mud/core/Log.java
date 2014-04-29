@@ -339,9 +339,11 @@ public class Log extends java.util.logging.Logger
 			maxLevel=s_int(code.substring(x+1));
 		}
 		Target t;
-		try {
+		try
+		{
 			t=Target.valueOf(code);
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			t=Target.OFF;
 		}
 		if( t==null) t=Target.OFF;
@@ -416,7 +418,8 @@ public class Log extends java.util.logging.Logger
 		// initializes the logging objects
 		if((numberOfLogs>1) && (!append))
 		{
-			try{
+			try
+			{
 				String name=logName+(numberOfLogs-1)+".log";
 				final File f=new File(logPath,name);
 				if(f.exists())
@@ -426,7 +429,8 @@ public class Log extends java.util.logging.Logger
 			{
 				final String inum=(i>0)?(""+i):"";
 				final String inumm1=(i>1)?(""+(i-1)):"";
-				try{
+				try
+				{
 					final File f=new File(logPath,logName+inumm1+".log");
 					if(f.exists())
 						f.renameTo(new File(logPath,logName+inum+".log"));
@@ -506,7 +510,8 @@ public class Log extends java.util.logging.Logger
 	 */
 	public final LogReader getLogReader()
 	{
-		return new LogReader() {
+		return new LogReader()
+		{
 			BufferedReader reader = null;
 			public String nextLine()
 			{
@@ -524,7 +529,8 @@ public class Log extends java.util.logging.Logger
 					}
 				}
 				String line=null;
-				try {
+				try
+				{
 					if(reader.ready())
 						line=reader.readLine();
 				}
@@ -532,7 +538,8 @@ public class Log extends java.util.logging.Logger
 				if(line==null) close();
 				return line;
 			}
-			public void close() {
+			public void close()
+			{
 				{
 					try
 					{

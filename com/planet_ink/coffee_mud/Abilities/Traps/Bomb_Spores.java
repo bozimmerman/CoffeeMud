@@ -52,7 +52,8 @@ public class Bomb_Spores extends StdBomb
 		return offenders;
 	}
 
-	public List<Item> getTrapComponents() {
+	public List<Item> getTrapComponents()
+	{
 		Vector V=new Vector();
 		Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
 		Ability A=CMClass.getAbility(text());

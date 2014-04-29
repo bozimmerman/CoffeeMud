@@ -58,7 +58,8 @@ public class GenScroll extends StdScroll
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
 	public String readableText(){return readableText;}
-	public void setReadableText(String text){
+	public void setReadableText(String text)
+	{
 		readableText=text;
 		setSpellList(readableText);
 	}

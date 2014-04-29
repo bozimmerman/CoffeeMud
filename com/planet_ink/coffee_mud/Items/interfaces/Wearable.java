@@ -40,7 +40,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Wearable extends Environmental 
 {
 	/** a constant used in the Locale item search classes to filter on only items being worn */
-	public static final Filterer<Environmental> FILTER_WORNONLY=new Filterer<Environmental>(){
+	public static final Filterer<Environmental> FILTER_WORNONLY=new Filterer<Environmental>()
+	{
 		@Override
 		public boolean passesFilter(Environmental obj) 
 		{
@@ -49,7 +50,8 @@ public interface Wearable extends Environmental
 		}
 	};
 	/** a constant used in the Locale item search classes to filter on only items NOT being worn */
-	public static final Filterer<Environmental> FILTER_UNWORNONLY=new Filterer<Environmental>(){
+	public static final Filterer<Environmental> FILTER_UNWORNONLY=new Filterer<Environmental>()
+	{
 		@Override
 		public boolean passesFilter(Environmental obj) 
 		{
@@ -462,7 +464,8 @@ public interface Wearable extends Environmental
 					if(replace)
 					{
 						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, stat);
-						if(idx>=0){
+						if(idx>=0)
+						{
 							oldLocationCodeIndex=idx;
 							type="REPLACE";
 						}
@@ -498,7 +501,8 @@ public interface Wearable extends Environmental
 		}
 		private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 		public static CODES c(byte c){return insts[c];}
-		public static CODES instance(){
+		public static CODES instance()
+		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 			if(c==null) c=new CODES();
 			return c;
@@ -569,7 +573,8 @@ public interface Wearable extends Environmental
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
 		 */
-		public int findDex_ignoreCase(String rsc) {
+		public int findDex_ignoreCase(String rsc)
+		{
 			if(rsc==null) return -1;
 			int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
 			if(x>=0) return x;
@@ -585,7 +590,8 @@ public interface Wearable extends Environmental
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
 		 */
-		public long find_ignoreCase(String rsc) {
+		public long find_ignoreCase(String rsc)
+		{
 			if(rsc==null) return -1;
 			int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
 			if(x>=0) return allCodes[x];
@@ -601,7 +607,8 @@ public interface Wearable extends Environmental
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
 		 */
-		public int findDex_endsWith(String rsc) {
+		public int findDex_endsWith(String rsc)
+		{
 			if(rsc==null) return -1;
 			int x=CMParms.endsWith(descs, rsc.toLowerCase());
 			if(x>=0) return x;
@@ -617,7 +624,8 @@ public interface Wearable extends Environmental
 		 * Returns the index of the names locations, or -1
 		 * @return the index of the names locations, or -1
 		 */
-		public long find_endsWith(String rsc) {
+		public long find_endsWith(String rsc)
+		{
 			if(rsc==null) return -1;
 			int x=CMParms.endsWith(descs, rsc.toLowerCase());
 			if(x>=0) return allCodes[x];
@@ -653,7 +661,8 @@ public interface Wearable extends Environmental
 		 * Returns whether the code is valid
 		 * @return whether the code is valid
 		 */
-		public static boolean IS_VALID(int code) {
+		public static boolean IS_VALID(int code)
+		{
 			return (code>=0) && (CMParms.indexOf(c().allCodes, code)>=0);
 		}
 		/**

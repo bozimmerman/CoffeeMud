@@ -80,7 +80,8 @@ public class StdRideable extends StdContainer implements Rideable
 	
 	public boolean isMobileRideBasis()
 	{
-		switch(rideBasis()){
+		switch(rideBasis())
+		{
 			case RIDEABLE_SIT:
 			case RIDEABLE_TABLE:
 			case RIDEABLE_ENTERIN:

@@ -49,7 +49,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		private static final long serialVersionUID = -4557809818979881831L;
 		public CMThreadPoolExecutor executor = null;
 		public CMArrayBlockingQueue(int capacity) { super(capacity);}
-		@Override public boolean offer(E o) {
+		@Override public boolean offer(E o)
+		{
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
@@ -67,8 +68,10 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		threadFactory=new CMThreadFactory(poolName);
 		setThreadFactory(threadFactory);
 		this.queueSize=queueSize;
-		setRejectedExecutionHandler(new RejectedExecutionHandler(){
-			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+		setRejectedExecutionHandler(new RejectedExecutionHandler()
+		{
+			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
+			{
 				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
 			}
 		});

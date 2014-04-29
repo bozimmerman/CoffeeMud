@@ -45,33 +45,39 @@ public class ChannelWhoReply extends Packet {
 	
 	public ChannelWhoReply(Vector v) throws InvalidPacketException {
 		super(v);
-		try {
+		try
+		{
 			type = Packet.CHAN_WHO_REP;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
-			try{
+			try
+			{
 			who = (Vector)v.elementAt(7);
 			}catch(Exception e){ who=new Vector();}
 		}
-		catch( ClassCastException e ) {
+		catch( ClassCastException e )
+		{
 			throw new InvalidPacketException();
 		}
 	}
 
 	public void send() throws InvalidPacketException {
-		if( channel==null || who == null  ) {
+		if( channel==null || who == null  )
+		{
 			throw new InvalidPacketException();
 		}
 		channel = Intermud.getRemoteChannel(channel);
 		super.send();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		String str = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 
-		for(i=0; i<who.size(); i++) {
+		for(i=0; i<who.size(); i++)
+		{
 			String nom = (String)who.elementAt(0);
 			str += "\"" + nom + "\",";
 		}

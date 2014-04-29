@@ -110,7 +110,8 @@ public class StdLawBook extends StdItem
 				if((allowedToModify)&&(!theLaw.lawIsActivated()))
 					changeTheLaw(A2,B,mob,theLaw,"ACTIVATED","TRUE");
 
-				try{
+				try
+				{
 					if(which<1)
 					{
 						if(mob.session()!=null)
@@ -171,7 +172,8 @@ public class StdLawBook extends StdItem
 	public String getFromTOC(String tag)
 	{
 		Properties lawProps=(Properties)Resources.getResource("LAWBOOKTOC");
-		try{
+		try
+		{
 			if((lawProps==null)||(lawProps.isEmpty()))
 			{
 				lawProps=new Properties();

@@ -216,19 +216,22 @@ public class AutoPlayTester
 		public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * ((x)-0.001))); return (y>0)?y:-y;}
 		public Object waitFor(Object regexO)
 		{
-			try {
+			try
+			{
 				return testObj.waitFor(toJavaString(regexO),1)[0];
 			} catch(Exception e) { return null; }
 		}
 		public Object waitForMultiMatch(Object regexO, Object numMatches)
 		{
-			try {
+			try
+			{
 				return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
 			} catch(Exception e) { return null; }
 		}
 		public boolean writeLine(Object O) 
 		{
-			try {
+			try
+			{
 				testObj.writeln(toJavaString(O));
 				return true;
 			} catch(Exception e) { return false; }

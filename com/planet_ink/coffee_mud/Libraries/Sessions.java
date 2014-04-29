@@ -34,7 +34,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public final SLinkedList<Session> all=new SLinkedList<Session>();
 	
-	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
+	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>()
+	{
 		public boolean passesFilter(Session obj) { 
 			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
@@ -47,10 +48,12 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public Iterator<Session> all(){return all.iterator();}
 	public Iterable<Session> allIterable(){return all;}
-	public Iterator<Session> localOnline(){
+	public Iterator<Session> localOnline()
+	{
 		return new FilteredIterator<Session>(all.iterator(),localOnlineFilter);
 	}
-	public Iterable<Session> localOnlineIterable(){
+	public Iterable<Session> localOnlineIterable()
+	{
 		return new FilteredIterable<Session>(all,localOnlineFilter);
 	}
 	

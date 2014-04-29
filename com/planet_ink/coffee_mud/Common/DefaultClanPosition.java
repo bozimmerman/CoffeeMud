@@ -71,58 +71,76 @@ public class DefaultClanPosition implements ClanPosition
 		}
 	}
 	
-	public String getID() {
+	public String getID()
+	{
 		return ID;
 	}
-	public void setID(String iD) {
+	public void setID(String iD)
+	{
 		ID = iD;
 	}
-	public int getRoleID() {
+	public int getRoleID()
+	{
 		return roleID;
 	}
-	public void setRoleID(int roleID) {
+	public void setRoleID(int roleID)
+	{
 		this.roleID = roleID;
 	}
-	public int getRank() {
+	public int getRank()
+	{
 		return rank;
 	}
-	public void setRank(int rank) {
+	public void setRank(int rank)
+	{
 		this.rank = rank;
 	}
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
-	public String getPluralName() {
+	public String getPluralName()
+	{
 		return pluralName;
 	}
-	public void setPluralName(String pluralName) {
+	public void setPluralName(String pluralName)
+	{
 		this.pluralName = pluralName;
 	}
-	public int getMax() {
+	public int getMax()
+	{
 		return max;
 	}
-	public void setMax(int max) {
+	public void setMax(int max)
+	{
 		this.max = max;
 	}
-	public String getInnerMaskStr() {
+	public String getInnerMaskStr()
+	{
 		return innerMaskStr;
 	}
-	public void setInnerMaskStr(String innerMaskStr) {
+	public void setInnerMaskStr(String innerMaskStr)
+	{
 		this.innerMaskStr = innerMaskStr;
 	}
-	public boolean isPublic() {
+	public boolean isPublic()
+	{
 		return isPublic;
 	}
-	public void setPublic(boolean isPublic) {
+	public void setPublic(boolean isPublic)
+	{
 		this.isPublic = isPublic;
 	}
-	public Clan.Authority[] getFunctionChart() {
+	public Clan.Authority[] getFunctionChart()
+	{
 		return functionChart;
 	}
-	public void setFunctionChart(Clan.Authority[] functionChart) {
+	public void setFunctionChart(Clan.Authority[] functionChart)
+	{
 		this.functionChart = functionChart;
 	}
 	

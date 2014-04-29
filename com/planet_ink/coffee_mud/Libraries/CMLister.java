@@ -48,7 +48,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			likeRoom=R;
 		}
 		@Override
-		public boolean passesFilter(Object obj) {
+		public boolean passesFilter(Object obj)
+		{
 			if((likeRoom!=null)&&(obj instanceof Room))
 			{
 				if((((Room)obj).roomID().length()>0)&&(!((Room)obj).getArea().Name().equals(likeRoom.getArea().Name())))
@@ -66,7 +67,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			ofType=typ;
 		}
 		@Override
-		public boolean passesFilter(Object obj) {
+		public boolean passesFilter(Object obj)
+		{
 			if(ofType>=0)
 			{
 				if(obj instanceof Ability)

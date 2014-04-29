@@ -68,11 +68,13 @@ public class TreeLayout extends AbstractLayout
 			return stem;
 		}
 
-		private void patchRun(LayoutNode from, LayoutNode to) {
+		private void patchRun(LayoutNode from, LayoutNode to)
+		{
 			to.flagRun(AbstractLayout.getRunDirection(getDirection(from,to)));
 		}
 		
-		public TreeStem firstBranch() {
+		public TreeStem firstBranch()
+		{
 			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<1)) return null;
 			long[] nextCoord = getCoord(currNode.coord(),turns[0]);
@@ -83,7 +85,8 @@ public class TreeLayout extends AbstractLayout
 			patchRun(currNode,newStem.currNode);
 			return newStem;
 		}
-		public TreeStem secondBranch() {
+		public TreeStem secondBranch()
+		{
 			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<2)) return null;
 			long[] nextCoord = getCoord(currNode.coord(),turns[1]);
@@ -110,7 +113,8 @@ public class TreeLayout extends AbstractLayout
 		root.currNode.flagGateExit(dir);
 		root.currNode.flagRun(AbstractLayout.getRunDirection(dir));
 		
-		while(lSet.spaceAvailable()) {
+		while(lSet.spaceAvailable())
+		{
 			Vector<TreeStem> newOnes = new Vector<TreeStem>();
 			for(Iterator<TreeStem> i =  progress.iterator(); i.hasNext() && lSet.spaceAvailable(); )
 			{
