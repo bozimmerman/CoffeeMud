@@ -82,6 +82,9 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
+				if(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS))
+					break; // let admins go ahead and put stuff
+				else
 				if(msg.tool() instanceof ShipComponent)
 				{
 					if(msg.value()<=0)
@@ -119,7 +122,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				((ShipComponent)msg.tool()).setInstalledFactor((float)0.0);
+				((ShipComponent)msg.tool()).setInstalledFactor(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)?1.0f:0.0f);
 				break;
 			case CMMsg.TYP_INSTALL:
 				if((msg.tool() instanceof ShipComponent)&&(msg.value()>=0))
