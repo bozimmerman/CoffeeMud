@@ -812,7 +812,7 @@ public class DefaultCharStats implements CharStats
 			int curStat=getStat(abilityCode);
 			if(curStat > currMax*7)
 			{
-				Log.warnOut("Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode));
+				//Log.warnOut("Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode));
 				curStat=currMax*7;
 			}
 			final int pctOfMax=Math.round(((float)curStat/(float)currMax)*racialMax);
