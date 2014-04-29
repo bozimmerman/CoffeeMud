@@ -1119,15 +1119,15 @@ public class StdMOB implements MOB
 		CMLib.threads().startTickDown(this, Tickable.TICKID_MOB, 1);
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
-			final boolean isImMobile=CMath.bset(phyStats.disposition(), PhyStats.CAN_NOT_MOVE);
+			final boolean isImMobile=CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
 			try
 			{
-				phyStats.setDisposition(phyStats.disposition()|PhyStats.CAN_NOT_MOVE);
+				phyStats.setSensesMask(phyStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 				tick(this, Tickable.TICKID_MOB); // slap on the butt
 			}
 			finally
 			{
-				phyStats.setDisposition(CMath.dobit(phyStats.disposition(),PhyStats.CAN_NOT_MOVE,isImMobile));
+				phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(),PhyStats.CAN_NOT_MOVE,isImMobile));
 			}
 		}
 	}
@@ -1189,10 +1189,10 @@ public class StdMOB implements MOB
 		CMLib.factions().updatePlayerFactions(this, location());
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
-			final boolean isImMobile=CMath.bset(phyStats.disposition(), PhyStats.CAN_NOT_MOVE);
+			final boolean isImMobile=CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);
 			try
 			{
-				phyStats.setDisposition(phyStats.disposition()|PhyStats.CAN_NOT_MOVE);
+				phyStats.setSensesMask(phyStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 				tick(this, Tickable.TICKID_MOB); // slap on the butt
 			}
 			catch (final Exception t)
@@ -1201,7 +1201,7 @@ public class StdMOB implements MOB
 			}
 			finally
 			{
-				phyStats.setDisposition(CMath.dobit(phyStats.disposition(), PhyStats.CAN_NOT_MOVE, isImMobile));
+				phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
 			}
 		}
 		if (location() == null)

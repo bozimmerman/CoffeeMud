@@ -195,7 +195,8 @@ public class Spell_SummonMonster extends Spell
 		else
 		if(victim!=null)
 		{
-			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			if(newMOB.getVictim()!=victim) 
+				newMOB.setVictim(victim);
 			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
 		}
 		if(newMOB.amDead()||newMOB.amDestroyed())
