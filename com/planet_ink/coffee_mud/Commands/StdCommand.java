@@ -34,22 +34,20 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdCommand implements Command
 {
-	public StdCommand(){}
-	protected String ID=null;
-	@Override
-	public String ID()
+	protected final String ID;
+	private final String[] access=null;
+	public StdCommand()
 	{
-		if(ID==null)
-		{
-			ID=this.getClass().getName();
-			final int x=ID.lastIndexOf('.');
-			if(x>=0) ID=ID.substring(x+1);
-		}
-		return ID;
+		final String id=this.getClass().getName();
+		final int x=id.lastIndexOf('.');
+		if(x>=0) 
+			ID=id.substring(x+1);
+		else
+			ID=id;
 	}
+	@Override public String ID() { return ID; }
 	@Override public String name() { return ID();}
 
-	private final String[] access=null;
 	@Override public String[] getAccessWords(){return access;}
 	@Override public void initializeClass(){}
 	@Override
@@ -134,7 +132,6 @@ public class StdCommand implements Command
 	}
 	@Override public boolean canBeOrdered(){return true;}
 	@Override public boolean securityCheck(MOB mob){return true;}
-	public boolean staffCommand(){return false;}
 	@Override public CMObject newInstance(){return this;}
 	@Override
 	public CMObject copyOf()
