@@ -229,7 +229,8 @@ public class StdJournal extends StdItem
 									String journal;
 									try { 
 										journal=mob.session().prompt("Enter the journal to transfer this msg to: ","",30000); 
-									} catch(IOException e)
+									}
+									catch(IOException e)
 									{
 										mob.tell("Timed out.");
 										repeat=true;

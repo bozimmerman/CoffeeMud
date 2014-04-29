@@ -472,7 +472,8 @@ public class StdItem implements Item
 				if((A!=null)&&(A.bubbleAffect()))
 					A.affectPhyStats(affected,affectableStats); 
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
@@ -487,7 +488,8 @@ public class StdItem implements Item
 				if((A!=null)&&(A.bubbleAffect()))
 					A.affectCharStats(affectedMob,affectableStats); 
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
@@ -502,7 +504,8 @@ public class StdItem implements Item
 				if((A!=null)&&(A.bubbleAffect()))
 					A.affectCharState(affectedMob,affectableMaxState); 
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void setMiscText(String newText)
@@ -1406,7 +1409,8 @@ public class StdItem implements Item
 				final Ability A=affects.get(a);
 				if(A!=null) applier.apply(A);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -1546,7 +1550,8 @@ public class StdItem implements Item
 				final Behavior B=behaviors.get(a);
 				if(B!=null) applier.apply(B);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	/** Manipulation of the scripts list */
@@ -1610,7 +1615,8 @@ public class StdItem implements Item
 				final ScriptingEngine S=scripts.get(a);
 				if(S!=null) applier.apply(S);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	protected String tackOns()

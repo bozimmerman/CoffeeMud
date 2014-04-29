@@ -6144,7 +6144,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(int i=0;i<ttParms.length;i++)
 							tt[i+1]=ttParms[i];
 						script.setElementAt(si,2,tt);
-					} catch(Exception e)
+					}
+					catch(Exception e)
 					{
 						logError(scripted,"IF","Syntax",e.getMessage());
 						tickStatus=Tickable.STATUS_END;
@@ -6641,7 +6642,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						String value=((MOB)newTarget).session().prompt(promptStr,60000);
 						setVar(newTarget.Name(),var,value);
-					} catch(Exception e) { return "";}
+					}
+					catch(Exception e) { return "";}
 				}
 				break;
 			}
@@ -6662,7 +6664,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,60000)?"Y":"N";
 						setVar(newTarget.Name(),var,value);
-					} catch(Exception e) { return "";}
+					}
+					catch(Exception e) { return "";}
 				}
 				break;
 			}
@@ -6684,7 +6687,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,60000);
 						setVar(newTarget.Name(),var,value);
-					} catch(Exception e) { return "";}
+					}
+					catch(Exception e) { return "";}
 				}
 				break;
 			}
@@ -9076,7 +9080,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						V.addElement(DO);
 						tt=CMParms.toStringArray(V);
 						script.setElementAt(si,2,tt);
-					} catch(Exception e)
+					}
+					catch(Exception e)
 					{
 						logError(scripted,"MPWHILE","Syntax",e.getMessage());
 						break;
@@ -9412,7 +9417,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return false;
 			}
 		}
-		} finally { recurseCounter.addAndGet(-1); }
+		}
+		finally { recurseCounter.addAndGet(-1); }
 		return true;
 	}
 	
@@ -10269,7 +10275,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 		}
-		} finally { recurseCounter.addAndGet(-1); }
+		}
+		finally { recurseCounter.addAndGet(-1); }
 	}
 
 	protected int getTriggerCode(String trigger, String[] ttrigger)

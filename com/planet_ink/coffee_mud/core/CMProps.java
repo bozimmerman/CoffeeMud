@@ -968,7 +968,8 @@ public class CMProps extends Properties
 						try
 						{
 							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
-						} catch(IOException e){}
+						}
+						catch(IOException e){}
 					}
 					Resources.submitResource(rscKey, rawListData);
 					final Object[] set=p().sysLstFileLists; 

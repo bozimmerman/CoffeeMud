@@ -988,11 +988,13 @@ public class StdRoom implements Room
 		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
 	};
 	
-	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>(){ 
+	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>()
+	{
 		public final void apply(final Item I){ I.affectPhyStats(me,phyStats);} 
 	};
 	
-	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
+	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>()
+	{
 		public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);} 
 	};
 	
@@ -1015,7 +1017,8 @@ public class StdRoom implements Room
 		} 
 	};
 	
-	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>(){ 
+	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>()
+	{
 		public final void apply(final MOB M) 
 		{ 
 			M.recoverCharStats();
@@ -1728,7 +1731,8 @@ public class StdRoom implements Room
 				final MOB M=inhabitants.get(a);
 				if(M!=null) applier.apply(M);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void delInhabitant(MOB mob)
@@ -1877,7 +1881,8 @@ public class StdRoom implements Room
 				final Item I=contents.get(a);
 				if(I!=null) applier.apply(I);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public Item getRandomItem()
@@ -2197,7 +2202,8 @@ public class StdRoom implements Room
 				final Ability A=affects.get(a);
 				if(A!=null) applier.apply(A);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void delAllEffects(boolean unInvoke)
@@ -2329,7 +2335,8 @@ public class StdRoom implements Room
 				final Behavior B=behaviors.get(a);
 				if(B!=null) applier.apply(B);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -2405,7 +2412,8 @@ public class StdRoom implements Room
 				final ScriptingEngine S=scripts.get(a);
 				if(S!=null) applier.apply(S);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }

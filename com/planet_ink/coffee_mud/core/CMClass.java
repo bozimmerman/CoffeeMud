@@ -2064,7 +2064,8 @@ public class CMClass extends ClassLoader
 					if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
 					return result;
 				}
-			} catch(Exception t){}
+			}
+			catch(Exception t){}
 		}
 		/* Try to load it from our repository */
 		final CMFile CF=new CMFile(pathName,null);

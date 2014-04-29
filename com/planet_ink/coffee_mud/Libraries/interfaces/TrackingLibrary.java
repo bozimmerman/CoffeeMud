@@ -100,25 +100,32 @@ public interface TrackingLibrary extends CMLibrary
 	
 	public static enum TrackingFlag 
 	{
-		NOHOMES(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		NOHOMES(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return CMLib.law().getLandTitle(R)!=null; 
 		}}),
-		OPENONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		OPENONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return !E.isOpen();
 		}}),
-		UNLOCKEDONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		UNLOCKEDONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return !E.hasALock();
 		}}),
-		AREAONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		AREAONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return CMLib.law().getLandTitle(R)!=null; 
 		}}),
-		NOEMPTYGRIDS(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		NOEMPTYGRIDS(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0); 
 		}}),
-		NOAIR(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		NOAIR(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR); 
 		}}),
-		NOWATER(new RFilter(){  public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+		NOWATER(new RFilter(){  public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
 			return (R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 				   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)

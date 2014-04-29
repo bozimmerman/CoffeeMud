@@ -93,7 +93,8 @@ public class MWHTMLConverter implements HTTPOutputConverter
 						}
 						else
 							out.write(("@"+macro.toString()+"@").getBytes()); 
-					} catch(Exception e){}
+					}
+					catch(Exception e){}
 					state=-1;
 					macro.setLength(0);
 				}

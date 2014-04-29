@@ -277,7 +277,8 @@ public class CMLib
 						dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
 					Log.errOut(dump.toString());
 				} 
-			} catch(java.lang.ThreadDeath td) {}
+			}
+			catch(java.lang.ThreadDeath td) {}
 		}
 		catch(Throwable th){}
 

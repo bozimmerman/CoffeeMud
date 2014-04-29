@@ -96,7 +96,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 				if(components.size()==0)
 				{
 					mob.tell("You don't end up with any usable components.");
-				} else
+				}
+				else
 				{
 					for(int i=0;i<components.size();i++)
 					{

@@ -703,7 +703,8 @@ public class CharGen extends StdCommand
 									CMLib.commands().postStand(M2,true);
 									M1.tick(M1,Tickable.TICKID_MOB);
 									M2.tick(M2,Tickable.TICKID_MOB);
-								} catch(Exception t)
+								}
+								catch(Exception t)
 								{
 									Log.errOut("CharGen",t);
 								}
@@ -882,7 +883,8 @@ public class CharGen extends StdCommand
 		try
 		{
 			latch.await();
-		} catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			aborted[0]=true;
 			return;

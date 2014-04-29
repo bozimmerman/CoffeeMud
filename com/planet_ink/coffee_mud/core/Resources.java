@@ -532,7 +532,8 @@ public class Resources
 							{
 								String value=URLEncoder.encode(secMap.get(key),"UTF-8");
 								str.append(key).append("=").append(value).append("\n");
-							} catch (UnsupportedEncodingException e) { }
+							}
+							catch (UnsupportedEncodingException e) { }
 						}
 					}
 					CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);

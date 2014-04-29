@@ -106,7 +106,8 @@ public class Email extends StdCommand
 					{
 						if(S!=null) S.snoopSuspension(1);
 						mob.tell(messages.toString());
-					} finally
+					}
+					finally
 					{
 						if(S!=null) S.snoopSuspension(-1);
 					}
@@ -137,7 +138,8 @@ public class Email extends StdCommand
 						{
 							if(S!=null) S.snoopSuspension(1);
 							mob.tell(messages.toString());
-						} finally
+						}
+						finally
 						{
 							if(S!=null) S.snoopSuspension(-1);
 						}

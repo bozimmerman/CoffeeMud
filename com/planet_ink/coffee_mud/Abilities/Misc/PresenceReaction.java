@@ -166,7 +166,8 @@ public class PresenceReaction extends StdAbility
 							Command C=CMClass.getCommand("Mood");
 							if(C!=null)
 								C.execute(M,CMParms.parse("MOOD "+previousMood),0);
-						} catch(Exception e){}
+						}
+						catch(Exception e){}
 					}
 				}
 				else
@@ -245,7 +246,8 @@ public class PresenceReaction extends StdAbility
 				{
 					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>",reactToM.Name());
 					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
-				} catch(Exception e){}
+				}
+				catch(Exception e){}
 				managed.add(C);
 				continue;
 			}

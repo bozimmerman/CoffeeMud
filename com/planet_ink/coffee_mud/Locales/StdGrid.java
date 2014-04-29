@@ -134,7 +134,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		return getAltRoomFrom(fromRoom,direction);
 	}
-	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction){ 
+	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
+	{
 		return toRoom;
 	}
 	

@@ -307,7 +307,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 											I3Server.shutdown();
 											CMLib.hosts().get(0).executeCommand("START I3");
 											Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
-										} catch(Exception e){}
+										}
+										catch(Exception e){}
 									}
 								});
 							}

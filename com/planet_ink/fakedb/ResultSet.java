@@ -198,7 +198,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return Byte.parseByte(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public short getShort(int columnIndex) throws java.sql.SQLException
    {
@@ -217,7 +218,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return Long.parseLong(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public float getFloat(int columnIndex) throws java.sql.SQLException
    {
@@ -228,7 +230,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return Float.parseFloat(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public double getDouble(int columnIndex) throws java.sql.SQLException
    {
@@ -239,7 +242,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return Double.parseDouble(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.math.BigDecimal getBigDecimal(int columnIndex) throws java.sql.SQLException
    {
@@ -248,7 +252,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return new java.math.BigDecimal(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    /**
 	* @deprecated
@@ -266,7 +271,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return o.toString().getBytes();
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Date getDate(int columnIndex) throws java.sql.SQLException
    {
@@ -277,7 +283,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return java.sql.Date.valueOf(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Time getTime(int columnIndex) throws java.sql.SQLException
    {
@@ -288,7 +295,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return java.sql.Time.valueOf(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Timestamp getTimestamp(int columnIndex) throws java.sql.SQLException
    {
@@ -299,7 +307,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return java.sql.Timestamp.valueOf(o.toString());
-	  } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.io.InputStream getAsciiStream(int columnIndex) throws java.sql.SQLException
    {
@@ -336,7 +345,8 @@ public class ResultSet implements java.sql.ResultSet
 	  try
 	  {
 		 return new java.net.URL(s);
-	  } catch (java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  }
+	  catch (java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
 
    public int findColumn(String columnName) throws java.sql.SQLException

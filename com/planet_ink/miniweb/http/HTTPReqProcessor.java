@@ -503,7 +503,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				try { 
 					converter = converterClass.newInstance();
 					return new MWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis());
-				} catch (Exception e) { }
+				}
+				catch (Exception e) { }
 				return buffers;
 			}
 			else

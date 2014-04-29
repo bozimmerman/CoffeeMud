@@ -302,7 +302,8 @@ public class Listen extends CM1Command
 			try
 			{
 				STATTYPE.valueOf(codeStr);
-			} catch(Exception iox)
+			}
+			catch(Exception iox)
 			{
 				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 				return null;

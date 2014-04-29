@@ -832,7 +832,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				try
 				{
 					buf.write(C.executeInternal(M, 0, M.getVictim()).toString().getBytes(Session.MSDP_CHARSET));
-				} catch (IOException e)
+				}
+				catch (IOException e)
 				{
 					buf.write(Integer.toString(M.getVictim().phyStats().level()).getBytes(Session.MSDP_CHARSET));
 				}

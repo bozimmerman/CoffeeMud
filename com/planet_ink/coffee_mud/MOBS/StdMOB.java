@@ -704,7 +704,8 @@ public class StdMOB implements MOB
 		{
 			for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
 				total += f.nextElement().follower.totalFollowers();
-		} catch (Exception t){}
+		}
+		catch (Exception t){}
 		return total;
 	}
 
@@ -914,7 +915,8 @@ public class StdMOB implements MOB
 		try
 		{
 			CMLib.catalog().changeCatalogUsage(this, false);
-		} catch (Exception t){}
+		}
+		catch (Exception t){}
 		if ((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS)) 
 		&& (fetchEffect("Age") != null)
 		&& CMath.isInteger(fetchEffect("Age").text())
@@ -1034,7 +1036,8 @@ public class StdMOB implements MOB
 			{
 				phyStats.setDisposition(phyStats.disposition()|PhyStats.CAN_NOT_MOVE);
 				tick(this, Tickable.TICKID_MOB); // slap on the butt
-			} finally
+			}
+			finally
 			{
 				phyStats.setDisposition(CMath.dobit(phyStats.disposition(),PhyStats.CAN_NOT_MOVE,isImMobile));
 			}
@@ -1168,7 +1171,8 @@ public class StdMOB implements MOB
 				return false;
 			}
 			return true;
-		} catch (NullPointerException n){}
+		}
+		catch (NullPointerException n){}
 		return false;
 	}
 
@@ -3372,7 +3376,8 @@ public class StdMOB implements MOB
 		try
 		{
 			return inventory.elementAt(index);
-		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -3388,7 +3393,8 @@ public class StdMOB implements MOB
 					if (I != null)
 						applier.apply(I);
 				}
-			} catch (ArrayIndexOutOfBoundsException e){}
+			}
+			catch (ArrayIndexOutOfBoundsException e){}
 	}
 
 	public Item getRandomItem() 
@@ -3514,7 +3520,8 @@ public class StdMOB implements MOB
 			if (followers == null)
 				return null;
 			return followers.get(index).follower;
-		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -3732,7 +3739,8 @@ public class StdMOB implements MOB
 					return list.get(index);
 				index-=list.size();
 			}
-		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -3918,19 +3926,22 @@ public class StdMOB implements MOB
 			{
 				for (int a = 0; a < affects.size(); a++)
 					applier.apply(affects.get(a));
-			} catch (ArrayIndexOutOfBoundsException e){}
+			}
+			catch (ArrayIndexOutOfBoundsException e){}
 		final List<Ability> racialEffects = racialEffects();
 		try
 		{
 			if (racialEffects.size() > 0)
 				for (final Ability A : racialEffects)
 					applier.apply(A);
-		} catch (ArrayIndexOutOfBoundsException e){}
+		}
+		catch (ArrayIndexOutOfBoundsException e){}
 		try
 		{
 			for (final Ability A : clanEffects())
 				applier.apply(A);
-		} catch (ArrayIndexOutOfBoundsException e){}
+		}
+		catch (ArrayIndexOutOfBoundsException e){}
 	}
 
 	public void delAllEffects(boolean unInvoke) 
@@ -3970,7 +3981,8 @@ public class StdMOB implements MOB
 			if (index < abilitys.size() + charStats().getMyRace().numRacialEffects(this))
 				return racialEffects().get(index - affects.size());
 			return clanEffects().get(index - affects.size() - racialEffects().size());
-		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -4034,7 +4046,8 @@ public class StdMOB implements MOB
 		try
 		{
 			return behaviors.elementAt(index);
-		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 
@@ -4051,7 +4064,8 @@ public class StdMOB implements MOB
 			{
 				for (int a = 0; a < behaviors.size(); a++)
 					applier.apply(behaviors.get(a));
-			} catch (ArrayIndexOutOfBoundsException e){}
+			}
+			catch (ArrayIndexOutOfBoundsException e){}
 	}
 
 	public int[][] getAbilityUsageCache(final String abilityID)
@@ -4187,7 +4201,8 @@ public class StdMOB implements MOB
 		try
 		{
 			return scripts.elementAt(x);
-		} catch (Exception e){}
+		}
+		catch (Exception e){}
 		return null;
 	}
 
@@ -4203,7 +4218,8 @@ public class StdMOB implements MOB
 					if (S != null)
 						applier.apply(S);
 				}
-			} catch (ArrayIndexOutOfBoundsException e){}
+			}
+			catch (ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the tatoo list */

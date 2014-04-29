@@ -156,7 +156,8 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 				final Item I=contents.get(a);
 				if(I!=null) applier.apply(I);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	public Item getItem(int i)

@@ -536,7 +536,8 @@ public class Nanny extends StdBehavior
 								H.add(R.fetchRider(r));
 					}
 				}
-			} while(H.size() > H2.size());
+			}
+			while(H.size() > H2.size());
 			
 			addAssociationsIfNecessary(H);
 			List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());

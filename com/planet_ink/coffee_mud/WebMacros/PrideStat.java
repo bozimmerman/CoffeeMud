@@ -66,12 +66,14 @@ public class PrideStat extends StdWebMacro
 				try
 				{
 					period=TimeClock.TimePeriod.valueOf(s.toUpperCase().trim());
-				} catch(Exception e)
+				}
+				catch(Exception e)
 				{
 					try
 					{
 						stat=AccountStats.PrideStat.valueOf(s.toUpperCase().trim());
-					} catch(Exception e2)
+					}
+					catch(Exception e2)
 					{
 						return " [error unknown parameter: "+s+"]";
 					}

@@ -798,7 +798,8 @@ public class RoomLoader
 						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
 						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 						newItem.recoverPhyStats();
-					} catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
+					}
+					catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
@@ -896,7 +897,8 @@ public class RoomLoader
 						newMOB.recoverPhyStats();
 						newMOB.recoverMaxState();
 						newMOB.resetToMaxState();
-					} catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
+					}
+					catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");

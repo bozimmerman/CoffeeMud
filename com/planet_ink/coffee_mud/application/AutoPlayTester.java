@@ -219,14 +219,16 @@ public class AutoPlayTester
 			try
 			{
 				return testObj.waitFor(toJavaString(regexO),1)[0];
-			} catch(Exception e) { return null; }
+			}
+			catch(Exception e) { return null; }
 		}
 		public Object waitForMultiMatch(Object regexO, Object numMatches)
 		{
 			try
 			{
 				return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
-			} catch(Exception e) { return null; }
+			}
+			catch(Exception e) { return null; }
 		}
 		public boolean writeLine(Object O) 
 		{
@@ -234,7 +236,8 @@ public class AutoPlayTester
 			{
 				testObj.writeln(toJavaString(O));
 				return true;
-			} catch(Exception e) { return false; }
+			}
+			catch(Exception e) { return false; }
 		}
 		
 		public JScriptEvent(AutoPlayTester testObj)

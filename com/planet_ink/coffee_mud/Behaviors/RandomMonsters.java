@@ -285,7 +285,8 @@ public class RandomMonsters extends ActiveTicker
 				MOB M=(MOB)maintained.elementAt(i);
 				if((M.amDead())||(M.amDestroyed())||(M.location()==null)||(!M.location().isInhabitant(M)))
 					maintained.removeElement(M);
-			} catch(Exception e){	}
+			}
+			catch(Exception e){	}
 		}
 		if(maintained.size()>=maxMonsters)
 		{

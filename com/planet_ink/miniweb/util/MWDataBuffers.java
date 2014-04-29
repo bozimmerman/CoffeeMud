@@ -143,7 +143,8 @@ public class MWDataBuffers implements DataBuffers
 				}
 				list.addFirst(new FileEntry(b,b.limit()));
 				return b;
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				closers.add(r);
 				length-=p.length;

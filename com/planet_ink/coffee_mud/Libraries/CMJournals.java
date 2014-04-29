@@ -265,7 +265,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							ForumJournalFlags.valueOf(rest.substring(y,x).toUpperCase().trim());
 							flagDexes.addElement(Integer.valueOf(y));
-						} catch(Exception e){}
+						}
+						catch(Exception e){}
 					}
 					x=rest.indexOf('=',x+1);
 				}

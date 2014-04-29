@@ -342,7 +342,8 @@ public class Log extends java.util.logging.Logger
 		try
 		{
 			t=Target.valueOf(code);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			t=Target.OFF;
 		}

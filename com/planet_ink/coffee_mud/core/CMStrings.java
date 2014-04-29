@@ -1904,7 +1904,8 @@ public class CMStrings
 		if (Diff_Timeout <= 0)
 		{
 			deadline = Long.MAX_VALUE;
-		} else
+		}
+		else
 		{
 			deadline = System.currentTimeMillis() + (long) (Diff_Timeout * 1000);
 		}
@@ -2186,7 +2187,8 @@ public class CMStrings
 				if (k1 == -d || (k1 != d && v1[k1_offset - 1] < v1[k1_offset + 1]))
 				{
 					x1 = v1[k1_offset + 1];
-				} else
+				}
+				else
 				{
 					x1 = v1[k1_offset - 1] + 1;
 				}
@@ -2202,11 +2204,13 @@ public class CMStrings
 				{
 					// Ran off the right of the graph.
 					k1end += 2;
-				} else if (y1 > text2_length)
+				}
+				else if (y1 > text2_length)
 				{
 					// Ran off the bottom of the graph.
 					k1start += 2;
-				} else if (front)
+				}
+				else if (front)
 				{
 					int k2_offset = v_offset + delta - k1;
 					if (k2_offset >= 0 && k2_offset < v_length && v2[k2_offset] != -1)
@@ -2230,7 +2234,8 @@ public class CMStrings
 				if (k2 == -d || (k2 != d && v2[k2_offset - 1] < v2[k2_offset + 1]))
 				{
 					x2 = v2[k2_offset + 1];
-				} else
+				}
+				else
 				{
 					x2 = v2[k2_offset - 1] + 1;
 				}
@@ -2247,11 +2252,13 @@ public class CMStrings
 				{
 					// Ran off the left of the graph.
 					k2end += 2;
-				} else if (y2 > text2_length)
+				}
+				else if (y2 > text2_length)
 				{
 					// Ran off the top of the graph.
 					k2start += 2;
-				} else if (!front)
+				}
+				else if (!front)
 				{
 					int k1_offset = v_offset + delta - k2;
 					if (k1_offset >= 0 && k1_offset < v_length && v1[k1_offset] != -1)
@@ -2360,7 +2367,8 @@ public class CMStrings
 			if (lineHash.containsKey(line))
 			{
 				chars.append(String.valueOf((char) lineHash.get(line).intValue()));
-			} else
+			}
+			else
 			{
 				lineArray.add(line);
 				lineHash.put(line, Integer.valueOf(lineArray.size() - 1));
@@ -2457,7 +2465,8 @@ public class CMStrings
 		if (text1_length > text2_length)
 		{
 			text1 = text1.substring(text1_length - text2_length);
-		} else if (text1_length < text2_length)
+		}
+		else if (text1_length < text2_length)
 		{
 			text2 = text2.substring(0, text1_length);
 		}
@@ -2526,13 +2535,16 @@ public class CMStrings
 		if (hm1 == null && hm2 == null)
 		{
 			return null;
-		} else if (hm2 == null)
+		}
+		else if (hm2 == null)
 		{
 			hm = hm1;
-		} else if (hm1 == null)
+		}
+		else if (hm1 == null)
 		{
 			hm = hm2;
-		} else
+		}
+		else
 		{
 			// Both matched.	Select the longest.
 			hm = hm1[4].length() > hm2[4].length() ? hm1 : hm2;
@@ -2543,10 +2555,12 @@ public class CMStrings
 		{
 			return hm;
 			//return new String[]{hm[0], hm[1], hm[2], hm[3], hm[4]};
-		} else if(hm!=null)
+		}
+		else if(hm!=null)
 		{
 			return new String[]{hm[2], hm[3], hm[0], hm[1], hm[4]};
-		} else
+		}
+		else
 		{
 			return new String[]{};
 		}
@@ -2591,7 +2605,8 @@ public class CMStrings
 		{
 			return new String[]{best_longtext_a, best_longtext_b,
 													best_shorttext_a, best_shorttext_b, best_common};
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -2630,13 +2645,15 @@ public class CMStrings
 				length_insertions2 = 0;
 				length_deletions2 = 0;
 				lastequality = thisDiff.text;
-			} else
+			}
+			else
 			{
 				// An insertion or deletion.
 				if (thisDiff.operation == DiffOperation.INSERT)
 				{
 					length_insertions2 += thisDiff.text.length();
-				} else
+				}
+				else
 				{
 					length_deletions2 += thisDiff.text.length();
 				}
@@ -2673,7 +2690,8 @@ public class CMStrings
 						{
 							pointer.previous();
 						}
-					} else
+					}
+					else
 					{
 						// There is a safe equality we can fall back to.
 						thisDiff = equalities.lastElement();
@@ -2742,7 +2760,8 @@ public class CMStrings
 						// pointer.add inserts the element before the cursor, so there is
 						// no need to step past the new element.
 					}
-				} else
+				}
+				else
 				{
 					if (overlap_length2 >= deletion.length() / 2.0 ||
 							overlap_length2 >= insertion.length() / 2.0)
@@ -2838,7 +2857,8 @@ public class CMStrings
 					if (bestEquality1.length() != 0)
 					{
 						prevDiff.text = bestEquality1;
-					} else
+					}
+					else
 					{
 						pointer.previous(); // Walk past nextDiff.
 						pointer.previous(); // Walk past thisDiff.
@@ -2851,7 +2871,8 @@ public class CMStrings
 					if (bestEquality2.length() != 0)
 					{
 						nextDiff.text = bestEquality2;
-					} else
+					}
+					else
 					{
 						pointer.remove(); // Delete nextDiff.
 						nextDiff = thisDiff;
@@ -2904,19 +2925,23 @@ public class CMStrings
 		{
 			// Five points for blank lines.
 			return 5;
-		} else if (lineBreak1 || lineBreak2)
+		}
+		else if (lineBreak1 || lineBreak2)
 		{
 			// Four points for line breaks.
 			return 4;
-		} else if (nonAlphaNumeric1 && !whitespace1 && whitespace2)
+		}
+		else if (nonAlphaNumeric1 && !whitespace1 && whitespace2)
 		{
 			// Three points for end of sentences.
 			return 3;
-		} else if (whitespace1 || whitespace2)
+		}
+		else if (whitespace1 || whitespace2)
 		{
 			// Two points for whitespace.
 			return 2;
-		} else if (nonAlphaNumeric1 || nonAlphaNumeric2)
+		}
+		else if (nonAlphaNumeric1 || nonAlphaNumeric2)
 		{
 			// One point for non-alphanumeric.
 			return 1;
@@ -2987,7 +3012,8 @@ public class CMStrings
 											 : "Previous diff should have been an equality.";
 								thisDiff.text += text_insert.substring(0, commonlength);
 								pointer.next();
-							} else
+							}
+							else
 							{
 								pointer.add(new Diff(DiffOperation.EQUAL,
 										text_insert.substring(0, commonlength)));
@@ -3020,7 +3046,8 @@ public class CMStrings
 					}
 					// Step forward to the equality.
 					thisDiff = pointer.hasNext() ? pointer.next() : null;
-				} else if (prevEqual != null)
+				}
+				else if (prevEqual != null)
 				{
 					// Merge this equality with the previous one.
 					prevEqual.text += thisDiff.text;
@@ -3076,7 +3103,8 @@ public class CMStrings
 					thisDiff = pointer.next(); // Walk past nextDiff.
 					nextDiff = pointer.hasNext() ? pointer.next() : null;
 					changes = true;
-				} else if (thisDiff.text.startsWith(nextDiff.text))
+				}
+				else if (thisDiff.text.startsWith(nextDiff.text))
 				{
 					// Shift the edit over the next equality.
 					prevDiff.text += nextDiff.text;
@@ -3178,7 +3206,8 @@ public class CMStrings
 				{
 					return false;
 				}
-			} else if (!text.equals(other.text))
+			}
+			else if (!text.equals(other.text))
 			{
 				return false;
 			}

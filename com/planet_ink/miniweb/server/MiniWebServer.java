@@ -427,7 +427,8 @@ public class MiniWebServer extends Thread
 						{
 							handlers.add(handler);
 						}
-					} catch (Exception e)
+					}
+					catch (Exception e)
 					{
 						config.getLogger().throwing("", "", e);
 					}

@@ -569,7 +569,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						listenerM.tell(message);
 				}
 			}
-		} catch(Exception e){}
+		}
+		catch(Exception e){}
 	}
 
 	private String getMSSPPacket()

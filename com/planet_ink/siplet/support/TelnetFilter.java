@@ -981,7 +981,8 @@ public class TelnetFilter
 						byte[] newOutput=this.msdpModule.convertStringToMsdp(rest);
 						if(newOutput!=null)
 							return newOutput;
-					} catch (MJSONException e)
+					}
+					catch (MJSONException e)
 					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());
@@ -996,7 +997,8 @@ public class TelnetFilter
 						byte[] newOutput=gmcpModule.convertStringToGmcp(rest);
 						if(newOutput!=null)
 							return newOutput;
-					} catch (MJSONException e)
+					}
+					catch (MJSONException e)
 					{
 						if(debugTelnetCodes)
 							System.out.println("JSON Parse Error: "+e.getMessage());

@@ -93,7 +93,8 @@ public class FakeSession implements Session
 				try
 				{
 					bout.write(msg.getBytes());
-				} catch(Exception e)
+				}
+				catch(Exception e)
 				{
 					Log.errOut("FakeSession",e);
 				}

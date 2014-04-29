@@ -374,7 +374,8 @@ public interface XMLLibrary extends CMLibrary
 				piece2.contents=new XVector<XMLpiece>(contents);
 				piece2.parms=new XHashtable<String,String>(parms);
 				return piece2;
-			} catch(Exception e)
+			}
+			catch(Exception e)
 			{
 				return this;
 			}

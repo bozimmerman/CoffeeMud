@@ -46,7 +46,8 @@ public class AutoTitleID extends StdWebMacro
 		{
 			if(parms.containsKey("ENCODED"))
 				return URLEncoder.encode(last,"UTF-8");
-		} catch(Exception e) {}
+		}
+		catch(Exception e) {}
 		return clearWebMacros(last);
 	}
 }

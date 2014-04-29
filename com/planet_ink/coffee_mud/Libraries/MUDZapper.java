@@ -3045,7 +3045,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 									parms.addElement(EVAL); // the compiled eval
 									Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 									parms.addElement(tmp);
-								} catch(ScriptParseException spe)
+								}
+								catch(ScriptParseException spe)
 								{
 									Log.errOut("MUDZapper","Script parse Exception for "+str2);
 									Log.errOut("MUDZapper",spe);

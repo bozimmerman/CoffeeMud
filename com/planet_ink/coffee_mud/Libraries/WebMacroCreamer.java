@@ -836,7 +836,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						try
 						{
 							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
-						} catch (HTTPException e1)	{ }
+						}
+						catch (HTTPException e1)	{ }
 					} 
 				}
 				catch (IOException e2)
@@ -957,7 +958,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						return true;
 					}
 					yahooSession.numTotalTimes=CMath.s_int(timesPerRunStr);
-				} catch (UnsupportedEncodingException e)
+				}
+				catch (UnsupportedEncodingException e)
 				{
 					Log.errOut(Thread.currentThread().getName(),e);
 					yahooSession.H.finished();
@@ -1279,7 +1281,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			if(resp.length()>0)
 				return resp;
 			return copyYahooGroupMsg(sess);
-		} catch (UnsupportedEncodingException e)
+		}
+		catch (UnsupportedEncodingException e)
 		{
 			Log.errOut(Thread.currentThread().getName(),e);
 		}

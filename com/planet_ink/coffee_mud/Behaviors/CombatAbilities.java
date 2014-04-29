@@ -595,7 +595,8 @@ public class CombatAbilities extends StdBehavior
 				try
 				{
 					useSkill(mob,null,null);
-				} catch(CMException cme){}
+				}
+				catch(CMException cme){}
 			}
 			return true;
 		}
@@ -746,7 +747,8 @@ public class CombatAbilities extends StdBehavior
 		try
 		{
 			skillUsed=useSkill(mob, victim, leader)!=null;
-		} catch(CMException cme) { return true;}
+		}
+		catch(CMException cme) { return true;}
 		
 		Ability A=null;
 		// if a skill use failed, take a stab at wanding

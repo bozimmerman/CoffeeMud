@@ -841,7 +841,8 @@ public class DefaultSession implements Session
 							rawCharsOut(msg.substring(last,i+1).toCharArray());
 							last=i+1;
 							rawCharsOut("<pause - enter>".toCharArray());
-							try{ 
+							try
+							{
 								String s=blockingIn(-1); 
 								if(s!=null)
 								{
@@ -1822,7 +1823,8 @@ public class DefaultSession implements Session
 									out.write(PINGCHARS);
 									out.checkError();
 								}
-							} catch(Exception t){}
+							}
+							catch(Exception t){}
 							out.close();
 						}
 						setStatus(SessionStatus.LOGOUT9);
@@ -2023,7 +2025,8 @@ public class DefaultSession implements Session
 									try
 									{
 										callBack.callBack();
-									} catch(Throwable t)
+									}
+									catch(Throwable t)
 									{
 										Log.errOut(t);
 									}

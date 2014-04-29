@@ -114,7 +114,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				Log.warnOut("Failed to unpack a space ship area for the space ship");
 				getShipArea();
 			}
-		} catch (CMException e)
+		}
+		catch (CMException e)
 		{
 			Log.warnOut("Unable to parse space ship xml for some reason.");
 		}

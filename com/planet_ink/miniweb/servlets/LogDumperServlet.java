@@ -72,9 +72,11 @@ public class LogDumperServlet implements SimpleServlet
 			{
 				if(bs != null)
 				{
-					try{ 
+					try
+					{
 						bs.close(); 
-					} catch(Exception e) {} // java really needs an " i don't care " syntax for exception handling
+					}
+					catch(Exception e) {} // java really needs an " i don't care " syntax for exception handling
 				}
 			}
 		}

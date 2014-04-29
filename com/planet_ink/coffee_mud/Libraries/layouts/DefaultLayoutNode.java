@@ -55,7 +55,8 @@ public class DefaultLayoutNode implements LayoutNode
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to,this)),this);
 	}
 	public boolean isFlagged(LayoutFlags flag) { return flags.contains(flag);}
-	public LayoutRuns getFlagRuns(){ 
+	public LayoutRuns getFlagRuns()
+	{
 		if(tags.containsKey(LayoutTags.NODERUN))
 			return LayoutRuns.valueOf(tags.get(LayoutTags.NODERUN));
 		return null;

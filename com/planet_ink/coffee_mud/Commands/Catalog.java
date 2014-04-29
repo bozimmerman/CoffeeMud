@@ -237,7 +237,8 @@ public class Catalog extends StdCommand
 							if(P instanceof Coins) continue;
 							if((P instanceof MOB)&&(whatKind!=2))
 							{
-								if(catalog(R,mob,P)){ 
+								if(catalog(R,mob,P))
+								{
 									content.flagDirty(); 
 									dirty=true;
 								}
@@ -245,7 +246,8 @@ public class Catalog extends StdCommand
 							else
 							if((P instanceof Item)&&(whatKind!=1))
 							{
-								if(catalog(R,mob,P)){ 
+								if(catalog(R,mob,P))
+								{
 									content.flagDirty(); 
 									dirty=true;
 								}

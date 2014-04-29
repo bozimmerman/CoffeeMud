@@ -909,7 +909,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
-		} catch (Throwable t){return "";}
+		}
+		catch (Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
 
@@ -923,7 +924,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
 			if((start>=Blob.length())||(Blob.charAt(start)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
-		} catch (Throwable t){return "";}
+		}
+		catch (Throwable t){return "";}
 		return Blob.substring(start+1).trim();
 	}
 

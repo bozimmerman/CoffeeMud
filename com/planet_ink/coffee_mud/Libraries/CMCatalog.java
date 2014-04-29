@@ -86,7 +86,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						start=mid+1;
 		
 				}
-			} catch(Exception e){}
+			}
+			catch(Exception e){}
 			return null;
 		}
 	}
@@ -813,7 +814,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						selections.addElement((Item)icatalog.elementAt(d,1));
 					}
 				}
-			} catch(IndexOutOfBoundsException e) {}
+			}
+			catch(IndexOutOfBoundsException e) {}
 		}
 		if(selections==null) return null;
 		Item I=selections.elementAt(CMLib.dice().roll(1,selections.size(),-1));
@@ -1031,7 +1033,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					if((o==null)||o.amDestroyed()||(!CMLib.flags().isCataloged(o)))
 						refs.removeElementAt(r);
 				}
-			} catch(ArrayIndexOutOfBoundsException ex){}
+			}
+			catch(ArrayIndexOutOfBoundsException ex){}
 		}
 		
 		public Physical getLiveReference()
@@ -1046,7 +1049,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					if((o!=null)&&(CMLib.flags().isInTheGame(o,true)))
 						return o;
 				}
-			} catch(Exception e) { }
+			}
+			catch(Exception e) { }
 			return null;
 		}
 		public synchronized void addReference(Physical P) 

@@ -712,7 +712,8 @@ public class StdSpaceShip implements Area, SpaceShip
 				final Ability A=affects.get(a);
 				if(A!=null) applier.apply(A);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -985,7 +986,8 @@ public class StdSpaceShip implements Area, SpaceShip
 				final Behavior B=behaviors.get(a);
 				if(B!=null) applier.apply(B);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -1026,7 +1028,8 @@ public class StdSpaceShip implements Area, SpaceShip
 				final ScriptingEngine S=scripts.get(a);
 				if(S!=null) applier.apply(S);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void addProperRoom(Room R)

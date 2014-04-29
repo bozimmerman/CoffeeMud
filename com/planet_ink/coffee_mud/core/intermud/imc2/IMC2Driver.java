@@ -240,7 +240,8 @@ public final class IMC2Driver extends Thread {
 		{
 			setName("IMC2Client:"+this_imcmud.host+"@"+this_imcmud.port);
 			sa = new Socket(this_imcmud.host, this_imcmud.port);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			tracef(0, "Error connecting to " + this_imcmud.host + ":" +
 						  this_imcmud.port);
@@ -610,11 +611,13 @@ public final class IMC2Driver extends Thread {
 			imc_addkey(out, key, val);
 		}
 
-		} catch (StringIndexOutOfBoundsException x)
+		}
+		catch (StringIndexOutOfBoundsException x)
 		{
 			Log.errOut("IMC2Driver", "Stringerror: "+keys);
 			Log.errOut("IMC2Driver", x);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			Log.errOut("IMC2Driver", e);
 		}

@@ -2413,7 +2413,8 @@ public class ListCmd extends StdCommand
 	{
 		if((sess==null)||(sess.isStopped())) return false;
 		sess.rawCharsOut("<pause - enter>".toCharArray());
-		try{ 
+		try
+		{
 			String s=sess.blockingIn(10 * 60 * 1000); 
 			if(s!=null)
 			{

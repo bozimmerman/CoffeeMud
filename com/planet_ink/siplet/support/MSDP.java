@@ -231,7 +231,8 @@ public class MSDP
 			bout.write(TelnetFilter.IAC_);
 			bout.write(TelnetFilter.IAC_SE);
 			return bout.toByteArray();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			return new byte[0];
 		}

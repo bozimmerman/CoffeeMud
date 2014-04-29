@@ -226,7 +226,8 @@ public class MUD extends Thread implements MudHost
 					StringBuffer rejectText;
 					
 					try { rejectText = Resources.getFileResource("text/offline.txt",true);
-					} catch(java.lang.NullPointerException npe) { rejectText=new StringBuffer("");}
+					}
+					catch(java.lang.NullPointerException npe) { rejectText=new StringBuffer("");}
 					
 					try
 					{
@@ -394,7 +395,8 @@ public class MUD extends Thread implements MudHost
 									A.unInvoke();
 								if((A!=null)&&(!A.isSavable()))
 									M.delEffect(A);
-							} catch(Exception ex) {Log.errOut(ex);}
+							}
+							catch(Exception ex) {Log.errOut(ex);}
 						}
 					}
 				}
@@ -631,7 +633,8 @@ public class MUD extends Thread implements MudHost
 				try
 				{
 					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
-				} catch(Exception t){}
+				}
+				catch(Exception t){}
 			}
 		CMLib.hosts().clear();
 		if(!keepItDown)
@@ -1004,7 +1007,8 @@ public class MUD extends Thread implements MudHost
 				if(F.exists())
 					Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
 					
-			} catch(Exception e)
+			}
+			catch(Exception e)
 			{
 				Log.errOut(e);
 				Log.errOut("Database error! Panic shutdown!");
@@ -1277,7 +1281,8 @@ public class MUD extends Thread implements MudHost
 			{
 				CMLib.registerLibrary(serviceEngine);
 				CMLib.registerLibrary(new IMudClient());
-			} else
+			}
+			else
 			{
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.THREADS));
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD));

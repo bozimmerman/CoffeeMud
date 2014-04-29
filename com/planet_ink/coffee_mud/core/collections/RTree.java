@@ -47,7 +47,8 @@ public class RTree<T extends BoundedObject> {
 						me.computeMBR(true);
 					}
 				});
-			} else
+			}
+			else
 			{
 				children = new Vector<RTreeNode>(maxSize+1);
 			}
@@ -92,7 +93,8 @@ public class RTree<T extends BoundedObject> {
 				{
 					box.union(children.get(i).box);
 				}
-			} else
+			}
+			else
 			{
 				if (data.isEmpty())
 					return;
@@ -122,7 +124,8 @@ public class RTree<T extends BoundedObject> {
 			if (parent.children.isEmpty())
 			{
 				parent.remove();
-			} else
+			}
+			else
 			{
 				parent.computeMBR();
 			}
@@ -220,7 +223,8 @@ public class RTree<T extends BoundedObject> {
 			{
 				parent = new RTreeNode(false);
 				root = parent;
-			} else
+			}
+			else
 			{
 				parent.children.remove(n);
 			}
@@ -269,10 +273,12 @@ public class RTree<T extends BoundedObject> {
 				if (overlap1 > overlap2)
 				{
 					parent = g1;
-				} else if (overlap2 > overlap1)
+				}
+				else if (overlap2 > overlap1)
 				{
 					parent = g2;
-				} else
+				}
+				else
 				{
 					// Or the one with the lowest area
 					long area1 = area(g1.box);
@@ -340,25 +346,30 @@ public class RTree<T extends BoundedObject> {
 				if (overlap1 > overlap2)
 				{
 					g1.data.add(nmax);
-				} else if (overlap2 > overlap1)
+				}
+				else if (overlap2 > overlap1)
 				{
 					g2.data.add(nmax);
-				} else
+				}
+				else
 				{
 					long area1 = area(g1.box);
 					long area2 = area(g2.box);
 					if (area1 > area2)
 					{
 						g2.data.add(nmax);
-					} else if (area2 > area1)
+					}
+					else if (area2 > area1)
 					{
 						g1.data.add(nmax);
-					} else
+					}
+					else
 					{
 						if (g1.data.size() < g2.data.size())
 						{
 							g1.data.add(nmax);
-						} else
+						}
+						else
 						{
 							g2.data.add(nmax);
 						}
@@ -371,7 +382,8 @@ public class RTree<T extends BoundedObject> {
 				if (g1.data.size() == maxSize - minSize + 1)
 				{
 					g2.data.addAll(n.data);
-				} else
+				}
+				else
 				{
 					g1.data.addAll(n.data);
 				}
@@ -433,7 +445,8 @@ public class RTree<T extends BoundedObject> {
 			for (int i = 0; i < node.data.size(); i++)
 				if (node.data.get(i).getBounds().intersects(box))
 					results.add(node.data.get(i));
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < node.children.size(); i++)
 			{
@@ -466,7 +479,8 @@ public class RTree<T extends BoundedObject> {
 				}
 			}
 			return null;
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < node.children.size(); i++)
 			{
@@ -502,7 +516,8 @@ public class RTree<T extends BoundedObject> {
 					results.add(node.data.get(i));
 				}
 			}
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < node.children.size(); i++)
 			{
@@ -534,7 +549,8 @@ public class RTree<T extends BoundedObject> {
 				}
 			}
 			return null;
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < node.children.size(); i++)
 			{
@@ -645,7 +661,8 @@ public class RTree<T extends BoundedObject> {
 		if (n.isLeaf())
 		{
 			return n.data.size();
-		} else
+		}
+		else
 		{
 			int sum = 0;
 			for (int i = 0; i < n.children.size(); i++)
@@ -660,7 +677,8 @@ public class RTree<T extends BoundedObject> {
 		if (n.isLeaf())
 		{
 			return n;
-		} else
+		}
+		else
 		{
 			BoundedCube box = o.getBounds();
 
@@ -690,7 +708,8 @@ public class RTree<T extends BoundedObject> {
 		if (n.isLeaf())
 		{
 			return n.data.contains(o)?n:null;
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < n.children.size(); i++)
 			{

@@ -73,7 +73,8 @@ public class Tell extends StdCommand
 					if(S!=null) S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
 						mob.tell(V.get(i));
-				} finally
+				}
+				finally
 				{
 					if(S!=null) S.snoopSuspension(-1);
 				}
@@ -126,7 +127,8 @@ public class Tell extends StdCommand
 		{
 			if(ts!=null) ts.snoopSuspension(1);
 			CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
-		} finally
+		}
+		finally
 		{
 			if(ts!=null) ts.snoopSuspension(-1);
 		}

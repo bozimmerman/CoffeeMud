@@ -934,7 +934,8 @@ public class StdArea implements Area
 				final Ability A=affects.get(a);
 				if(A!=null) applier.apply(A);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -1076,7 +1077,8 @@ public class StdArea implements Area
 				final ScriptingEngine S=scripts.get(a);
 				if(S!=null) applier.apply(S);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	public int maxRange(){return Integer.MAX_VALUE;}
@@ -1278,7 +1280,8 @@ public class StdArea implements Area
 				final Behavior B=behaviors.get(a);
 				if(B!=null) applier.apply(B);
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	public int properSize()

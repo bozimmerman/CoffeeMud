@@ -107,7 +107,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return true;
 	}
 	
-	public boolean shutdown(){ 
+	public boolean shutdown()
+	{
 		mgrs.clear();
 		return true;
 	}
@@ -1075,11 +1076,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				String baseStr=CMLib.xml().getParmValue(shopPiece.parms, "NUMBER");
 				if(baseStr != null) baseNumber[0]=baseStr; 
-			} catch(Exception e){ }
-			try{ 
+			}
+			catch(Exception e){ }
+			try
+			{
 				String baseStr=CMLib.xml().getParmValue(shopPiece.parms, "PRICE");
 				if(baseStr != null) basePrice[0]=baseStr;
-			} catch(Exception e){ }
+			}
+			catch(Exception e){ }
 			final BuildCallback callBack=new BuildCallback()
 			{
 				@Override public void willBuild(Environmental E, XMLpiece xmlPiece) 
@@ -1823,7 +1827,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			Log.errOut("Generate",e.getMessage()+": "+condition);
 			try { 
 				CMStrings.parseStringExpression(condition,fixed, true); 
-			} catch(Exception e1) {}
+			}
+			catch(Exception e1) {}
 			return false;
 		}
 	}

@@ -114,7 +114,8 @@ public interface RawMaterial extends Item
 			try
 			{
 				return Material.valueOf(name);
-			} catch(Exception e)
+			}
+			catch(Exception e)
 			{
 				return null;
 			}

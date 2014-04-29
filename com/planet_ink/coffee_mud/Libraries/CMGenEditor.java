@@ -457,7 +457,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						oldVals.remove(foundChoice);
 						mob.tell("'"+foundChoice+"' removed.");
 						thisVal = "?";
-					} else
+					}
+					else
 					{
 						oldVals.add(foundChoice);
 						mob.tell("'"+foundChoice+"' added.");
@@ -533,7 +534,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				P.setName(newName);
 				CMLib.catalog().changeCatalogUsage(P,false);
 				return;
-			} else
+			}
+			else
 			if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
 			{
 				CMLib.catalog().changeCatalogUsage(P,false);

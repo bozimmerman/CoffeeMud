@@ -64,7 +64,8 @@ public class Prop_StayAboard extends Property
 				&&(ticking instanceof MOB)
 				&&(rideable!=null))
 					stayAboard((Rider)ticking);
-			} finally
+			}
+			finally
 			{
 				noRepeat=false;
 			}
@@ -109,7 +110,8 @@ public class Prop_StayAboard extends Property
 					else
 					if(E instanceof Item)
 						stayAboard((Rider)E);
-			} finally
+			}
+			finally
 			{
 				noRepeat=false;
 			}

@@ -289,7 +289,8 @@ public class DBConnections
 					{
 						DB.query(querySql);
 						numPinged++;
-					} catch (SQLException e)
+					}
+					catch (SQLException e)
 					{
 						Log.errOut("DBConnections",e.getMessage());
 					}

@@ -2728,7 +2728,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					else
 						((DeadBody)E).setKillingTool(null);
 				}
-			} catch(Exception e){}
+			}
+			catch(Exception e){}
 			String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{

@@ -295,7 +295,8 @@ public class RandomItems extends ActiveTicker
 			{
 				I=(Item)maintained.elementAt(i);
 				if(!isStillMaintained(E,SK,I)) maintained.removeElement(I);
-			} catch(Exception e){	}
+			}
+			catch(Exception e){	}
 		}
 		if(maintained.size()>=maxItems)
 			return true;

@@ -220,7 +220,8 @@ public class Generate extends StdCommand
 			default:
 				break;
 			}
-		} catch(CMException cex)
+		}
+		catch(CMException cex)
 		{
 			mob.tell("Unable to generate: "+cex.getMessage());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))

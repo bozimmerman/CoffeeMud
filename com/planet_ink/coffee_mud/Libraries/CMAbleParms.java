@@ -546,7 +546,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		try
 		{
 			testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
-		} catch(CMException e)
+		}
+		catch(CMException e)
 		{
 			
 			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
@@ -586,7 +587,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					fakeSession.getPreviousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
 					String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
 					editRow.setElementAt(a,2,newVal);
-				} catch(Exception e) {}
+				}
+				catch(Exception e) {}
 			}
 		}
 		fakeSession.setMob(null);
@@ -1684,7 +1686,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						try
 						{
 							return rebuild(spells);
-						} catch(Exception e)
+						}
+						catch(Exception e)
 						{
 							return oldVal;
 						}
@@ -1746,7 +1749,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							try
 							{
 								newVal = rebuild(spells);
-							} catch(CMException e)
+							}
+							catch(CMException e)
 							{
 								mob.tell(e.getMessage());
 								okToProceed = true;
@@ -2595,7 +2599,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				else
 					classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
 				fixDataColumns(dataRows);
-			} catch(CMException e)
+			}
+			catch(CMException e)
 			{
 				parseError = e.getMessage();
 				return;
@@ -2616,7 +2621,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			try
 			{
 				fixDataColumn(editRow,-1);
-			} catch(CMException cme) { return null;}
+			}
+			catch(CMException cme) { return null;}
 			for(int i=0;i<editRow.size();i++)
 				if(i!=keyIndex)
 				{
@@ -2726,7 +2732,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					for(int v=0;v<V.size();v++)
 						if(oldVal.equalsIgnoreCase(V.elementAt(v)))
 							return new String[]{(String)choices.elementAt(v,2),""};
-				} else
+				}
+				else
 				{
 					Vector<String> V = new Vector<String>();
 					for(int c=0;c<choices.size();c++)

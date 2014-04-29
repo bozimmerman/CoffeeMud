@@ -204,7 +204,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				else
 					try { innerContents.remove(a); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
 			}
-		} catch(ArrayIndexOutOfBoundsException e){}
+		}
+		catch(ArrayIndexOutOfBoundsException e){}
 	}
     public Item getRandomItem()
     {

@@ -118,7 +118,8 @@ public class MWSessionManager implements ServletSessionManager
 				Thread.sleep(1);
 				sessionID = request.getClientAddress().hashCode()+""+System.currentTimeMillis() + "" + System.nanoTime();
 			}
-		}catch(Exception e){ 
+		}catch(Exception e)
+		{
 			config.getLogger().throwing("", "", e);
 		}
 		SimpleServletSession newSession = new MWServletSession(sessionID);

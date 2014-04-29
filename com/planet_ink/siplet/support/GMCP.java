@@ -77,7 +77,8 @@ public class GMCP
 			bout.write(TelnetFilter.IAC_);
 			bout.write(TelnetFilter.IAC_SE);
 			return bout.toByteArray();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			return new byte[0];
 		}

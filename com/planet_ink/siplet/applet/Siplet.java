@@ -153,22 +153,26 @@ public class Siplet
 				out.write(new byte[]{(byte)255,(byte)253,18}); //iac, iacdo, logout 
 				out.flush();
 			}
-		} catch(Exception e) { }
+		}
+		catch(Exception e) { }
 		try
 		{
 			if((in!=null)&&(in[0]!=null))
 				in[0].close();
-		} catch(Exception e) { }
+		}
+		catch(Exception e) { }
 		try
 		{
 			if(out!=null)
 				out.close();
-		} catch(Exception e) { }
+		}
+		catch(Exception e) { }
 		try
 		{
 			if(sock!=null)
 				sock.close();
-		} catch(Exception e) { }
+		}
+		catch(Exception e) { }
 		in=null;
 		out=null;
 		sock=null;
