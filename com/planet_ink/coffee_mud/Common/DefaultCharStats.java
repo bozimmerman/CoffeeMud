@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 import org.mozilla.javascript.Context;
@@ -812,7 +814,23 @@ public class DefaultCharStats implements CharStats
 			int curStat=getStat(abilityCode);
 			if(curStat > currMax*7)
 			{
-				//Log.warnOut("Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode));
+				final String errorMsg="Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode);
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				Set<String> errs=(Set)Resources.getResource("SYSTEM_DEFCHARSTATS_ERRORS");
+				if(errs==null)
+				{
+					errs=new TreeSet<String>();
+					Resources.submitResource("SYSTEM_DEFCHARSTATS_ERRORS", errs);
+				}
+				if(!errs.contains(errorMsg))
+				{
+					errs.add(errorMsg);
+					final StringBuilder str=new StringBuilder(errorMsg+"\n\r");
+					ByteArrayOutputStream stream=new ByteArrayOutputStream();
+					new Exception().printStackTrace(new PrintStream(stream));
+					str.append(new String(stream.toByteArray()));
+					Log.errOut("DefCharStats",str.toString());
+				}
 				curStat=currMax*7;
 			}
 			final int pctOfMax=Math.round(((float)curStat/(float)currMax)*racialMax);
