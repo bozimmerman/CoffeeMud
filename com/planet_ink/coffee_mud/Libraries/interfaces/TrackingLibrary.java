@@ -140,7 +140,7 @@ public interface TrackingLibrary extends CMLibrary
 	
 	public static class TrackingFlags extends HashSet<TrackingFlag> 
 	{
-        private static final long serialVersionUID = -6914706649617909073L;
+		private static final long serialVersionUID = -6914706649617909073L;
 		private int hashCode=(int)serialVersionUID;
 		public TrackingFlags plus(TrackingFlag flag) 
 		{ 

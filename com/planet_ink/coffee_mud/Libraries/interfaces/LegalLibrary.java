@@ -42,7 +42,7 @@ public interface LegalLibrary extends CMLibrary
 	public LandTitle getLandTitle(Room room);
 	public boolean isRoomSimilarlyTitled(LandTitle title, Room R);
 	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms);
-    public boolean isHomeRoomDownstairs(Room room);
+	public boolean isHomeRoomDownstairs(Room room);
 	public boolean isHomeRoomUpstairs(Room room);
 	public boolean doesHavePriviledgesHere(MOB mob, Room room);
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R);

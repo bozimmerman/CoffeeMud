@@ -21,7 +21,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1672867955945287259L;
+	private static final long serialVersionUID = 1672867955945287259L;
 
 	public Pair.FirstConverter<T,K> getFirstConverter()
 	{

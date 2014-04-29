@@ -37,7 +37,7 @@ public class HelpTopics extends StdWebMacro
 	public String name() { return "HelpTopics"; }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("HELPTOPIC");

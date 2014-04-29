@@ -34,10 +34,10 @@ limitations under the License.
 public class MultiPartData
 {
 	private Map<String,String> 	headers		= new HashMap<String,String>(); // headers pertaining only to this part
-	private String 				contentType = MIMEType.bin.getType();       // content type for the buffer of this part
-	private byte[] 				data		= new byte[0];                  // data buffer for this part
-	private List<MultiPartData> subParts    = new LinkedList<MultiPartData>(); // any sub-parts to this part
-	private String				disposition = "form-data";                  // content-disposition for this part
+	private String 				contentType = MIMEType.bin.getType();   	// content type for the buffer of this part
+	private byte[] 				data		= new byte[0];  				// data buffer for this part
+	private List<MultiPartData> subParts	= new LinkedList<MultiPartData>(); // any sub-parts to this part
+	private String				disposition = "form-data";  				// content-disposition for this part
 	private Map<String,String>  variables   = new HashMap<String,String>(); // content-disposition variables definition map
 
 	/**

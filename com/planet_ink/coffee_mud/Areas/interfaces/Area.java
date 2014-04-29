@@ -638,7 +638,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	}
 	
 	/**	
-	 * State flag for areas.    
+	 * State flag for areas.	
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaState()
 	 */
 	public static enum State

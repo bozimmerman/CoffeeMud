@@ -251,7 +251,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
+	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
 	{
 		Item oldI = (changes!=null)?(Item)I.copyOf():null;
 		

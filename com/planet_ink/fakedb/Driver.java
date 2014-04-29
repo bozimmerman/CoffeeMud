@@ -90,7 +90,7 @@ public class Driver implements java.sql.Driver
 	  return result;
    }
 
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		throw new SQLFeatureNotSupportedException();
-    }
+	}
 }

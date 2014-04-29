@@ -42,10 +42,10 @@ public class EnumerationIterator<K> implements Iterator<K>
 	}
 
 	@Override
-    public void remove()
-    {
+	public void remove()
+	{
 		throw new java.lang.UnsupportedOperationException();
-    }
+	}
 	
 	
 }

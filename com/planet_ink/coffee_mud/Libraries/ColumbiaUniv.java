@@ -41,7 +41,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
 	@SuppressWarnings("unchecked")
-    protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
+	protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 

@@ -293,15 +293,15 @@ public class GrinderMobs
 						I2=(Item)I2.copyOf();
 					if(I2!=null)
 					{
-    					boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
-    					I2.setContainer(null);
-    					I2.unWear();
-    					if(worn) I2.wearEvenIfImpossible(M);
-    					happilyAddItem(I2,M);
-    					items.addElement(I2);
-    					I2.setContainer(null);
-    					String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
-    					cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
+						I2.setContainer(null);
+						I2.unWear();
+						if(worn) I2.wearEvenIfImpossible(M);
+						happilyAddItem(I2,M);
+						items.addElement(I2);
+						I2.setContainer(null);
+						String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
+						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}
 			}

@@ -94,7 +94,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		return climateObj;
 	}
 	public double getOMLCoeff() { return omlCoeff; }
-    public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
+	public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
 	public TimeClock getTimeObj(){return localClock;}

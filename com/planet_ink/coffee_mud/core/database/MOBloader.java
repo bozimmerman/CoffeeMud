@@ -992,7 +992,7 @@ public class MOBloader
 					String clanID=DB.getRes(R,"CMCLAN");
 					Pair<Clan,Integer> role=mob.getClanRole(clanID);
 					if(role==null)
-		    			clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"' AND CMCLAN='"+clanID+"'");
+						clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"' AND CMCLAN='"+clanID+"'");
 					else
 					{
 						MemberRecord M=BuildClanMemberRecord(R);
@@ -1001,7 +1001,7 @@ public class MOBloader
 					}
 					savedClans.add(clanID.toUpperCase());
 				}
-    			R.close();
+				R.close();
 			}
 			for(Pair<Clan,Integer> p : mob.clans())
 				if(!savedClans.contains(p.first.clanID().toUpperCase()))

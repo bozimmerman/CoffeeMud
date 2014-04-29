@@ -1232,13 +1232,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							  buf.append(mob.location().roomID());
 							  c++; break; }
 				case 't': { 	 if(mob.location()!=null)
-            					  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
-            				  c++; break;
-            			  }
-            	case 'T': { 	 if(mob.location()!=null)
-            					  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
-            				  c++; break;
-            			  }
+								  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
+							  c++; break;
+						  }
+				case 'T': { 	 if(mob.location()!=null)
+								  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
+							  c++; break;
+						  }
 				case 'v': { buf.append("^<Move^>"+mob.curState().getMovement()+"^</Move^>"); c++; break;}
 				case 'V': { buf.append("^<MaxMove^>"+mob.maxState().getMovement()+"^</MaxMove^>"); c++; break;}
 				case 'w': { buf.append(mob.phyStats().weight()); c++; break;}

@@ -95,7 +95,7 @@ public class Concierge extends StdBehavior
 	}
 	
 	@SuppressWarnings("unchecked")
-    public Environmental findDestination(MOB observer, MOB mob, String where)
+	public Environmental findDestination(MOB observer, MOB mob, String where)
 	{
 		DVector stringsToDo=null;
 		if(rates.size()==0) return CMLib.map().findArea(where);

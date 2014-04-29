@@ -1009,7 +1009,7 @@ public class StdAbility implements Ability
 				lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
 				if(lowest<0) lowest=0;
 			}
-    
+	
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());

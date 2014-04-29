@@ -328,7 +328,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public DVector getLanguageParser(String parser)
+	public DVector getLanguageParser(String parser)
 	{
 		final String parserKey=getLanguageParserKey();
 		Hashtable<String,DVector> parserSections=(Hashtable<String,DVector>)Resources.getResource(parserKey);
@@ -343,7 +343,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public DVector getLanguageTranslator(String parser)
+	public DVector getLanguageTranslator(String parser)
 	{
 		final String translatorKey=getLanguageTranslatorKey();
 		Hashtable<String,DVector> translationSections=(Hashtable<String,DVector>)Resources.getResource(translatorKey);
@@ -386,7 +386,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public List<List<String>> preCommandParser(List<String> CMDS)
+	public List<List<String>> preCommandParser(List<String> CMDS)
 	{
 		List<String> MORE_CMDS=new Vector<String>();
 		String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
@@ -507,7 +507,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
+	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
 	{
 		if(str==null) return null;
 		DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);

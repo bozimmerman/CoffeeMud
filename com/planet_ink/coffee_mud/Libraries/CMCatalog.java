@@ -1205,15 +1205,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						myFiles=new CMFile.CMVFSFile[xtra];
 					if(xtra==2)
 					{
-    					myFiles[myFiles.length-2]=mdir;
-    					myFiles[myFiles.length-1]=idir;
+						myFiles[myFiles.length-2]=mdir;
+						myFiles[myFiles.length-1]=idir;
 					}
 					else
 					if(mdir != null)
-    					myFiles[myFiles.length-1]=mdir;
+						myFiles[myFiles.length-1]=mdir;
 					else
 					if(idir != null)
-    					myFiles[myFiles.length-1]=idir;
+						myFiles[myFiles.length-1]=idir;
 					Arrays.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 				}
 				return myFiles;

@@ -429,8 +429,8 @@ public class ClanData extends StdWebMacro
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
 								{
-	                                return o1.name.compareTo(o2.name);
-                                }
+									return o1.name.compareTo(o2.name);
+								}
 							});
 						else
 						if(sort.equalsIgnoreCase("ROLE"))
@@ -438,8 +438,8 @@ public class ClanData extends StdWebMacro
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
 								{
-	                                return new Integer(o1.role).compareTo(new Integer(o2.role));
-                                }
+									return new Integer(o1.role).compareTo(new Integer(o2.role));
+								}
 							});
 						else
 						if(sort.equalsIgnoreCase("KILLS")||sort.equalsIgnoreCase("TOTALKILLS"))
@@ -447,8 +447,8 @@ public class ClanData extends StdWebMacro
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
 								{
-	                                return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
-                                }
+									return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
+								}
 							});
 						else
 						if(sort.equalsIgnoreCase("MOBKILLS"))
@@ -456,8 +456,8 @@ public class ClanData extends StdWebMacro
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
 								{
-	                                return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
-                                }
+									return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
+								}
 							});
 						else
 						if(sort.equalsIgnoreCase("PLAYERKILLS")||sort.equalsIgnoreCase("PVPKILLS"))
@@ -465,8 +465,8 @@ public class ClanData extends StdWebMacro
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
 								{
-	                                return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
-                                }
+									return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
+								}
 							});
 						else
 							return "[Unknown sort field: "+sort+"]";

@@ -33,11 +33,11 @@ public class Pair<T,K> implements Map.Entry<T, K>
 		public K convert(Pair<T, K> obj) { return obj.second;}
 	}
 	@Override
-    public T getKey() { return first; }
+	public T getKey() { return first; }
 	@Override
-    public K getValue() { return second; }
+	public K getValue() { return second; }
 	@Override
-    public K setValue(K value) { second=value; return value; }
+	public K setValue(K value) { second=value; return value; }
 	@Override
 	public boolean equals(Object o)
 	{

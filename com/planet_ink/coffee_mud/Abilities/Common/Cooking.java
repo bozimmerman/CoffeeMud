@@ -666,16 +666,16 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 			}
 			if(finalRecipe==null)
-    			for(int r=0;r<allRecipes.size();r++)
-    			{
-    				List<String> Vr=allRecipes.get(r);
-    				if(Vr.size()>0)
-    				{
-    					String item=Vr.get(RCP_FINALFOOD);
-    					if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
-    					{ finalRecipe=Vr; break;}
-    				}
-    			}
+				for(int r=0;r<allRecipes.size();r++)
+				{
+					List<String> Vr=allRecipes.get(r);
+					if(Vr.size()>0)
+					{
+						String item=Vr.get(RCP_FINALFOOD);
+						if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
+						{ finalRecipe=Vr; break;}
+					}
+				}
 			if(finalRecipe==null) return false;
 			buildingI=buildItem(mob,finalRecipe,null);
 			if(parsedVars.forceLevels)

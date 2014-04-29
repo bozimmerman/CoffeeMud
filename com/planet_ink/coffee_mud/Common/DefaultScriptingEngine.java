@@ -3002,13 +3002,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						arg1=arg1.toUpperCase();
-    					for(TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
-    						if(phase.toString().startsWith(arg1)
-    						&&(monster.location().getArea().getTimeObj().getMoonPhase()==phase))
-    						{
-    							returnable=true;
-    							break;
-    						}
+						for(TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
+							if(phase.toString().startsWith(arg1)
+							&&(monster.location().getArea().getTimeObj().getMoonPhase()==phase))
+							{
+								returnable=true;
+								break;
+							}
 					}
 				}
 				break;
@@ -9350,47 +9350,47 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CCT");
 					if(t!=null)
 					{
-    					String command=t[1];
-    					boolean chk=false;
-    					int x=command.indexOf('=');
-    					if(x>0)
-    					{
-    						chk=true;
-    						for(int i=0;i<x;i++)
-    							switch(command.charAt(i))
-    							{
-    								case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
-    								case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
-    								case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
-    								default: chk=false; break;
-    							}
-    					}
-    					else
-    						chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
-    					if(chk)
-    					{
-    						str="";
-    						if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
-    							str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
-    						if((t[2].length()==0)||(t[2].equals("ALL")))
-    							tryIt=true;
-    						else
-    						if((t[2].equals("P"))&&(t.length>3))
-    						{
-    							if(match(str.trim(),t[3]))
-    								tryIt=true;
-    						}
-    						else
-    						for(int i=2;i<t.length;i++)
-    						{
-    							if(str.indexOf(" "+t[i]+" ")>=0)
-    							{
-    								str=(t[i].trim()+" "+str.trim()).trim();
-    								tryIt=true;
-    								break;
-    							}
-    						}
-    					}
+						String command=t[1];
+						boolean chk=false;
+						int x=command.indexOf('=');
+						if(x>0)
+						{
+							chk=true;
+							for(int i=0;i<x;i++)
+								switch(command.charAt(i))
+								{
+									case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
+									case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
+									case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
+									default: chk=false; break;
+								}
+						}
+						else
+							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+						if(chk)
+						{
+							str="";
+							if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+								str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
+							if((t[2].length()==0)||(t[2].equals("ALL")))
+								tryIt=true;
+							else
+							if((t[2].equals("P"))&&(t.length>3))
+							{
+								if(match(str.trim(),t[3]))
+									tryIt=true;
+							}
+							else
+							for(int i=2;i<t.length;i++)
+							{
+								if(str.indexOf(" "+t[i]+" ")>=0)
+								{
+									str=(t[i].trim()+" "+str.trim()).trim();
+									tryIt=true;
+									break;
+								}
+							}
+						}
 					}
 				}
 				break;
@@ -9498,12 +9498,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+							return;
+						}
 					}
 				}
 				break;
@@ -9516,12 +9516,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+							return;
+						}
 					}
 				}
 				break;
@@ -9535,12 +9535,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+							return;
+						}
 					}
 				}
 				break;
@@ -9555,38 +9555,38 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CT");
 					if(t!=null)
 					{
-    					String str=null;
-    					if(msg.othersMessage()!=null)
-    						str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
-    					else
-    						str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()),"`","'");
-    					str=(" "+str+" ").toUpperCase();
-    					str=CMStrings.removeColors(str);
-    					str=CMStrings.replaceAll(str,"\n\r"," ");
-    					if((t[1].length()==0)||(t[1].equals("ALL")))
-    					{
-    						enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-    						return;
-    					}
-    					else
-    					if((t[1].equals("P"))&&(t.length>2))
-    					{
-    						if(match(str.trim(),t[2]))
-    						{
-    							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-    							return;
-    						}
-    					}
-    					else
-    					for(int i=1;i<t.length;i++)
-    					{
-    						int x=str.indexOf(" "+t[i]+" ");
-    						if(x>=0)
-    						{
-    							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
-    							return;
-    						}
-    					}
+						String str=null;
+						if(msg.othersMessage()!=null)
+							str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
+						else
+							str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()),"`","'");
+						str=(" "+str+" ").toUpperCase();
+						str=CMStrings.removeColors(str);
+						str=CMStrings.replaceAll(str,"\n\r"," ");
+						if((t[1].length()==0)||(t[1].equals("ALL")))
+						{
+							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+							return;
+						}
+						else
+						if((t[1].equals("P"))&&(t.length>2))
+						{
+							if(match(str.trim(),t[2]))
+							{
+								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+								return;
+							}
+						}
+						else
+						for(int i=1;i<t.length;i++)
+						{
+							int x=str.indexOf(" "+t[i]+" ");
+							if(x>=0)
+							{
+								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+								return;
+							}
+						}
 					}
 				}
 				break;
@@ -9630,63 +9630,63 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CCT");
 					if(t!=null)
 					{
-    					String command=t[1];
-    					boolean chk=false;
-    					int x=command.indexOf('=');
-    					if(x>0)
-    					{
-    						chk=true;
-    						for(int i=0;i<x;i++)
-    							switch(command.charAt(i))
-    							{
-    								case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
-    								case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
-    								case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
-    								default: chk=false; break;
-    							}
-    					}
-    					else
-    						chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
-    					if(chk)
-    					{
-    						String str="";
-    						if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
-    							str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
-    						boolean doIt=false;
-    						if((t[2].length()==0)||(t[2].equals("ALL")))
-    							doIt=true;
-    						else
-    						if((t[2].equals("P"))&&(t.length>3))
-    						{
-    							if(match(str.trim(),t[3]))
-    								doIt=true;
-    						}
-    						else
-    						for(int i=2;i<t.length;i++)
-    						{
-    							if(str.indexOf(" "+t[i]+" ")>=0)
-    							{
-    								str=(t[i].trim()+" "+str.trim()).trim();
-    								doIt=true;
-    								break;
-    							}
-    						}
-    						if(doIt)
-    						{
-    							Item Tool=null;
-    							if(msg.tool() instanceof Item)
-    								Tool=(Item)msg.tool();
-    							if(Tool==null) Tool=defaultItem;
-    							if(msg.target() instanceof MOB)
-    								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-    							else
-    							if(msg.target() instanceof Item)
-    								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
-    							else
-    								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-    							return;
-    						}
-    					}
+						String command=t[1];
+						boolean chk=false;
+						int x=command.indexOf('=');
+						if(x>0)
+						{
+							chk=true;
+							for(int i=0;i<x;i++)
+								switch(command.charAt(i))
+								{
+									case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
+									case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
+									case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
+									default: chk=false; break;
+								}
+						}
+						else
+							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+						if(chk)
+						{
+							String str="";
+							if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+								str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
+							boolean doIt=false;
+							if((t[2].length()==0)||(t[2].equals("ALL")))
+								doIt=true;
+							else
+							if((t[2].equals("P"))&&(t.length>3))
+							{
+								if(match(str.trim(),t[3]))
+									doIt=true;
+							}
+							else
+							for(int i=2;i<t.length;i++)
+							{
+								if(str.indexOf(" "+t[i]+" ")>=0)
+								{
+									str=(t[i].trim()+" "+str.trim()).trim();
+									doIt=true;
+									break;
+								}
+							}
+							if(doIt)
+							{
+								Item Tool=null;
+								if(msg.tool() instanceof Item)
+									Tool=(Item)msg.tool();
+								if(Tool==null) Tool=defaultItem;
+								if(msg.target() instanceof MOB)
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								else
+								if(msg.target() instanceof Item)
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+								else
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								return;
+							}
+						}
 					}
 				}
 				break;
@@ -9888,23 +9888,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
-    						t[1]=t[1].trim();
-    					else
-    					if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
-    						break;
-    					double d=0.0;
-    					if(CMath.isDouble(t[1]))
-    						d=CMath.s_double(t[1]);
-    					else
-    						d=CMath.s_int(t[1]);
-    					if((((Coins)msg.tool()).getTotalValue()>=d)
-    					||(t[1].equals("ALL"))
-    					||(t[1].equals("ANY")))
-    					{
-    						enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
-    						return;
-    					}
+						if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
+							t[1]=t[1].trim();
+						else
+						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
+							break;
+						double d=0.0;
+						if(CMath.isDouble(t[1]))
+							d=CMath.s_double(t[1]);
+						else
+							d=CMath.s_int(t[1]);
+						if((((Coins)msg.tool()).getTotalValue()>=d)
+						||(t[1].equals("ALL"))
+						||(t[1].equals("ANY")))
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
+							return;
+						}
 					}
 				}
 				break;
@@ -9919,27 +9919,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						List<ScriptableResponse> V=new XVector(que);
-    						ScriptableResponse SB=null;
-    						String roomID=null;
-    						if(msg.target()!=null)
-    							roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
-    						for(int q=0;q<V.size();q++)
-    						{
-    							SB=V.get(q);
-    							if((SB.scr==script)&&(SB.s==msg.source()))
-    							{
-    								if(que.remove(SB))
-    									execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-    								break;
-    							}
-    						}
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							List<ScriptableResponse> V=new XVector(que);
+							ScriptableResponse SB=null;
+							String roomID=null;
+							if(msg.target()!=null)
+								roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
+							for(int q=0;q<V.size();q++)
+							{
+								SB=V.get(q);
+								if((SB.scr==script)&&(SB.s==msg.source()))
+								{
+									if(que.remove(SB))
+										execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+									break;
+								}
+							}
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+							return;
+						}
 					}
 				}
 				break;
@@ -9952,27 +9952,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						List<ScriptableResponse> V=new XVector(que);
-    						ScriptableResponse SB=null;
-    						String roomID=null;
-    						if(msg.target()!=null)
-    							roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
-    						for(int q=0;q<V.size();q++)
-    						{
-    							SB=V.get(q);
-    							if((SB.scr==script)&&(SB.s==msg.source()))
-    							{
-    								if(que.remove(SB))
-    									execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-    								break;
-    							}
-    						}
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							List<ScriptableResponse> V=new XVector(que);
+							ScriptableResponse SB=null;
+							String roomID=null;
+							if(msg.target()!=null)
+								roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
+							for(int q=0;q<V.size();q++)
+							{
+								SB=V.get(q);
+								if((SB.scr==script)&&(SB.s==msg.source()))
+								{
+									if(que.remove(SB))
+										execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+									break;
+								}
+							}
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+							return;
+						}
 					}
 				}
 				break;
@@ -10031,12 +10031,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    					{
-    						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-    						return;
-    					}
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+							return;
+						}
 					}
 				}
 				break;
@@ -10173,59 +10173,59 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					boolean doIt=false;
 					if(t!=null)
 					{
-    					String channel=t[1];
-    					int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
-    					String str=null;
-    					if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
-    					{
-    						str=msg.sourceMessage();
-    						if(str==null) str=msg.othersMessage();
-    						if(str==null) str=msg.targetMessage();
-    						if(str==null) break;
-    						str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
-    						int dex=str.indexOf("["+channel+"]");
-    						if(dex>0)
-    							str=str.substring(dex+2+channel.length()).trim();
-    						else
-    						{
-    							dex=str.indexOf('\'');
-    							int edex=str.lastIndexOf('\'');
-    							if(edex>dex) str=str.substring(dex+1,edex);
-    						}
-    						str=" "+CMStrings.removeColors(str)+" ";
-    						str=CMStrings.replaceAll(str,"\n\r"," ");
-    						if((t[2].length()==0)||(t[2].equals("ALL")))
-    							doIt=true;
-    						else
-    						if(t[2].equals("P")&&(t.length>2))
-    						{
-    							if(match(str.trim(),t[3]))
-    								doIt=true;
-    						}
-    						else
-    						for(int i=2;i<t.length;i++)
-    							if(str.indexOf(" "+t[i]+" ")>=0)
-    							{
-    								str=t[i];
-    								doIt=true;
-    								break;
-    							}
-    					}
-    					if(doIt)
-    					{
-    						Item Tool=null;
-    						if(msg.tool() instanceof Item)
-    							Tool=(Item)msg.tool();
-    						if(Tool==null) Tool=defaultItem;
-    						if(msg.target() instanceof MOB)
-    							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-    						else
-    						if(msg.target() instanceof Item)
-    							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
-    						else
-    							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-    						return;
-    					}
+						String channel=t[1];
+						int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
+						String str=null;
+						if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
+						{
+							str=msg.sourceMessage();
+							if(str==null) str=msg.othersMessage();
+							if(str==null) str=msg.targetMessage();
+							if(str==null) break;
+							str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
+							int dex=str.indexOf("["+channel+"]");
+							if(dex>0)
+								str=str.substring(dex+2+channel.length()).trim();
+							else
+							{
+								dex=str.indexOf('\'');
+								int edex=str.lastIndexOf('\'');
+								if(edex>dex) str=str.substring(dex+1,edex);
+							}
+							str=" "+CMStrings.removeColors(str)+" ";
+							str=CMStrings.replaceAll(str,"\n\r"," ");
+							if((t[2].length()==0)||(t[2].equals("ALL")))
+								doIt=true;
+							else
+							if(t[2].equals("P")&&(t.length>2))
+							{
+								if(match(str.trim(),t[3]))
+									doIt=true;
+							}
+							else
+							for(int i=2;i<t.length;i++)
+								if(str.indexOf(" "+t[i]+" ")>=0)
+								{
+									str=t[i];
+									doIt=true;
+									break;
+								}
+						}
+						if(doIt)
+						{
+							Item Tool=null;
+							if(msg.tool() instanceof Item)
+								Tool=(Item)msg.tool();
+							if(Tool==null) Tool=defaultItem;
+							if(msg.target() instanceof MOB)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+							else
+							if(msg.target() instanceof Item)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+							return;
+						}
 					}
 				}
 				break;
@@ -10241,20 +10241,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"Cp");
 					if(t!=null)
 					{
-    					if(CMParms.getCleanBit(t[1],0).equalsIgnoreCase("p"))
-    						doIt=str.trim().equals(t[1].substring(1).trim());
-    					else
-    					{
-    						Pattern P=patterns.get(t[1]);
-    						if(P==null)
-    						{
-    							P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-    							patterns.put(t[1],P);
-    						}
-    						Matcher M=P.matcher(str);
-    						doIt=M.find();
-    						if(doIt) str=str.substring(M.start()).trim();
-    					}
+						if(CMParms.getCleanBit(t[1],0).equalsIgnoreCase("p"))
+							doIt=str.trim().equals(t[1].substring(1).trim());
+						else
+						{
+							Pattern P=patterns.get(t[1]);
+							if(P==null)
+							{
+								P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+								patterns.put(t[1],P);
+							}
+							Matcher M=P.matcher(str);
+							doIt=M.find();
+							if(doIt) str=str.substring(M.start()).trim();
+						}
 					}
 					if(doIt)
 					{
@@ -10386,9 +10386,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+							execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 					}
 				}
 				break;
@@ -10403,11 +10403,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(t==null) t=parseBits(script,0,"CCR");
 						if(t!=null)
 						{
-    						int low=CMath.s_int(t[1]);
-    						int high=CMath.s_int(t[2]);
-    						if(high<low) high=low;
-    						targetTick=CMLib.dice().roll(1,high-low+1,low-1);
-    						delayTargetTimes.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(targetTick));
+							int low=CMath.s_int(t[1]);
+							int high=CMath.s_int(t[2]);
+							if(high<low) high=low;
+							targetTick=CMLib.dice().roll(1,high-low+1,low-1);
+							delayTargetTimes.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(targetTick));
 						}
 					}
 					int delayProgCounter=0;
@@ -10430,9 +10430,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CR");
 					if(t!=null)
 					{
-    					int prcnt=CMath.s_int(t[1]);
-    					if(CMLib.dice().rollPercentage()<prcnt)
-    						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
+						int prcnt=CMath.s_int(t[1]);
+						if(CMLib.dice().rollPercentage()<prcnt)
+							execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
 					}
 				}
 				else

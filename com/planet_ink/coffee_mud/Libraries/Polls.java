@@ -100,7 +100,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
+	public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
 	{
 		Iterator<Poll> i=getPollList();
 		List<Poll> list[]=new List[3];

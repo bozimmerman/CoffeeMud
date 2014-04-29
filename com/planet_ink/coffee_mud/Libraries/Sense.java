@@ -1069,21 +1069,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				P.eachEffect(new EachApplicable<Ability>()
 				{
-	                public void apply(Ability A)
-	                {
-	    				if((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
-	    					V.addElement(A);
-	                }
+					public void apply(Ability A)
+					{
+						if((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+							V.addElement(A);
+					}
 				});
 			}
 			else
 				P.eachEffect(new EachApplicable<Ability>()
 				{
-	                public void apply(Ability A)
-	                {
-	    				if((A.classificationCode()&Ability.ALL_ACODES)==domain)
-	    					V.addElement(A);
-	                }
+					public void apply(Ability A)
+					{
+						if((A.classificationCode()&Ability.ALL_ACODES)==domain)
+							V.addElement(A);
+					}
 				});
 		return V;
 	}
@@ -1120,11 +1120,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P!=null)
 			P.eachEffect(new EachApplicable<Ability>()
 			{
-                public void apply(Ability A)
-                {
+				public void apply(Ability A)
+				{
 					if((A.flags()&flag)>0)
 						V.addElement(A);
-                }
+				}
 			});
 		return V;
 	}

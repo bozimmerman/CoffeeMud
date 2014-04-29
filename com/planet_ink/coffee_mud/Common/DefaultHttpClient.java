@@ -453,7 +453,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					ByteArrayOutputStream bout=new ByteArrayOutputStream();
 					while ((len = in.read(buffer)) != -1)
 					{
-					    bout.write(buffer, 0, len);
+						bout.write(buffer, 0, len);
 					}
 					return bout.toByteArray();
 				}

@@ -195,34 +195,34 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-    public void bumpPrideStat(PrideStat stat, int amt) 
+	public void bumpPrideStat(PrideStat stat, int amt) 
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
-	    for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-	    {
-	    	if(period==TimeClock.TimePeriod.ALLTIME)
-	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
-	    	else
-	    	{
-		    	if(now>prideExpireTime[period.ordinal()])
-		    	{
+		for(TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
+			if(period==TimeClock.TimePeriod.ALLTIME)
+				prideStats[period.ordinal()][stat.ordinal()]+=amt;
+			else
+			{
+				if(now>prideExpireTime[period.ordinal()])
+				{
 					for(AccountStats.PrideStat stat2 : AccountStats.PrideStat.values())
 						prideStats[period.ordinal()][stat2.ordinal()]=0;
 					prideExpireTime[period.ordinal()]=period.nextPeriod();
-		    	}
-	    		prideStats[period.ordinal()][stat.ordinal()]+=amt;
-	    	}
-	    }
-    }
+				}
+				prideStats[period.ordinal()][stat.ordinal()]+=amt;
+			}
+		}
+	}
 	
 	@Override
-    public int getPrideStat(TimePeriod period, PrideStat stat) 
+	public int getPrideStat(TimePeriod period, PrideStat stat) 
 	{
-	    if((period==null)||(stat==null))
-	    	return 0;
-	    return prideStats[period.ordinal()][stat.ordinal()];
-    }
+		if((period==null)||(stat==null))
+			return 0;
+		return prideStats[period.ordinal()][stat.ordinal()];
+	}
 	
 	public MOB getAccountMob()
 	{

@@ -367,11 +367,11 @@ public class Connection implements java.sql.Connection
 	   return null; 
    }
 
-    public void setSchema(String schema) throws SQLException { connect(schema); }
-    public String getSchema() throws SQLException { return oldPath; }
-    public void abort(Executor executor) throws SQLException { this.close(); }
-    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException { }
-    public int getNetworkTimeout() throws SQLException { return 0; }
+	public void setSchema(String schema) throws SQLException { connect(schema); }
+	public String getSchema() throws SQLException { return oldPath; }
+	public void abort(Executor executor) throws SQLException { this.close(); }
+	public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException { }
+	public int getNetworkTimeout() throws SQLException { return 0; }
 
    // JDK 1.4 stuff
 /*

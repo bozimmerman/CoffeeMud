@@ -190,7 +190,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
 
-    public boolean isHomePeerRoom(Room R)
+	public boolean isHomePeerRoom(Room R)
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
@@ -248,7 +248,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return doneRooms;
 	}
 	
-    public boolean isHomeRoomDownstairs(Room room)
+	public boolean isHomeRoomDownstairs(Room room)
 	{
 		if(isHomePeerRoom(room.getRoomInDir(Directions.UP)))
 			return true;

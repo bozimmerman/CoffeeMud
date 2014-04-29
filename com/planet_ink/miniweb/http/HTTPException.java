@@ -48,7 +48,7 @@ public class HTTPException extends Exception
 	private final String 				body;		// optional body to send back with the error, usually ""
 	private final Map<HTTPHeader,String>errorHeaders = new Hashtable<HTTPHeader,String>(); // any optional/extraneous headers to send back
 	private final boolean    			isDebugging;
-	private final Logger    			debugLogger;
+	private final Logger				debugLogger;
 	private final MiniWebConfig			config;
 	private final static String			EOLN		 = HTTPIOHandler.EOLN;
 	

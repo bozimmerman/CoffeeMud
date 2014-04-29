@@ -310,10 +310,10 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * from the players movement score.
 	 * Variables may be included in the formula, which are:
 	 * {@literal @}x1: Players current class level
-	 * {@literal @}x2: Players adjusted Strength     {@literal @}x3: Players Max adjusted Strength
+	 * {@literal @}x2: Players adjusted Strength	 {@literal @}x3: Players Max adjusted Strength
 	 * {@literal @}x4: Players adjusted Dexterity    {@literal @}x5: Players Max adjusted Dexterity
 	 * {@literal @}x6: Players adjusted Constitution {@literal @}x7: Players Max adjusted Constitution
-	 * {@literal @}x8: Players adjusted Wisdom       {@literal @}x9: Players adjusted Intelligence
+	 * {@literal @}x8: Players adjusted Wisdom  	 {@literal @}x9: Players adjusted Intelligence
 	 * @see CharClass#getMovementDesc()
 	 * @return the formula that causes a gain or loss in movement
 	 */
@@ -336,7 +336,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * \{@literal @}x2: Players adjusted Strength     {@literal @}x3: Players Max adjusted Strength
 	 * \{@literal @}x4: Players adjusted Dexterity    {@literal @}x5: Players Max adjusted Dexterity
 	 * {@literal @}x6: Players adjusted Constitution {@literal @}x7: Players Max adjusted Constitution
-	 * {@literal @}x8: Players adjusted Wisdom       {@literal @}x9: Players adjusted Intelligence
+	 * {@literal @}x8: Players adjusted Wisdom  	 {@literal @}x9: Players adjusted Intelligence
 	 * @see CharClass#getHitPointDesc()
 	 * @return the formula that causes a gain or loss in hit points
 	 */
@@ -356,10 +356,10 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * from the players mana score.
 	 * Variables may be included in the formula, which are:
 	 * {@literal @}x1: Players current class level
-	 * {@literal @}x2: Players adjusted Wisdom       {@literal @}x3: Players Max adjusted Wisdom
+	 * {@literal @}x2: Players adjusted Wisdom  	 {@literal @}x3: Players Max adjusted Wisdom
 	 * {@literal @}x4: Players adjusted Intelligence {@literal @}x5: Players Max adjusted Intelligence
 	 * {@literal @}x6: Players adjusted Attack Attr  {@literal @}x7: Players Max adjusted Attack Attr
-	 * {@literal @}x8: Players adjusted Charisma     {@literal @}x9: Players adjusted Constitution
+	 * {@literal @}x8: Players adjusted Charisma	 {@literal @}x9: Players adjusted Constitution
 	 * @see CharClass#getManaDesc()
 	 * @see CharClass#getAttackAttribute()
 	 * @return the formula that causes a gain or loss in mana

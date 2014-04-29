@@ -102,7 +102,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public CompiledZapperMask getPreCompiledMask(final String str)
+	public CompiledZapperMask getPreCompiledMask(final String str)
 	{
 		Map<String,CompiledZapperMask> H=(Map<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
 		if(H==null)

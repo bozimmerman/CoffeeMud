@@ -1842,14 +1842,14 @@ public class Modify extends StdCommand
 						for(int r=1;r<results.size();r++)
 						{
 							String[] row=results.get(r);
-        					for(int c=0;c<row.length;c++)
-        					{
-        						if(c<headerRow.length)
-            						buf.append(CMStrings.padRight(row[c],headerRow[c].length()));
-        						else
-            						buf.append(row[c]);
-        					}
-        					buf.append("\n\r");
+							for(int c=0;c<row.length;c++)
+							{
+								if(c<headerRow.length)
+									buf.append(CMStrings.padRight(row[c],headerRow[c].length()));
+								else
+									buf.append(row[c]);
+							}
+							buf.append("\n\r");
 						}
 					}
 					if(mob.session()!=null)

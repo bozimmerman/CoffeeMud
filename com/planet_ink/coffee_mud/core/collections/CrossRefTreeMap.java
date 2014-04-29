@@ -28,8 +28,8 @@ public class CrossRefTreeMap<T, K>
 	final static Comparator<Object> comparator=new Comparator<Object>()
 	{
 		@Override
-        public int compare(Object o1, Object o2)
-        {
+		public int compare(Object o1, Object o2)
+		{
 			if(o1 == null)
 			{
 				if(o2 == null)
@@ -41,14 +41,14 @@ public class CrossRefTreeMap<T, K>
 			if(o1.hashCode() == o2.hashCode())
 				return 0;
 			return o1.hashCode() > o2.hashCode() ? 1 : -1;
-        }
+		}
 	};
 	final TreeMap<T,TreeSet<K>> map1		=new TreeMap<T,TreeSet<K>>(comparator);
 	final TreeMap<K,TreeSet<T>> map2		=new TreeMap<K,TreeSet<T>>(comparator);
 	final int 					maxKsInMap1;
 	final int 					maxTsInMap2;
 	@SuppressWarnings("rawtypes")
-    private static final Set empty=new TreeSet();
+	private static final Set empty=new TreeSet();
 	
 	public CrossRefTreeMap(int maxFirstForEachSecond, int maxSecondForEachFirst)
 	{
@@ -69,7 +69,7 @@ public class CrossRefTreeMap<T, K>
 	}
 
 	@SuppressWarnings("unchecked")
-    public Set<K> getFirst(T t)
+	public Set<K> getFirst(T t)
 	{
 		final Set<K> kSet=map1.get(t);
 		if(kSet == null)
@@ -78,7 +78,7 @@ public class CrossRefTreeMap<T, K>
 	}
 	
 	@SuppressWarnings("unchecked")
-    public Set<T> getSecond(K k)
+	public Set<T> getSecond(K k)
 	{
 		final Set<T> tSet=map2.get(k);
 		if(tSet == null)
@@ -134,7 +134,7 @@ public class CrossRefTreeMap<T, K>
 						map2.remove(k);
 					}
 					else
-        				kTs.remove(t);
+						kTs.remove(t);
 				}
 			}
 			map1.remove(t);
@@ -157,7 +157,7 @@ public class CrossRefTreeMap<T, K>
 						map1.remove(t);
 					}
 					else
-	    				tKs.remove(k);
+						tKs.remove(k);
 				}
 			}
 			map2.remove(k);

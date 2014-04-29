@@ -265,7 +265,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-    public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
+	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException
 	{
 		Vector<Object> columns = parseRecipeFormatColumns(C.parametersFormat());
 		Map<String,AbilityParmEditor> editors = this.getEditors();
@@ -315,7 +315,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 	
 	@SuppressWarnings("unchecked")
-    protected static int getClassFieldIndex(DVector dataRow)
+	protected static int getClassFieldIndex(DVector dataRow)
 	{
 		for(int d=0;d<dataRow.size();d++)
 			if(dataRow.elementAt(d,1) instanceof List) 
@@ -335,7 +335,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-    protected Item getSampleItem(DVector dataRow)
+	protected Item getSampleItem(DVector dataRow)
 	{
 		boolean classIDRequired = false;
 		String classID = null;
@@ -396,7 +396,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-    protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<? extends Object> columnsV, int numberOfDataColumns)
+	protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<? extends Object> columnsV, int numberOfDataColumns)
 		throws CMException
 	{
 		StringBuffer str = new StringBuffer(recipeData.toString());
@@ -464,7 +464,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 	
 	@SuppressWarnings("unchecked")
-    protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
+	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		if(classModelI == null)
@@ -556,7 +556,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 	
 	@SuppressWarnings("unchecked")
-    public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
+	public void testRecipeParsing(StringBuffer str, String recipeFormat, String saveRecipeFilename) throws CMException
 	{
 		Vector<? extends Object> columnsV = parseRecipeFormatColumns(recipeFormat);
 		int numberOfDataColumns = 0;
@@ -685,7 +685,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
+	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
 	{
 		Map<String,AbilityParmEditor> editors = getEditors();
 		AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
@@ -2698,8 +2698,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return false;
 		}
 		@SuppressWarnings("unchecked")
-        public String[] fakeUserInput(String oldVal)
-        {
+		public String[] fakeUserInput(String oldVal)
+		{
 			boolean emptyOK = false;
 			switch(fieldType)
 			{

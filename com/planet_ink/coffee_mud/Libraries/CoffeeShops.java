@@ -1658,6 +1658,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
 		if(data.auctioningI!=null)
-    		data.auctioningM.tell("Auction ended.");
+			data.auctioningM.tell("Auction ended.");
 	}
 }

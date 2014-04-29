@@ -591,8 +591,8 @@ public class IMudInterface implements ImudServices, Serializable
 					}
 					else
 						mob=CMClass.getFactoryMOB();
-    				mob.setName(tk.sender_name+"@"+tk.sender_mud);
-    				mob.setLocation(getUniversalRoom());
+					mob.setName(tk.sender_name+"@"+tk.sender_mud);
+					mob.setLocation(getUniversalRoom());
 					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.Str.SAYFILTER));
 					CMLib.commands().postSay(mob,smob,tk.message,true,true);
 				}

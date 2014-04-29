@@ -1237,7 +1237,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@SuppressWarnings("unchecked")
-    protected List<ItemCraftor.ItemKeyPair> craftAllOfThisRecipe(ItemCraftor skill, int material, Map<String,Object> defined)
+	protected List<ItemCraftor.ItemKeyPair> craftAllOfThisRecipe(ItemCraftor skill, int material, Map<String,Object> defined)
 	{
 		List<ItemCraftor.ItemKeyPair> skillContents=(List<ItemCraftor.ItemKeyPair>)defined.get("____COFFEEMUD_"+skill.ID()+"_"+material+"_true");
 		if(skillContents==null)
@@ -1271,7 +1271,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return false;
 	}
 	
-    protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
 		List<Item> contents = new Vector<Item>();

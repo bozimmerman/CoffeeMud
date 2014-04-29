@@ -54,12 +54,12 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 	protected int   generatedAmtPerTick = 1;
 	
 	@Override
-    public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
+	public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
 	@Override
-    public void setGenerationAmountPerTick(int amt) 
+	public void setGenerationAmountPerTick(int amt) 
 	{
 		generatedAmtPerTick=amt;
-    }
+	}
 
 	@Override public TechType getTechType() { return TechType.SHIP_GENERATOR; }
 	

@@ -68,7 +68,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private HTTPMethod 	 		 requestType  = null;		// request type defs to null so that method-not-allowed is generated 
 	private String 	 			 requestString= null;		// full request line, including method, path, etc..
 	private Map<String,String>   headers	  = new Hashtable<String,String>(); // all the base headers received for this request
-	private Map<String,String>   urlParameters= null;       // holds url parameters, urlencoded variables, and form-data variables
+	private Map<String,String>   urlParameters= null;   	// holds url parameters, urlencoded variables, and form-data variables
 	private ByteBuffer	 		 buffer;	  				// acts as both the line buffer and data buffer
 	private int					 bodyLength	  = 0;			// length of the data buffer, and flag that a body was received
 	private float				 httpVer	  = 1.0f;		// version of this http request (1.0, 1.1, etc)

@@ -76,13 +76,13 @@ public class ClanDetails extends StdCommand
 						if(M.playerpvps > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
 					@SuppressWarnings("unchecked")
-	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
+					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
-	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
-	                    {
-	                    	return o2.second.compareTo(o1.second);
-	                    }
+						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+						{
+							return o2.second.compareTo(o1.second);
+						}
 					});
 					if(topKillers.size()==0)
 						msg.append("There have not been any rival clan playerkills...\n\r");
@@ -114,13 +114,13 @@ public class ClanDetails extends StdCommand
 						if((M.mobpvps+M.playerpvps) > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
 					@SuppressWarnings("unchecked")
-	                Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
+					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
-	                    public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
-	                    {
-	                    	return o2.second.compareTo(o1.second);
-	                    }
+						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+						{
+							return o2.second.compareTo(o1.second);
+						}
 					});
 					if(topKillers.size()==0)
 						msg.append("There have not been any rival clan kills...\n\r");

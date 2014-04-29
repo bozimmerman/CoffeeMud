@@ -994,8 +994,8 @@ public class CharClassData extends StdWebMacro
 							CharClass C1=c.nextElement();
 							if(C1.baseClass().equals(C.baseClass()))
 							{
-		    					int maxInt=18+C1.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-		    					String f=C1.getManaFormula();
+								int maxInt=18+C1.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+								String f=C1.getManaFormula();
 								num++;
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
@@ -1016,11 +1016,11 @@ public class CharClassData extends StdWebMacro
 					}
 					else
 					{
-    					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-    					String f=C.getManaFormula();
-    					str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxInt,10,sm,f)+") ");
-    					str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxInt,50,sm,f)+") ");
-    					str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxInt,90,sm,f)+") ");
+						int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
+						String f=C.getManaFormula();
+						str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxInt,10,sm,f)+") ");
+						str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxInt,50,sm,f)+") ");
+						str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxInt,90,sm,f)+") ");
 					}
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
@@ -1035,8 +1035,8 @@ public class CharClassData extends StdWebMacro
 							CharClass C1=c.nextElement();
 							if(C1.baseClass().equals(C.baseClass()))
 							{
-		    					String f=C1.getMovementFormula();
-		    					int maxStrength=18+C1.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+								String f=C1.getMovementFormula();
+								int maxStrength=18+C1.maxStatAdjustments()[CharStats.STAT_STRENGTH];
 								num++;
 								avgs[0][0]+=avgMath(10,10,sm,f);
 								avgs[0][1]+=avgMath(18,10,sm,f);
@@ -1057,11 +1057,11 @@ public class CharClassData extends StdWebMacro
 					}
 					else
 					{
-    					String f=C.getMovementFormula();
-    					int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
-    					str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxStrength,10,sm,f)+") ");
-    					str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxStrength,50,sm,f)+") ");
-    					str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxStrength,90,sm,f)+") ");
+						String f=C.getMovementFormula();
+						int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
+						str.append("("+avgMath(10,10,sm,f)+"/"+avgMath(18,10,sm,f)+"/"+avgMath(maxStrength,10,sm,f)+") ");
+						str.append("("+avgMath(10,50,sm,f)+"/"+avgMath(18,50,sm,f)+"/"+avgMath(maxStrength,50,sm,f)+") ");
+						str.append("("+avgMath(10,90,sm,f)+"/"+avgMath(18,90,sm,f)+"/"+avgMath(maxStrength,90,sm,f)+") ");
 					}
 				}
 

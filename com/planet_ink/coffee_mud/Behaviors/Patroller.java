@@ -369,8 +369,8 @@ public class Patroller extends ActiveTicker
 			Set<MOB> mobsHere=CMLib.players().getPlayersHere(thisRoom);
 			if(mobsHere.size()>0)
 			{
-	    		for(MOB inhab : mobsHere)
-	    		{
+				for(MOB inhab : mobsHere)
+				{
 					if((!inhab.isMonster())
 					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
 					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
@@ -378,7 +378,7 @@ public class Patroller extends ActiveTicker
 						tickStatus=Tickable.STATUS_NOT;
 						return true;
 					}
-	    		}
+				}
 			}
 			
 			tickStatus=Tickable.STATUS_MISC+15;

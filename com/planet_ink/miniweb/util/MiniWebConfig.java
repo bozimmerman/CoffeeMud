@@ -50,11 +50,11 @@ public class MiniWebConfig implements Cloneable
 	private static final String   ERROR_PAGE 					= "root\\errorpage.mwhtml";
 	
 	// configuration for the request thread pool
-	private static final int      DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
-	private static final int      DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
-	private static final int      DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
-	private static final int      DEFAULT_THREAD_TIMEOUT_SECS		= 30; //Timeout for active request threads
-	private static final int      DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
+	private static final int	  DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
+	private static final int	  DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
+	private static final int	  DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
+	private static final int	  DEFAULT_THREAD_TIMEOUT_SECS		= 30; //Timeout for active request threads
+	private static final int	  DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
 	
 	private static final long     DEFAULT_FILECACHE_EXPIRE_MS	= 5 * 60 * 1000; 		// 5 minutes -- how long a cache entry lived
 	private static final long     DEFAULT_FILECACHE_MAX_BYTES	= 10 * 1024 * 1024;	// the maximum number of bytes this cache will hold total
@@ -90,7 +90,7 @@ public class MiniWebConfig implements Cloneable
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
 	private MimeConverterManager  converters					= null;
-	private FileCacheManager      fileCache						= null;
+	private FileCacheManager	  fileCache						= null;
 	private Logger				  logger						= null;
 	private HTTPFileGetter		  fileGetter					= null;
 	private MiniWebServer		  miniWebServer					= null;

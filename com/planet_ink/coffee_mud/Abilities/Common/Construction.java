@@ -137,17 +137,17 @@ public class Construction extends CraftingSkill
 		final Room theRoomToReturnTo=returnToRoom;
 		room.eachInhabitant(new EachApplicable<MOB>()
 		{
-            public void apply(MOB a)
-            {
-            	theRoomToReturnTo.bringMobHere(a, false);
-            }
+			public void apply(MOB a)
+			{
+				theRoomToReturnTo.bringMobHere(a, false);
+			}
 		});
 		room.eachItem(new EachApplicable<Item>()
 		{
-            public void apply(Item a)
-            {
-            	theRoomToReturnTo.addItem(a,Expire.Player_Drop);
-            }
+			public void apply(Item a)
+			{
+				theRoomToReturnTo.addItem(a,Expire.Player_Drop);
+			}
 		});
 		title.setOwnerName("");
 		title.updateLot(null); // this is neat -- this will obliterate leaf rooms around this one.
@@ -616,12 +616,12 @@ public class Construction extends CraftingSkill
 		super.unInvoke();
 	}
 
-    public boolean isHomePeerRoom(Room R)
+	public boolean isHomePeerRoom(Room R)
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
 	
-    public boolean isHomePeerTitledRoom(Room R)
+	public boolean isHomePeerTitledRoom(Room R)
 	{
 		LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null) return false;

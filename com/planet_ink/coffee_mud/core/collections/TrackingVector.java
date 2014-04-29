@@ -163,7 +163,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 	
 	
-    @Override
+	@Override
 	public boolean remove(Object arg0)
 	{
 		if(removeOnlyFromMe(arg0))
@@ -175,8 +175,8 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@SuppressWarnings("unchecked")
-    public boolean removeOnlyFromMe(Object arg0)
-    {
+	public boolean removeOnlyFromMe(Object arg0)
+	{
 		boolean success=super.remove(arg0);
 		if((trackBackRef!=null)&&(trackBackRef.get()!=null))
 			trackBackRef.get().removed((T)arg0);

@@ -46,7 +46,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
 	
 	@SuppressWarnings("unchecked")
-    protected Hashtable<String,JournalSummaryStats> getSummaryStats()
+	protected Hashtable<String,JournalSummaryStats> getSummaryStats()
 	{
 		Hashtable<String,JournalSummaryStats> journalSummaryStats;
 		journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
@@ -292,7 +292,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
-    public HashSet<String> getArchonJournalNames()
+	public HashSet<String> getArchonJournalNames()
 	{
 		HashSet<String> H = (HashSet<String>)Resources.getResource("ARCHON_ONLY_JOURNALS");
 		if(H == null)

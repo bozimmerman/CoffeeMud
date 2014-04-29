@@ -133,9 +133,9 @@ public class GenRecipe extends GenReadable implements Recipe
 		setReadableText("");
 		replaceName = null;
 	}
-    public int getTotalRecipePages() { return super.usesRemaining(); }
-    public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
-    
+	public int getTotalRecipePages() { return super.usesRemaining(); }
+	public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
+	
 	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
 	public String getStat(String code)
 	{

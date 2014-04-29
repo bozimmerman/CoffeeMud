@@ -50,7 +50,7 @@ public class FileCmd extends CM1Command
 	}
 	
 	@Override
-    public void run() 
+	public void run() 
 	{
 		try
 		{
@@ -240,7 +240,7 @@ public class FileCmd extends CM1Command
 			Log.errOut(className,ioe);
 			req.close();
 		}
-    }
+	}
 	
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
