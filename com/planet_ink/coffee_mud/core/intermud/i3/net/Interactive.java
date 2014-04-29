@@ -200,9 +200,11 @@ public abstract class Interactive implements ServerUser {
 	 * that the user has lost their link.  It will tell the body object
 	 * that the link is lost, then destruct itself.
 	 */
-	protected void loseLink() {
+	protected void loseLink() 
+	{
 		socket = null;
-		if( body != null ) {
+		if( body != null ) 
+		{
 			body.loseLink();
 		}
 		destruct();
@@ -216,7 +218,8 @@ public abstract class Interactive implements ServerUser {
 	 * should be called.
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject#processEvent
 	 */
-	public void processEvent() {
+	public void processEvent() 
+	{
 	}
 
 	/**
@@ -229,11 +232,14 @@ public abstract class Interactive implements ServerUser {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerUser#processInput
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerThread#tick(com.planet_ink.coffee_mud.core.interfaces.Tickable, int)
 	 */
-	public synchronized final void processInput() {
-		if( input_thread != null ) {
+	public synchronized final void processInput() 
+	{
+		if( input_thread != null ) 
+		{
 			String msg = input_thread.nextMessage();
 
-			if( msg != null ) {
+			if( msg != null ) 
+			{
 				last_command_time = new java.util.Date();
 				input(msg);
 			}
@@ -253,7 +259,8 @@ public abstract class Interactive implements ServerUser {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Input
 	 * @see #input
 	 */
-	public synchronized final void redirectInput(Input ob) {
+	public synchronized final void redirectInput(Input ob) 
+	{
 		redirect.addElement(ob);
 	}
 
@@ -262,8 +269,10 @@ public abstract class Interactive implements ServerUser {
 	 * to the message.
 	 * @param msg the message to send to the client machine
 	 */
-	public final void sendMessage(String msg) {
-		if( socket == null ) {
+	public final void sendMessage(String msg) 
+	{
+		if( socket == null ) 
+		{
 			return;
 		}
 		sendMessage(msg, false);
@@ -275,8 +284,10 @@ public abstract class Interactive implements ServerUser {
 	 * @param msg the message to send to the client
 	 * @param nowrap if true, no newline is attached
 	 */
-	public final void sendMessage(String msg, boolean nowrap) {
-		if( !nowrap ) {
+	public final void sendMessage(String msg, boolean nowrap) 
+	{
+		if( !nowrap ) 
+		{
 			msg += "\n";
 		}
 		output_stream.print(msg);
@@ -287,7 +298,8 @@ public abstract class Interactive implements ServerUser {
 	 * Validates a user password against a random string.
 	 * @return true if the two passwords match
 	 */
-	public final boolean validatePassword(String other) {
+	public final boolean validatePassword(String other) 
+	{
 		return other.equals(password);
 	}
 
@@ -295,7 +307,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the address from which this user is connected.
 	 * @return the host name for this user's current site
 	 */
-	public final String getAddressName() {
+	public final String getAddressName() 
+	{
 		if(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0)
 			return CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		return socket.getInetAddress().getHostName();
@@ -305,7 +318,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the body to which this user is connected.
 	 * @return the body to which this user is connected, or null if no body exists
 	 */
-	public final InteractiveBody getBody() {
+	public final InteractiveBody getBody() 
+	{
 		return body;
 	}
 
@@ -317,7 +331,8 @@ public abstract class Interactive implements ServerUser {
 	 * @param ob the body to which this interactive is being connected
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.net.InteractiveBody
 	 */
-	public void setBody(InteractiveBody ob) {
+	public void setBody(InteractiveBody ob) 
+	{
 		body = ob;
 	}
 
@@ -325,7 +340,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the time at which the user logged in for this session
 	 * @return the time of login for the current session
 	 */
-	public final Date getCurrentLoginTime() {
+	public final Date getCurrentLoginTime() 
+	{
 		return current_login_time;
 	}
 
@@ -333,7 +349,8 @@ public abstract class Interactive implements ServerUser {
 	 * Tells whether or not the user is marked for destruction.
 	 * @return true if the user is marked for destruction
 	 */
-	public boolean getDestructed() {
+	public boolean getDestructed() 
+	{
 		return destructed;
 	}
 
@@ -342,7 +359,8 @@ public abstract class Interactive implements ServerUser {
 	 * with mixed capitalization, spaces, hyphens, etc.
 	 * @return the user's display name
 	 */
-	public String getDisplayName() {
+	public String getDisplayName() 
+	{
 		return display_name;
 	}
 
@@ -352,14 +370,18 @@ public abstract class Interactive implements ServerUser {
 	 * name.
 	 * @param str the new display name
 	 */
-	public final void setDisplayName(String str) {
-		try {
-			if( !getKeyName().equals(Interactive.createKeyName(str)) ) {
+	public final void setDisplayName(String str) 
+	{
+		try 
+		{
+			if( !getKeyName().equals(Interactive.createKeyName(str)) ) 
+			{
 				return;
 			}
 			display_name = str;
 		}
-		catch( InvalidNameException e ) {
+		catch( InvalidNameException e ) 
+		{
 			return;
 		}
 	}
@@ -368,7 +390,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the user's email address
 	 * @return the email address for this user
 	 */
-	public final String getEmail() {
+	public final String getEmail() 
+	{
 		return email;
 	}
 
@@ -376,7 +399,8 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's email address
 	 * @param str the new email address
 	 */
-	public final void setEmail(String str) {
+	public final void setEmail(String str) 
+	{
 		email = str;
 	}
 
@@ -385,7 +409,8 @@ public abstract class Interactive implements ServerUser {
 	 * last entered a command.
 	 * @return the idle time in seconds
 	 */
-	public final int getIdle() {
+	public final int getIdle() 
+	{
 		return (int)(((new Date()).getTime() - last_command_time.getTime())/1000);
 	}
 
@@ -403,7 +428,8 @@ public abstract class Interactive implements ServerUser {
 	 * can be reduced for comparison.
 	 * @see #createKeyName
 	 */
-	public final String getKeyName() {
+	public final String getKeyName() 
+	{
 		return key_name;
 	}
 
@@ -413,8 +439,10 @@ public abstract class Interactive implements ServerUser {
 	 * @param str the key name being set
 	 * @see #getKeyName
 	 */
-	protected void setKeyName(String str) {
-		if( key_name != null ) {
+	protected void setKeyName(String str) 
+	{
+		if( key_name != null ) 
+		{
 			return;
 		}
 		key_name = str;
@@ -425,7 +453,8 @@ public abstract class Interactive implements ServerUser {
 	 * at their last login.
 	 * @return the last login site
 	 */
-	public final String getLastLoginSite() {
+	public final String getLastLoginSite() 
+	{
 		return last_login_site;
 	}
 
@@ -434,8 +463,10 @@ public abstract class Interactive implements ServerUser {
 	 * during login.
 	 * @param site the last login site
 	 */
-	public void setLastLoginSite(String site) {
-		if( last_login_site != null ) {
+	public void setLastLoginSite(String site) 
+	{
+		if( last_login_site != null ) 
+		{
 			return;
 		}
 		last_login_site = site;
@@ -445,7 +476,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the time of the user's last login.
 	 * @return the last login time
 	 */
-	public final Date getLastLoginTime() {
+	public final Date getLastLoginTime() 
+	{
 		return last_login_time;
 	}
 
@@ -454,8 +486,10 @@ public abstract class Interactive implements ServerUser {
 	 * time.
 	 * @param time the time the user last logged in
 	 */
-	public void setLastLoginTime(Date time) {
-		if( last_login_time != null ) {
+	public void setLastLoginTime(Date time) 
+	{
+		if( last_login_time != null ) 
+		{
 			return;
 		}
 		last_login_time = time;
@@ -466,7 +500,8 @@ public abstract class Interactive implements ServerUser {
 	 * @return the object id
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject#getObjectId
 	 */
-	public final String getObjectId() {
+	public final String getObjectId() 
+	{
 		return object_id;
 	}
 
@@ -475,8 +510,10 @@ public abstract class Interactive implements ServerUser {
 	 * @param id the object id assigned to this object
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject#setObjectId
 	 */
-	public final void setObjectId(String id) {
-		if( object_id != null ) {
+	public final void setObjectId(String id) 
+	{
+		if( object_id != null ) 
+		{
 			return;
 		}
 		object_id = id;
@@ -486,7 +523,8 @@ public abstract class Interactive implements ServerUser {
 	 * Allows a subclass to get the password.
 	 * @return the user's password
 	 */
-	protected String getPassword() {
+	protected String getPassword() 
+	{
 		return password;
 	}
 
@@ -494,7 +532,8 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's password.
 	 * @param pass the new password
 	 */
-	protected void setPassword(String pass) {
+	protected void setPassword(String pass) 
+	{
 		password = pass;
 	}
 
@@ -502,7 +541,8 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the user's command prompt.
 	 * @return the command prompt
 	 */
-	public String getPrompt() {
+	public String getPrompt() 
+	{
 		return "> ";
 	}
 
@@ -511,7 +551,8 @@ public abstract class Interactive implements ServerUser {
 	 * a real name.
 	 * @return the user's real name or null
 	 */
-	public final String getRealName() {
+	public final String getRealName() 
+	{
 		return real_name;
 	}
 
@@ -519,7 +560,8 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's real name.
 	 * @param nom the real name for the user
 	 */
-	public void setRealName(String nom) {
+	public void setRealName(String nom) 
+	{
 		real_name = nom;
 	}
 
@@ -529,7 +571,8 @@ public abstract class Interactive implements ServerUser {
 	 * @param s the socket for this connection
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerUser#setSocket
 	 */
-	public final void setSocket(Socket s) throws java.io.IOException {
+	public final void setSocket(Socket s) throws java.io.IOException 
+	{
 		socket = s;
 		input_thread = new InputThread(socket, this);
 		output_stream = new PrintStream(s.getOutputStream());
@@ -586,24 +629,33 @@ class InputThread implements Runnable
 	 * this will call loseLink() in the interactive object.
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Interactive#loseLink
 	 */
-	public void run() {
-		while( !destructed ) {
+	public void run() 
+	{
+		while( !destructed ) 
+		{
 			String msg;
 
 			try {
 				msg = stream.readLine();
 			}
-			catch( java.io.IOException e ) {
-				synchronized( user ) {
+			catch( java.io.IOException e ) 
+			{
+				synchronized( user ) 
+				{
 					user.loseLink();
 				}
 				return;
 			}
-			synchronized( this ) {
-				input_buffer.add(msg);
-				internalSize+=(msg.length()*2);
+			synchronized( this ) 
+			{
+				if(msg != null)
+				{
+					input_buffer.add(msg);
+					internalSize+=(msg.length()*2);
+				}
 			}
-			if(internalSize > (10 * 1024 * 1024)) {
+			if(internalSize > (10 * 1024 * 1024)) 
+			{
 				Log.errOut("Excessive buffer size: "+internalSize);
 			}
 			try { Thread.sleep(10); }
@@ -616,22 +668,26 @@ class InputThread implements Runnable
 	 * call stop if the interactive is destructed for
 	 * any reason.
 	 */
-	public void stop() {
+	public void stop() 
+	{
 		destructed = true;
 		CMLib.killThread(thread,500,1);
 		input_buffer.clear();
 	}
 
-	protected synchronized String nextMessage() {
+	protected synchronized String nextMessage() 
+	{
 		String msg;
 
-		synchronized( input_buffer ) {
-			if( input_buffer.size() > 0 ) {
-				msg = input_buffer.get(0);
-				input_buffer.remove(0);
+		synchronized( input_buffer ) 
+		{
+			if( input_buffer.size() > 0 ) 
+			{
+				msg = input_buffer.remove(0);
 				internalSize-=(msg.length()*2);
 			}
-			else {
+			else 
+			{
 				msg = null;
 			}
 		}
