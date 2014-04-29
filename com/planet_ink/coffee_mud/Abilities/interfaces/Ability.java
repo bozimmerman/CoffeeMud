@@ -366,14 +366,6 @@ public interface Ability extends Environmental
 	public int usageType();
 
 	/**
-	 * Returns whether this skill may be saved to the database,
-	 * or whether it is strictly a run-time thing that should
-	 * not  be saved.
-	 * @param truefalse whether this skill may be saved to the database
-	 */
-	public void setSavable(boolean truefalse);
-
-	/**
 	 * Returns an optional numeric value whose purpose is
 	 * entirely contextual.  For many skills, this reflects
 	 * some sort of enhancement.  Default is 0.
