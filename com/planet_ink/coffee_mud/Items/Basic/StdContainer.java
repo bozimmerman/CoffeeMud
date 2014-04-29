@@ -73,6 +73,13 @@ public class StdContainer extends StdItem implements Container
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_INSTALL:
+				if((!(this instanceof Technical))||(!(msg.tool() instanceof Technical)))
+				{
+					mob.tell(name()+" cannot be installed.");
+					return false;
+				}
+				//$FALL-THROUGH$
 			case CMMsg.TYP_PUT:
 				if(msg.tool() instanceof Item)
 				{

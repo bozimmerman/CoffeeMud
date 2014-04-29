@@ -99,6 +99,9 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_HANDS:
+			case CMMsg.TYP_INSTALL:
+			case CMMsg.TYP_ENHANCE:
+			case CMMsg.TYP_REPAIR:
 				msg.source().tell("You have trouble manipulating matter in this form.");
 				return false;
 			case CMMsg.TYP_THROW:

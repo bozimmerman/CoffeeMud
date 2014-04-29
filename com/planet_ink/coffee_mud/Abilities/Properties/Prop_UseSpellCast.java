@@ -129,6 +129,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
 				break;
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_INSTALL:
 				if((myItem instanceof Container)
 				  &&(msg.amITarget(myItem)))
 					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);

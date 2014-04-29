@@ -36,6 +36,7 @@ public class Prop_IceBox extends Property
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_PUT:
+		case CMMsg.TYP_INSTALL:
 			if(affected instanceof Item)
 			{
 				if(msg.amITarget(affected)&&(msg.tool() instanceof Decayable))
