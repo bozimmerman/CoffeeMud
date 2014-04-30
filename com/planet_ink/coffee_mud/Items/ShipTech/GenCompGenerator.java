@@ -66,9 +66,8 @@ public class GenCompGenerator extends StdCompGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
-										   "POWERCAP","POWERREM","CONSUMEDTYPES",
-										   "GENAMTPER","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
+										   "POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER","MANUFACTURER","INSTFACT"};
 	@Override
 	public String getStat(String code)
 	{
@@ -80,8 +79,9 @@ public class GenCompGenerator extends StdCompGenerator
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+powerCapacity();
-		case 5:
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+powerCapacity();
+		case 6:
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
@@ -91,11 +91,11 @@ public class GenCompGenerator extends StdCompGenerator
 			}
 			return str.toString();
 		}
-		case 6: return ""+powerRemaining();
-		case 7: return ""+getGeneratedAmountPerTick();
-		case 8: return ""+activated();
-		case 9: return ""+getManufacturerName();
-		case 10: return ""+getInstalledFactor();
+		case 7: return ""+powerRemaining();
+		case 8: return ""+getGeneratedAmountPerTick();
+		case 9: return ""+activated();
+		case 10: return ""+getManufacturerName();
+		case 11: return ""+getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -112,8 +112,9 @@ public class GenCompGenerator extends StdCompGenerator
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5:{
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 6:{
 				final List<String> mats = CMParms.parseCommas(val,true);
 				final int[] newMats = new int[mats.size()];
 				for(int x=0;x<mats.size();x++)
@@ -125,11 +126,11 @@ public class GenCompGenerator extends StdCompGenerator
 				super.setConsumedFuelType(newMats);
 				break;
 			   }
-		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 7: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
-		case 8: activate(CMath.s_bool(val)); break;
-		case 9: setManufacturerName(val); break;
-		case 10: setInstalledFactor(CMath.s_float(val)); break;
+		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 8: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
+		case 9: activate(CMath.s_bool(val)); break;
+		case 10: setManufacturerName(val); break;
+		case 11: setInstalledFactor(CMath.s_float(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

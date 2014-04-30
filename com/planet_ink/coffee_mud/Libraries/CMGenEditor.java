@@ -2620,6 +2620,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCapacity(MOB mob, Container E, int showNumber, int showFlag) throws IOException
 	{ E.setCapacity(prompt(mob,E.capacity(),showNumber,showFlag,"Capacity")); }
 
+	protected void genOpenDelayTicks(MOB mob, Container E, int showNumber, int showFlag) throws IOException
+	{ E.setOpenDelayTicks(prompt(mob,E.openDelayTicks(),showNumber,showFlag,"Open Delay Ticks")); }
+
+	protected void genOpenDelayTicks(MOB mob, Exit E, int showNumber, int showFlag) throws IOException
+	{ E.setOpenDelayTicks(prompt(mob,E.openDelayTicks(),showNumber,showFlag,"Open Delay Ticks")); }
+
 	protected void genAttack(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{ P.basePhyStats().setAttackAdjustment(prompt(mob,P.basePhyStats().attackAdjustment(),showNumber,showFlag,"Attack Adjustment")); }
 
@@ -7379,7 +7385,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAffects(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
 			if(me instanceof Container)
+			{
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
+				genOpenDelayTicks(mob,(Container)me,++showNumber,showFlag);
+			}
 			if(me instanceof Perfume)
 				((Perfume)me).setSmellList(prompt(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
 			genImage(mob,me,++showNumber,showFlag);
@@ -7494,6 +7503,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
+			genOpenDelayTicks(mob,me,++showNumber,showFlag);
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
@@ -7679,6 +7689,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 				genLidsNLocks(mob,(Container)me,++showNumber,showFlag);
+				genOpenDelayTicks(mob,(Container)me,++showNumber,showFlag);
 			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);
@@ -7777,6 +7788,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDoorName(mob,me,++showNumber,showFlag);
 				genOpenWord(mob,me,++showNumber,showFlag);
 				genCloseWord(mob,me,++showNumber,showFlag);
+				genOpenDelayTicks(mob,me,++showNumber,showFlag);
 			}
 			genExitMisc(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);

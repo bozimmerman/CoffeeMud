@@ -417,6 +417,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Container)item).capacity()));
 				text.append(CMLib.xml().convertXMLtoTag("CONT",((Container)item).containTypes()));
+				text.append(CMLib.xml().convertXMLtoTag("OPENTK",((Container)item).openDelayTicks()));
 			}
 			if(E instanceof AmmunitionWeapon)
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
@@ -2605,6 +2606,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				((Container)item).setCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
 				((Container)item).setContainTypes(CMLib.xml().getLongFromPieces(buf,"CONT"));
+				final String openDelayStr=CMLib.xml().getValFromPieces(buf,"OPENTK");
+				if((openDelayStr!=null)&&(openDelayStr.length()>0))
+					((Container)item).setOpenDelayTicks(CMath.s_int(openDelayStr));
 
 			}
 			if(item instanceof AmmunitionWeapon)

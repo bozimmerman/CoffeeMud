@@ -68,8 +68,7 @@ public class GenCageRideable extends StdCageRideable
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD"};
 	@Override
 	public String getStat(String code)
 	{
@@ -81,8 +80,9 @@ public class GenCageRideable extends StdCageRideable
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+rideBasis();
+		case 6: return ""+riderCapacity();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -100,8 +100,9 @@ public class GenCageRideable extends StdCageRideable
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 6: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

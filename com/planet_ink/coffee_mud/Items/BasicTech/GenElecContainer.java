@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -67,7 +68,7 @@ public class GenElecContainer extends StdElecContainer
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
 	@Override
 	public String getStat(String code)
 	{
@@ -79,10 +80,11 @@ public class GenElecContainer extends StdElecContainer
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+powerCapacity();
-		case 5: return ""+activated();
-		case 6: return ""+powerRemaining();
-		case 7: return ""+getManufacturerName();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+powerCapacity();
+		case 6: return ""+activated();
+		case 7: return ""+powerRemaining();
+		case 8: return ""+getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -99,10 +101,11 @@ public class GenElecContainer extends StdElecContainer
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5: activate(CMath.s_bool(val)); break;
-		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 7: setManufacturerName(val); break;
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 6: activate(CMath.s_bool(val)); break;
+		case 7: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 8: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

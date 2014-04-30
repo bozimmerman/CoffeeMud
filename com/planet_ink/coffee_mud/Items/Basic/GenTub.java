@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -64,9 +62,8 @@ public class GenTub extends StdTub
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
+											"QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
 	@Override
 	public String getStat(String code)
 	{
@@ -78,11 +75,12 @@ public class GenTub extends StdTub
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
-		case 6: return ""+thirstQuenched();
-		case 7: return ""+liquidHeld();
-		case 8: return ""+liquidType();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+rideBasis();
+		case 6: return ""+riderCapacity();
+		case 7: return ""+thirstQuenched();
+		case 8: return ""+liquidHeld();
+		case 9: return ""+liquidType();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -99,11 +97,12 @@ public class GenTub extends StdTub
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
-		case 6: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
-		case 7: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
-		case 8:{
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 6: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 7: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+		case 8: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+		case 9:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
 				setLiquidType(x);

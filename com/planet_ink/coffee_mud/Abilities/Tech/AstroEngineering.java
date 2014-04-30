@@ -342,6 +342,11 @@ public class AstroEngineering extends TechSkill
 			mob.tell("That's not an electronics item.");
 			return false;
 		}
+		if(!(targetItem instanceof ShipComponent))
+		{
+			mob.tell("That's not a space ship component.");
+			return false;
+		}
 		if(mob.isInCombat())
 		{
 			mob.tell(mob,null,null,"<S-NAME> <S-IS-ARE> in combat!");

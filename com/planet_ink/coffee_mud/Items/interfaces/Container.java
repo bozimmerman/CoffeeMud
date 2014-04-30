@@ -44,6 +44,8 @@ public interface Container extends Item
 	public long containTypes();
 	public void setContainTypes(long containTypes);
 	public void emptyPlease(boolean flatten);
+	public int openDelayTicks();
+	public void setOpenDelayTicks(int ticksToReset);
 
 	/**
 	 * For containers with lids and locks, this returns the unique string

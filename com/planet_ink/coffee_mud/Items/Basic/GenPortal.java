@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -73,8 +73,7 @@ public class GenPortal extends StdPortal
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};
 	@Override
 	public String getStat(String code)
 	{
@@ -86,10 +85,11 @@ public class GenPortal extends StdPortal
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
-		case 6: return ""+doorName();
-		case 7: return ""+closedText();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+rideBasis();
+		case 6: return ""+riderCapacity();
+		case 7: return ""+doorName();
+		case 8: return ""+closedText();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -106,10 +106,11 @@ public class GenPortal extends StdPortal
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: break;
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
 		case 5: break;
-		case 6: setExitParams(val,closeWord(),openWord(),closedText()); break;
-		case 7: setExitParams(doorName(),closeWord(),openWord(),val); break;
+		case 6: break;
+		case 7: setExitParams(val,closeWord(),openWord(),closedText()); break;
+		case 8: setExitParams(doorName(),closeWord(),openWord(),val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

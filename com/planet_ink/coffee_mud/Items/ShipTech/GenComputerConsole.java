@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -60,10 +59,8 @@ public class GenComputerConsole extends StdComputerConsole
 		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "POWERCAP","ACTIVATED","POWERREM",
-							  "MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
+										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
 	@Override
 	public String getStat(String code)
 	{
@@ -75,13 +72,14 @@ public class GenComputerConsole extends StdComputerConsole
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
-		case 6: return ""+powerCapacity();
-		case 7: return ""+activated();
-		case 8: return ""+powerRemaining();
-		case 9: return ""+getManufacturerName();
-		case 10: return ""+getInstalledFactor();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+rideBasis();
+		case 6: return ""+riderCapacity();
+		case 7: return ""+powerCapacity();
+		case 8: return ""+activated();
+		case 9: return ""+powerRemaining();
+		case 10: return ""+getManufacturerName();
+		case 11: return ""+getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -98,13 +96,14 @@ public class GenComputerConsole extends StdComputerConsole
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
-		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 7: activate(CMath.s_bool(val)); break;
-		case 8: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 9: setManufacturerName(val); break;
-		case 10: setInstalledFactor(CMath.s_float(val)); break;
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 6: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 8: activate(CMath.s_bool(val)); break;
+		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 10: setManufacturerName(val); break;
+		case 11: setInstalledFactor(CMath.s_float(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

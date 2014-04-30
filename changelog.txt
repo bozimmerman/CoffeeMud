@@ -17,6 +17,7 @@
   15. Script commands requiring location specifiers (mpat, mpgoto, mptransfer, mpechoat, etc) can find mobile mobs better using new
       syntax with the AT (@) sign.  For example, mptransfer $n hassan@midgaard#3001
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
+  17. Containers of all sorts now expose modifiable "open delay ticks".
    *. test the tech install skill!!! make sure put doesn't work, but remove does.  Check install level after.
    *. make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
       this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)

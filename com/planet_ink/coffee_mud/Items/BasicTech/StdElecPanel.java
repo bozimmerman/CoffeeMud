@@ -48,6 +48,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		super.setLidsNLocks(true, true, false, false);
 		basePhyStats().setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		this.activated=true;
+		this.openDelayTicks=0;
 		this.recoverPhyStats();
 	}
 
@@ -125,7 +126,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				((ShipComponent)msg.tool()).setInstalledFactor(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)?1.0f:0.0f);
+				if(msg.tool() instanceof ShipComponent)
+					((ShipComponent)msg.tool()).setInstalledFactor(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)?1.0f:0.0f);
 				break;
 			case CMMsg.TYP_INSTALL:
 				if((msg.tool() instanceof ShipComponent)&&(msg.value()>=0))

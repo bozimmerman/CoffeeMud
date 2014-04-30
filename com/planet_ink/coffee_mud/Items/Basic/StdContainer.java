@@ -42,6 +42,7 @@ public class StdContainer extends StdItem implements Container
 	protected boolean hasALid=false;
 	protected int capacity=0;
 	protected long containType=0;
+	protected int openDelayTicks=30;
 
 	public StdContainer()
 	{
@@ -66,6 +67,18 @@ public class StdContainer extends StdItem implements Container
 		capacity=newValue;
 	}
 
+	@Override
+	public int openDelayTicks()
+	{
+		return openDelayTicks;
+	}
+	
+	@Override
+	public void setOpenDelayTicks(int ticksToReset)
+	{
+		openDelayTicks = ticksToReset;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -369,8 +382,9 @@ public class StdContainer extends StdItem implements Container
 				if((!hasALid)||(isOpen)||(isLocked)) return;
 				if((owner() instanceof Room)
 				&&(!CMLib.flags().isGettable(this))
-				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN)))
-					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
+				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN))
+				&&(openDelayTicks>0))
+					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,openDelayTicks);
 				isLocked=false;
 				isOpen=true;
 				break;
@@ -384,8 +398,9 @@ public class StdContainer extends StdItem implements Container
 					return;
 				if((owner() instanceof Room)
 				&&(!CMLib.flags().isGettable(this))
-				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN)))
-					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
+				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN))
+				&&(openDelayTicks>0))
+					CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,openDelayTicks);
 				isLocked=false;
 				break;
 			default:
@@ -513,9 +528,6 @@ public class StdContainer extends StdItem implements Container
 				}
 		return false;
 	}
-
-
-
 
 	@Override public boolean isLocked(){return isLocked;}
 	@Override public boolean hasALock(){return hasALock;}

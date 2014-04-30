@@ -180,7 +180,7 @@ public class GenExit extends StdExit implements Modifiable
 		"CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
 		"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION",
 		"READABLETEXT","HASADOOR","DEFCLOSED","HASALOCK","DEFLOCKED",
-		"KEYNAME"
+		"KEYNAME","RESETTIME"
 	};
 	@Override public String[] getStatCodes(){return CODES;}
 	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
@@ -212,6 +212,7 @@ public class GenExit extends StdExit implements Modifiable
 		case 13: return ""+hasALock(); // hasalock
 		case 14: return ""+defaultsLocked(); // deflocked
 		case 15: return ""+keyName(); // keyname
+		case 16: return ""+openDelayTicks(); // open ticks
 		}
 		return "";
 	}
@@ -257,6 +258,7 @@ public class GenExit extends StdExit implements Modifiable
 		case 13: hasALock=CMath.s_bool(val); break; // hasalock
 		case 14: doorDefaultsLocked=CMath.s_bool(val); break; // deflocked
 		case 15: setKeyName(val); break; // keyname
+		case 16: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break; // openticks
 		}
 	}
 	@Override

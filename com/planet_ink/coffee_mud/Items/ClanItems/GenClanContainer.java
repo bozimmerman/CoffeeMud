@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -77,8 +77,7 @@ public class GenClanContainer extends StdClanContainer
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
-									 "CLANID","CITYPE"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","CLANID","CITYPE"};
 	@Override
 	public String getStat(String code)
 	{
@@ -90,8 +89,9 @@ public class GenClanContainer extends StdClanContainer
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return clanID();
-		case 5: return ""+ciType();
+		case 4: return ""+openDelayTicks();
+		case 5: return clanID();
+		case 6: return ""+ciType();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -108,8 +108,9 @@ public class GenClanContainer extends StdClanContainer
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setClanID(val); break;
-		case 5: setCIType(CMath.s_parseListIntExpression(ClanItem.CI_DESC,val)); break;
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setClanID(val); break;
+		case 6: setCIType(CMath.s_parseListIntExpression(ClanItem.CI_DESC,val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -77,8 +77,7 @@ public class GenPerfume extends StdPerfume
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
-							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST"};
 	@Override
 	public String getStat(String code)
 	{
@@ -90,10 +89,11 @@ public class GenPerfume extends StdPerfume
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+thirstQuenched();
-		case 5: return ""+liquidHeld();
-		case 6: return ""+liquidType();
-		case 7: return ""+getSmellList();
+		case 4: return ""+openDelayTicks();
+		case 5: return ""+thirstQuenched();
+		case 6: return ""+liquidHeld();
+		case 7: return ""+liquidType();
+		case 8: return ""+getSmellList();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -110,15 +110,16 @@ public class GenPerfume extends StdPerfume
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
-		case 5: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
-		case 6:{
+		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 5: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+		case 6: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+		case 7:{
 				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
 				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
 				setLiquidType(x);
 				break;
 			   }
-		case 7: setSmellList(val); break;
+		case 8: setSmellList(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
