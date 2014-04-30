@@ -124,17 +124,15 @@ public class AstroEngineering extends TechSkill
 				return;
 		}
 		Pair<String,Integer> expertise=mob.fetchExpertise(experName+"%");
-		if(expertise==null)
-		{
-			mob.addExpertise(experName+"%0");
-			expertise=mob.fetchExpertise(experName+"%");
-		}
-		final int currentExpertise=expertise.second.intValue();
+		final int currentExpertise=(expertise!=null)?expertise.second.intValue():0;
 		if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentExpertise)
 		{
-			expertise.second=Integer.valueOf(expertise.second.intValue()+1);
+			mob.addExpertise(experName+"%"+(currentExpertise+1));
 			lastCastHelp=System.currentTimeMillis();
-			mob.tell(mob,null,null,"You gain some new insights about "+experName+".");
+			AstroEngineering A=(AstroEngineering)mob.fetchAbility(ID());
+			if(A!=null)
+				A.lastCastHelp=System.currentTimeMillis();
+			mob.tell(mob,null,null,"You gain some new insights about "+CMLib.english().makePlural(experName.toLowerCase())+".");
 		}
 	}
 
@@ -158,7 +156,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.INSTALL)
 				{
-					final CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <T-NAME> into <O-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <O-NAME> into <T-NAME>.");
 					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -169,7 +167,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.REPAIR)
 				{
-					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> repair(s) <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> <S-IS-ARE> done trying to repair <T-NAME>.");
 					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -179,7 +177,8 @@ public class AstroEngineering extends TechSkill
 				}
 				else
 				{
-					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> enhance(s) <T-NAME>.");
+					String verb=altverb;
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> <S-IS-ARE> done "+verb+" <T-NAME>.");
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -211,7 +210,12 @@ public class AstroEngineering extends TechSkill
 				return false;
 			}
 			if(tickDown==4)
-				mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+op.verb+" <T-NAME>.");
+			{
+				String verb=op.verb;
+				if(op==Operation.ENHANCE)
+					verb=altverb;
+				mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+" <T-NAME>.");
+			}
 			else
 			if(((baseTickSpan-tickDown)%4)==0)
 			{
@@ -265,9 +269,10 @@ public class AstroEngineering extends TechSkill
 		targetPanel = null;
 		targetRoom = mob.location();
 		op=Operation.REPAIR;
+		int minTicks=8;
 		if(commands.firstElement() instanceof String)
 		{
-			if(((String)commands.firstElement()).equalsIgnoreCase("INSTALL"))
+			if("INSTALL".startsWith(((String)commands.firstElement()).toUpperCase()))
 			{
 				op=Operation.INSTALL;
 				commands.remove(0);
@@ -303,20 +308,20 @@ public class AstroEngineering extends TechSkill
 				}
 			}
 			else
-			if(((String)commands.firstElement()).equalsIgnoreCase("REPAIR"))
+			if("REPAIR".startsWith(((String)commands.firstElement()).toUpperCase()))
 			{
 				op=Operation.REPAIR;
 				commands.remove(0);
 			}
 			else
-			if(((String)commands.firstElement()).equalsIgnoreCase("ENHANCE"))
+			if("ENHANCE".startsWith(((String)commands.firstElement()).toUpperCase()))
 			{
 				op=Operation.ENHANCE;
 				final String[] verbs=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_VERBS);
 				final String[] adjs1=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ1);
 				final String[] adjs2=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ2);
 				final String[] adjs12=new String[adjs1.length+adjs2.length];
-				System.arraycopy(adjs1, 0, adjs12, 9, adjs1.length);
+				System.arraycopy(adjs1, 0, adjs12, 0, adjs1.length);
 				System.arraycopy(adjs2, 0, adjs12, adjs1.length, adjs2.length);
 				final String[] nouns=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_NOUN);
 				altverb=verbs[CMLib.dice().roll(1, verbs.length, -1)].trim()+" "
@@ -332,6 +337,21 @@ public class AstroEngineering extends TechSkill
 			targetItem=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if(targetItem==null)
 			targetItem=targetRoom.findItem(null,itemName);
+		if((targetItem==null)&&(targetPanel==null))
+		{
+			for(int i=0;i<targetRoom.numItems();i++)
+			{
+				Item I=targetRoom.getItem(i);
+				if((I instanceof Electronics.ElecPanel)
+				&&(((Electronics.ElecPanel)I).isOpen())
+				&&(CMLib.flags().canBeSeenBy(I, mob)))
+				{
+					targetItem=targetRoom.findItem(I,itemName);
+					if(targetItem!=null)
+						break;
+				}
+			}
+		}
 		if((targetItem==null)||(!CMLib.flags().canBeSeenBy(targetItem,mob)))
 		{
 			mob.tell("You don't see '"+itemName+"' here.");
@@ -378,6 +398,11 @@ public class AstroEngineering extends TechSkill
 				mob.tell(mob,targetItem,null,"<T-NAME> must be repaired first!");
 				return false;
 			}
+			if(targetItem instanceof ShipComponent)
+			{
+				if(((ShipComponent)targetItem).getInstalledFactor()>1.0)
+					minTicks+=(int)Math.round((((ShipComponent)targetItem).getInstalledFactor()-1.0)*0.01);
+			}
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
@@ -398,9 +423,10 @@ public class AstroEngineering extends TechSkill
 		baseTickSpan = targetItem.basePhyStats().weight()/4;
 		if(failure)
 			baseTickSpan=baseTickSpan/2;
-		if(baseTickSpan<8)
-			baseTickSpan=8;
-		startTickDown(mob, mob, baseTickSpan);
+		if(baseTickSpan<minTicks)
+			baseTickSpan=minTicks;
+		mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+op.verb+" <T-NAME>"+((targetPanel!=null)?" into "+targetPanel.name():"")+".");
+		beneficialAffect(mob, mob, asLevel, baseTickSpan);
 
 		return !failure;
 	}

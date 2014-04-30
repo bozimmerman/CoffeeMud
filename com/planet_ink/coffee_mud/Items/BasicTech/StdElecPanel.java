@@ -136,6 +136,11 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 						((ShipComponent)msg.tool()).setInstalledFactor((float)1.0);
 					else
 						((ShipComponent)msg.tool()).setInstalledFactor((float)CMath.div(msg.value(), 100.0));
+					CMMsg msg2=(CMMsg)msg.copyOf();
+					msg2.setTargetCode(CMMsg.MSG_PUT);
+					msg2.setSourceCode(CMMsg.MSG_PUT);
+					msg2.setOthersCode(CMMsg.MSG_PUT);
+					super.executeMsg(myHost, msg2);
 				}
 				break;
 			case CMMsg.TYP_ACTIVATE:
