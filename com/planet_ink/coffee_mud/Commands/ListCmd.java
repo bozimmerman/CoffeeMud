@@ -1903,6 +1903,26 @@ public class ListCmd extends StdCommand
 	{
 		return CMParms.toStringList(RawMaterial.Material.values());
 	}
+	
+	public String listSpace(MOB mob, Vector commands)
+	{
+		StringBuilder str=new StringBuilder("");
+		if((commands.size()<=2)
+		||commands.get(2).toString().equals("?")
+		||commands.get(2).toString().equals("help"))
+		{
+			str.append("List what in space? Try one of the following:\n\r");
+			str.append("LIST SPACE ALL - List everything in space everywhere!!\n\r");
+			str.append("LIST SPACE WITHIN [DISTANCE] - List within distance of current planet.\n\r");
+			str.append("LIST SPACE AROUND [X],[Y],[Z] - List all within 1 solar system of coords.\n\r");
+			str.append("LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r");
+			str.append("LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r");
+			str.append("\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r");
+			return str.toString();
+		}
+		//TODO: finish!
+		return str.toString();
+	}
 
 	public String listExpired(MOB mob)
 	{
@@ -2404,7 +2424,8 @@ public class ListCmd extends StdCommand
 		/*71*/new ListCmdEntry("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
 		/*72*/new ListCmdEntry("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		/*73*/new ListCmdEntry("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*74*/new ListCmdEntry("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS})
+		/*74*/new ListCmdEntry("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
+		/*75*/new ListCmdEntry("SPACE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS})
 	};
 
 	public boolean pause(Session sess)
@@ -2924,6 +2945,7 @@ public class ListCmd extends StdCommand
 					})).toString());
 				break;
 		case 74: s.wraplessPrintln(listExpired(mob)); break;
+		case 75: s.wraplessPrintln(listSpace(mob,commands)); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

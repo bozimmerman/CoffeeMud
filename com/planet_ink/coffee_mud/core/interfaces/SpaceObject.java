@@ -108,27 +108,33 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public long getMass();
 
 	/** distance constant useful for coordinates, is 1 kilometer, in decameters*/
-	public static final long DISTANCE_KILOMETER=100;
+	public static final long DISTANCE_KILOMETER		= 100;
+	/** distance constant useful for coordinates, is 1 AU, in decameters*/
+	public static final long DISTANCE_AU			= 14959787100L;
+	/** distance constant useful for coordinates, is 1 radius of a solar system*/
+	public static final long DISTANCE_SYSTEMRADIUS	= 590638000000L;
+	/** distance constant useful for coordinates, is 1 diameter of a solar system*/
+	public static final long DISTANCE_SYSTEMDIAMETER= DISTANCE_SYSTEMRADIUS*2L;
 	/** distance constant useful for coordinates, is 1 lightyear, in decameters*/
-	public static final long DISTANCE_LIGHTYEAR=946073047258080L;
+	public static final long DISTANCE_LIGHTYEAR		= 946073047258080L;
 	/** distance constant useful for coordinates, is 1 lightmonth, in decameters*/
-	public static final long DISTANCE_LIGHTMONTH=DISTANCE_LIGHTYEAR/12;
+	public static final long DISTANCE_LIGHTMONTH	= DISTANCE_LIGHTYEAR/12L;
 	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
-	public static final long DISTANCE_LIGHTDAY=DISTANCE_LIGHTYEAR/365;
+	public static final long DISTANCE_LIGHTDAY		= DISTANCE_LIGHTYEAR/365L;
 	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
-	public static final long DISTANCE_LIGHTHOUR=DISTANCE_LIGHTDAY/24;
+	public static final long DISTANCE_LIGHTHOUR		= DISTANCE_LIGHTDAY/24L;
 	/** distance constant useful for coordinates, is 1 lighthour, in decameters*/
-	public static final long DISTANCE_LIGHTMINUTE=DISTANCE_LIGHTHOUR/60;
+	public static final long DISTANCE_LIGHTMINUTE	= DISTANCE_LIGHTHOUR/60L;
 	/** distance constant useful for coordinates, is 1 lightsecond, in decameters*/
-	public static final long DISTANCE_LIGHTSECOND=DISTANCE_LIGHTMINUTE/60;
+	public static final long DISTANCE_LIGHTSECOND	= DISTANCE_LIGHTMINUTE/60L;
 	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
-	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*1000L;
+	public static final long DISTANCE_AROUNDGALAXY	= DISTANCE_LIGHTYEAR*1000L;
 	/** distance constant useful for coordinates, is 1 planet, in decameters*/
-	public static final long DISTANCE_PLANETRADIUS=639875;
+	public static final long DISTANCE_PLANETRADIUS	= 639875L;
 	/** distance constant useful for weapon fire, in decameters*/
-	public static final long DISTANCE_POINTBLANK=20000;
+	public static final long DISTANCE_POINTBLANK	= 20000L;
 	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
-	public static final long DISTANCE_BETWEENSTARS=DISTANCE_LIGHTYEAR*4;
+	public static final long DISTANCE_BETWEENSTARS	= DISTANCE_LIGHTYEAR*4L;
 
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;
