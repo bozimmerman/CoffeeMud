@@ -56,7 +56,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
 	{
-		@Override public int compare(Area o1, Area o2)
+		@Override 
+		public int compare(Area o1, Area o2)
 		{
 			if(o1==null) return (o2==null)?0:-1;
 			return o1.Name().compareToIgnoreCase(o2.Name());
@@ -103,7 +104,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	// areas
-	@Override public int numAreas() { return areasList.size(); }
+	@Override
+	public int numAreas() 
+	{
+		return areasList.size();
+	}
 
 	@Override
 	public void addArea(Area newOne)
@@ -138,6 +143,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
+	
 	@Override
 	public Area findAreaStartsWith(String calledThis)
 	{
@@ -183,11 +189,30 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	@Override public Enumeration<Area> areas() { return new IteratorEnumeration<Area>(areasList.iterator()); }
-	@Override public Enumeration<Area> mundaneAreas() { return new FilteredEnumeration<Area>(areas(),mundaneAreaFilter); }
-	@Override public Enumeration<Area> spaceAreas() { return new FilteredEnumeration<Area>(areas(),planetsAreaFilter); }
+	
+	@Override 
+	public Enumeration<Area> areas() 
+	{
+		return new IteratorEnumeration<Area>(areasList.iterator());
+	}
+	
+	@Override 
+	public Enumeration<Area> mundaneAreas() 
+	{
+		return new FilteredEnumeration<Area>(areas(),mundaneAreaFilter);
+	}
+	
+	@Override 
+	public Enumeration<Area> spaceAreas() 
+	{
+		return new FilteredEnumeration<Area>(areas(),planetsAreaFilter);
+	}
 
-	@Override public Enumeration<String> roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
+	@Override public Enumeration<String> roomIDs()
+	{
+		return new WorldMap.CompleteRoomIDEnumerator(this);
+	}
+	
 	@Override
 	public Area getFirstArea()
 	{
@@ -195,6 +220,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areas().nextElement();
 		return null;
 	}
+	
 	@Override
 	public Area getDefaultParentArea()
 	{
@@ -203,6 +229,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return getArea(defaultParentAreaName.trim());
 		return null;
 	}
+	
 	@Override
 	public Area getRandomArea()
 	{
@@ -326,7 +353,7 @@ public class CMMap extends StdLibrary implements WorldMap
 									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
 
-	public static void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
+	protected static void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
 		final double directionYaw = O.direction()[0];
 		double directionPitch = O.direction()[1];
@@ -445,10 +472,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2)
 	{
-		//TODO: fix this -- multiplying things by coordinates is a Bad Idea (TM)
-		return Math.round(Math.sqrt(( (O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0])*(O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0]))
-									+((O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1])*(O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1]))
-									+((O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2])*(O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2]))));
+		return Math.round(Math.sqrt(( CMath.bigMultiply(O1.speed(),O1.coordinates()[0])
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[0])))
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0])))
+									.add(CMath.bigMultiply(O1.speed(),O1.coordinates()[1])
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[1]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[1])))
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[1])))
+									.add(CMath.bigMultiply(O1.speed(),O1.coordinates()[2])
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[2]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[2])))
+										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[2]))).doubleValue()));
 	}
 
 	@Override
@@ -477,9 +509,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	@Override public Enumeration<SpaceObject> getSpaceObjects() { return this.space.objects(); }
+	@Override 
+	public Enumeration<SpaceObject> getSpaceObjects() 
+	{ 
+		return this.space.objects(); 
+	}
 
-	@Override public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries() { return this.space.objectEntries(); }
+	@Override 
+	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries() 
+	{ 
+		return this.space.objectEntries(); 
+	}
 
 	@Override
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
@@ -791,7 +831,10 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	@Override
 	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ return findInhabitants(rooms,mob,srchStr,false,timePct);}
+	{ 
+		return findInhabitants(rooms,mob,srchStr,false,timePct);
+	}
+	
 	@Override
 	public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{
@@ -799,6 +842,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(found.size()>0) return found.get(0);
 		return null;
 	}
+	
 	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
 	{
 		final Vector<MOB> found=new Vector<MOB>();
@@ -824,7 +868,10 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	@Override
 	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ return findInventory(rooms,mob,srchStr,false,timePct);}
+	{ 
+		return findInventory(rooms,mob,srchStr,false,timePct);
+	}
+	
 	@Override
 	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{
@@ -832,6 +879,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(found.size()>0) return found.get(0);
 		return null;
 	}
+	
 	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
 	{
 		final List<Item> found=new Vector<Item>();
@@ -870,9 +918,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return found;
 	}
+	
 	@Override
 	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ return findShopStock(rooms,mob,srchStr,false,false,timePct);}
+	{ 
+		return findShopStock(rooms,mob,srchStr,false,false,timePct);
+	}
+	
 	@Override
 	public Environmental findFirstShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{
@@ -880,9 +932,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(found.size()>0) return found.get(0);
 		return null;
 	}
+	
 	@Override
 	public List<Environmental> findShopStockers(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ return findShopStock(rooms,mob,srchStr,false,true,timePct);}
+	{ 
+		return findShopStock(rooms,mob,srchStr,false,true,timePct);
+	}
+	
 	@Override
 	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{
@@ -890,6 +946,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(found.size()>0) return found.get(0);
 		return null;
 	}
+	
 	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
 	{
 		final XVector<Environmental> found=new XVector<Environmental>();
@@ -1046,7 +1103,10 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	@Override
 	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
-	{ return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);}
+	{ 
+		return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);
+	}
+	
 	@Override
 	public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
 	{
@@ -1054,6 +1114,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(found.size()>0) return found.get(0);
 		return null;
 	}
+	
 	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
 	{
 		final Vector<Item> found=new Vector<Item>();
@@ -2440,7 +2501,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
@@ -2702,7 +2764,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		return new CMFile.CMVFSDir(root,root.getPath()+"map/")
 		{
-			@Override protected CMFile.CMVFSFile[] getFiles()
+			@Override 
+			protected CMFile.CMVFSFile[] getFiles()
 			{
 				final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
