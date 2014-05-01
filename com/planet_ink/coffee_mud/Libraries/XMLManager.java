@@ -55,6 +55,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		super();
 	}
+	
 	private XMLManager(final StringBuffer buf, final int startDex)
 	{
 		bufDex=startDex;

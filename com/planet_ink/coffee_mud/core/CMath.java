@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core;
 import java.util.*;
 import java.util.Map.Entry;
 import java.io.*;
+import java.math.BigInteger;
 
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -1717,4 +1718,16 @@ public class CMath
 	{
 		return a<b?b:a;
 	}
+	
+	/**
+	 * Generates a big integer from multiply two longs
+	 * @param l1 the first long
+	 * @param l2 the second long
+	 * @return the big big integer
+	 */
+	public final static BigInteger bigMultiply(long l1, long l2)
+	{
+		return BigInteger.valueOf(l1).multiply(BigInteger.valueOf(l2));
+	}
+	
 }
