@@ -38,6 +38,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 {
 	@Override public String ID(){return "XMLManager";}
 
+	protected final static String HEX_DIGITS="0123456789ABCDEF";
+	
 	protected final String[][] IGNORE_TAG_BOUNDS={{"!--","-->"},{"?","?>"},{"![CDATA[","]]>"}};
 	protected enum State {	START, BEFORETAG, INTAG, BEFOREATTRIB, BEGINTAGSELFEND, BEFORECLOSETAG, INCLOSETAG,
 							AFTERCLOSETAG, INATTRIB, INPOSTATTRIB, BEFOREATTRIBVALUE, INATTRIBVALUE,

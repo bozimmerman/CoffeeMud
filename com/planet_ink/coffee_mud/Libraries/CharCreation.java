@@ -1418,6 +1418,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				parms[1]=generateRandomName(3,6);
 				while((!isOkName(parms[1],false)) || (CMLib.players().playerExists(parms[1])) || (CMLib.players().accountExists(parms[1])))
 					parms[1] = generateRandomName(3, 8);
+				loginObj.savedInput=CMStrings.replaceFirst(loginObj.savedInput, "*", parms[1]);
 			}
 			if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.getAccountName())))
 			{
