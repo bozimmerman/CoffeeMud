@@ -19,9 +19,6 @@
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
   17. Containers of all sorts now expose modifiable "open delay ticks".
   18. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
-   *. make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
-      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
-   *. retest private libs, private dbtables, private classes, private area objects, private players
    *. some way to reposition planets? esp relative to nearby ones
    *. create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.
    *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
@@ -36,8 +33,9 @@
    *. make ship dampeners
    *. engines should have max turn thrust, different from max thrust
    *. finish main ship software for controlling all this stuff
-   *. add electronics to guides
+   *. add electronics to guides, how to make a ship, details about tech
    *. add electronics to MG
+   *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
     
 # Build 5.8.1 Release 3/14/2014
