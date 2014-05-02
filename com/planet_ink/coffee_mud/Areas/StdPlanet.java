@@ -40,7 +40,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	protected static double[]	emptyDirection	= new double[2];
 
 	protected long[]	coordinates	= new long[3];
-	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
+	protected long		radius		= SpaceObject.Distance.PlanetRadius.dm;
 
 	public StdPlanet()
 	{

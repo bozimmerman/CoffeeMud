@@ -212,4 +212,24 @@ public class StdProgram extends StdItem implements Software
 		}
 		super.executeMsg(host, msg);
 	}
+	
+	public String display(long d)
+	{
+		return CMLib.english().sizeDescShort(d);
+	}
+	
+	public String display(long[] coords)
+	{
+		return CMLib.english().coordDescShort(coords);
+	}
+	
+	public String display(double[] dir)
+	{
+		return CMLib.english().directionDescShort(dir);
+	}
+	
+	public String displayPerSec(long speed)
+	{
+		return CMLib.english().speedDescShort(speed);
+	}
 }

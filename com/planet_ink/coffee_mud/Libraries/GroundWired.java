@@ -47,15 +47,17 @@ public class GroundWired extends StdLibrary implements TechLibrary
 {
 	@Override public String ID(){return "GroundWired";}
 
-	public Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
+	protected Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
 
-	public final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
+	protected final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
 
-	public final Map<String,LinkedList<WeakReference<Electronics>>> sets=new Hashtable<String,LinkedList<WeakReference<Electronics>>>();
+	protected final Map<String,LinkedList<WeakReference<Electronics>>> sets=new Hashtable<String,LinkedList<WeakReference<Electronics>>>();
 
-	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
+	protected final Map<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents	= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
 
-	public final AtomicInteger nextKey = new AtomicInteger(0);
+	protected final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
+
+	protected final AtomicInteger nextKey = new AtomicInteger(0);
 
 	public int globalTechLevel = 0;
 	public long globalTechReachedOn=0;
@@ -207,10 +209,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
-	@Override public TickClient getServiceClient() { return serviceClient;}
-	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents
-													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>();
-
+	@Override 
+	public TickClient getServiceClient() 
+	{
+		return serviceClient;
+	}
+	
 	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>()
 	{
 		@Override public boolean hasNext() { return false; }
@@ -314,22 +318,22 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					CMLib.map().moveSpaceObject(O);
 					cube=cube.expand(O.direction(),O.speed());
 				}
-				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.DISTANCE_LIGHTMINUTE);
+				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				for(final SpaceObject cO : cOs)
 					if(cO != O)
 					{
 						if(cO.getBounds().intersects(cube))
 						{
-							// we have a collision! or landing
+							//TODO: we have a collision! or landing
 							// if destroyed, break
 						}
 						else
 						if((cO instanceof Area)
 						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
 						{
-							// gravity
+							//TODO: gravity
 						}
-						// we might also have a landing, or something near one...
+						//TODO: we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
 						// the nearby things.
 						// this is important because this needs to do gravity also.
@@ -341,7 +345,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{

@@ -4529,23 +4529,36 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell("(no change)");
 		}
 	}
+	
 	protected void genDeity8(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setClericSin(prompt(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin",false,false)); }
+	{ 
+		E.setClericSin(prompt(mob,E.getClericSin(),showNumber,showFlag,"Cleric Sin",false,false)); 
+	}
 
 	protected void genDeity9(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setWorshipSin(prompt(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin",false,false)); }
+	{ 
+		E.setWorshipSin(prompt(mob,E.getWorshipSin(),showNumber,showFlag,"Worshiper Sin",false,false)); 
+	}
 
 	protected void genDeity0(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setClericPowerup(prompt(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual",false,false)); }
+	{ 
+		E.setClericPowerup(prompt(mob,E.getClericPowerup(),showNumber,showFlag,"Cleric Power Ritual",false,false)); 
+	}
 
 	protected void genDeity11(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false)); }
+	{ 
+		E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false)); 
+	}
 
 	protected void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
-	{ E.setXGridSize(prompt(mob,E.xGridSize(),showNumber,showFlag,"Size (X)")); }
+	{ 
+		E.setXGridSize(prompt(mob,E.xGridSize(),showNumber,showFlag,"Size (X)")); 
+	}
 
 	protected void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
-	{ E.setYGridSize(prompt(mob,E.yGridSize(),showNumber,showFlag,"Size (Y)")); }
+	{ 
+		E.setYGridSize(prompt(mob,E.yGridSize(),showNumber,showFlag,"Size (Y)")); 
+	}
 
 	protected void genLocationCoords(MOB mob, LocationRoom E, int showNumber, int showFlag) throws IOException
 	{
@@ -4553,6 +4566,157 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[0]),showNumber,showFlag,"Horiz. Dir From Core","This is a horizontal direction in degrees from 0 to 360.",0,360));
 		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[1]),showNumber,showFlag,"Vert. Dir From Core","This is a vertical direction in degrees from 0 to 360.",0,360));
 		E.setDirectionFromCore(newDir);
+	}
+
+	protected Long parseSpaceDistance(String dist)
+	{
+		if(dist==null)
+			return null;
+		dist=dist.trim();
+		int digits=-1;
+		if((dist.length()>0)&&(dist.charAt(0)=='-'))
+			digits++;
+		while((digits<dist.length()-1)&&(Character.isDigit(dist.charAt(digits+1))))
+			digits++;
+		if(digits<0)
+			return null;
+		Long value=Long.valueOf(dist.substring(0,digits+1));
+		String unit=dist.substring(digits+1).trim();
+		if(unit.length()==0)
+			return value;
+		SpaceObject.Distance distUnit=(SpaceObject.Distance)CMath.s_valueOf(SpaceObject.Distance.class, unit);
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(d.abbr.equalsIgnoreCase(unit))
+					distUnit=d;
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(d.name().equalsIgnoreCase(unit))
+					distUnit=d;
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(unit.toLowerCase().startsWith(d.name().toLowerCase()))
+					distUnit=d;
+		if(distUnit==null)
+			return null;
+		return new Long(value.longValue() * distUnit.dm);
+	}
+	
+	public void genSpaceStuff(MOB mob, SpaceObject E, int showNumber, int showFlag) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			final StringBuffer buf=new StringBuffer();
+			buf.append(showNumber+". ");
+			buf.append("Radius: "+CMLib.english().sizeDescShort(E.radius())+", Coords in space: "+CMLib.english().coordDescShort(E.coordinates())+"\n\r");
+			buf.append(showNumber+". Moving: ");
+			if(E.speed()<=0)
+				buf.append("no");
+			else
+				buf.append(CMLib.english().speedDescShort(E.speed())+", Direction: "+CMLib.english().directionDescShort(E.direction())+"\n\r");
+			mob.tell(buf.toString());
+			return;
+		}
+		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			String val=mob.session().prompt(showNumber+". Radius (ENTER="+(CMLib.english().sizeDescShort(E.radius()))+"): ");
+			if((val==null)||(val.trim().length()==0))
+			{
+				mob.tell("(unchanged)");
+				break;
+			}
+			Long newValue=parseSpaceDistance(val);
+			if((newValue==null)||(newValue.longValue()<0))
+				mob.tell("Unknown radius: '"+val+"', valid units include: "+SpaceObject.Distance.getAbbrList()+".");
+			else
+			{
+				E.setRadius(newValue.longValue());
+				break;
+			}
+		}
+		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			String val=mob.session().prompt(showNumber+". Coordinates in Space (ENTER="+(CMLib.english().coordDescShort(E.coordinates()))+"): ");
+			if((val==null)||(val.trim().length()==0))
+			{
+				mob.tell("(unchanged)");
+				break;
+			}
+			Long[] valL=new Long[3];
+			List<String> valsL=CMParms.parseCommas(val,true);
+			if(valsL.size()!=3)
+				mob.tell("Value must be 3 distances, positive or negative, comma delimited.");
+			else
+			{
+				boolean fail=true;
+				for(int i=0;i<3;i++)
+				{
+					Long newValue=parseSpaceDistance(valsL.get(i));
+					if(newValue==null)
+					{
+						mob.tell("Unknown coord: '"+valsL.get(i)+"', valid units include: "+SpaceObject.Distance.getAbbrList()+".");
+						break;
+					}
+					else
+					{
+						valL[i]=newValue;
+						if(i==2) fail=false;
+					}
+				}
+				if(!fail)
+				{
+					E.setCoords(new long[]{valL[0].longValue(),valL[1].longValue(),valL[2].longValue()});
+					break;
+				}
+			}
+		}
+		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			String val=mob.session().prompt(showNumber+". Speed in Space (ENTER="+(CMLib.english().speedDescShort(E.speed()))+"): ");
+			if((val==null)||(val.trim().length()==0))
+			{
+				mob.tell("(unchanged)");
+				break;
+			}
+			val=val.trim();
+			if(val.trim().toLowerCase().endsWith("/sec"))
+				val=val.substring(0,val.length()-4);
+			if(val.trim().toLowerCase().endsWith("/second"))
+				val=val.substring(0,val.length()-7);
+			Long newValue=parseSpaceDistance(val);
+			if((newValue==null)||(newValue.longValue()<0))
+				mob.tell("Unknown speed/sec: '"+val+"', valid units include: "+SpaceObject.Distance.getAbbrList()+".");
+			else
+			{
+				E.setSpeed(newValue.longValue());
+				break;
+			}
+		}
+		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			String val=mob.session().prompt(showNumber+". Direction in Space (ENTER="+(CMLib.english().directionDescShort(E.direction()))+"): ");
+			if((val==null)||(val.trim().length()==0))
+			{
+				mob.tell("(unchanged)");
+				break;
+			}
+			val=val.toLowerCase().trim();
+			int x=val.indexOf(" mark ");
+			if((x<0)
+			||(!CMath.isDouble(val.substring(0,x).trim()))
+			||(!CMath.isDouble(val.substring(x+6).trim()))
+			||(CMath.s_double(val.substring(0,x).trim())<0)
+			||(CMath.s_double(val.substring(0,x).trim())>=360)
+			||(CMath.s_double(val.substring(x+6).trim())<0)
+			||(CMath.s_double(val.substring(x+6).trim())>=360))
+				mob.tell("Invalid direction in degrees: '"+val+"', you might need to include 'mark' in the direction.");
+			else
+			{
+				E.setDirection(new double[]{CMath.s_double(val.substring(0,x).trim()),CMath.s_double(val.substring(x+6).trim())});
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -8563,7 +8727,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void modifyGenArea(MOB mob, Area myArea) throws IOException
+	public void modifyArea(MOB mob, Area myArea) throws IOException
 	{
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -8595,6 +8759,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Xml File Path","GENERATIONFILEPATH");
 				promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Variables (VAR=VAL format)","OTHERVARS");
+			}
+			if(myArea instanceof SpaceObject)
+			{
+				SpaceObject spaceArea=(SpaceObject)myArea;
+				genSpaceStuff(mob,spaceArea,++showNumber,showFlag);
 			}
 			genBehaviors(mob,myArea,++showNumber,showFlag);
 			genAffects(mob,myArea,++showNumber,showFlag);

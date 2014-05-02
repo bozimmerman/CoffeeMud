@@ -107,34 +107,64 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 */
 	public long getMass();
 
-	/** distance constant useful for coordinates, is 1 kilometer, in decameters*/
-	public static final long DISTANCE_KILOMETER		= 100;
-	/** distance constant useful for coordinates, is 1 AU, in decameters*/
-	public static final long DISTANCE_AU			= 14959787100L;
-	/** distance constant useful for coordinates, is 1 radius of a solar system*/
-	public static final long DISTANCE_SYSTEMRADIUS	= 590638000000L;
-	/** distance constant useful for coordinates, is 1 diameter of a solar system*/
-	public static final long DISTANCE_SYSTEMDIAMETER= DISTANCE_SYSTEMRADIUS*2L;
-	/** distance constant useful for coordinates, is 1 lightyear, in decameters*/
-	public static final long DISTANCE_LIGHTYEAR		= 946073047258080L;
-	/** distance constant useful for coordinates, is 1 lightmonth, in decameters*/
-	public static final long DISTANCE_LIGHTMONTH	= DISTANCE_LIGHTYEAR/12L;
-	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
-	public static final long DISTANCE_LIGHTDAY		= DISTANCE_LIGHTYEAR/365L;
-	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
-	public static final long DISTANCE_LIGHTHOUR		= DISTANCE_LIGHTDAY/24L;
-	/** distance constant useful for coordinates, is 1 lighthour, in decameters*/
-	public static final long DISTANCE_LIGHTMINUTE	= DISTANCE_LIGHTHOUR/60L;
-	/** distance constant useful for coordinates, is 1 lightsecond, in decameters*/
-	public static final long DISTANCE_LIGHTSECOND	= DISTANCE_LIGHTMINUTE/60L;
-	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
-	public static final long DISTANCE_AROUNDGALAXY	= DISTANCE_LIGHTYEAR*1000L;
-	/** distance constant useful for coordinates, is 1 planet, in decameters*/
-	public static final long DISTANCE_PLANETRADIUS	= 639875L;
-	/** distance constant useful for weapon fire, in decameters*/
-	public static final long DISTANCE_POINTBLANK	= 20000L;
-	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
-	public static final long DISTANCE_BETWEENSTARS	= DISTANCE_LIGHTYEAR*4L;
+	/**
+	 * Some distance constants.  Not really proper enumerations, but
+	 * it's a nice way to create custom objects cleanly.
+	 * @author Bo Zimmerman
+	 */
+	public static enum Distance
+	{
+		Decameter("dm",1L),
+		Kilometer("km",100L),
+		AstroUnit("au",14959787100L),
+		SolarSystemRadius("sr",590638000000L),
+		SolarSystemDiameter("sd",590638000000L*2L),
+		LightYear("lY",946073047258080L),
+		LightMonth("lM",946073047258080L/12L),
+		LightDay("lD",946073047258080L/365L),
+		LightHour("lh",946073047258080L/(365L*24L)),
+		LightMinute("lm",946073047258080L/(365L*24L)),
+		LightSecond("ls",946073047258080L/(365L*24L*60L)),
+		Galaxy("g",946073047258080L*1000L),
+		PlanetRadius("pr",639875L),
+		StarDistance("sd",946073047258080L*4L),
+		SpaceCombatPointBlank("pb",20000L),
+		;
+		public final long dm;
+		public final String abbr;
+		private static String abbrList="";
+		private Distance(String abbr, long distance)
+		{
+			this.abbr=abbr;
+			this.dm=distance;
+		}
+		public static String getAbbrList()
+		{
+			if(abbrList.length()==0)
+			{
+				for(Distance d : Distance.values())
+					abbrList+=d.abbr+", ";
+				abbrList=abbrList.substring(0,abbrList.length()-2);
+			}
+			return abbrList;
+		}
+	}
+	
+	/**
+	 * Ordered array of distance enums appropriate for telling distances in space.
+	 */
+	public static final Distance[] DISTANCES = new Distance[]
+	{
+		Distance.LightYear,
+		Distance.LightMonth,
+		Distance.LightDay,
+		Distance.LightHour,
+		Distance.LightMinute,
+		Distance.LightSecond,
+		Distance.AstroUnit,
+		Distance.Kilometer,
+		Distance.Decameter,
+	};
 
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;

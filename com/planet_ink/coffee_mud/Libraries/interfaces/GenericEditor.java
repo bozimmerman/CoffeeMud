@@ -33,7 +33,7 @@ import java.util.*;
 */
 public interface GenericEditor extends CMLibrary
 {
-	public void modifyGenArea(MOB mob, Area myArea) throws IOException;
+	public void modifyArea(MOB mob, Area myArea) throws IOException;
 	public Room modifyRoom(MOB mob, Room R) throws IOException;
 	public void modifyAccount(MOB mob, PlayerAccount A) throws IOException;
 	public void modifyStdItem(MOB mob, Item thang) throws IOException;

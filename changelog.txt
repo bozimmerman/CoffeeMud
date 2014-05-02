@@ -19,9 +19,11 @@
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
   17. Containers of all sorts now expose modifiable "open delay ticks".
   18. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
-   *. some way to reposition planets? esp relative to nearby ones.  Also, ability to list objects in space.
-   *. create space objects, esp stars.  planets should be thin areas, solar systems are triggered 
-        to load when players fly near enough.  Modify solar systems.  Destroy solar systems. etc.
+   *. test way to reposition planets? esp relative to nearby ones (for moons I guess).
+   *. ability to list objects in space.
+   *. create space objects, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.  
+   *. Modify space objects. Ability to move them relative to each other would be cool...  
+   *. Destroy space objects.
    *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)

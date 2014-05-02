@@ -39,6 +39,7 @@ import java.util.regex.*;
 public class EnglishParser extends StdLibrary implements EnglishParsing
 {
 	@Override public String ID(){return "EnglishParser";}
+	
 	private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
 	public static boolean[] PUNCTUATION_TABLE=null;
 	public final static char[] ALL_CHRS="ALL".toCharArray();
@@ -112,6 +113,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return str.substring(0,str.length()-1)+(uppercase?"VES":"ves");
 		return str+(uppercase?"S":"s");
 	}
+	
 	@Override
 	public String cleanArticles(String s)
 	{
@@ -127,61 +129,112 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		int i=0;
 		for(;i<str.length();i++)
-		  switch(str.charAt(i))
-		  {
-		  case '^':
-		  {
-			  i++;
-			  if(i<str.length())
-			  {
-				  switch(str.charAt(i))
-				  {
-				  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
-				  case '<':
-					while(i<str.length()-1)
+		{
+			switch(str.charAt(i))
+			{
+			case '^':
+			{
+				i++;
+				if(i<str.length())
+				{
+					switch(str.charAt(i))
 					{
-						if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
-							i++;
-						else
+					case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+					case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+					case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+					case '<':
+						while(i<str.length()-1)
 						{
-							i++;
-							break;
+							if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+								i++;
+							else
+							{
+								i++;
+								break;
+							}
 						}
+						break;
+					case '&':
+						while(i<str.length())
+						{
+							if(str.charAt(i)!=';')
+								i++;
+							else
+								break;
+						}
+						break;
 					}
-					break;
-				  case '&':
-					while(i<str.length())
-					{
-						if(str.charAt(i)!=';')
-							i++;
-						else
-							break;
-					}
-					break;
-				  }
-			  }
-			  break;
-		  }
-		  case 'a': case 'e': case 'i': case 'o': case 'u':
-		  case 'A': case 'E': case 'I': case 'O': case 'U':
-			  return "an";
-		  default:
-			  if(Character.isLetter(str.charAt(i)))
-				  return "a";
-			  else
-				  return "";
-		  }
+				}
+				break;
+			}
+			case 'a': case 'e': case 'i': case 'o': case 'u':
+			case 'A': case 'E': case 'I': case 'O': case 'U':
+				return "an";
+			default:
+				if(Character.isLetter(str.charAt(i)))
+					return "a";
+				else
+					return "";
+			}
+		}
 		return "";
 	}
 
+	protected String getBestDistance(long d)
+	{
+		String min=null;
+		for(SpaceObject.Distance distance : SpaceObject.DISTANCES)
+		{
+			if(distance.dm < d)
+			{
+				double val=(double)d/(double)distance.dm;
+				if((val<0)||(val<100))
+					val=Math.round(val*100.0)/100.0;
+				else
+					val=Math.round(val);
+				if(val!=0.0)
+				{
+					String s=Double.toString(val)+distance.abbr;
+					if((min==null)||(min.length()>s.length()))
+						min=s;
+				}
+			}
+		}
+		if(min==null)
+			return d+"dm";
+		return min;
+	}
+	
+	@Override
+	public String sizeDescShort(long size)
+	{
+		return getBestDistance(size);
+	}
+	
+	@Override
+	public String coordDescShort(long[] coords)
+	{
+		return getBestDistance(coords[0])+","+getBestDistance(coords[1])+","+getBestDistance(coords[2]);
+	}
+	
+	@Override
+	public String speedDescShort(long speed)
+	{
+		return getBestDistance(speed)+"/sec";
+	}
+	
+	@Override
+	public String directionDescShort(double[] dir)
+	{
+		return Math.round(Math.toDegrees(dir[0])*100)/100.0+" mark "+Math.round(Math.toDegrees(dir[1])*100)/100.0;
+	}
+	
 	@Override
 	public String getFirstWord(final String str)
 	{
-	  int i=0;
-	  int start=-1;
-	  for(;i<str.length();i++)
+		int i=0;
+		int start=-1;
+		for(;i<str.length();i++)
 		switch(str.charAt(i))
 		{
 		case '^':
@@ -195,26 +248,26 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
 				case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
 				case '<':
-				  while(i<str.length()-1)
-				  {
-					  if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
-						  i++;
-					  else
-					  {
-						  i++;
-						  break;
-					  }
-				  }
-				  break;
+					while(i<str.length()-1)
+					{
+						if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+							i++;
+						else
+						{
+							i++;
+							break;
+						}
+					}
+					break;
 				case '&':
-				  while(i<str.length())
-				  {
-					  if(str.charAt(i)!=';')
-						  i++;
-					  else
-						  break;
-				  }
-				  break;
+					while(i<str.length())
+					{
+						if(str.charAt(i)!=';')
+							i++;
+						else
+							break;
+					}
+					break;
 				}
 			}
 			break;
@@ -572,6 +625,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
 	}
+	
 	@Override
 	public void evoke(MOB mob, Vector<String> commands)
 	{
@@ -639,7 +693,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return new String(str2,0,s);
 	}
 
-	private boolean isPunctuation(byte b)
+	private boolean isPunctuation(final byte b)
 	{
 		if((b<0)||(b>255)) return false;
 		return PUNCTUATION_TABLE[b];
@@ -728,12 +782,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
-						  if(tos < toSrchC.length-4)
-							  tos+=4;
-						  break;
+							if(tos < toSrchC.length-4)
+								tos+=4;
+							break;
 						default:
-						  tos++;
-						  break;
+							tos++;
+							break;
 						}
 					break;
 				case ',':
@@ -747,23 +801,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				switch(srchC[x])
 				{
 				case '^':
-				  x++;
-				  if(tos<srchC.length)
-					  switch(srchC[x])
-					  {
-					  case ColorLibrary.COLORCODE_BACKGROUND:
-						  if(x < srchC.length-1)
-							  x+=2;
-						  break;
-					  case ColorLibrary.COLORCODE_FANSI256:
-					  case ColorLibrary.COLORCODE_BANSI256:
+					x++;
+					if(tos<srchC.length)
+						switch(srchC[x])
+						{
+						case ColorLibrary.COLORCODE_BACKGROUND:
+							if(x < srchC.length-1)
+								x+=2;
+							break;
+						case ColorLibrary.COLORCODE_FANSI256:
+						case ColorLibrary.COLORCODE_BANSI256:
 						if(x < srchC.length-4)
 							x+=4;
 						break;
-					  default:
+						default:
 						x++;
 						break;
-					  }
+						}
 					break;
 				case ',':
 				case '?':
@@ -780,7 +834,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							break;
 						else
 						if(x==(srchC.length-1))
-						   found=true;
+							 found=true;
 						else
 							tos++;
 					}
@@ -816,8 +870,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return (flags.occurrance+1)+"."+flags.srchStr;
 	}
 
-	@Override public int getContextNumber(ItemCollection cont, Environmental E){ return getContextNumber(toCollection(cont),E);}
-	@Override public int getContextNumber(Environmental[] list, Environmental E){ return getContextNumber(new XVector<Environmental>(list),E);}
+	@Override
+	public int getContextNumber(ItemCollection cont, Environmental E)
+	{
+		return getContextNumber(toCollection(cont),E);
+	}
+	
+	@Override
+	public int getContextNumber(Environmental[] list, Environmental E)
+	{
+		return getContextNumber(new XVector<Environmental>(list),E);
+	}
+	
 	@Override
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E)
 	{
@@ -836,6 +900,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		return -1;
 	}
+	
 	private Collection<? extends Environmental> toCollection(ItemCollection cont)
 	{
 		final LinkedList<Item> list=new LinkedList<Item>();
@@ -844,8 +909,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return list;
 	}
 
-	@Override public int getContextSameNumber(ItemCollection cont, Environmental E){ return getContextSameNumber(toCollection(cont),E);}
-	@Override public int getContextSameNumber(Environmental[] list, Environmental E){ return getContextSameNumber(new XVector<Environmental>(list),E);}
+	@Override
+	public int getContextSameNumber(ItemCollection cont, Environmental E)
+	{
+		return getContextSameNumber(toCollection(cont),E);
+	}
+	
+	@Override
+	public int getContextSameNumber(Environmental[] list, Environmental E)
+	{
+		return getContextSameNumber(new XVector<Environmental>(list),E);
+	}
+	
 	@Override
 	public int getContextSameNumber(Collection<? extends Environmental> list, Environmental E)
 	{
@@ -864,8 +939,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		return -1;
 	}
-	@Override public String getContextName(ItemCollection cont, Environmental E){ return getContextName(toCollection(cont),E);}
-	@Override public String getContextName(Environmental[] list, Environmental E){ return getContextName(new XVector<Environmental>(list),E);}
+	
+	@Override
+	public String getContextName(ItemCollection cont, Environmental E)
+	{
+		return getContextName(toCollection(cont),E);
+	}
+	
+	@Override
+	public String getContextName(Environmental[] list, Environmental E)
+	{
+		return getContextName(new XVector<Environmental>(list),E);
+	}
+	
 	@Override
 	public String getContextName(Collection<? extends Environmental> list, Environmental E)
 	{
@@ -876,8 +962,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
-	@Override public String getContextSameName(ItemCollection cont, Environmental E){ return getContextSameName(toCollection(cont),E);}
-	@Override public String getContextSameName(Environmental[] list, Environmental E){ return getContextSameName(new XVector<Environmental>(list),E);}
+	@Override 
+	public String getContextSameName(ItemCollection cont, Environmental E)
+	{
+		return getContextSameName(toCollection(cont),E);
+	}
+	
+	@Override
+	public String getContextSameName(Environmental[] list, Environmental E)
+	{
+		return getContextSameName(new XVector<Environmental>(list),E);
+	}
+	
 	@Override
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E)
 	{
@@ -1429,7 +1525,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>=1;i--)
 			if(commands.get(i).equalsIgnoreCase("from") || commands.get(i).equalsIgnoreCase("in")|| commands.get(i).equalsIgnoreCase("on"))
-			{ fromDex=i; containerDex=i+1;  break;}
+			{ 
+				fromDex=i; 
+				containerDex=i+1;  
+				break;
+			}
+		
 		final String possibleContainerID=CMParms.combine(commands,containerDex);
 
 
@@ -1574,7 +1675,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return maxToGive;
 	}
 
-	protected class FetchFlags
+	protected static class FetchFlags
 	{
 		public String srchStr;
 		public int occurrance;

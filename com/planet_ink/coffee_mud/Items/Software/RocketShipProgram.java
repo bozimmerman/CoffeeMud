@@ -85,7 +85,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");
 		else
 		{
-			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.DISTANCE_LIGHTMINUTE);
+			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.Distance.LightMinute.dm);
 			SpaceObject orbitingPlanet=null;
 			SpaceObject altitudePlanet=null;
 			for(final SpaceObject orb : orbs)
@@ -100,9 +100,9 @@ public class RocketShipProgram extends GenShipProgram
 				}
 
 			str.append("^H").append(CMStrings.padRight("Speed",10));
-			str.append("^N").append(CMStrings.padRight(Long.toString(ship.speed()),20));
+			str.append("^N").append(CMStrings.padRight(displayPerSec(ship.speed()),20));
 			str.append("^H").append(CMStrings.padRight("Direction",10));
-			final String dirStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.direction()[0])*100)/100.0).toString();
+			final String dirStr=display(ship.direction());
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight("Location",10));
@@ -111,12 +111,12 @@ public class RocketShipProgram extends GenShipProgram
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
 			str.append("^H").append(CMStrings.padRight("Facing",10));
-			final String facStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).toString();
+			final String facStr=display(ship.facing());
 			str.append("^N").append(CMStrings.padRight(facStr,20));
 			if(altitudePlanet!=null)
 			{
 				str.append("^H").append(CMStrings.padRight("Altitude",10));
-				str.append("^N").append(CMStrings.padRight(Long.toString((CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius())/10)+"km",20));
+				str.append("^N").append(CMStrings.padRight(display((CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius())/10),20));
 			}
 			else
 			{

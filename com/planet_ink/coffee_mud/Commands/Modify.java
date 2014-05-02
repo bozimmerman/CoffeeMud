@@ -470,13 +470,13 @@ public class Modify extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around wildly.");
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
-			CMLib.genEd().modifyGenArea(mob,myArea);
+			CMLib.genEd().modifyArea(mob,myArea);
 		else
 		if((commands.size()==3)&&(CMLib.map().getArea((String)commands.elementAt(2))!=null))
 		{
 			myArea=CMLib.map().getArea((String)commands.elementAt(2));
 			oldName=myArea.Name();
-			CMLib.genEd().modifyGenArea(mob,myArea);
+			CMLib.genEd().modifyArea(mob,myArea);
 		}
 		else
 		{

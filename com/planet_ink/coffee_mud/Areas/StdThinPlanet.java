@@ -39,7 +39,7 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 
 	protected long[]	coordinates	= new long[3];
 	protected double[]	direction	= new double[2];
-	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
+	protected long		radius		= SpaceObject.Distance.PlanetRadius.dm;
 
 	public StdThinPlanet()
 	{
