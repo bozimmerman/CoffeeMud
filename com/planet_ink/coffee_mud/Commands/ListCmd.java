@@ -2487,7 +2487,7 @@ public class ListCmd extends StdCommand
 			this.shortName=shortName;
 			this.len=Integer.valueOf(len);
 		}
-		public Object getFromArea(Area A)
+		public Comparable getFromArea(Area A)
 		{
 			switch(this)
 			{
@@ -2502,8 +2502,10 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public Object getAreaStatFromSomewhere(Area A, String stat)
+	public Comparable getAreaStatFromSomewhere(Area A, String stat)
 	{
+		if(A==null)
+			return null;
 		stat=stat.toUpperCase().trim();
 		final ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, stat);
 		final Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
@@ -2676,31 +2678,42 @@ public class ListCmd extends StdCommand
 		Enumeration<Area> a;
 		if(sortBys!=null)
 		{
-			TreeMap<Comparable,Area> sorted=new TreeMap<Comparable,Area>();
+			final List<String> sortFields=sortBys;
+			List<Area> sorted=new ArrayList<Area>();
 			for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
 			{
 				final Area A=as.nextElement();
 				if((filter!=null)&&(!filter.passesFilter(A)))
 					continue;
-				sorted.put(A.name(), A);
+				sorted.add(A);
 			}
-			for(int si=sortBys.size()-1; si>=0;si--)
-			{
-				TreeMap<Comparable,Area> newsorted=new TreeMap<Comparable,Area>();
-				for (final Area A : sorted.values())
+			Collections.sort(sorted,new Comparator<Area>(){
+				@Override
+				public int compare(Area arg0, Area arg1) 
 				{
-					final Object val=getAreaStatFromSomewhere(A,sortBys.get(si));
-					if(val==null)
+					for(String sortField : sortFields)
 					{
-						newsorted=sorted;
-						break;
+						Comparable val0=getAreaStatFromSomewhere(arg0,sortField);
+						Comparable val1=getAreaStatFromSomewhere(arg1,sortField);
+						int comp=1;
+						if((val0==null)&&(val1==null))
+							comp=0;
+						else
+						if(val0==null)
+							comp=-1;
+						else
+						if(val1==null)
+							comp=1;
+						else
+							comp=val0.compareTo(val1);
+						if(comp!=0)
+							return comp;
 					}
-					newsorted.put((Comparable)val, A);
+					return 0;
 				}
-				sorted=newsorted;
-			}
+			});
 			if(sorted.size()>0)
-				a=new IteratorEnumeration<Area>(sorted.values().iterator());
+				a=new IteratorEnumeration<Area>(sorted.iterator());
 			else
 				a=CMLib.map().areas();
 		}
