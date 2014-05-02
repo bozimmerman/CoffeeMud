@@ -194,7 +194,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					val=Math.round(val);
 				if(val!=0.0)
 				{
-					String s=Double.toString(val)+distance.abbr;
+					String s=Double.toString(val);
+					if(s.endsWith(".0"))
+						s=s.substring(0,s.length()-2);
+					s+=distance.abbr;
 					if((min==null)||(min.length()>s.length()))
 						min=s;
 				}

@@ -18,6 +18,7 @@
       syntax with the AT (@) sign.  For example, mptransfer $n hassan@midgaard#3001
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
   17. Containers of all sorts now expose modifiable "open delay ticks".
+   *. --- start of tech ---
   18. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
    *. test way to reposition planets? esp relative to nearby ones (for moons I guess).
    *. ability to list objects in space.
@@ -38,6 +39,7 @@
    *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, details about tech
    *. add electronics to MG
+   *. --- end of tech ---
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
     

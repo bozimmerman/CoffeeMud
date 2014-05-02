@@ -112,7 +112,12 @@ public interface GenericEditor extends CMLibrary
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException;
 
-	public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
+	public static interface CMEval 
+	{ 
+		public Object eval(Object val, Object[] choices, boolean emptyOK) 
+				throws CMException;
+	}
+	
 	public static class CMEvalStrChoice implements CMEval
 	{
 		public static CMEvalStrChoice INSTANCE = new CMEvalStrChoice();
