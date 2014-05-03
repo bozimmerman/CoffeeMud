@@ -96,7 +96,7 @@ public class Save extends StdCommand
 					CMLib.database().DBUpdateFollowers(M);
 				}
 			}
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes everyone.\n\r"));
 		}
 		else
 		if(lastCommand.equals("ITEMS"))
@@ -113,7 +113,7 @@ public class Save extends StdCommand
 					final Area A=mob.location().getArea();
 					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart(e.nextElement(),1);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -121,7 +121,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),1);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -140,7 +140,7 @@ public class Save extends StdCommand
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),0);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -167,7 +167,7 @@ public class Save extends StdCommand
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),2);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -176,7 +176,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),2);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}

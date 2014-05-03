@@ -55,7 +55,7 @@ public class Prayer_BloodMoon extends Prayer
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The blood moon fades.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The blood moon fades."));
 		}
 		super.unInvoke();
 	}

@@ -337,7 +337,7 @@ public class Create extends StdCommand
 		thisRoom.recoverRoomStats();
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().getArea().fillInAreaRoom(thisRoom);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly a block of earth falls from the sky.\n\r"));
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
 
@@ -377,7 +377,7 @@ public class Create extends StdCommand
 		CMLib.database().DBCreateAccount(thisAcct);
 		CMLib.players().addAccount(thisAcct);
 
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A new soul descends from the heavens and dissipates.\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A new soul descends from the heavens and dissipates.\n\r"));
 		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.getAccountName()+".");
 	}
 
@@ -498,7 +498,7 @@ public class Create extends StdCommand
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		if(R!=null)
 			CMLib.utensils().swapRaces(GR,R);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The diversity of the world just increased!"));
 	}
 
 	public void areas(MOB mob, Vector commands)
@@ -542,7 +542,7 @@ public class Create extends StdCommand
 		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
 		R.setDescription("");
 		CMLib.database().DBCreateRoom(R);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The size of the world just increased!"));
 		mob.tell("You are now at "+R.roomID()+".");
 		R.bringMobHere(mob,true);
 		CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
@@ -585,7 +585,7 @@ public class Create extends StdCommand
 			return;
 		}
 		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The complication of skill usage just increased!"));
 	}
 
 	public void expertises(MOB mob, Vector commands)
@@ -634,7 +634,7 @@ public class Create extends StdCommand
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("skills/expertises.txt");
 		CMLib.expertises().recompileExpertises();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The power of skill usage just increased!"));
 	}
 
 	public void titles(MOB mob, Vector commands)
@@ -675,7 +675,7 @@ public class Create extends StdCommand
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("titles.txt");
 		CMLib.titles().reloadAutoTitles();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of the players just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The prestige of the players just increased!"));
 	}
 
 	public void abilities(MOB mob, Vector commands)
@@ -705,7 +705,7 @@ public class Create extends StdCommand
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenAbility(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenAbility",CR.getStat("ALLXML"));
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just increased!"));
 	}
 
 	public void languages(MOB mob, Vector commands)
@@ -735,7 +735,7 @@ public class Create extends StdCommand
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenLanguage(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenLanguage",CR.getStat("ALLXML"));
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just increased!"));
 	}
 
 	public void craftSkills(MOB mob, Vector commands)
@@ -765,7 +765,7 @@ public class Create extends StdCommand
 		CR.setStat("CLASS",classD);
 		CMLib.genEd().modifyGenCraftSkill(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenCraftSkill",CR.getStat("ALLXML"));
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just increased!"));
 	}
 
 	public void allQualify(MOB mob, Vector commands)
@@ -805,7 +805,7 @@ public class Create extends StdCommand
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
 		CMLib.ableMapper().saveAllQualifysFile(map);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just increased!"));
 	}
 
 	public void classes(MOB mob, Vector commands)
@@ -854,7 +854,7 @@ public class Create extends StdCommand
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
 		if(C!=null)
 			CMLib.utensils().reloadCharClasses(C);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The employment of the world just increased!"));
 	}
 
 	public void socials(MOB mob, Vector commands)

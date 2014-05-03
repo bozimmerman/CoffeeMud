@@ -6146,7 +6146,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==1)
 				{
 					if(lastKnownLocation!=null)
-						lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,"A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script.");
+						lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,_("A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script."));
 				}
 				break;
 			}
@@ -10654,6 +10654,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}catch(final Exception e){Log.errOut("DefaultScriptingEngine",e);}
 	}
 
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+	
 	protected static class JScriptEvent extends ScriptableObject
 	{
 		@Override public String getClassName(){ return "JScriptEvent";}

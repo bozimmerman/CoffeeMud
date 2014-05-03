@@ -80,7 +80,7 @@ public class Link extends At
 		mob.location().getArea().fillInAreaRoom(thisRoom);
 
 		mob.location().recoverRoomStats();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly a portal opens up in the landscape.\n\r"));
 		Log.sysOut("Link",mob.Name()+" linked "+CMLib.map().getExtendedRoomID(mob.location())+" to room "+CMLib.map().getExtendedRoomID(thisRoom)+".");
 		return false;
 	}

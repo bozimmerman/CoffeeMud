@@ -423,9 +423,9 @@ public class StdSpaceShip implements Area, SpaceShip
 			if(room!=null)
 			{
 				if(room.getArea()==this)
-					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+					room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic doesn't seem to work here."));
 				else
-					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
+					room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic doesn't seem to work there."));
 			}
 
 			return false;

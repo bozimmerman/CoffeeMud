@@ -52,7 +52,7 @@ public class Chant_PlantBed extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(peaPod);
 			if(R!=null)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"A pea-pod shrivels up!");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A pea-pod shrivels up!"));
 			final Rideable RI=(Rideable)peaPod;
 			for(int r=RI.numRiders()-1;r>=0;r--)
 				RI.fetchRider(r).setRiding(null);
@@ -105,7 +105,7 @@ public class Chant_PlantBed extends Chant
 				newItem.setMiscText(newItem.text());
 				peaPod=newItem;
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A comfortable pea-pod bed grows nearby."));
 				mob.location().recoverPhyStats();
 				beneficialAffect(mob,newItem,asLevel,0);
 			}

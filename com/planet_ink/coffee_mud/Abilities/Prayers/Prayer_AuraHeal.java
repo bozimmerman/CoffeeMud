@@ -64,7 +64,7 @@ public class Prayer_AuraHeal extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The healing aura around you fades.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The healing aura around you fades."));
 	}
 
 	@Override

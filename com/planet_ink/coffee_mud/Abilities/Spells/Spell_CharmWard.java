@@ -81,7 +81,7 @@ public class Spell_CharmWard extends Spell
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}
@@ -94,8 +94,8 @@ public class Spell_CharmWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 			{
 				if((msg.source().location()!=null)&&(msg.source().location()!=R))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}

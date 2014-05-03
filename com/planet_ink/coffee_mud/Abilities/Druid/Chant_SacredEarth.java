@@ -52,7 +52,7 @@ public class Chant_SacredEarth extends Chant
 			return;
 		final Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The sacred earth charm is ended.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The sacred earth charm is ended."));
 
 		super.unInvoke();
 
@@ -156,7 +156,7 @@ public int castingQuality(MOB mob, Physical target)
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The charm of the sacred earth begins here!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The charm of the sacred earth begins here!"));
 					beneficialAffect(mob,target,asLevel,0);
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{

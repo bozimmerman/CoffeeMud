@@ -95,7 +95,7 @@ public class Prayer_Monolith extends Prayer
 								&&(!M.amDead()))
 									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 							}
-							mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The monolith of ice shatters!!!"));
 							((Item)affected).destroy();
 						}
 					}
@@ -148,7 +148,7 @@ public class Prayer_Monolith extends Prayer
 						amountRemaining-=mob.phyStats().damage();
 						if(amountRemaining<0)
 						{
-							mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of stone is destroyed!");
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The monolith of stone is destroyed!"));
 							((Item)affected).destroy();
 						}
 					}

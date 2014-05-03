@@ -134,7 +134,7 @@ public class Archon_Banish extends ArchonSkill
 				if(((!shere)&&(!summon)&&(teleport))
 				   ||((shere)&&(summon)))
 				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 					return false;
 				}
 			}
@@ -150,7 +150,7 @@ public class Archon_Banish extends ArchonSkill
 				if(((shere)&&(!summon)&&(teleport))
 				   ||((!shere)&&(summon)))
 				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 					return false;
 				}
 			}
@@ -162,7 +162,7 @@ public class Archon_Banish extends ArchonSkill
 			   ||(msg.source().location().getArea()==affected))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 				return false;
 			}
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)

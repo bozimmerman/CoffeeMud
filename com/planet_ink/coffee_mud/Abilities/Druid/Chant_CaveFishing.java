@@ -50,7 +50,7 @@ public class Chant_CaveFishing extends Chant
 		if((affected instanceof Room)
 		&&(this.canBeUninvoked()))
 		{
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The fish start to disappear!");
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The fish start to disappear!"));
 			((Room)affected).setResource(previousResource);
 		}
 	}

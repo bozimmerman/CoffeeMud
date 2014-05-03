@@ -58,7 +58,7 @@ public class Chant_Den extends Chant
 			final Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The den fades away...");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The den fades away..."));
 				while(R.numInhabitants()>0)
 				{
 					final MOB M=R.fetchInhabitant(0);

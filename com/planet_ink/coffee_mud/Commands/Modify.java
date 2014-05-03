@@ -232,7 +232,7 @@ public class Modify extends StdCommand
 			if((!oldRoom.sameAs(newRoom))&&(!newRoom.amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(newRoom);
-				newRoom.showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+				newRoom.showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 				Log.sysOut("Rooms",mob.Name()+" modified room "+newRoom.roomID()+".");
 			}
 			oldRoom.destroy();
@@ -278,7 +278,7 @@ public class Modify extends StdCommand
 						CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This entire area twitches.\n\r");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("This entire area twitches.\n\r"));
 				}
 				else
 				{
@@ -293,7 +293,7 @@ public class Modify extends StdCommand
 					reid=true;
 				else
 					CMLib.database().DBUpdateRoom(mob.location());
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"This area twitches.\n\r");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("This area twitches.\n\r"));
 			}
 
 			if(reid)
@@ -323,7 +323,7 @@ public class Modify extends StdCommand
 			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			mob.location().setDisplayText(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 		}
 		else
 		if(command.equalsIgnoreCase("CLASS"))
@@ -336,7 +336,7 @@ public class Modify extends StdCommand
 				return;
 			}
 			CMLib.genEd().changeRoomType(mob.location(),newRoom);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 		}
 		else
 		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
@@ -345,7 +345,7 @@ public class Modify extends StdCommand
 			((GridLocale)mob.location()).setXGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 		}
 		else
 		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
@@ -354,7 +354,7 @@ public class Modify extends StdCommand
 			((GridLocale)mob.location()).setYGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 		}
 		else
 		if(command.equalsIgnoreCase("DESCRIPTION"))
@@ -362,7 +362,7 @@ public class Modify extends StdCommand
 			if(commands.size()<4) { flunkRoomCmd(mob); return;}
 			mob.location().setDescription(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The very nature of reality changes.\n\r"));
 		}
 		else
 		if(command.equalsIgnoreCase("AFFECTS"))
@@ -370,7 +370,7 @@ public class Modify extends StdCommand
 			CMLib.genEd().genAffects(mob,mob.location(),1,1);
 			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The very nature of reality changes.\n\r"));
 		}
 		else
 		if(command.equalsIgnoreCase("BEHAVIORS"))
@@ -378,7 +378,7 @@ public class Modify extends StdCommand
 			CMLib.genEd().genBehaviors(mob,mob.location(),1,1);
 			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The very nature of reality changes.\n\r"));
 		}
 		else
 		if(CMLib.coffeeMaker().isAnyGenStat(mob.location(), command))
@@ -386,7 +386,7 @@ public class Modify extends StdCommand
 			CMLib.coffeeMaker().setAnyGenStat(mob.location(),command, restStr);
 			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The very nature of reality changes.\n\r"));
 		}
 		else
 		{
@@ -659,7 +659,7 @@ public class Modify extends StdCommand
 			myArea.setName(oldName);
 		myArea.recoverPhyStats();
 		mob.location().recoverRoomStats();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("There is something different about this place...\n\r"));
 		if(myArea.name().equals(oldName))
 			CMLib.database().DBUpdateArea(myArea.Name(),myArea);
 		else
@@ -1003,7 +1003,7 @@ public class Modify extends StdCommand
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
 		CMLib.ableMapper().saveAllQualifysFile(map);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just changed!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just changed!"));
 	}
 
 	public boolean classes(MOB mob, Vector commands)
@@ -1204,7 +1204,7 @@ public class Modify extends StdCommand
 			return;
 		}
 		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just increased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The complication of skill usage just increased!"));
 	}
 
 	public void socials(MOB mob, Vector commands)
@@ -1265,7 +1265,7 @@ public class Modify extends StdCommand
 			if(changed) break;
 		}
 		if(changed)
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The happiness of all mankind has just fluxuated!"));
 	}
 
 	public void players(MOB mob, Vector commands)

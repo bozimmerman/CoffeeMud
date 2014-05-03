@@ -58,7 +58,7 @@ public class Chant_Treehouse extends Chant
 			final Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The treehouse fades away...");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The treehouse fades away..."));
 				while(R.numInhabitants()>0)
 				{
 					final MOB M=R.fetchInhabitant(0);
@@ -131,7 +131,7 @@ public class Chant_Treehouse extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"A treehouse appears up in a nearby tree!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("A treehouse appears up in a nearby tree!"));
 				mob.location().clearSky();
 				final Room newRoom=CMClass.getLocale("WoodRoom");
 				newRoom.setDisplayText("A treehouse");

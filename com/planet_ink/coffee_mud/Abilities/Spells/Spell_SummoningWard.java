@@ -78,7 +78,7 @@ public class Spell_SummoningWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING))
 			&&(!mob.amDead()))
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}
@@ -97,8 +97,8 @@ public class Spell_SummoningWard extends Spell
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 				{
 					if((msg.source().location()!=null)&&(msg.source().location()!=R))
-						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
 				}
 				return false;
 			}

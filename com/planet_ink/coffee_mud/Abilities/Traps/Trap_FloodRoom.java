@@ -197,7 +197,7 @@ public class Trap_FloodRoom extends StdTrap
 				final Room R=(Room)affected;
 				if(tickDown>13)
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"Water is filling up the room!");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("Water is filling up the room!"));
 					CMLib.utensils().extinguish(invoker(),R,true);
 					R.recoverPhyStats();
 					R.recoverRoomStats();
@@ -213,7 +213,7 @@ public class Trap_FloodRoom extends StdTrap
 				{
 					R.recoverPhyStats();
 					R.recoverRoomStats();
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"The water is draining away...");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The water is draining away..."));
 				}
 			}
 		}
@@ -243,7 +243,7 @@ public class Trap_FloodRoom extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
-				target.location().showHappens(CMMsg.MSG_OK_VISUAL,"The exits are blocked off! Water starts pouring in!");
+				target.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The exits are blocked off! Water starts pouring in!"));
 			}
 		}
 	}

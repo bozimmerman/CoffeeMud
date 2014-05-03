@@ -55,7 +55,7 @@ public class Chant_HowlersMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The howlers moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The howlers moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -247,7 +247,7 @@ public class Chant_HowlersMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Howler's Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Howler's Moon Rises!"));
 					ticksTicked=0;
 					beneficialAffect(mob,target,asLevel,0);
 				}

@@ -65,7 +65,7 @@ public class Prayer_AuraHarm extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The harmful aura around you fades.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The harmful aura around you fades."));
 	}
 
 	@Override

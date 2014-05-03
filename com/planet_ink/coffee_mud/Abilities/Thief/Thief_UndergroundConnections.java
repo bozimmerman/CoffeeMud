@@ -310,7 +310,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 1:
 				{
 					underA.theNoun="a strange horse drawn cart";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out.");
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out."));
 					final Room destR=makeNewRoom(area,"A bundle of straw","Your eyes, mouth, and ears are filled with the stuff. This trip better be short!");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the piles of hay");
@@ -319,7 +319,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 2:
 				{
 					underA.theNoun="a large group of teamsters carrying potato sacks";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A group of large teamsters with big empty potato sacks approaches.");
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A group of large teamsters with big empty potato sacks approaches."));
 					final Room destR=makeNewRoom(area,"A potato sack","Once you get past the musty rotten smell, this is really uncomfortable!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into a sack");
 					break;
@@ -327,7 +327,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 3:
 				{
 					underA.theNoun="a pullcart full of plague victims";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A pullcart full of the decaying bodies of plague victims pulls up.");
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A pullcart full of the decaying bodies of plague victims pulls up."));
 					final Room destR=makeNewRoom(area,"A pile of bodies","There is a finger in your ear, and you aren't sure whose it is.");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the bottom of the pile");
@@ -336,7 +336,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 4:
 				{
 					underA.theNoun="a horse drawn cart full of empty vinegar barrels";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,"A horse drawn cart full of empty vinegar barrels pulls up.");
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A horse drawn cart full of empty vinegar barrels pulls up."));
 					final Room destR=makeNewRoom(area,"A vinegar barrel","You feel thoroughly pickled!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into an empty barrel.");
 					break;

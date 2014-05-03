@@ -107,9 +107,9 @@ public class Spell_Anchor extends Spell
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 			{
 				if(roomS!=null)
-					roomS.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+					roomS.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 				if(roomD!=null)
-					roomD.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+					roomD.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 			}
 			return false;
 		}

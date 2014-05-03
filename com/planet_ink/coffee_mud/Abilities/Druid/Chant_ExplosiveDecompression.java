@@ -96,7 +96,7 @@ public class Chant_ExplosiveDecompression extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ball of fire **EXPLODES**!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ball of fire **EXPLODES**!"));
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
@@ -119,7 +119,7 @@ public class Chant_ExplosiveDecompression extends Chant
 						}
 					}
 					maliciousAffect(mob,target,asLevel,20,-1);
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The fire burns off all the air here!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The fire burns off all the air here!"));
 				}
 			}
 		}

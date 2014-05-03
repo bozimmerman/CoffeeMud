@@ -53,13 +53,13 @@ public class Prayer_Gateway extends Prayer
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The divine gateway closes."));
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.setRawExit(Directions.GATE,null);
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The divine gateway closes."));
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.setRawExit(Directions.GATE,null);
 			}

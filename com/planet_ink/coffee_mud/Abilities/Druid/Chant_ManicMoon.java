@@ -48,7 +48,7 @@ public class Chant_ManicMoon extends Chant
 	public void unInvoke()
 	{
 		if((affected instanceof Room)&&(canBeUninvoked()))
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The manic moon sets.");
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The manic moon sets."));
 
 		super.unInvoke();
 
@@ -189,7 +189,7 @@ public class Chant_ManicMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Manic Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Manic Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

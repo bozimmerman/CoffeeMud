@@ -67,7 +67,7 @@ public class Prop_MagicFreedom extends Property
 			&&(((MOB)msg.target()).location()!=null))
 				room=((MOB)msg.target()).location();
 			if(room!=null)
-				room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 			return false;
 		}
 		return true;

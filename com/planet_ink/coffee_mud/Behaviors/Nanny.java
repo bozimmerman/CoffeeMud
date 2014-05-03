@@ -349,8 +349,8 @@ public class Nanny extends StdBehavior
 					if((!shere)&&((summon)||(teleport)))
 					{
 						if((msg.source().location()!=null)&&(msg.source().location()!=R))
-							msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-						R.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+							msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 						return false;
 					}
 				}

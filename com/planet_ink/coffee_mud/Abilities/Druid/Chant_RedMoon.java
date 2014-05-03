@@ -52,7 +52,7 @@ public class Chant_RedMoon extends Chant
 			return;
 		final Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The red moon sets.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The red moon sets."));
 
 		super.unInvoke();
 
@@ -166,7 +166,7 @@ public class Chant_RedMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Red Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Red Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

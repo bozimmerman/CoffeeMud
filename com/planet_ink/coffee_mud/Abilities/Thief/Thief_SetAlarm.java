@@ -101,8 +101,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			final Vector mobsDone=new Vector();
-			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
-			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
+			room1.showHappens(CMMsg.MSG_NOISE,_("A horrible alarm is going off here."));
+			room2.showHappens(CMMsg.MSG_NOISE,_("A horrible alarm is going off here."));
 			for(int r=0;r<rooms.size();r++)
 			{
 				final Room R=(Room)rooms.elementAt(r);

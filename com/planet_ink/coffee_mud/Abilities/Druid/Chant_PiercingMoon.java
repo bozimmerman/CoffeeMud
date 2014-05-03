@@ -54,7 +54,7 @@ public class Chant_PiercingMoon extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The piercing moon sets.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The piercing moon sets."));
 		}
 		super.unInvoke();
 
@@ -141,9 +141,9 @@ public class Chant_PiercingMoon extends Chant
 				if(msg.value()<=0)
 				{
 					if(!mob.location().getArea().getClimateObj().canSeeTheStars(mob.location()))
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces through the clouds!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon pierces through the clouds!"));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon brightens!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon brightens!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

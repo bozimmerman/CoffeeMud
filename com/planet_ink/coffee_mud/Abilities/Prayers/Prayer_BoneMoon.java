@@ -55,7 +55,7 @@ public class Prayer_BoneMoon extends Prayer
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The bone moon fades.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The bone moon fades."));
 		}
 		super.unInvoke();
 	}

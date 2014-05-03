@@ -54,7 +54,7 @@ public class Chant_SummonMoon extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The summoned moon sets.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The summoned moon sets."));
 		}
 		super.unInvoke();
 
@@ -140,7 +140,7 @@ public class Chant_SummonMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces into the room!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon pierces into the room!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

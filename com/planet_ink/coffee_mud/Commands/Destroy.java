@@ -563,7 +563,7 @@ public class Destroy extends StdCommand
 				}
 			if(confirmed)
 			{
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A thunderous boom of destruction is heard in the distance."));
 				Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
 				CMLib.map().obliterateArea(A);
 			}
@@ -601,9 +601,9 @@ public class Destroy extends StdCommand
 		if(oldR==null) oldR=CMClass.getRace("StdRace");
 		CMLib.utensils().swapRaces(oldR,R);
 		if(!oldR.ID().equals("StdRace"))
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The diversity of the world just changed?!"));
 		else
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just decreased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The diversity of the world just decreased!"));
 		return true;
 	}
 
@@ -625,7 +625,7 @@ public class Destroy extends StdCommand
 		}
 		CMLib.ableMapper().alterAbilityComponentFile(classID,true);
 		CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The complication of skill usage just decreased!"));
 		return true;
 	}
 
@@ -644,7 +644,7 @@ public class Destroy extends StdCommand
 		if(removed)
 		{
 			Resources.removeResource("skills/expertises.txt");
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The power of skill usage just decreased!"));
 			CMLib.expertises().recompileExpertises();
 		}
 		return true;
@@ -674,7 +674,7 @@ public class Destroy extends StdCommand
 		final boolean removed=Resources.findRemoveProperty(F, classID);
 		if(removed)
 		{
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The prestige of players just decreased!"));
 			Resources.removeResource("titles.txt");
 			CMLib.titles().reloadAutoTitles();
 		}
@@ -712,9 +712,9 @@ public class Destroy extends StdCommand
 		if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
 		CMLib.utensils().reloadCharClasses(C);
 		if(!oldC.ID().equals("StdCharClass"))
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The diversity of the world just changed?!"));
 		else
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just decreased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The employment of the world just decreased!"));
 		return true;
 	}
 
@@ -750,7 +750,7 @@ public class Destroy extends StdCommand
 		}
 		CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
 		CMLib.database().DBDeleteAbility(A.ID());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just decreased!"));
 		return true;
 	}
 
@@ -788,11 +788,11 @@ public class Destroy extends StdCommand
 		{
 			CMLib.socials().remove(soc2.name());
 			CMLib.socials().save(mob);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The happiness of all mankind has just decreased!"));
 			Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
 		else
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The happiness of all mankind has just increased!"));
 	}
 
 	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
@@ -854,7 +854,7 @@ public class Destroy extends StdCommand
 		}
 		subMap.remove(classD.toUpperCase().trim());
 		CMLib.ableMapper().saveAllQualifysFile(map);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just decreased!");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The skill of the world just decreased!"));
 	}
 
 	@Override

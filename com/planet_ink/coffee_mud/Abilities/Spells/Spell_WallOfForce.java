@@ -105,7 +105,7 @@ public class Spell_WallOfForce extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of force is gone.");
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("The wall of force is gone."));
 				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();

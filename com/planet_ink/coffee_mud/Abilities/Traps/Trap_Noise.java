@@ -58,7 +58,7 @@ public class Trap_Noise extends StdTrap
 				{
 					final Room R=(Room)e.nextElement();
 					if(R!=target.location())
-						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"You hear a loud noise coming from somewhere.");
+						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("You hear a loud noise coming from somewhere."));
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

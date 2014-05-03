@@ -55,7 +55,7 @@ public class Prayer_FountainLife extends Prayer
 		if(littleSpring==null)
 			return;
 		if(canBeUninvoked())
-			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,"The fountain of life dries up.");
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("The fountain of life dries up."));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{

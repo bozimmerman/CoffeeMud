@@ -129,7 +129,7 @@ public class Trap_CrushingRoom extends StdTrap
 			{
 				final Room R=(Room)affected;
 				if(tickDown>13)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"The walls start closing in around you!");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The walls start closing in around you!"));
 				else
 				if(tickDown>4)
 				{
@@ -146,7 +146,7 @@ public class Trap_CrushingRoom extends StdTrap
 				}
 				else
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"The walls begin retracting...");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The walls begin retracting..."));
 				}
 			}
 		}
@@ -165,7 +165,7 @@ public class Trap_CrushingRoom extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
 			{
 				super.spring(target);
-				target.location().showHappens(CMMsg.MSG_OK_VISUAL,"The exits are blocked off! The walls start closing in!");
+				target.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The exits are blocked off! The walls start closing in!"));
 			}
 		}
 	}

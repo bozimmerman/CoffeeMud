@@ -141,7 +141,7 @@ public class Chant_SummonTornado extends Chant
 						availableRooms.addElement(R);
 				}
 				if(stuff.size()==0)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The tornado dissipates harmlessly.");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The tornado dissipates harmlessly."));
 				else
 				while(stuff.size()>0)
 				{

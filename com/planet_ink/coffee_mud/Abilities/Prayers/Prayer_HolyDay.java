@@ -63,7 +63,7 @@ public class Prayer_HolyDay extends Prayer
 			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				final Room R=(Room)e.nextElement();
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The holy day has ended.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The holy day has ended."));
 			}
 		}
 	}

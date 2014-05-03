@@ -85,7 +85,7 @@ public class Chant_SummonHerb extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				}
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some herbs quickly begin to grow here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Some herbs quickly begin to grow here."));
 				mob.location().recoverPhyStats();
 			}
 		}

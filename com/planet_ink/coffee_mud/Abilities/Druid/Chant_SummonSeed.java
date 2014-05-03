@@ -117,7 +117,7 @@ public class Chant_SummonSeed extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.addItem(newItem);
 				}
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some seeds appear!");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Some seeds appear!"));
 				mob.location().recoverPhyStats();
 			}
 		}

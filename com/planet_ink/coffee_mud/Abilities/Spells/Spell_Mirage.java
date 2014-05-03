@@ -141,7 +141,7 @@ public class Spell_Mirage extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The appearance of this place changes...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The appearance of this place changes..."));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();

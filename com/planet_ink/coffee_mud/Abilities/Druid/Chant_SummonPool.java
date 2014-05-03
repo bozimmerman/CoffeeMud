@@ -53,7 +53,7 @@ public class Chant_SummonPool extends Chant
 		if(littleSpring==null)
 			return;
 		if(canBeUninvoked())
-			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,"The little pool dries up.");
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("The little pool dries up."));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{

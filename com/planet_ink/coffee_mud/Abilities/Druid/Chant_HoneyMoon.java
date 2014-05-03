@@ -51,7 +51,7 @@ public class Chant_HoneyMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The honey moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The honey moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -133,7 +133,7 @@ public class Chant_HoneyMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Honey Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Honey Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

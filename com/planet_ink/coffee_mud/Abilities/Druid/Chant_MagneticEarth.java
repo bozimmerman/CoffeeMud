@@ -168,7 +168,7 @@ public class Chant_MagneticEarth extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ground gains a powerful magnetic field!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground gains a powerful magnetic field!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

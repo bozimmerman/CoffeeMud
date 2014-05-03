@@ -65,9 +65,9 @@ public class Chant_AlterTime extends Chant
 				int x=CMath.s_int(text());
 				while(x==0)	x=CMLib.dice().roll(1,3,-2);
 				if(x>0)
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves forwards!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Time moves forwards!"));
 				else
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves backwards!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Time moves backwards!"));
 				mob.location().getArea().getTimeObj().tickTock(x);
 			}
 		}

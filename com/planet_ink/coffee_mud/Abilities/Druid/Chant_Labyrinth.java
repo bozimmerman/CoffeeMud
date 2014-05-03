@@ -121,7 +121,7 @@ public class Chant_Labyrinth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Something is happening...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Something is happening..."));
 
 				final Room newRoom=CMClass.getLocale("CaveMaze");
 				((GridLocale)newRoom).setXGridSize(10);

@@ -53,7 +53,7 @@ public class Chant_ColdMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The cold moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The cold moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -175,7 +175,7 @@ public class Chant_ColdMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Cold Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Cold Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

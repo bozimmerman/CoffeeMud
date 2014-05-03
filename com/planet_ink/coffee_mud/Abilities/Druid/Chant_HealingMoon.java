@@ -50,7 +50,7 @@ public class Chant_HealingMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The healing moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The healing moon sets."));
 		super.unInvoke();
 
 	}
@@ -150,7 +150,7 @@ public class Chant_HealingMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Healing Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Healing Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

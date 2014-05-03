@@ -101,7 +101,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
 			if(mob.phyStats().level()>15)
 			{
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The room fills with gas!");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The room fills with gas!"));
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					final MOB target=mob.location().fetchInhabitant(i);
@@ -198,7 +198,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			final Ability A=CMClass.findAbility(spell);
 			if(A==null)
 			{
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"But nothing happened...");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("But nothing happened..."));
 				return;
 			}
 			A.invoke(invoker(),V,mob,true,0);

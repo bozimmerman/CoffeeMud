@@ -52,7 +52,7 @@ public class Chant_Blight extends Chant
 			return;
 		final Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The blight is ended.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The blight is ended."));
 
 		super.unInvoke();
 
@@ -154,7 +154,7 @@ public class Chant_Blight extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The soil is blighted!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The soil is blighted!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

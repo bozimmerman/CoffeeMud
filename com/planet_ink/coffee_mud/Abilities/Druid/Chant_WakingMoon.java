@@ -54,7 +54,7 @@ public class Chant_WakingMoon extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"The waking moon sets.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The waking moon sets."));
 		}
 		super.unInvoke();
 
@@ -140,7 +140,7 @@ public class Chant_WakingMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Waking Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Waking Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

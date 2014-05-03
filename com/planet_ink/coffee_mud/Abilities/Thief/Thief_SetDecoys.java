@@ -129,10 +129,10 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 				spring(target);
 			else
 			if(numWhoCanSee>1)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing everyone's gaze to be momentarily distracted towards it.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A decoy pops up, causing everyone's gaze to be momentarily distracted towards it."));
 			else
 			if(numWhoCanSee==1)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,"A decoy pops up, causing your gaze to be momentarily distracted towards it.");
+				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A decoy pops up, causing your gaze to be momentarily distracted towards it."));
 		}
 		return true;
 	}

@@ -51,7 +51,7 @@ public class Chant_PaleMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if((affected instanceof Room)&&(canBeUninvoked()))
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The pale moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The pale moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -173,7 +173,7 @@ public class Chant_PaleMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Pale Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Pale Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

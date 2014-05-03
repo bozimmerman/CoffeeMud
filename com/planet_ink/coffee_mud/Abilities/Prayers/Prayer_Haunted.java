@@ -62,7 +62,7 @@ public class Prayer_Haunted extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(R!=null))
-		   R.showHappens(CMMsg.MSG_OK_VISUAL,"The haunted aura fades.");
+		   R.showHappens(CMMsg.MSG_OK_VISUAL,_("The haunted aura fades."));
 	}
 
 	@Override

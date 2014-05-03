@@ -51,7 +51,7 @@ public class Chant_PeaceMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if((affected instanceof Room)&&(canBeUninvoked()))
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The peace moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The peace moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -166,7 +166,7 @@ public class Chant_PeaceMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Peace Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Peace Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

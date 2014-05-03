@@ -122,7 +122,7 @@ public class Chant_MuddyGrounds extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ground here turns to MUD!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground here turns to MUD!"));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());

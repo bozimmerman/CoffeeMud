@@ -97,7 +97,7 @@ public class Spell_WallOfAir extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,"The wall of air dissipates.");
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("The wall of air dissipates."));
 				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();

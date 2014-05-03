@@ -51,7 +51,7 @@ public class Chant_DeathMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The death moon sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The death moon sets."));
 
 		super.unInvoke();
 
@@ -166,7 +166,7 @@ public class Chant_DeathMoon extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Death Moon Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Death Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,10);
 				}
 			}

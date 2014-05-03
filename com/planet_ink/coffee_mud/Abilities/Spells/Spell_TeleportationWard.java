@@ -82,7 +82,7 @@ public class Spell_TeleportationWard extends Spell
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}
@@ -102,8 +102,8 @@ public class Spell_TeleportationWard extends Spell
 				if((!shere)&&(!summon)&&(teleport)&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 				{
 					if((msg.source().location()!=null)&&(msg.source().location()!=R))
-						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
 					return false;
 				}
 			}

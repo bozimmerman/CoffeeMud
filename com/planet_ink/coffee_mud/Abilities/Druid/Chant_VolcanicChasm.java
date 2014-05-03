@@ -148,7 +148,7 @@ public class Chant_VolcanicChasm extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Flames and sulfurous steam leap from cracks opening around you!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Flames and sulfurous steam leap from cracks opening around you!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

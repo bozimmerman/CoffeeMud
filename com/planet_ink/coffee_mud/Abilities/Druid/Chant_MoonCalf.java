@@ -51,7 +51,7 @@ public class Chant_MoonCalf extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The moon calf sets.");
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The moon calf sets."));
 			super.unInvoke();
 			return;
 		}
@@ -174,7 +174,7 @@ public class Chant_MoonCalf extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon Calf Rises!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon Calf Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
