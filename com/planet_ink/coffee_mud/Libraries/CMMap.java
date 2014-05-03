@@ -484,6 +484,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public SpaceObject findSpaceObject(String s, boolean exactOnly)
+	{
+		final Iterable<SpaceObject> i=new Iterable<SpaceObject>()
+		{
+			@Override
+			public Iterator<SpaceObject> iterator()
+			{
+				return new EnumerationIterator<SpaceObject>(space.objects());
+			}
+			
+		};
+		return (SpaceObject)CMLib.english().fetchEnvironmental(i, s, exactOnly);
+	}
+	
+	@Override
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs)
 	{
 		if(o instanceof SpaceObject)

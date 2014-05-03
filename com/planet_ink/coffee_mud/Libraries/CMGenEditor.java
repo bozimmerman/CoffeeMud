@@ -4635,6 +4635,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				break;
 			}
 		}
+		final String coordHelp1=_("Distances may be any of the following:")+"\n\r"
+				+ _("1. 3 distances: '[X],[Y],[Z]', positive or negative.")+"\n\r"
+				+ _("2. Relative distance: '[X] FROM [name of another space object]', in random direction.")+"\n\r"
+				+ _("3. Relative distance: '[X] FROM [name of another space object] TOWARD [Y],[Z]', where Y,Z are a direction in degrees.");
+		final String coordHelp2="Valid distance units include: "+SpaceObject.Distance.getFullList()+".";
 		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			String val=mob.session().prompt(showNumber+". Coordinates in Space (ENTER="+(CMLib.english().coordDescShort(E.coordinates()))+"): ");
@@ -4643,19 +4648,69 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell("(unchanged)");
 				break;
 			}
-			Long[] valL=new Long[3];
+			List<String> utokens=CMParms.parseSpaces(val.toUpperCase(),true);
+			if(utokens.contains("FROM"))
+			{
+				List<String> tokens=CMParms.parseSpaces(val,true);
+				int x=utokens.indexOf("FROM");
+				int y=utokens.indexOf("TOWARD");
+				double[] direction;
+				if(y>0)
+				{
+					List<String> degreeStr=CMParms.parseCommas(CMParms.combine(tokens,y+1),true);
+					if((degreeStr.size()!=2)
+					||(!CMath.isInteger(degreeStr.get(0)))||(!CMath.isInteger(degreeStr.get(1)))
+					||(CMath.s_int(degreeStr.get(0))<0)||(CMath.s_int(degreeStr.get(0))>359)
+					||(CMath.s_int(degreeStr.get(0))<0)||(CMath.s_int(degreeStr.get(1))>359))
+					{
+						
+						mob.tell(_("Invalid degrees (0-359): ")+CMParms.combine(tokens,y+1)+".\n\r"+coordHelp1+"\n\r"+coordHelp2);
+						continue;
+					}
+					double[] degreesDbl=CMParms.toDoubleArray(degreeStr);
+					direction=new double[]{Math.toRadians(degreesDbl[0]),Math.toRadians(degreesDbl[1])};
+					while(tokens.size()>=y)
+						tokens.remove(tokens.size()-1);
+				}
+				else
+					direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+				
+				String distStr=CMParms.combine(tokens,0,x);
+				String objName=CMParms.combine(tokens,x+1);
+				Long dist=parseSpaceDistance(distStr);
+				if(dist==null)
+				{
+					mob.tell(_("Unknown distance:")+" '"+distStr+"'. "+coordHelp2);
+					continue;
+				}
+				SpaceObject O=null;
+				if(objName.trim().length()>0)
+				{
+					O=CMLib.map().findSpaceObject(objName, true);
+					if(O==null)
+						O=CMLib.map().findSpaceObject(objName, false);
+				}
+				if(O==null)
+				{
+					mob.tell(_("Unknown relative space object")+" '"+objName+"'.\n\r"+coordHelp2);
+					continue;
+				}
+				val=CMParms.toStringList(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+			}
+			
 			List<String> valsL=CMParms.parseCommas(val,true);
 			if(valsL.size()!=3)
-				mob.tell("Value must be 3 distances, positive or negative, comma delimited.");
+				mob.tell(coordHelp1+"\n\r"+coordHelp2);
 			else
 			{
 				boolean fail=true;
+				Long[] valL=new Long[3];
 				for(int i=0;i<3;i++)
 				{
 					Long newValue=parseSpaceDistance(valsL.get(i));
 					if(newValue==null)
 					{
-						mob.tell("Unknown coord: '"+valsL.get(i)+"', valid units include: "+SpaceObject.Distance.getAbbrList()+".");
+						mob.tell("Unknown coord: '"+valsL.get(i)+"'. "+coordHelp2);
 						break;
 					}
 					else
@@ -4713,7 +4768,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell("Invalid direction in degrees: '"+val+"', you might need to include 'mark' in the direction.");
 			else
 			{
-				E.setDirection(new double[]{CMath.s_double(val.substring(0,x).trim()),CMath.s_double(val.substring(x+6).trim())});
+				E.setDirection(new double[]{Math.toRadians(CMath.s_double(val.substring(0,x).trim())),Math.toRadians(CMath.s_double(val.substring(x+6).trim()))});
 				break;
 			}
 		}

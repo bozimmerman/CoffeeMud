@@ -116,23 +116,30 @@ public interface SpaceObject extends Environmental, BoundedObject
 	{
 		Decameter("dm",1L),
 		Kilometer("km",100L),
+		MoonRadius("mr",173740L),
+		PlanetRadius("pr",639875L),
+		SaturnRadius("sr",6026800L),
 		AstroUnit("au",14959787100L),
-		SolarSystemRadius("sr",590638000000L),
-		SolarSystemDiameter("sd",590638000000L*2L),
+		StarGRadius("gr",69550000L),
+		StarDRadius("dr",959812L),
+		StarBRadius("br",695500000L),
+		SolarSystemRadius("yr",590638000000L),
+		SolarSystemDiameter("yd",590638000000L*2L),
+		DistanceBetweenStars("sd",946073047258080L*4L),
+		SpaceCombatPointBlank("pb",20000L),
 		LightYear("lY",946073047258080L),
 		LightMonth("lM",946073047258080L/12L),
 		LightDay("lD",946073047258080L/365L),
 		LightHour("lh",946073047258080L/(365L*24L)),
 		LightMinute("lm",946073047258080L/(365L*24L)),
 		LightSecond("ls",946073047258080L/(365L*24L*60L)),
-		Galaxy("g",946073047258080L*1000L),
-		PlanetRadius("pr",639875L),
-		StarDistance("sd",946073047258080L*4L),
-		SpaceCombatPointBlank("pb",20000L),
+		Parsec("p",3085677580000000L),
+		GalaxyRadius("xr",946073047258080L*1000L),
 		;
 		public final long dm;
 		public final String abbr;
 		private static String abbrList="";
+		private static String fullList="";
 		private Distance(String abbr, long distance)
 		{
 			this.abbr=abbr;
@@ -148,6 +155,16 @@ public interface SpaceObject extends Environmental, BoundedObject
 			}
 			return abbrList;
 		}
+		public static String getFullList()
+		{
+			if(fullList.length()==0)
+			{
+				for(Distance d : Distance.values())
+					fullList+=d.name()+"("+d.abbr+"), ";
+				fullList=fullList.substring(0,fullList.length()-2);
+			}
+			return fullList;
+		}
 	}
 	
 	/**
@@ -155,6 +172,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 */
 	public static final Distance[] DISTANCES = new Distance[]
 	{
+		Distance.Parsec,
 		Distance.LightYear,
 		Distance.LightMonth,
 		Distance.LightDay,
