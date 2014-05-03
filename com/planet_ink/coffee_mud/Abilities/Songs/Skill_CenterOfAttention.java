@@ -164,7 +164,7 @@ public class Skill_CenterOfAttention extends BardSkill
 							if((msg.value()<=0)&&(msg2.value()<=0))
 							{
 								maliciousAffect(mob,target,asLevel,3,-1);
-								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) watching <T-NAME> with an amused expression.");
+								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) watching <T-NAME> with an amused expression."));
 							}
 						}
 					}

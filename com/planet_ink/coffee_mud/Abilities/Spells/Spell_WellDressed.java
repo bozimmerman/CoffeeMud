@@ -74,7 +74,7 @@ public class Spell_WellDressed extends Spell
 		/*
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> clothe(s) aren't quite as appealing any more.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> clothe(s) aren't quite as appealing any more."));
 		*/
 	}
 
@@ -123,7 +123,7 @@ public class Spell_WellDressed extends Spell
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					//target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> very well dressed.");
+					//target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> very well dressed."));
 					beneficialAffect(mob,target,asLevel,0);
 					final Ability A=target.fetchEffect(ID());
 					if(A!=null) A.setMiscText(""+newDressCode);

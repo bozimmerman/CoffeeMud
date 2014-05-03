@@ -84,7 +84,7 @@ public class Spell_Polymorph extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> morph(s) back into <S-HIM-HERSELF> again.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
 	}
 
 
@@ -97,7 +97,7 @@ public class Spell_Polymorph extends Spell
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already polymorphed.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already polymorphed."));
 			return false;
 		}
 

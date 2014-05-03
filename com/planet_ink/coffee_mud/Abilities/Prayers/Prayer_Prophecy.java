@@ -56,7 +56,7 @@ public class Prayer_Prophecy extends Prayer
 		if((mob.amDead())||(this.tickDown>0)||(mob.isInCombat()))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL,"<S-NAME> end(s) <S-HIS-HER> trance.");
+				mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL,_("<S-NAME> end(s) <S-HIS-HER> trance."));
 			super.unInvoke();
 			return;
 		}

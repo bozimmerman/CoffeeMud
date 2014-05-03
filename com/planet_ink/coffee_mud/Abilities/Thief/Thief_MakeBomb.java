@@ -135,7 +135,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				if(CMLib.dice().rollPercentage()>50)
 				{
 					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> set(s) the bomb off on accident!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> set(s) the bomb off on accident!"));
 					T.spring(mob);
 				}
 				else

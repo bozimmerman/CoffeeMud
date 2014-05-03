@@ -139,7 +139,7 @@ public class Spell_FaerieFog extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"A faerie fog is already here.");
+			mob.tell(mob,null,null,_("A faerie fog is already here."));
 			return false;
 		}
 

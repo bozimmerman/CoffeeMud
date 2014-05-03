@@ -86,7 +86,7 @@ public class StdLimb extends StdItem implements FalseLimb
 							final Item I=mob.fetchFirstWornItem(codes.get(w2));
 							if((I!=null)&&(I!=this))
 							{
-								msg.source().tell(mob,I,null,"You'll need to remove <T-NAMESELF> first.");
+								msg.source().tell(mob,I,null,_("You'll need to remove <T-NAMESELF> first."));
 								return false;
 							}
 						}

@@ -69,7 +69,7 @@ public class Chant_SummonFlyTrap extends Chant
 						final String raceCat=((DeadBody)I).charStats().getMyRace().racialCategory();
 						if(raceCat.equals("Insect")||raceCat.equals("Arachnid"))
 						{
-							if(R.show(mob,I,CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> devour(s) <T-NAMESELF>."))
+							if(R.show(mob,I,CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,_("<S-NAME> devour(s) <T-NAMESELF>.")))
 							{
 								I.destroy();
 								break;
@@ -90,7 +90,7 @@ public class Chant_SummonFlyTrap extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrivels up and dies.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrivels up and dies."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -197,7 +197,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> grow(s) from the ground.");
+		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> grow(s) from the ground."));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

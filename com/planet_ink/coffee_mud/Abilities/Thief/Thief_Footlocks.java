@@ -61,7 +61,7 @@ public class Thief_Footlocks extends ThiefSkill
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-(getXLEVELLevel(mob)*3)))
 		&&((msg.sourceMinor()==CMMsg.TYP_ADVANCE)||(msg.sourceMinor()==CMMsg.TYP_RETREAT)||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stumble(s) in the footlocks.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> stumble(s) in the footlocks."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -78,7 +78,7 @@ public class Thief_Footlocks extends ThiefSkill
 			if(!mob.amDead())
 			{
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> break(s) free of the footlocks.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> break(s) free of the footlocks."));
 			}
 			if(footlock!=null)
 			{

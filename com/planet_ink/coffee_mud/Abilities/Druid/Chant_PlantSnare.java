@@ -69,7 +69,7 @@ public class Chant_PlantSnare extends Chant
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the snaring plants.")))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 					if(amountRemaining<0)
@@ -93,7 +93,7 @@ public class Chant_PlantSnare extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -175,7 +175,7 @@ public class Chant_PlantSnare extends Chant
 							if(troom==room)
 							{
 								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-								troom.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
+								troom.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!"));
 							}
 						}
 					}

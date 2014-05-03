@@ -93,7 +93,7 @@ public class Prayer_Blindsight extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the blindsight.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the blindsight."));
 			return false;
 		}
 

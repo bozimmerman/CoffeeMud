@@ -192,7 +192,7 @@ public class Prayer_SenseTraps extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing traps.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing traps."));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

@@ -161,7 +161,7 @@ public class Prayer_DrunkenStupor extends Prayer
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) a bit tipsy!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) a bit tipsy!"));
 				}
 			}
 		}

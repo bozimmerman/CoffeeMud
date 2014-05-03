@@ -57,7 +57,7 @@ public class Chant_WindShape extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer shaped like the wind.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer shaped like the wind."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Chant_WindShape extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the shape of the wind.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the shape of the wind."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Chant_WindShape extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s).");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s)."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

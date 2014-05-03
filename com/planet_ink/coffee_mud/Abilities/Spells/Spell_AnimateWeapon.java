@@ -154,15 +154,15 @@ public class Spell_AnimateWeapon extends Spell
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,CMMsg.MSG_DROP,"<T-NAME> flies out of <S-YOUPOSS> hands!");
+					mob.location().show(mob,target,CMMsg.MSG_DROP,_("<T-NAME> flies out of <S-YOUPOSS> hands!"));
 				else
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> starts flying around!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> starts flying around!"));
 				if(mob.location().isContent(target))
 					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> twitch(es) oddly, but does nothing more.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> twitch(es) oddly, but does nothing more."));
 
 
 		// return whether it worked

@@ -61,7 +61,7 @@ public class Spell_AddLimb extends Spell
 			{
 				noloop=true;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> extra limb fades away.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> extra limb fades away."));
 				mob.recoverCharStats();
 				CMLib.utensils().confirmWearability(mob);
 			}
@@ -111,7 +111,7 @@ public class Spell_AddLimb extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) an arm!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) an arm!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 

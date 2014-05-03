@@ -241,7 +241,7 @@ public class Dance_Swords extends Dance
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> make(s) a false step.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> make(s) a false step."));
 
 		return success;
 	}

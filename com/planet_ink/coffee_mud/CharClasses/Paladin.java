@@ -192,7 +192,7 @@ public class Paladin extends StdCharClass
 								&&(myChar.isMine(msg.tool()))))
 		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.STAT_WISDOM)*2))
 		{
-			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
+			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!"));
 			return false;
 		}
 		return super.okMessage(myChar, msg);

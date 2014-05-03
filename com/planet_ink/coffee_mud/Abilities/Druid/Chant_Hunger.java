@@ -72,7 +72,7 @@ public class Chant_Hunger extends Chant
 				if(msg.value()<=0)
 				{
 					target.curState().adjHunger(-(150+(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))) * 5),target.maxState().maxHunger(target.baseWeight()));
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly hungry!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly hungry!"));
 				}
 			}
 		}

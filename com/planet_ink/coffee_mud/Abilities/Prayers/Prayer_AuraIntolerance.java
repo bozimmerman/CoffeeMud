@@ -57,7 +57,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
-			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"The intolerant aura around <S-NAME> fades.");
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("The intolerant aura around <S-NAME> fades."));
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class Prayer_AuraIntolerance extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"The aura of intolerance is already with <S-NAME>.");
+			mob.tell(target,null,null,_("The aura of intolerance is already with <S-NAME>."));
 			return false;
 		}
 		if((!auto)&&((mob.getWorshipCharID().length()==0)

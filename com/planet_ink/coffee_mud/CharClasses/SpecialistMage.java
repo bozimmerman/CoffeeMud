@@ -104,7 +104,7 @@ public class SpecialistMage extends Mage
 				if(CMLib.dice().rollPercentage()>
 				   (myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
 				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fizzle(s) a spell.");
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fizzle(s) a spell."));
 					return false;
 				}
 			}

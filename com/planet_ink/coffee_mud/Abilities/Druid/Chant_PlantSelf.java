@@ -57,7 +57,7 @@ public class Chant_PlantSelf extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> uproot(s) <S-HIM-HERSELF>.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> uproot(s) <S-HIM-HERSELF>."));
 				else
 					mob.tell(_("You uproot yourself."));
 			}

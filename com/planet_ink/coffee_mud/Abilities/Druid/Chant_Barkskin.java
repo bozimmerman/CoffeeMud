@@ -60,7 +60,7 @@ public class Chant_Barkskin extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> skin is no longer bark-like.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin is no longer bark-like."));
 	}
 
 
@@ -74,7 +74,7 @@ public class Chant_Barkskin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-YOUPOSS> skin is already like bark.");
+			mob.tell(target,null,null,_("<S-YOUPOSS> skin is already like bark."));
 			return false;
 		}
 

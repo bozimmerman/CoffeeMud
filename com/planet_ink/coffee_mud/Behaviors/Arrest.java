@@ -2509,7 +2509,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((judge!=null)
 					&&(CMLib.flags().aliveAwakeMobile(judge,true)))
 					{
-						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
+						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> put(s) <T-NAME> on parole!"));
 						final Ability A=CMClass.getAbility("Prisoner");
 						A.startTickDown(judge,W.criminal(),W.jailTime());
 						W.criminal().recoverPhyStats();
@@ -2924,12 +2924,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.jail().bringMobHere(officer,false);
 							if(!canFocusOn(officer,W.criminal()))
 							{
-								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>, but can't find <T-HIM-HER>.");
+								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> arrive(s) to release <T-NAME>, but can't find <T-HIM-HER>."));
 								dismissOfficer(officer);
 								W.setArrestingOfficer(myArea,null);
 							}
 							else
-								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
+								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> arrive(s) to release <T-NAME>."));
 							final Ability A=CMClass.getAbility("Skill_HandCuff");
 							if((A!=null)&&(!CMLib.flags().isBoundOrHeld(W.criminal())))
 								A.invoke(officer,W.criminal(),true,0);

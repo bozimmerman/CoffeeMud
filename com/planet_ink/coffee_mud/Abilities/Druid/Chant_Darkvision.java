@@ -83,7 +83,7 @@ public class Chant_Darkvision extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> darkvision.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> darkvision."));
 			return false;
 		}
 

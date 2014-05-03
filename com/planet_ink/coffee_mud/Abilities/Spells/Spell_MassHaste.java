@@ -77,7 +77,7 @@ public class Spell_MassHaste extends Spell
 					   &&(target.fetchEffect("Spell_MassHaste")==null))
 					{
 						mob.location().send(mob,msg);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> speed(s) up!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> speed(s) up!"));
 						final Spell_Haste haste=new Spell_Haste();
 						haste.setProficiency(proficiency());
 						haste.beneficialAffect(mob,target,asLevel,0);

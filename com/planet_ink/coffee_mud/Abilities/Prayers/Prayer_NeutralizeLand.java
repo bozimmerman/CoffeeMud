@@ -105,10 +105,10 @@ public class Prayer_NeutralizeLand extends Prayer
 				if(revokeThis==null)
 				{
 					if(foundSomethingAtLeast)
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"The magic on <T-NAME> appears too powerful to be nullified.");
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("The magic on <T-NAME> appears too powerful to be nullified."));
 					else
 					if(auto)
-						mob.tell(mob,target,null,"Nothing seems to be happening to <T-NAME>.");
+						mob.tell(mob,target,null,_("Nothing seems to be happening to <T-NAME>."));
 				}
 				else
 				{

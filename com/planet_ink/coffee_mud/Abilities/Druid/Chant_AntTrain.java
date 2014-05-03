@@ -64,9 +64,9 @@ public class Chant_AntTrain extends Chant
 			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
 				if(wasntMine)
-					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants.");
+					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants."));
 				else
-					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME>, is carried back into <S-HIS-HER> hands by a departing train of ants.");
+					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME>, is carried back into <S-HIS-HER> hands by a departing train of ants."));
 				item.unWear();
 			}
 			if(wasntMine)

@@ -1650,7 +1650,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
 			mobs(mob,commands);
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if(commandType.equals("DAY"))
@@ -1664,7 +1664,7 @@ public class Modify extends StdCommand
 			}
 			mob.location().getArea().getTimeObj().setDayOfMonth(CMath.s_int((String)commands.get(2)));
 			mob.location().getArea().getTimeObj().save();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if(commandType.equals("MONTH"))
@@ -1678,7 +1678,7 @@ public class Modify extends StdCommand
 			}
 			mob.location().getArea().getTimeObj().setMonth(CMath.s_int((String)commands.get(2)));
 			mob.location().getArea().getTimeObj().save();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if(commandType.equals("YEAR"))
@@ -1692,7 +1692,7 @@ public class Modify extends StdCommand
 			}
 			mob.location().getArea().getTimeObj().setYear(CMath.s_int((String)commands.get(2)));
 			mob.location().getArea().getTimeObj().save();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if((commandType.equals("TIME"))||(commandType.equals("HOUR")))
@@ -1710,7 +1710,7 @@ public class Modify extends StdCommand
 			if(oldTOD!=C.getTODCode())
 				C.handleTimeChange();
 			C.save();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if(commandType.startsWith("JSCRIPT"))
@@ -1767,7 +1767,7 @@ public class Modify extends StdCommand
 			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms around the idea of "+P.getSubject()+".^?");
 			CMLib.polls().modifyVote(P, mob);
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world's uncertainty has changed.^?");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^SThe world's uncertainty has changed.^?"));
 			Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
 		}
 		else
@@ -1787,7 +1787,7 @@ public class Modify extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				return false;
 			}
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			CMLib.quests().modifyHoliday(mob,num);
 			Log.sysOut("CreateEdit",mob.Name()+" modified Holiday "+name+".");
 		}
@@ -1798,7 +1798,7 @@ public class Modify extends StdCommand
 			&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NEWS)))
 				return errorOut(mob);
 
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			final Item I=CMClass.getItem("StdJournal");
 			I.setName("SYSTEM_NEWS");
 			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
@@ -1807,7 +1807,7 @@ public class Modify extends StdCommand
 			{
 				mob.location().send(mob,newMsg);
 				I.executeMsg(mob,newMsg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world is now more informed!^?");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^SThe world is now more informed!^?"));
 			}
 		}
 		else

@@ -68,7 +68,7 @@ public class Spell_Reinforce extends Spell
 					mob.tell(target.name(mob)+" cannot be reinforced further.");
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and harden!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to glow and harden!"));
 					target.setUsesRemaining(target.usesRemaining()+50);
 					target.recoverPhyStats();
 					mob.location().recoverRoomStats();

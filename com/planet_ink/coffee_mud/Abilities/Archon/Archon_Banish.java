@@ -168,7 +168,7 @@ public class Archon_Banish extends ArchonSkill
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if((msg.source()!=null)&&(msg.source().location()!=null))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but the magic fizzles."));
 				return false;
 			}
 		}

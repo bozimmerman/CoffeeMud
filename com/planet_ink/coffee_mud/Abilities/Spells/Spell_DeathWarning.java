@@ -54,7 +54,7 @@ public class Spell_DeathWarning extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,"<S-YOUPOSS> death warning magic fades.");
+				mob.tell(mob,null,null,_("<S-YOUPOSS> death warning magic fades."));
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class Spell_DeathWarning extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a death's warning.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a death's warning."));
 			return false;
 		}
 

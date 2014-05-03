@@ -95,7 +95,7 @@ public class Undead_ColdTouch extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) cold!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) cold!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

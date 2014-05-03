@@ -79,7 +79,7 @@ public class Spell_Frailty extends Spell
 		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less frail.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less frail."));
 		}
 	}
 
@@ -110,7 +110,7 @@ public class Spell_Frailty extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) frail!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) frail!"));
 					maliciousAffect(mob,target,asLevel,10,-1);
 				}
 			}

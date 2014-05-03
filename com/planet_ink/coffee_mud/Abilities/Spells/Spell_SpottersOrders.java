@@ -124,7 +124,7 @@ public class Spell_SpottersOrders extends Spell
 					{
 						P.third[0]=System.currentTimeMillis() + (CMLib.dice().roll(1, 4, 0) * CMProps.getTickMillis()) -1;
 						if(mob!=P.first)
-							P.first.tell(mob,spottedM,null,"<S-NAME> telepathically imparts the weaknesses of <T-NAME> to you.");
+							P.first.tell(mob,spottedM,null,_("<S-NAME> telepathically imparts the weaknesses of <T-NAME> to you."));
 					}
 					if(P.second==null)
 					{
@@ -187,13 +187,13 @@ public class Spell_SpottersOrders extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not in combat.");
+			mob.tell(target,null,null,_("<T-NAME> <T-IS-ARE> not in combat."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
 			return false;
 		}
 
@@ -218,7 +218,7 @@ public class Spell_SpottersOrders extends Spell
 					{
 						A.spottedM=victim;
 						A.setMiscText(victim.Name());
-						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,"<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!");
+						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
 					}
 				}
 			}

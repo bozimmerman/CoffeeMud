@@ -150,7 +150,7 @@ public class Spell_Grease extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> manage(s) to work <S-HIS-HER> way out of the grease.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> manage(s) to work <S-HIS-HER> way out of the grease."));
 	}
 
 
@@ -182,13 +182,13 @@ public class Spell_Grease extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isInFlight(target))
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected."));
 				else
 				if(msg.value()<=0)
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) to slip and slide!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) to slip and slide!"));
 						success=maliciousAffect(mob,target,asLevel,8,-1);
 					}
 				}

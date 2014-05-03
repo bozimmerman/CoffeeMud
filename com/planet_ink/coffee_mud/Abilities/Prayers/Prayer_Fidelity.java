@@ -101,7 +101,7 @@ public class Prayer_Fidelity extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) the fidelity geas!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) the fidelity geas!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}

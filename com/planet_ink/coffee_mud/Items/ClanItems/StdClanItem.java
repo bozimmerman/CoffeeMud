@@ -140,7 +140,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					CI.setRightfulOwner(null);
 					if(CI.owner()!=M.location())
 						M.location().moveItemTo(CI,ItemPossessor.Expire.Player_Drop);
-					M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
+					M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> drop(s) <T-NAME>."));
 					return false;
 				}
 			}
@@ -384,7 +384,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			else
 			{
 				if(M.location()!=null)
-					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
+					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,CMLib.lang()._("<T-NAME> is destroyed by <S-YOUPOSS> touch!"));
 				for(final Pair<Clan,Integer> clanP : CMLib.clans().findRivalrousClans(M))
 				{
 					final Clan C=clanP.first;

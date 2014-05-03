@@ -164,7 +164,7 @@ public class Chant_AstralProjection extends Chant
 			spirit.setPlayerStats(target.playerStats());
 			spirit.setLocation(target.location());
 			spirit.setBitmap(target.getBitmap());
-			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
+			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("^Z<S-NAME> go(es) limp!^.^?\n\r"));
 			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);
 			final Ability A=CMClass.getAbility("Prop_AstralSpirit");

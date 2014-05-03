@@ -69,7 +69,7 @@ public class Chant_TremorSense extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> tremor sense fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> tremor sense fades."));
 		for(int r=0;r<rooms.size();r++)
 		{
 			final Room R=rooms.elementAt(r);
@@ -135,7 +135,7 @@ public class Chant_TremorSense extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing tremors.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing tremors."));
 			return false;
 		}
 

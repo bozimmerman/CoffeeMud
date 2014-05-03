@@ -113,7 +113,7 @@ public class Skill_Juggle extends BardSkill
 		&&(CMLib.dice().rollPercentage()<90)
 		&&(msg.source()!=affected))
 		{
-			msg.source().tell(msg.source(),msg.target(),null,"<T-NAME> is moving too fast for you to grab it.");
+			msg.source().tell(msg.source(),msg.target(),null,_("<T-NAME> is moving too fast for you to grab it."));
 			return false;
 		}
 		return true;
@@ -189,7 +189,7 @@ public class Skill_Juggle extends BardSkill
 			&&(!juggles.contains(I))
 			&&(juggles.size()<maxJuggles()))
 			{
-				if(M.location().show(M,I,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>."))
+				if(M.location().show(M,I,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) juggling <T-NAMESELF>.")))
 					juggleItem(I);
 				else
 				{
@@ -337,7 +337,7 @@ public class Skill_Juggle extends BardSkill
 			while(juggles.size()>0)
 			{
 				final Item I=juggles.elementAt(0);
-				M.location().show(M,I,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
+				M.location().show(M,I,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) juggling <T-NAMESELF>."));
 				unJuggle(I);
 				I.unWear();
 				if(!M.isMine(I)) M.moveItemTo(I);
@@ -455,7 +455,7 @@ public class Skill_Juggle extends BardSkill
 			A.pause=false;
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to juggle, but messes up.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to juggle, but messes up."));
 
 
 		// return whether it worked

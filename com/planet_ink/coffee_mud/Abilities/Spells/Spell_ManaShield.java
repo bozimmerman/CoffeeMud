@@ -56,7 +56,7 @@ public class Spell_ManaShield extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The mana shield around <S-NAME> fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The mana shield around <S-NAME> fades."));
 	}
 
 	@Override

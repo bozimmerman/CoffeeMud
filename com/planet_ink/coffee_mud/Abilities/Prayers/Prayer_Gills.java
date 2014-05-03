@@ -55,7 +55,7 @@ public class Prayer_Gills extends Prayer
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> gills vanish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> gills vanish."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Prayer_Gills extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> gills.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> gills."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -100,7 +100,7 @@ public class Prayer_Gills extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a pair of gills!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

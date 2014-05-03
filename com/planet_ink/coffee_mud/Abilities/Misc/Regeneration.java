@@ -79,7 +79,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		doneAnything=doneAnything||mob.curState().adjMana(mob.phyStats().level()*2,mob.maxState());
 		doneAnything=doneAnything||mob.curState().adjMovement(mob.phyStats().level()*3,mob.maxState());
 		if(doneAnything)
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> regenerate(s)."));
 		return true;
 	}
 

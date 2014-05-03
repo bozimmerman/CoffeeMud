@@ -60,7 +60,7 @@ public class Spell_MageArmor extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> magical armor fades away.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> magical armor fades away."));
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class Spell_MageArmor extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already wearing mage armor.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already wearing mage armor."));
 			return false;
 		}
 

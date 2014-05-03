@@ -69,16 +69,16 @@ public class Chant_Homeopathy extends Chant
 				}
 				final int roll=CMLib.dice().rollPercentage();
 				if((roll>66)||(D==null))
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> condition is unchanged.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> condition is unchanged."));
 				else
 				if(roll>33)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> glow(s) a bit.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> glow(s) a bit."));
 					D.unInvoke();
 				}
 				else
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"Something is definitely happening to <S-NAME>!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("Something is definitely happening to <S-NAME>!"));
 					for(int i=0;i<1000;i++)
 						if(!D.tick(target,Tickable.TICKID_MOB))
 							break;

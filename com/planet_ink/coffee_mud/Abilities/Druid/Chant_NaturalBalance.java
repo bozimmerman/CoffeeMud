@@ -57,7 +57,7 @@ public class Chant_NaturalBalance extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> natural communion.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> end(s) <S-HIS-HER> natural communion."));
 				else
 					mob.tell(_("Your communion with natural balance ends."));
 			}

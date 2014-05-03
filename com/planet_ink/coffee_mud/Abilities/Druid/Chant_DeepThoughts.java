@@ -57,7 +57,7 @@ public class Chant_DeepThoughts extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> deep thinking.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> end(s) <S-HIS-HER> deep thinking."));
 				else
 					mob.tell(_("You stop thinking deeply."));
 			}

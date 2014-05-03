@@ -153,9 +153,9 @@ public class Spell_Shatter extends Spell
 					{
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
-							R.show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
+							R.show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is destroyed!"));
 						else
-							R.show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
+							R.show(mobTarget,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME>, possessed by <S-NAME>, is destroyed!"));
 						target.unWear();
 						target.destroy();
 						R.recoverRoomStats();

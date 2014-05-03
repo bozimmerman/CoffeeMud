@@ -287,7 +287,7 @@ public class Dance extends StdAbility
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
 			if(msg.source().location()!=null)
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) dancing.");
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) dancing."));
 			unInvoke();
 		}
 		super.executeMsg(host,msg);
@@ -401,7 +401,7 @@ public class Dance extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> make(s) a false step.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> make(s) a false step."));
 
 		return success;
 	}

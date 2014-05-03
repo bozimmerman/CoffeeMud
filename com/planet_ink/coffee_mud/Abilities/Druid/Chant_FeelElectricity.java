@@ -135,7 +135,7 @@ public class Chant_FeelElectricity extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very charged!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) very charged!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

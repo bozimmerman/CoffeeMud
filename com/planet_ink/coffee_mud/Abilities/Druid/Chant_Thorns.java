@@ -57,7 +57,7 @@ public class Chant_Thorns extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> thorns disappear.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> thorns disappear."));
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class Chant_Thorns extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already covered in thorns.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already covered in thorns."));
 			return false;
 		}
 

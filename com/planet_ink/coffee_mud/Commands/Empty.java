@@ -152,7 +152,7 @@ public class Empty extends Drop
 		&&(V.firstElement() instanceof Drink)
 		&&(!((Drink)V.firstElement()).containsDrink())
 		)
-			mob.tell(mob,(Drink)V.firstElement(),null,"<T-NAME> is already empty.");
+			mob.tell(mob,(Drink)V.firstElement(),null,_("<T-NAME> is already empty."));
 		else
 		for(int v=0;v<V.size();v++)
 		{

@@ -89,7 +89,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			&&(affected instanceof MOB)))
 			{
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
-					msg.source().tell((MOB)affected,null,null,"<S-NAME> is already out!");
+					msg.source().tell((MOB)affected,null,null,_("<S-NAME> is already out!"));
 				makeMyPeace((MOB)affected);
 				return false;
 			}
@@ -138,7 +138,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) consciousness."));
 				CMLib.commands().postStand(mob,true);
 				if((utterSafety)&&(mob.isMonster()))
 					CMLib.tracking().wanderAway(mob,false,true);

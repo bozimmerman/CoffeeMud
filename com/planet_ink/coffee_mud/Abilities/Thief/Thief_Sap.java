@@ -102,7 +102,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) consciousness."));
 				CMLib.commands().postStand(mob,true);
 			}
 			else
@@ -183,7 +183,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.location().show(target,null, CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
+					target.location().show(target,null, CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the floor!"));
 					success=maliciousAffect(mob,target,asLevel,3,-1);
 					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;

@@ -198,7 +198,7 @@ public class Song_Babble extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

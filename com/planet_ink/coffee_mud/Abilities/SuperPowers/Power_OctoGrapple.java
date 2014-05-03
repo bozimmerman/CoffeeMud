@@ -76,7 +76,7 @@ public class Power_OctoGrapple extends SuperPower
 			{
 				if(msg.sourceMessage()!=null)
 				{
-					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the grappling arms."))
+					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the grappling arms.")))
 					{
 						if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 						{
@@ -130,14 +130,14 @@ public class Power_OctoGrapple extends SuperPower
 				if(mob==invoker)
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> grapple.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> release(s) <S-HIS-HER> grapple."));
 					else
 						mob.tell(_("You release your grapple."));
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the grapple");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> released from the grapple"));
 					else
 						mob.tell(_("You are released from the grapple."));
 				}

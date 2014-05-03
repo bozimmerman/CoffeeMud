@@ -139,7 +139,7 @@ public class Thief_Snatch extends ThiefSkill
 			{
 				mob.location().send(target,msg);
 				mob.location().send(mob,msg2);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> disarm(s) <T-NAMESELF>!"));
 				if(mob.location().isContent(hisWeapon))
 				{
 					CMLib.commands().postGet(mob,null,hisWeapon,true);

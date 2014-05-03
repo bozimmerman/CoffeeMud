@@ -272,7 +272,7 @@ public class GenWallpaper implements Item
 		default:
 			break;
 		}
-		mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
+		mob.tell(mob,this,null,_("You can't do that to <T-NAMESELF>."));
 		return false;
 	}
 

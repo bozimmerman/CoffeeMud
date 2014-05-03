@@ -88,7 +88,7 @@ public class Chant_FreeVine extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> pull(s) <S-HIS-HER> roots up!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> pull(s) <S-HIS-HER> roots up!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

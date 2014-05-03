@@ -92,7 +92,7 @@ public class Spell_Misstep extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit clumsy.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit clumsy."));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

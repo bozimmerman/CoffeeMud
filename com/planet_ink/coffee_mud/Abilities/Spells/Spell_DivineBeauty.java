@@ -63,7 +63,7 @@ public class Spell_DivineBeauty extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self."));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Spell_DivineBeauty extends Spell
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) divinely beautiful!!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) divinely beautiful!!!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

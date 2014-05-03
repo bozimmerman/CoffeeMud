@@ -84,7 +84,7 @@ public class Spell_Fatigue extends Spell
 				{
 					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
 						target.curState().adjFatigue(CharState.FATIGUED_MILLIS+((mob.phyStats().level()) * 5l * CMProps.getTickMillis()),target.maxState());
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly fatigued!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly fatigued!"));
 				}
 			}
 		}

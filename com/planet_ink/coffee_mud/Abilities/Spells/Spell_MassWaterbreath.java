@@ -77,7 +77,7 @@ public class Spell_MassWaterbreath extends Spell
 						mob.location().send(mob,msg);
 						final Spell_WaterBreathing breath=new Spell_WaterBreathing();
 						breath.setProficiency(proficiency());
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a pair of gills!"));
 						breath.beneficialAffect(mob,target,asLevel,0);
 					}
 				}

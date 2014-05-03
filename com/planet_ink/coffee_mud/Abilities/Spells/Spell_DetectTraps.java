@@ -173,7 +173,7 @@ public class Spell_DetectTraps extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting traps.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting traps."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

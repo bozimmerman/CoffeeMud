@@ -115,7 +115,7 @@ public class Prayer_MassBlindness extends Prayer
 						if(msg.value()<=0)
 						{
 							success=maliciousAffect(mob,target,asLevel,0,-1);
-							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
 						}
 						nothingDone=false;
 					}

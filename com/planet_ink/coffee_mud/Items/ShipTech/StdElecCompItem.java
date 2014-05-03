@@ -186,11 +186,11 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 							addAmt=0.1f;
 					}
 					setInstalledFactor(this.getInstalledFactor()+addAmt);
-					msg.source().tell(msg.source(),this,null,"<T-NAME> is now enhanced.\n\r");
+					msg.source().tell(msg.source(),this,null,_("<T-NAME> is now enhanced.\n\r"));
 				}
 				else
 				{
-					msg.source().tell(msg.source(),this,null,"Your attempt to enhance <T-NAME> has failed.\n\r");
+					msg.source().tell(msg.source(),this,null,_("Your attempt to enhance <T-NAME> has failed.\n\r"));
 				}
 				break;
 			}

@@ -105,7 +105,7 @@ public class Skill_Conduct extends BardSkill
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly."));
 
 		return success;
 	}

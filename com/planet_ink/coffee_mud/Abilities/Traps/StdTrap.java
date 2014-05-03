@@ -216,7 +216,7 @@ public class StdTrap extends StdAbility implements Trap
 			   &&(msg.target() instanceof MOB)
 			   &&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
 			{
-				msg.source().tell((MOB)msg.target(),msg.tool(),null,"<S-NAME> can't accept <T-NAME>.");
+				msg.source().tell((MOB)msg.target(),msg.tool(),null,_("<S-NAME> can't accept <T-NAME>."));
 				return false;
 			}
 		}
@@ -307,7 +307,7 @@ public class StdTrap extends StdAbility implements Trap
 					if((msg.targetMinor()==CMMsg.TYP_HOLD)
 					&&(msg.source().isMine(affected)))
 					{
-						msg.source().tell(msg.source(),affected,null,"You activate <T-NAME>.");
+						msg.source().tell(msg.source(),affected,null,_("You activate <T-NAME>."));
 						activateBomb();
 					}
 				}

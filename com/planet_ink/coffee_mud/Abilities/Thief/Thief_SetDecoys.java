@@ -174,7 +174,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> set(s) several decoys around the room."))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> set(s) several decoys around the room.")))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;

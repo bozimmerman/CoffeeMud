@@ -109,10 +109,10 @@ public class Trap_SpikePit extends Trap_RoomPit
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor!");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor!"));
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{

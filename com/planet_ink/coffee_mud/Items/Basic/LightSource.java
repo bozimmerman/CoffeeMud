@@ -134,7 +134,7 @@ public class LightSource extends StdItem implements Light
 				if(owner() instanceof MOB)
 				{
 					final MOB M=(MOB)owner();
-					M.tell(M,null,this,"<O-NAME> flickers and burns out.");
+					M.tell(M,null,this,_("<O-NAME> flickers and burns out."));
 					setDuration(0);
 					if(destroyedWhenBurnedOut())
 						destroy();

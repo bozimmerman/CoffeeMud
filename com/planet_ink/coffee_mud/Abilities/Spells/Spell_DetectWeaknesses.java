@@ -141,13 +141,13 @@ public class Spell_DetectWeaknesses extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> not in combat.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> not in combat."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
 			return false;
 		}
 
@@ -172,7 +172,7 @@ public class Spell_DetectWeaknesses extends Spell
 					{
 						A.spottedM=victim;
 						A.setMiscText(victim.Name());
-						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,"<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!");
+						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
 					}
 				}
 			}

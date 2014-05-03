@@ -134,7 +134,7 @@ public class Chant_WaterWalking extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a water walker.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a water walker."));
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class Chant_WaterWalking extends Chant
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> feel(s) a little lighter!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> feel(s) a little lighter!"));
 					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}

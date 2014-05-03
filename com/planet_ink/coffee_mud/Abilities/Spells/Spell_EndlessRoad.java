@@ -128,7 +128,7 @@ public class Spell_EndlessRoad extends Spell
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) lost!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) lost!"));
 				}
 			}
 		}

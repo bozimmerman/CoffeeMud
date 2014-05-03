@@ -100,7 +100,7 @@ public class Spell_MindLight extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"The Mind Light is already here!");
+			mob.tell(mob,null,null,_("The Mind Light is already here!"));
 			return false;
 		}
 

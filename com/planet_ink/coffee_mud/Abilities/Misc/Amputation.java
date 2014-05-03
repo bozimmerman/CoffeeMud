@@ -199,7 +199,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> limbs have been restored.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> limbs have been restored."));
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
@@ -224,7 +224,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,target,null,"You can't do that to <T-NAMESELF>.");
+						mob.tell(mob,target,null,_("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}

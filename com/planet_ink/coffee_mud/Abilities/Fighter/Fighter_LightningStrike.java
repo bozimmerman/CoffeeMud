@@ -99,7 +99,7 @@ public class Fighter_LightningStrike extends MonkSkill
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) less drowsy."));
 				else
 					mob.tell(_("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);
@@ -186,7 +186,7 @@ public class Fighter_LightningStrike extends MonkSkill
 						CMLib.combat().postAttack(mob,target,null);
 				if((!anyWeapons(mob))&&(msg.value()<=0))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> collapse(s) in exhaustion."));
 					success=maliciousAffect(mob,mob,asLevel,9,-1);
 				}
 			}

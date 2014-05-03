@@ -66,7 +66,7 @@ public class Prayer_SenseGood extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The glowing blue fades from <S-YOUPOSS> eyes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The glowing blue fades from <S-YOUPOSS> eyes."));
 	}
 
 	@Override

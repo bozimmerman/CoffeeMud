@@ -72,7 +72,7 @@ public class Spell_Delude extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already deluding others.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already deluding others."));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -99,7 +99,7 @@ public class Spell_Delude extends Spell
 				{
 					previousAlignment=target.fetchFaction(CMLib.factions().AlignID());
 
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> undergo(es) a change of attitude"));
 					success=beneficialAffect(mob,target,asLevel,0);
 					if(success)
 					{

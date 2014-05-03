@@ -70,7 +70,7 @@ public class Chant_HardenSkin extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> skin softens.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin softens."));
 	}
 
 
@@ -83,7 +83,7 @@ public class Chant_HardenSkin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-YOUPOSS> skin is already hard.");
+			mob.tell(target,null,null,_("<S-YOUPOSS> skin is already hard."));
 			return false;
 		}
 

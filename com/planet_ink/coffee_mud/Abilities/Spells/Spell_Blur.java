@@ -89,7 +89,7 @@ public class Spell_Blur extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to come back into focus.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to come back into focus."));
 	}
 
 
@@ -120,7 +120,7 @@ public class Spell_Blur extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) blurry!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) blurry!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

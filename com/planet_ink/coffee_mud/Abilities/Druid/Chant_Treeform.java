@@ -145,7 +145,7 @@ public class Chant_Treeform extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> body is no longer treeish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> body is no longer treeish."));
 			if(oldState!=null)
 			{
 				mob.curState().setHitPoints(oldState.getHitPoints());
@@ -183,7 +183,7 @@ public class Chant_Treeform extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a tree.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a tree."));
 			return false;
 		}
 
@@ -216,7 +216,7 @@ public class Chant_Treeform extends Chant
 					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50);
 					if(success)
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> transform(s) into a tree!!"));
 						target.tell(_("To return to your flesh body, try to leave this area."));
 					}
 				}

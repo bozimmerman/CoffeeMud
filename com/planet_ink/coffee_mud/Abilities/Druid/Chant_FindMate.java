@@ -230,7 +230,7 @@ public class Chant_FindMate extends Chant
 				final Chant_FindMate A=(Chant_FindMate)target.fetchEffect(ID());
 				if(A!=null)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> yearn(s) for a mate!"));
 					A.makeLongLasting();
 					A.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverPhyStats();

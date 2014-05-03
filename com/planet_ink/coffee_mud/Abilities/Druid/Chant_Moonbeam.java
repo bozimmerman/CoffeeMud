@@ -60,7 +60,7 @@ public class Chant_Moonbeam extends Chant
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The moonbeam shining down from above <S-NAME> dims.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("The moonbeam shining down from above <S-NAME> dims."));
 		super.unInvoke();
 		room.recoverRoomStats();
 	}

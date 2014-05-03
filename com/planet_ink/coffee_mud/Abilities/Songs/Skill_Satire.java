@@ -76,7 +76,7 @@ public class Skill_Satire extends BardSkill
 		A2=CMLib.law().getLegalObject(room);
 		if((B==null)||((!B.isAnyOfficer(A2, target))&&(!B.isJudge(A2, target))))
 		{
-			mob.tell(mob,target,null,"<T-NAME> is not an officer here.");
+			mob.tell(mob,target,null,_("<T-NAME> is not an officer here."));
 			return false;
 		}
 		final Set<MOB> group = mob.getGroupMembers(new HashSet<MOB>());
@@ -92,7 +92,7 @@ public class Skill_Satire extends BardSkill
 
 		if(!CMLib.flags().canBeHeardSpeakingBy(mob, target))
 		{
-			mob.tell(mob,target,null,"<T-NAME> can't hear you.");
+			mob.tell(mob,target,null,_("<T-NAME> can't hear you."));
 			return false;
 		}
 

@@ -73,7 +73,7 @@ public class Chant_ColdWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding the cold.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding the cold."));
 			return false;
 		}
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

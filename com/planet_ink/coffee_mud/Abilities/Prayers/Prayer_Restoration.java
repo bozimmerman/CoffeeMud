@@ -113,7 +113,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(healing>0)
 				{
 					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) much healthier!"));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
@@ -122,7 +122,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(A!=null)
 				{
 					target.delEffect(A);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> missing parts are restored!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> missing parts are restored!"));
 					A=target.fetchAbility(A.ID());
 					if(A!=null) target.delAbility(A);
 					target.recoverCharStats();
@@ -134,7 +134,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if((A!=null)&&(A.canBeUninvoked()))
 				{
 					target.delEffect(A);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> atemi damage is healed!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> atemi damage is healed!"));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
@@ -145,7 +145,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				{
 					A.unInvoke();
 					target.delEffect(A);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> lost levels are restored!"));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
@@ -155,7 +155,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				{
 					A.unInvoke();
 					target.delEffect(A);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> lost levels are restored!"));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();
@@ -165,7 +165,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				{
 					A.unInvoke();
 					target.delEffect(A);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer cold and weak!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer cold and weak!"));
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();

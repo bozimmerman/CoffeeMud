@@ -59,7 +59,7 @@ public class Spell_Summon extends Spell
 					return;
 				if(mob.getStartRoom().getArea()!=mob.location().getArea())
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn back into the summoning swirl.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn back into the summoning swirl."));
 					mob.getStartRoom().bringMobHere(mob,false);
 				}
 			}

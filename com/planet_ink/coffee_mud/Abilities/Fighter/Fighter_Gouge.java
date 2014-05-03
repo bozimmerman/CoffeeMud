@@ -145,7 +145,7 @@ public class Fighter_Gouge extends MonkSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> blinded!"));
 				maliciousAffect(mob,target,asLevel,5,-1);
 				Amputator A=(Amputator)target.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");

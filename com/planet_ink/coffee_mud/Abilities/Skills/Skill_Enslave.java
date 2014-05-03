@@ -340,7 +340,7 @@ public class Skill_Enslave extends StdSkill
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
 			CMLib.commands().postSay(mob,null,"You know, if I had any ambitions, I would enslave myself so I could do interesting things!",false,false);
 			return false;
 		}

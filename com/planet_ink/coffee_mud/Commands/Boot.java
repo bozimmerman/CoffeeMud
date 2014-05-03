@@ -65,7 +65,7 @@ public class Boot extends StdCommand
 				{
 					mob.tell("You boot "+S.mob().name());
 					if(S.mob().location()!=null)
-						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
+						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,_("Something is happening to <S-NAME>."));
 				}
 				else
 					mob.tell("You boot "+S.getAddress());

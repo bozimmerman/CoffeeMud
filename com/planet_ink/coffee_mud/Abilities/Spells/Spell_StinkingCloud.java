@@ -91,7 +91,7 @@ public class Spell_StinkingCloud extends Spell
 				case CMMsg.TYP_ADVANCE:
 					if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_GAS)))
 					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> double(s) over from the sickening gas.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> double(s) over from the sickening gas."));
 						return false;
 					}
 					break;
@@ -118,7 +118,7 @@ public class Spell_StinkingCloud extends Spell
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) nauseatingly stinky!");
+			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) nauseatingly stinky!"));
 		super.executeMsg(myHost,msg);
 	}
 
@@ -134,7 +134,7 @@ public class Spell_StinkingCloud extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the stinking cloud!"));
 		}
 	}
 
@@ -188,7 +188,7 @@ public class Spell_StinkingCloud extends Spell
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,0,-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped in the stinking cloud!"));
 						}
 					}
 				}

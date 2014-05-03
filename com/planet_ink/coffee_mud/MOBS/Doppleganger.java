@@ -120,7 +120,7 @@ public class Doppleganger extends StdMOB
 			}
 			if((mimicing==null)&&(location()!=null)&&(msg.source()!=null))
 			{
-				location().show(this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
+				location().show(this,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on a new form!"));
 				mimicing=msg.source();
 				username=mimicing.Name();
 				setDisplayText(mimicing.displayText());

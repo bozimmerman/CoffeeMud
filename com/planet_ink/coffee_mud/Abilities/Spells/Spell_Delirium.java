@@ -220,7 +220,7 @@ public class Spell_Delirium extends Spell
 		super.unInvoke();
 
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit less delirious.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit less delirious."));
 	}
 
 	@Override
@@ -270,7 +270,7 @@ public class Spell_Delirium extends Spell
 				{
 					amountRemaining=300;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) under the grip of delirium!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) under the grip of delirium!!"));
 				}
 			}
 		}

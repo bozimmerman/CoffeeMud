@@ -187,7 +187,7 @@ public class Hunting extends CommonSkill
 					found.location().delInhabitant(found);
 					found.setLocation(null);
 					found.destroy();
-					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-HAS-HAVE> lost the trail.");
+					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-HAS-HAVE> lost the trail."));
 				}
 			}
 		}

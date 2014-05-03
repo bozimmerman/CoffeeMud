@@ -86,7 +86,7 @@ public class Thief_RunningFight extends ThiefSkill
 			final MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))
 			{
-				mob.tell(M,null,null,"<S-NAME> is not fighting you!");
+				mob.tell(M,null,null,_("<S-NAME> is not fighting you!"));
 				return false;
 			}
 			int dir=-1;

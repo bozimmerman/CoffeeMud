@@ -67,7 +67,7 @@ public class Spell_RechargeWand extends Spell
 				mob.location().send(mob,msg);
 				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses())
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly then disintigrates!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glow(s) brightly then disintigrates!"));
 					target.destroy();
 				}
 				else

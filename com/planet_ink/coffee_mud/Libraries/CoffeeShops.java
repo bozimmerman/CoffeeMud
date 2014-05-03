@@ -1226,7 +1226,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
 		{
-			mob.tell(whoIgnores,null,null,"<S-NAME> appear(s) to be ignoring you.");
+			mob.tell(whoIgnores,null,null,_("<S-NAME> appear(s) to be ignoring you."));
 			return false;
 		}
 		return true;

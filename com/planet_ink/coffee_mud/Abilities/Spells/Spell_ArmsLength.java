@@ -53,7 +53,7 @@ public class Spell_ArmsLength extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,"<S-YOUPOSS> arms length magic fades.");
+				mob.tell(mob,null,null,_("<S-YOUPOSS> arms length magic fades."));
 	}
 
   @Override
@@ -96,7 +96,7 @@ public int castingQuality(MOB mob, Physical target)
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-IS-ARE> keeping enemies at arms length.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-IS-ARE> keeping enemies at arms length."));
 			return false;
 		}
 

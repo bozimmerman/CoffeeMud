@@ -80,7 +80,7 @@ public class Spell_GustOfWind extends Spell
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				CMLib.commands().postStand(mob,true);
 			}
 			else
@@ -136,7 +136,7 @@ public class Spell_GustOfWind extends Spell
 							&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()-(adjustedLevel(mob,asLevel)/2)))
 							&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 							{
-								R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
+								R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) down!"));
 								doneTicking=false;
 								success=maliciousAffect(mob,target,asLevel,2,-1);
 							}

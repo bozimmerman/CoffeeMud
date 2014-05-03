@@ -103,7 +103,7 @@ public class Spell_SpyingStone extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> open(s) a pair of strange eyes, which become transluscent.");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> open(s) a pair of strange eyes, which become transluscent."));
 			}
 		}
 		else

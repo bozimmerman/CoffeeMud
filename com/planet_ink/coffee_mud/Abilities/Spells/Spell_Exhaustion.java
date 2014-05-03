@@ -79,7 +79,7 @@ public class Spell_Exhaustion extends Spell
 				invoker=mob;
 				if(msg.value()>0)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> become(s) exhausted!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> become(s) exhausted!"));
 					target.curState().setMovement(0);
 					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
 						target.curState().setFatigue(target.curState().getFatigue()+CharState.FATIGUED_MILLIS);

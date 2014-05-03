@@ -92,7 +92,7 @@ public class Spell_Shield extends Spell
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) protected!");
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) protected!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

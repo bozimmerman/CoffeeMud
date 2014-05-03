@@ -81,7 +81,7 @@ public class Prayer_AuraStrife extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
-			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"The aura of strife around <S-NAME> fades.");
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("The aura of strife around <S-NAME> fades."));
 	}
 
 	@Override

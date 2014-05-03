@@ -67,7 +67,7 @@ public class Spell_Refit extends Spell
 					mob.tell("Nothing happens to "+target.name(mob)+".");
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to magically resize itself!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to magically resize itself!"));
 					target.basePhyStats().setHeight(0);
 				}
 				target.recoverPhyStats();

@@ -125,7 +125,7 @@ public class Chant extends StdAbility
 			else
 			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
 				return false;
 			}
 		}

@@ -106,7 +106,7 @@ public class Poison_Slumberall extends Poison
 		if((!fallenYet)&&(mob.location()!=null))
 		{
 			fallenYet=true;
-			mob.location().show(mob,null,CMMsg.MSG_SLEEP,"<S-NAME> fall(s) asleep!");
+			mob.location().show(mob,null,CMMsg.MSG_SLEEP,_("<S-NAME> fall(s) asleep!"));
 			mob.recoverPhyStats();
 		}
 		return true;

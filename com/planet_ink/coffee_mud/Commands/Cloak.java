@@ -75,7 +75,7 @@ public class Cloak extends StdCommand
 			A=CMClass.getAbility(str);
 		if(A!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) cloaked!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) cloaked!"));
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());

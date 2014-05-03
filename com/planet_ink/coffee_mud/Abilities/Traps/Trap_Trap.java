@@ -209,7 +209,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		if(CMLib.flags().isInFlight(mob))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> pause(s) over it in flight.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> pause(s) over it in flight."));
 			return;
 		}
 		else
@@ -253,10 +253,10 @@ public class Trap_Trap extends StdAbility implements Trap
 			}
 			myPit.bringMobHere(mob,false);
 			if(mob.phyStats().weight()<5)
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
 			else
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor with a THUMP!"));
 				final int damage=CMLib.dice().roll(mob.phyStats().level(),3,1);
 				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,-1,null);
 			}
@@ -303,7 +303,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			victimOfSpell(target);
 			break;
 		default:
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap, but it appears to have misfired.");
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a trap, but it appears to have misfired."));
 			break;
 		}
 

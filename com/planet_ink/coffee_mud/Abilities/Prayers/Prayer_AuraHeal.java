@@ -161,7 +161,7 @@ public class Prayer_AuraHeal extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"A healing aura descends over the area!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("A healing aura descends over the area!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

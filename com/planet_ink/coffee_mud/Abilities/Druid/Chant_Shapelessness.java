@@ -57,7 +57,7 @@ public class Chant_Shapelessness extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to material form."));
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class Chant_Shapelessness extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already shapeless.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already shapeless."));
 			return false;
 		}
 		if((!auto)&&(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(),null)))
@@ -167,7 +167,7 @@ public class Chant_Shapelessness extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s) and become(s) ethereal!"));
 				beneficialAffect(mob,target,asLevel,3);
 			}
 		}

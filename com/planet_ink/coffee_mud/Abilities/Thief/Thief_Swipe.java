@@ -102,7 +102,7 @@ public class Thief_Swipe extends ThiefSkill
 
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
-			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
+			mob.tell(mob,mob.getVictim(),null,_("Not while you are fighting <T-NAME>!"));
 			return false;
 		}
 

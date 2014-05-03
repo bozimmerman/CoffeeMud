@@ -292,7 +292,7 @@ public class Chant_WindColor extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already watching the winds.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already watching the winds."));
 			return false;
 		}
 

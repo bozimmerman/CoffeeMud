@@ -905,24 +905,24 @@ public class Nanny extends StdBehavior
 			{
 				if(PA.fetchEffect("Soiled")!=null)
 				{
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> change(s) <T-YOUPOSS> diaper.");
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> change(s) <T-YOUPOSS> diaper."));
 					PA.delEffect(PA.fetchEffect("Soiled"));
 				}
 				else
 				if(CMLib.dice().rollPercentage()>50)
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) with <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> play(s) with <T-NAME>."));
 				else
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>."));
 
 			}
 			else
 			if(CMLib.flags().isChild(PA))
 			{
 				if(CMLib.dice().rollPercentage()>20)
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> play(s) with <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> play(s) with <T-NAME>."));
 				else
 				{
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> groom(s) <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> groom(s) <T-NAME>."));
 					if(PA.fetchEffect("Soiled")!=null)
 						PA.delEffect(PA.fetchEffect("Soiled"));
 				}
@@ -934,7 +934,7 @@ public class Nanny extends StdBehavior
 				{
 					if((!CMLib.flags().isAnimalIntelligence((MOB)PA))
 					&&(CMLib.flags().canSpeak(mob)))
-						R.show(mob, PA, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
+						R.show(mob, PA, CMMsg.MSG_NOISE,_("<S-NAME> speak(s) quietly with <T-NAME>."));
 					else
 					{
 						final List<RawMaterial> V=((MOB)PA).charStats().getMyRace().myResources();
@@ -944,22 +944,22 @@ public class Nanny extends StdBehavior
 							if(((Item)V.get(v)).material()==RawMaterial.RESOURCE_FUR)
 								comb=true;
 						if(comb)
-							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> groom(s) <T-NAME>.");
+							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> groom(s) <T-NAME>."));
 						else
-							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> pet(s) <T-NAME>.");
+							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> pet(s) <T-NAME>."));
 					}
 				}
 				else
-					R.show(mob, PA, CMMsg.MSG_LOCK,"<S-NAME> admire(s) <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_LOCK,_("<S-NAME> admire(s) <T-NAME>."));
 			}
 			else
 			if(PA instanceof MOB)
 			{
 				if(CMLib.flags().isAnimalIntelligence((MOB)PA))
-					R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> smile(s) and pet(s) <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> smile(s) and pet(s) <T-NAME>."));
 				else
 				if(CMLib.flags().canSpeak(mob))
-					R.show(mob, PA, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
+					R.show(mob, PA, CMMsg.MSG_NOISE,_("<S-NAME> speak(s) quietly with <T-NAME>."));
 			}
 		}
 		return true;

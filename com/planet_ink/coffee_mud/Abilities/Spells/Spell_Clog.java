@@ -60,7 +60,7 @@ public class Spell_Clog extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> mouth reverts to normal size.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> mouth reverts to normal size."));
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class Spell_Clog extends Spell
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!");
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!"));
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					}
 				}

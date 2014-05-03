@@ -154,7 +154,7 @@ public class Prayer_AuraHarm extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"A harmful aura descends over the area!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("A harmful aura descends over the area!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}

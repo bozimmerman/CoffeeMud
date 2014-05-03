@@ -106,7 +106,7 @@ public class Spell_Ugliness extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) too hideous to look at!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) too hideous to look at!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}

@@ -639,7 +639,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				int reallyEat=basePrice*(expenseAffects.size()+1);
 				while(mob.curState().getMana()<reallyEat)
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> strength of will begins to crumble."));
 					//pick one and kill it
 					final Ability A=expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
 					A.unInvoke();

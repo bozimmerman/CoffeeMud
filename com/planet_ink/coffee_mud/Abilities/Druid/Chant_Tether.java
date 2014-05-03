@@ -64,7 +64,7 @@ public class Chant_Tether extends Chant
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(mob.curState().getHitPoints()>0))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back by the tether!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> pulled back by the tether!"));
 				if((tetheredTo!=null)&&(tetheredTo!=mob.location()))
 					tetheredTo.bringMobHere(mob,false);
 				return false;
@@ -114,7 +114,7 @@ public class Chant_Tether extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already tethered.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already tethered."));
 			return false;
 		}
 

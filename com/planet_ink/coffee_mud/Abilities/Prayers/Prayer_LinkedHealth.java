@@ -125,7 +125,7 @@ public class Prayer_LinkedHealth extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> and <T-NAME> are linked in health.");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> and <T-NAME> are linked in health."));
 				buddy=mob;
 				beneficialAffect(mob,target,asLevel,0);
 				buddy=target;

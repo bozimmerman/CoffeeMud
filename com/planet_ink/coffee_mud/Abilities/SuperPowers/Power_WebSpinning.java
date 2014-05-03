@@ -69,7 +69,7 @@ public class Power_WebSpinning extends SuperPower
 				&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 				||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 				{
-					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
+					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the web.")))
 					{
 						amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 						if(amountRemaining<0)
@@ -90,7 +90,7 @@ public class Power_WebSpinning extends SuperPower
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(((Item)affected).owner()==msg.source()))
 				{
-					msg.source().tell(msg.source(),affected,null,"<T-NAME> is too sticky to let go of!");
+					msg.source().tell(msg.source(),affected,null,_("<T-NAME> is too sticky to let go of!"));
 					return false;
 				}
 			}
@@ -102,7 +102,7 @@ public class Power_WebSpinning extends SuperPower
 			{
 				if(msg.targetMinor()==CMMsg.TYP_OPEN)
 				{
-					msg.source().tell(msg.source(),affected,null,"<T-NAME> is held fast by gobs of webbing!");
+					msg.source().tell(msg.source(),affected,null,_("<T-NAME> is held fast by gobs of webbing!"));
 					return false;
 				}
 			}
@@ -122,7 +122,7 @@ public class Power_WebSpinning extends SuperPower
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the web."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -154,7 +154,7 @@ public class Power_WebSpinning extends SuperPower
 					if(CMLib.map().roomLocation(target)==mob.location())
 					{
 						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> become(s) stuck in a mass of web!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> become(s) stuck in a mass of web!"));
 					}
 				}
 			}

@@ -121,7 +121,7 @@ public class Chant_Yearning extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) to yearn for something!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) to yearn for something!"));
 					maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
 				}
 			}

@@ -111,7 +111,7 @@ public class Thief_Evesdrop extends ThiefSkill
 				A.unInvoke();
 			else
 			{
-				mob.tell(mob,target,null,"It is too crowded to evesdrop on <T-NAME>.");
+				mob.tell(mob,target,null,_("It is too crowded to evesdrop on <T-NAME>."));
 				return false;
 			}
 		}

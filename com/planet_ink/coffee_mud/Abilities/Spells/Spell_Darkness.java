@@ -93,7 +93,7 @@ public class Spell_Darkness extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Darkness is already here!");
+			mob.tell(mob,null,null,_("Darkness is already here!"));
 			return false;
 		}
 

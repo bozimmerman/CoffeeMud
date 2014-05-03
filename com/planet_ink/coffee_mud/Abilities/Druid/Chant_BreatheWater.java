@@ -86,7 +86,7 @@ public class Chant_BreatheWater extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a water breather.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a water breather."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -99,7 +99,7 @@ public class Chant_BreatheWater extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a pair of gills!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

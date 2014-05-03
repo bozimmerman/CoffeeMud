@@ -77,7 +77,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 				unInvoke();
 			}
 			if(mob.curState().adjHitPoints(super.getXLEVELLevel(invoker())+(int)Math.round(CMath.div(mob.phyStats().level(),2.0)),mob.maxState()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> mend(s) and heal(s).");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> mend(s) and heal(s)."));
 		}
 		return super.tick(ticking,tickID);
 	}

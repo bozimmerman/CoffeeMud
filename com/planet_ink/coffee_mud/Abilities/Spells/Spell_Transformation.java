@@ -49,7 +49,7 @@ public class Spell_Transformation extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer so brutish."));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Spell_Transformation extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already transformed.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already transformed."));
 			return false;
 		}
 

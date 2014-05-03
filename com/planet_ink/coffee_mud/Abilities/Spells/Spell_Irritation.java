@@ -68,7 +68,7 @@ public class Spell_Irritation extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> start(s) wincing and scratching!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> start(s) wincing and scratching!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}

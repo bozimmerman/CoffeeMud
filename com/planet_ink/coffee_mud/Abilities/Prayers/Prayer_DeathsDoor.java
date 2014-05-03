@@ -60,7 +60,7 @@ public class Prayer_DeathsDoor extends Prayer
 					return super.okMessage(host,msg);
 				final Room oldRoom=mob.location();
 				mob.resetToMaxState();
-				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back from death's door!");
+				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> pulled back from death's door!"));
 				startRoom.bringMobHere(mob,false);
 				unInvoke();
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects

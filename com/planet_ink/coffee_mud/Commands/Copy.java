@@ -43,7 +43,7 @@ public class Copy extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
 		{
@@ -371,7 +371,7 @@ public class Copy extends StdCommand
 					CMLib.database().DBUpdateExits(R);
 					R.startItemRejuv();
 				}
-				room.show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, a massive new landscape instantiates from the Java Plane.");
+				room.show(mob,null,CMMsg.MSG_OK_ACTION,_("Suddenly, a massive new landscape instantiates from the Java Plane."));
 				Log.sysOut("SysopUtils",mob.Name()+" copied area "+E.Name());
 			}
 			else

@@ -90,7 +90,7 @@ public class Chant_Shamblermorph extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer a shambling mound.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer a shambling mound."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -126,7 +126,7 @@ public class Chant_Shamblermorph extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!"));
 					if(malicious)
 						maliciousAffect(mob,target,asLevel,0,-1);
 					else

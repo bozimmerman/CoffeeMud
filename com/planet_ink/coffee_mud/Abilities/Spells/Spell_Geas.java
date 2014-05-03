@@ -115,7 +115,7 @@ public class Spell_Geas extends Spell
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
 			CMLib.commands().postSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
@@ -151,7 +151,7 @@ public class Spell_Geas extends Spell
 				if((STEPS==null)||(STEPS.size()==0))
 				{
 					STEPS=null;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused.");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) confused."));
 					return false;
 				}
 				setMiscText(CMParms.combine(commands,0));

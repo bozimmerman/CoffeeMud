@@ -159,7 +159,7 @@ public class Thief_Robbery extends ThiefSkill
 			||(stolen instanceof LandTitle)
 			||((price.experiencePrice>0)||(price.questPointPrice>0)))
 			{
-				mob.tell(mob,target,stolen,"You cannot rob '<O-NAME>' from <T-NAME>.");
+				mob.tell(mob,target,stolen,_("You cannot rob '<O-NAME>' from <T-NAME>."));
 				return false;
 			}
 			if(!shop.getShop().doIHaveThisInStock(stolen.Name(),mob))

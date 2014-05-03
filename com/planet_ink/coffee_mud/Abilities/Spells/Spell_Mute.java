@@ -107,7 +107,7 @@ public class Spell_Mute extends Spell
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) mute!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) mute!"));
 				}
 			}
 		}

@@ -44,7 +44,7 @@ public class ROMPatrolman extends StdBehavior
 		return "gang member passifying";
 	}
 
-	public static void keepPeace(MOB observer)
+	public void keepPeace(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
 		MOB victim=null;
@@ -63,7 +63,7 @@ public class ROMPatrolman extends StdBehavior
 
 		if(victim==null) return;
 		if(BrotherHelper.isBrother(victim,observer,false)) return;
-		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***");
+		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***"));
 		for(final Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
 		{
 			final Room R=(Room)r.nextElement();
@@ -78,30 +78,30 @@ public class ROMPatrolman extends StdBehavior
 		switch(CMLib.dice().roll(1,7,-1))
 		{
 		case 0:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> yell(s) 'All roit! All roit! break it up!'^?");
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> yell(s) 'All roit! All roit! break it up!'^?"));
 			makePeace=true;
 			break;
 		case 1:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> sigh(s) 'Society's to blame, but what's a bloke to do?'^?");
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> sigh(s) 'Society's to blame, but what's a bloke to do?'^?"));
 			fight=true;
 			break;
 		case 2:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> mumble(s) 'bloody kids will be the death of us all.'^?");
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> mumble(s) 'bloody kids will be the death of us all.'^?"));
 			break;
 		case 3:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> yell(s) 'Stop that! Stop that!' and attack(s).^?");
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> yell(s) 'Stop that! Stop that!' and attack(s).^?"));
 			fight=true;
 			break;
 		case 4:
-			observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> pull(s) out his billy and go(es) to work.");
+			observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> pull(s) out his billy and go(es) to work."));
 			fight=true;
 			break;
 		case 5:
-			observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> sigh(s) in resignation and proceed(s) to break up the fight.");
+			observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> sigh(s) in resignation and proceed(s) to break up the fight."));
 			makePeace=true;
 			break;
 		case 6:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Settle down, you hooligans!'^?");
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Settle down, you hooligans!'^?"));
 			break;
 		 }
 

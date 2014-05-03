@@ -185,7 +185,7 @@ public class Prayer_AuraFear extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"An aura descends over <T-NAME>!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("An aura descends over <T-NAME>!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}

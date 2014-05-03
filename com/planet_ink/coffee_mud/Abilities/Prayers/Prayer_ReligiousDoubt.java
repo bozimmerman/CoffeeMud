@@ -92,7 +92,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert")))
 			{
-				msg.source().tell((MOB)msg.target(),null,null,"<S-NAME> is not interested in hearing your religious beliefs.");
+				msg.source().tell((MOB)msg.target(),null,null,_("<S-NAME> is not interested in hearing your religious beliefs."));
 				return false;
 			}
 		}
@@ -119,7 +119,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet."));
 				beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/CMProps.getTickMillis()));
 			}
 		}

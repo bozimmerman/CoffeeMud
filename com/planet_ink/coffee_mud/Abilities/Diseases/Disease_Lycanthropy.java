@@ -139,7 +139,7 @@ public class Disease_Lycanthropy extends Disease
 
 		if((CMLib.dice().rollPercentage()<15)
 		&&((mob.location().domainType()&Room.INDOORS)>0))
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!"));
 		// time to tick lycanthropically
 		final MOB M=victimHere(mob.location(),mob);
 		if(M!=null)
@@ -184,7 +184,7 @@ public class Disease_Lycanthropy extends Disease
 						deathTrail=null;
 					else
 					if(CMLib.dice().rollPercentage()<15)
-						mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sniff(s) at the air.");
+						mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sniff(s) at the air."));
 
 				}
 				else
@@ -226,7 +226,7 @@ public class Disease_Lycanthropy extends Disease
 			||(A.getTimeObj().getMoonPhase()!=TimeClock.MoonPhase.FULL))
 			{
 				changed=false;
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to normal.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to normal."));
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();

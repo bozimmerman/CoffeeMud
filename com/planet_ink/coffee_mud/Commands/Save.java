@@ -71,7 +71,7 @@ public class Save extends StdCommand
 			return false;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 		String firstCommand="";
 		String lastCommand = "";
 		if(commands.size()>1)
@@ -148,7 +148,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),0);
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the room.\n\r");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}

@@ -165,7 +165,7 @@ public class Spell_IncreaseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Gravity has already been increased here!");
+			mob.tell(mob,null,null,_("Gravity has already been increased here!"));
 			return false;
 		}
 

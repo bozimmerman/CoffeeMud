@@ -61,7 +61,7 @@ public class Spell_Haste extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> slow(s) back down to normal speed.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> slow(s) back down to normal speed."));
 	}
 
 
@@ -94,7 +94,7 @@ public class Spell_Haste extends Spell
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> speed(s) up!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> speed(s) up!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

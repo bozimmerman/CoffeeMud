@@ -147,7 +147,7 @@ public class Spell_ObscureSelf extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) a bit less obscure.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) a bit less obscure."));
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class Spell_ObscureSelf extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already obscure.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already obscure."));
 			return false;
 		}
 

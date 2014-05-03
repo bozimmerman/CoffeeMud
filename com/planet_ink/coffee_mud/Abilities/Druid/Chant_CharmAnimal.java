@@ -152,7 +152,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> natural-will returns.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> natural-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);

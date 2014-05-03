@@ -76,7 +76,7 @@ public class Prayer_ProtCold extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already protected from cold.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already protected from cold."));
 			return false;
 		}
 

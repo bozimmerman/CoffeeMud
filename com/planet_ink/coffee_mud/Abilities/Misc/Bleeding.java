@@ -79,7 +79,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 			else
 			if((msg.targetMinor()==CMMsg.TYP_LOOK)
 			||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-				msg.source().tell((MOB)msg.target(),null,null,"^R<S-NAME> <S-IS-ARE> still bleeding...");
+				msg.source().tell((MOB)msg.target(),null,null,_("^R<S-NAME> <S-IS-ARE> still bleeding..."));
 		}
 		else
 		if((msg.source()==affected)

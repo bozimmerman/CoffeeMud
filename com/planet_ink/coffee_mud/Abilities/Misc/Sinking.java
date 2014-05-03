@@ -164,7 +164,7 @@ public class Sinking extends StdAbility
 			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
 			&&(mob.curState().getMovement()>0)))
 			{
-				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
+				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> tread(s) water.")))
 				&&(!mob.isMonster()))
 				{
 					isTreading=true;

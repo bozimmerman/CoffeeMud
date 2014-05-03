@@ -97,7 +97,7 @@ public class Troll extends StdRace
 			if((room!=null)&&(!M.amDead()))
 			{
 				if(M.curState().adjHitPoints((int)Math.round(CMath.div(M.phyStats().level(),2.0)),M.maxState()))
-					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
+					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> regenerate(s)."));
 				final Area A=room.getArea();
 				if(A!=null)
 				{

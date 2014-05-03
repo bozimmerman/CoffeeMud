@@ -66,7 +66,7 @@ public class Prayer_SenseAllergies extends Prayer
 				mob.location().send(mob,msg);
 				final Ability A=target.fetchEffect("Allergies");
 				if(A==null)
-					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything.");
+					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything."));
 				else
 				{
 

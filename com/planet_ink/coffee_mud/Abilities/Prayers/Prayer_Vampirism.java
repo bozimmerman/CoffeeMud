@@ -227,7 +227,7 @@ public class Prayer_Vampirism extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!"));
 					target.curState().setHunger(0);
 					target.curState().setThirst(0);
 					maliciousAffect(mob,target,asLevel,0,-1);

@@ -147,7 +147,7 @@ public class Spell_TimeStop extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Time has already been stopped here!");
+			mob.tell(mob,null,null,_("Time has already been stopped here!"));
 			return false;
 		}
 

@@ -200,7 +200,7 @@ public class Soiled extends StdAbility
 		A.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
 		Environmental msgTarget=target;
 		if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
-		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
+		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,_("<T-NAME> has soiled <T-HIM-HERSELF>!"));
 		if(target instanceof MOB)
 		{
 			final Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);

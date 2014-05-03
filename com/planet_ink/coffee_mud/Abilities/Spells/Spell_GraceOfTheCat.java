@@ -111,7 +111,7 @@ public class Spell_GraceOfTheCat extends Spell
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> move(s) more gracefully!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> move(s) more gracefully!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

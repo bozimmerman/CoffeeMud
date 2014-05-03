@@ -107,7 +107,7 @@ public class Display extends StdCommand
 			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
 			if(mob.location().okMessage(recipient,newMsg))
 			{
-				recipient.tell(recipient,giveThis,mob,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
+				recipient.tell(recipient,giveThis,mob,_("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 				mob.location().send(recipient,newMsg);
 			}
 

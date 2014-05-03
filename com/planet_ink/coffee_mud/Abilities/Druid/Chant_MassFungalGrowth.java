@@ -67,7 +67,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		}
 		if(V.size()>0)
 		{
-			mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_NOISE,"The faint sound of fungus popping into existence can be heard.");
+			mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_NOISE,_("The faint sound of fungus popping into existence can be heard."));
 			int done=0;
 			for(int v=0;v<V.size();v++)
 			{

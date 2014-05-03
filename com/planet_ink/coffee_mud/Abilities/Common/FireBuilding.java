@@ -185,7 +185,7 @@ public class FireBuilding extends CommonSkill
 				else
 				{
 					l.light(true);
-					mob.location().show(mob,lighting,CMMsg.TYP_HANDS,"<S-NAME> light(s) <T-NAMESELF>.");
+					mob.location().show(mob,lighting,CMMsg.TYP_HANDS,_("<S-NAME> light(s) <T-NAMESELF>."));
 					return true;
 				}
 				return false;

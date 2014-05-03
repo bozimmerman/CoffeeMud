@@ -119,7 +119,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 			if(lvl<=0) lvl=1;
 			if((lvl<minLevel)||(lvl>maxLevel)) return true;
 
-			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
+			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,_("The field around <T-NAMESELF> reflects the spell!"));
 			final Ability A=(Ability)msg.tool();
 			A.invoke(target,msg.source(),true,msg.source().phyStats().level());
 			setAbilityCode(abilityCode()-lvl);
@@ -127,7 +127,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 			{
 				if(affected instanceof MOB)
 				{
-					target.location().show(target,target,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
+					target.location().show(target,target,CMMsg.MSG_OK_VISUAL,_("The field around <T-NAMESELF> fades."));
 					if(fade>0)
 						target.delEffect(this);
 				}
@@ -136,12 +136,12 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 				{
 					if(fade>0)
 					{
-						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"<T-NAMESELF> vanishes!");
+						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,_("<T-NAMESELF> vanishes!"));
 						((Item)affected).destroy();
 						target.location().recoverRoomStats();
 					}
 					else
-						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,"The field around <T-NAMESELF> fades.");
+						target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,_("The field around <T-NAMESELF> fades."));
 				}
 			}
 			return false;

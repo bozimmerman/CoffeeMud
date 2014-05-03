@@ -443,7 +443,7 @@ public class StdRideable extends StdMOB implements Rideable
 				final MOB tmob=(MOB)msg.target();
 				if((amRiding(tmob))&&(!amRiding(msg.source())))
 				{
-					msg.source().tell(msg.source(),tmob,null,"<T-NAME> must dismount first.");
+					msg.source().tell(msg.source(),tmob,null,_("<T-NAME> must dismount first."));
 					return false;
 				}
 			}

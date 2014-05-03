@@ -60,11 +60,11 @@ public class Spell_Disenchant extends Spell
 				mob.location().send(mob,msg);
 				int level=CMLib.utensils().disenchantItem(target);
 				if(target.amDestroyed())
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades away!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades away!"));
 				else
 				if(level>-999)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades and becomes dull!"));
 					if((target.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 						target.basePhyStats().setDisposition(target.basePhyStats().disposition()-PhyStats.IS_BONUS);
 					if(level<=0) level=1;

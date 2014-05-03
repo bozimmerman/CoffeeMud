@@ -133,7 +133,7 @@ public class Chant_SummonDustdevil extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		if(mob.location()!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> dissipate(s).");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> dissipate(s)."));
 			final Vector V=new Vector();
 			for(int i=0;i<mob.numItems();i++)
 				V.addElement(mob.getItem(i));

@@ -74,7 +74,7 @@ public class Thief_Distract extends ThiefSkill
 			&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_WISDOM)*2))
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
+				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> distract(s) <T-NAME>."));
 				return false;
 			}
 		}
@@ -92,9 +92,9 @@ public class Thief_Distract extends ThiefSkill
 			if(!mob.amDead())
 			{
 				if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
-					invoker.tell(invoker,mob,null,"You are no longer distracting <T-NAMESELF>.");
+					invoker.tell(invoker,mob,null,_("You are no longer distracting <T-NAMESELF>."));
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so distracted.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer so distracted."));
 			}
 		}
 		super.unInvoke();

@@ -268,7 +268,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				if(!merchantM.isMonster())
 				{
-					shopperM.tell(shopperM,null,null,"You'll have to talk to <S-NAME> about that.");
+					shopperM.tell(shopperM,null,null,_("You'll have to talk to <S-NAME> about that."));
 					return false;
 				}
 				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),merchantM))

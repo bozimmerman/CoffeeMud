@@ -168,7 +168,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					final String data=nonPlayerData.xml;
 					final Environmental object=parseHeavenlyData(data);
 					if(object==null)
-						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,_("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
 					else
 					if(object instanceof Item)
 					{
@@ -184,7 +184,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 						body.destroy();
 						rejuvedMOB.bringToLife(mob.location(),true);
-						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> get(s) up!"));
 					}
 					mob.location().recoverRoomStats();
 				}

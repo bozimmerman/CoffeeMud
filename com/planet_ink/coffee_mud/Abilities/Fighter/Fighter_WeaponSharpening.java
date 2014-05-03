@@ -107,7 +107,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			weapon.recoverPhyStats();
 			if(mob.location()!=null)
 				mob.location().recoverRoomStats();
-			mob.tell(mob,weapon,null,"You have finished sharpening <T-NAME>.");
+			mob.tell(mob,weapon,null,_("You have finished sharpening <T-NAME>."));
 			weapon = null;
 		}
 		else

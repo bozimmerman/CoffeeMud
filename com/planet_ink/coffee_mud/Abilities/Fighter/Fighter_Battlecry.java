@@ -100,7 +100,7 @@ public class Fighter_Battlecry extends FighterSkill
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) excited!");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> get(s) excited!"));
 					timesTicking=0;
 					beneficialAffect(mob,target,asLevel,0);
 				}

@@ -118,7 +118,7 @@ public class Chant_WindSnatcher extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already snatching the wind.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already snatching the wind."));
 			return false;
 		}
 
@@ -137,7 +137,7 @@ public class Chant_WindSnatcher extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"The wind snatcher surrounds <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("The wind snatcher surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

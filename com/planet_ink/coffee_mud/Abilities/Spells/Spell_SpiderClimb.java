@@ -62,7 +62,7 @@ public class Spell_SpiderClimb extends Spell
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if((canBeUninvoked())&&(!mob.amDead())&&(room!=null))
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> no longer <S-HAS-HAVE> a spidery gait.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> no longer <S-HAS-HAVE> a spidery gait."));
 		super.unInvoke();
 		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
@@ -76,7 +76,7 @@ public class Spell_SpiderClimb extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> spidery magic.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> spidery magic."));
 			return false;
 		}
 

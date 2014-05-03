@@ -112,7 +112,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(CMLib.flags().isGolem(target))
 		{
-			mob.tell(target,null,null,"You can't hurt <S-NAMESELF> with Atemi Strike.");
+			mob.tell(target,null,null,_("You can't hurt <S-NAMESELF> with Atemi Strike."));
 			return false;
 		}
 
@@ -151,7 +151,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> do(es) not look well."));
 					success=maliciousAffect(mob,target,asLevel,((2*getXLEVELLevel(mob))+mob.phyStats().level())/3,-1);
 				}
 			}

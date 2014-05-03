@@ -87,7 +87,7 @@ public class Chant_RestoreMana extends Chant
 				if(msg.value()<=0)
 				{
 					target.curState().adjMana(+50,target.maxState());
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) a burst of power.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) a burst of power."));
 				}
 			}
 		}

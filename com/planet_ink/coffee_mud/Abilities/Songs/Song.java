@@ -90,7 +90,7 @@ public class Song extends StdAbility
 			&&(!msg.sourceMajor(CMMsg.MASK_CHANNEL)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) singing."));
 				unInvoke();
 			}
 			else
@@ -99,7 +99,7 @@ public class Song extends StdAbility
 			&&(CMath.bset(((Armor)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) singing."));
 				unInvoke();
 			}
 		}
@@ -399,7 +399,7 @@ public class Song extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

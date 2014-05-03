@@ -77,7 +77,7 @@ public class Chant_SummonInsects extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the insect swarm!"));
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class Chant_SummonInsects extends Chant
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped by the swarm of stinging insects!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped by the swarm of stinging insects!"));
 						}
 					}
 				}

@@ -125,7 +125,7 @@ public class Chant_Treemorph extends Chant
 				msg.source().setVictim(null);
 			if((msg.target()==mob)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
 			{
-				msg.source().tell(msg.source(),mob,null,"You can't do that to <T-NAME>.");
+				msg.source().tell(msg.source(),mob,null,_("You can't do that to <T-NAME>."));
 				return false;
 			}
 			if(mob.isInCombat())
@@ -178,7 +178,7 @@ public class Chant_Treemorph extends Chant
 		{
 			if(tree!=null) tree.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer a tree.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer a tree."));
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);
@@ -238,7 +238,7 @@ public class Chant_Treemorph extends Chant
 					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
 					tree.setMaterial(RawMaterial.RESOURCE_OAK);
 					tree.basePhyStats().setWeight(5000);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into a tree!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*25,-1);
 					final Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))

@@ -52,7 +52,7 @@ public class Possess extends StdCommand
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,t,null,"You can't do that to <T-NAMESELF>.");
+						mob.tell(mob,t,null,_("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}

@@ -72,7 +72,7 @@ public class Skill_Puppeteer extends BardSkill
 				||(msg.targetMajor(CMMsg.MASK_MALICIOUS)))
 					msg.source().setVictim((MOB)msg.target());
 			}
-			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");
+			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,_("<S-NAME> animate(s) <T-NAMESELF>."));
 			return false;
 		}
 		else
@@ -186,15 +186,15 @@ public class Skill_Puppeteer extends BardSkill
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,CMMsg.MSG_DROP,"<S-NAME> start(s) animating <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_DROP,_("<S-NAME> start(s) animating <T-NAME>!"));
 				else
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) animating <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) animating <T-NAME>!"));
 				if(mob.location().isContent(target))
 					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> twitch(es) oddly, but does nothing more.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> twitch(es) oddly, but does nothing more."));
 
 
 		// return whether it worked

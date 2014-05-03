@@ -77,7 +77,7 @@ public class Prayer_Tithe extends Prayer
 			((Coins)msg.target()).setNumberOfCoins(num-(num/10));
 			if((invoker()!=msg.source())&&((num/10)>0))
 			{
-				invoker().tell(msg.source(),null,null,"<S-NAME> tithes.");
+				invoker().tell(msg.source(),null,null,_("<S-NAME> tithes."));
 				final String currency=((Coins)msg.target()).getCurrency();
 				CMLib.beanCounter().addMoney(invoker(),currency,CMath.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
@@ -93,7 +93,7 @@ public class Prayer_Tithe extends Prayer
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
-						invoker().tell(msg.source(),null,null,"<S-NAME> tithes.");
+						invoker().tell(msg.source(),null,null,_("<S-NAME> tithes."));
 						CMLib.beanCounter().addMoney(invoker(),CMath.div(price.absoluteGoldPrice,10.0));
 					}
 			}

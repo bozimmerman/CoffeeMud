@@ -54,7 +54,7 @@ public class Spell_DetectMagic extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> eyes cease to sparkle."));
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class Spell_DetectMagic extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting magic.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting magic."));
 			return false;
 		}
 

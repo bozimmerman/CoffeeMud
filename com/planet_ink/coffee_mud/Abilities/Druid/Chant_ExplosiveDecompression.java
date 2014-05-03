@@ -115,7 +115,7 @@ public class Chant_ExplosiveDecompression extends Chant
 							}
 							if((M.charStats().getBodyPart(Race.BODY_FOOT)>0)
 							&&(!CMLib.flags().isFlying(M))&&(CMLib.flags().isStanding(M)))
-								mob.location().show(M,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_SIT,"<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!");
+								mob.location().show(M,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_SIT,_("<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!"));
 						}
 					}
 					maliciousAffect(mob,target,asLevel,20,-1);

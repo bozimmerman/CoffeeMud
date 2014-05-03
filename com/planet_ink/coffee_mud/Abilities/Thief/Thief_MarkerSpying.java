@@ -123,7 +123,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 				A.unInvoke();
 			else
 			{
-				mob.tell(mob,target,null,"It is too crowded to spy on <T-NAME>.");
+				mob.tell(mob,target,null,_("It is too crowded to spy on <T-NAME>."));
 				return false;
 			}
 		}

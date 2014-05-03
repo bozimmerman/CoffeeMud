@@ -67,7 +67,7 @@ public class Chant_SweetScent extends Chant
 					if((M!=null)
 					&&(CMLib.flags().isAnimalIntelligence(M))
 					&&(CMLib.flags().canSmell(M)))
-						M.tell(M,I,null,"<T-NAME> smell(s) absolutely intoxicating!");
+						M.tell(M,I,null,_("<T-NAME> smell(s) absolutely intoxicating!"));
 				}
 				for(int r=0;r<rooms.size();r++)
 				{
@@ -107,7 +107,7 @@ public class Chant_SweetScent extends Chant
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely intoxicating!");
+			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) absolutely intoxicating!"));
 	}
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

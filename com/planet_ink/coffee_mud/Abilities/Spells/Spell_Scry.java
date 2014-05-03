@@ -53,7 +53,7 @@ public class Spell_Scry extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked()) scries.removeElement(mob);
 		if((canBeUninvoked())&&(invoker!=null))
-			invoker.tell(mob,null,null,"Your knowledge of '<S-NAME>' fades.");
+			invoker.tell(mob,null,null,_("Your knowledge of '<S-NAME>' fades."));
 		super.unInvoke();
 
 	}

@@ -84,7 +84,7 @@ public class Spell_Grow extends Spell
 			else
 				mob.basePhyStats().setWeight(getOldWeight());
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrink(s) back down to size."));
 			CMLib.utensils().confirmWearability(mob);
 		}
 		super.unInvoke();
@@ -125,7 +125,7 @@ public class Spell_Grow extends Spell
 					A=target.fetchEffect(ID());
 					if(A!=null)
 					{
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) to an enormous size!"));
 						setMiscText(Integer.toString(target.basePhyStats().weight()));
 						A.setMiscText(Integer.toString(target.basePhyStats().weight()));
 						long newWeight=Math.round(CMath.mul(target.basePhyStats().weight(),aff));

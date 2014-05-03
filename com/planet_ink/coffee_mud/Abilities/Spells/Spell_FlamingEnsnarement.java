@@ -64,7 +64,7 @@ public class Spell_FlamingEnsnarement extends Spell
 			case CMMsg.TYP_ADVANCE:
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the flaming ensnarement."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the flaming ensnarement.")))
 				{
 					amountRemaining-=mob.phyStats().level();
 					if(amountRemaining<0)
@@ -92,7 +92,7 @@ public class Spell_FlamingEnsnarement extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement."));
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class Spell_FlamingEnsnarement extends Spell
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,0,-1);
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!");
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!"));
 							}
 						}
 					}

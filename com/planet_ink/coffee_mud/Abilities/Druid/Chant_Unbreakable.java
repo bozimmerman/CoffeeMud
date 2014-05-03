@@ -130,7 +130,7 @@ public class Chant_Unbreakable extends Chant
 					maintainCondition=target.usesRemaining();
 
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is unbreakable!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is unbreakable!"));
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}

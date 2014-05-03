@@ -129,14 +129,14 @@ public class Fighter_Pin extends FighterSkill
 				if(mob==invoker)
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> pin.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> release(s) <S-HIS-HER> pin."));
 					else
 						mob.tell(_("You release your pin."));
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the pin");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> released from the pin"));
 					else
 						mob.tell(_("You are released from the pin."));
 				}

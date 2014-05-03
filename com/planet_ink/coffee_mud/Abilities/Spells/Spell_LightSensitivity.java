@@ -125,9 +125,9 @@ public class Spell_LightSensitivity extends Spell
 				if(msg.value()<=0)
 				{
 					if(CMLib.flags().isInDark(mob.location()))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) extremely sensitive to light.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) extremely sensitive to light."));
 					else
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) blinded by the light.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) blinded by the light."));
 					if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					else

@@ -70,7 +70,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=10;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> rotting away...");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> rotting away..."));
 			conDown++;
 			mob.recoverCharStats();
 			return true;
@@ -136,7 +136,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) grey!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) grey!"));
 					conDown=1;
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}

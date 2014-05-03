@@ -115,7 +115,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
-			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
+			mob.tell(mob,mob.getVictim(),null,_("Not while you are fighting <T-NAME>!"));
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));

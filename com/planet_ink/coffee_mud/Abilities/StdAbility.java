@@ -639,7 +639,7 @@ public class StdAbility implements Ability
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,t,null,"You can't do that to <T-NAMESELF>.");
+						mob.tell(mob,t,null,_("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}
@@ -810,7 +810,7 @@ public class StdAbility implements Ability
 					mob.tell("You don't see anything called '"+targetName+"' here.");
 			}
 			else
-				mob.tell(mob,target,null,"You can't do that to <T-NAMESELF>.");
+				mob.tell(mob,target,null,_("You can't do that to <T-NAMESELF>."));
 			return null;
 		}
 		return (Item)target;

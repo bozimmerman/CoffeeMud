@@ -441,7 +441,7 @@ public class Song_Ode extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> lose(s) <S-HIS-HER> inspiration.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> lose(s) <S-HIS-HER> inspiration."));
 		return success;
 	}
 }

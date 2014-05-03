@@ -86,7 +86,7 @@ public class Disease_Chlamydia extends Disease
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				msg.source().tell(mob,null,null,"<S-NAME> really do(es)n't feel like it.");
+				msg.source().tell(mob,null,null,_("<S-NAME> really do(es)n't feel like it."));
 				return false;
 			}
 		}

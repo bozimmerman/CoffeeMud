@@ -217,7 +217,7 @@ public class Thief_Trap extends ThiefSkill
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
 					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) the trap on accident!"));
 					T.spring(mob);
 				}
 				else

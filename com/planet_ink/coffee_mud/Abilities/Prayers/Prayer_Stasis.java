@@ -89,7 +89,7 @@ public class Prayer_Stasis extends Prayer
 		else
 		if((msg.amITarget(mob))&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
 		{
-			msg.source().tell(msg.source(),mob,null,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
+			msg.source().tell(msg.source(),mob,null,_("The statis field around <T-NAME> protect(s) <T-HIM-HER>."));
 			return false;
 		}
 
@@ -119,7 +119,7 @@ public class Prayer_Stasis extends Prayer
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,10);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> surrounded by a stasis field!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> surrounded by a stasis field!"));
 				}
 			}
 		}

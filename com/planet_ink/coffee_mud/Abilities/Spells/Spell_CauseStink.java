@@ -114,7 +114,7 @@ public class Spell_CauseStink extends Spell
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely HORRIBLE!!!");
+			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) absolutely HORRIBLE!!!"));
 	}
 
 	@Override

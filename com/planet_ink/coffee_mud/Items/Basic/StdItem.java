@@ -862,7 +862,7 @@ public class StdItem implements Item
 			case CMMsg.TYP_POUR:
 				if(!(this instanceof Drink))
 				{
-					mob.tell(mob,this,null,"You can't do that with <T-NAMESELF>.");
+					mob.tell(mob,this,null,_("You can't do that with <T-NAMESELF>."));
 					return false;
 				}
 				break;
@@ -1148,7 +1148,7 @@ public class StdItem implements Item
 						thislayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 						if(thislayer>layer)
 						{
-							mob.tell(mob,I,null,"You must remove <T-NAME> first.");
+							mob.tell(mob,I,null,_("You must remove <T-NAME> first."));
 							return false;
 						}
 					}
@@ -1254,7 +1254,7 @@ public class StdItem implements Item
 		default:
 			break;
 		}
-		mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
+		mob.tell(mob,this,null,_("You can't do that to <T-NAMESELF>."));
 		return false;
 	}
 

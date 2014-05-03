@@ -246,7 +246,7 @@ public class Age extends StdAbility
 						babe.bringToLife(R,true);
 						CMLib.beanCounter().clearZeroMoney(babe,null);
 						babe.setFollowing(following);
-						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
+						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
 							CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());

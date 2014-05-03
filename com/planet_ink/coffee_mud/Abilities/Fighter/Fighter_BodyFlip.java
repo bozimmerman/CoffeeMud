@@ -179,7 +179,7 @@ public class Fighter_BodyFlip extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,asLevel,2,-1);
-				target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
+				target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the floor!"));
 			}
 		}
 		else

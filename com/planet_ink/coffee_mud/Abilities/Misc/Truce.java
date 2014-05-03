@@ -113,7 +113,7 @@ public class Truce extends StdAbility
 			||((msg.target()==mob)&&(isTruceWith(msg.source().Name()))))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(msg.source(),msg.target(),null,"You have made peace with <T-NAMESELF>.");
+			msg.source().tell(msg.source(),msg.target(),null,_("You have made peace with <T-NAMESELF>."));
 			msg.source().makePeace();
 			if(msg.target() instanceof MOB)
 				((MOB)msg.target()).makePeace();

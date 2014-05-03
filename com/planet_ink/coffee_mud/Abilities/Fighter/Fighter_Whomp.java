@@ -105,7 +105,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) less drowsy."));
 				else
 					mob.tell(_("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);

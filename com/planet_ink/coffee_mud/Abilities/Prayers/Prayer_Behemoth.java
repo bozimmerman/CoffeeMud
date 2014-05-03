@@ -91,7 +91,7 @@ public class Prayer_Behemoth extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already BEHEMOTH in size.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already BEHEMOTH in size."));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Prayer_Behemoth extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) to BEHEMOTH size!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) to BEHEMOTH size!"));
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.utensils().confirmWearability(target);
 			}

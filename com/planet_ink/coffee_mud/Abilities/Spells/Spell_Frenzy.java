@@ -122,7 +122,7 @@ public class Spell_Frenzy extends Spell
 				R.send(mob,msg);
 				if(target.location()==R)
 				{
-					R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
+					R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) wild!"));
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
 					final Ability A=target.fetchEffect(ID());

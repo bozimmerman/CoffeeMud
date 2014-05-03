@@ -56,7 +56,7 @@ public class Chant_CloudWalk extends Chant
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> float(s) down to the ground.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> float(s) down to the ground."));
 
 		super.unInvoke();
 
@@ -113,7 +113,7 @@ public class Chant_CloudWalk extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a cloud walker");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a cloud walker"));
 			return false;
 		}
 

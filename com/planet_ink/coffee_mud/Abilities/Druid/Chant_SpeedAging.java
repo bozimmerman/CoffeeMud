@@ -135,7 +135,7 @@ public class Chant_SpeedAging extends Chant
 				&&((A==null)||(A.displayText().length()==0)))
 				{
 					final MOB M=(MOB)target;
-					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> age(s) a bit."));
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						M.setAgeMinutes(M.getAgeMinutes()+(M.getAgeMinutes()/10));
 					else
@@ -178,7 +178,7 @@ public class Chant_SpeedAging extends Chant
 						ageBy=millisPerYear+1;
 					A.setMiscText(""+(start-ageBy));
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
+						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> age(s) a bit."));
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages a bit.");
 					target.recoverPhyStats();

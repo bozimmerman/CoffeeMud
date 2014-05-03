@@ -57,7 +57,7 @@ public class Prayer_Fortress extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The unholy fortress around <S-NAME> fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The unholy fortress around <S-NAME> fades."));
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Prayer_Fortress extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark protective aura surrounds <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A dark protective aura surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 				final Ability A=target.fetchEffect("Prayer_Sanctuary");
 				if(A!=null) A.unInvoke();

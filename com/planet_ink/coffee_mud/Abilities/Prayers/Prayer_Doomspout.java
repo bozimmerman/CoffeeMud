@@ -100,7 +100,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				&&(target.fetchEffect(ID())==null))
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) seriously ill!"));
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
@@ -143,7 +143,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> doomspout disease clear up.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> doomspout disease clear up."));
 			}
 	}
 
@@ -190,7 +190,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 					if(mob.getWorshipCharID().length()>0)
 						godName=mob.getWorshipCharID();
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) seriously ill!"));
 				}
 				else
 					spreadImmunity(target);

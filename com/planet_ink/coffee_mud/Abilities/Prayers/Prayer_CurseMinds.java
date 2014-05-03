@@ -112,7 +112,7 @@ public class Prayer_CurseMinds extends Prayer
 					if((msg.value()<=0)&&(msg2.value()<=0))
 					{
 						success=maliciousAffect(mob,target,asLevel,15,-1);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) confused!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) confused!"));
 					}
 					nothingDone=false;
 				}

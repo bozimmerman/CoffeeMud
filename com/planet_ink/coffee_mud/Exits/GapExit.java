@@ -62,8 +62,8 @@ public class GapExit extends StdExit
 			final int chance=(int)Math.round(CMath.div(mobWeight(mob),mob.maxCarry())*(100.0-(3.0*mob.charStats().getStat(CharStats.STAT_STRENGTH))));
 			if(CMLib.dice().rollPercentage()<chance)
 			{
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!");
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s)!!!!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to jump the crevasse, but miss(es) the far ledge!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s)!!!!"));
 				CMLib.combat().postDeath(null,mob,null);
 				return false;
 			}
@@ -80,6 +80,6 @@ public class GapExit extends StdExit
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!CMLib.flags().isInFlight(mob))
 		&&(!CMLib.flags().isFalling(mob)))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> jump(s) the crevasse!");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> jump(s) the crevasse!"));
 	}
 }

@@ -145,7 +145,7 @@ public class Chant_WindGust extends Chant
 							&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()))-(5*howLong))
 							&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 							{
-								mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
+								mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) down!"));
 								doneTicking=false;
 								success=maliciousAffect(mob,target,asLevel,howLong,-1);
 							}

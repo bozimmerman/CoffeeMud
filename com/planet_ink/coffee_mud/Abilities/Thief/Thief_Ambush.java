@@ -82,7 +82,7 @@ public class Thief_Ambush extends ThiefSkill
 			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(!H.contains(M))&&(CMLib.flags().canSee(M)))
 			{
-				mob.tell(M,null,null,"<S-NAME> is watching you too closely.");
+				mob.tell(M,null,null,_("<S-NAME> is watching you too closely."));
 				return false;
 			}
 		}

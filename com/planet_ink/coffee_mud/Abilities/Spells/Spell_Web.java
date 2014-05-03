@@ -70,7 +70,7 @@ public class Spell_Web extends Spell
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the web.")))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 					if(amountRemaining<0)
@@ -94,7 +94,7 @@ public class Spell_Web extends Spell
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the web."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -139,7 +139,7 @@ public class Spell_Web extends Spell
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in a mass of web!");
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck in a mass of web!"));
 							}
 						}
 					}

@@ -95,7 +95,7 @@ public class Spell_SummonFlyer extends Spell
 				else
 				if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> flees.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> flees."));
 					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();

@@ -202,7 +202,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					if((checkProtection("holy"))
 					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					{
-						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
+						mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,_("Holy energies from <S-NAME> are repelled from <T-NAME>."));
 						return false;
 					}
 				}

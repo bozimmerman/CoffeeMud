@@ -91,7 +91,7 @@ public class Spell_Levitate extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) back down."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -149,7 +149,7 @@ public class Spell_Levitate extends Spell
 				{
 					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
 					if(target instanceof MOB)
-						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) straight up!");
+						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) straight up!"));
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION,target.name()+" float(s) straight up!");
 				}

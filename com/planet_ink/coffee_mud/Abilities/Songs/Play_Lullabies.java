@@ -72,11 +72,11 @@ public class Play_Lullabies extends Play
 			{
 				if(CMLib.flags().isSleeping(mob))
 					mob.phyStats().setDisposition(mob.phyStats().disposition()-PhyStats.IS_SLEEPING);
-				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
+				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> wake(s) up."));
 			}
 			else
 			{
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> fall(s) asleep.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> fall(s) asleep."));
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
 			}
 		}

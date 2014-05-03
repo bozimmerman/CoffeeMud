@@ -57,7 +57,7 @@ public class Prayer_Wings extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> wings vanish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> wings vanish."));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class Prayer_Wings extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> wings.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> wings."));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Prayer_Wings extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) an enormous pair of wings!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) an enormous pair of wings!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

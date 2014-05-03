@@ -127,7 +127,7 @@ public class Spell_GhostSound extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"There are already ghost sounds here.");
+			mob.tell(mob,null,null,_("There are already ghost sounds here."));
 			return false;
 		}
 

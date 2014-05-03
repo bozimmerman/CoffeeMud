@@ -87,7 +87,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs a magic missile from <T-NAME>!");
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> absorbs a magic missile from <T-NAME>!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

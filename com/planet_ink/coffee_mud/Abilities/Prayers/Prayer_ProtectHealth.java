@@ -80,7 +80,7 @@ public class Prayer_ProtectHealth extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&(msg.tool() instanceof DiseaseAffect))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"An unhealthy assault against <S-NAME> is magically repelled.");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("An unhealthy assault against <S-NAME> is magically repelled."));
 				return false;
 			}
 
@@ -98,7 +98,7 @@ public class Prayer_ProtectHealth extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protected health.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protected health."));
 			return false;
 		}
 		Room R=CMLib.map().roomLocation(target);

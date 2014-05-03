@@ -75,7 +75,7 @@ public class Spell_SlowProjectiles extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Projectiles are already slow here!");
+			mob.tell(mob,null,null,_("Projectiles are already slow here!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

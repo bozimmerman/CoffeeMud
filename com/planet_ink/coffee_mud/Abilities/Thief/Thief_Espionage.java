@@ -110,7 +110,7 @@ public class Thief_Espionage extends ThiefSkill
 			}
 			else
 			{
-				mob.tell(mob,target,null,"It is too crowded to commit espionage with <T-NAME>.");
+				mob.tell(mob,target,null,_("It is too crowded to commit espionage with <T-NAME>."));
 				return false;
 			}
 		}

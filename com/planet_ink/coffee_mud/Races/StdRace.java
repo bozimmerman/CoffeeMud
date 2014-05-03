@@ -276,7 +276,7 @@ public class StdRace implements Race
 		&&(myHost instanceof MOB)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
-			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>.");
+			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>."));
 			return false;
 		}
 		return true;

@@ -95,7 +95,7 @@ public class Spell_Friends extends Spell
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) much more likeable!");
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) much more likeable!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

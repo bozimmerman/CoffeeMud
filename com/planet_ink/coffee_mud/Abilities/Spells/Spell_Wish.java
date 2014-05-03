@@ -68,7 +68,7 @@ public class Spell_Wish extends Spell
 			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> teleport(s) to "+here.displayText()+".");
 			here.bringMobHere((MOB)target,false);
 			if(here.isInhabitant((MOB)target))
-				here.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) out of nowhere.");
+				here.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> appear(s) out of nowhere."));
 		}
 		else
 		if(target instanceof Item)
@@ -79,7 +79,7 @@ public class Spell_Wish extends Spell
 			item.setContainer(null);
 			item.removeFromOwnerContainer();
 			here.addItem(item,ItemPossessor.Expire.Player_Drop);
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears out of the Java Plane!");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appears out of the Java Plane!"));
 		}
 	}
 
@@ -114,7 +114,7 @@ public class Spell_Wish extends Spell
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> sigh(s).");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
 			CMLib.commands().postSay(mob,null,"My wishes never seem to come true.",false,false);
 			return false;
 		}

@@ -150,7 +150,7 @@ public class Spell_Timeport extends Spell
 					if((M!=null)&&(M.getVictim()==target))
 						M.makePeace();
 				}
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es)!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es)!"));
 				CMLib.threads().suspendTicking(target,-1);
 				beneficialAffect(mob,target,asLevel,3);
 				final Ability A=target.fetchEffect(ID());

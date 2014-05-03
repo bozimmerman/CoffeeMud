@@ -191,7 +191,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				if(CMLib.dice().rollPercentage()>50)
 				{
 					final Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) the trap on accident!"));
 					T.spring(mob);
 				}
 				else

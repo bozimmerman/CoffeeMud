@@ -59,7 +59,7 @@ public class Song_Distraction extends Song
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) distracted by the singing.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s) distracted by the singing."));
 				return false;
 			}
 		}

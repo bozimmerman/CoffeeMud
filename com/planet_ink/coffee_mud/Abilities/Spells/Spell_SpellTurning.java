@@ -52,7 +52,7 @@ public class Spell_SpellTurning extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> reflective protection dissipates.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> reflective protection dissipates."));
 
 		super.unInvoke();
 
@@ -79,7 +79,7 @@ public class Spell_SpellTurning extends Spell
 		&&((CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker())))>75))
 		{
 			oncePerRound=true;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the spell!"));
 			final Ability A=(Ability)msg.tool();
 			A.invoke(mob,msg.source(),true,msg.source().phyStats().level());
 			return false;

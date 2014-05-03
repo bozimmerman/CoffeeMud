@@ -103,7 +103,7 @@ public class Spell_LightenItem extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) much lighter.");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) much lighter."));
 				beneficialAffect(mob,target,asLevel,100);
 				target.recoverPhyStats();
 				mob.recoverPhyStats();

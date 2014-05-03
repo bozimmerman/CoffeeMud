@@ -178,7 +178,7 @@ public class Prayer_AnimateVampire extends Prayer
 				}
 				body.destroy();
 				newMOB.setStartRoom(null);
-				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}
 		}

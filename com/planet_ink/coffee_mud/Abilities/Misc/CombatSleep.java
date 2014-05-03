@@ -99,7 +99,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem so drowsy any more.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> do(es)n't seem so drowsy any more."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -155,7 +155,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) unconscious!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) unconscious!!"));
 				}
 				target.makePeace();
 				if(mob.getVictim()==target)

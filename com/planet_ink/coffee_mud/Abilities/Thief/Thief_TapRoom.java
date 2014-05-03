@@ -326,7 +326,7 @@ public class Thief_TapRoom extends ThiefSkill
 			target=(Room)givenTarget;
 		if(mob.isInCombat())
 		{
-			mob.tell(mob,null,null,"Not while <S-NAME> <S-IS-ARE> fighting.");
+			mob.tell(mob,null,null,_("Not while <S-NAME> <S-IS-ARE> fighting."));
 			return false;
 		}
 

@@ -57,7 +57,7 @@ public class Spell_Shockshield extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> electric shield fizzles out.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> electric shield fizzles out."));
 	}
 
 	@Override

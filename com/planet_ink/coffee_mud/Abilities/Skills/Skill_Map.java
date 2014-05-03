@@ -189,7 +189,7 @@ public class Skill_Map extends StdSkill
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up."));
 		return success;
 	}
 

@@ -66,7 +66,7 @@ public class Chant_EndureRust extends Chant
 				final Room R=CMLib.map().roomLocation(affected);
 				dontbother.add(msg.target());
 				if(R!=null)
-					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<T-NAME> resist(s) the oxidizing affects.");
+					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,_("<T-NAME> resist(s) the oxidizing affects."));
 			}
 			return false;
 		}

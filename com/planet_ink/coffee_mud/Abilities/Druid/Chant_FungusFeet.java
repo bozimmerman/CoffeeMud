@@ -71,7 +71,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			{
 				if((mob.location()!=null)&&(CMLib.flags().isInTheGame(mob,false)))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOU-POSS> feet rot off!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOU-POSS> feet rot off!"));
 					final Ability A=CMClass.getAbility("Amputation");
 					if(A!=null)
 					{
@@ -112,7 +112,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Wearable.WORN_FEET)>0))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The fungus on <S-YOUPOSS> feet dies and falls off.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The fungus on <S-YOUPOSS> feet dies and falls off."));
 			}
 	}
 
@@ -162,7 +162,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A fungus sprouts up between <S-YOUPOSS> toes!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A fungus sprouts up between <S-YOUPOSS> toes!"));
 				}
 				else
 					spreadImmunity(target);

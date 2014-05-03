@@ -123,7 +123,7 @@ public class Chant_Drifting extends Chant
 		{
 			final Ability A=mob.fetchEffect("Falling");
 			if(A!=null) A.unInvoke();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) back down.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) back down."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -158,7 +158,7 @@ public class Chant_Drifting extends Chant
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,0);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) drifting up!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) drifting up!"));
 				}
 			}
 		}

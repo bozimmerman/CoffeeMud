@@ -141,7 +141,7 @@ public class Prayer_GodLight extends Prayer
 				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().recoverRoomStats();
 					mob.location().recoverRoomStats();

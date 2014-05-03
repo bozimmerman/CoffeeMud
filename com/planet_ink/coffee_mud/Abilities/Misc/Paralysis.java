@@ -117,7 +117,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 					int levelDiff=(adjustedLevel(mob, asLevel)-target.phyStats().level());
 					if(levelDiff<0) levelDiff=0;
 					success=maliciousAffect(mob,target,asLevel,10 + (levelDiff/10),-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> can't move!"));
 				}
 			}
 		}

@@ -95,7 +95,7 @@ public class Spell_MindFog extends Spell
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to feel a bit fogged in the head.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit fogged in the head."));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

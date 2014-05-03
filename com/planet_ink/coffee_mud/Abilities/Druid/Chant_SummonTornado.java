@@ -94,7 +94,7 @@ public class Chant_SummonTornado extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"A tornado is already here!");
+			mob.tell(mob,null,null,_("A tornado is already here!"));
 			return false;
 		}
 

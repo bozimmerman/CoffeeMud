@@ -122,7 +122,7 @@ public class Thief_Detection extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting hidden things.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting hidden things."));
 			return false;
 		}
 

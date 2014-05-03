@@ -85,7 +85,7 @@ public class Spell_IceSheet extends Spell
 						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
 						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 						mob.recoverPhyStats();
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) on the ice.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) on the ice."));
 						return false;
 					}
 				}
@@ -132,7 +132,7 @@ public class Spell_IceSheet extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"An Ice Sheet is already here!");
+			mob.tell(mob,null,null,_("An Ice Sheet is already here!"));
 			return false;
 		}
 

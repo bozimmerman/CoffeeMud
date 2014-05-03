@@ -97,12 +97,12 @@ public class Spell extends StdAbility
 			&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
 			&&(CMLib.dice().rollPercentage()<50))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
 				return false;
 			}
 			if(!CMLib.flags().canConcentrate(mob))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to concentrate.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> can't seem to concentrate."));
 				return false;
 			}
 		}

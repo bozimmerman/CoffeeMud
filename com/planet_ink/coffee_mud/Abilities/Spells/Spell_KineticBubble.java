@@ -52,7 +52,7 @@ public class Spell_KineticBubble extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> Kinetic Bubble pops.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> Kinetic Bubble pops."));
 
 		super.unInvoke();
 	}

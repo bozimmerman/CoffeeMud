@@ -100,7 +100,7 @@ public class Spell_ArcanePossession extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows slightly!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows slightly!"));
 				setMiscText(mob.Name());
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();

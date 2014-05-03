@@ -146,11 +146,11 @@ public class Chant_CaveIn extends Chant
 				mob.location().send(mob,msg);
 				amountRemaining=200;
 				if(target instanceof Exit)
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in causes rubble to fall, blocking <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("A cave-in causes rubble to fall, blocking <T-NAME>!"));
 				else
 				if(target instanceof MOB)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in drops rocks on <T-NAME>!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("A cave-in drops rocks on <T-NAME>!"));
 					final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)

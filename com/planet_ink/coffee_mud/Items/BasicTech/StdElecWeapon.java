@@ -292,7 +292,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								{
 									if((!((MOB)targ).amDead())||(((MOB)targ).curState().getHitPoints()>0))
 										CMLib.combat().postDeath(msg.source(), (MOB)targ, null);
-									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
+									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,_("<T-NAME> disintegrate(s)!"));
 									if(((MOB)targ).amDead())
 									{
 										DeadBody corpseI=null;
@@ -316,7 +316,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								if((targ instanceof Item)
 								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).playerCorpse()))))
 								{
-									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,"^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it disintegrates!^?");
+									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,_("^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it disintegrates!^?"));
 									((Item)targ).destroy();
 								}
 								R.recoverRoomStats();
@@ -352,7 +352,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								if((targ instanceof Item)
 								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).playerCorpse()))))
 								{
-									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,"^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it explodes!^?");
+									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,_("^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it explodes!^?"));
 									((Item)targ).destroy();
 								}
 								R.recoverRoomStats();

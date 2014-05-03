@@ -111,7 +111,7 @@ public class Prayer_Philosophy extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) pondering the mysteries of the universe.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) pondering the mysteries of the universe."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

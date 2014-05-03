@@ -56,7 +56,7 @@ public class Song_Disgust extends Song
 			final MOB newMOB=room.fetchRandomInhabitant();
 			if(newMOB!=mob)
 			{
-				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s) disgusted with <T-NAMESELF>.");
+				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s) disgusted with <T-NAMESELF>."));
 				CMLib.combat().postAttack(mob,newMOB,mob.fetchWieldedItem());
 			}
 		}

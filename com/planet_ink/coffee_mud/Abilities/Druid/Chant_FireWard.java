@@ -73,7 +73,7 @@ public class Chant_FireWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding fire.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding fire."));
 			return false;
 		}
 

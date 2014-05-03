@@ -58,7 +58,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to material form."));
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already ethereal.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already ethereal."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -164,7 +164,7 @@ public class Prayer_Etherealness extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s) and become(s) ethereal!"));
 				beneficialAffect(mob,target,asLevel,3);
 			}
 		}

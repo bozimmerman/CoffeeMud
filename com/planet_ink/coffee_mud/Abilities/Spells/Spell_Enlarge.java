@@ -103,7 +103,7 @@ public class Spell_Enlarge extends Spell
 					A.unInvoke();
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) to an enormous size!"));
 					beneficialAffect(mob,target,asLevel,100);
 				}
 			}

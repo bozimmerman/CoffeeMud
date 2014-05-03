@@ -163,7 +163,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				tickStatus=Tickable.STATUS_DEAD;
 				final MOB M=(MOB)owner();
-				M.tell(M,null,this,"<O-NAME> burns out.");
+				M.tell(M,null,this,_("<O-NAME> burns out."));
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
 					destroy();

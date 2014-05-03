@@ -120,7 +120,7 @@ public class Spell_DetectAmbush extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting ambushes.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting ambushes."));
 			return false;
 		}
 

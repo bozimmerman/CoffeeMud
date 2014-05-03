@@ -131,7 +131,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 		final Exit X=(Exit)chkE;
 		if(!X.hasADoor())
 		{
-			mob.tell(mob,X,null,"<T-NAME> is not a door!");
+			mob.tell(mob,X,null,_("<T-NAME> is not a door!"));
 			return false;
 		}
 		if((!auto)&&(X.phyStats().level()>((adjustedLevel(mob,asLevel)*2))))
@@ -141,7 +141,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 		}
 		if(X.isOpen())
 		{
-			mob.tell(mob,X,null,"You'd better close <T-NAME> first.");
+			mob.tell(mob,X,null,_("You'd better close <T-NAME> first."));
 			return false;
 		}
 

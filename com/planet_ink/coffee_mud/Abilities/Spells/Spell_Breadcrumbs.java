@@ -147,7 +147,7 @@ public class Spell_Breadcrumbs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already dropping breadcrumbs.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already dropping breadcrumbs."));
 			return false;
 		}
 

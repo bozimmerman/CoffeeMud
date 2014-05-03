@@ -54,7 +54,7 @@ public class Spell_ShrinkMouth extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> mouth returns to its normal size.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> mouth returns to its normal size."));
 			}
 		}
 		super.unInvoke();

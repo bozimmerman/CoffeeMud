@@ -74,7 +74,7 @@ public class Prayer_FortifyFood extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> look(s) much more nutritious!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> look(s) much more nutritious!"));
 				((Food)target).setNourishment(((Food)target).nourishment()+1000);
 			}
 		}

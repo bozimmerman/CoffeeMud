@@ -125,7 +125,7 @@ public class Spell_Forget extends Spell
 				{
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					if(success)
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) forgetful!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) forgetful!"));
 				}
 			}
 		}

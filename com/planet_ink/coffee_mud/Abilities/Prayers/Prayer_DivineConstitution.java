@@ -85,7 +85,7 @@ public class Prayer_DivineConstitution extends Prayer
 				if((diff>0)
 				&&(msg.value()>diff))
 				{
-					R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) divine health!");
+					R.show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) divine health!"));
 					conPts++;
 					xtraHPs+=1+diff;
 					msg.source().recoverCharStats();
@@ -108,7 +108,7 @@ public class Prayer_DivineConstitution extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> divine constitution fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> divine constitution fades."));
 	}
 
 	@Override

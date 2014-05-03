@@ -113,7 +113,7 @@ public class Chant_Sunray extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

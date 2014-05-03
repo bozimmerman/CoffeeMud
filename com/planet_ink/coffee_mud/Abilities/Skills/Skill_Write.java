@@ -108,7 +108,7 @@ public class Skill_Write extends StdSkill
 				mob.location().send(mob,msg);
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up."));
 		return success;
 	}
 

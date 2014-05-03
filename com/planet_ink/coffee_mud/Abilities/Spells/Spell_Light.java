@@ -68,7 +68,7 @@ public class Spell_Light extends Spell
 		// undo the affects of this spell
 		final Room room=CMLib.map().roomLocation(affected);
 		if(canBeUninvoked()&&(room!=null)&&(affected instanceof MOB))
-			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The light above <S-NAME> dims."));
 		super.unInvoke();
 		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
@@ -82,7 +82,7 @@ public class Spell_Light extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> light.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> light."));
 			return false;
 		}
 

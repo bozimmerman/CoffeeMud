@@ -73,7 +73,7 @@ public class Chant_GasWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding gas.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding gas."));
 			return false;
 		}
 

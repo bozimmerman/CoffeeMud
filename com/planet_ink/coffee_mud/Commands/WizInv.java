@@ -78,7 +78,7 @@ public class WizInv extends StdCommand
 		if(A!=null)
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) from view!"));
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());

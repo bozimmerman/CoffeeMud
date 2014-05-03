@@ -97,10 +97,10 @@ public class Chant_Stonewalking extends Chant
 			{
 				final Room R=mob.location();
 				if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)||(R.domainType()==Room.DOMAIN_INDOORS_STONE))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn out of the walls.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn out of the walls."));
 				else
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn out of the rocks.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn out of the rocks."));
 				else
 					mob.tell(_("Your stone walk has ended."));
 			}
@@ -164,7 +164,7 @@ public class Chant_Stonewalking extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) into the walls!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) into the walls!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

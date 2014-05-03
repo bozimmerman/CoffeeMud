@@ -73,7 +73,7 @@ public class Chant_BullStrength extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the strength of a bull.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the strength of a bull."));
 			return false;
 		}
 

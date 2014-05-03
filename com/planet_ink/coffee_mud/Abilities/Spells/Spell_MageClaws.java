@@ -101,7 +101,7 @@ public class Spell_MageClaws extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> claws return to normal.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> claws return to normal."));
 	}
 
 
@@ -114,13 +114,13 @@ public class Spell_MageClaws extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> mage claws.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> mage claws."));
 			return false;
 		}
 
 		if(!freeHands(target))
 		{
-			mob.tell(target,null,null,"<S-NAME> do(es) not have <S-HIS-HER> hands free.");
+			mob.tell(target,null,null,_("<S-NAME> do(es) not have <S-HIS-HER> hands free."));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Spell_MageClaws extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

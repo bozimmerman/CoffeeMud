@@ -113,9 +113,9 @@ public class ThiefSkill extends StdAbility
 			if(((Exit)unlockThis).isOpen()==failOnOpen)
 			{
 				if(failOnOpen)
-					mob.tell(mob,unlockThis,null,"<T-NAME> is open!");
+					mob.tell(mob,unlockThis,null,_("<T-NAME> is open!"));
 				else
-					mob.tell(mob,unlockThis,null,"<T-NAME> is closed!");
+					mob.tell(mob,unlockThis,null,_("<T-NAME> is closed!"));
 				return null;
 			}
 
@@ -126,15 +126,15 @@ public class ThiefSkill extends StdAbility
 			if(((Container)unlockThis).isOpen()==failOnOpen)
 			{
 				if(failOnOpen)
-					mob.tell(mob,unlockThis,null,"<T-NAME> is open!");
+					mob.tell(mob,unlockThis,null,_("<T-NAME> is open!"));
 				else
-					mob.tell(mob,unlockThis,null,"<T-NAME> is closed!");
+					mob.tell(mob,unlockThis,null,_("<T-NAME> is closed!"));
 				return null;
 			}
 		}
 		else
 		{
-			mob.tell(mob,unlockThis,null,"You can't do that to <T-NAME>.");
+			mob.tell(mob,unlockThis,null,_("You can't do that to <T-NAME>."));
 			return null;
 		}
 		return unlockThis;

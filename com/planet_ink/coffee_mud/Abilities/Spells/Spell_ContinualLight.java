@@ -61,7 +61,7 @@ public class Spell_ContinualLight extends Spell
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("The light above <S-NAME> dims."));
 		super.unInvoke();
 		if(canBeUninvoked())
 			room.recoverRoomStats();

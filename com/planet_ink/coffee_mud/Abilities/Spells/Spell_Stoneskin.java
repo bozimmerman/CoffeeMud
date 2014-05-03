@@ -63,7 +63,7 @@ public class Spell_Stoneskin extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> skin softens.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin softens."));
 	}
 
 
@@ -118,7 +118,7 @@ public class Spell_Stoneskin extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as stone!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> skin turn hard as stone!"));
 				HitsRemaining = 3 + ( adjustedLevel( mob, asLevel ) / 5 );
 				beneficialAffect(mob,target,asLevel,0);
 			}

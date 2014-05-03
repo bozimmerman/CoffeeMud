@@ -506,7 +506,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyBlessed(mob))&&(numBlessings()>0))
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the presence of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the presence of <S-NAME> in <T-NAME>."));
 				if((mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 				||(CMSecurity.isASysOp(mob)))
 				{
@@ -540,7 +540,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyPowered(mob))&&(numPowers()>0))
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the power of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the power of <S-NAME> in <T-NAME>."));
 				final Ability Power=fetchPower(CMLib.dice().roll(1,numPowers(),-1));
 				if(Power!=null)
 					bestowPower(mob,Power);
@@ -560,7 +560,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if(numCurses()>0)
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"You feel the wrath of <S-NAME> in <T-NAME>.");
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the wrath of <S-NAME> in <T-NAME>."));
 				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric")
 				||(CMSecurity.isASysOp(mob)))
 				{
@@ -591,7 +591,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>.");
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>."));
 			for(int a=mob.numEffects()-1;a>=0;a--) // reverse, and personal
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -608,7 +608,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyPowered(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,"<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>.");
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>."));
 			for(int a=mob.numAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);

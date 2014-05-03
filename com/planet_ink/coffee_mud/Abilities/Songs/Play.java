@@ -196,7 +196,7 @@ public class Play extends StdAbility
 			&&(instrument.amWearingAt(Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) playing."));
 				unInvoke();
 			}
 			else
@@ -206,7 +206,7 @@ public class Play extends StdAbility
 			&&(instrument.amWearingAt(Wearable.WORN_HELD)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) playing."));
 				unInvoke();
 			}
 		}
@@ -518,7 +518,7 @@ public class Play extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

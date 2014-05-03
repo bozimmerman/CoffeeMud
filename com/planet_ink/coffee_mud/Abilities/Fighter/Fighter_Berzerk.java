@@ -112,7 +112,7 @@ public class Fighter_Berzerk extends FighterSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already berzerk.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already berzerk."));
 			return false;
 		}
 

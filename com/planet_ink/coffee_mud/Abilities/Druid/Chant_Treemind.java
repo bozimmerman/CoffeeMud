@@ -94,7 +94,7 @@ public class Chant_Treemind extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already have the mind of a tree.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already have the mind of a tree."));
 			return false;
 		}
 

@@ -86,9 +86,9 @@ public class Spell_GravitySlam extends Spell
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(!CMLib.flags().isInFlight(target))
-					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> hurled up into the air and **SLAMMED** back down!");
+					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> hurled up into the air and **SLAMMED** back down!"));
 				else
-					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> hurled even higher into the air and **SLAMMED** back down!");
+					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> hurled even higher into the air and **SLAMMED** back down!"));
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");

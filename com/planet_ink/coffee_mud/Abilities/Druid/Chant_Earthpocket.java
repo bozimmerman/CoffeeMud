@@ -152,7 +152,7 @@ public class Chant_Earthpocket extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already connected with an earthpocket.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already connected with an earthpocket."));
 			return false;
 		}
 
@@ -187,7 +187,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.recoverPhyStats();
 				target.location().addItem(pocket);
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A dark pocket of energy appears in a nearby wall."));
 			}
 		}
 		else

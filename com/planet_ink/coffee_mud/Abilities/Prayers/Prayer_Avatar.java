@@ -170,7 +170,7 @@ public class Prayer_Avatar extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the AVATAR.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the AVATAR."));
 			return false;
 		}
 
@@ -202,7 +202,7 @@ public class Prayer_Avatar extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) the AVATAR!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) the AVATAR!"));
 				beneficialAffect(mob,target,asLevel,levels);
 			}
 		}

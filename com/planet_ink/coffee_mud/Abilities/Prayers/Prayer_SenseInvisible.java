@@ -66,7 +66,7 @@ public class Prayer_SenseInvisible extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The clearness fades from <S-YOUPOSS> eyes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The clearness fades from <S-YOUPOSS> eyes."));
 	}
 
 	@Override

@@ -102,7 +102,7 @@ public class Prayer_BloodMoon extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"The Blood Moon rises over <S-NAME>.");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("The Blood Moon rises over <S-NAME>."));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

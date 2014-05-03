@@ -139,7 +139,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) sick!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> get(s) sick!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

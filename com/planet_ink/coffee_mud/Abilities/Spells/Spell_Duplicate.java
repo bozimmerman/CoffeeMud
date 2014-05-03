@@ -99,7 +99,7 @@ public class Spell_Duplicate extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				CMLib.utensils().disenchantItem(newTarget);
 				if(newTarget.amDestroyed())
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades away!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades away!"));
 				else
 				{
 					newTarget.recoverPhyStats();

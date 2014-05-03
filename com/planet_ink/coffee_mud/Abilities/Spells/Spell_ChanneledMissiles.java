@@ -108,7 +108,7 @@ public class Spell_ChanneledMissiles extends Spell
 		if(mob==null) return;
 
 		if((canBeUninvoked()&&(!mob.amDead())))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) channeling missiles.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) channeling missiles."));
 	}
 
 	@Override

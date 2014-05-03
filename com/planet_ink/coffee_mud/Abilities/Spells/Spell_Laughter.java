@@ -58,7 +58,7 @@ public class Spell_Laughter extends Spell
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		((MOB)affected).location().show((MOB)affected,null,CMMsg.MSG_OK_ACTION,"<S-NAME> laugh(s) uncontrollably, unable to move!");
+		((MOB)affected).location().show((MOB)affected,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> laugh(s) uncontrollably, unable to move!"));
 		return true;
 	}
 
@@ -74,7 +74,7 @@ public class Spell_Laughter extends Spell
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) laughing.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) laughing."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -130,7 +130,7 @@ public class Spell_Laughter extends Spell
 					success=maliciousAffect(mob,target,asLevel,ticks,-1);
 					if(success)
 						if(target.location()==R)
-							R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) laughing uncontrollably, unable to move!!");
+							R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) laughing uncontrollably, unable to move!!"));
 				}
 			}
 		}

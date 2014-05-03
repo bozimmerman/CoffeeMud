@@ -105,7 +105,7 @@ public class Chant_DeepDarkness extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Deep Darkness is already been here!");
+			mob.tell(mob,null,null,_("Deep Darkness is already been here!"));
 			return false;
 		}
 

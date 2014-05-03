@@ -168,7 +168,7 @@ public class Spell_RogueLimb extends Spell
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more."));
 
 
 		// return whether it worked

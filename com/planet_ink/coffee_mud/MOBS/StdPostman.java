@@ -885,7 +885,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					}
 					if(CMLib.flags().isEnspelled((Item)msg.tool()) || CMLib.flags().isOnFire((Item)msg.tool()))
 					{
-						mob.tell(this,msg.tool(),null,"<S-HE-SHE> refuses to accept <T-NAME> for delivery.");
+						mob.tell(this,msg.tool(),null,_("<S-HE-SHE> refuses to accept <T-NAME> for delivery."));
 						return false;
 					}
 				}

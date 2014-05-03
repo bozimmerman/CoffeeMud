@@ -94,19 +94,19 @@ public class Chant_ManicMoon extends Chant
 				switch(CMLib.dice().roll(1,5,0))
 				{
 				case 1:
-					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> howl(s) at the moon!");
+					room.show(M,null,CMMsg.MSG_NOISE,_("<S-NAME> howl(s) at the moon!"));
 					break;
 				case 2:
-					room.show(M,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> wig(s) out!");
+					room.show(M,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> wig(s) out!"));
 					break;
 				case 3:
-					room.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) confused!");
+					room.show(M,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> get(s) confused!"));
 					break;
 				case 4:
-					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> sing(s) randomly!");
+					room.show(M,null,CMMsg.MSG_NOISE,_("<S-NAME> sing(s) randomly!"));
 					break;
 				case 5:
-					room.show(M,null,CMMsg.MSG_NOISE,"<S-NAME> go(es) nuts!");
+					room.show(M,null,CMMsg.MSG_NOISE,_("<S-NAME> go(es) nuts!"));
 					break;
 				}
 		}

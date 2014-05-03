@@ -60,7 +60,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The divine edict aura around <S-NAME> fades.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The divine edict aura around <S-NAME> fades."));
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"The aura of the divine edict is already with <S-NAME>.");
+			mob.tell(target,null,null,_("The aura of the divine edict is already with <S-NAME>."));
 			return false;
 		}
 

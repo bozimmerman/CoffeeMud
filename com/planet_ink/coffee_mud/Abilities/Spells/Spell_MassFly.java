@@ -76,7 +76,7 @@ public class Spell_MassFly extends Spell
 					{
 						mob.location().send(mob,msg);
 						if(mob.location()==target.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) to fly around!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) to fly around!"));
 						final Spell_Fly fly=new Spell_Fly();
 						fly.setProficiency(proficiency());
 						fly.beneficialAffect(mob,target,asLevel,0);

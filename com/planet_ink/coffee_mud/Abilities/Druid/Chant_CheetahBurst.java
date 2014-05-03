@@ -100,7 +100,7 @@ public class Chant_CheetahBurst extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already at a cheetah's speed.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already at a cheetah's speed."));
 			return false;
 		}
 
@@ -126,7 +126,7 @@ public class Chant_CheetahBurst extends Chant
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> gain(s) cheetah-like reflexes!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> gain(s) cheetah-like reflexes!"));
 					beneficialAffect(mob,target,asLevel,0);
 					final Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
 					if(A!=null) A.cheetahTick=3;

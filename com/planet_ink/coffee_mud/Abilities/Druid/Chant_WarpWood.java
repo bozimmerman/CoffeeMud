@@ -127,15 +127,15 @@ public class Chant_WarpWood extends Chant
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(mobTarget==null)
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to twist and warp!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to twist and warp!"));
 					else
-						mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, twists and warps!");
+						mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME>, possessed by <S-NAME>, twists and warps!"));
 					if(target.usesRemaining()>0)
 						target.recoverPhyStats();
 					else
 					{
 						target.setUsesRemaining(100);
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is destroyed!"));
 						target.unWear();
 						target.destroy();
 						mob.location().recoverRoomStats();

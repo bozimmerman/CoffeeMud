@@ -981,7 +981,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			body.destroy();
 			rejuvedMOB.basePhyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
-			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
+			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
 			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
@@ -1022,7 +1022,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return true;
 		}
 		else
-			corpseRoom.show(tellMob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
+			corpseRoom.show(tellMob,body,CMMsg.MSG_OK_VISUAL,_("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
 		return false;
 	}
 

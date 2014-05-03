@@ -96,7 +96,7 @@ public class Chant_SummonVine extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) still and plant-like.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) still and plant-like."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}

@@ -369,24 +369,24 @@ public class AstroEngineering extends TechSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(mob,null,null,"<S-NAME> <S-IS-ARE> in combat!");
+			mob.tell(mob,null,null,_("<S-NAME> <S-IS-ARE> in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().canBeSeenBy(targetRoom,mob))
 		{
-			mob.tell(mob,null,null,"<S-NAME> can't see to do that!");
+			mob.tell(mob,null,null,_("<S-NAME> can't see to do that!"));
 			return false;
 		}
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(mob,null,null,"You need to stand up!");
+			mob.tell(mob,null,null,_("You need to stand up!"));
 			return false;
 		}
 		if(op==Operation.REPAIR)
 		{
 			if(!targetItem.subjectToWearAndTear())
 			{
-				mob.tell(mob,targetItem,null,"<T-NAME> can't be repaired!");
+				mob.tell(mob,targetItem,null,_("<T-NAME> can't be repaired!"));
 				return false;
 			}
 		}
@@ -395,7 +395,7 @@ public class AstroEngineering extends TechSkill
 		{
 			if((targetItem.subjectToWearAndTear())&&(targetItem.usesRemaining()<100))
 			{
-				mob.tell(mob,targetItem,null,"<T-NAME> must be repaired first!");
+				mob.tell(mob,targetItem,null,_("<T-NAME> must be repaired first!"));
 				return false;
 			}
 			if(targetItem instanceof ShipComponent)

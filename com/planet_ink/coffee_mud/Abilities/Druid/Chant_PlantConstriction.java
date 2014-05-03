@@ -97,7 +97,7 @@ public class Chant_PlantConstriction extends Chant
 		{
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*4))
 			{
-				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<S-NAME> struggle(s) to remove <T-NAME> and fail(s).");
+				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,_("<S-NAME> struggle(s) to remove <T-NAME> and fail(s)."));
 				return false;
 			}
 		}

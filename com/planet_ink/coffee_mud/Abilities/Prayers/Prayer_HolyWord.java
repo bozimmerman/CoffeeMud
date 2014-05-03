@@ -90,7 +90,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blinding holy aura fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> blinding holy aura fades."));
 	}
 
 	@Override

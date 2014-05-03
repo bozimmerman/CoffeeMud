@@ -99,7 +99,7 @@ public class Spell_Advancement extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) more knowledgable!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) more knowledgable!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

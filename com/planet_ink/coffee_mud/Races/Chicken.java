@@ -187,7 +187,7 @@ public class Chicken extends StdRace
 				final Item I=((MOB)ticking).findItem("an egg");
 				if(I!=null)
 				{
-					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
+					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> lay(s) an egg."));
 					I.removeFromOwnerContainer();
 					I.executeMsg((MOB)ticking,CMClass.getMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
 					((MOB)ticking).location().addItem(I,ItemPossessor.Expire.Resource);

@@ -100,12 +100,12 @@ public class Spell_Disintegrate extends Spell
 						if(((MOB)target).curState().getHitPoints()>0)
 							CMLib.combat().postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*100),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
+							R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> disintegrate(s)!"));
 						else
 							return false;
 					}
 					else
-						R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> disintegrate(s)!"));
 
 					if(target instanceof Item)
 						((Item)target).destroy();

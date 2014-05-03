@@ -65,7 +65,7 @@ public class Spell_ImprovedInvisibility extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) back into view.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) back into view."));
 	}
 
 
@@ -95,7 +95,7 @@ public class Spell_ImprovedInvisibility extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) from view!"));
 				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*3);
 			}
 		}

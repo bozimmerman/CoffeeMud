@@ -91,7 +91,7 @@ public class Chant_SummonSapling extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) still and tree-like."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}

@@ -89,12 +89,12 @@ public class Prayer_DemonicConsumption extends Prayer
 						if(((MOB)target).curState().getHitPoints()>0)
 							CMLib.combat().postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*100),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
+							R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> <T-IS-ARE> consumed!"));
 						else
 							return false;
 					}
 					else
-						R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> is consumed!");
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> is consumed!"));
 
 					if(target instanceof Item)
 						((Item)target).destroy();

@@ -170,22 +170,22 @@ public class InTheAir extends StdRoom
 			switch(room.getArea().getClimateObj().weatherType(room))
 			{
 			case Climate.WEATHER_BLIZZARD:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The swirling blizzard inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The swirling blizzard inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_HAIL:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hail storm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The hail storm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_RAIN:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The rain storm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The rain storm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_SLEET:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The biting sleet inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The biting sleet inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_THUNDERSTORM:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The thunderstorm inhibits <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The thunderstorm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_WINDY:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hard winds inhibit <S-YOUPOSS> progress.");
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The hard winds inhibit <S-YOUPOSS> progress."));
 				return false;
 			}
 		}

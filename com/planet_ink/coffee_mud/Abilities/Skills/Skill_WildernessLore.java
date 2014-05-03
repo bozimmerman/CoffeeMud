@@ -53,7 +53,7 @@ public class Skill_WildernessLore extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) a quick look at the terrain and feel(s) quite confused.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) a quick look at the terrain and feel(s) quite confused."));
 			return false;
 		}
 		final Room room=mob.location();

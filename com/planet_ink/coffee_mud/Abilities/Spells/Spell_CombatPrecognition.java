@@ -143,7 +143,7 @@ public class Spell_CombatPrecognition extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the sight.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the sight."));
 			return false;
 		}
 

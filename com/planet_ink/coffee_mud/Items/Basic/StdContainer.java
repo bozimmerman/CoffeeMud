@@ -177,7 +177,7 @@ public class StdContainer extends StdItem implements Container
 						&&(amWearingAt(Wearable.IN_INVENTORY))
 						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
-							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
+							mob.tell(mob,newitem,this,_("You can't see <T-NAME> in <O-NAME>."));
 							return false;
 						}
 						else
@@ -215,7 +215,7 @@ public class StdContainer extends StdItem implements Container
 						}
 						return true;
 					}
-					mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
+					mob.tell(mob,newitem,this,_("You can't see <T-NAME> in <O-NAME>."));
 					return false;
 				}
 				else

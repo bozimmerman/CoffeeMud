@@ -88,7 +88,7 @@ public class Chant_FodderSignal extends Chant
 					&&(!dummy.getGroupMembers(new HashSet<MOB>()).contains(M))
 					&&(CMLib.flags().canBeSeenBy(dummy,M)))
 					{
-						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,"<S-NAME> howl(s) in anger at <T-NAMESELF>!"))
+						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,_("<S-NAME> howl(s) in anger at <T-NAMESELF>!")))
 							CMLib.combat().postAttack(M,dummy,M.fetchWieldedItem());
 					}
 				}
@@ -125,7 +125,7 @@ public class Chant_FodderSignal extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A horrible angering flag is emitting from <S-NAME>!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A horrible angering flag is emitting from <S-NAME>!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

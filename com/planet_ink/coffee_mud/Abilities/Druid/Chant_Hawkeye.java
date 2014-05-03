@@ -101,7 +101,7 @@ public class Chant_Hawkeye extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> hawk vision.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> hawk vision."));
 			return false;
 		}
 

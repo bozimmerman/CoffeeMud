@@ -75,7 +75,7 @@ public class Prayer_Tremor extends Prayer
 			if(!oncePerRd)
 			{
 				oncePerRd=true;
-				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
+				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to stand up, and falls back down!"));
 			}
 			return false;
 		}
@@ -140,7 +140,7 @@ public class Prayer_Tremor extends Prayer
 					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if(CMLib.flags().isInFlight(target))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected."));
 					else
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
@@ -157,7 +157,7 @@ public class Prayer_Tremor extends Prayer
 								}
 							}
 							else
-								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected by the quake.");
+								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected by the quake."));
 						}
 					}
 				}

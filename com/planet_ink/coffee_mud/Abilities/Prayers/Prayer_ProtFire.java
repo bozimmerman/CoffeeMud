@@ -75,7 +75,7 @@ public class Prayer_ProtFire extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already protected from fire.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already protected from fire."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

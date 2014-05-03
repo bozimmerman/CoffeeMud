@@ -90,7 +90,7 @@ public class Spell_DeadenSmell extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> lost <S-HIS-HER> sense of smell!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lost <S-HIS-HER> sense of smell!"));
 					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}

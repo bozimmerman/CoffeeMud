@@ -53,7 +53,7 @@ public class Spell_Blink extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) blinking.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) blinking."));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class Spell_Blink extends Spell
 				default: move=0;
 				}
 				if(move==0)
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) again.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
 				else
 				{
 					int rangeTo=mob.rangeToTarget();
@@ -91,7 +91,7 @@ public class Spell_Blink extends Spell
 					switch(move)
 					{
 					case 0:
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) again.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
 						break;
 					case 1:
 						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>.");
@@ -111,9 +111,9 @@ public class Spell_Blink extends Spell
 			}
 			else
 			if((roll>2)&&(roll<7))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a few feet away.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a few feet away."));
 			else
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) again.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
 		}
 		return super.tick(ticking,tickID);
 	}

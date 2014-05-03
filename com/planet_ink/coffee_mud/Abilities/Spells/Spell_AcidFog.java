@@ -79,7 +79,7 @@ public class Spell_AcidFog extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the acid fog!"));
 		}
 	}
 
@@ -126,7 +126,7 @@ public class Spell_AcidFog extends Spell
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the acid fog!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped in the acid fog!"));
 						}
 					}
 				}

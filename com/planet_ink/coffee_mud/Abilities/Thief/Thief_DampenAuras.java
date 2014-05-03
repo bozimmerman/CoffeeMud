@@ -96,7 +96,7 @@ public class Thief_DampenAuras extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> can't dampen <S-YOUPOSS> auras again so soon.");
+			mob.tell(target,null,null,_("<S-NAME> can't dampen <S-YOUPOSS> auras again so soon."));
 			return false;
 		}
 

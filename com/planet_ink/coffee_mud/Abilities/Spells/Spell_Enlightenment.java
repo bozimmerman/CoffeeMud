@@ -109,7 +109,7 @@ public class Spell_Enlightenment extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) at things with a new understanding!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) at things with a new understanding!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

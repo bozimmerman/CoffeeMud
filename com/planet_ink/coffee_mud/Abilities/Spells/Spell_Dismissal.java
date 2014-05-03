@@ -81,8 +81,8 @@ public class Spell_Dismissal extends Spell
 						target.destroy();
 					else
 					{
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
-						target.getStartRoom().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s)!");
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> vanish(es) in dismissal!"));
+						target.getStartRoom().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> appear(s)!"));
 						target.getStartRoom().bringMobHere(target,false);
 						CMLib.commands().postLook(target,true);
 					}

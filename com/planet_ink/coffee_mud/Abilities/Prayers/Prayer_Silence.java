@@ -109,7 +109,7 @@ public class Prayer_Silence extends Prayer
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> silenced!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> silenced!"));
 				}
 			}
 		}

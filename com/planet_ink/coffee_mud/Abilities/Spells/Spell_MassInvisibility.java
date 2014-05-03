@@ -89,7 +89,7 @@ public class Spell_MassInvisibility extends Spell
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) from view!"));
 						final Spell_Invisibility spell=new Spell_Invisibility();
 						spell.setProficiency(proficiency());
 						spell.beneficialAffect(mob,target,asLevel,0);

@@ -90,7 +90,7 @@ public class Chant_SaplingWorkers extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) still and tree-like."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -255,7 +255,7 @@ public class Chant_SaplingWorkers extends Chant
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setStartRoom(null);
-		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");
+		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) looking around!"));
 		if((start)&&(A!=null)) A.invoke(newMOB,null,false,0);
 		return(newMOB);
 	}

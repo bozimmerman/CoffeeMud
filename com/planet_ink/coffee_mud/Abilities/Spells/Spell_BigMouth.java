@@ -286,7 +286,7 @@ public class Spell_BigMouth extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the owner of a huge mouth.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the owner of a huge mouth."));
 			return false;
 		}
 
@@ -310,7 +310,7 @@ public class Spell_BigMouth extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!"));
 				beneficialAffect(mob,target,asLevel,4);
 			}
 		}

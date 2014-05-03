@@ -53,7 +53,7 @@ public class Spell_AchillesArmor extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> Achilles Armor is now gone.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> Achilles Armor is now gone."));
 
 		super.unInvoke();
 
@@ -132,7 +132,7 @@ public class Spell_AchillesArmor extends Spell
 		{
 			if(msg.tool().ID().equals("Amputation"))
 			{
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The armor around <S-NAME> protect(s) <T-NAME>!");
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The armor around <S-NAME> protect(s) <T-NAME>!"));
 				return false;
 			}
 		}

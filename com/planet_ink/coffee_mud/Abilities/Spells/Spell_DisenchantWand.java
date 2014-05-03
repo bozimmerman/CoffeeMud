@@ -63,7 +63,7 @@ public class Spell_DisenchantWand extends Spell
 				mob.location().send(mob,msg);
 				((Wand)target).setSpell(null);
 				((Wand)target).setUsesRemaining(0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades and becomes dull!"));
 				if((target.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 					target.basePhyStats().setDisposition(target.basePhyStats().disposition()-PhyStats.IS_BONUS);
 				target.recoverPhyStats();

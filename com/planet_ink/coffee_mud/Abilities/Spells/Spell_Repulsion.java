@@ -60,7 +60,7 @@ public class Spell_Repulsion extends Spell
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the repulsion field."))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the repulsion field.")))
 				{
 					amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 					if(amountRemaining<0)
@@ -100,7 +100,7 @@ public class Spell_Repulsion extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -149,7 +149,7 @@ public class Spell_Repulsion extends Spell
 								if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
 									level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
 								if(level<2) level=2;
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) repelled!"));
 								if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 									target.setAtRange(target.rangeToTarget());
 								else

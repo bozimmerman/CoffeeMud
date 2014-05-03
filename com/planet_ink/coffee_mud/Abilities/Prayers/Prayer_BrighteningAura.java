@@ -87,7 +87,7 @@ public class Prayer_BrighteningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already surrounded by a brightening aura.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already surrounded by a brightening aura."));
 			return false;
 		}
 

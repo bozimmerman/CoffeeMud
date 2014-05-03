@@ -53,7 +53,7 @@ public class Prop_NoOrdering extends Property
 			if(affected instanceof MOB)
 				msg.source().tell(_("You don't feel very commanding around here."));
 			else
-				msg.source().tell(msg.source(),msg.target(),null,"<T-NAME> isn't paying any attention to you.");
+				msg.source().tell(msg.source(),msg.target(),null,_("<T-NAME> isn't paying any attention to you."));
 			return false;
 		}
 		return true;

@@ -153,7 +153,7 @@ public class Spell_ReverseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"Gravity has already been reversed here!");
+			mob.tell(mob,null,null,_("Gravity has already been reversed here!"));
 			return false;
 		}
 

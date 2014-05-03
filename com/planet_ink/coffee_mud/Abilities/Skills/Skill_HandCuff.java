@@ -73,14 +73,14 @@ public class Skill_HandCuff extends StdSkill
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if((msg.source()!=null)&&(msg.source().location()!=null))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>.");
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>."));
 				return false;
 			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_FOLLOW)&&(msg.target()!=invoker()))
 			||((msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)&&(msg.source().amFollowing()==invoker())))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 				if(amountRemaining<0)
 					unInvoke();
@@ -98,7 +98,7 @@ public class Skill_HandCuff extends StdSkill
 			&&(msg.target() instanceof Room)
 			&&(!((Room)msg.target()).isInhabitant(invoker))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 				if(amountRemaining<0)
 					unInvoke();
@@ -113,7 +113,7 @@ public class Skill_HandCuff extends StdSkill
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
@@ -153,7 +153,7 @@ public class Skill_HandCuff extends StdSkill
 		{
 			mob.setFollowing(null);
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> <S-IS-ARE> released from the handcuffs."));
 			if(!oldAssist)
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			if(oldGuard)

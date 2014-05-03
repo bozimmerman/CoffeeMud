@@ -136,7 +136,7 @@ public class Undead_EnergyDrain extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drained!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drained!"));
 					if(reAffect!=null)
 					{
 						if(reAffect instanceof Undead_EnergyDrain)

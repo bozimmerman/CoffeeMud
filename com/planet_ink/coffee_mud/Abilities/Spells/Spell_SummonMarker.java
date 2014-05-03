@@ -84,7 +84,7 @@ public class Spell_SummonMarker extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,"The spot <S-NAME> pointed to glows for brief moment.");
+				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,_("The spot <S-NAME> pointed to glows for brief moment."));
 				beneficialAffect(mob,mob.location(),0,(adjustedLevel(mob,asLevel)*240)+450);
 			}
 

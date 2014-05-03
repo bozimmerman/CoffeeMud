@@ -61,7 +61,7 @@ public class Chant_FurCoat extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> fur coat vanishes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> fur coat vanishes."));
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Chant_FurCoat extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a fur coat.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a fur coat."));
 			return false;
 		}
 

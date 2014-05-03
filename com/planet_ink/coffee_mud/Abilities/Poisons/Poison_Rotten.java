@@ -79,7 +79,7 @@ public class Poison_Rotten extends Poison
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(affected instanceof Item)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) rotten!");
+			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) rotten!"));
 	}
 	@Override protected String POISON_AFFECT(){return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";}
 	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}

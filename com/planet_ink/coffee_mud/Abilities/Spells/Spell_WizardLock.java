@@ -183,7 +183,7 @@ public class Spell_WizardLock extends Spell
 					}
 					else
 						beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) shut tight!"));
 				}
 				else
 				if(target instanceof Container)
@@ -191,7 +191,7 @@ public class Spell_WizardLock extends Spell
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) shut tight!"));
 				}
 				final Ability lock=target.fetchEffect(ID());
 				if(lock != null)

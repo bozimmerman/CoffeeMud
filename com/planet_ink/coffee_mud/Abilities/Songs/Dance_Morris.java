@@ -65,7 +65,7 @@ public class Dance_Morris extends Dance
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
 			missedLastOne=true;
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> become(s) distracted.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> become(s) distracted."));
 			return false;
 		}
 		missedLastOne=false;

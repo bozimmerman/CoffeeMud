@@ -80,7 +80,7 @@ public class Prayer_ProtDisease extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_DISEASE)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repell(s) the disease.");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> magically repell(s) the disease."));
 				return false;
 			}
 
@@ -98,7 +98,7 @@ public class Prayer_ProtDisease extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protection from disease.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from disease."));
 			return false;
 		}
 

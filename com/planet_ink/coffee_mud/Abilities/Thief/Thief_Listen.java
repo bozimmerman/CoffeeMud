@@ -132,7 +132,7 @@ public class Thief_Listen extends ThiefSkill
 					if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
 						invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 					else
-						invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
+						invoker().tell(msg.source(),null,null,_("<S-NAME> said something, but you couldn't quite make it out."));
 				}
 			}
 			else
@@ -150,7 +150,7 @@ public class Thief_Listen extends ThiefSkill
 					this.cleanTalkers(Ps);
 				}
 				else
-					invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
+					invoker().tell(msg.source(),null,null,_("<S-NAME> said something, but you couldn't quite make it out."));
 			}
 
 		}

@@ -79,7 +79,7 @@ public class Spell_GiantStrength extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> muscles shrink back to their normal size.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> muscles shrink back to their normal size."));
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Spell_GiantStrength extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) huge muscles!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) huge muscles!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

@@ -171,7 +171,7 @@ public class Skill_ControlUndead extends StdSkill
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
@@ -253,7 +253,7 @@ public class Skill_ControlUndead extends StdSkill
 							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);
 						if(success)
 						{
-							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> now controlled.");
+							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> now controlled."));
 							target.makePeace();
 							CMLib.commands().postFollow(target,mob,false);
 							CMLib.combat().makePeaceInGroup(mob);
@@ -264,7 +264,7 @@ public class Skill_ControlUndead extends StdSkill
 					}
 					else
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) submissive!");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) submissive!"));
 						target.makePeace();
 						beneficialAffect(mob,target,asLevel,5);
 					}

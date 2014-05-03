@@ -111,7 +111,7 @@ public class Prayer_IceHealing extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"An aura surrounds <S-NAME>.");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("An aura surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

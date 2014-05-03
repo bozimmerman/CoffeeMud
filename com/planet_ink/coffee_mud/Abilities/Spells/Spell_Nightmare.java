@@ -75,41 +75,41 @@ public class Spell_Nightmare extends Spell
 					{
 					case 1:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,"<T-NAME> rips away your flesh.");
+						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> rips away your flesh."));
 						break;
 					case 2:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,"<T-NAME> seems to wrap itself around you.");
+						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> seems to wrap itself around you."));
 						break;
 					case 3:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,"<T-NAME> seems to bend around your hands.");
+						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> seems to bend around your hands."));
 						break;
 					case 4:
 						mob.tell(_("You see your flesh melting away in large chunks."));
 						break;
 					case 5:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,"<T-NAME> glare(s) at you, taking on a horrifying form.");
+						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> glare(s) at you, taking on a horrifying form."));
 						break;
 					case 6:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it.");
+						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it."));
 						break;
 					case 7:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,"<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you.");
+						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you."));
 						break;
 					case 8:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,"<T-NAME> become(s) a horrifying image of terror.");
+						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> become(s) a horrifying image of terror."));
 						break;
 					case 9:
-						mob.tell(mob,null,null,"The nightmare consumes your mind, taking you into madness.");
+						mob.tell(mob,null,null,_("The nightmare consumes your mind, taking you into madness."));
 						break;
 					case 10:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,"<T-NAME> <T-IS-ARE> trying to take control of your mind.");
+						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> <T-IS-ARE> trying to take control of your mind."));
 						break;
 					}
 					notAgainThisRound=true;
@@ -157,7 +157,7 @@ public class Spell_Nightmare extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare."));
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class Spell_Nightmare extends Spell
 				{
 					amountRemaining=100;
 					maliciousAffect(mob,target,asLevel,10,-1);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) into the throes of a horrendous nightmare!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) into the throes of a horrendous nightmare!!"));
 				}
 			}
 		}

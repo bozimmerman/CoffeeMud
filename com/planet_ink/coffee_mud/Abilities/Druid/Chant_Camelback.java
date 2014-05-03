@@ -64,7 +64,7 @@ public class Chant_Camelback extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> camelback disappears.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> camelback disappears."));
 			mob.curState().setThirst(0);
 		}
 	}
@@ -92,7 +92,7 @@ public class Chant_Camelback extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a camel's back.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a camel's back."));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Chant_Camelback extends Chant
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a camelback hump!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a camelback hump!"));
 				target.tell(_("You feel quenched!"));
 			}
 		}

@@ -104,7 +104,7 @@ public class Chant_Goodberry extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> begin to glow!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> begin to glow!"));
 				if(owner instanceof MOB)
 					for(int i=0;i<((MOB)owner).numItems();i++)
 					{

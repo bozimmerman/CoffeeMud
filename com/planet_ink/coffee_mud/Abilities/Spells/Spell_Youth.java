@@ -66,13 +66,13 @@ public class Spell_Youth extends Spell
 				if((target.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 					||(target.baseCharStats().ageCategory()<=Race.AGE_YOUNGADULT))
 				{
-					mob.tell(mob,target,null,"The magic appears to have had no effect upon <T-NAME>.");
+					mob.tell(mob,target,null,_("The magic appears to have had no effect upon <T-NAME>."));
 					success=false;
 				}
 				else
 				{
 					final int[] chart=target.baseCharStats().getMyRace().getAgingChart();
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) younger!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) younger!"));
 					final int cat=target.baseCharStats().ageCategory();
 					int age=target.baseCharStats().getStat(CharStats.STAT_AGE);
 					if(cat>=Race.AGE_ANCIENT)

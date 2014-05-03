@@ -101,7 +101,7 @@ public class Archon extends StdCharClass
 		{
 			//((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
 			if(msg.source()!=msg.target())
-				msg.source().tell(msg.source(),msg.target(),msg.tool(),"<T-NAME> is immune to <O-NAME>.");
+				msg.source().tell(msg.source(),msg.target(),msg.tool(),_("<T-NAME> is immune to <O-NAME>."));
 			return false;
 		}
 		return super.okMessage(myHost, msg);

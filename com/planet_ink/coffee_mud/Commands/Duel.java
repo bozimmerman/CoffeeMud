@@ -84,7 +84,7 @@ public class Duel extends StdCommand
 			else
 			if((uiT != null)&&(iuT != null))
 			{
-				target.tell(mob,target,null,"^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N");
+				target.tell(mob,target,null,_("^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N"));
 				final Item weapon=mob.fetchWieldedItem();
 				if(weapon==null)
 				{
@@ -109,13 +109,13 @@ public class Duel extends StdCommand
 			else
 			if(uiT!=null)
 			{
-				mob.tell(mob,target,null,"<T-NAME> is awaiting a response to a previous challenge and cannot be challenged at this time.");
+				mob.tell(mob,target,null,_("<T-NAME> is awaiting a response to a previous challenge and cannot be challenged at this time."));
 				return false;
 			}
 			else
 			if(uuT!=null)
 			{
-				mob.tell(mob,target,null,"<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time.");
+				mob.tell(mob,target,null,_("<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time."));
 				return false;
 			}
 			else

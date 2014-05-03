@@ -148,7 +148,7 @@ public int castingQuality(MOB mob, Physical target)
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The Bone Moon rises over <S-NAME>.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The Bone Moon rises over <S-NAME>."));
 				level=1;
 				if(CMLib.law().doesOwnThisProperty(mob,target))
 				{

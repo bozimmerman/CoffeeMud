@@ -55,7 +55,7 @@ public class Chant_Root extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> roots are pulled up.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> roots are pulled up."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Chant_Root extends Chant
 				{
 					if(!uprooted)
 					{
-						msg.source().tell((MOB)affected,null,null,"<S-NAME> <S-IS-ARE> rooted and can't go anywhere.");
+						msg.source().tell((MOB)affected,null,null,_("<S-NAME> <S-IS-ARE> rooted and can't go anywhere."));
 						return false;
 					}
 					uprooted=false;
@@ -120,7 +120,7 @@ public class Chant_Root extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already rooted.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already rooted."));
 			return false;
 		}
 

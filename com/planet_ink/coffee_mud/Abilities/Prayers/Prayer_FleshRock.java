@@ -156,7 +156,7 @@ public class Prayer_FleshRock extends Prayer
 		{
 			if(statue!=null) statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flesh is no longer made of rock.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> flesh is no longer made of rock."));
 			if(prevState!=null) prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
@@ -213,7 +213,7 @@ public class Prayer_FleshRock extends Prayer
 					statue.setDescription("It`s a hard rocky statue, which looks exactly like "+name+".");
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.basePhyStats().setWeight(2000);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into rock!!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into rock!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))),-1);
 					target.makePeace();
 					if(mob.getVictim()==target) mob.setVictim(null);

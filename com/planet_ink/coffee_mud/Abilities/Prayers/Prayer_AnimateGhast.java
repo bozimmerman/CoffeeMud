@@ -154,7 +154,7 @@ public class Prayer_AnimateGhast extends Prayer
 						it++;
 				}
 				body.destroy();
-				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to rise!"));
 				newMOB.setStartRoom(null);
 				mob.location().recoverRoomStats();
 			}

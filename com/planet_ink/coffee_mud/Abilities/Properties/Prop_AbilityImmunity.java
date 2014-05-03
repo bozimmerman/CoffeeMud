@@ -104,7 +104,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else
-							msg.source().tell(msg.source(),msg.target(),msg.tool(),"<T-NAME> seem(s) immune to <O-NAME>.");
+							msg.source().tell(msg.source(),msg.target(),msg.tool(),_("<T-NAME> seem(s) immune to <O-NAME>."));
 					}
 					return false;
 				}

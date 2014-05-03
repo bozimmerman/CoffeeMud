@@ -123,7 +123,7 @@ public class Spell_Silence extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,"This place is already silent.");
+			mob.tell(mob,null,null,_("This place is already silent."));
 			return false;
 		}
 

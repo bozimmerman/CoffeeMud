@@ -130,7 +130,7 @@ public class Song_Friendship extends Song
 			{
 				if((canBeUninvoked()&&(!mob.amDead())))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> free-will returns.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
 					mob.setFollowing(null);
 					CMLib.commands().postStand(mob,true);
 					if(mob.isMonster())
@@ -205,7 +205,7 @@ public class Song_Friendship extends Song
 							if(levelDiff<0) levelDiff=0;
 
 							if((levelDiff>(3+((mob.phyStats().level()+(getXLEVELLevel(mob)*2))/10)))&&(mindAttack()))
-								mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
+								mob.tell(mob,follower,null,_("<T-NAME> looks too powerful."));
 							else
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
@@ -236,7 +236,7 @@ public class Song_Friendship extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> hit(s) a foul note.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

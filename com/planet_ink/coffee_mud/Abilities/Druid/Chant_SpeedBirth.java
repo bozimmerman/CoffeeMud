@@ -105,7 +105,7 @@ public class Chant_SpeedBirth extends Chant
 				else
 					remain=remain/2;
 				A.setMiscText((start-remain)+"/"+(end-remain)+rest);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) even MORE pregnant!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> appear(s) even MORE pregnant!"));
 			}
 		}
 		else

@@ -58,7 +58,7 @@ public class Prayer_Demonshield extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> demonic flame shield vanishes.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> demonic flame shield vanishes."));
 	}
 
 	@Override

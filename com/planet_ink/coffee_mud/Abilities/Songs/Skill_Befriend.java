@@ -80,7 +80,7 @@ public class Skill_Befriend extends BardSkill
 
 		if(target.amFollowing()!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> is already someone elses friend.");
+			mob.tell(target,null,null,_("<S-NAME> is already someone elses friend."));
 			return false;
 		}
 

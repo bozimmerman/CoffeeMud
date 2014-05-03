@@ -133,7 +133,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) different somehow..."));
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
@@ -183,7 +183,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) different somehow..."));
 				}
 				else
 					spreadImmunity(target);

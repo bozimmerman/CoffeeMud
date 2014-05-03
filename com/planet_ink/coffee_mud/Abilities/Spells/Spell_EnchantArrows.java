@@ -61,7 +61,7 @@ public class Spell_EnchantArrows extends Spell
 
 		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")))
 		{
-			mob.tell(mob,target,null,"You can't enchant <T-NAME> ith an Enchant Arrows spell!");
+			mob.tell(mob,target,null,_("You can't enchant <T-NAME> ith an Enchant Arrows spell!"));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Spell_EnchantArrows extends Spell
 					mob.tell("You are not able to enchant "+target.name(mob)+" further.");
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows!"));
 					if(A==null){ A=(Ability)copyOf(); target.addNonUninvokableEffect(A);}
 					A.setMiscText(""+(CMath.s_int(A.text())+1));
 					target.recoverPhyStats();

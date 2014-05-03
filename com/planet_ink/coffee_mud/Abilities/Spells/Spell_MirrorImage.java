@@ -71,7 +71,7 @@ public class Spell_MirrorImage extends Spell
 			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
-				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
+				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<T-NAME> attack(s) a mirrored image!")))
 					numberOfImages--;
 				return false;
 			}
@@ -167,7 +167,7 @@ public class Spell_MirrorImage extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> mirror images.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> mirror images."));
 			return false;
 		}
 

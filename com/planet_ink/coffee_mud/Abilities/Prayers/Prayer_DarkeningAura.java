@@ -89,7 +89,7 @@ public class Prayer_DarkeningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already surrounded by a darkening aura.");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already surrounded by a darkening aura."));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Prayer_DarkeningAura extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <IS-ARE> surrounded by a dark aura!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <IS-ARE> surrounded by a dark aura!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

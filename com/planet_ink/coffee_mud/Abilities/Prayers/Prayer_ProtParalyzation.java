@@ -80,7 +80,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_PARALYZE)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"An paralyzing assault against <S-NAME> is magically repelled.");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("An paralyzing assault against <S-NAME> is magically repelled."));
 				return false;
 			}
 
@@ -98,7 +98,7 @@ public class Prayer_ProtParalyzation extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protection from paralyzation.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from paralyzation."));
 			return false;
 		}
 

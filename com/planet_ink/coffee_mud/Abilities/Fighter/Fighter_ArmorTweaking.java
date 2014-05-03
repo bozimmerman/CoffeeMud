@@ -78,7 +78,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		{
 			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
-				M.tell(M,affected,null,"<T-NAME> no longer feel(s) quite as snuggly tweaked.");
+				M.tell(M,affected,null,_("<T-NAME> no longer feel(s) quite as snuggly tweaked."));
 		}
 		super.unInvoke();
 	}

@@ -133,7 +133,7 @@ public class Prayer_SunCurse extends Prayer
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> under a mighty sun curse!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> under a mighty sun curse!"));
 				}
 			}
 		}

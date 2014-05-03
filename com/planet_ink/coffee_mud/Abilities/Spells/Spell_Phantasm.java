@@ -62,7 +62,7 @@ public class Spell_Phantasm extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					else
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around for someone to fight...");
+						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> look(s) around for someone to fight..."));
 					((MOB)affected).destroy();
 				}
 			}

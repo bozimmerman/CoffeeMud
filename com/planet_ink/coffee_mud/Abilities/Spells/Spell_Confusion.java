@@ -126,7 +126,7 @@ public class Spell_Confusion extends Spell
 					success=maliciousAffect(mob,target,asLevel,15,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> look(s) confused!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> look(s) confused!"));
 				}
 			}
 		}

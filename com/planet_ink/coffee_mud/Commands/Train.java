@@ -195,12 +195,12 @@ public class Train extends StdCommand
 		}
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
-			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
+			mob.tell(teacher,null,null,_("<S-NAME> can't see you!"));
 			return false;
 		}
 		if(!CMLib.flags().canBeSeenBy(mob,teacher))
 		{
-			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
+			mob.tell(teacher,null,null,_("<S-NAME> can't see you!"));
 			return false;
 		}
 		if(teacher==mob)

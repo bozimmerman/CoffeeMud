@@ -79,7 +79,7 @@ public class Prayer_ProtectElements extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> protection from elements.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from elements."));
 			return false;
 		}
 

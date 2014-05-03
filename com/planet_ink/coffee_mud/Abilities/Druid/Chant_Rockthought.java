@@ -111,7 +111,7 @@ public class Chant_Rockthought extends Chant
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
-						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) stubborn.");
+						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) stubborn."));
 					}
 				}
 			}

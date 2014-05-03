@@ -62,7 +62,7 @@ public class Chant_SoaringEagle extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eagle wings vanish.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> eagle wings vanish."));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class Chant_SoaringEagle extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the wings of an eagle.");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the wings of an eagle."));
 			return false;
 		}
 

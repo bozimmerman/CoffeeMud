@@ -55,7 +55,7 @@ public class Spell_Torture extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to survive the torture.");
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to survive the torture."));
 	}
 
 	public void cryOut(MOB mob)

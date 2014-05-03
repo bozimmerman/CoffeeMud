@@ -56,7 +56,7 @@ public class Chant_AnimalGrowth extends Chant
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrink(s) back down to size."));
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class Chant_AnimalGrowth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) to an ENORMOUS size!");
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) to an ENORMOUS size!"));
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();
 			}

@@ -74,7 +74,7 @@ public class Spell_Spook extends Spell
 					{
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> shake(s) in fear!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> shake(s) in fear!"));
 							invoker=mob;
 							CMLib.commands().postFlee(target,"");
 						}

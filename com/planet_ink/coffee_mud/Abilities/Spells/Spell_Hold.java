@@ -105,7 +105,7 @@ public class Spell_Hold extends Spell
 					success=maliciousAffect(mob,target,asLevel,7-levelDiff,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) perfectly still!!"));
 				}
 			}
 		}

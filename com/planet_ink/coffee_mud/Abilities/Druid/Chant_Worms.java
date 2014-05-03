@@ -96,7 +96,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> worms disease is cured.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> worms disease is cured."));
 			}
 	}
 
@@ -127,7 +127,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,688,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very sick in the stomach!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) very sick in the stomach!"));
 				}
 				else
 					spreadImmunity(target);

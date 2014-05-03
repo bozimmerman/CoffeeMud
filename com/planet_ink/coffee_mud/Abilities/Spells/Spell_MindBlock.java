@@ -53,7 +53,7 @@ public class Spell_MindBlock extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> anti-psionic field fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> anti-psionic field fades."));
 
 		super.unInvoke();
 
@@ -83,7 +83,7 @@ public class Spell_MindBlock extends Spell
 			}
 			if(yep)
 			{
-				msg.source().tell(msg.source(),mob,null,"<T-NAME> seem(s) unaffected by the enchantment.");
+				msg.source().tell(msg.source(),mob,null,_("<T-NAME> seem(s) unaffected by the enchantment."));
 				return false;
 			}
 		}

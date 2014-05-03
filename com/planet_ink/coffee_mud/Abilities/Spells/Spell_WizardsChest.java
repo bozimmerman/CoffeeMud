@@ -141,7 +141,7 @@ public class Spell_WizardsChest extends Spell
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) well protected!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) well protected!"));
 				}
 			}
 

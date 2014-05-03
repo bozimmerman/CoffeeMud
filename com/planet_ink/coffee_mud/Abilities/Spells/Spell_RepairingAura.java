@@ -139,7 +139,7 @@ public class Spell_RepairingAura extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(msg2!=null) mob.location().send(mob,msg2);
-				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,"<T-NAME> attain(s) a repairing aura.");
+				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,_("<T-NAME> attain(s) a repairing aura."));
 				beneficialAffect(mob,realTarget,asLevel,0);
 				final Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);

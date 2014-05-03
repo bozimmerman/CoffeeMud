@@ -55,7 +55,7 @@ public class Spell_Shrink extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to <S-HIS-HER> normal size.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to <S-HIS-HER> normal size."));
 				recheckMOB=mob;
 			}
 			else

@@ -69,7 +69,7 @@ public class Spell_Mend extends Spell
 					mob.tell("Nothing happens to "+target.name(mob)+".");
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and mend!");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to glow and mend!"));
 					target.setUsesRemaining(100);
 				}
 				target.recoverPhyStats();
