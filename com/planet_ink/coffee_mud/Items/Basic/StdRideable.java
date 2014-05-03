@@ -362,7 +362,7 @@ public class StdRideable extends StdContainer implements Rideable
 				{
 					if(!amRiding((Rider)msg.tool()))
 					{
-						msg.source().tell(msg.tool()+" is not "+stateString((Rider)msg.tool())+" "+name(msg.source())+"!");
+						msg.source().tell(msg.tool().name()+" is not "+stateString((Rider)msg.tool())+" "+name(msg.source())+"!");
 						if(((Rider)msg.tool()).riding()==this)
 							((Rider)msg.tool()).setRiding(null);
 						return false;
