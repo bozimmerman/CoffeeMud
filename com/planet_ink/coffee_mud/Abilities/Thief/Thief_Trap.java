@@ -87,7 +87,7 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight(_("Affects"),17)+" Requires\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Trap Name"),15)+" "+CMStrings.padRight(_("Affects"),17)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);

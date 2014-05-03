@@ -680,7 +680,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
-				list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight(_("Align"),6)+"\n\r");
+				list.append(CMStrings.padRight(_("   Code"),16)+CMStrings.padRight(_("Name"),21)+CMStrings.padRight(_("Min"),11)+CMStrings.padRight(_("Max"),11)+CMStrings.padRight(_("Align"),6)+"\n\r");
 				for(final Enumeration<FRange> e=me.ranges();e.hasMoreElements();)
 				{
 					final Faction.FRange FR=e.nextElement();
@@ -847,7 +847,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction change adjustment Factors with Zapper Masks:\n\r");
-				list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight(_("Loss"),6)+"\n\r");
+				list.append("    #) "+CMStrings.padRight(_("Zapper Mask"),31)+CMStrings.padRight(_("Gain"),6)+CMStrings.padRight(_("Loss"),6)+"\n\r");
 				final StringBuffer choices=new StringBuffer("");
 				int numFactors=0;
 				for(final Enumeration<Faction.FZapFactor> e=me.factors();e.hasMoreElements();)

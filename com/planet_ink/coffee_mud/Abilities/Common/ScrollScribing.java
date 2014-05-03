@@ -179,7 +179,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			final StringBuffer buf=new StringBuffer("Scrolls you know how to enscribe:\n\r");
 			final int colWidth=ListingLibrary.ColFixer.fixColWidth(25,mob.session());
-			buf.append(CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight(_("Spell"),colWidth));
+			buf.append(CMStrings.padRight(_("Spell"),colWidth)+" "+CMStrings.padRight(_("Spell"),colWidth)+" "+CMStrings.padRight(_("Spell"),colWidth));
 			int toggler=1;
 			final int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)

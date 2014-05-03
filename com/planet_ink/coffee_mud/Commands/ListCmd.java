@@ -1660,8 +1660,8 @@ public class ListCmd extends StdCommand
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
-		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight(_("Grp"),COL_LEN1)+CMStrings.padRight(_("Client"),COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight(_("Grp"),COL_LEN1)+CMStrings.padRight(_("Client"),COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		int col=0;
 		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0)) mask=null;

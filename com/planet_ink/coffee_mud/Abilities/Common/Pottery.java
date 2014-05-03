@@ -216,7 +216,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(26,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" Clay required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" Clay required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

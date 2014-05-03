@@ -1618,7 +1618,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 									  String mask)
 	{
 		final StringBuffer str=new StringBuffer("");
-		str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight(_("Bid"),6)+"] Buy^.^N\n\r");
+		str.append("^x"+CMStrings.padRight(_("Lvl"),3)+" "+CMStrings.padRight(_("Item"),50)+" "+CMStrings.padRight(_("Days"),4)+" ["+CMStrings.padRight(_("Bid"),6)+"] Buy^.^N\n\r");
 		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
 		for(int v=0;v<auctions.size();v++)
 		{

@@ -730,7 +730,7 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster()) return;
 		final StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
 		final Hashtable channels=imc2.query_channels();
-		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight(_("Owner"),20)+"\n\r");
+		buf.append(CMStrings.padRight(_("Name"), 22)+CMStrings.padRight(_("Policy"),25)+CMStrings.padRight(_("Owner"),20)+"\n\r");
 		final Enumeration e = channels.keys();
 		while (e.hasMoreElements())
 		{

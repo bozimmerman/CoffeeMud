@@ -196,7 +196,7 @@ public class Quests extends StdLibrary implements QuestManager
 		List<String> line=null;
 		String var=null;
 		List<String> V=null;
-		str.append("^H#  "+CMStrings.padRight("Holiday Name",20)+CMStrings.padRight(_("Area Name(s)"),50)+"^?\n\r");
+		str.append("^H#  "+CMStrings.padRight(_("Holiday Name"),20)+CMStrings.padRight(_("Area Name(s)"),50)+"^?\n\r");
 		for(int s=1;s<steps.size();s++)
 		{
 			final String step=steps.get(s);

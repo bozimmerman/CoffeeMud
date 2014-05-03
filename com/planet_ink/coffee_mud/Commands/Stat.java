@@ -115,7 +115,7 @@ public class Stat  extends Skills
 		}
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
 		if(skillUse)
-			table.append(CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+CMStrings.padRight("Skill",25)+CMStrings.padRight(_("Uses"),10)+"\n\r");
+			table.append(CMStrings.padRight(_("Skill"),25)+CMStrings.padRight(_("Uses"),10)+CMStrings.padRight(_("Skill"),25)+CMStrings.padRight(_("Uses"),10)+"\n\r");
 		else
 		if(questStats)
 			table.append(CMStrings.padRight(_("Quest"),30)

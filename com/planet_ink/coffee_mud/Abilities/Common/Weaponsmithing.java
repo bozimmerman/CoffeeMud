@@ -279,7 +279,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final int toggleTop=displayColumns();
 			final int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",itemWidth)+" Lvl "+CMStrings.padRight(_("Amt"),3)+((r<(toggleTop-1)?" ":"")));
+				buf.append(CMStrings.padRight(_("Item"),itemWidth)+" Lvl "+CMStrings.padRight(_("Amt"),3)+((r<(toggleTop-1)?" ":"")));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{

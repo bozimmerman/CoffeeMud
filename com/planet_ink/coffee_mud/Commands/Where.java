@@ -506,7 +506,7 @@ public class Where extends StdCommand
 				}
 			}
 			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r");
-			msg.append("^x"+CMStrings.padRight("Area Name",35)+CMStrings.padRight("Level",6)+CMStrings.padRight("Alignment",20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
+			msg.append("^x"+CMStrings.padRight(_("Area Name"),35)+CMStrings.padRight(_("Level"),6)+CMStrings.padRight(_("Alignment"),20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 			{
 				final Area A=(Area)scores.elementAt(i,1);

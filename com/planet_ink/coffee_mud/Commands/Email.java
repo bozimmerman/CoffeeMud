@@ -75,7 +75,7 @@ public class Email extends StdCommand
 				{
 					final Vector mymsgs=new Vector();
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
-					messages.append("^X### "+CMStrings.padRight("From",cols[1])+" "+CMStrings.padRight(_("Date"),cols[2])+" Subject^?^.\n\r");
+					messages.append("^X### "+CMStrings.padRight(_("From"),cols[1])+" "+CMStrings.padRight(_("Date"),cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
 						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
