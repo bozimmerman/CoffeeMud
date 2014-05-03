@@ -818,7 +818,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
-			mob.tell("You can't go that way.");
+			mob.tell(_("You can't go that way."));
 			return false;
 		}
 
@@ -852,7 +852,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))
 		{
-			mob.tell("You can't go that way.");
+			mob.tell(_("You can't go that way."));
 			return false;
 		}
 		else
@@ -891,7 +891,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			if((!flee)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
 			{
-				mob.tell("You are too tired.");
+				mob.tell(_("You are too tired."));
 				return false;
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
@@ -925,7 +925,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(enterMsg.target()==null)
 		{
 			((Room)leaveMsg.target()).bringMobHere(mob,false);
-			mob.tell("You can't go that way.");
+			mob.tell(_("You can't go that way."));
 			return false;
 		}
 		mob.setLocation((Room)enterMsg.target());

@@ -78,7 +78,7 @@ public class Shutdown extends StdCommand implements Tickable
 			{
 				if(shuttingDownMob==null)
 				{
-					mob.tell("Either no shutdown has been scheduled or is already underway and can't be cancelled.");
+					mob.tell(_("Either no shutdown has been scheduled or is already underway and can't be cancelled."));
 					return false;
 				}
 				shuttingDownMob=null;

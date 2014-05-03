@@ -111,7 +111,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify who your kamikaze bomber is, and which direction they should go.");
+			mob.tell(_("You must specify who your kamikaze bomber is, and which direction they should go."));
 			return false;
 		}
 		final String s=(String)commands.lastElement();

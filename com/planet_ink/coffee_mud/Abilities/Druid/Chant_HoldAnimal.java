@@ -64,7 +64,7 @@ public class Chant_HoldAnimal extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You can move again!");
+			mob.tell(_("You can move again!"));
 			CMLib.commands().postStand(mob,true);
 		}
 	}

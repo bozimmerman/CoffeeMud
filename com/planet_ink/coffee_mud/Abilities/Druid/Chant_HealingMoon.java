@@ -108,13 +108,13 @@ public class Chant_HealingMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell("You must be able to see the moon for this magic to work.");
+			mob.tell(_("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the healing moon.");
+			mob.tell(_("This place is already under the healing moon."));
 			return false;
 		}
 

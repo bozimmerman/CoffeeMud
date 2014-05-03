@@ -381,7 +381,7 @@ public class Song_Ode extends Song
 			final StringBuffer str=new StringBuffer("");
 			for(final Enumeration e=H.keys();e.hasMoreElements();)
 				str.append((String)e.nextElement()+" ");
-			mob.tell("Compose or sing an ode about whom?");
+			mob.tell(_("Compose or sing an ode about whom?"));
 			if(str.length()>0)
 				mob.tell("You presently have odes written about: "+str.toString().trim()+".");
 			return false;
@@ -415,7 +415,7 @@ public class Song_Ode extends Song
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You may not compose an ode about yourself!");
+			mob.tell(_("You may not compose an ode about yourself!"));
 			return false;
 		}
 

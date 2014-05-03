@@ -50,7 +50,7 @@ public class Spell_ResistPetrification extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your flowing protection dissipates.");
+			mob.tell(_("Your flowing protection dissipates."));
 
 		super.unInvoke();
 

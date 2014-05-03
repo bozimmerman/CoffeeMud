@@ -105,7 +105,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("You need to specify what to turn your target into!");
+			mob.tell(_("You need to specify what to turn your target into!"));
 			return false;
 		}
 		final String race=(String)commands.lastElement();
@@ -114,7 +114,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(target==null) return false;
 		if((target==mob)&&(!auto))
 		{
-			mob.tell("You cannot hold enough energy to cast this on yourself.");
+			mob.tell(_("You cannot hold enough energy to cast this on yourself."));
 			return false;
 		}
 		Race R=CMClass.getRace(race);

@@ -143,7 +143,7 @@ public class Prayer_AnimateGhost extends Prayer
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell("You can't animate that.");
+			mob.tell(_("You can't animate that."));
 			return false;
 		}
 
@@ -151,12 +151,12 @@ public class Prayer_AnimateGhost extends Prayer
 		if(body.playerCorpse()||(body.mobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
-			mob.tell("You can't animate that.");
+			mob.tell(_("You can't animate that."));
 			return false;
 		}
 		if(body.basePhyStats().level()<15)
 		{
-			mob.tell("This creature is too weak to create a ghost from.");
+			mob.tell(_("This creature is too weak to create a ghost from."));
 			return false;
 		}
 

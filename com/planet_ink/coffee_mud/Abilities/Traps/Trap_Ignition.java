@@ -86,7 +86,7 @@ public class Trap_Ignition extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell("You'll need to set down a container of lamp oil first.");
+			mob.tell(_("You'll need to set down a container of lamp oil first."));
 			return false;
 		}
 		return true;

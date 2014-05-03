@@ -82,7 +82,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 				&&(x>=0)
 				&&(mob.session().getPreviousCMD()!=null)
 				&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf("LEVEL UP")<0))
-					mob.tell("The wand fizzles in an irritating way.");
+					mob.tell(_("The wand fizzles in an irritating way."));
 				else
 				if(x>=0)
 				{

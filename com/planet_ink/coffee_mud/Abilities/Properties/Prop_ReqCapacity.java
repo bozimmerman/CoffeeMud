@@ -106,18 +106,18 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			{
 				if(((Room)msg.target()).numInhabitants()>=peopleCap)
 				{
-					msg.source().tell("No more people can fit in there.");
+					msg.source().tell(_("No more people can fit in there."));
 					return false;
 				}
 				if(((Room)msg.target()).numPCInhabitants()>=playerCap)
 				{
-					msg.source().tell("No more players can fit in there.");
+					msg.source().tell(_("No more players can fit in there."));
 					return false;
 				}
 				if(msg.source().isMonster()
 				&& (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
 				{
-					msg.source().tell("No more MOBs can fit in there.");
+					msg.source().tell(_("No more MOBs can fit in there."));
 					return false;
 				}
 			}
@@ -155,7 +155,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						{
 							msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
 							if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
-								msg.source().tell("You should consider bundling up some of those resources.");
+								msg.source().tell(_("You should consider bundling up some of those resources."));
 							return false;
 						}
 					}

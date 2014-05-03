@@ -42,7 +42,7 @@ public class Purge extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -50,7 +50,7 @@ public class Purge extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is PURGE MOB [MOB NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is PURGE MOB [MOB NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
@@ -90,7 +90,7 @@ public class Purge extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is PURGE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is PURGE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}

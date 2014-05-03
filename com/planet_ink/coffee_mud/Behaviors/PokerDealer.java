@@ -313,7 +313,7 @@ public class PokerDealer extends StdBehavior
 		&&(!msg.targetMajor(CMMsg.MASK_INTERMSG))
 		&&(msg.source().location().isContent((Coins)msg.target())))
 		{
-			msg.source().tell("No touching the pot!");
+			msg.source().tell(_("No touching the pot!"));
 			return false;
 		}
 
@@ -375,7 +375,7 @@ public class PokerDealer extends StdBehavior
 				else
 				{
 					// if they've already antied, we abort this.
-					playerDroppingMoney.tell("You have already antied, and can not anti again.");
+					playerDroppingMoney.tell(_("You have already antied, and can not anti again."));
 					return false;
 				}
 			}
@@ -385,7 +385,7 @@ public class PokerDealer extends StdBehavior
 			{
 				// now, if the game is already started, but its not a betting round,
 				// we reject their attempt to bet.
-				playerDroppingMoney.tell("You can not bet at this time.");
+				playerDroppingMoney.tell(_("You can not bet at this time."));
 				// abort the message
 				return false;
 			}
@@ -395,7 +395,7 @@ public class PokerDealer extends StdBehavior
 				// now, if the game is already started, we allow them only to bet on their turn.
 				// if it is not their turn to bet, we abort.
 				if(whoseTurn==null)
-					playerDroppingMoney.tell("You can not bet at this time.  Please wait your turn.");
+					playerDroppingMoney.tell(_("You can not bet at this time.  Please wait your turn."));
 				else
 					playerDroppingMoney.tell("It is "+whoseTurn.name()+"'s turn to bet right now.  Please wait for the dealer to call on you.");
 				// abort the message

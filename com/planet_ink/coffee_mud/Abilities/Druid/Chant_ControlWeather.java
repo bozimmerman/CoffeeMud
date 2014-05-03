@@ -61,14 +61,14 @@ public class Chant_ControlWeather extends Chant
 				||(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONALTERING)
 				   &&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONSUMMONING)))
 				{
-					msg.source().tell("The weather is finely balanced here, and will not heed your call.");
+					msg.source().tell(_("The weather is finely balanced here, and will not heed your call."));
 					return false;
 				}
 			}
 			else
 			if(!msg.amISource(invoker()))
 			{
-				msg.source().tell("The sky here does not heed to your call.");
+				msg.source().tell(_("The sky here does not heed to your call."));
 				return false;
 			}
 		}
@@ -80,7 +80,7 @@ public class Chant_ControlWeather extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

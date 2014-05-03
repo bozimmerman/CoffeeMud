@@ -126,7 +126,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					offensiveAffects.get(a).unInvoke();
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
-					target.tell("You feel less constricted!");
+					target.tell(_("You feel less constricted!"));
 			}
 		}
 		else

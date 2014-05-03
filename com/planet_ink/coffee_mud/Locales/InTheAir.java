@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -150,12 +148,12 @@ public class InTheAir extends StdRoom
 		&&(!(msg.target() instanceof Exit))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell("You can't sit here.");
+			msg.source().tell(CMLib.lang()._("You can't sit here."));
 			return false;
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_SLEEP)&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell("You can't sleep here.");
+			msg.source().tell(CMLib.lang()._("You can't sleep here."));
 			return false;
 		}
 
@@ -165,7 +163,7 @@ public class InTheAir extends StdRoom
 			final MOB mob=msg.source();
 			if((!CMLib.flags().isInFlight(mob))&&(!CMLib.flags().isFalling(mob)))
 			{
-				mob.tell("You can't fly.");
+				mob.tell(CMLib.lang()._("You can't fly."));
 				return false;
 			}
 			if(CMLib.dice().rollPercentage()>50)

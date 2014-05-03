@@ -93,7 +93,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				{
 					if(getDestinationRoom()==null)
 					{
-						msg.source().tell("This portal is broken.. nowhere to go!");
+						msg.source().tell(_("This portal is broken.. nowhere to go!"));
 						return false;
 					}
 					if(hasALid()&&(!isOpen()))

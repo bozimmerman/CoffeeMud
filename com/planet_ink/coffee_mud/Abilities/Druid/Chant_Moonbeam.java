@@ -85,7 +85,7 @@ public class Chant_Moonbeam extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("The moonbeam is already with you.");
+			target.tell(_("The moonbeam is already with you."));
 			return false;
 		}
 

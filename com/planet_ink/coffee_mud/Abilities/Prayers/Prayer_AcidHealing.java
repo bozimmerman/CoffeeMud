@@ -56,7 +56,7 @@ public class Prayer_AcidHealing extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The aura of acid healing around you fades.");
+			mob.tell(_("The aura of acid healing around you fades."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Prayer_AcidHealing extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already healed by acid.");
+			mob.tell(_("You already healed by acid."));
 			return false;
 		}
 

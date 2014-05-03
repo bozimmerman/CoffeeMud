@@ -72,23 +72,23 @@ public class Druid_Rend extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to rend!");
+			mob.tell(_("You are too far away to rend!"));
 			return false;
 		}
 		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
-			mob.tell("You must be in your animal form to rend.");
+			mob.tell(_("You must be in your animal form to rend."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 		{
-			mob.tell("You must have legs to rend!");
+			mob.tell(_("You must have legs to rend!"));
 			return false;
 		}
 		final Ability A=mob.fetchEffect("Fighter_Pin");
 		if(A!=null)
 		{
-			mob.tell("You rend your way out of the pin!");
+			mob.tell(_("You rend your way out of the pin!"));
 			A.unInvoke();
 			mob.delEffect(A);
 			CMLib.commands().postStand(mob,true);
@@ -100,7 +100,7 @@ public class Druid_Rend extends StdAbility
 
 		if(CMLib.flags().isStanding(target))
 		{
-			mob.tell("You can only rend someone who is on the ground!");
+			mob.tell(_("You can only rend someone who is on the ground!"));
 			return false;
 		}
 

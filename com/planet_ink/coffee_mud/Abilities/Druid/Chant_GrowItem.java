@@ -51,7 +51,7 @@ public class Chant_GrowItem extends Chant
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_OAK;
@@ -87,7 +87,7 @@ public class Chant_GrowItem extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell("The chant failed for some reason...");
+					mob.tell(_("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;

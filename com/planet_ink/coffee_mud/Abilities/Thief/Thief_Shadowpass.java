@@ -52,7 +52,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		Room R=mob.location();
 		if((!auto)&&(!CMLib.flags().isInDark(R))||(R==null))
 		{
-			mob.tell("You can only shadowpass from the shadows to the shadows.");
+			mob.tell(_("You can only shadowpass from the shadows to the shadows."));
 			return false;
 		}
 		final List<Integer> trail=new Vector<Integer>();

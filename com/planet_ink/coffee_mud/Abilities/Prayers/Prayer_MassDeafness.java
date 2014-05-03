@@ -76,7 +76,7 @@ public class Prayer_MassDeafness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(CMLib.flags().canHear(mob)))
-			mob.tell("Your hearing returns.");
+			mob.tell(_("Your hearing returns."));
 	}
 
 

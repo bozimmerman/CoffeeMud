@@ -72,7 +72,7 @@ public class Spell_IceSheet extends Spell
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
 				{
-					mob.tell("You are frozen in the ice sheet and can't even blink.");
+					mob.tell(_("You are frozen in the ice sheet and can't even blink."));
 					return false;
 				}
 				else

@@ -66,7 +66,7 @@ public class Fighter_LightningStrike extends MonkSkill
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell("You are way too drowsy.");
+					mob.tell(_("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -101,7 +101,7 @@ public class Fighter_LightningStrike extends MonkSkill
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
 				else
-					mob.tell("You feel less drowsy.");
+					mob.tell(_("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);
 			}
 		}
@@ -132,7 +132,7 @@ public class Fighter_LightningStrike extends MonkSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away from your target to strike!");
+			mob.tell(_("You are too far away from your target to strike!"));
 			return false;
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
@@ -143,12 +143,12 @@ public class Fighter_LightningStrike extends MonkSkill
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell("You must be unarmed to perform the strike.");
+			mob.tell(_("You must be unarmed to perform the strike."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<2)
 		{
-			mob.tell("You need at least two hands to do this.");
+			mob.tell(_("You need at least two hands to do this."));
 			return false;
 		}
 

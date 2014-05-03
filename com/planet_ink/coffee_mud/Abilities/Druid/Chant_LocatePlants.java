@@ -74,7 +74,7 @@ public class Chant_LocatePlants extends Chant
 			if(nextDirection==-1)
 			{
 				if(plantsHere(mob,mob.location()).length()==0)
-					mob.tell("The plant life trail fizzles out here.");
+					mob.tell(_("The plant life trail fizzles out here."));
 				nextDirection=-999;
 				unInvoke();
 			}

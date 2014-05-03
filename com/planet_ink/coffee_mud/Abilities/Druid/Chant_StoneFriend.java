@@ -93,7 +93,7 @@ public class Chant_StoneFriend extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell("You don't want to leave your friend.");
+			mob.tell(_("You don't want to leave your friend."));
 			return false;
 		}
 		else

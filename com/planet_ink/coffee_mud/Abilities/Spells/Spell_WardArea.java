@@ -180,7 +180,7 @@ public class Spell_WardArea extends Spell implements Trap
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify what arcane spell to set, and any necessary parameters.");
+			mob.tell(_("You must specify what arcane spell to set, and any necessary parameters."));
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
@@ -190,7 +190,7 @@ public class Spell_WardArea extends Spell implements Trap
 		{
 			parameters=null;
 			shooter=null;
-			mob.tell("You don't know any arcane spell by that name.");
+			mob.tell(_("You don't know any arcane spell by that name."));
 			return false;
 		}
 
@@ -200,7 +200,7 @@ public class Spell_WardArea extends Spell implements Trap
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
-				mob.tell("You cannot set that spell here -- there are other players present!");
+				mob.tell(_("You cannot set that spell here -- there are other players present!"));
 				return false;
 			}
 		}

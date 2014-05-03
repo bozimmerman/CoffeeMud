@@ -47,7 +47,7 @@ public class Spell_MassHaste extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth speeding up.");
+			mob.tell(_("There doesn't appear to be anyone here worth speeding up."));
 			return false;
 		}
 

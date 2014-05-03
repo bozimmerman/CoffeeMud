@@ -71,7 +71,7 @@ public class Prayer_Stasis extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The holy stasis has been lifted.");
+			mob.tell(_("The holy stasis has been lifted."));
 	}
 
 	@Override

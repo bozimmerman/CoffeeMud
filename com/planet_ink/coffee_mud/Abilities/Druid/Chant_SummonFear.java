@@ -60,7 +60,7 @@ public class Chant_SummonFear extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth scaring.");
+			mob.tell(_("There doesn't appear to be anyone here worth scaring."));
 			return false;
 		}
 

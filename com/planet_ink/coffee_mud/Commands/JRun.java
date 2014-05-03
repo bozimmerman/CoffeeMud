@@ -46,7 +46,7 @@ public class JRun extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("jrun filename1 parm1 parm2 ...");
+			mob.tell(_("jrun filename1 parm1 parm2 ..."));
 			return false;
 		}
 		commands.removeElementAt(0);

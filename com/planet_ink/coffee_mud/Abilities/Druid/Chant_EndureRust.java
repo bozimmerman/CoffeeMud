@@ -50,7 +50,7 @@ public class Chant_EndureRust extends Chant
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
-			((MOB)affected).tell("Your rust endurance fades.");
+			((MOB)affected).tell(_("Your rust endurance fades."));
 		super.unInvoke();
 	}
 

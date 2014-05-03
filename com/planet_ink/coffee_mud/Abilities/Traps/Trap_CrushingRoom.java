@@ -73,7 +73,7 @@ public class Trap_CrushingRoom extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-				mob.tell("You'll need to set down at least 100 pounds of stone first.");
+				mob.tell(_("You'll need to set down at least 100 pounds of stone first."));
 				return false;
 			}
 		}
@@ -83,7 +83,7 @@ public class Trap_CrushingRoom extends StdTrap
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				if(mob!=null)
-					mob.tell("You can only set this trap indoors.");
+					mob.tell(_("You can only set this trap indoors."));
 				return false;
 			}
 		}
@@ -102,14 +102,14 @@ public class Trap_CrushingRoom extends StdTrap
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell("The exits are blocked! You can't get out!");
+				msg.source().tell(_("The exits are blocked! You can't get out!"));
 				return false;
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell("The entry to that room is blocked!");
+				msg.source().tell(_("The entry to that room is blocked!"));
 				return false;
 			}
 		}

@@ -137,18 +137,18 @@ public class Thief_HideOther extends ThiefSkill
 		if(target==null) return false;
 		if((target==mob)&&(!auto)&&(givenTarget!=mob))
 		{
-			mob.tell("Just use HIDE!");
+			mob.tell(_("Just use HIDE!"));
 			return false;
 		}
 		if((mob.isInCombat())||(target.isInCombat()))
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(target))
 		{
-			mob.tell("You can only hide a group member.");
+			mob.tell(_("You can only hide a group member."));
 			return false;
 		}
 

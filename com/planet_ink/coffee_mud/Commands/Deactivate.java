@@ -46,7 +46,7 @@ public class Deactivate extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
-			mob.tell("Deactivate what?");
+			mob.tell(_("Deactivate what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

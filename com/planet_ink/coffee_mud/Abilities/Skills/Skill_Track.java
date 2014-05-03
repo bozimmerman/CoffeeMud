@@ -84,14 +84,14 @@ public class Skill_Track extends StdSkill
 
 			if(nextDirection==999)
 			{
-				mob.tell("The trail seems to pause here.");
+				mob.tell(_("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("The trail dries up here.");
+				mob.tell(_("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -222,7 +222,7 @@ public class Skill_Track extends StdSkill
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell("You stop tracking.");
+			mob.tell(_("You stop tracking."));
 			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
 			{
 				tickStatus=Tickable.STATUS_NOT;
@@ -271,7 +271,7 @@ public class Skill_Track extends StdSkill
 		final String mobName=CMParms.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
-			mob.tell("Track whom?");
+			mob.tell(_("Track whom?"));
 			tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}
@@ -286,7 +286,7 @@ public class Skill_Track extends StdSkill
 		if((givenTarget==null)
 		&&(thisRoom.fetchInhabitant(mobName)!=null))
 		{
-			mob.tell("Try 'look'.");
+			mob.tell(_("Try 'look'."));
 			tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}

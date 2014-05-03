@@ -69,7 +69,7 @@ public class Chant_GrowClub extends Chant
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_OAK;

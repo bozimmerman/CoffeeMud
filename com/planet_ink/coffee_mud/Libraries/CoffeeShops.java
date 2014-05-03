@@ -1033,7 +1033,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		CMLib.commands().postFollow(product,mobFor,false);
 		if(product.amFollowing()==null)
 		{
-			mobFor.tell("You cannot accept seem to accept this follower!");
+			mobFor.tell(_("You cannot accept seem to accept this follower!"));
 			return false;
 		}
 		return true;
@@ -1690,6 +1690,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
 		if(data.auctioningI!=null)
-			data.auctioningM.tell("Auction ended.");
+			data.auctioningM.tell(_("Auction ended."));
 	}
 }

@@ -53,7 +53,7 @@ public class Spell_Anchor extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your anchor has been lifted.");
+			mob.tell(_("Your anchor has been lifted."));
 
 		super.unInvoke();
 

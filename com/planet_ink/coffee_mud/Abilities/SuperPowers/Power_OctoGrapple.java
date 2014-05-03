@@ -132,14 +132,14 @@ public class Power_OctoGrapple extends SuperPower
 					if(mob.location()!=null)
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> grapple.");
 					else
-						mob.tell("You release your grapple.");
+						mob.tell(_("You release your grapple."));
 				}
 				else
 				{
 					if(mob.location()!=null)
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the grapple");
 					else
-						mob.tell("You are released from the grapple.");
+						mob.tell(_("You are released from the grapple."));
 				}
 				CMLib.commands().postStand(mob,true);
 			}

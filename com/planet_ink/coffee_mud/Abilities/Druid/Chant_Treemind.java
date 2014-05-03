@@ -51,7 +51,7 @@ public class Chant_Treemind extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your treemind fades.");
+			mob.tell(_("Your treemind fades."));
 
 		super.unInvoke();
 

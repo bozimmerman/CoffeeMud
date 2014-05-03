@@ -100,7 +100,7 @@ public class Chant_AcidRain extends Chant
 		if(target==null) return false;
 		if(!isRaining(target))
 		{
-			mob.tell("This chant requires some rain.");
+			mob.tell(_("This chant requires some rain."));
 			return false;
 		}
 

@@ -107,7 +107,7 @@ public class Prayer_Anger extends Prayer
 						final CMMsg amsg=CMClass.getMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if((target!=null)&&(mob.location().okMessage(mob,amsg)))
 						{
-							inhab.tell("You feel angry.");
+							inhab.tell(_("You feel angry."));
 							inhab.setVictim(target);
 						}
 					}

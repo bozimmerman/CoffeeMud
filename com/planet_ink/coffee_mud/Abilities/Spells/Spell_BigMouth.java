@@ -63,7 +63,7 @@ public class Spell_BigMouth extends Spell
 				final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
 				{
-					mob.tell("Your stomach is too full.");
+					mob.tell(_("Your stomach is too full."));
 					return false;
 				}
 
@@ -263,7 +263,7 @@ public class Spell_BigMouth extends Spell
 		{
 			if(thang instanceof MOB)
 			{
-				((MOB)thang).tell("Your mouth shrinks to normal size.");
+				((MOB)thang).tell(_("Your mouth shrinks to normal size."));
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>0))
 				{
 					unInvoked=false;

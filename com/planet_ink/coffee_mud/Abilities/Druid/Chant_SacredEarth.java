@@ -67,7 +67,7 @@ public class Chant_SacredEarth extends Chant
 		if((msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_GATHERINGSKILL))
 		{
-			msg.source().tell("The sacred earth will not allow you to violate it.");
+			msg.source().tell(_("The sacred earth will not allow you to violate it."));
 			return false;
 		}
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -121,7 +121,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This earth is already sacred.");
+			mob.tell(_("This earth is already sacred."));
 			return false;
 		}
 		if((((mob.location().domainType()&Room.INDOORS)>0)
@@ -130,7 +130,7 @@ public int castingQuality(MOB mob, Physical target)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
-			mob.tell("This chant will not work here.");
+			mob.tell(_("This chant will not work here."));
 			return false;
 		}
 

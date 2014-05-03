@@ -118,7 +118,7 @@ public class Vine extends StdRace
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 			&&(((MOB)myHost).fetchEffect("Chant_FreeVine")==null))
 			{
-				msg.source().tell("You can't really go anywhere -- you are rooted!");
+				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

@@ -152,7 +152,7 @@ public class Spell_StinkingCloud extends Spell
 			h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth casting this on.");
+			mob.tell(_("There doesn't appear to be anyone here worth casting this on."));
 			return false;
 		}
 

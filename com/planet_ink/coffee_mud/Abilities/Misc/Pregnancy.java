@@ -359,7 +359,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							}
 						}
 						else
-							mob.tell("You are in labor!!");
+							mob.tell(_("You are in labor!!"));
 
 					}
 					else
@@ -371,16 +371,16 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						{
 							if(CMLib.flags().isSleeping(mob))
 								mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
-							mob.tell("Oh! You had a contraction!");
+							mob.tell(_("Oh! You had a contraction!"));
 						}
 						else
 						if((monthsRemaining<=3)&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()==1))
-							mob.tell("You feel a kick in your gut.");
+							mob.tell(_("You feel a kick in your gut."));
 						else
 						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getHourOfDay()<2)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.dice().rollPercentage()>25)
-								mob.tell("You feel really sick this morning.");
+								mob.tell(_("You feel really sick this morning."));
 							else
 								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"**BLEH** <S-NAME> just threw up.");
 						}

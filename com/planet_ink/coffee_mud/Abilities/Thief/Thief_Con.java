@@ -76,7 +76,7 @@ public class Thief_Con extends ThiefSkill
 		if(commands!=null) commands= new XVector<String>(commands);
 		if(commands.size()<1)
 		{
-			mob.tell("Con whom into doing what?");
+			mob.tell(_("Con whom into doing what?"));
 			return false;
 		}
 		final Vector V=new Vector();
@@ -102,7 +102,7 @@ public class Thief_Con extends ThiefSkill
 
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy fighting right now.");
+			mob.tell(_("You are too busy fighting right now."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Thief_Con extends ThiefSkill
 
 		if(commands.get(0).toUpperCase().startsWith("FOL"))
 		{
-			mob.tell("You can't con someone into following you.");
+			mob.tell(_("You can't con someone into following you."));
 			return false;
 		}
 
@@ -124,7 +124,7 @@ public class Thief_Con extends ThiefSkill
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
 			{
-				mob.tell("You can't con someone into doing that.");
+				mob.tell(_("You can't con someone into doing that."));
 				return false;
 			}
 		}

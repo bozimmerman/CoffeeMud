@@ -123,7 +123,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(p==null)
 		{
 			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" clan.");
-			student.tell("You must be authorized to draw from the power of your clan to learn this skill.");
+			student.tell(_("You must be authorized to draw from the power of your clan to learn this skill."));
 			return false;
 		}
 		return true;
@@ -157,14 +157,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			if(!mob.clans().iterator().hasNext())
 			{
-				mob.tell("You must be a member of a clan to use this skill.");
+				mob.tell(_("You must be a member of a clan to use this skill."));
 				return false;
 			}
 			final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 			if((p==null)
 			&&(!CMSecurity.isASysOp(mob)))
 			{
-				mob.tell("You are not authorized to draw from the power of your clan.");
+				mob.tell(_("You are not authorized to draw from the power of your clan."));
 				return false;
 			}
 			if(p!=null)

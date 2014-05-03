@@ -64,7 +64,7 @@ public class Prayer_Wave extends Prayer
 			}
 			else
 			{
-				mob.tell("Wash your opponents which direction?");
+				mob.tell(_("Wash your opponents which direction?"));
 				return false;
 			}
 		}
@@ -72,7 +72,7 @@ public class Prayer_Wave extends Prayer
 		final Exit exitRoom=mob.location().getExitInDir(dir);
 		if((destRoom==null)||(exitRoom==null)||(dir==Directions.UP))
 		{
-			mob.tell("You can't wash your opponents that way!");
+			mob.tell(_("You can't wash your opponents that way!"));
 			return false;
 		}
 

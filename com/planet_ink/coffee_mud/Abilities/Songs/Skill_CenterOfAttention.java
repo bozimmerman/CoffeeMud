@@ -123,7 +123,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -135,7 +135,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth performing for.");
+			mob.tell(_("There doesn't appear to be anyone here worth performing for."));
 			return false;
 		}
 

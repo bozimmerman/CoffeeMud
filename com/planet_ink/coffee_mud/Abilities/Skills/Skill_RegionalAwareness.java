@@ -213,14 +213,14 @@ public class Skill_RegionalAwareness extends StdSkill
 
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)==Room.INDOORS))
 		{
-			mob.tell("This only works outdoors.");
+			mob.tell(_("This only works outdoors."));
 			return false;
 		}
 
 		if((!auto)
 		&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
-			mob.tell("You need to be able to see your surroundings to do that.");
+			mob.tell(_("You need to be able to see your surroundings to do that."));
 			return false;
 		}
 

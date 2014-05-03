@@ -53,7 +53,7 @@ public class Thief_SilentDrop extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What would you like to drop?");
+			mob.tell(_("What would you like to drop?"));
 			return false;
 		}
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);

@@ -62,7 +62,7 @@ public class Prayer_MassBlindness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(CMLib.flags().canSee(mob)))
-			mob.tell("Your vision returns.");
+			mob.tell(_("Your vision returns."));
 	}
 
 	@Override

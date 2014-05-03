@@ -119,7 +119,7 @@ public class Spell_Scatter extends Spell
 		{
 			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,true);
 			if(targets.size()==0)
-				mob.tell("You don't seem to be carrying that.");
+				mob.tell(_("You don't seem to be carrying that."));
 		}
 
 		if(targets.size()==0) return false;

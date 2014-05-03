@@ -828,7 +828,7 @@ public class Masonry extends CraftingSkill
 			}
 			if(numAdjacentProperties>1)
 			{
-				mob.tell("You can not demolish a room if there is more than one room adjacent to it.  Demolish those first.");
+				mob.tell(_("You can not demolish a room if there is more than one room adjacent to it.  Demolish those first."));
 				return false;
 			}
 			dir=-1;

@@ -75,7 +75,7 @@ public class Chant_DruidicConnection extends Chant
 					unInvoke();
 					return false;
 				}
-				invoker.tell("Your prolonged connection to this place fills you with harmony!");
+				invoker.tell(_("Your prolonged connection to this place fills you with harmony!"));
 				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
 											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
 				CMLib.leveler().postExperience(invoker(),null,null,xp,false);
@@ -140,7 +140,7 @@ public class Chant_DruidicConnection extends Chant
 		if(target.fetchEffect(ID())!=null)
 		{
 			if(!quietly)
-				mob.tell("This place is already connected to a druid.");
+				mob.tell(_("This place is already connected to a druid."));
 			return false;
 		}
 		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
@@ -150,13 +150,13 @@ public class Chant_DruidicConnection extends Chant
 		if(pct<50)
 		{
 			if(!quietly)
-				mob.tell("You'll need to summon more of your special plant-life here to develop the connection.");
+				mob.tell(_("You'll need to summon more of your special plant-life here to develop the connection."));
 			return false;
 		}
 		if((!auto)&&(!mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid")))
 		{
 			if(!quietly)
-				mob.tell("Only druids can make this connection.");
+				mob.tell(_("Only druids can make this connection."));
 			return false;
 		}
 
@@ -164,7 +164,7 @@ public class Chant_DruidicConnection extends Chant
 		&&(!auto))
 		{
 			if(!quietly)
-				mob.tell("This chant does not work here.");
+				mob.tell(_("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

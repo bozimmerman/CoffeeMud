@@ -51,7 +51,7 @@ public class Spell_ResistPoison extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your anti-venom protection dissipates.");
+			mob.tell(_("Your anti-venom protection dissipates."));
 
 		super.unInvoke();
 

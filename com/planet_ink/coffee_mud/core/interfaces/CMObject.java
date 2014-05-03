@@ -74,4 +74,5 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 * during initialization.
 	 */
 	public void initializeClass();
+	
 }

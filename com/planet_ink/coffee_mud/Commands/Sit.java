@@ -44,7 +44,7 @@ public class Sit extends StdCommand
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You are already sitting!");
+			mob.tell(_("You are already sitting!"));
 			return false;
 		}
 		if(commands.size()<=1)

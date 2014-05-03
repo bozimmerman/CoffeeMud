@@ -418,11 +418,11 @@ public class Import extends StdCommand
 
 	}
 
-	protected static boolean temporarilyDeleteArea(MOB mob, Vector reLinkTable, String areaName)
+	protected boolean temporarilyDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
 		if((mob!=null)&&(CMLib.flags().isInTheGame(mob,true)&&(mob.location().getArea().Name().equalsIgnoreCase(areaName))))
 		{
-			mob.tell("You dip!  You are IN that area!  Leave it first...");
+			mob.tell(_("You dip!  You are IN that area!  Leave it first..."));
 			return false;
 		}
 		try

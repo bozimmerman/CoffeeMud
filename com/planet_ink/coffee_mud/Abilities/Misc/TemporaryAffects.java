@@ -288,7 +288,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Specify a target, a property, number of ticks, and (optionally) some misc text!");
+			mob.tell(_("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
 			return false;
 		}
 		final Vector V=new XVector(commands.firstElement());

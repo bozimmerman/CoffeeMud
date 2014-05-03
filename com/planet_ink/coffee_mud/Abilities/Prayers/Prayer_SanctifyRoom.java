@@ -55,7 +55,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
-			mob.tell("You feel your muscles unwilling to cooperate.");
+			mob.tell(_("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		return true;
@@ -103,7 +103,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already a sanctified place.");
+			mob.tell(_("This place is already a sanctified place."));
 			return false;
 		}
 

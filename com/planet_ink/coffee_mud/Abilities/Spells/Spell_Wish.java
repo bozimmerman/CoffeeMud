@@ -122,13 +122,13 @@ public class Spell_Wish extends Spell
 		String myWish=CMParms.combine(commands,0);
 		if(((!auto)&&(mob.phyStats().level()<20))||(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<2))
 		{
-			mob.tell("You are too weak to wish.");
+			mob.tell(_("You are too weak to wish."));
 			return false;
 		}
 		if(myWish.toUpperCase().trim().startsWith("FOR ")) myWish=myWish.trim().substring(3);
 		if(myWish.length()==0)
 		{
-			mob.tell("What would you like to wish for?");
+			mob.tell(_("What would you like to wish for?"));
 			return false;
 		}
 
@@ -748,7 +748,7 @@ public class Spell_Wish extends Spell
 						&&(newLevel>target.basePhyStats().level()))
 						{
 							wishDrain(mob,baseLoss,false);
-							mob.tell("That's beyond your power, but you lost exp even for trying.");
+							mob.tell(_("That's beyond your power, but you lost exp even for trying."));
 							return false;
 						}
 					}

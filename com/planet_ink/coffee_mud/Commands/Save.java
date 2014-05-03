@@ -66,7 +66,7 @@ public class Save extends StdCommand
 			{
 				CMLib.database().DBUpdatePlayer(mob);
 				CMLib.database().DBUpdateFollowers(mob);
-				mob.tell("Your player record has been updated.");
+				mob.tell(_("Your player record has been updated."));
 			}
 			return false;
 		}
@@ -84,7 +84,7 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell("You are not allowed to save players.");
+				mob.tell(_("You are not allowed to save players."));
 				return false;
 			}
 			for(final Session S : CMLib.sessions().allIterable())
@@ -103,7 +103,7 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell("You are not allowed to save the mobs here.");
+				mob.tell(_("You are not allowed to save the mobs here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
@@ -130,7 +130,7 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell("You are not allowed to save the contents here.");
+				mob.tell(_("You are not allowed to save the contents here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
@@ -157,7 +157,7 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell("You are not allowed to save the mobs here.");
+				mob.tell(_("You are not allowed to save the mobs here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
@@ -185,11 +185,11 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
 			{
-				mob.tell("You are not allowed to save the contents here.");
+				mob.tell(_("You are not allowed to save the contents here."));
 				return false;
 			}
 			CMLib.quests().save();
-			mob.tell("Quest list saved.");
+			mob.tell(_("Quest list saved."));
 		}
 		else
 		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))

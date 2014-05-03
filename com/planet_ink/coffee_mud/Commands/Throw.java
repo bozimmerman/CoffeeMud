@@ -46,7 +46,7 @@ public class Throw extends StdCommand
 			commands.addElement(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)
 		{
-			mob.tell("Throw what, where or at whom?");
+			mob.tell(_("Throw what, where or at whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -77,7 +77,7 @@ public class Throw extends StdCommand
 			||(mob.location().getExitInDir(dir)==null)
 			||(!mob.location().getExitInDir(dir).isOpen()))
 			{
-				mob.tell("You can't throw anything that way!");
+				mob.tell(_("You can't throw anything that way!"));
 				return false;
 			}
 			final boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);

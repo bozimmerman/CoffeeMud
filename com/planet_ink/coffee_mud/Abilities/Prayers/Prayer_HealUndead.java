@@ -73,7 +73,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 		if((!undead)&&(!auto))
 		{
-			mob.tell("Only the undead are affected by this.");
+			mob.tell(_("Only the undead are affected by this."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 				if(undead)
 				{
 					target.curState().adjHitPoints(healing,target.maxState());
-					target.tell("You feel tons better!");
+					target.tell(_("You feel tons better!"));
 				}
 				else
 					CMLib.combat().postDamage(mob,target,this,healing/3,

@@ -60,7 +60,7 @@ public class Chant_Hibernation extends Chant
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> hibernation.");
 				else
-					mob.tell("Your hibernation ends.");
+					mob.tell(_("Your hibernation ends."));
 			}
 		}
 	}
@@ -94,7 +94,7 @@ public class Chant_Hibernation extends Chant
 		{
 			if(roundsHibernating<10)
 			{
-				mob.tell("You can't withdraw from hibernation just yet.");
+				mob.tell(_("You can't withdraw from hibernation just yet."));
 				return false;
 			}
 			unInvoke();
@@ -149,12 +149,12 @@ public class Chant_Hibernation extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("You can't hibernate while in combat!");
+			mob.tell(_("You can't hibernate while in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You must be in a sitting, restful position to hibernate.");
+			mob.tell(_("You must be in a sitting, restful position to hibernate."));
 			return false;
 		}
 		// now see if it worked

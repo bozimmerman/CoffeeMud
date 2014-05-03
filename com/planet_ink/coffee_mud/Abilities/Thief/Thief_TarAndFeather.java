@@ -83,7 +83,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -91,7 +91,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))

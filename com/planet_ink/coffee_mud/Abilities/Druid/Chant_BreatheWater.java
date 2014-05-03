@@ -54,7 +54,7 @@ public class Chant_BreatheWater extends Chant
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your fish gills disappear.");
+			mob.tell(_("Your fish gills disappear."));
 	}
 
 	@Override

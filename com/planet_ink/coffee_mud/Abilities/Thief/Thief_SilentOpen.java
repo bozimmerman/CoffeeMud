@@ -53,7 +53,7 @@ public class Thief_SilentOpen extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What would you like to open?");
+			mob.tell(_("What would you like to open?"));
 			return false;
 		}
 		final Environmental item=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
@@ -62,7 +62,7 @@ public class Thief_SilentOpen extends ThiefSkill
 		||(item instanceof Area)
 		||(item instanceof Room))
 		{
-			mob.tell("You can't open that!");
+			mob.tell(_("You can't open that!"));
 			return false;
 		}
 

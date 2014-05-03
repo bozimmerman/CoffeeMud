@@ -105,7 +105,7 @@ public class Prayer_Prophecy extends Prayer
 			}
 		}
 		if(prophesies.size()==0)
-			mob.tell("You receive no prophetic visions.");
+			mob.tell(_("You receive no prophetic visions."));
 		else
 		{
 			final TimeClock clock =CMLib.time().localClock(mob);
@@ -218,7 +218,7 @@ public class Prayer_Prophecy extends Prayer
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell("Not while you're fighting!");
+			mob.tell(_("Not while you're fighting!"));
 			return false;
 		}
 

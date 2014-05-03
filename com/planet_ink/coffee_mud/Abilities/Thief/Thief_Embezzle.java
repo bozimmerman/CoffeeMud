@@ -106,7 +106,7 @@ public class Thief_Embezzle extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Embezzle money from whose accounts?");
+			mob.tell(_("Embezzle money from whose accounts?"));
 			return false;
 		}
 		MOB target=null;
@@ -126,7 +126,7 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy to embezzle.");
+			mob.tell(_("You are too busy to embezzle."));
 			return false;
 		}
 		final Banker bank=(Banker)target;

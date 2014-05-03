@@ -56,7 +56,7 @@ public class Prayer_Vampirism extends Prayer
 
 		if((canBeUninvoked())&&(CMLib.flags().canSee(mob)))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("Your vampirism fades.");
+				mob.tell(_("Your vampirism fades."));
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Prayer_Vampirism extends Prayer
 			   &&(msg.tool()!=null)
 			   &&(msg.tool().ID().equals("Skill_Swim")))
 			{
-				mob.tell("You can't swim!");
+				mob.tell(_("You can't swim!"));
 				return false;
 			}
 		}

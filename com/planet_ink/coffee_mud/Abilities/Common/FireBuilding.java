@@ -195,7 +195,7 @@ public class FireBuilding extends CommonSkill
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					mob.tell("You are not allowed to burn anything here.");
+					mob.tell(_("You are not allowed to burn anything here."));
 					return false;
 				}
 			}

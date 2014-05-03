@@ -55,14 +55,14 @@ public class Paladin_HealingHands extends StdAbility
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell("Your alignment has alienated your god from you.");
+			mob.tell(_("Your alignment has alienated your god from you."));
 			return false;
 		}
 
 		final int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),4.0)));
 		if(mob.curState().getMana()<healing)
 		{
-			mob.tell("You don't have enough mana to do that.");
+			mob.tell(_("You don't have enough mana to do that."));
 			return false;
 		}
 
@@ -87,7 +87,7 @@ public class Paladin_HealingHands extends StdAbility
 				if(manaLost>0) manaLost=manaLost*-1;
 				mob.curState().adjMana(manaLost,mob.maxState());
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
-				target.tell("You feel a little better!");
+				target.tell(_("You feel a little better!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}

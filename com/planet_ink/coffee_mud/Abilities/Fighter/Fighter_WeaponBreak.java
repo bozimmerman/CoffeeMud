@@ -74,17 +74,17 @@ public class Fighter_WeaponBreak extends FighterSkill
 		final MOB victim=mob.getVictim();
 		if((!mob.isInCombat())||(victim==null))
 		{
-			mob.tell("You must be in combat to do this!");
+			mob.tell(_("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to try that!");
+			mob.tell(_("You are too far away to try that!"));
 			return false;
 		}
 		if((!auto)&&(mob.fetchWieldedItem()==null))
 		{
-			mob.tell("You need a weapon to break someone elses!");
+			mob.tell(_("You need a weapon to break someone elses!"));
 			return false;
 		}
 		final Item item=victim.fetchWieldedItem();

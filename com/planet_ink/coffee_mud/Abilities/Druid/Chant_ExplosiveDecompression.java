@@ -71,7 +71,7 @@ public class Chant_ExplosiveDecompression extends Chant
 		if(target==null) return false;
 		if((!auto)&&((target.domainType()&Room.INDOORS)==0))
 		{
-			mob.tell("This chant only works indoors.");
+			mob.tell(_("This chant only works indoors."));
 			return false;
 		}
 

@@ -58,7 +58,7 @@ public class Spell_Delude extends Spell
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
 			if(mob.fetchFaction(CMLib.factions().AlignID()) != previousAlignment)
 				mob.addFaction(CMLib.factions().AlignID(), previousAlignment);
-			mob.tell("Your attitude returns to normal.");
+			mob.tell(_("Your attitude returns to normal."));
 			CMLib.utensils().confirmWearability(mob);
 		}
 	}

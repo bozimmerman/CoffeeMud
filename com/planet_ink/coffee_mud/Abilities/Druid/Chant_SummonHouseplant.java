@@ -76,7 +76,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD))
 		{
-			mob.tell("This is not the place for a houseplant.");
+			mob.tell(_("This is not the place for a houseplant."));
 			return false;
 		}
 		return true;

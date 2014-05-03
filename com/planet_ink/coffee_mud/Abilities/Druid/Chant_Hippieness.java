@@ -73,7 +73,7 @@ public class Chant_Hippieness extends Chant
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
 		{
-			msg.source().tell("No, man... work is so bourgeois...");
+			msg.source().tell(_("No, man... work is so bourgeois..."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -159,7 +159,7 @@ public class Chant_Hippieness extends Chant
 		{
 			for(final Pair<Clan,Integer> p : oldClans)
 				mob.setClan(p.first.clanID(),p.second.intValue());
-			mob.tell("You don't feel quite so groovy.");
+			mob.tell(_("You don't feel quite so groovy."));
 		}
 	}
 

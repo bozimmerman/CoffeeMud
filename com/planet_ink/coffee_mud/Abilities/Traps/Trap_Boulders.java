@@ -72,7 +72,7 @@ public class Trap_Boulders extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<50))
 			{
-				mob.tell("You'll need to set down at least 50 pounds of rock first.");
+				mob.tell(_("You'll need to set down at least 50 pounds of rock first."));
 				return false;
 			}
 			if(P instanceof Room)
@@ -83,7 +83,7 @@ public class Trap_Boulders extends StdTrap
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
 				{
-					mob.tell("You can only set this trap in caves, or by mountains or hills.");
+					mob.tell(_("You can only set this trap in caves, or by mountains or hills."));
 					return false;
 				}
 			}

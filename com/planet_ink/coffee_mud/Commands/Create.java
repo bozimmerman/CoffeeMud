@@ -47,13 +47,13 @@ public class Create extends StdCommand
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE EXIT [DIRECTION] [EXIT TYPE]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE EXIT [DIRECTION] [EXIT TYPE]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -130,7 +130,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -190,7 +190,7 @@ public class Create extends StdCommand
 		if((newItem instanceof ArchonOnly)
 		&&(!CMSecurity.isASysOp(mob)))
 		{
-			mob.tell("NO!");
+			mob.tell(_("NO!"));
 			return;
 		}
 
@@ -220,7 +220,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE MANUFACTURER [NEW NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE MANUFACTURER [NEW NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -229,7 +229,7 @@ public class Create extends StdCommand
 		final Manufacturer manufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 		if(manufacturer==null)
 		{
-			mob.tell("DefaultManufacturer not found.");
+			mob.tell(_("DefaultManufacturer not found."));
 			Log.errOut("DefaultManufacturer was not found in common classes.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
@@ -255,7 +255,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE USER [PLAYER NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE USER [PLAYER NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -289,13 +289,13 @@ public class Create extends StdCommand
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -322,7 +322,7 @@ public class Create extends StdCommand
 		thisRoom.setArea(room.getArea());
 		if(thisRoom.roomID().length()==0)
 		{
-			mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
+			mob.tell(_("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -345,7 +345,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ACCOUNT [NAME] [PASSWORD]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ACCOUNT [NAME] [PASSWORD]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -410,7 +410,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE MOB [MOB NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE MOB [MOB NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -458,7 +458,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE RACE [RACE ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE RACE [RACE ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -466,7 +466,7 @@ public class Create extends StdCommand
 		final Race R=CMClass.getRace(raceID);
 		if((R!=null)&&(R.isGeneric()))
 		{
-			mob.tell("This generic race already exists.. perhaps you might modify it?");
+			mob.tell(_("This generic race already exists.. perhaps you might modify it?"));
 			return;
 		}
 		Race GR=null;
@@ -506,7 +506,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE AREA [AREA NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE AREA [AREA NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -553,7 +553,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -592,7 +592,7 @@ public class Create extends StdCommand
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			final StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
@@ -611,7 +611,7 @@ public class Create extends StdCommand
 		final String skillID=parms.substring(0,parms.indexOf('='));
 		if(skillID.indexOf(' ')>=0)
 		{
-			mob.tell("Spaces are not allowed in expertise codes.");
+			mob.tell(_("Spaces are not allowed in expertise codes."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -641,7 +641,7 @@ public class Create extends StdCommand
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r"));
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			final StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
@@ -683,7 +683,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ABILITY [ABILITY ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ABILITY [ABILITY ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -713,7 +713,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE LANGUAGE [LANGUAGE ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE LANGUAGE [LANGUAGE ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -743,7 +743,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE CRAFTSKILL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE CRAFTSKILL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -773,14 +773,14 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -813,7 +813,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE CLASS [CLASS ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE CLASS [CLASS ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -865,7 +865,7 @@ public class Create extends StdCommand
 
 		if(commands.size()<3)
 		{
-			mob.tell("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r");
+			mob.tell(_("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -881,7 +881,7 @@ public class Create extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -1049,7 +1049,7 @@ public class Create extends StdCommand
 			if(named.trim().length()==0)
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-				mob.tell("Include a name!");
+				mob.tell(_("Include a name!"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				return false;
 			}
@@ -1071,7 +1071,7 @@ public class Create extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if((commands.size()<3)||(CMParms.combine(commands,2).indexOf('.')<0))
 			{
-				mob.tell("Create which faction?  You must give a filename with an extension.");
+				mob.tell(_("Create which faction?  You must give a filename with an extension."));
 				return false;
 			}
 			else
@@ -1079,7 +1079,7 @@ public class Create extends StdCommand
 				final String name=CMParms.combine(commands,2);
 				if((name.indexOf(' ')>=0)||(name.length()==0))
 				{
-					mob.tell("That name is not allowed. No spaces!");
+					mob.tell(_("That name is not allowed. No spaces!"));
 					return false;
 				}
 				Faction F=CMLib.factions().getFaction(name);
@@ -1096,7 +1096,7 @@ public class Create extends StdCommand
 					final StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
 					if((template==null)||(template.length()==0))
 					{
-						mob.tell("The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.");
+						mob.tell(_("The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation."));
 						return false;
 					}
 					//Resources.submitResource(name,template);
@@ -1167,7 +1167,7 @@ public class Create extends StdCommand
 					CMLib.quests().questMaker(mob);
 				else
 				{
-					mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
+					mob.tell(_("You must specify a valid quest string.  Try AHELP QUESTS."));
 					return false;
 				}
 			}
@@ -1179,7 +1179,7 @@ public class Create extends StdCommand
 				Q.setScript(script,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 				{
-					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
+					mob.tell(_("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS."));
 					return false;
 				}
 				else
@@ -1201,7 +1201,7 @@ public class Create extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 			{
-				mob.tell("You must specify a valid clan name.  Try CLANLIST and AHELP CLANS.");
+				mob.tell(_("You must specify a valid clan name.  Try CLANLIST and AHELP CLANS."));
 				return false;
 			}
 			else
@@ -1211,13 +1211,13 @@ public class Create extends StdCommand
 				C.setName(name);
 				if(C.name().trim().length()==0)
 				{
-					mob.tell("You must specify a VALID clan name.");
+					mob.tell(_("You must specify a VALID clan name."));
 					return false;
 				}
 				else
 				if(CMLib.clans().getClan(C.clanID())!=null)
 				{
-					mob.tell("That clan already exists, try CLANLIST.");
+					mob.tell(_("That clan already exists, try CLANLIST."));
 					return false;
 				}
 				else
@@ -1237,7 +1237,7 @@ public class Create extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 			{
-				mob.tell("You must specify a valid government name.  Try LIST GOVERNMENTS.");
+				mob.tell(_("You must specify a valid government name.  Try LIST GOVERNMENTS."));
 				return false;
 			}
 			else
@@ -1246,7 +1246,7 @@ public class Create extends StdCommand
 				final ClanGovernment G=CMLib.clans().createGovernment(name);
 				if(G==null)
 				{
-					mob.tell("You must specify an unused government name.");
+					mob.tell(_("You must specify an unused government name."));
 					return false;
 				}
 				else

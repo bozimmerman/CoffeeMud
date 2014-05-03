@@ -75,7 +75,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The paralysis eases out of your muscles.");
+			mob.tell(_("The paralysis eases out of your muscles."));
 	}
 
 	@Override

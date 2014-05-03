@@ -53,7 +53,7 @@ public class Spell_DetectInvisible extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your sight becomes less keen.");
+			mob.tell(_("Your sight becomes less keen."));
 	}
 
 	@Override

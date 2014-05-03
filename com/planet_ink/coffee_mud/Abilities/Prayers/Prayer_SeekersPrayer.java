@@ -50,7 +50,7 @@ public class Prayer_SeekersPrayer extends Prayer
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell("Not while you're fighting!");
+			mob.tell(_("Not while you're fighting!"));
 			return false;
 		}
 
@@ -89,7 +89,7 @@ public class Prayer_SeekersPrayer extends Prayer
 					seeks.add(Q);
 				}
 				if(seeks.size()==0)
-					mob.tell("You receive no visions of seekers.");
+					mob.tell(_("You receive no visions of seekers."));
 				else
 				{
 					while(seeks.size() > numSeekers)

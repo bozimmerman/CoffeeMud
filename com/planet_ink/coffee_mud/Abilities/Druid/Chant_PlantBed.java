@@ -72,7 +72,7 @@ public class Chant_PlantBed extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
-			mob.tell("This chant will not work here.");
+			mob.tell(_("This chant will not work here."));
 			return false;
 		}
 

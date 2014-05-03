@@ -48,7 +48,7 @@ public class Commands extends StdCommand
 			if ((commands!=null) && (commands.size()>0) && ("CLEAR".startsWith(commands.get(0).toString().toUpperCase())))
 			{
 				mob.clearCommandQueue();
-				mob.tell("Command queue cleared.");
+				mob.tell(_("Command queue cleared."));
 				return false;
 			}
 			final StringBuffer commandList=new StringBuffer("");

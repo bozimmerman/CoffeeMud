@@ -67,7 +67,7 @@ public class Spell_Shove extends Spell
 			}
 			if(dir<0)
 			{
-				mob.tell("Shove whom which direction?  Try north, south, east, or west...");
+				mob.tell(_("Shove whom which direction?  Try north, south, east, or west..."));
 				return false;
 			}
 		}
@@ -75,7 +75,7 @@ public class Spell_Shove extends Spell
 		   ||(mob.location().getExitInDir(dir)==null)
 		   ||(!mob.location().getExitInDir(dir).isOpen()))
 		{
-			mob.tell("You can't shove anyone that way!");
+			mob.tell(_("You can't shove anyone that way!"));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public class Spell_Shove extends Spell
 						thisRoom.send(target,leaveMsg);
 						newRoom.bringMobHere(target,false);
 						newRoom.send(target,enterMsg);
-						target.tell("\n\r\n\r");
+						target.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(target,true);
 					}
 				}

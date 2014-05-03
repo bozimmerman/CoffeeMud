@@ -61,7 +61,7 @@ public class ClanCreate extends StdCommand
 			if(p!=null)
 				mob.tell("You are already a member of "+p.first.getName()+". You need to resign before you can create another.");
 			else
-				mob.tell("You are not elligible to create a new clan at this time.");
+				mob.tell(_("You are not elligible to create a new clan at this time."));
 			return false;
 		}
 
@@ -97,13 +97,13 @@ public class ClanCreate extends StdCommand
 								return;
 							if(doubleCheck.length()>30) // Robert checking length
 							{
-								mob.tell("That name is too long, please use a shorter one.");
+								mob.tell(_("That name is too long, please use a shorter one."));
 								return;
 							}
 							final Clan checkC=CMLib.clans().findClan(doubleCheck);
 							if(CMLib.players().playerExists(doubleCheck)
 							||(doubleCheck.equalsIgnoreCase("All")))
-								mob.tell("That name can not be used.");
+								mob.tell(_("That name can not be used."));
 							else
 							if(checkC!=null)
 								mob.tell("Clan "+checkC.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
@@ -143,7 +143,7 @@ public class ClanCreate extends StdCommand
 											@Override public void callBack()
 											{
 												final String govt=this.input;
-												if(govt.length()==0){ mob.tell("Aborted."); return;}
+												if(govt.length()==0){ mob.tell(_("Aborted.")); return;}
 												int govtType=-1;
 												int newRoleID=-1;
 												for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
@@ -164,7 +164,7 @@ public class ClanCreate extends StdCommand
 														if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
 														&&(newClan.getRolesList().length>1))
 														{
-															mob.tell("You are not qualified to lead a clan of this style.\n\r");
+															mob.tell(_("You are not qualified to lead a clan of this style.\n\r"));
 															session.prompt(IC[0].reset());
 															return;
 														}
@@ -176,7 +176,7 @@ public class ClanCreate extends StdCommand
 												}
 												if((govtType<0)||(newRoleID<0))
 												{
-													mob.tell("That is not a proper type.\n\r");
+													mob.tell(_("That is not a proper type.\n\r"));
 													session.prompt(IC[0].reset());
 													return;
 												}

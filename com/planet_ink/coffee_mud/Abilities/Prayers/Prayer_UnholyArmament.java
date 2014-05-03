@@ -66,7 +66,7 @@ public class Prayer_UnholyArmament extends Prayer
 
 		if(mob.isInCombat())
 		{
-			mob.tell("Not during combat!");
+			mob.tell(_("Not during combat!"));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Prayer_UnholyArmament extends Prayer
 				if(mob.getWorshipCharID().length()>0)
 					mob.tell(mob.getWorshipCharID()+" can see that you are already completely armed.");
 				else
-					mob.tell("The gods can see that you are already armed.");
+					mob.tell(_("The gods can see that you are already armed."));
 				return false;
 			}
 			int numThatsOk=1;

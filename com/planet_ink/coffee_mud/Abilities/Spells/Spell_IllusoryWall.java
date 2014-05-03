@@ -62,7 +62,7 @@ public class Spell_IllusoryWall extends Spell
 		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
-			mob.tell("Cast which direction?!");
+			mob.tell(_("Cast which direction?!"));
 			return false;
 		}
 
@@ -71,7 +71,7 @@ public class Spell_IllusoryWall extends Spell
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
-			mob.tell("That way is already closed.");
+			mob.tell(_("That way is already closed."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

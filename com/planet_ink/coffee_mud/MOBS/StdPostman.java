@@ -806,7 +806,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
 					boolean codCharge=false;
 					if(V.size()==0)
-						mob.tell("\n\rYour postal box is presently empty.");
+						mob.tell(_("\n\rYour postal box is presently empty."));
 					else
 					{
 						StringBuffer str=new StringBuffer("");

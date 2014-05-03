@@ -78,7 +78,7 @@ public class Skill_FireBreathing extends BardSkill
 		final Item fireSource=getFireSource(mob);
 		if((!auto)&&(fireSource==null))
 		{
-			mob.tell("You need to be holding some fire source to breathe fire.");
+			mob.tell(_("You need to be holding some fire source to breathe fire."));
 			return false;
 		}
 		// the invoke method for spells receives as

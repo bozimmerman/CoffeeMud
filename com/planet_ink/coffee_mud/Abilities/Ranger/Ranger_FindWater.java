@@ -85,7 +85,7 @@ public class Ranger_FindWater extends StdAbility
 			if(nextDirection==-1)
 			{
 				if(waterHere(mob,mob.location(),null).length()==0)
-					mob.tell("The water trail dries up here.");
+					mob.tell(_("The water trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -257,7 +257,7 @@ public class Ranger_FindWater extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell("You stop tracking.");
+			mob.tell(_("You stop tracking."));
 			if(commands.size()==0) return true;
 		}
 

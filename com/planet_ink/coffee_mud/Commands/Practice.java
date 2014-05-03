@@ -71,7 +71,7 @@ public class Practice extends StdCommand
 
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
-			mob.tell("That person doesn't seem to be here.");
+			mob.tell(_("That person doesn't seem to be here."));
 			return false;
 		}
 

@@ -57,7 +57,7 @@ public class Prayer_ElectricHealing extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The aura of electric healing around you fades.");
+			mob.tell(_("The aura of electric healing around you fades."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Prayer_ElectricHealing extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already healed by electricity.");
+			mob.tell(_("You already healed by electricity."));
 			return false;
 		}
 

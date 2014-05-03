@@ -97,7 +97,7 @@ public class Chant_Labyrinth extends Chant
 	{
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell("You cannot invoke the labyrinth here.");
+			mob.tell(_("You cannot invoke the labyrinth here."));
 			return false;
 		}
 
@@ -166,7 +166,7 @@ public class Chant_Labyrinth extends Chant
 						oldRoom.send(follower,leaveMsg);
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

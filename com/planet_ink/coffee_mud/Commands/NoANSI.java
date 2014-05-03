@@ -51,11 +51,11 @@ public class NoANSI extends StdCommand
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
-				mob.tell("ANSI colour disabled.\n\r");
+				mob.tell(_("ANSI colour disabled.\n\r"));
 			}
 			else
 			{
-				mob.tell("ANSI is already disabled.\n\r");
+				mob.tell(_("ANSI is already disabled.\n\r"));
 			}
 			mob.session().setClientTelnetMode(Session.TELNET_ANSI,false);
 			mob.session().setServerTelnetMode(Session.TELNET_ANSI,false);

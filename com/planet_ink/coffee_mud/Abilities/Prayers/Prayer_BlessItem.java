@@ -75,7 +75,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your aura of blessing fades.");
+			mob.tell(_("Your aura of blessing fades."));
 		super.unInvoke();
 	}
 
@@ -118,7 +118,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 
 		if(target instanceof Coins)
 		{
-			mob.tell("You can not bless that.");
+			mob.tell(_("You can not bless that."));
 			return false;
 		}
 

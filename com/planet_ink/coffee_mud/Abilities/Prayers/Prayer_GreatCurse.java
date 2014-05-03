@@ -68,7 +68,7 @@ public class Prayer_GreatCurse extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The great curse is lifted.");
+			mob.tell(_("The great curse is lifted."));
 	}
 
 

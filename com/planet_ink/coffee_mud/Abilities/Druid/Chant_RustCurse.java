@@ -52,7 +52,7 @@ public class Chant_RustCurse extends Chant
 			M=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
-			M.tell("You don't feel so damp any more.");
+			M.tell(_("You don't feel so damp any more."));
 	}
 
 
@@ -127,7 +127,7 @@ public class Chant_RustCurse extends Chant
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.tell("You feel damp!");
+					target.tell(_("You feel damp!"));
 				}
 			}
 		}

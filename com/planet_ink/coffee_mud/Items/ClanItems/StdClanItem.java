@@ -229,7 +229,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return V;
 	}
-
+	
 	public static boolean stdOkMessageMOBS(MOB giver, MOB targetMOB, Item myHost)
 	{
 		if((targetMOB != null)&&(targetMOB.isMonster()))
@@ -255,7 +255,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			&&(!CMLib.flags().isMobile(targetMOB)))
 			{
 				if(giver!=null)
-					giver.tell("This item should only be given to those who roam the area.");
+					giver.tell(CMLib.lang()._("This item should only be given to those who roam the area."));
 				else
 					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem mobile enough to take <O-NAME>.");
 				return false;
@@ -272,7 +272,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				&&(targetMOB.getClanRole(theLaw.rulingOrganization())!=null))
 				{
 					if(giver!=null)
-						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
+						giver.tell(CMLib.lang()._("You can only give a clan item to a conquered mob within the conquered area."));
 					else
 						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to take <O-NAME> here.");
 					return false;
@@ -313,7 +313,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				if(CMLib.clans().findRivalrousClan(msg.source())==null)
 				{
-					msg.source().tell("You must belong to an elligible clan to do that to a clan item.");
+					msg.source().tell(CMLib.lang()._("You must belong to an elligible clan to do that to a clan item."));
 					return false;
 				}
 				else
@@ -321,7 +321,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					final Clan itemC=CMLib.clans().getClan(((ClanItem)myHost).clanID());
 					if(itemC==null)
 					{
-						msg.source().tell("This ancient relic from a lost clan fades out of existence.");
+						msg.source().tell(CMLib.lang()._("This ancient relic from a lost clan fades out of existence."));
 						((ClanItem)myHost).destroy();
 						return false;
 					}
@@ -341,7 +341,7 @@ public class StdClanItem extends StdItem implements ClanItem
 						}
 						if(relation!=Clan.REL_WAR)
 						{
-							msg.source().tell("You must be at war with this clan to take one of their items.");
+							msg.source().tell(CMLib.lang()._("You must be at war with this clan to take one of their items."));
 							return false;
 						}
 						final Room room=msg.source().location();
@@ -350,12 +350,12 @@ public class StdClanItem extends StdItem implements ClanItem
 							final LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
 							if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(itemC.clanID())))
 							{
-								msg.source().tell("You'll need to conquer this area to do that.");
+								msg.source().tell(CMLib.lang()._("You'll need to conquer this area to do that."));
 								return false;
 							}
 							if((theLaw!=null)&&(!theLaw.isFullyControlled()))
 							{
-								msg.source().tell("Your clan does not yet fully control the area.");
+								msg.source().tell(CMLib.lang()._("Your clan does not yet fully control the area."));
 								return false;
 							}
 						}

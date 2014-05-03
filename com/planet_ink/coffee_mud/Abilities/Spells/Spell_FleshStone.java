@@ -99,7 +99,7 @@ public class Spell_FleshStone extends Spell
 				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
-					mob.tell("Statues can't do that.");
+					mob.tell(_("Statues can't do that."));
 					return false;
 				}
 			}

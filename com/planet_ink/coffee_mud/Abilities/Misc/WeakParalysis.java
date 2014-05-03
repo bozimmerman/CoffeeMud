@@ -69,7 +69,7 @@ public class WeakParalysis extends StdAbility
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The paralysis eases out of your muscles.");
+			mob.tell(_("The paralysis eases out of your muscles."));
 	}
 
 

@@ -118,18 +118,18 @@ public class Spell_IncreaseGravity extends Spell
 		{
 		case CMMsg.TYP_ADVANCE:
 			{
-				msg.source().tell("You feel too heavy to advance.");
+				msg.source().tell(_("You feel too heavy to advance."));
 				return false;
 			}
 		case CMMsg.TYP_RETREAT:
 			{
-				msg.source().tell("You feel too heavy to retreat.");
+				msg.source().tell(_("You feel too heavy to retreat."));
 				return false;
 			}
 		case CMMsg.TYP_LEAVE:
 		case CMMsg.TYP_FLEE:
 			{
-				msg.source().tell("You feel too heavy to leave.");
+				msg.source().tell(_("You feel too heavy to leave."));
 				return false;
 			}
 		}

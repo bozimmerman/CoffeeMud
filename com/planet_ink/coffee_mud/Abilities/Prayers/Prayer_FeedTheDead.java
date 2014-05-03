@@ -52,7 +52,7 @@ public class Prayer_FeedTheDead extends Prayer
 		{
 			if((commands.size()==0)||(!CMath.isNumber((String)commands.lastElement())))
 			{
-				mob.tell("Feed how much experience?");
+				mob.tell(_("Feed how much experience?"));
 				return false;
 			}
 			amount=CMath.s_int((String)commands.lastElement());
@@ -70,17 +70,17 @@ public class Prayer_FeedTheDead extends Prayer
 		if(target==null) return false;
 		if(!target.charStats().getMyRace().racialCategory().equals("Undead"))
 		{
-			mob.tell("Only the undead may be fed in this way.");
+			mob.tell(_("Only the undead may be fed in this way."));
 			return false;
 		}
 		if(!target.isMonster())
 		{
-			mob.tell("That creature cannot be fed.");
+			mob.tell(_("That creature cannot be fed."));
 			return false;
 		}
 		if(mob.isMonster() && (!auto) && (givenTarget==null))
 		{
-			mob.tell("You cannot feed the dead.");
+			mob.tell(_("You cannot feed the dead."));
 			return false;
 		}
 

@@ -137,7 +137,7 @@ public class Chant_AnimalSpy extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell("Chant to whom?");
+			mob.tell(_("Chant to whom?"));
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();

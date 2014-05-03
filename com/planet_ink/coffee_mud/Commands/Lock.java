@@ -45,7 +45,7 @@ public class Lock extends StdCommand
 		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
-			mob.tell("Lock what?");
+			mob.tell(_("Lock what?"));
 			return false;
 		}
 		Environmental lockThis=null;

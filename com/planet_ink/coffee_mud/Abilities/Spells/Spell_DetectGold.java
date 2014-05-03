@@ -56,7 +56,7 @@ public class Spell_DetectGold extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer as golden.");
+			mob.tell(_("Your senses are no longer as golden."));
 	}
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{

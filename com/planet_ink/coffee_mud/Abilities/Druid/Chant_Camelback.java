@@ -117,7 +117,7 @@ public class Chant_Camelback extends Chant
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) a camelback hump!");
-				target.tell("You feel quenched!");
+				target.tell(_("You feel quenched!"));
 			}
 		}
 		else

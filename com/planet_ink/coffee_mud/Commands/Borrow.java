@@ -52,7 +52,7 @@ public class Borrow extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Borrow how much?");
+			mob.tell(_("Borrow how much?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -63,14 +63,14 @@ public class Borrow extends StdCommand
 		Item thisThang=null;
 		if((numCoins==0)||(denomination==0.0))
 		{
-			mob.tell("Borrow how much?");
+			mob.tell(_("Borrow how much?"));
 			return false;
 		}
 		thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell("That doesn't appear to be available.  Try LIST.");
+			mob.tell(_("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		final String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";

@@ -46,7 +46,7 @@ public class AHelp extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getArcHelpFile().size()==0)
 		{
-			mob.tell("No archon help is available.");
+			mob.tell(_("No archon help is available."));
 			return false;
 		}
 		StringBuffer thisTag=null;

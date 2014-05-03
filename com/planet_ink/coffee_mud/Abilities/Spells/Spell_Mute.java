@@ -61,7 +61,7 @@ public class Spell_Mute extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your ability to speak returns.");
+			mob.tell(_("Your ability to speak returns."));
 	}
 
 	@Override

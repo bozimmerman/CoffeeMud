@@ -123,7 +123,7 @@ public class Spell_Telepathy extends Spell
 
 				mob.tell(target.Name()+" is a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+".");
 				if(thoughts.length()==0)
-					mob.tell("You don't detect any other thoughts.");
+					mob.tell(_("You don't detect any other thoughts."));
 				else
 					mob.tell(thoughts.toString());
 			}

@@ -75,7 +75,7 @@ public class Prayer_CurseItem extends Prayer
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("The curse is lifted.");
+			mob.tell(_("The curse is lifted."));
 		super.unInvoke();
 	}
 

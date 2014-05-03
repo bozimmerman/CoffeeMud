@@ -58,7 +58,7 @@ public class Prayer_SenseDisease extends Prayer
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell("Your disease sensations fade.");
+			mob.tell(_("Your disease sensations fade."));
 		}
 	}
 
@@ -141,7 +141,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell("You do not sense any disease.");
+			mob.tell(_("You do not sense any disease."));
 		else
 		if(dirs.length()==0)
 			mob.tell("You sense disease coming from "+last+".");

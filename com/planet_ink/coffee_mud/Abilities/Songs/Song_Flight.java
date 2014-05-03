@@ -64,7 +64,7 @@ public class Song_Flight extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't sing!");
+			mob.tell(_("You can't sing!"));
 			return false;
 		}
 
@@ -123,7 +123,7 @@ public class Song_Flight extends Song
 									directionCode=Directions.getDirectionCode(direction);
 									if(directionCode<0)
 									{
-										mob.tell("Flee where?!");
+										mob.tell(_("Flee where?!"));
 										return false;
 									}
 									CMLib.tracking().walk(follower,directionCode,true,false);

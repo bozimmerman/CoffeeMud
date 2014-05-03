@@ -46,11 +46,11 @@ public class Beacon extends StdCommand
 		if(commands.size()==0)
 		{
 			if(mob.getStartRoom()==mob.location())
-				mob.tell("This is already your beacon.");
+				mob.tell(_("This is already your beacon."));
 			else
 			{
 				mob.setStartRoom(mob.location());
-				mob.tell("You have modified your beacon.");
+				mob.tell(_("You have modified your beacon."));
 			}
 		}
 		else

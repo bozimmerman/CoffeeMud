@@ -106,12 +106,12 @@ public class Fighter_Charge extends FighterSkill
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))
 		{
-			mob.tell("You can not charge while in melee!");
+			mob.tell(_("You can not charge while in melee!"));
 			return false;
 		}
 		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
-			mob.tell("You must be on your feet to charge!");
+			mob.tell(_("You must be on your feet to charge!"));
 			return false;
 		}
 

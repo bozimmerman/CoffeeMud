@@ -70,7 +70,7 @@ public class Chant_SummonPool extends Chant
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("This magic only works in caves.");
+			mob.tell(_("This magic only works in caves."));
 			return false;
 		}
 

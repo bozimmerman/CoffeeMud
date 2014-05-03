@@ -46,7 +46,7 @@ public class View extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("View what merchandise?");
+			mob.tell(_("View what merchandise?"));
 			return false;
 		}
 

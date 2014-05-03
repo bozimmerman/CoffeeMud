@@ -51,7 +51,7 @@ public class Spell_ResistIndignities extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your dignified protection dissipates.");
+			mob.tell(_("Your dignified protection dissipates."));
 
 		super.unInvoke();
 

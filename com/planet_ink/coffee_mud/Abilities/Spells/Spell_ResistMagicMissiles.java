@@ -50,7 +50,7 @@ public class Spell_ResistMagicMissiles extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your magic missile protection dissipates.");
+			mob.tell(_("Your magic missile protection dissipates."));
 
 		super.unInvoke();
 

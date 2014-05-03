@@ -81,7 +81,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell("Make a bomb from what, with what kind of bomb? Use bomb list for a list.");
+				mob.tell(_("Make a bomb from what, with what kind of bomb? Use bomb list for a list."));
 				return false;
 			}
 			final String name=(String)commands.lastElement();
@@ -127,7 +127,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell("You have completed your task.");
+				mob.tell(_("You have completed your task."));
 				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 			}
 			else
@@ -140,7 +140,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				}
 				else
 				{
-					mob.tell("You fail in your attempt.");
+					mob.tell(_("You fail in your attempt."));
 				}
 			}
 		}

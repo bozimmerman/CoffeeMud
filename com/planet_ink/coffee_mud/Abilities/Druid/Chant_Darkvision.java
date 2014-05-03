@@ -71,7 +71,7 @@ public class Chant_Darkvision extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You lose your darkvision.");
+			mob.tell(_("You lose your darkvision."));
 	}
 
 	@Override

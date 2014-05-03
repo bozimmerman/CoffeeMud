@@ -72,7 +72,7 @@ public class Prayer_DarkSenses extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You lose your dark senses.");
+			mob.tell(_("You lose your dark senses."));
 	}
 
 	@Override

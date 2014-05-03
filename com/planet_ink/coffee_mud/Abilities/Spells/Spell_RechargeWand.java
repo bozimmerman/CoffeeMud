@@ -50,7 +50,7 @@ public class Spell_RechargeWand extends Spell
 
 		if(!(target instanceof Wand))
 		{
-			mob.tell("You can't recharge that.");
+			mob.tell(_("You can't recharge that."));
 			return false;
 		}
 

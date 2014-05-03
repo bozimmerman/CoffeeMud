@@ -48,7 +48,7 @@ public class Chant_Farsight extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -100,7 +100,7 @@ public class Chant_Farsight extends Chant
 					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
-						mob.tell("Your sight has reached its limit.");
+						mob.tell(_("Your sight has reached its limit."));
 						success=true;
 						break;
 					}
@@ -118,7 +118,7 @@ public class Chant_Farsight extends Chant
 
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
-							mob.tell("\n\rSomething has obstructed your vision.");
+							mob.tell(_("\n\rSomething has obstructed your vision."));
 							success=false;
 							commands.removeAllElements();
 						}
@@ -127,7 +127,7 @@ public class Chant_Farsight extends Chant
 							commands.removeElementAt(0);
 							thatRoom=room;
 							limit--;
-							mob.tell("\n\r");
+							mob.tell(_("\n\r"));
 							final CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}

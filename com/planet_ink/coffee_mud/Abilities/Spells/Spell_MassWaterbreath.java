@@ -47,7 +47,7 @@ public class Spell_MassWaterbreath extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth casting this on.");
+			mob.tell(_("There doesn't appear to be anyone here worth casting this on."));
 			return false;
 		}
 

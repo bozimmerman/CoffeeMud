@@ -47,7 +47,7 @@ public class Dismount extends StdCommand
 		{
 			if(mob.riding()==null)
 			{
-				mob.tell("But you aren't riding anything?!");
+				mob.tell(_("But you aren't riding anything?!"));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString(mob)+" <T-NAMESELF>.");

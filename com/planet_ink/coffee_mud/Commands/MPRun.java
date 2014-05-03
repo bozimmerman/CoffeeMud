@@ -74,14 +74,14 @@ public class MPRun extends StdCommand
 			return CMLib.commands().handleUnknownCommand(mob, commands);
 		if(commands.size()<2)
 		{
-			mob.tell("mprun (user:password) [script]");
+			mob.tell(_("mprun (user:password) [script]"));
 			return false;
 		}
 		commands.removeElementAt(0);
 
 		final String cmd = CMParms.combineWithQuotes(commands, 0);
 		executeScript(mob, cmd);
-		mob.tell("Completed.");
+		mob.tell(_("Completed."));
 		return false;
 	}
 

@@ -170,7 +170,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			A.unInvoke();
-			mob.tell("You remove your disguise.");
+			mob.tell(_("You remove your disguise."));
 			return true;
 		}
 		final String what=(String)commands.firstElement();
@@ -263,19 +263,19 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0))
 			{
-				mob.tell("Your disguise name may not have a space in it, or illegal characters.");
+				mob.tell(_("Your disguise name may not have a space in it, or illegal characters."));
 				return false;
 			}
 			else
 			if(CMLib.players().playerExists(how))
 			{
-				mob.tell("You cannot disguise yourself as a player except through Mark Disguise.");
+				mob.tell(_("You cannot disguise yourself as a player except through Mark Disguise."));
 				return false;
 			}
 			else
 			if(CMLib.login().isBadName(how))
 			{
-				mob.tell("You cannot disguise yourself as that.");
+				mob.tell(_("You cannot disguise yourself as that."));
 				return false;
 			}
 			else
@@ -286,7 +286,7 @@ public class Skill_Disguise extends BardSkill
 			{
 				if(how.equalsIgnoreCase("Archon"))
 				{
-					mob.tell("You cannot disguise yourself as an Archon.");
+					mob.tell(_("You cannot disguise yourself as an Archon."));
 					return false;
 				}
 				if(CMClass.findCharClass(how)==null)
@@ -301,7 +301,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((!how.equalsIgnoreCase("good"))&&(!how.equalsIgnoreCase("evil")))
 			{
-				mob.tell("You may only disguise your alignment as 'good' or 'evil'.");
+				mob.tell(_("You may only disguise your alignment as 'good' or 'evil'."));
 				return false;
 			}
 			break;

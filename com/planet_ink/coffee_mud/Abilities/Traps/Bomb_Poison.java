@@ -71,7 +71,7 @@ public class Bomb_Poison extends StdBomb
 		if((!(P instanceof Drink))||(V.size()==0))
 		{
 			if(mob!=null)
-				mob.tell("You need some poison to make this out of.");
+				mob.tell(_("You need some poison to make this out of."));
 			return false;
 		}
 		return true;

@@ -72,7 +72,7 @@ public class Spell_Command extends Spell
 
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
-			mob.tell("You can't command someone to follow.");
+			mob.tell(_("You can't command someone to follow."));
 			return false;
 		}
 
@@ -81,7 +81,7 @@ public class Spell_Command extends Spell
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
 			{
-				mob.tell("You can't command someone to doing that.");
+				mob.tell(_("You can't command someone to doing that."));
 				return false;
 			}
 		}

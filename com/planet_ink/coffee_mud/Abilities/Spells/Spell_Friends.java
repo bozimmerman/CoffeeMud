@@ -59,7 +59,7 @@ public class Spell_Friends extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You begin to feel more like your regular cranky self.");
+			mob.tell(_("You begin to feel more like your regular cranky self."));
 	}
 
 

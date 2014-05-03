@@ -72,7 +72,7 @@ public class Spell_FindFamiliar extends Spell
 	{
 		if((mob.numFollowers()>0)||(mob.isMonster()))
 		{
-			mob.tell("You cannot have any followers when casting this spell.");
+			mob.tell(_("You cannot have any followers when casting this spell."));
 			return false;
 		}
 

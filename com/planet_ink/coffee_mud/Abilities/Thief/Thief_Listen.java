@@ -164,7 +164,7 @@ public class Thief_Listen extends ThiefSkill
 		final MOB M=invoker();
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell("You stop listening.");
+			M.tell(_("You stop listening."));
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class Thief_Listen extends ThiefSkill
 		final int dirCode=Directions.getGoodDirectionCode(whom);
 		if(!CMLib.flags().canHear(mob))
 		{
-			mob.tell("You don't hear anything.");
+			mob.tell(_("You don't hear anything."));
 			return false;
 		}
 
@@ -192,13 +192,13 @@ public class Thief_Listen extends ThiefSkill
 		{
 			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
-				mob.tell("Listen which direction?");
+				mob.tell(_("Listen which direction?"));
 				return false;
 			}
 			room=mob.location().getRoomInDir(dirCode);
 			if((room.domainType()&Room.INDOORS)==0)
 			{
-				mob.tell("You can only listen indoors.");
+				mob.tell(_("You can only listen indoors."));
 				return false;
 			}
 		}
@@ -236,10 +236,10 @@ public class Thief_Listen extends ThiefSkill
 					}
 				}
 				else
-					mob.tell("You definitely hear something.");
+					mob.tell(_("You definitely hear something."));
 			}
 			else
-				mob.tell("You don't hear anything.");
+				mob.tell(_("You don't hear anything."));
 		}
 		return success;
 	}

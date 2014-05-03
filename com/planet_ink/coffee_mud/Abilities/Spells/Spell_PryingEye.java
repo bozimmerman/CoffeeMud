@@ -57,7 +57,7 @@ public class Spell_PryingEye extends Spell
 				mob.setLocation(null);
 			mob.setSession(null);
 			if(invoker!=null)
-				invoker.tell("The prying eye has closed.");
+				invoker.tell(_("The prying eye has closed."));
 			mob.destroy();
 		}
 	}
@@ -98,7 +98,7 @@ public class Spell_PryingEye extends Spell
 					CMLib.tracking().walk(mob, dir, false, false);
 					if(dirs.size()==0)
 					{
-						invoker().tell("\n\r^SThe eye has reached its destination and will soon close.^N^?");
+						invoker().tell(_("\n\r^SThe eye has reached its destination and will soon close.^N^?"));
 						super.tickDown=6;
 					}
 				}
@@ -114,7 +114,7 @@ public class Spell_PryingEye extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("You must specify directions for the eye to follow.");
+			mob.tell(_("You must specify directions for the eye to follow."));
 			return false;
 		}
 

@@ -101,13 +101,13 @@ public class Paladin_MountedCharge extends StdAbility
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))
 		{
-			mob.tell("You can not charge while in melee!");
+			mob.tell(_("You can not charge while in melee!"));
 			return false;
 		}
 
 		if(mob.riding()==null)
 		{
-			mob.tell("You must be mounted to use this skill.");
+			mob.tell(_("You must be mounted to use this skill."));
 			return false;
 		}
 

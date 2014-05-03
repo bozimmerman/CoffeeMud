@@ -72,7 +72,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 		if(revokeThis==null)
 		{
 			if(auto)
-				mob.tell("Nothing happens.");
+				mob.tell(_("Nothing happens."));
 			else
 				mob.tell(mob,target,null,"<T-NAME> can not be affected by this prayer.");
 			return false;

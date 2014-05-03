@@ -44,7 +44,7 @@ public class Put extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Put out what?");
+			mob.tell(_("Put out what?"));
 			return;
 		}
 		commands.removeElementAt(1);
@@ -52,7 +52,7 @@ public class Put extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
@@ -72,7 +72,7 @@ public class Put extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Put what where?");
+			mob.tell(_("Put what where?"));
 			return false;
 		}
 
@@ -166,7 +166,7 @@ public class Put extends StdCommand
 			V.remove(container);
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

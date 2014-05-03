@@ -97,7 +97,7 @@ public class Skill_Revoke extends StdSkill
 		if(revokeThis==null)
 		{
 			if(target instanceof Room)
-				mob.tell("Revoke your magic from what?");
+				mob.tell(_("Revoke your magic from what?"));
 			else
 				mob.tell(mob,target,null,"<T-NAME> do(es) not appear to be affected by anything you can revoke.");
 			return false;

@@ -63,7 +63,7 @@ public class Prayer_DivineGuidance extends Prayer
 		{
 			final MOB mob=(MOB)affected;
 			if(canBeUninvoked())
-				mob.tell("You have received your divine guidance.");
+				mob.tell(_("You have received your divine guidance."));
 		}
 		super.unInvoke();
 	}

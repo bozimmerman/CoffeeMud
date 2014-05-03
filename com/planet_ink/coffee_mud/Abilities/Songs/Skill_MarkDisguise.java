@@ -65,7 +65,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell("You remove your disguise.");
+			mob.tell(_("You remove your disguise."));
 			return true;
 		}
 		MOB target=getMark(mob);
@@ -74,12 +74,12 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(target==null)
 		{
-			mob.tell("You need to have marked someone before you can disguise yourself as him or her.");
+			mob.tell(_("You need to have marked someone before you can disguise yourself as him or her."));
 			return false;
 		}
 		if(target.charStats().getClassLevel("Archon")>=0)
 		{
-			mob.tell("You may not disguise yourself as an Archon.");
+			mob.tell(_("You may not disguise yourself as an Archon."));
 			return false;
 		}
 

@@ -50,7 +50,7 @@ public class Spell_PrayerShield extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your shield against prayers fades.");
+			mob.tell(_("Your shield against prayers fades."));
 
 		super.unInvoke();
 

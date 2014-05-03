@@ -60,7 +60,7 @@ public class Spell_BaseClanEq extends Spell
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))
 				{
 					teacher.tell(student.name()+" already knows '"+A.name()+"', and may not learn another clan enchantment.");
-					student.tell("You may only learn a single clan enchantment.");
+					student.tell(_("You may only learn a single clan enchantment."));
 					return false;
 				}
 			}
@@ -73,13 +73,13 @@ public class Spell_BaseClanEq extends Spell
 		if(type.length()==0) return false;
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell(_("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 		if(clanPair==null)
 		{
-			mob.tell("You are not authorized to draw from the power of your clan.");
+			mob.tell(_("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -91,12 +91,12 @@ public class Spell_BaseClanEq extends Spell
 		//   -2   -1			0    1
 		if(commands.size()<1)
 		{
-			mob.tell("Enchant which spell onto what?");
+			mob.tell(_("Enchant which spell onto what?"));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			mob.tell("Use how much clan enchantment power?");
+			mob.tell(_("Use how much clan enchantment power?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
@@ -109,7 +109,7 @@ public class Spell_BaseClanEq extends Spell
 		final int points=CMath.s_int((String)commands.elementAt(1));
 		if(points<=0)
 		{
-			mob.tell("You need to use at least 1 enchantment point.");
+			mob.tell(_("You need to use at least 1 enchantment point."));
 			return false;
 		}
 		final long exp=points*CMProps.getIntVar(CMProps.Int.CLANENCHCOST);

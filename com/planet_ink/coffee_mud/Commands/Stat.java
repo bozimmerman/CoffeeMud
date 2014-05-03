@@ -95,7 +95,7 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
 		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
-		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
+		if(V.size()==0){ mob.tell(_("No Stats?!")); return false;}
 		final StringBuffer table=new StringBuffer("");
 		boolean skillUse=false;
 		boolean questStats=false;

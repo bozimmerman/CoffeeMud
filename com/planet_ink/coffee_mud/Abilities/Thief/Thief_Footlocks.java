@@ -116,7 +116,7 @@ public class Thief_Footlocks extends ThiefSkill
 
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to wake up!");
+			mob.tell(_("You need to wake up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -128,13 +128,13 @@ public class Thief_Footlocks extends ThiefSkill
 			cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
 			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
 			{
-				mob.tell("You need a pound of cloth to use this skill.");
+				mob.tell(_("You need a pound of cloth to use this skill."));
 				return false;
 			}
 			wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
 			if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
 			{
-				mob.tell("You need two pounds of wood to use this skill.");
+				mob.tell(_("You need two pounds of wood to use this skill."));
 				return false;
 			}
 		}

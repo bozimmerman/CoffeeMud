@@ -43,13 +43,13 @@ public class OutFit extends StdCommand
 	throws java.io.IOException
 	{
 		if(secondsElapsed>8.0)
-			mob.tell("You feel your outfit plea is almost answered.");
+			mob.tell(_("You feel your outfit plea is almost answered."));
 		else
 		if(secondsElapsed>4.0)
-			mob.tell("Your plea swirls around you.");
+			mob.tell(_("Your plea swirls around you."));
 		else
 		if(actionsRemaining>0.0)
-			mob.tell("You invoke a plea for mystical outfitting and await the answer.");
+			mob.tell(_("You invoke a plea for mystical outfitting and await the answer."));
 		return true;
 	}
 	@Override
@@ -64,10 +64,10 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,C.outfit(mob));
 		if(R!=null)
 			CMLib.utensils().outfit(mob,R.outfit(mob));
-		mob.tell("\n\r");
+		mob.tell(_("\n\r"));
 		final Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.executeInternal(mob, metaFlags);
-		mob.tell("\n\rUseful equipment appears mysteriously out of the Java Plane.");
+		mob.tell(_("\n\rUseful equipment appears mysteriously out of the Java Plane."));
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 		mob.recoverPhyStats();

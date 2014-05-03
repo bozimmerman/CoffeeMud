@@ -92,7 +92,7 @@ public class Chant_Reincarnation extends Chant
 				if(!(affected instanceof MOB))
 					return super.tick(ticking,tickID);
 				final MOB mob=(MOB)affected;
-				mob.tell("Your reincarnation geas is lifted as your form solidifies.");
+				mob.tell(_("Your reincarnation geas is lifted as your form solidifies."));
 				if(newRace!=null)
 				{
 					mob.baseCharStats().setMyRace(newRace);
@@ -169,7 +169,7 @@ public class Chant_Reincarnation extends Chant
 		}
 		if(target.isMonster())
 		{
-			mob.tell("Your chant would have no effect on such a creature.");
+			mob.tell(_("Your chant would have no effect on such a creature."));
 			return false;
 		}
 

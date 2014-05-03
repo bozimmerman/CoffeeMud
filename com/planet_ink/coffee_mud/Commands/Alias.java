@@ -83,7 +83,7 @@ public class Alias extends StdCommand
 							if(check.equals("D"))
 							{
 								pStats.delAliasName(selection);
-								mob.tell("Alias deleted.");
+								mob.tell(_("Alias deleted."));
 								session.prompt(IC[0].reset());
 								return;
 							}
@@ -107,20 +107,20 @@ public class Alias extends StdCommand
 							final String commandStr=this.input.toUpperCase().trim();
 							if(pStats.getAlias(commandStr).length()>0)
 							{
-								mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
+								mob.tell(_("That alias already exists.  Select it from the menu to delete or modify."));
 								session.prompt(IC[0].reset());
 								return;
 							}
 							if(CMParms.contains(access,commandStr))
 							{
-								mob.tell("You may not alias alias.");
+								mob.tell(_("You may not alias alias."));
 								session.prompt(IC[0].reset());
 								return;
 							}
 							for(int i=0;i<commandStr.length();i++)
 								if(!Character.isLetterOrDigit(commandStr.charAt(i)))
 								{
-									mob.tell("Your alias name may only contain letters and numbers without spaces. ");
+									mob.tell(_("Your alias name may only contain letters and numbers without spaces. "));
 									session.prompt(IC[0].reset());
 									return;
 								}
@@ -147,17 +147,17 @@ public class Alias extends StdCommand
 				value=CMStrings.replaceAll(value,"<","");
 				value=CMStrings.replaceAll(value,"&","");
 				if((value.length()==0)&&(pStats.getAlias(aliasName).length()>0))
-					mob.tell("(No change)");
+					mob.tell(_("(No change)"));
 				else
 				if(value.length()==0)
 				{
-					mob.tell("Aborted.");
+					mob.tell(_("Aborted."));
 					pStats.delAliasName(aliasName);
 				}
 				else
 				{
 					pStats.setAlias(aliasName,value);
-					mob.tell("The alias was successfully changed.");
+					mob.tell(_("The alias was successfully changed."));
 				}
 				session.prompt(IC[0].reset());
 			}

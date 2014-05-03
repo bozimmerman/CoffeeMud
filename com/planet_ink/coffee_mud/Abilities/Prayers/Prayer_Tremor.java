@@ -103,7 +103,7 @@ public class Prayer_Tremor extends Prayer
 				}
 			}
 			else
-				mob.tell("The movement under your feet stops.");
+				mob.tell(_("The movement under your feet stops."));
 		}
 	}
 
@@ -113,7 +113,7 @@ public class Prayer_Tremor extends Prayer
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth shaking up.");
+			mob.tell(_("There doesn't appear to be anyone here worth shaking up."));
 			return false;
 		}
 

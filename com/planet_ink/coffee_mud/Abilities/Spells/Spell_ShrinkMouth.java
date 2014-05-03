@@ -69,7 +69,7 @@ public class Spell_ShrinkMouth extends Spell
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
-			msg.source().tell("Your mouth is too tiny to eat!");
+			msg.source().tell(_("Your mouth is too tiny to eat!"));
 			return false;
 		}
 		return true;

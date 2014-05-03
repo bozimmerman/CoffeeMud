@@ -92,7 +92,7 @@ public class Trap_SpellBlast extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell("You'll need to set down a scroll with a spell first.");
+			mob.tell(_("You'll need to set down a scroll with a spell first."));
 			return false;
 		}
 		return true;

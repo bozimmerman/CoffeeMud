@@ -50,7 +50,7 @@ public class Spell_ResistBludgeoning extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your bludgeoning protection dissipates.");
+			mob.tell(_("Your bludgeoning protection dissipates."));
 
 		super.unInvoke();
 

@@ -61,7 +61,7 @@ public class Buy extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Buy what?");
+			mob.tell(_("Buy what?"));
 			return false;
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)

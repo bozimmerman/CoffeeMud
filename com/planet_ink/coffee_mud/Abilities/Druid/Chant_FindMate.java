@@ -93,14 +93,14 @@ public class Chant_FindMate extends Chant
 
 			if(nextDirection==999)
 			{
-				mob.tell("Your yearning for a mate seems to fade.");
+				mob.tell(_("Your yearning for a mate seems to fade."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("You no longer want to continue.");
+				mob.tell(_("You no longer want to continue."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -180,7 +180,7 @@ public class Chant_FindMate extends Chant
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			target.tell("You stop tracking.");
+			target.tell(_("You stop tracking."));
 			return true;
 		}
 

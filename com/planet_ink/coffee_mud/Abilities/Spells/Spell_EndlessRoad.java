@@ -52,7 +52,7 @@ public class Spell_EndlessRoad extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You feel like you are finally getting somewhere.");
+			mob.tell(_("You feel like you are finally getting somewhere."));
 		CMLib.commands().postStand(mob,true);
 	}
 

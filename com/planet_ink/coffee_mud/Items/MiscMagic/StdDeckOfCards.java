@@ -286,7 +286,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		&&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
 		{
 			if(!shuffleDeck())
-				msg.source().tell("There are no cards left in the deck");
+				msg.source().tell(_("There are no cards left in the deck"));
 			else
 			{
 				final Room R=CMLib.map().roomLocation(this);

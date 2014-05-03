@@ -79,7 +79,7 @@ public class Skill_Dirt extends StdSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You can see again!");
+			mob.tell(_("You can see again!"));
 	}
 
 	@Override
@@ -138,13 +138,13 @@ public class Skill_Dirt extends StdSkill
 		if(!hereOK(mob))
 		{
 			if(!auto)
-				mob.tell("There's no dirt here to kick!");
+				mob.tell(_("There's no dirt here to kick!"));
 			return false;
 		}
 
 		if((!auto)&&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0))
 		{
-			mob.tell("You need feet to kick.");
+			mob.tell(_("You need feet to kick."));
 			return false;
 		}
 
@@ -167,7 +167,7 @@ public class Skill_Dirt extends StdSkill
 
 		if((!auto)&&CMLib.flags().isFlying(mob))
 		{
-			mob.tell("You are too far from the ground to kick dirt.");
+			mob.tell(_("You are too far from the ground to kick dirt."));
 			return false;
 		}
 

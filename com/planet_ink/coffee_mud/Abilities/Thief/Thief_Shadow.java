@@ -207,24 +207,24 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Shadow whom?");
+			mob.tell(_("Shadow whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You cannot shadow yourself?!");
+			mob.tell(_("You cannot shadow yourself?!"));
 			return false;
 		}
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
-			mob.tell("You cannot shadow someone while part of a group.");
+			mob.tell(_("You cannot shadow someone while part of a group."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))

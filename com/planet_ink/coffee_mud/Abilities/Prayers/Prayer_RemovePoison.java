@@ -109,7 +109,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 				{
 					if(target instanceof MOB)
 					{
-						((MOB)target).tell("You feel much better!");
+						((MOB)target).tell(_("You feel much better!"));
 						((MOB)target).recoverCharStats();
 						((MOB)target).recoverMaxState();
 					}

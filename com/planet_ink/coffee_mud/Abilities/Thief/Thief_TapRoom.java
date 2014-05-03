@@ -130,7 +130,7 @@ public class Thief_TapRoom extends ThiefSkill
 			{
 				if(getAvailableLine(msg.source()).size()==0)
 				{
-					msg.source().tell("You have run out of cloth to make tapline from!  Better put down the cup...");
+					msg.source().tell(_("You have run out of cloth to make tapline from!  Better put down the cup..."));
 					return false;
 				}
 				int roomsLeft=0;
@@ -139,7 +139,7 @@ public class Thief_TapRoom extends ThiefSkill
 					roomsLeft=CMath.s_int(V.get(3));
 				if(roomsLeft<=0)
 				{
-					msg.source().tell("Go any further, and your tap line won't work at all.  Better just put it down here...");
+					msg.source().tell(_("Go any further, and your tap line won't work at all.  Better just put it down here..."));
 					return false;
 				}
 			}
@@ -334,13 +334,13 @@ public class Thief_TapRoom extends ThiefSkill
 		final Item[] cups=getCups(mob);
 		if((!auto)&&(cups==null))
 		{
-			mob.tell("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room.");
+			mob.tell(_("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room."));
 			abort=true;
 		}
 		final List<RawMaterial> line=getAvailableLine(mob);
 		if((!auto)&&(line.size()==0))
 		{
-			mob.tell("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room.");
+			mob.tell(_("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room."));
 			abort=true;
 		}
 		if(abort) return false;

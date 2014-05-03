@@ -196,7 +196,7 @@ public class Corpse extends GenContainer implements DeadBody
 				else
 				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 				{
-					msg.source().tell("You may not loot another players corpse.");
+					msg.source().tell(_("You may not loot another players corpse."));
 					return false;
 				}
 				else
@@ -204,7 +204,7 @@ public class Corpse extends GenContainer implements DeadBody
 				{
 					if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 					{
-						msg.source().tell("You can not get that.  You are not a player killer.");
+						msg.source().tell(_("You can not get that.  You are not a player killer."));
 						return false;
 					}
 					else

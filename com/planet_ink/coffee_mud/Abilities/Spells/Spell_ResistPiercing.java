@@ -50,7 +50,7 @@ public class Spell_ResistPiercing extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your piercing protection dissipates.");
+			mob.tell(_("Your piercing protection dissipates."));
 
 		super.unInvoke();
 

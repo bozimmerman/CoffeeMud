@@ -162,7 +162,7 @@ public class Who extends StdCommand
 		{
 			if((!(CMLib.intermud().i3online()))
 			&&(!CMLib.intermud().imc2online()))
-				mob.tell("Intermud is unavailable.");
+				mob.tell(_("Intermud is unavailable."));
 			else
 				CMLib.intermud().i3who(mob,mobName.substring(1));
 			return false;
@@ -194,7 +194,7 @@ public class Who extends StdCommand
 
 		final String msg = getWho(mob,friends,mobName);
 		if((mobName!=null)&&(msg.length()==0))
-			mob.tell("That person doesn't appear to be online.\n\r");
+			mob.tell(_("That person doesn't appear to be online.\n\r"));
 		else
 			mob.tell(msg);
 		return false;

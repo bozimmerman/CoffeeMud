@@ -75,7 +75,7 @@ public class StdWand extends StdItem implements Wand
 		if(manaRequired<5) manaRequired=5;
 		if(manaRequired>mob.curState().getMana())
 		{
-			mob.tell("You don't have enough mana.");
+			mob.tell(CMLib.lang()._("You don't have enough mana."));
 			return false;
 		}
 		mob.curState().adjMana(-manaRequired,mob.maxState());

@@ -531,7 +531,7 @@ public class Quests extends StdLibrary implements QuestManager
 		if(resp instanceof List)
 			steps=(List<String>)resp;
 		else
-		{ mob.tell("Unknown error."); return;}
+		{ mob.tell(_("Unknown error.")); return;}
 		if((holidayNumber<=0)||(holidayNumber>=steps.size()))
 		{ mob.tell(holidayNumber+" does not exist as a holiday -- enter LIST HOLIDAYS."); return;}
 
@@ -581,7 +581,7 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			final String err=alterHoliday(oldName, encodedData);
 			if(err.length()==0)
-				mob.tell("Holiday modified.");
+				mob.tell(_("Holiday modified."));
 			else
 				mob.tell(err);
 		}
@@ -824,7 +824,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if(CMParms.indexOf(TYPES,newVal.toUpperCase().trim())<0)
 					{
 						newVal="?";
-						mob.tell("Not a valid entry.  Try ?");
+						mob.tell(_("Not a valid entry.  Try ?"));
 						continue;
 					}
 					typeIndex=CMParms.indexOf(TYPES,newVal.toUpperCase().trim());
@@ -1175,7 +1175,7 @@ public class Quests extends StdLibrary implements QuestManager
 					{
 						newStr=mob.session().prompt("Enter  # Weight + thing to say (?) '"+s+"'\n\r: ",s);
 						if(newStr.equals("?"))
-							mob.tell("Enter a number followed by a phrase to say like 9thingtosay. Enter NULL to delete this thing to say.");
+							mob.tell(_("Enter a number followed by a phrase to say like 9thingtosay. Enter NULL to delete this thing to say."));
 						else
 							s=newStr;
 					}
@@ -1614,7 +1614,7 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			if((questTemplates==null)||(questTemplates.size()==0))
 			{
-				mob.tell("No valid quest templates found in resources/quests/templates!");
+				mob.tell(_("No valid quest templates found in resources/quests/templates!"));
 				return null;
 			}
 			int questIndex=-1;
@@ -1837,14 +1837,14 @@ public class Quests extends StdLibrary implements QuestManager
 						}
 						}
 					}
-					if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^HNow verify this page's selections:^.^N"); continue;}
+					if(showFlag<-900){ ok=false; showFlag=0; mob.tell(_("\n\r^HNow verify this page's selections:^.^N")); continue;}
 					if(showFlag>0){ showFlag=-1; continue;}
 					final String what=mob.session().prompt("Edit which (enter 0 to cancel)? ","");
 					if(what.trim().equals("0"))
 					{
 						if(mob.session().confirm("Are you sure you want to abort (y/N)? ","N"))
 						{
-							mob.tell("Aborted.");
+							mob.tell(_("Aborted."));
 							return null;
 						}
 					}
@@ -1885,7 +1885,7 @@ public class Quests extends StdLibrary implements QuestManager
 				Q.setScript("LOAD=quests/"+name+".quest",true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 				{
-					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
+					mob.tell(_("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS."));
 					return null;
 				}
 				CMLib.quests().addQuest(Q);

@@ -72,7 +72,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell("You are way too drowsy.");
+					mob.tell(_("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
 				else
-					mob.tell("You feel less drowsy.");
+					mob.tell(_("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);
 			}
 		}
@@ -139,7 +139,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away from your target to whomp!");
+			mob.tell(_("You are too far away from your target to whomp!"));
 			return false;
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))

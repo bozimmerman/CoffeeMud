@@ -59,7 +59,7 @@ public class Spell_MagicalAura extends Spell
 			return;
 		if(canBeUninvoked())
 			if(affected instanceof MOB)
-				((MOB)affected).tell("Your magical aura fades.");
+				((MOB)affected).tell(_("Your magical aura fades."));
 
 		super.unInvoke();
 

@@ -54,7 +54,7 @@ public class Cloak extends StdCommand
 		   if(A!=null)
 			   A.unInvoke();
 		   else
-			   mob.tell("You are not cloaked!");
+			   mob.tell(_("You are not cloaked!"));
 		   return false;
 		}
 		else
@@ -62,7 +62,7 @@ public class Cloak extends StdCommand
 		{
 			if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),PhyStats.IS_NOT_SEEN)))
 			{
-				mob.tell("You are already cloaked!");
+				mob.tell(_("You are already cloaked!"));
 				return false;
 			}
 		}
@@ -83,10 +83,10 @@ public class Cloak extends StdCommand
 
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
-			mob.tell("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'.");
+			mob.tell(_("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'."));
 			return false;
 		}
-		mob.tell("Cloaking is not available!");
+		mob.tell(_("Cloaking is not available!"));
 		return false;
 	}
 

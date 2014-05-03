@@ -54,7 +54,7 @@ public class Spell_DetectAmbush extends Spell
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You are no longer detecting ambushes.");
+			mob.tell(_("You are no longer detecting ambushes."));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class Spell_DetectAmbush extends Spell
 			lastRoom=R;
 			if(found)
 			{
-				mob.tell("Potential danger in that direction stops you for a second.");
+				mob.tell(_("Potential danger in that direction stops you for a second."));
 				return false;
 			}
 		}

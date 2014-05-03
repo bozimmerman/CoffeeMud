@@ -56,7 +56,7 @@ public class Spell_TeleportObject extends Spell
 		final Room oldRoom=mob.location();
 		if(commands.size()<2)
 		{
-			mob.tell("Teleport what object to what place or person?");
+			mob.tell(_("Teleport what object to what place or person?"));
 			return false;
 		}
 		final String objectName=(String)commands.firstElement();
@@ -97,7 +97,7 @@ public class Spell_TeleportObject extends Spell
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 
@@ -120,7 +120,7 @@ public class Spell_TeleportObject extends Spell
 
 		if((newRoom==null)||(newRoom==oldRoom))
 		{
-			mob.tell("Your magic seems unable to send anything there.");
+			mob.tell(_("Your magic seems unable to send anything there."));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Spell_TeleportObject extends Spell
 				newRoom.showOthers(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) out of nowhere!");
 			}
 			else
-				mob.tell("Nothing happens.");
+				mob.tell(_("Nothing happens."));
 		}
 		// return whether it worked
 		return success;

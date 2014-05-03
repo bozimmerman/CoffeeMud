@@ -167,7 +167,7 @@ public class Chant_SnatchLight extends Chant
 
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			mob.tell("Your ability to snatch light dissipates.");
+			mob.tell(_("Your ability to snatch light dissipates."));
 			if(mob.location()!=null)
 			{
 				mob.location().recoverRoomStats();

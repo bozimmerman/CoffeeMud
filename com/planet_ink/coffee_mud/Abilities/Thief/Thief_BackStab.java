@@ -81,7 +81,7 @@ public class Thief_BackStab extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Backstab whom?");
+			mob.tell(_("Backstab whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -99,7 +99,7 @@ public class Thief_BackStab extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy to focus on backstabbing right now.");
+			mob.tell(_("You are too busy to focus on backstabbing right now."));
 			return false;
 		}
 

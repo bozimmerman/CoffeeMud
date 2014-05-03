@@ -54,7 +54,7 @@ public class Bomb_Explosive extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_COAL))
 		{
 			if(mob!=null)
-				mob.tell("You need some coal to make this out of.");
+				mob.tell(_("You need some coal to make this out of."));
 			return false;
 		}
 		return true;

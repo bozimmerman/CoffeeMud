@@ -46,7 +46,7 @@ public class Package extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Package what?");
+			mob.tell(_("Package what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -98,7 +98,7 @@ public class Package extends StdCommand
 		if(thePackage==null) return false;
 		if(!thePackage.isPackagable(V))
 		{
-			mob.tell("All items in a package must be absolutely identical.  Some here are not.");
+			mob.tell(_("All items in a package must be absolutely identical.  Some here are not."));
 			return false;
 		}
 		Item getThis=null;

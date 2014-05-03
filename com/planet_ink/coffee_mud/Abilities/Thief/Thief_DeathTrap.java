@@ -158,12 +158,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());
 		if(amount<100)
 		{
-			mob.tell("You need 100 pounds of raw metal to build this trap.");
+			mob.tell(_("You need 100 pounds of raw metal to build this trap."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy to get that done right now.");
+			mob.tell(_("You are too busy to get that done right now."));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell("You have set the trap.");
+				mob.tell(_("You have set the trap."));
 				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 				final Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
 				if(T!=null) T.setMiscText(mob.Name());
@@ -196,7 +196,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				}
 				else
 				{
-					mob.tell("You fail in your attempt to set the death trap.");
+					mob.tell(_("You fail in your attempt to set the death trap."));
 				}
 			}
 		}

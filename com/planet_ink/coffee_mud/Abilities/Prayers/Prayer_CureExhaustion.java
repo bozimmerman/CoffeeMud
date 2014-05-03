@@ -89,7 +89,7 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 				final int healing=CMLib.dice().roll(5,adjustedLevel(mob,asLevel),20);
 				target.curState().setFatigue(0);
 				target.curState().adjMovement(healing,target.maxState());
-				target.tell("You feel pretty invigorated!");
+				target.tell(_("You feel pretty invigorated!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}

@@ -83,7 +83,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 		if(target==null) return false;
 		if(target.charStats().getBodyPart(Race.BODY_WING)<=0)
 		{
-			mob.tell("You can't flap without wings.");
+			mob.tell(_("You can't flap without wings."));
 			return false;
 		}
 

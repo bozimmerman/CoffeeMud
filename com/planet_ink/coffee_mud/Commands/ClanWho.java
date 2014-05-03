@@ -61,7 +61,7 @@ public class ClanWho extends Who
 				clanList.add(c.first.clanID());
 			if(clanList.size()==0)
 			{
-				mob.tell("You need to specify a clan.");
+				mob.tell(_("You need to specify a clan."));
 				return false;
 			}
 		}

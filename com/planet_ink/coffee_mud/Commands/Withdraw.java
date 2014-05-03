@@ -52,7 +52,7 @@ public class Withdraw extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Withdraw what or how much?");
+			mob.tell(_("Withdraw what or how much?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -68,7 +68,7 @@ public class Withdraw extends StdCommand
 			{
 				if(denomination==0.0)
 				{
-					mob.tell("Withdraw how much?");
+					mob.tell(_("Withdraw how much?"));
 					return false;
 				}
 				thisThang=((Banker)SHOP).findDepositInventory(accountName,""+Integer.MAX_VALUE);
@@ -93,7 +93,7 @@ public class Withdraw extends StdCommand
 							thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 						else
 						{
-							mob.tell("Withdraw how much?");
+							mob.tell(_("Withdraw how much?"));
 							return false;
 						}
 					}
@@ -122,7 +122,7 @@ public class Withdraw extends StdCommand
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell("That doesn't appear to be available.  Try LIST.");
+			mob.tell(_("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";

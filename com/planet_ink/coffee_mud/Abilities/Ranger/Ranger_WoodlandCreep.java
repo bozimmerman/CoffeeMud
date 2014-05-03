@@ -100,13 +100,13 @@ public class Ranger_WoodlandCreep extends StdAbility
 
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already creeping around.");
+			mob.tell(_("You are already creeping around."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&(!auto))
 		{
-			mob.tell("You don't know how to creep around in a place like this.");
+			mob.tell(_("You don't know how to creep around in a place like this."));
 			return false;
 		}
 

@@ -654,7 +654,7 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell("You don't see them here.");
+					mob.tell(_("You don't see them here."));
 				else
 					mob.tell("You don't see anyone called '"+targetName+"' here.");
 			}
@@ -731,7 +731,7 @@ public class StdAbility implements Ability
 				   ||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
-				mob.tell("You don't see that here.");
+				mob.tell(_("You don't see that here."));
 			else
 			if(!CMLib.flags().isSleeping(mob))
 				mob.tell("You don't see '"+targetName+"' here.");
@@ -799,12 +799,12 @@ public class StdAbility implements Ability
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			if(targetName.length()==0)
-				mob.tell("You need to be more specific.");
+				mob.tell(_("You need to be more specific."));
 			else
 			if((target==null)||(target instanceof Item))
 			{
 				if(targetName.trim().length()==0)
-					mob.tell("You don't see that here.");
+					mob.tell(_("You don't see that here."));
 				else
 				if(!CMLib.flags().isSleeping(mob))
 					mob.tell("You don't see anything called '"+targetName+"' here.");
@@ -1182,7 +1182,7 @@ public class StdAbility implements Ability
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			   &&(CMLib.flags().isBound(mob)))
 			{
-				mob.tell("You are bound!");
+				mob.tell(_("You are bound!"));
 				return false;
 			}
 
@@ -1190,25 +1190,25 @@ public class StdAbility implements Ability
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-					mob.tell("You must be at full mana to do that.");
+					mob.tell(_("You must be at full mana to do that."));
 				else
-					mob.tell("You don't have enough mana to do that.");
+					mob.tell(_("You don't have enough mana to do that."));
 				return false;
 			}
 			if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 			{
 				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-					mob.tell("You must be at full movement to do that.");
+					mob.tell(_("You must be at full movement to do that."));
 				else
-					mob.tell("You don't have enough movement to do that.  You are too tired.");
+					mob.tell(_("You don't have enough movement to do that.  You are too tired."));
 				return false;
 			}
 			if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 			{
 				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-					mob.tell("You must be at full health to do that.");
+					mob.tell(_("You must be at full health to do that."));
 				else
-					mob.tell("You don't have enough hit points to do that.");
+					mob.tell(_("You don't have enough hit points to do that."));
 				return false;
 			}
 
@@ -1217,12 +1217,12 @@ public class StdAbility implements Ability
 				if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
 				{
 					if(minCastWaitTime()<=1000)
-						mob.tell("You need a second to recover before doing that again.");
+						mob.tell(_("You need a second to recover before doing that again."));
 					else
 					if(minCastWaitTime()<=5000)
-						mob.tell("You need a few seconds to recover before doing that again.");
+						mob.tell(_("You need a few seconds to recover before doing that again."));
 					else
-						mob.tell("You need awhile to recover before doing that again.");
+						mob.tell(_("You need awhile to recover before doing that again."));
 					return false;
 				}
 			}
@@ -1458,20 +1458,20 @@ public class StdAbility implements Ability
 	{
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			teacher.tell("You are refusing to teach right now.");
+			teacher.tell(_("You are refusing to teach right now."));
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 		{
-			teacher.tell("You need to stand up to teach.");
+			teacher.tell(_("You need to stand up to teach."));
 			student.tell(teacher.name()+" needs to stand up to teach.");
 			return false;
 		}
 		if(teacher.isInCombat())
 		{
 			student.tell(teacher.name()+" seems busy right now.");
-			teacher.tell("Not while you are fighting!");
+			teacher.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		final Ability yourAbility=teacher.fetchAbility(ID());
@@ -1513,7 +1513,7 @@ public class StdAbility implements Ability
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
-			student.tell("You are refusing training at this time.");
+			student.tell(_("You are refusing training at this time."));
 			return false;
 		}
 		final int qLevel=CMLib.ableMapper().qualifyingLevel(student,this);
@@ -1565,19 +1565,19 @@ public class StdAbility implements Ability
 		else
 		{
 			student.tell(teacher.name()+" does not know anything about that.");
-			teacher.tell("You don't know that.");
+			teacher.tell(_("You don't know that."));
 			return false;
 		}
 		if(student.isInCombat())
 		{
 			teacher.tell(student.name()+" seems busy right now.");
-			student.tell("Not while you are fighting!");
+			student.tell(_("Not while you are fighting!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
 		{
-			student.tell("You need to stand up and be alert to learn.");
+			student.tell(_("You need to stand up and be alert to learn."));
 			teacher.tell(student.name()+" needs to stand up to be taught about that.");
 			return false;
 		}
@@ -1637,13 +1637,13 @@ public class StdAbility implements Ability
 		if((practicesToPractice(student)>0)&&(student.getPractices()<practicesToPractice(student)))
 		{
 			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
-			student.tell("You do not have enough practices.");
+			student.tell(_("You do not have enough practices."));
 			return false;
 		}
 
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			teacher.tell("You are refusing to teach right now.");
+			teacher.tell(_("You are refusing to teach right now."));
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
@@ -1651,7 +1651,7 @@ public class StdAbility implements Ability
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
-			student.tell("You are refusing training at this time.");
+			student.tell(_("You are refusing training at this time."));
 			return false;
 		}
 
@@ -1695,14 +1695,14 @@ public class StdAbility implements Ability
 		}
 		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
 		{
-			student.tell("You need to stand up to practice.");
+			student.tell(_("You need to stand up to practice."));
 			teacher.tell(student.name()+" needs to stand up to practice that.");
 			return false;
 		}
 		if(student.isInCombat())
 		{
 			teacher.tell(student.name()+" seems busy right now.");
-			student.tell("Not while you are fighting!");
+			student.tell(_("Not while you are fighting!"));
 			return false;
 		}
 

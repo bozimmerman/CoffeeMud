@@ -55,7 +55,7 @@ public class Prayer_Maladiction extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your maladiction fades.");
+			mob.tell(_("Your maladiction fades."));
 	}
 
 	@Override

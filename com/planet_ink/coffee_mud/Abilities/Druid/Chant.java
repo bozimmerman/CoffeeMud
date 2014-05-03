@@ -119,7 +119,7 @@ public class Chant extends StdAbility
 		{
 			if(!appropriateToMyFactions(mob))
 			{
-				mob.tell("Extreme emotions disrupt your chant.");
+				mob.tell(_("Extreme emotions disrupt your chant."));
 				return false;
 			}
 			else

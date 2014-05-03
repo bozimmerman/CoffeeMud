@@ -66,7 +66,7 @@ public class Thief_Mug extends ThiefSkill
 		final MOB target=mob.getVictim();
 		if(!mob.isInCombat())
 		{
-			mob.tell("You can only mug someone you are fighting!");
+			mob.tell(_("You can only mug someone you are fighting!"));
 			return false;
 		}
 		String itemToSteal="all";

@@ -91,7 +91,7 @@ public class Spell_Delay extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify what arcane spell to delay, and any necessary parameters.");
+			mob.tell(_("You must specify what arcane spell to delay, and any necessary parameters."));
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
@@ -101,7 +101,7 @@ public class Spell_Delay extends Spell
 		{
 			parameters=null;
 			shooter=null;
-			mob.tell("You don't know any arcane spell by that name.");
+			mob.tell(_("You don't know any arcane spell by that name."));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Spell_Delay extends Spell
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
-				mob.tell("You cannot delay that spell here -- there are other players present!");
+				mob.tell(_("You cannot delay that spell here -- there are other players present!"));
 				return false;
 			}
 		}
@@ -144,7 +144,7 @@ public class Spell_Delay extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell("You hear a clock start ticking down in your head...20...19...");
+				mob.tell(_("You hear a clock start ticking down in your head...20...19..."));
 				beneficialAffect(mob,mob.location(),asLevel,5);
 				shooter=null;
 				parameters=null;

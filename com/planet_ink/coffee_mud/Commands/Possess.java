@@ -66,7 +66,7 @@ public class Possess extends StdCommand
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell("You don't see them here.");
+					mob.tell(_("You don't see them here."));
 				else
 					mob.tell("You don't see '"+targetName+"' here.");
 			}
@@ -82,7 +82,7 @@ public class Possess extends StdCommand
 	{
 		if(mob.soulMate()!=null)
 		{
-			mob.tell("You are already possessing someone.  Quit back to your body first!");
+			mob.tell(_("You are already possessing someone.  Quit back to your body first!"));
 			return false;
 		}
 		commands.removeElementAt(0);

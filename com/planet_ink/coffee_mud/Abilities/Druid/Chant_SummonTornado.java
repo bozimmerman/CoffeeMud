@@ -78,7 +78,7 @@ public class Chant_SummonTornado extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
@@ -86,7 +86,7 @@ public class Chant_SummonTornado extends Chant
 		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
 		&&(!auto))
 		{
-			mob.tell("This chant requires wind, a thunderstorm, or a blizzard!");
+			mob.tell(_("This chant requires wind, a thunderstorm, or a blizzard!"));
 			return false;
 		}
 
@@ -220,7 +220,7 @@ public class Chant_SummonTornado extends Chant
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(CMath.div(damage,2.0));
 							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
-							//if(R!=mob.location()) M.tell("Wait a minute! Where are you?");
+							//if(R!=mob.location()) M.tell(_("Wait a minute! Where are you?"));
 						}
 					}
 				}

@@ -108,7 +108,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			if((!(body instanceof DeadBody))
 			||(((DeadBody)body).mobName().length()==0))
 			{
-				mob.tell("You can't resurrect that.");
+				mob.tell(_("You can't resurrect that."));
 				return false;
 			}
 			playerCorpse=((DeadBody)body).playerCorpse();

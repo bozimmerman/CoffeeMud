@@ -44,7 +44,7 @@ public class Spell_Daydream extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Invoke a daydream about what?");
+			mob.tell(_("Invoke a daydream about what?"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

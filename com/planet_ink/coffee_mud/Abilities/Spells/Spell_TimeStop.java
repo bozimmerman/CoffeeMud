@@ -105,9 +105,9 @@ public class Spell_TimeStop extends Spell
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
 				if(msg.source()==invoker)
-					msg.source().tell("You cannot travel beyond the time stopped area.");
+					msg.source().tell(_("You cannot travel beyond the time stopped area."));
 				else
-					msg.source().tell("Nothing just happened.  You didn't do that.");
+					msg.source().tell(_("Nothing just happened.  You didn't do that."));
 				return false;
 			default:
 				if((msg.source() == invoker)
@@ -125,7 +125,7 @@ public class Spell_TimeStop extends Spell
 				   &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
-					msg.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
+					msg.source().tell(_("Time is stopped. Nothing just happened.  You didn't do that."));
 					return false;
 				}
 			}

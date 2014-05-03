@@ -67,7 +67,7 @@ public class Spell_Cloudkill extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You feel less intoxicated.");
+			mob.tell(_("You feel less intoxicated."));
 			CMLib.commands().postStand(mob,true);
 			if((invoker!=null)
 			&&(!mob.isInCombat())
@@ -84,7 +84,7 @@ public class Spell_Cloudkill extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth clouding.");
+			mob.tell(_("There doesn't appear to be anyone here worth clouding."));
 			return false;
 		}
 

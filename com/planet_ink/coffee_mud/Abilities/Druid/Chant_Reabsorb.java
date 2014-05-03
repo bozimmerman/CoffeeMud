@@ -85,7 +85,7 @@ public class Chant_Reabsorb extends Chant
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))
 			{
-				mob.tell("You are not allowed to reabsorb a player corpse.");
+				mob.tell(_("You are not allowed to reabsorb a player corpse."));
 				return false;
 			}
 		}
@@ -106,7 +106,7 @@ public class Chant_Reabsorb extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("That magic won't work here.");
+			mob.tell(_("That magic won't work here."));
 			return false;
 		}
 

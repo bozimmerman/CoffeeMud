@@ -68,7 +68,7 @@ public class Archon_Freeze extends ArchonSkill
 			case CMMsg.TYP_ADVANCE:
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
-				mob.tell("You are frozen, and cant go anywhere.");
+				mob.tell(_("You are frozen, and cant go anywhere."));
 				return false;
 			}
 		}
@@ -85,7 +85,7 @@ public class Archon_Freeze extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You are no longer freezed!");
+			mob.tell(_("You are no longer freezed!"));
 	}
 
 	@Override

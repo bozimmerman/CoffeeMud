@@ -46,7 +46,7 @@ public class Help extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell("No help is available.");
+			mob.tell(_("No help is available."));
 			return false;
 		}
 		StringBuilder thisTag=null;

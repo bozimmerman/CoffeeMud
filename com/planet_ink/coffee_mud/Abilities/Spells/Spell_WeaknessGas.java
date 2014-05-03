@@ -70,7 +70,7 @@ public class Spell_WeaknessGas extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your weakness to gasses is now gone.");
+			mob.tell(_("Your weakness to gasses is now gone."));
 
 		super.unInvoke();
 

@@ -55,7 +55,7 @@ public class Prayer_PreserveBody extends Prayer
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell("You can't preserve that.");
+			mob.tell(_("You can't preserve that."));
 			return false;
 		}
 

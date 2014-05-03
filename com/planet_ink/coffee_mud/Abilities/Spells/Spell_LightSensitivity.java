@@ -65,7 +65,7 @@ public class Spell_LightSensitivity extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your light sensitivity returns to normal.");
+			mob.tell(_("Your light sensitivity returns to normal."));
 	}
 
 	@Override

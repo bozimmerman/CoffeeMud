@@ -67,7 +67,7 @@ public class Thief_Detection extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell("You stop detecting.");
+			M.tell(_("You stop detecting."));
 	}
 
 	@Override

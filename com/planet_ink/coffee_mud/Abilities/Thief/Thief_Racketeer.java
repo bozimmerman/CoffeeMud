@@ -127,7 +127,7 @@ public class Thief_Racketeer extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Get protection money from whom?");
+			mob.tell(_("Get protection money from whom?"));
 			return false;
 		}
 		MOB target=null;
@@ -142,7 +142,7 @@ public class Thief_Racketeer extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy to racketeer right now.");
+			mob.tell(_("You are too busy to racketeer right now."));
 			return false;
 		}
 		if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)

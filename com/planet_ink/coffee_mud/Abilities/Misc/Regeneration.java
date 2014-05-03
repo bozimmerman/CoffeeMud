@@ -175,7 +175,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You feel less regenerative.");
+			mob.tell(_("You feel less regenerative."));
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(commands.size()<2)
 		{
-			mob.tell("Memorize what from what?");
+			mob.tell(_("Memorize what from what?"));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
@@ -63,13 +63,13 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't memorize from that.");
+			mob.tell(_("You can't memorize from that."));
 			return false;
 		}
 
 		if(((Scroll)target).usesRemaining()<1)
 		{
-			mob.tell("The scroll appears to be faded.");
+			mob.tell(_("The scroll appears to be faded."));
 			return false;
 		}
 

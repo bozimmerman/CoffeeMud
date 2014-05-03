@@ -90,7 +90,7 @@ public class Spell_AcidFog extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth melting.");
+			mob.tell(_("There doesn't appear to be anyone here worth melting."));
 			return false;
 		}
 

@@ -68,7 +68,7 @@ public class ClanApply extends StdCommand
 						mob.tell("You are already a member of "+p.first.getName()+". You need to resign before you can apply to another.");
 					}
 					else
-						mob.tell("You are not elligible to apply to this clan.");
+						mob.tell(_("You are not elligible to apply to this clan."));
 					return false;
 				}
 

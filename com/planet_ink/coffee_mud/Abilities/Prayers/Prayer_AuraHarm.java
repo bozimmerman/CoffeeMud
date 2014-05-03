@@ -130,7 +130,7 @@ public class Prayer_AuraHarm extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("The aura of harm is already here.");
+			mob.tell(_("The aura of harm is already here."));
 			return false;
 		}
 		if(target.fetchEffect("Prayer_AuraHeal")!=null)

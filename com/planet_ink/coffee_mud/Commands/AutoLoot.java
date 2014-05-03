@@ -47,12 +47,12 @@ public class AutoLoot extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOLOOT))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
-			mob.tell("Autolooting has been turned off.");
+			mob.tell(_("Autolooting has been turned off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
-			mob.tell("Autolooting has been turned on.");
+			mob.tell(_("Autolooting has been turned on."));
 		}
 		return false;
 	}

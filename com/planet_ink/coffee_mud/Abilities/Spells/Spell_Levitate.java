@@ -63,7 +63,7 @@ public class Spell_Levitate extends Spell
 			||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				mob.tell("You can't seem to go anywhere!");
+				mob.tell(_("You can't seem to go anywhere!"));
 				return false;
 			}
 		}
@@ -116,7 +116,7 @@ public class Spell_Levitate extends Spell
 		{
 			if(mob.isMine(target))
 			{
-				mob.tell("You'd better set it down first!");
+				mob.tell(_("You'd better set it down first!"));
 				return false;
 			}
 		}

@@ -44,7 +44,7 @@ public class Enter extends Go
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell("Enter what or where? Try LOOK or EXITS.");
+			mob.tell(_("Enter what or where? Try LOOK or EXITS."));
 			return false;
 		}
 		Environmental enterThis=null;

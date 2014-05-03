@@ -92,7 +92,7 @@ public class Prayer_CureLight extends Prayer implements MendingSkill
 				final int oldHP=target.curState().getHitPoints();
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				if(target.curState().getHitPoints()>oldHP)
-					target.tell("You feel a little better!");
+					target.tell(_("You feel a little better!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}

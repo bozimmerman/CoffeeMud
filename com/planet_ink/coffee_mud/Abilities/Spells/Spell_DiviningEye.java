@@ -48,14 +48,14 @@ public class Spell_DiviningEye extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("You must specify a divining spell and any parameters for it.");
+			mob.tell(_("You must specify a divining spell and any parameters for it."));
 			return false;
 		}
 
 		final Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
-			mob.tell("This spell requires an active prying eye.");
+			mob.tell(_("This spell requires an active prying eye."));
 			return false;
 		}
 

@@ -117,7 +117,7 @@ public class Chant_VolcanicChasm extends Chant
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell("This chant only works in caves.");
+			mob.tell(_("This chant only works in caves."));
 			return false;
 		}
 

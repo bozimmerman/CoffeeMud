@@ -49,7 +49,7 @@ public class PollCmd extends StdCommand
 		{
 			if((commands!=null)&&(mypolls[1].size()==0))
 			{
-				mob.tell("No polls are available at this time.");
+				mob.tell(_("No polls are available at this time."));
 				return false;
 			}
 			else
@@ -89,7 +89,7 @@ public class PollCmd extends StdCommand
 		}
 
 		if(mypolls[2].size()>0)
-			mob.tell("\n\r^HPrevious polling results:^N\n\r");
+			mob.tell(_("\n\r^HPrevious polling results:^N\n\r"));
 		int i=0;
 		for(final Poll P : mypolls[2])
 		{

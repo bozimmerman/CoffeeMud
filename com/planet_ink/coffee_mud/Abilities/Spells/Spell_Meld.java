@@ -82,7 +82,7 @@ public class Spell_Meld extends Spell
 		//
 		if(commands.size()<2)
 		{
-			mob.tell("Meld what and what else together?");
+			mob.tell(_("Meld what and what else together?"));
 			return false;
 		}
 		final Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
@@ -106,12 +106,12 @@ public class Spell_Meld extends Spell
 			final Armor armorTwo=(Armor)itemTwo;
 			if(armorOne.getClothingLayer()!=armorTwo.getClothingLayer())
 			{
-				mob.tell("This spell can only be cast on items worn at the same layer.");
+				mob.tell(_("This spell can only be cast on items worn at the same layer."));
 				return false;
 			}
 			if(armorOne.getLayerAttributes()!=armorTwo.getLayerAttributes())
 			{
-				mob.tell("Those items are too different to meld together.");
+				mob.tell(_("Those items are too different to meld together."));
 				return false;
 			}
 
@@ -169,13 +169,13 @@ public class Spell_Meld extends Spell
 		}
 		else
 		{
-			mob.tell("You can't meld those together.");
+			mob.tell(_("You can't meld those together."));
 			return false;
 		}
 
 		if(itemOne==itemTwo)
 		{
-			mob.tell("You can't meld something to itself.");
+			mob.tell(_("You can't meld something to itself."));
 			return false;
 		}
 

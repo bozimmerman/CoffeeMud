@@ -50,18 +50,18 @@ public class Fighter_Cartwheel extends FighterSkill
 		final MOB victim=mob.getVictim();
 		if(victim==null)
 		{
-			mob.tell("You can only do this in combat!");
+			mob.tell(_("You can only do this in combat!"));
 			return false;
 		}
 		if(mob.rangeToTarget()>=mob.location().maxRange())
 		{
-			mob.tell("You can not get any further away here!");
+			mob.tell(_("You can not get any further away here!"));
 			return false;
 		}
 		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
 		||(mob.charStats().getBodyPart(Race.BODY_ARM)<=1))
 		{
-			mob.tell("You need arms and legs to do this.");
+			mob.tell(_("You need arms and legs to do this."));
 			return false;
 		}
 

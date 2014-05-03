@@ -94,7 +94,7 @@ public class TreeGolem extends StdRace
 		{
 			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 			{
-				msg.source().tell("You can't really go anywhere -- you are rooted!");
+				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

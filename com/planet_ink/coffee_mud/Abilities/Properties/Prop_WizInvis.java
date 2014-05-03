@@ -128,7 +128,7 @@ public class Prop_WizInvis extends Property
 			}
 			else
 				being.recoverPhyStats();
-			mob.tell("You begin to fade back into view.");
+			mob.tell(_("You begin to fade back into view."));
 		}
 	}
 

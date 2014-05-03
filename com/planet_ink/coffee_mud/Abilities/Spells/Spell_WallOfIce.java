@@ -138,7 +138,7 @@ public class Spell_WallOfIce extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell("You really should be in ranged combat to cast this.");
+			mob.tell(_("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -146,7 +146,7 @@ public class Spell_WallOfIce extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell("There is already a wall of ice here.");
+				mob.tell(_("There is already a wall of ice here."));
 				return false;
 			}
 		}

@@ -73,7 +73,7 @@ public class Poison_Caffeine extends Poison {
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)&&((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP)))
 		{
-			mob.tell("You're too caffeinated for that!");
+			mob.tell(_("You're too caffeinated for that!"));
 			return false;
 		}
 		return true;

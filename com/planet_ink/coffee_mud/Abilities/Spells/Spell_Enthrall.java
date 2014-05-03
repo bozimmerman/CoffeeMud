@@ -105,7 +105,7 @@ public class Spell_Enthrall extends Spell
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell("You don't want to leave your friend.");
+			mob.tell(_("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -196,7 +196,7 @@ public class Spell_Enthrall extends Spell
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
-			mob.tell("You can't speak!");
+			mob.tell(_("You can't speak!"));
 			return false;
 		}
 

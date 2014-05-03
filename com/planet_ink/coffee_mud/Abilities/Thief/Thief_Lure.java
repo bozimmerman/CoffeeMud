@@ -70,12 +70,12 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Lure whom which direction?");
+			mob.tell(_("Lure whom which direction?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		String str=(String)commands.lastElement();

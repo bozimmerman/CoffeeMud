@@ -113,7 +113,7 @@ public class Get extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell("Get what?");
+			mob.tell(_("Get what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -212,7 +212,7 @@ public class Get extends StdCommand
 			}
 			else
 			if(containerName.equalsIgnoreCase("all"))
-				mob.tell("You don't see anything here.");
+				mob.tell(_("You don't see anything here."));
 			else
 			{
 				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);

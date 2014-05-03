@@ -133,14 +133,14 @@ public class Thief_Mark extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Who would you like to mark?");
+			mob.tell(_("Who would you like to mark?"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You cannot mark yourself!");
+			mob.tell(_("You cannot mark yourself!"));
 			return false;
 		}
 		Ability A=mob.fetchEffect(ID());
@@ -174,7 +174,7 @@ public class Thief_Mark extends ThiefSkill
 			((Thief_Mark)A).mark=target;
 			((Thief_Mark)A).ticks=0;
 			A.setMiscText(target.Name()+"/0");
-			mob.tell("You may use the mark skill again to unmark them.");
+			mob.tell(_("You may use the mark skill again to unmark them."));
 		}
 		return success;
 	}

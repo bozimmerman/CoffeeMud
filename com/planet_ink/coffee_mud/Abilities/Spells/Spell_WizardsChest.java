@@ -100,7 +100,7 @@ public class Spell_WizardsChest extends Spell
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Enchant what?.");
+			mob.tell(_("Enchant what?."));
 			return false;
 		}
 		Physical target=null;
@@ -109,7 +109,7 @@ public class Spell_WizardsChest extends Spell
 
 		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasALid()))
 		{
-			mob.tell("You can only enchant the locks on open containers with lids.");
+			mob.tell(_("You can only enchant the locks on open containers with lids."));
 			return false;
 		}
 

@@ -57,13 +57,13 @@ public class Spell_Flagportation extends Spell
 
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell(_("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell("You are not authorized to draw from the power of your clan.");
+			mob.tell(_("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -94,13 +94,13 @@ public class Spell_Flagportation extends Spell
 		}catch(final NoSuchElementException nse){}
 		if(candidates.size()==0)
 		{
-			mob.tell("You don't have any flags to flagportate to!");
+			mob.tell(_("You don't have any flags to flagportate to!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 
@@ -120,7 +120,7 @@ public class Spell_Flagportation extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell("Your magic seems unable to take you to that flag.");
+			mob.tell(_("Your magic seems unable to take you to that flag."));
 			return false;
 		}
 
@@ -162,7 +162,7 @@ public class Spell_Flagportation extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell("\n\r\n\r");
+					follower.tell(_("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

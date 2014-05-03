@@ -57,7 +57,7 @@ public class Play_Blues extends Play
 				||msg.tool().Name().equals("SEX <T-NAME>"))))
 			{
 				if(msg.amISource(myChar))
-					myChar.tell("You really don't feel like it.");
+					myChar.tell(_("You really don't feel like it."));
 				else
 				if(msg.amITarget(myChar))
 					msg.source().tell(myChar.name()+" doesn't look like "+myChar.charStats().heshe()+" feels like it.");

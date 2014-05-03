@@ -123,7 +123,7 @@ public class Druid_MyPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell("Your plant senses fail you.");
+			mob.tell(_("Your plant senses fail you."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
@@ -156,7 +156,7 @@ public class Druid_MyPlants extends StdAbility
 					}
 				}
 				if(V.size()==0)
-					mob.tell("You don't sense that there are ANY plants which are attuned to you.");
+					mob.tell(_("You don't sense that there are ANY plants which are attuned to you."));
 				else
 					mob.tell("### Plant Name           Location\n\r"+yourPlants.toString());
 			}

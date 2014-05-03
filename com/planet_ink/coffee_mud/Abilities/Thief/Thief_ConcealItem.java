@@ -74,7 +74,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What item would you like to conceal?");
+			mob.tell(_("What item would you like to conceal?"));
 			return false;
 		}
 		final Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -82,7 +82,7 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
 		{
-			mob.tell("You aren't good enough to conceal anything that large.");
+			mob.tell(_("You aren't good enough to conceal anything that large."));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell("You may not conceal that.");
+			mob.tell(_("You may not conceal that."));
 			return false;
 		}
 

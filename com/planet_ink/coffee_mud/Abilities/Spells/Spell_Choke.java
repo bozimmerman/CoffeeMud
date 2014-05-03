@@ -59,7 +59,7 @@ public class Spell_Choke extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to breathe easier.");
+			mob.tell(_("You begin to breathe easier."));
 	}
 
 	@Override

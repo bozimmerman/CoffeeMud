@@ -55,7 +55,7 @@ public class Thief_Peek extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Peek at whom?");
+			mob.tell(_("Peek at whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -63,7 +63,7 @@ public class Thief_Peek extends ThiefSkill
 
 		if(target==mob)
 		{
-			mob.tell("You cannot peek at yourself. Try Inventory.");
+			mob.tell(_("You cannot peek at yourself. Try Inventory."));
 			return false;
 		}
 

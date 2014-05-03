@@ -145,12 +145,12 @@ public class Prayer_PeaceRitual extends Prayer
 		clan1=CMLib.clans().findRivalrousClan(mob);
 		if(clan1==null)
 		{
-			mob.tell("You must belong to a clan to use this prayer.");
+			mob.tell(_("You must belong to a clan to use this prayer."));
 			return false;
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify the clan you wish to see peace with.");
+			mob.tell(_("You must specify the clan you wish to see peace with."));
 			return false;
 		}
 		final String clan2Name=CMParms.combine(commands,0);

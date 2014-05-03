@@ -72,12 +72,12 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to do this!");
+			mob.tell(_("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to try that!");
+			mob.tell(_("You are too far away to try that!"));
 			return false;
 		}
 		final Item w=mob.fetchWieldedItem();
@@ -86,7 +86,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell("You cannot coup de grace without a weapon!");
+				mob.tell(_("You cannot coup de grace without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
@@ -98,7 +98,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			}
 			if(mob.curState().getMovement()<150)
 			{
-				mob.tell("You don't have the energy to try it.");
+				mob.tell(_("You don't have the energy to try it."));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(mob.getVictim()))

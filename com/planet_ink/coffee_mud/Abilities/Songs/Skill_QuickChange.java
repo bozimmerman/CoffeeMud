@@ -149,7 +149,7 @@ public class Skill_QuickChange extends BardSkill
 				final List<PackedItem> mySavedGear=getAllPackedItems(mob.session());
 				packThese(myCurrentGear);
 				if(mySavedGear.size()==0)
-					mob.tell("That outfit is now tucked away for a quick change later on.");
+					mob.tell(_("That outfit is now tucked away for a quick change later on."));
 				else
 					wearThese(mob,mySavedGear);
 			}

@@ -84,7 +84,7 @@ public class Mount extends StdCommand
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 					{
-						mob.tell("Only the bound or servants can be mounted unwillingly.");
+						mob.tell(_("Only the bound or servants can be mounted unwillingly."));
 						return false;
 					}
 					RI=M;

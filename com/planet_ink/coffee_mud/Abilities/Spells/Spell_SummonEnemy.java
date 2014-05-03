@@ -101,7 +101,7 @@ public class Spell_SummonEnemy extends Spell
 						CMLib.tracking().wanderAway(target, false, true);
 				}
 				else
-					mob.tell("Your equal could not be summoned.");
+					mob.tell(_("Your equal could not be summoned."));
 			}
 		}
 		else

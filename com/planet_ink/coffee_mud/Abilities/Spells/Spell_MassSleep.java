@@ -61,7 +61,7 @@ public class Spell_MassSleep extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth putting to sleep.");
+			mob.tell(_("There doesn't appear to be anyone here worth putting to sleep."));
 			return false;
 		}
 

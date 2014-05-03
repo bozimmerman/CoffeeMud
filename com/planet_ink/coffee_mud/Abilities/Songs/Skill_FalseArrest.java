@@ -52,12 +52,12 @@ public class Skill_FalseArrest extends BardSkill
 		if(target==null) return false;
 		if(mob==target)
 		{
-			mob.tell("Arrest whom?!");
+			mob.tell(_("Arrest whom?!"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 

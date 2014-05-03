@@ -54,7 +54,7 @@ public class Chant_Rockfeet extends Chant
 			M=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
-			M.tell("Your hands and feet don't seem so heavy any more.");
+			M.tell(_("Your hands and feet don't seem so heavy any more."));
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public int castingQuality(MOB mob, Physical target)
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.tell("Your hands and feet feel extremely heavy!");
+					target.tell(_("Your hands and feet feel extremely heavy!"));
 				}
 			}
 		}

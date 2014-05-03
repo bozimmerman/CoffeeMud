@@ -56,7 +56,7 @@ public class Prayer_BrighteningAura extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your brightening aura fades.");
+			mob.tell(_("Your brightening aura fades."));
 	}
 
 	@Override

@@ -84,7 +84,7 @@ public class Chant_Treehouse extends Chant
 		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("There is already a treehouse above here!");
+			mob.tell(_("There is already a treehouse above here!"));
 			return false;
 		}
 		boolean isATree=((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WOODS)
@@ -96,18 +96,18 @@ public class Chant_Treehouse extends Chant
 			isATree=true;
 		if(!isATree)
 		{
-			mob.tell("There really aren't enough trees here to chant to.");
+			mob.tell(_("There really aren't enough trees here to chant to."));
 			return false;
 		}
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.UP)!=null)
 		&&(mob.location().getRoomInDir(Directions.UP).roomID().length()>0))
 		{
-			mob.tell("You can't create a treehouse here!");
+			mob.tell(_("You can't create a treehouse here!"));
 			return false;
 		}
 

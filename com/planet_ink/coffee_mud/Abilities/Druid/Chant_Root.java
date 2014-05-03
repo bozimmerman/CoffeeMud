@@ -71,7 +71,7 @@ public class Chant_Root extends Chant
 				{
 					if(!uprooted)
 					{
-						msg.source().tell("You can't really go anywhere -- you are rooted!");
+						msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
 						return false;
 					}
 					uprooted=false;

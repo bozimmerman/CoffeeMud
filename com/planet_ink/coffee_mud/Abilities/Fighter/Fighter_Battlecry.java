@@ -79,7 +79,7 @@ public class Fighter_Battlecry extends FighterSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You calm down a bit.");
+			mob.tell(_("You calm down a bit."));
 	}
 
 	@Override

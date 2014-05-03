@@ -70,7 +70,7 @@ public class Play_Charge extends Play
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))
 		{
-			mob.tell("Play charge at whom?");
+			mob.tell(_("Play charge at whom?"));
 			return false;
 		}
 		if(commands.size()==0)

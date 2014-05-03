@@ -842,7 +842,7 @@ public class Conquerable extends Arrest
 				||(CMLib.clans().getClan(holdingClan)==null)
 				||(!CMLib.clans().getClan(holdingClan).isWorshipConquest()))
 				{
-					msg.source().tell("Only a member of a conquering deity clan can pray for that here.");
+					msg.source().tell(_("Only a member of a conquering deity clan can pray for that here."));
 					return false;
 				}
 			}

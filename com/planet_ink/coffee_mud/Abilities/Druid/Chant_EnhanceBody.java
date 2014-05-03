@@ -65,7 +65,7 @@ public class Chant_EnhanceBody extends Chant
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your body doesn't feel quite so enhanced.");
+			mob.tell(_("Your body doesn't feel quite so enhanced."));
 	}
 
 

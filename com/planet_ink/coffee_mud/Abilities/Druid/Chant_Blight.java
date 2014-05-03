@@ -129,7 +129,7 @@ public class Chant_Blight extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already blighted.");
+			mob.tell(_("This place is already blighted."));
 			return false;
 		}
 

@@ -51,7 +51,7 @@ public class Fire extends StdCommand
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			target=null;
 		if(target==null)
-			mob.tell("Fire whom?");
+			mob.tell(_("Fire whom?"));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");

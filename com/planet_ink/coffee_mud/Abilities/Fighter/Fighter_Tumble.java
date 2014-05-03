@@ -112,18 +112,18 @@ public class Fighter_Tumble extends FighterSkill
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already tumbling.");
+			mob.tell(_("You are already tumbling."));
 			return false;
 		}
 
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell("You aren't in combat!");
+			mob.tell(_("You aren't in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobile(mob,true))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 

@@ -44,7 +44,7 @@ public class DumpFile extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("dumpfile {raw} username|all {filename1 ...}");
+			mob.tell(_("dumpfile {raw} username|all {filename1 ...}"));
 			return false;
 		}
 		commands.removeElementAt(0);

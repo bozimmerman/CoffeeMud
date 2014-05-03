@@ -70,7 +70,7 @@ public class Chant_Dragonsight extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You lose your dragonsight.");
+			mob.tell(_("You lose your dragonsight."));
 	}
 
 	@Override

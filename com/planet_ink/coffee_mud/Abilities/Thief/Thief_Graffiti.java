@@ -49,7 +49,7 @@ public class Thief_Graffiti extends ThiefSkill
 		final String str=CMParms.combine(commands,0);
 		if(str.length()==0)
 		{
-			mob.tell("What would you like to write here?");
+			mob.tell(_("What would you like to write here?"));
 			return false;
 		}
 		Room target=mob.location();
@@ -60,7 +60,7 @@ public class Thief_Graffiti extends ThiefSkill
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
-			mob.tell("You can't put graffiti here.");
+			mob.tell(_("You can't put graffiti here."));
 			return false;
 		}
 

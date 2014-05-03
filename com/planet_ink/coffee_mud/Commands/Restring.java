@@ -42,7 +42,7 @@ public class Restring extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 

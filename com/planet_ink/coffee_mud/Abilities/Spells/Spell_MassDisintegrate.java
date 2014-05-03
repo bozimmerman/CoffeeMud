@@ -50,7 +50,7 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(mob.location().numItems()==0)
 			{
-				mob.tell("There doesn't appear to be anyone here worth disintgrating.");
+				mob.tell(_("There doesn't appear to be anyone here worth disintgrating."));
 				return false;
 			}
 			h=new HashSet();

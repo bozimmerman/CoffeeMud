@@ -569,7 +569,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					if(finalR==null)
 					{
 						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
-						buyer.tell("Nowhere was found to dock your ship.  Please contact the administrators!.");
+						buyer.tell(_("Nowhere was found to dock your ship.  Please contact the administrators!."));
 					}
 					else
 					{

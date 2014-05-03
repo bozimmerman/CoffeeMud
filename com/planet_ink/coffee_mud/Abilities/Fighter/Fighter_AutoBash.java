@@ -107,7 +107,7 @@ public class Fighter_AutoBash extends FighterSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell("You are no longer automatically bashing opponents.");
+			mob.tell(_("You are no longer automatically bashing opponents."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -118,7 +118,7 @@ public class Fighter_AutoBash extends FighterSkill
 
 		if(success)
 		{
-			mob.tell("You will now automatically bash opponents when you fight.");
+			mob.tell(_("You will now automatically bash opponents when you fight."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();

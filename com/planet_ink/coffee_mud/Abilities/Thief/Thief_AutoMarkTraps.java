@@ -109,18 +109,18 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are no longer automatically marking traps.");
+			target.tell(_("You are no longer automatically marking traps."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_MarkTrapped")==null))
 		{
-			target.tell("You don't know how to mark traps yet!");
+			target.tell(_("You don't know how to mark traps yet!"));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_DetectTraps")==null))
 		{
-			target.tell("You don't know how to detect traps yet!");
+			target.tell(_("You don't know how to detect traps yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -129,7 +129,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 
 		if(success)
 		{
-			target.tell("You will now automatically mark traps when you enter a room.");
+			target.tell(_("You will now automatically mark traps when you enter a room."));
 			beneficialAffect(mob,target,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();

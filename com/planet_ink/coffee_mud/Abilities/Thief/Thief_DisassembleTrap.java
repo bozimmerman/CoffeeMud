@@ -54,7 +54,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 		final Hashtable traps=new Hashtable();
 		if(A==null)
 		{
-			mob.tell("You don't know how to remove traps.");
+			mob.tell(_("You don't know how to remove traps."));
 			return false;
 		}
 
@@ -73,7 +73,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			}
 		if(traps.size()==0)
 		{
-			mob.tell("Your attempt was unsuccessful.");
+			mob.tell(_("Your attempt was unsuccessful."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 				final List<Item> components=T.getTrapComponents();
 				if(components.size()==0)
 				{
-					mob.tell("You don't end up with any usable components.");
+					mob.tell(_("You don't end up with any usable components."));
 				}
 				else
 				{

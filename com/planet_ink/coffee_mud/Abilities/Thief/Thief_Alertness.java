@@ -96,7 +96,7 @@ public class Thief_Alertness extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell("You don't feel quite so alert any more.");
+			M.tell(_("You don't feel quite so alert any more."));
 	}
 
 	@Override

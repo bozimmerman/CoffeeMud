@@ -49,7 +49,7 @@ public class Take extends StdCommand
 		{
 			if(commands.size()<3)
 			{
-				mob.tell("Take what from whom?");
+				mob.tell(_("Take what from whom?"));
 				return false;
 			}
 			commands.removeElementAt(0);

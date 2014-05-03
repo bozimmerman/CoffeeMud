@@ -45,7 +45,7 @@ public class Knock extends StdCommand
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell("Knock on what?");
+			mob.tell(_("Knock on what?"));
 			return false;
 		}
 		final String knockWhat=CMParms.combine(commands,1).toUpperCase();
@@ -68,7 +68,7 @@ public class Knock extends StdCommand
 			Exit E=mob.location().getExitInDir(dir);
 			if(E==null)
 			{
-				mob.tell("Knock on what?");
+				mob.tell(_("Knock on what?"));
 				return false;
 			}
 			if(!E.hasADoor())

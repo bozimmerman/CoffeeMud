@@ -67,7 +67,7 @@ public class Disease_Depression extends Disease
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				mob.tell("You don't really feel like doing it right now.");
+				mob.tell(_("You don't really feel like doing it right now."));
 				return false;
 			}
 		}
@@ -96,11 +96,11 @@ public class Disease_Depression extends Disease
 
 		final MOB mob=(MOB)affected;
 		if(CMLib.dice().rollPercentage()==1)
-			mob.tell("You are hungry.");
+			mob.tell(_("You are hungry."));
 		if(mob.isInCombat()
 		&&(CMLib.dice().rollPercentage()<10))
 		{
-			mob.tell("Whats the point in fighting, really?");
+			mob.tell(_("Whats the point in fighting, really?"));
 			mob.makePeace();
 		}
 		if((!mob.isInCombat())

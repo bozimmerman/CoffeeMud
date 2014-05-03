@@ -57,7 +57,7 @@ public class Skill_Map extends StdSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You stop mapping.");
+			mob.tell(_("You stop mapping."));
 		map=null;
 	}
 
@@ -101,7 +101,7 @@ public class Skill_Map extends StdSkill
 		}
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell("You are too stupid to actually make a map.");
+			mob.tell(_("You are too stupid to actually make a map."));
 			return false;
 		}
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -110,13 +110,13 @@ public class Skill_Map extends StdSkill
 		Item item=target;
 		if(!item.isReadable())
 		{
-			mob.tell("You can't map on that.");
+			mob.tell(_("You can't map on that."));
 			return false;
 		}
 
 		if(item instanceof Scroll)
 		{
-			mob.tell("You can't map on a scroll.");
+			mob.tell(_("You can't map on a scroll."));
 			return false;
 		}
 
@@ -124,14 +124,14 @@ public class Skill_Map extends StdSkill
 		{
 			if(!item.ID().equals("BardMap"))
 			{
-				mob.tell("There's no more room to add to that map.");
+				mob.tell(_("There's no more room to add to that map."));
 				return false;
 			}
 		}
 		else
 		if(item.readableText().length()>0)
 		{
-			mob.tell("There's no more room to map on that.");
+			mob.tell(_("There's no more room to map on that."));
 			return false;
 		}
 

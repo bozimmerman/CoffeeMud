@@ -67,12 +67,12 @@ public class Chant_MeteorStrike extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth striking at.");
+			mob.tell(_("There doesn't appear to be anyone here worth striking at."));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to strike with meteors.");
+			mob.tell(_("You must be outdoors to strike with meteors."));
 			return false;
 		}
 

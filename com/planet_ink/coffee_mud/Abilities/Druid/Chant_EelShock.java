@@ -56,7 +56,7 @@ public class Chant_EelShock extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("<S-YOUPOSS> are no longer stunned.");
+				mob.tell(_("<S-YOUPOSS> are no longer stunned."));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Chant_EelShock extends Chant
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell("You are stunned.");
+			mob.tell(_("You are stunned."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -128,7 +128,7 @@ public class Chant_EelShock extends Chant
 		final Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth shocking.");
+			mob.tell(_("There doesn't appear to be anyone here worth shocking."));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Chant_EelShock extends Chant
 
 		if(!roomWet(location))
 		{
-				mob.tell("It's too dry to invoke this chant.");
+				mob.tell(_("It's too dry to invoke this chant."));
 				return false;
 		}
 

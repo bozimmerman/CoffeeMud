@@ -529,7 +529,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XQ)^.^Wuit without saving";
 
 		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
-		mob.tell("^HCoffeeMud Message Maker^N");
+		mob.tell(_("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
 		if(autoAdd) sess.println(addModeMessage);
 		while((mob.session()!=null)&&(!sess.isStopped()))
@@ -567,7 +567,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case 'R':
 				{
 					if(vbuf.size()==0)
-						mob.tell("The file is empty!");
+						mob.tell(_("The file is empty!"));
 					else
 					{
 						String line=param1;
@@ -582,14 +582,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 								vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),line,str));
 						}
 						else
-							mob.tell("(aborted)");
+							mob.tell(_("(aborted)"));
 					}
 					break;
 				}
 				case 'E':
 				{
 					if(vbuf.size()==0)
-						mob.tell("The file is empty!");
+						mob.tell(_("The file is empty!"));
 					else
 					{
 						String line=param1;
@@ -603,7 +603,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							if(str==null)
 								str=sess.prompt("Rewrite: \n\r");
 							if(str.length()==0)
-								mob.tell("(no change)");
+								mob.tell(_("(no change)"));
 							else
 								vbuf.set(ln,str);
 						}
@@ -615,7 +615,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case 'D':
 				{
 					if(vbuf.size()==0)
-						mob.tell("The file is empty!");
+						mob.tell(_("The file is empty!"));
 					else
 					{
 						String line=paramAll;
@@ -654,7 +654,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							vbuf.add(s);
 						if(newDoc.length>1)
 						{
-							mob.tell("\n\r^HNew text successfully imported.^N");
+							mob.tell(_("\n\r^HNew text successfully imported.^N"));
 						}
 					}
 					break;
@@ -670,7 +670,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case 'I':
 				{
 					if(vbuf.size()==0)
-						mob.tell("The file is empty!");
+						mob.tell(_("The file is empty!"));
 					else
 					{
 						String line=param1;

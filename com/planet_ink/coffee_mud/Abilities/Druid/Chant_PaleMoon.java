@@ -58,7 +58,7 @@ public class Chant_PaleMoon extends Chant
 
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("You are no longer under the pale moon.");
+			mob.tell(_("You are no longer under the pale moon."));
 
 		super.unInvoke();
 
@@ -132,12 +132,12 @@ public class Chant_PaleMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell("You must be able to see the moon for this magic to work.");
+			mob.tell(_("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the pale moon.");
+			mob.tell(_("This place is already under the pale moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)

@@ -85,7 +85,7 @@ public class Poison_Slumberall extends Poison
 		&&(msg.sourceMajor()>0)
 		&&(msg.sourceMinor()!=CMMsg.TYP_SLEEP))
 		{
-			mob.tell("You are way too drowsy.");
+			mob.tell(_("You are way too drowsy."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

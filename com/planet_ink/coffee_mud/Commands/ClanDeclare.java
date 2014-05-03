@@ -45,7 +45,7 @@ public class ClanDeclare extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You must specify the clans name, and a new relationship.");
+			mob.tell(_("You must specify the clans name, and a new relationship."));
 			return false;
 		}
 		commands.setElementAt(getAccessWords()[0],0);
@@ -113,7 +113,7 @@ public class ClanDeclare extends StdCommand
 				}
 				if(C2==C)
 				{
-					mob.tell("You can't do that.");
+					mob.tell(_("You can't do that."));
 					return false;
 				}
 				if(C.getClanRelations(C2.clanID())==newRole)
@@ -128,7 +128,7 @@ public class ClanDeclare extends StdCommand
 					last=last+(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis());
 					if(System.currentTimeMillis()<last)
 					{
-						mob.tell("You must wait at least 1 mud month between relation changes.");
+						mob.tell(_("You must wait at least 1 mud month between relation changes."));
 						return false;
 					}
 				}
@@ -151,7 +151,7 @@ public class ClanDeclare extends StdCommand
 		}
 		else
 		{
-			mob.tell("You must specify the clans name, and a new relationship.");
+			mob.tell(_("You must specify the clans name, and a new relationship."));
 			return false;
 		}
 		mob.tell(msg.toString());

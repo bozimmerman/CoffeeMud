@@ -50,7 +50,7 @@ public class Spell_ChantShield extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your shield against chants fades.");
+			mob.tell(_("Your shield against chants fades."));
 
 		super.unInvoke();
 

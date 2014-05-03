@@ -100,7 +100,7 @@ public class Announce extends StdCommand
 			{
 				if(mob.playerStats()!=null)
 					mob.playerStats().setAnnounceMessage(s);
-				mob.tell("Your announce message has been changed.");
+				mob.tell(_("Your announce message has been changed."));
 			}
 		}
 		else
@@ -141,11 +141,11 @@ public class Announce extends StdCommand
 					}
 				}
 				if(!found)
-					mob.tell("You can't find anyone by that name.");
+					mob.tell(_("You can't find anyone by that name."));
 			}
 		}
 		else
-			mob.tell("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r");
+			mob.tell(_("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r"));
 		return false;
 	}
 

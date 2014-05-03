@@ -137,7 +137,7 @@ public class Spell_AnimateWeapon extends Spell
 		if(target==null) return false;
 		if(!(target instanceof Weapon))
 		{
-			mob.tell("That's not a weapon!");
+			mob.tell(_("That's not a weapon!"));
 			return false;
 		}
 

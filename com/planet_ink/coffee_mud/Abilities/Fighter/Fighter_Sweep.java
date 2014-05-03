@@ -73,12 +73,12 @@ public class Fighter_Sweep extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to sweep!");
+			mob.tell(_("You are too far away to sweep!"));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to sweep!");
+			mob.tell(_("You must be in combat to sweep!"));
 			return false;
 		}
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
@@ -88,14 +88,14 @@ public class Fighter_Sweep extends FighterSkill
 
 		if(h.size()==0)
 		{
-			mob.tell("There aren't enough enough targets in range!");
+			mob.tell(_("There aren't enough enough targets in range!"));
 			return false;
 		}
 
 		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell("You need a weapon to sweep!");
+			mob.tell(_("You need a weapon to sweep!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;

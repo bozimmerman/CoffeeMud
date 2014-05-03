@@ -47,9 +47,9 @@ public class TypeCmd extends Go
 		if((commands.size()<=1)||(R==null))
 		{
 			if(consoleMode)
-				mob.tell("Type what into this console?  Have you read the screen?");
+				mob.tell(_("Type what into this console?  Have you read the screen?"));
 			else
-				mob.tell("Type what into what?");
+				mob.tell(_("Type what into what?"));
 			return false;
 		}
 		Environmental typeIntoThis=(consoleMode)?mob.riding():null;

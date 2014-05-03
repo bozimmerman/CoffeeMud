@@ -46,7 +46,7 @@ public class Sell extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Sell what?");
+			mob.tell(_("Sell what?"));
 			return false;
 		}
 

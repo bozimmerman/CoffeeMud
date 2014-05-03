@@ -93,7 +93,7 @@ public class Chant_SpeedBirth extends Chant
 				mob.location().send(mob,msg);
 				if(remain<=20000)
 				{
-					mob.tell("Birth is imminent!");
+					mob.tell(_("Birth is imminent!"));
 					return true;
 				}
 				else

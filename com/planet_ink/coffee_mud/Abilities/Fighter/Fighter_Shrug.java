@@ -84,7 +84,7 @@ public class Fighter_Shrug extends FighterSkill
 	{
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell("You must be in combat first!");
+			mob.tell(_("You must be in combat first!"));
 			return false;
 		}
 

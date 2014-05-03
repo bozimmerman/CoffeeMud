@@ -67,10 +67,10 @@ public class Prop_Crawlspace extends Property
 				{
 					if(msg.source().phyStats().height()>120)
 					{
-						msg.source().tell("You cannot fit in there.");
+						msg.source().tell(_("You cannot fit in there."));
 						return false;
 					}
-					msg.source().tell("You must crawl that way.");
+					msg.source().tell(_("You must crawl that way."));
 					return false;
 				}
 				break;
@@ -87,10 +87,10 @@ public class Prop_Crawlspace extends Property
 						mob.recoverPhyStats();
 						mob.recoverCharStats();
 						mob.recoverMaxState();
-						mob.tell("You wake up, but you are still crawling.");
+						mob.tell(_("You wake up, but you are still crawling."));
 						return false;
 					}
-					msg.source().tell("You cannot stand up here, try crawling.");
+					msg.source().tell(_("You cannot stand up here, try crawling."));
 					return false;
 				}
 				break;

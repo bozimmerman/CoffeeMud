@@ -233,7 +233,7 @@ public class Auction extends Channel implements Tickable
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		//mob.tell("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!");
+		//mob.tell(_("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!"));
 		//if((mob!=null)||(commands!=null)) return false;
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
@@ -243,7 +243,7 @@ public class Auction extends Channel implements Tickable
 		if(CMath.isSet(pstats.getChannelMask(),channelInt))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again.");
+			mob.tell(_("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again."));
 		}
 
 		String cmd=null;
@@ -273,7 +273,7 @@ public class Auction extends Channel implements Tickable
 			commands.removeElementAt(0);
 			if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
 			{
-				mob.tell("A live auction is already underway.  Do AUCTION LIST to see it.");
+				mob.tell(_("A live auction is already underway.  Do AUCTION LIST to see it."));
 				return false;
 			}
 			final Vector V=new Vector();
@@ -338,7 +338,7 @@ public class Auction extends Channel implements Tickable
 			}
 			if(commands.size()<1)
 			{
-				mob.tell("Bid how much?");
+				mob.tell(_("Bid how much?"));
 				return false;
 			}
 			final String amount=CMParms.combine(commands,0);
@@ -356,7 +356,7 @@ public class Auction extends Channel implements Tickable
 			}
 			if((liveData.auctioningI==null)||(liveData.auctioningM!=mob))
 			{
-				mob.tell("You are not currently running a live auction.");
+				mob.tell(_("You are not currently running a live auction."));
 				return false;
 			}
 			final Vector V=new Vector();
@@ -393,12 +393,12 @@ public class Auction extends Channel implements Tickable
 			commands.removeElementAt(0);
 			if(commands.size()==0)
 			{
-				mob.tell("Channel what?");
+				mob.tell(_("Channel what?"));
 				return false;
 			}
 			if((liveData.auctioningI==null)||(liveData.auctioningM==null))
 			{
-				mob.tell("Channeling is only allowed during live auctions.");
+				mob.tell(_("Channeling is only allowed during live auctions."));
 				return false;
 			}
 			commands.insertElementAt("AUCTION",0);

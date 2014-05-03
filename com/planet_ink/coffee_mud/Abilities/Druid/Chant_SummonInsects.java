@@ -102,7 +102,7 @@ public class Chant_SummonInsects extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 

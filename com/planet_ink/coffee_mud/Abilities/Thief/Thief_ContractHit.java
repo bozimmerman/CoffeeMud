@@ -158,7 +158,7 @@ public class Thief_ContractHit extends ThiefSkill
 			if(M.location()!=null)
 			{
 				M.location().showHappens(CMMsg.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
-				M.tell("'It is done.'");
+				M.tell(_("'It is done.'"));
 			}
 		}
 		for(int i=0;i<hitmen.size();i++)
@@ -190,18 +190,18 @@ public class Thief_ContractHit extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Who would you like to put a hit out on?");
+			mob.tell(_("Who would you like to put a hit out on?"));
 			return false;
 		}
 		if(mob.location()==null) return false;
 		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell("You need to be on the streets to put out a hit.");
+			mob.tell(_("You need to be on the streets to put out a hit."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("You are too busy to get that done right now.");
+			mob.tell(_("You are too busy to get that done right now."));
 			return false;
 		}
 
@@ -220,7 +220,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(target==mob)
 		{
-			mob.tell("You cannot hit yourself!");
+			mob.tell(_("You cannot hit yourself!"));
 			return false;
 		}
 		if(!mob.mayIFight(target))

@@ -52,7 +52,7 @@ public class Spell_Permanency extends Spell
 
 		if(((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))||(mob.isMonster()))
 		{
-			mob.tell("You aren't powerful enough to cast this.");
+			mob.tell(_("You aren't powerful enough to cast this."));
 			return false;
 		}
 

@@ -50,13 +50,13 @@ public class Thief_Ambush extends ThiefSkill
 	{
 		if(mob.fetchEffect("Thief_Hide")!=null)
 		{
-			mob.tell("You are already hiding.");
+			mob.tell(_("You are already hiding."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Thief_Ambush extends ThiefSkill
 		}
 		if(numBesidesMe==0)
 		{
-			mob.tell("You need a group to set up an ambush!");
+			mob.tell(_("You need a group to set up an ambush!"));
 			return false;
 		}
 		for(int i=0;i<mob.location().numInhabitants();i++)

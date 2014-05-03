@@ -45,13 +45,13 @@ public class Hold extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Hold what?");
+			mob.tell(_("Hold what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))

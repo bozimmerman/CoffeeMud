@@ -84,7 +84,7 @@ public class Spell_GustOfWind extends Spell
 				CMLib.commands().postStand(mob,true);
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Spell_GustOfWind extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell("There doesn't appear to be anyone here worth blowing around.");
+			mob.tell(_("There doesn't appear to be anyone here worth blowing around."));
 			return false;
 		}
 

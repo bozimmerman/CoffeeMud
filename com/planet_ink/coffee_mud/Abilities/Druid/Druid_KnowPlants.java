@@ -77,7 +77,7 @@ public class Druid_KnowPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell("Your plant senses fail you.");
+			mob.tell(_("Your plant senses fail you."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,null);

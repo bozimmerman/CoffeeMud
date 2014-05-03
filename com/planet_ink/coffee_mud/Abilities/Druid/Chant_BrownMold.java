@@ -127,7 +127,7 @@ public class Chant_BrownMold extends Chant
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("Only the anger of combat can summon the brown mold.");
+			mob.tell(_("Only the anger of combat can summon the brown mold."));
 			return false;
 		}
 		final int material=RawMaterial.RESOURCE_HEMP;

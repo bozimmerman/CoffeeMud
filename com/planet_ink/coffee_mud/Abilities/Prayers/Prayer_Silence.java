@@ -64,7 +64,7 @@ public class Prayer_Silence extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your silence is lifted.");
+			mob.tell(_("Your silence is lifted."));
 	}
 
 	@Override

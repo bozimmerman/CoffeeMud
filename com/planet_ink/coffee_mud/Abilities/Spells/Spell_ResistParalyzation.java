@@ -51,7 +51,7 @@ public class Spell_ResistParalyzation extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your liberating protection fades away.");
+			mob.tell(_("Your liberating protection fades away."));
 
 		super.unInvoke();
 

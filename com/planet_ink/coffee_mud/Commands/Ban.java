@@ -46,7 +46,7 @@ public class Ban extends StdCommand
 		String banMe=CMParms.combine(commands,0);
 		if(banMe.length()==0)
 		{
-			mob.tell("Ban what?  Enter an IP address or name mask.");
+			mob.tell(_("Ban what?  Enter an IP address or name mask."));
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();

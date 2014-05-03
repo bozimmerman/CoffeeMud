@@ -1153,6 +1153,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("text/offline.txt");
 
 		if(mob!=null)
-			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
+			mob.tell(_("Help files unloaded. Next HELP, AHELP, new char will reload."));
 	}
 }

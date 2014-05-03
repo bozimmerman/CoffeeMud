@@ -98,7 +98,7 @@ public class Chant_WarpWood extends Chant
 		if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		||(!target.subjectToWearAndTear()))
 		{
-			mob.tell("That can't be warped.");
+			mob.tell(_("That can't be warped."));
 			return false;
 		}
 

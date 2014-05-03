@@ -101,7 +101,7 @@ public class Chant_TremorSense extends Chant
 			&&(invoker.location()!=null))
 			{
 				if(invoker.location()==affected)
-					invoker.tell("You feel footsteps around you.");
+					invoker.tell(_("You feel footsteps around you."));
 				else
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
@@ -115,7 +115,7 @@ public class Chant_TremorSense extends Chant
 				||(msg.tool().ID().endsWith("_Earthquake"))))
 			{
 				if(invoker.location()==affected)
-					invoker.tell("You feel a ferocious rumble.");
+					invoker.tell(_("You feel a ferocious rumble."));
 				else
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
@@ -141,7 +141,7 @@ public class Chant_TremorSense extends Chant
 
 		if((!CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
-			mob.tell("You must be sitting on the ground for this chant to work.");
+			mob.tell(_("You must be sitting on the ground for this chant to work."));
 			return false;
 		}
 

@@ -61,7 +61,7 @@ public class Spell_MassInvisibility extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth making invisible.");
+			mob.tell(_("There doesn't appear to be anyone here worth making invisible."));
 			return false;
 		}
 

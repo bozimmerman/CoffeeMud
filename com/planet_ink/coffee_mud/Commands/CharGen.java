@@ -301,7 +301,7 @@ public class CharGen extends StdCommand
 		c.mob=mob;
 		if(commands.size()==0)
 		{
-			mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])");
+			mob.tell(_("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])"));
 			return;
 		}
 		final String[][] CAMATCH={
@@ -890,7 +890,7 @@ public class CharGen extends StdCommand
 			aborted[0]=true;
 			return;
 		}
-		mob.tell("");
+		mob.tell(_(""));
 		if(fileExp!=null)
 		{
 			final CMFile file=new CMFile(fileExp,mob);
@@ -998,7 +998,7 @@ public class CharGen extends StdCommand
 
 		if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
 		{
-			mob.tell("Enter 'ALL' for all classes.");
+			mob.tell(_("Enter 'ALL' for all classes."));
 			try
 			{
 				ClassName=mob.session().prompt("Enter a class name:");

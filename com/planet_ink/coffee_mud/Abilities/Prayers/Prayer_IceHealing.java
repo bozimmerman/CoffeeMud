@@ -57,7 +57,7 @@ public class Prayer_IceHealing extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The aura of ice healing around you fades.");
+			mob.tell(_("The aura of ice healing around you fades."));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class Prayer_IceHealing extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already healed by ice.");
+			mob.tell(_("You already healed by ice."));
 			return false;
 		}
 

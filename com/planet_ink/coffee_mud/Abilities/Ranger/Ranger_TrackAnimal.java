@@ -72,14 +72,14 @@ public class Ranger_TrackAnimal extends StdAbility
 
 			if(nextDirection==999)
 			{
-				mob.tell("The trail seems to pause here.");
+				mob.tell(_("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("The trail dries up here.");
+				mob.tell(_("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -151,7 +151,7 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
-			mob.tell("You can't see anything to track!");
+			mob.tell(_("You can't see anything to track!"));
 			return false;
 		}
 
@@ -159,7 +159,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell("You stop tracking.");
+			mob.tell(_("You stop tracking."));
 			if(commands.size()==0) return true;
 		}
 
@@ -171,7 +171,7 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		if(animalHere(mob.location())!=null)
 		{
-			mob.tell("Try 'look'.");
+			mob.tell(_("Try 'look'."));
 			return false;
 		}
 

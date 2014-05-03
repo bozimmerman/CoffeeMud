@@ -87,7 +87,7 @@ public class MagicShelter extends StdRoom
 		if((msg.sourceMinor()==CMMsg.TYP_RECALL)
 		||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 		{
-			msg.source().tell("You can't leave the shelter that way.  You'll have to revoke it.");
+			msg.source().tell(_("You can't leave the shelter that way.  You'll have to revoke it."));
 			return false;
 		}
 		return true;

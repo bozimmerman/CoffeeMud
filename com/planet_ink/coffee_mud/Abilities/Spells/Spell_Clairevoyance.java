@@ -104,7 +104,7 @@ public class Spell_Clairevoyance extends Spell
 			if(scryList.length()>0)
 				mob.tell("Cast on or revoke from whom?  You currently have "+name()+" on the following: "+scryList.toString()+".");
 			else
-				mob.tell("Cast on whom?");
+				mob.tell(_("Cast on whom?"));
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -136,7 +136,7 @@ public class Spell_Clairevoyance extends Spell
 
 		if(mob==target)
 		{
-			mob.tell("You can't cast this on yourself!");
+			mob.tell(_("You can't cast this on yourself!"));
 			return false;
 		}
 

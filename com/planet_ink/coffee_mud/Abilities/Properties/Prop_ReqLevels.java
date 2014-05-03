@@ -173,7 +173,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);
 			}
-			msg.source().tell("You are not allowed to go that way.");
+			msg.source().tell(_("You are not allowed to go that way."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

@@ -77,7 +77,7 @@ public class Channel extends StdCommand
 
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell("You have QUIET mode on.  You must turn it off first.");
+			mob.tell(_("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Channel extends StdCommand
 		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
 		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
 		{
-			mob.tell("This channel is not available to you.");
+			mob.tell(_("This channel is not available to you."));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Channel extends StdCommand
 		{
 			if(!CMLib.clans().checkClanPrivilege(mob, Clan.Function.CHANNEL))
 			{
-				mob.tell("You can't talk to your clan - you don't have one that allows you.");
+				mob.tell(_("You can't talk to your clan - you don't have one that allows you."));
 				return false;
 			}
 		}
@@ -165,20 +165,20 @@ public class Channel extends StdCommand
 			}
 			if(!showedAny)
 			{
-				mob.tell("There are no previous entries on this channel.");
+				mob.tell(_("There are no previous entries on this channel."));
 				return false;
 			}
 		}
 		else
 		if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
 		{
-			mob.tell("This channel is read-only.");
+			mob.tell(_("This channel is read-only."));
 			return false;
 		}
 		else
 		if(flags.contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)&&(!mob.isMonster()))
 		{
-			mob.tell("This channel is read-only.");
+			mob.tell(_("This channel is read-only."));
 			return false;
 		}
 		else

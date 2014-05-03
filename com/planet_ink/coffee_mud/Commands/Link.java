@@ -48,7 +48,7 @@ public class Link extends At
 
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is LINK [ROOM ID] [DIRECTION]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is LINK [ROOM ID] [DIRECTION]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
@@ -97,7 +97,7 @@ public class Link extends At
 
 		if((reverseRoom!=null)
 		&&((reverseRoom==mob.location())||(reverseRoom==mob.location().getGridParent())))
-			mob.tell("Opposite room already exists and heads this way.  One-way link created.");
+			mob.tell(_("Opposite room already exists and heads this way.  One-way link created."));
 
 		if(opRoom!=null)
 			mob.location().rawDoors()[direction]=null;

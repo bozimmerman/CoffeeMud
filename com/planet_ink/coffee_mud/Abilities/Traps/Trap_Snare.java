@@ -72,7 +72,7 @@ public class Trap_Snare extends StdTrap
 			if((I==null)
 			||(findNumberOfResource(mob.location(),I.material())<5))
 			{
-				mob.tell("You'll need to set down at least 5 pounds of cloth first.");
+				mob.tell(_("You'll need to set down at least 5 pounds of cloth first."));
 				return false;
 			}
 		}

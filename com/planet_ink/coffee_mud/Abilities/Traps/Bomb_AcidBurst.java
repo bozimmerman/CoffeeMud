@@ -54,7 +54,7 @@ public class Bomb_AcidBurst extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_LEMONS))
 		{
 			if(mob!=null)
-				mob.tell("You need some lemons to make this out of.");
+				mob.tell(_("You need some lemons to make this out of."));
 			return false;
 		}
 		return true;

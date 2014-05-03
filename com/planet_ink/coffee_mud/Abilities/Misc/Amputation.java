@@ -238,7 +238,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell("You don't see them here.");
+					mob.tell(_("You don't see them here."));
 				else
 					mob.tell("You don't see '"+targetName+"' here.");
 			}
@@ -598,7 +598,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				Weapon ww=null;
 				if((w==null)||(!(w instanceof Weapon)))
 				{
-					mob.tell("You cannot amputate without a weapon!");
+					mob.tell(_("You cannot amputate without a weapon!"));
 					return false;
 				}
 				ww=(Weapon)w;
@@ -609,7 +609,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				}
 				if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				{
-					mob.tell("You are too far away to try that!");
+					mob.tell(_("You are too far away to try that!"));
 					return false;
 				}
 				if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))

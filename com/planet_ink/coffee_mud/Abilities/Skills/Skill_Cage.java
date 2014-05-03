@@ -110,7 +110,7 @@ public class Skill_Cage extends StdSkill
 
 			if((mob.isInCombat())&&(mob.getVictim()!=target))
 			{
-				mob.tell("Not while you are fighting!");
+				mob.tell(_("Not while you are fighting!"));
 				return false;
 			}
 		}

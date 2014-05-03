@@ -56,7 +56,7 @@ public class ShallowWater extends StdRoom implements Drink
 		{
 			if(liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
-				msg.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell(_("You don't want to be drinking saltwater."));
 				return false;
 			}
 			return true;
@@ -76,10 +76,10 @@ public class ShallowWater extends StdRoom implements Drink
 			final boolean thirsty=mob.curState().getThirst()<=0;
 			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
-				mob.tell("You are no longer thirsty.");
+				mob.tell(_("You are no longer thirsty."));
 			else
 			if(full)
-				mob.tell("You have drunk all you can.");
+				mob.tell(_("You have drunk all you can."));
 		}
 	}
 

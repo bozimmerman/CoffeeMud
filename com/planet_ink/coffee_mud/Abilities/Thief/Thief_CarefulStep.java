@@ -57,18 +57,18 @@ public class Thief_CarefulStep extends ThiefSkill
 			final int dirCode=Directions.getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
-				mob.tell("Step where?");
+				mob.tell(_("Step where?"));
 				return false;
 			}
 			if(mob.isInCombat())
 			{
-				mob.tell("Not while you are fighting!");
+				mob.tell(_("Not while you are fighting!"));
 				return false;
 			}
 
 			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
-				mob.tell("Step where?");
+				mob.tell(_("Step where?"));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");

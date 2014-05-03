@@ -56,7 +56,7 @@ public class Push extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell("You can't push anything that way.");
+					mob.tell(_("You can't push anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);

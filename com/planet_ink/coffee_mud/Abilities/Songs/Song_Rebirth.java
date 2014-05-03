@@ -51,7 +51,7 @@ public class Song_Rebirth extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't sing!");
+			mob.tell(_("You can't sing!"));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Song_Rebirth extends Song
 							i++;
 					}
 					if(!foundOne)
-						mob.tell("Nothing seems to happen.");
+						mob.tell(_("Nothing seems to happen."));
 				}
 			}
 		}

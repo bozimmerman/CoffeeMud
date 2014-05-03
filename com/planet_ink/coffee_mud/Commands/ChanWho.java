@@ -46,7 +46,7 @@ public class ChanWho extends StdCommand
 		String channel=CMParms.combine(commands,1);
 		if((channel==null)||(channel.length()==0))
 		{
-			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
+			mob.tell(_("You must specify a channel name. Try CHANNELS for a list."));
 			return false;
 		}
 		final int x=channel.indexOf('@');
@@ -58,7 +58,7 @@ public class ChanWho extends StdCommand
 			channel=CMLib.channels().getChannel(channelInt).name.toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
-				mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+				mob.tell(_("You must specify a valid channel name. Try CHANNELS for a list."));
 				return false;
 			}
 			CMLib.intermud().i3chanwho(mob,channel,mud);
@@ -68,7 +68,7 @@ public class ChanWho extends StdCommand
 		channel=CMLib.channels().getChannel(channelInt).name;
 		if(channelInt<0)
 		{
-			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
+			mob.tell(_("You must specify a valid channel name. Try CHANNELS for a list."));
 			return false;
 		}
 		final String head="^x\n\rListening on "+channel+":^?^.^N\n\r";

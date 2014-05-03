@@ -84,17 +84,17 @@ public class Chant_Den extends Chant
 		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("There is already a den here!");
+			mob.tell(_("There is already a den here!"));
 			return false;
 		}
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("This magic will only work in a cave.");
+			mob.tell(_("This magic will only work in a cave."));
 			return false;
 		}
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		final Vector dirChoices=new Vector();
@@ -105,7 +105,7 @@ public class Chant_Den extends Chant
 		}
 		if(dirChoices.size()==0)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		final int d=((Integer)dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1))).intValue();

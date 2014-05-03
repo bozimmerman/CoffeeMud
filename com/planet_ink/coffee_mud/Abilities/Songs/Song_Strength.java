@@ -80,14 +80,14 @@ public class Song_Strength extends Song
 				amount=mob.charStats().getStat(CharStats.STAT_STRENGTH)/2;
 			else
 			{
-				mob.tell("Sing about how much strength?");
+				mob.tell(_("Sing about how much strength?"));
 				return false;
 			}
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_STRENGTH))
 		{
-			mob.tell("You can't sing away that much strength.");
+			mob.tell(_("You can't sing away that much strength."));
 			return false;
 		}
 

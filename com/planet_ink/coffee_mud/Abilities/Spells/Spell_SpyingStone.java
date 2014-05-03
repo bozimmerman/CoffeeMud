@@ -81,7 +81,7 @@ public class Spell_SpyingStone extends Spell
 
 		if(!(target instanceof Item))
 		{
-			mob.tell("You can't cast this spell on that.");
+			mob.tell(_("You can't cast this spell on that."));
 			return false;
 		}
 

@@ -60,7 +60,7 @@ public class Chant_Drifting extends Chant
 			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				mob.tell("You can't seem to drift accurately enough to advance or retreat!");
+				mob.tell(_("You can't seem to drift accurately enough to advance or retreat!"));
 				return false;
 			}
 			else
@@ -71,7 +71,7 @@ public class Chant_Drifting extends Chant
 			&&((mob.location().getRoomInDir(Directions.UP)==msg.target())
 			   ||(mob.location().getRoomInDir(Directions.DOWN)==msg.target())))
 			{
-				mob.tell("You can not seem to direct your flying that way.");
+				mob.tell(_("You can not seem to direct your flying that way."));
 				return false;
 			}
 		}

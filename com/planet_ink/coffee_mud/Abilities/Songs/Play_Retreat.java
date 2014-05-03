@@ -50,7 +50,7 @@ public class Play_Retreat extends Play
 	{
 		if(directionCode<0)
 		{
-			mob.tell("Flee where?!");
+			mob.tell(_("Flee where?!"));
 			return;
 		}
 		mob.makePeace();

@@ -104,18 +104,18 @@ public class Chant_WakingMoon extends Chant
 		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
 		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
 		{
-			mob.tell("You can only start this chant during the day.");
+			mob.tell(_("You can only start this chant during the day."));
 			return false;
 		}
 		if((target.domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("This chant does not work indoors.");
+			mob.tell(_("This chant does not work indoors."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the waking moon.");
+			mob.tell(_("This place is already under the waking moon."));
 			return false;
 		}
 

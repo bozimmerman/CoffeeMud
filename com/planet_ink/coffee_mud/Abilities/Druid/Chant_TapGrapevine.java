@@ -110,7 +110,7 @@ public class Chant_TapGrapevine extends Chant
 	{
 		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_Grapevine")!=null))
 		{
-			mob.tell("You are already listening through a grapevine.");
+			mob.tell(_("You are already listening through a grapevine."));
 			return false;
 		}
 		MOB tapped=null;
@@ -128,13 +128,13 @@ public class Chant_TapGrapevine extends Chant
 		final Vector myRooms=(tapped==null)?null:Druid_MyPlants.myPlantRooms(tapped);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
-			mob.tell("There doesn't appear to be any plants around here to listen through.");
+			mob.tell(_("There doesn't appear to be any plants around here to listen through."));
 			return false;
 		}
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),tapped,0);
 		if((!auto)&&(myPlant==null))
 		{
-			mob.tell("You must be in the same room as someone elses plants to initiate this chant.");
+			mob.tell(_("You must be in the same room as someone elses plants to initiate this chant."));
 			return false;
 		}
 

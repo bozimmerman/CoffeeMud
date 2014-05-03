@@ -57,7 +57,7 @@ public class Prayer_Forgive extends Prayer
 		if((name.trim().length()==0)&&(givenTarget!=null)) name=givenTarget.Name();
 		if(name.trim().length()==0)
 		{
-			mob.tell("Forgive whom?");
+			mob.tell(_("Forgive whom?"));
 			return false;
 		}
 		List<LegalWarrant> warrants=new Vector();

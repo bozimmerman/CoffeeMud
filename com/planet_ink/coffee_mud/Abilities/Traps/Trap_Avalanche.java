@@ -72,7 +72,7 @@ public class Trap_Avalanche extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-				mob.tell("You'll need to set down at least 100 pounds of stone first.");
+				mob.tell(_("You'll need to set down at least 100 pounds of stone first."));
 				return false;
 			}
 		}
@@ -82,7 +82,7 @@ public class Trap_Avalanche extends StdTrap
 			if(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 			{
 				if(mob!=null)
-					mob.tell("You can only set this trap in the mountains.");
+					mob.tell(_("You can only set this trap in the mountains."));
 				return false;
 			}
 		}

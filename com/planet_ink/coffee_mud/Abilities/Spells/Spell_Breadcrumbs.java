@@ -52,7 +52,7 @@ public class Spell_Breadcrumbs extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your breadcrumbs fade away.");
+			mob.tell(_("Your breadcrumbs fade away."));
 		trail=null;
 	}
 

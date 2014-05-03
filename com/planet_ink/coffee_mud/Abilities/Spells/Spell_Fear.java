@@ -54,7 +54,7 @@ public class Spell_Fear extends Spell
 			if((oldI!=M)&&(oldI!=null))
 				M.tell(M,oldI,null,"You are no longer afraid of <T-NAMESELF>.");
 			else
-				M.tell("You are no longer afraid.");
+				M.tell(_("You are no longer afraid."));
 		}
 	}
 
@@ -92,7 +92,7 @@ public class Spell_Fear extends Spell
 		if(h==null)
 		{
 			if(!auto)
-				mob.tell("There doesn't appear to be anyone here worth scaring.");
+				mob.tell(_("There doesn't appear to be anyone here worth scaring."));
 			return false;
 		}
 

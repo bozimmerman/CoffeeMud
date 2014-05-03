@@ -46,12 +46,12 @@ public class Learn extends StdCommand
 	{
 		if(mob.location().numInhabitants()==1)
 		{
-			mob.tell("You will need to find someone to teach you first.");
+			mob.tell(_("You will need to find someone to teach you first."));
 			return false;
 		}
 		if(commands.size()==1)
 		{
-			mob.tell("Learn what?  Enter QUALIFY or TRAIN to see what you can learn.");
+			mob.tell(_("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
 			return false;
 		}
 		commands.removeElementAt(0);

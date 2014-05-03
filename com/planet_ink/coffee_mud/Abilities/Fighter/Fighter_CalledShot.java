@@ -45,7 +45,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{
 			if(!quiet)
-				mob.tell("You are too close to perform a called shot!");
+				mob.tell(_("You are too close to perform a called shot!"));
 			return false;
 		}
 
@@ -53,7 +53,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
-				mob.tell("You need a weapon to perform a called shot!");
+				mob.tell(_("You need a weapon to perform a called shot!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;

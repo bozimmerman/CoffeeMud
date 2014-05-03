@@ -75,7 +75,7 @@ public class Skill_Swim extends StdSkill
 			final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 			if(dirCode<0)
 			{
-				mob.tell("Swim where?");
+				mob.tell(_("Swim where?"));
 				return false;
 			}
 			final Room r=mob.location().getRoomInDir(dirCode);
@@ -83,7 +83,7 @@ public class Skill_Swim extends StdSkill
 			{
 				if(!placeToSwim(r))
 				{
-					mob.tell("There is no water to swim on that way.");
+					mob.tell(_("There is no water to swim on that way."));
 					return false;
 				}
 			}
@@ -92,7 +92,7 @@ public class Skill_Swim extends StdSkill
 			&&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 			&&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
 			{
-				mob.tell("There is no water to swim on that way.");
+				mob.tell(_("There is no water to swim on that way."));
 				return false;
 			}
 

@@ -88,7 +88,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		&&(mob.session().getPreviousCMD()!=null)
 		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message.toUpperCase())<0))
 		{
-			mob.tell("The wand fizzles in an irritating way.");
+			mob.tell(_("The wand fizzles in an irritating way."));
 			return false;
 		}
 		return true;
@@ -212,7 +212,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell("You feel refreshed!");
+					target.tell(_("You feel refreshed!"));
 					return;
 				}
 				else
@@ -223,7 +223,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell("You feel refreshed!");
+					target.tell(_("You feel refreshed!"));
 					return;
 				}
 				else

@@ -44,7 +44,7 @@ public class Serve extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Serve whom?");
+			mob.tell(_("Serve whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);

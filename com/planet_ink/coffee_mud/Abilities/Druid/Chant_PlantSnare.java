@@ -128,7 +128,7 @@ public class Chant_PlantSnare extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth snaring.");
+			mob.tell(_("There doesn't appear to be anyone here worth snaring."));
 			return false;
 		}
 		final Room room=mob.location();
@@ -140,7 +140,7 @@ public class Chant_PlantSnare extends Chant
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
 		{
-			mob.tell("There doesn't seem to be a large enough mass of plant life around here...\n\r");
+			mob.tell(_("There doesn't seem to be a large enough mass of plant life around here...\n\r"));
 			return false;
 		}
 

@@ -107,7 +107,7 @@ public class Drop extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell("Drop what?");
+			mob.tell(_("Drop what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -152,7 +152,7 @@ public class Drop extends StdCommand
 				{
 					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell("You must remove that first.");
+						mob.tell(_("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -175,7 +175,7 @@ public class Drop extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 			drop(mob,(Item)V.elementAt(i),false,true,false);

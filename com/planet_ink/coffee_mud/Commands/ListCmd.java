@@ -1102,7 +1102,7 @@ public class ListCmd extends StdCommand
 
 	public StringBuilder listReports(Session viewerS, MOB mob)
 	{
-		mob.tell("\n\r^xCoffeeMud System Report:^.^N");
+		mob.tell(_("\n\r^xCoffeeMud System Report:^.^N"));
 		try
 		{
 			System.gc();
@@ -2215,7 +2215,7 @@ public class ListCmd extends StdCommand
 	{
 		final Iterator<Poll> i=CMLib.polls().getPollList();
 		if(!i.hasNext())
-			mob.tell("\n\rNo polls available.  Fix that by entering CREATE POLL!");
+			mob.tell(_("\n\rNo polls available.  Fix that by entering CREATE POLL!"));
 		else
 		{
 			final StringBuilder str=new StringBuilder("");
@@ -2823,7 +2823,7 @@ public class ListCmd extends StdCommand
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("List what?");
+			mob.tell(_("List what?"));
 			return;
 		}
 
@@ -2841,7 +2841,7 @@ public class ListCmd extends StdCommand
 		{
 			final List<String> V=getMyCmdWords(mob);
 			if(V.size()==0)
-				mob.tell("You are not allowed to use this command!");
+				mob.tell(_("You are not allowed to use this command!"));
 			else
 			{
 				final StringBuilder str=new StringBuilder("");
@@ -3015,7 +3015,7 @@ public class ListCmd extends StdCommand
 		}
 		if(V.size()==0)
 		{
-			mob.tell("You don't see anyone here buying or selling.");
+			mob.tell(_("You don't see anyone here buying or selling."));
 			return false;
 		}
 		for(int i=0;i<V.size();i++)

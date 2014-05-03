@@ -51,7 +51,7 @@ public class Prop_NoPKill extends Property
 		{
 			if(CMath.s_int(text())==0)
 			{
-				msg.source().tell("Player killing is forbidden here.");
+				msg.source().tell(_("Player killing is forbidden here."));
 				msg.source().setVictim(null);
 				return false;
 			}

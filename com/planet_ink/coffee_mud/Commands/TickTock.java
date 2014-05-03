@@ -50,7 +50,7 @@ public class TickTock extends StdCommand
 			{
 				int h=CMath.s_int(s);
 				if(h==0) h=1;
-				mob.tell("..tick..tock..");
+				mob.tell(_("..tick..tock.."));
 				mob.location().getArea().getTimeObj().tickTock(h);
 				mob.location().getArea().getTimeObj().save();
 			}
@@ -68,11 +68,11 @@ public class TickTock extends StdCommand
 							((Runnable)lib).run();
 						else
 							lib.getServiceClient().tickTicker(true);
-						mob.tell("Done.");
+						mob.tell(_("Done."));
 						return false;
 					}
 				}
-				mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
+				mob.tell(_("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
 			}
 		}
 		catch(final Exception e)

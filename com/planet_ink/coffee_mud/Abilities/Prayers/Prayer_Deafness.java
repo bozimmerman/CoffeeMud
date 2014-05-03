@@ -66,7 +66,7 @@ public class Prayer_Deafness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(CMLib.flags().canHear(mob)))
-			mob.tell("Your hearing returns.");
+			mob.tell(_("Your hearing returns."));
 	}
 
 	@Override

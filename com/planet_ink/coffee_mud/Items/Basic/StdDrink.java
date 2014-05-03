@@ -135,7 +135,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					}
 					return true;
 				}
-				mob.tell("You don't have that.");
+				mob.tell(_("You don't have that."));
 				return false;
 			case CMMsg.TYP_FILL:
 				if((totalDrinkContained()>=amountOfLiquidHeld)
@@ -221,10 +221,10 @@ public class StdDrink extends StdContainer implements Drink,Item
 				final boolean thirsty=mob.curState().getThirst()<=0;
 				final boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
 				if(thirsty)
-					mob.tell("You are no longer thirsty.");
+					mob.tell(_("You are no longer thirsty."));
 				else
 				if(full)
-					mob.tell("You have drunk all you can.");
+					mob.tell(_("You have drunk all you can."));
 				if(disappearsAfterDrinking
 				||((this instanceof RawMaterial)&&(amountOfLiquidRemaining<=0)))
 					destroy();

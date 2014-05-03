@@ -44,7 +44,7 @@ public class Eat extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Eat what?");
+			mob.tell(_("Eat what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

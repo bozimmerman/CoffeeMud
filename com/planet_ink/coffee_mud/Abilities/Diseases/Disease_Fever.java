@@ -72,16 +72,16 @@ public class Disease_Fever extends Disease
 			diseaseTick=DISEASE_DELAY();
 			switch(CMLib.dice().roll(1,10,0))
 			{
-			case 1: mob.tell("You think you just saw your mother swim by."); break;
-			case 2: mob.tell("A pink elephant just attacked you!"); break;
-			case 3: mob.tell("A horse just asked you a question."); break;
-			case 4: mob.tell("Your hands look very green."); break;
-			case 5: mob.tell("You think you just saw your father float by."); break;
-			case 6: mob.tell("A large piece of bread swings at you and misses!"); break;
-			case 7: mob.tell("Oh, the pretty colors!"); break;
-			case 8: mob.tell("You think you just saw something, but aren't sure."); break;
-			case 9: mob.tell("Hundreds of little rainbow bees buzz around your head."); break;
-			case 10: mob.tell("Everything looks upside-down."); break;
+			case 1: mob.tell(_("You think you just saw your mother swim by.")); break;
+			case 2: mob.tell(_("A pink elephant just attacked you!")); break;
+			case 3: mob.tell(_("A horse just asked you a question.")); break;
+			case 4: mob.tell(_("Your hands look very green.")); break;
+			case 5: mob.tell(_("You think you just saw your father float by.")); break;
+			case 6: mob.tell(_("A large piece of bread swings at you and misses!")); break;
+			case 7: mob.tell(_("Oh, the pretty colors!")); break;
+			case 8: mob.tell(_("You think you just saw something, but aren't sure.")); break;
+			case 9: mob.tell(_("Hundreds of little rainbow bees buzz around your head.")); break;
+			case 10: mob.tell(_("Everything looks upside-down.")); break;
 			}
 		}
 		return super.tick(ticking,tickID);

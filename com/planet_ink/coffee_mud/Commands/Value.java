@@ -46,7 +46,7 @@ public class Value extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Value what?");
+			mob.tell(_("Value what?"));
 			return false;
 		}
 

@@ -52,7 +52,7 @@ public class Spell_LedFoot extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your feet feel lighter.");
+			mob.tell(_("Your feet feel lighter."));
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class Spell_LedFoot extends Spell
 					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 				{
-					mob.tell("Your feet are just too heavy to move.");
+					mob.tell(_("Your feet are just too heavy to move."));
 					return false;
 				}
 				break;

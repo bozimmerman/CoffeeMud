@@ -94,7 +94,7 @@ public class Thief_Swipe extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Swipe from whom?");
+			mob.tell(_("Swipe from whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -114,7 +114,7 @@ public class Thief_Swipe extends ThiefSkill
 		}
 		if(target==mob)
 		{
-			mob.tell("You cannot swipe from yourself.");
+			mob.tell(_("You cannot swipe from yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

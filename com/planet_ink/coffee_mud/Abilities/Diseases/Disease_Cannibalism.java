@@ -124,7 +124,7 @@ public class Disease_Cannibalism extends Disease
 			&&(msg.tool()!=null)
 			&&(msg.tool().ID().equals("Spell_Hungerless")))
 			{
-				mob.tell("You don't feel any less hungry.");
+				mob.tell(_("You don't feel any less hungry."));
 				return false;
 			}
 		}

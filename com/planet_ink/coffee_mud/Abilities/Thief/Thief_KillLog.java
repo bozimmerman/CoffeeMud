@@ -110,7 +110,7 @@ public class Thief_KillLog extends ThiefSkill
 				set[3]="0";
 				theList.put(mark.Name(),set);
 				final MOB mob=(MOB)affected;
-				mob.tell("Ah, a new one for your kill log.");
+				mob.tell(_("Ah, a new one for your kill log."));
 				CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
 			}
 			set[1]=""+mark.phyStats().level();
@@ -230,7 +230,7 @@ public class Thief_KillLog extends ThiefSkill
 				mob.session().rawPrintln(str.toString());
 			return true;
 		}
-		mob.tell("You failed to recall your log.");
+		mob.tell(_("You failed to recall your log."));
 		return false;
 	}
 }

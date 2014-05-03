@@ -136,13 +136,13 @@ public class Thief_Hide extends ThiefSkill
 		final Room room=mob.location();
 		if((mob.fetchEffect(this.ID())!=null)||(room==null))
 		{
-			mob.tell("You are already hiding.");
+			mob.tell(_("You are already hiding."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 

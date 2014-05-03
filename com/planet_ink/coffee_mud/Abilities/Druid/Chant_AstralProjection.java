@@ -57,7 +57,7 @@ public class Chant_AstralProjection extends Chant
 			s.setMob(invoker.soulMate());
 			mob.setSession(s);
 			invoker.setSession(null);
-			mob.tell("^HYour astral spirit has returned to your body...\n\r\n\r^N");
+			mob.tell(_("^HYour astral spirit has returned to your body...\n\r\n\r^N"));
 			invoker.setSoulMate(null);
 			invoker.destroy();
 		}
@@ -139,7 +139,7 @@ public class Chant_AstralProjection extends Chant
 		if(CMLib.flags().isGolem(target)
 		&&((target.phyStats().height()<=0)||(target.phyStats().weight()<=0)))
 		{
-			mob.tell("You are already as astral spirit.");
+			mob.tell(_("You are already as astral spirit."));
 			return false;
 		}
 

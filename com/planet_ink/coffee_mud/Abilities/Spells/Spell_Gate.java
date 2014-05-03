@@ -78,20 +78,20 @@ public class Spell_Gate extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Gate to whom?");
+			mob.tell(_("Gate to whom?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 		if(mob.location().fetchInhabitant(areaName)!=null)
 		{
-			mob.tell("Better look around first.");
+			mob.tell(_("Better look around first."));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class Spell_Gate extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell("\n\r\n\r");
+					follower.tell(_("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

@@ -70,7 +70,7 @@ public class Spell_WeaknessAcid extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your acidic weakness is now gone.");
+			mob.tell(_("Your acidic weakness is now gone."));
 
 		super.unInvoke();
 

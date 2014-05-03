@@ -193,12 +193,12 @@ public class Merge extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what? Try DATABASE or a filename");
+			mob.tell(_("Merge what? Try DATABASE or a filename"));
 			return false;
 		}
 		if(mob.isMonster())
 		{
-			mob.tell("No can do.");
+			mob.tell(_("No can do."));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -226,7 +226,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(_("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -238,7 +238,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(_("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -250,7 +250,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell("You are not allowed to do that.");
+				mob.tell(_("You are not allowed to do that."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -259,7 +259,7 @@ public class Merge extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what? DATABASE or filename");
+			mob.tell(_("Merge what? DATABASE or filename"));
 			return false;
 		}
 		String firstWord=(String)commands.firstElement();
@@ -268,7 +268,7 @@ public class Merge extends StdCommand
 			commands.removeElementAt(0);
 			if(commands.size()==0)
 			{
-				mob.tell("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS");
+				mob.tell(_("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS"));
 				return false;
 			}
 			firstWord=(String)commands.firstElement();
@@ -299,7 +299,7 @@ public class Merge extends StdCommand
 			if(error.length()>0)
 			{
 				mob.tell("An error occurred on merge: "+error);
-				mob.tell("Please correct the problem and try the import again.");
+				mob.tell(_("Please correct the problem and try the import again."));
 				return false;
 			}
 			aremobs=true;
@@ -314,18 +314,18 @@ public class Merge extends StdCommand
 			if(error.length()>0)
 			{
 				mob.tell("An error occurred on merge: "+error);
-				mob.tell("Please correct the problem and try the import again.");
+				mob.tell(_("Please correct the problem and try the import again."));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell("Files of this type are not yet supported by MERGE.  You must merge an ITEMS or MOBS file at this time.");
+			mob.tell(_("Files of this type are not yet supported by MERGE.  You must merge an ITEMS or MOBS file at this time."));
 			return false;
 		}
 		if(things.size()==0)
 		{
-			mob.tell("Nothing was found in the file to merge!");
+			mob.tell(_("Nothing was found in the file to merge!"));
 			return false;
 		}
 		final StringBuffer allFieldsMsg=new StringBuffer("");
@@ -402,7 +402,7 @@ public class Merge extends StdCommand
 		}
 		if((onfields.size()==0)&&(ignore.size()==0)&&(changes.size()==0))
 		{
-			mob.tell("You must specify either an ON, CHANGES, or IGNORE parameter for valid matches to be made.");
+			mob.tell(_("You must specify either an ON, CHANGES, or IGNORE parameter for valid matches to be made."));
 			return false;
 		}
 		if(placesToDo.size()==0)
@@ -415,7 +415,7 @@ public class Merge extends StdCommand
 		}
 		if(placesToDo.size()==0)
 		{
-			mob.tell("There are no rooms to merge into!");
+			mob.tell(_("There are no rooms to merge into!"));
 			return false;
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)
@@ -565,7 +565,7 @@ public class Merge extends StdCommand
 			final Physical dbPM=(Physical)dbM;
 			if(CMLib.flags().isCataloged(PM))
 			{
-				mob.tell("^H**Warning: Changes will remove this object from the catalog.");
+				mob.tell(_("^H**Warning: Changes will remove this object from the catalog."));
 				PM.basePhyStats().setDisposition(CMath.unsetb(PM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
 			}
 			if(CMLib.flags().isCataloged(dbPM))
@@ -646,22 +646,22 @@ public class Merge extends StdCommand
 		final MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
 		if(dbClass.length()==0)
 		{
-			mob.tell("This command requires DBCLASS= to be set.");
+			mob.tell(_("This command requires DBCLASS= to be set."));
 			return false;
 		}
 		if(dbService.length()==0)
 		{
-			mob.tell("This command requires DBSERVICE= to be set.");
+			mob.tell(_("This command requires DBSERVICE= to be set."));
 			return false;
 		}
 		if(dbUser.length()==0)
 		{
-			mob.tell("This command requires DBUSER= to be set.");
+			mob.tell(_("This command requires DBUSER= to be set."));
 			return false;
 		}
 		if(dbPass.length()==0)
 		{
-			mob.tell("This command requires DBPASS= to be set.");
+			mob.tell(_("This command requires DBPASS= to be set."));
 			return false;
 		}
 
@@ -671,11 +671,11 @@ public class Merge extends StdCommand
 
 		final DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
-		mob.tell("Loading database rooms...");
+		mob.tell(_("Loading database rooms..."));
 		final List<Room> rooms = new LinkedList<Room>();
 		if((!dbConnector.amIOk())||(!dbInterface.isConnected()))
 		{
-			mob.tell("Failed to connect to database.");
+			mob.tell(_("Failed to connect to database."));
 			return false;
 		}
 		if(scope.equalsIgnoreCase("AREA"))
@@ -692,12 +692,12 @@ public class Merge extends StdCommand
 			rooms.addAll(Arrays.asList(dbInterface.DBReadRoomObjects(e.nextElement().Name(), false)));
 		if(rooms.size()==0)
 		{
-			mob.tell("No rooms found.");
+			mob.tell(_("No rooms found."));
 			return false;
 		}
 		for(final Room R : rooms)
 			dbInterface.DBReadContent(R.roomID(),R,false);
-		mob.tell("Data loaded, starting scan.");
+		mob.tell(_("Data loaded, starting scan."));
 		final Comparator<MOB> convM=new Comparator<MOB>()
 		{
 			@Override
@@ -956,10 +956,10 @@ public class Merge extends StdCommand
 			}
 			dbR.destroy();
 		}
-		mob.tell("Done");
+		mob.tell(_("Done"));
 		}catch(final CMException cme)
 		{
-			mob.tell("Cancelled.");
+			mob.tell(_("Cancelled."));
 		}
 		dbInterface.shutdown();
 		return true;

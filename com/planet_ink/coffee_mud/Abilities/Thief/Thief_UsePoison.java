@@ -62,7 +62,7 @@ public class Thief_UsePoison extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("What would you like to poison, and which poison would you use?");
+			mob.tell(_("What would you like to poison, and which poison would you use?"));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));

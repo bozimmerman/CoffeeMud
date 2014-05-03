@@ -83,7 +83,7 @@ public class Dig extends StdCommand
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
-				mob.tell("You are too busy to dig right now.");
+				mob.tell(_("You are too busy to dig right now."));
 				return false;
 			}
 

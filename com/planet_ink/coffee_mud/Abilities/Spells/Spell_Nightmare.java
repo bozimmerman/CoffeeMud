@@ -86,7 +86,7 @@ public class Spell_Nightmare extends Spell
 						if(I!=null) mob.tell(mob,I,null,"<T-NAME> seems to bend around your hands.");
 						break;
 					case 4:
-						mob.tell("You see your flesh melting away in large chunks.");
+						mob.tell(_("You see your flesh melting away in large chunks."));
 						break;
 					case 5:
 						M=R.fetchRandomInhabitant();

@@ -145,7 +145,7 @@ public class Spell_Cogniportive extends Spell
 						thisRoom.send(follower,leaveMsg);
 						home.bringMobHere(follower,false);
 						home.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -208,7 +208,7 @@ public class Spell_Cogniportive extends Spell
 		{
 			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
-				mob.tell("You can't cast this spell on coins!");
+				mob.tell(_("You can't cast this spell on coins!"));
 			return false;
 		}
 

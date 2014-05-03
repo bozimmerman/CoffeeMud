@@ -111,7 +111,7 @@ public class Flower extends Vine
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL)
 				||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				msg.source().tell("You can't really go anywhere -- you are rooted!");
+				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

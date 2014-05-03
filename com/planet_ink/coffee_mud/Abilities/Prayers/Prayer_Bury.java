@@ -57,18 +57,18 @@ public class Prayer_Bury extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell("You may only bury the dead.");
+			mob.tell(_("You may only bury the dead."));
 			return false;
 		}
 		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
 		{
-			mob.tell("You are not allowed to bury a players corpse.");
+			mob.tell(_("You are not allowed to bury a players corpse."));
 			return false;
 		}
 		Item hole=mob.location().findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
-			mob.tell("This chant will not work on desecrated ground.");
+			mob.tell(_("This chant will not work on desecrated ground."));
 			return false;
 		}
 

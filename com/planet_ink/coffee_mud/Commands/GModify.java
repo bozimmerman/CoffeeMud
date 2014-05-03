@@ -329,12 +329,12 @@ public class GModify extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("GModify what?");
+			mob.tell(_("GModify what?"));
 			return false;
 		}
 		if(mob.isMonster())
 		{
-			mob.tell("No can do.");
+			mob.tell(_("No can do."));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -357,7 +357,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(_("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -368,7 +368,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell("You are not allowed to do that here.");
+				mob.tell(_("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -379,7 +379,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell("You are not allowed to do that.");
+				mob.tell(_("You are not allowed to do that."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -547,7 +547,7 @@ public class GModify extends StdCommand
 		}
 		if((onfields.size()==0)&&(changes.size()==0))
 		{
-			mob.tell("You must specify either WHEN, or CHANGES parameters for valid matches to be made.");
+			mob.tell(_("You must specify either WHEN, or CHANGES parameters for valid matches to be made."));
 			return false;
 		}
 		if(placesToDo.size()==0)
@@ -560,7 +560,7 @@ public class GModify extends StdCommand
 		}
 		if(placesToDo.size()==0)
 		{
-			mob.tell("There are no rooms with data to gmodify!");
+			mob.tell(_("There are no rooms with data to gmodify!"));
 			return false;
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)

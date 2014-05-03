@@ -82,24 +82,24 @@ public class Thief_Snatch extends ThiefSkill
 		final MOB target=(auto&&(givenTarget instanceof MOB))?(MOB)givenTarget:mob.getVictim();
 		if((!mob.isInCombat())||(target==null))
 		{
-			mob.tell("You must be in combat to do this!");
+			mob.tell(_("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to disarm!");
+			mob.tell(_("You are too far away to disarm!"));
 			return false;
 		}
 		final Item weapon=mob.fetchWieldedItem();
 		if(weapon==null)
 		{
-			mob.tell("You need a weapon to disarm someone!");
+			mob.tell(_("You need a weapon to disarm someone!"));
 			return false;
 		}
 		else
 		if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
 		{
-			mob.tell("Your other hand needs to be free to do a weapon snatch.");
+			mob.tell(_("Your other hand needs to be free to do a weapon snatch."));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Thief_Snatch extends ThiefSkill
 		else
 		if(hisItem.rawLogicalAnd())
 		{
-			mob.tell("You can't snatch a two-handed weapon!");
+			mob.tell(_("You can't snatch a two-handed weapon!"));
 			return false;
 		}
 		final Weapon hisWeapon=(Weapon)hisItem;

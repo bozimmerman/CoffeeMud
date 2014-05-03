@@ -92,7 +92,7 @@ public class Prayer_GuardianHearth extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already a guarded hearth.");
+			mob.tell(_("This place is already a guarded hearth."));
 			return false;
 		}
 

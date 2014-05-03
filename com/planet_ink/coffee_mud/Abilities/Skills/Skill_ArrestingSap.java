@@ -76,7 +76,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell("You are way too drowsy.");
+					mob.tell(_("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -144,7 +144,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 					CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
-				mob.tell("You regain consciousness.");
+				mob.tell(_("You regain consciousness."));
 		}
 	}
 

@@ -44,7 +44,7 @@ public class Rebuke extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Rebuke whom?");
+			mob.tell(_("Rebuke whom?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,1);

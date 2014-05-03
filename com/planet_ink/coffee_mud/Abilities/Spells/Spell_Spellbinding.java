@@ -185,7 +185,7 @@ public class Spell_Spellbinding extends Spell
 		Spell_Spellbinding priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify your trigger word, followed by a list of spells, seperated by spaces.");
+			mob.tell(_("You must specify your trigger word, followed by a list of spells, seperated by spaces."));
 			return false;
 		}
 		final String key=(String)commands.elementAt(0);
@@ -239,14 +239,14 @@ public class Spell_Spellbinding extends Spell
 			for(int v2=0;v2<V.size();v2++)
 				if((v!=v2)&&(((String)V.elementAt(v,1)).equals(V.elementAt(v2,1))))
 				{
-					mob.tell("The same spell can not be bound to the same trigger more than once.");
+					mob.tell(_("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
 		if(thePriorKey!=null)
 			for(int v=0;v<V.size();v++)
 				if(thePriorKey.contains(V.elementAt(v,1)))
 				{
-					mob.tell("The same spell can not be bound to the same trigger more than once.");
+					mob.tell(_("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
 

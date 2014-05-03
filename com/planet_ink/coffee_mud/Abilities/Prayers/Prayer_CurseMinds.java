@@ -71,7 +71,7 @@ public class Prayer_CurseMinds extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your mind feels less cursed.");
+			mob.tell(_("Your mind feels less cursed."));
 		CMLib.commands().postStand(mob,true);
 	}
 

@@ -57,7 +57,7 @@ public class Prayer_DivineFavor extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your fall out of divine favor.");
+			mob.tell(_("Your fall out of divine favor."));
 	}
 
 	@Override

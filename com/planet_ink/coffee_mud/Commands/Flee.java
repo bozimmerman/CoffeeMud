@@ -51,7 +51,7 @@ public class Flee extends Go
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell("You can only flee while in combat.");
+				mob.tell(_("You can only flee while in combat."));
 				return false;
 			}
 		}
@@ -75,7 +75,7 @@ public class Flee extends Go
 
 		if((!XPloss)&&(direction.length()==0))
 		{
-			mob.tell("You stop fighting.");
+			mob.tell(_("You stop fighting."));
 			direction="NOWHERE";
 		}
 
@@ -105,7 +105,7 @@ public class Flee extends Go
 				directionCode=Directions.getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
-				mob.tell("Flee where?!");
+				mob.tell(_("Flee where?!"));
 				return false;
 			}
 		}

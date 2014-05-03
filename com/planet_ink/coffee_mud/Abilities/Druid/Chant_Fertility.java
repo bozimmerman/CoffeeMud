@@ -53,7 +53,7 @@ public class Chant_Fertility extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your extreme fertility subsides.");
+			mob.tell(_("Your extreme fertility subsides."));
 	}
 
 	@Override

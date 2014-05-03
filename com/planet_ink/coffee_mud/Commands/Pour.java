@@ -47,7 +47,7 @@ public class Pour extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Pour what, into/onto what?");
+			mob.tell(_("Pour what, into/onto what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

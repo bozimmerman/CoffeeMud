@@ -98,7 +98,7 @@ public class Prayer_BlessedHearth extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already a blessed hearth.");
+			mob.tell(_("This place is already a blessed hearth."));
 			return false;
 		}
 

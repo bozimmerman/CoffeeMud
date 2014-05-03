@@ -138,18 +138,18 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already trapped.");
+			mob.tell(_("This place is already trapped."));
 			return false;
 		}
 		if(!helpfulAbilityFound(mob))
 		{
-			mob.tell("You must know plant choke or plant constriction for this chant to work.");
+			mob.tell(_("You must know plant choke or plant constriction for this chant to work."));
 			return false;
 		}
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -159,7 +159,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		&&(!auto))
 		{
-			mob.tell("This chant does not work here.");
+			mob.tell(_("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

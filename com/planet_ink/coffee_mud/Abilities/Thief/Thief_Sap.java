@@ -70,7 +70,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell("You are way too drowsy.");
+					mob.tell(_("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -106,7 +106,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 				CMLib.commands().postStand(mob,true);
 			}
 			else
-				mob.tell("You regain consciousness.");
+				mob.tell(_("You regain consciousness."));
 		}
 	}
 
@@ -137,7 +137,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		{
 			if(mob.isInCombat())
 			{
-				mob.tell("Not while you are fighting!");
+				mob.tell(_("Not while you are fighting!"));
 				return false;
 			}
 

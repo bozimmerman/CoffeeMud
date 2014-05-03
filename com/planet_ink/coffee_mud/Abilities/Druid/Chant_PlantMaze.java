@@ -112,13 +112,13 @@ public class Chant_PlantMaze extends Chant
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
-			mob.tell("There doesn't appear to be any plants here you can control!");
+			mob.tell(_("There doesn't appear to be any plants here you can control!"));
 			return false;
 		}
 
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell("You cannot invoke the plant maze here.");
+			mob.tell(_("You cannot invoke the plant maze here."));
 			return false;
 		}
 
@@ -208,7 +208,7 @@ public class Chant_PlantMaze extends Chant
 						oldRoom.send(follower,leaveMsg);
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

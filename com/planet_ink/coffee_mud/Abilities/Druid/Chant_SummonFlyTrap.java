@@ -125,7 +125,7 @@ public class Chant_SummonFlyTrap extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -135,7 +135,7 @@ public class Chant_SummonFlyTrap extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 

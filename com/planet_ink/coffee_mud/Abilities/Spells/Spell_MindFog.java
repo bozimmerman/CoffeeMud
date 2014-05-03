@@ -60,7 +60,7 @@ public class Spell_MindFog extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You feel a little less foggy in the head.");
+			mob.tell(_("You feel a little less foggy in the head."));
 	}
 
 

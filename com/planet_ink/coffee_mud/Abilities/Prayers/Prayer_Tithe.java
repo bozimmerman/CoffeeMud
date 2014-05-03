@@ -55,7 +55,7 @@ public class Prayer_Tithe extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your need to tithe fades.");
+			mob.tell(_("Your need to tithe fades."));
 	}
 
 	@Override

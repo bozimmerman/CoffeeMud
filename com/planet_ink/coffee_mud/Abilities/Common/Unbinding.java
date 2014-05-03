@@ -129,12 +129,12 @@ public class Unbinding extends CommonSkill
 		if(target==null) return false;
 		if((!auto)&&(target==mob))
 		{
-			mob.tell("You can't unbind yourself!");
+			mob.tell(_("You can't unbind yourself!"));
 			return false;
 		}
 		if((!auto)&&mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		final List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);

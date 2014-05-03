@@ -178,6 +178,7 @@ public class Fighter extends StdCharClass
 
 	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	@Override public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	
 	public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)
@@ -194,7 +195,7 @@ public class Fighter extends StdCharClass
 			if(xp>500) xp=500;
 			if(xp>0)
 			{
-				((MOB)host).tell("^YVictory!!^N");
+				((MOB)host).tell(CMLib.lang()._("^YVictory!!^N"));
 				CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
 			}
 		}

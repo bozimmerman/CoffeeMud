@@ -98,7 +98,7 @@ public class ClimbableSurface extends StdRoom
 			if((!CMLib.flags().isClimbing(msg.source()))
 			&&(!CMLib.flags().isFalling(msg.source())))
 			{
-				msg.source().tell("You need to climb that way, if you know how.");
+				msg.source().tell(_("You need to climb that way, if you know how."));
 				return false;
 			}
 		}

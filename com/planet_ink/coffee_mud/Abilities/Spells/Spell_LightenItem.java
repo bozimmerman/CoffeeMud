@@ -82,7 +82,7 @@ public class Spell_LightenItem extends Spell
 		{
 			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
-				mob.tell("You can't cast this spell on your own coins.");
+				mob.tell(_("You can't cast this spell on your own coins."));
 			return false;
 		}
 

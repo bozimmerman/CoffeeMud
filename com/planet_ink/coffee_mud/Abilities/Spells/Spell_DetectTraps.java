@@ -55,7 +55,7 @@ public class Spell_DetectTraps extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer sensitive to traps.");
+			mob.tell(_("Your senses are no longer sensitive to traps."));
 	}
 	public String trapCheck(Physical P)
 	{

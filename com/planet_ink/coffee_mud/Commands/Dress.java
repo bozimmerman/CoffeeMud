@@ -44,12 +44,12 @@ public class Dress extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Dress whom in what?");
+			mob.tell(_("Dress whom in what?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are in combat!");
+			mob.tell(_("Not while you are in combat!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -100,7 +100,7 @@ public class Dress extends StdCommand
 			{
 				if(!item.amWearingAt(Wearable.IN_INVENTORY))
 				{
-					mob.tell("You might want to remove that first.");
+					mob.tell(_("You might want to remove that first."));
 					return false;
 				}
 				if(item instanceof Coins)

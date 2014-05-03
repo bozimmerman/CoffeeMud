@@ -64,7 +64,7 @@ public class Chant_Yearning extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your yearning subsides.");
+			mob.tell(_("Your yearning subsides."));
 	}
 
 	@Override

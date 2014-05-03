@@ -62,7 +62,7 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		{
 			((Item)msg.target()).destroy();
 			((Item)msg.tool()).destroy();
-			msg.source().tell("The bag implodes in your hands!");
+			msg.source().tell(_("The bag implodes in your hands!"));
 		}
 	}
 

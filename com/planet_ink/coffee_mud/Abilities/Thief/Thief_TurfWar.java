@@ -192,13 +192,13 @@ public class Thief_TurfWar extends ThiefSkill
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell("A turf war is already underway here.");
+			mob.tell(_("A turf war is already underway here."));
 			return false;
 		}
 
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
-			mob.tell("You must turn on your playerkill flag first.");
+			mob.tell(_("You must turn on your playerkill flag first."));
 			return false;
 		}
 
@@ -211,7 +211,7 @@ public class Thief_TurfWar extends ThiefSkill
 			if(A.text().equals(mob.Name())
 				||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())))
 			{
-				mob.tell("You can't declare war on your own turf!");
+				mob.tell(_("You can't declare war on your own turf!"));
 				return true;
 			}
 			turfC=CMLib.clans().getClan(A.text());
@@ -220,13 +220,13 @@ public class Thief_TurfWar extends ThiefSkill
 			if(turfM==null)
 			{
 				A.unInvoke();
-				mob.tell("This turf is untagged.");
+				mob.tell(_("This turf is untagged."));
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("This turf is not tagged by anyone.");
+			mob.tell(_("This turf is not tagged by anyone."));
 			return false;
 		}
 

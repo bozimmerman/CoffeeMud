@@ -48,7 +48,7 @@ public class Thief_Arsonry extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("What or which direction is that which would you like to set on fire?");
+			mob.tell(_("What or which direction is that which would you like to set on fire?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,0);
@@ -60,12 +60,12 @@ public class Thief_Arsonry extends ThiefSkill
 			final Room room=mob.location().getRoomInDir(dir);
 			if((room==null)||(mob.location().getExitInDir(dir)==null))
 			{
-				mob.tell("But there's nothing that way!");
+				mob.tell(_("But there's nothing that way!"));
 				return false;
 			}
 			if(!mob.location().getExitInDir(dir).isOpen())
 			{
-				mob.tell("That way isn't open!");
+				mob.tell(_("That way isn't open!"));
 				return false;
 			}
 			final Vector choices=new Vector();
@@ -82,7 +82,7 @@ public class Thief_Arsonry extends ThiefSkill
 			}
 			if(choices.size()==0)
 			{
-				mob.tell("There's nothing that way you can burn!");
+				mob.tell(_("There's nothing that way you can burn!"));
 				return false;
 			}
 			target=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
@@ -104,7 +104,7 @@ public class Thief_Arsonry extends ThiefSkill
 		}
 		if(!proceed)
 		{
-			mob.tell("You need to have something in your inventory on fire, like a torch, to use this skill.");
+			mob.tell(_("You need to have something in your inventory on fire, like a torch, to use this skill."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

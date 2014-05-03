@@ -156,7 +156,7 @@ public class Spell_MirrorImage extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your mirror images fade away.");
+			mob.tell(_("Your mirror images fade away."));
 	}
 
 	@Override

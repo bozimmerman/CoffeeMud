@@ -111,7 +111,7 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 				if((!(O instanceof MOB))||(passesMuster((MOB)O)))
 					return super.okMessage(myHost,msg);
 			}
-			msg.source().tell("You are not allowed in there.");
+			msg.source().tell(_("You are not allowed in there."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

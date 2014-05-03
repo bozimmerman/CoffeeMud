@@ -131,7 +131,7 @@ public class Prayer_DrunkenStupor extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You feel sober now.");
+			mob.tell(_("You feel sober now."));
 	}
 
 

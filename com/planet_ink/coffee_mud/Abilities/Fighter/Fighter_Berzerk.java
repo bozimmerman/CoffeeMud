@@ -86,7 +86,7 @@ public class Fighter_Berzerk extends FighterSkill
 					mob.curState().setHitPoints(1);
 				else
 					mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-				mob.tell("You feel calmer.");
+				mob.tell(_("You feel calmer."));
 				mob.recoverMaxState();
 			}
 		}
@@ -118,7 +118,7 @@ public class Fighter_Berzerk extends FighterSkill
 
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell("You aren't in combat!");
+			mob.tell(_("You aren't in combat!"));
 			return false;
 		}
 

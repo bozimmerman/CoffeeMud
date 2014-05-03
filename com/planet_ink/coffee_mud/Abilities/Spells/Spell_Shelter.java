@@ -80,7 +80,7 @@ public class Spell_Shelter extends Spell
 			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
-				mob.tell("You return to your previous location.");
+				mob.tell(_("You return to your previous location."));
 
 				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				backToRoom=getPreviousLocation(mob);
@@ -172,7 +172,7 @@ public class Spell_Shelter extends Spell
 						newRoom.bringMobHere(follower,false);
 						thisRoom.delInhabitant(follower);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 						if(follower==mob)
 							beneficialAffect(mob,mob,asLevel,999999);

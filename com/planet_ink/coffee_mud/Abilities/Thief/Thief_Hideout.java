@@ -82,7 +82,7 @@ public class Thief_Hideout extends ThiefSkill
 			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
-				mob.tell("You slip back onto the streets.");
+				mob.tell(_("You slip back onto the streets."));
 
 				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> walk(s) in out of nowhere.");
 				backToRoom=getPreviousLocation(mob);
@@ -153,7 +153,7 @@ public class Thief_Hideout extends ThiefSkill
 		final Room thisRoom=mob.location();
 		if(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell("You must be on the streets to enter your hideout.");
+			mob.tell(_("You must be on the streets to enter your hideout."));
 			return false;
 		}
 		TrackingLibrary.TrackingFlags flags;
@@ -171,7 +171,7 @@ public class Thief_Hideout extends ThiefSkill
 			case Room.DOMAIN_OUTDOORS_CITY:
 				break;
 			default:
-				mob.tell("You must be deep in an urban area to enter your hideout.");
+				mob.tell(_("You must be deep in an urban area to enter your hideout."));
 				return false;
 			}
 		}
@@ -203,7 +203,7 @@ public class Thief_Hideout extends ThiefSkill
 				newRoom.bringMobHere(mob,false);
 				thisRoom.delInhabitant(mob);
 				newRoom.send(mob,enterMsg);
-				mob.tell("\n\r\n\r");
+				mob.tell(_("\n\r\n\r"));
 				CMLib.commands().postLook(mob,true);
 				beneficialAffect(mob,mob,asLevel,999999);
 			}

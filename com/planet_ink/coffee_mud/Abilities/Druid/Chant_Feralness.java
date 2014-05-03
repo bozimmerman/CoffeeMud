@@ -93,7 +93,7 @@ public class Chant_Feralness extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You don't feel quite so feral.");
+			mob.tell(_("You don't feel quite so feral."));
 			if(lostpoints>=mob.curState().getHitPoints())
 				mob.curState().setHitPoints(1);
 			else
@@ -155,7 +155,7 @@ public class Chant_Feralness extends Chant
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
-					mob.tell("You failed to shapeshift.");
+					mob.tell(_("You failed to shapeshift."));
 					return false;
 				}
 				hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));

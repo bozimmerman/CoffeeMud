@@ -45,13 +45,13 @@ public class Display extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Show what to whom?");
+			mob.tell(_("Show what to whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell("To whom should I show that?");
+			mob.tell(_("To whom should I show that?"));
 			return false;
 		}
 
@@ -99,7 +99,7 @@ public class Display extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

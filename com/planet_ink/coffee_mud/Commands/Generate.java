@@ -64,7 +64,7 @@ public class Generate extends StdCommand
 		oldR.rawDoors()[direction]=R;
 		final int opDir=Directions.getOpDirectionCode(direction);
 		if(R.getRoomInDir(opDir)!=null)
-			mob.tell("An error has caused the following exit to be one-way.");
+			mob.tell(_("An error has caused the following exit to be one-way."));
 		else
 		{
 			R.setRawExit(opDir, E);
@@ -82,7 +82,7 @@ public class Generate extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
+			mob.tell(_("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]"));
 			return false;
 		}
 		final String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
@@ -131,7 +131,7 @@ public class Generate extends StdCommand
 			direction = Directions.getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
-				mob.tell("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by.");
+				mob.tell(_("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by."));
 				return false;
 			}
 			if(mob.location().getRoomInDir(direction)!=null)
@@ -230,7 +230,7 @@ public class Generate extends StdCommand
 			return false;
 		}
 		if(V.size()==0)
-			mob.tell("Nothing generated.");
+			mob.tell(_("Nothing generated."));
 		else
 		for(int v=0;v<V.size();v++)
 			if(V.elementAt(v) instanceof MOB)

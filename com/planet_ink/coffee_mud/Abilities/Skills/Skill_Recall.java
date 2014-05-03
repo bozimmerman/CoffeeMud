@@ -64,7 +64,7 @@ public class Skill_Recall extends StdSkill
 
 			if(recallRoom == null)
 			{
-				mob.tell("You've nowhere to recall TO!");
+				mob.tell(_("You've nowhere to recall TO!"));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plane!":"<S-NAME> recall(s) body and spirit to the Java Plane!");

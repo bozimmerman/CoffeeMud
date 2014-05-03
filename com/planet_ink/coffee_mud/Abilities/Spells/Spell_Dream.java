@@ -45,7 +45,7 @@ public class Spell_Dream extends Spell
 
 		if(commands.size()<1)
 		{
-			mob.tell("Invoke a dream about what?");
+			mob.tell(_("Invoke a dream about what?"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

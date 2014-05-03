@@ -94,20 +94,20 @@ public class Spell_MarkerPortal extends Spell
 		}catch(final NoSuchElementException nse){}
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");
+			mob.tell(_("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
 			return false;
 		}
 		oldRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
-			mob.tell("But your marker is HERE!");
+			mob.tell(_("But your marker is HERE!"));
 			return false;
 		}
 
 		if((oldRoom.getRoomInDir(Directions.GATE)!=null)
 		||(oldRoom.getExitInDir(Directions.GATE)!=null))
 		{
-			mob.tell("A portal cannot be created here.");
+			mob.tell(_("A portal cannot be created here."));
 			return false;
 		}
 

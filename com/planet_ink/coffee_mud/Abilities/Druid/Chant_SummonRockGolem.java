@@ -103,7 +103,7 @@ public class Chant_SummonRockGolem extends Chant
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell("You can only control one golem.");
+			mob.tell(_("You can only control one golem."));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Chant_SummonRockGolem extends Chant
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell("You can not summon a rock golem here.");
+			mob.tell(_("You can not summon a rock golem here."));
 			return false;
 		}
 

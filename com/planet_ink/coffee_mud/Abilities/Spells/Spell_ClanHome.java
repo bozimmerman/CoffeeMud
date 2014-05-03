@@ -47,13 +47,13 @@ public class Spell_ClanHome extends Spell
 	{
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell(_("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell("You are not authorized to draw from the power of your clan.");
+			mob.tell(_("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -61,17 +61,17 @@ public class Spell_ClanHome extends Spell
 		clanHomeRoom=CMLib.map().getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
-			mob.tell("Your clan does not have a clan home.");
+			mob.tell(_("Your clan does not have a clan home."));
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanHomeRoom))
 		{
-			mob.tell("You can't use this magic to get there from here.");
+			mob.tell(_("You can't use this magic to get there from here."));
 			return false;
 		}
 		if(!CMLib.law().doesOwnThisProperty(C.clanID(),clanHomeRoom))
 		{
-			mob.tell("Your clan no longer owns that room.");
+			mob.tell(_("Your clan no longer owns that room."));
 			return false;
 		}
 
@@ -105,7 +105,7 @@ public class Spell_ClanHome extends Spell
 						thisRoom.send(follower,leaveMsg);
 						clanHomeRoom.bringMobHere(follower,false);
 						clanHomeRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

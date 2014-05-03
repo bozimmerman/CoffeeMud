@@ -115,7 +115,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		}
 		if(unlockThis==null)
 		{
-			mob.tell("You can't seem to remember how this works.");
+			mob.tell(_("You can't seem to remember how this works."));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
@@ -164,7 +164,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 				}
 			}
 			if((!auto)&&(!saveTheTrap))
-				mob.tell("You have completed your attempt.");
+				mob.tell(_("You have completed your attempt."));
 			lastChecked=unlockThis;
 		}
 

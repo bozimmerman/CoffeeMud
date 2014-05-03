@@ -46,7 +46,7 @@ public class Topics extends ATopics
 		if(helpFile.size()==0)
 		{
 			if(mob!=null)
-				mob.tell("No help is available.");
+				mob.tell(_("No help is available."));
 			return false;
 		}
 

@@ -74,7 +74,7 @@ public class Prayer_LowerLaw extends Prayer
 				final Area O=CMLib.law().getLegalObject(mob.location());
 				final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if((B==null)||(O==null))
-					mob.tell("No lower law is established here.");
+					mob.tell(_("No lower law is established here."));
 				else
 				{
 					final Law L=B.legalInfo(O);

@@ -281,7 +281,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					playerInvolved = playerInvolved || (!M.isMonster());
 				if(!playerInvolved)
 				{
-					msg.source().tell("You'll need to be accompanied by an adult to enter there.");
+					msg.source().tell(_("You'll need to be accompanied by an adult to enter there."));
 					return false;
 				}
 			}
@@ -332,7 +332,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.target());
 				if(direction < 0)
 				{
-					msg.source().tell("Can't figure out where you're coming from?!");
+					msg.source().tell(_("Can't figure out where you're coming from?!"));
 					return false;
 				}
 				if(myDex<0)
@@ -348,7 +348,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 					if((xml==null)||(xml.length()==0))
 					{
-						msg.source().tell("Unable to load this area.  Please try again later.");
+						msg.source().tell(_("Unable to load this area.  Please try again later."));
 						return false;
 					}
 					final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
@@ -442,14 +442,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						piece=CMLib.percolator().processLikeParm("AREA", piece, definedIDs);
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{
-							msg.source().tell("Failed to enter the new area.  Try again later.");
+							msg.source().tell(_("Failed to enter the new area.  Try again later."));
 							return false;
 						}
 					}
 					catch(final CMException cme)
 					{
 						Log.errOut("StdAutoGenInstance",cme);
-						msg.source().tell("Failed to finish entering the new area.  Try again later.");
+						msg.source().tell(_("Failed to finish entering the new area.  Try again later."));
 						return false;
 					}
 					redirectA=newA;
@@ -469,7 +469,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						if(E==null) E = CMClass.getExit("Open");
 						final int opDir=Directions.getOpDirectionCode(direction);
 						if(R.getRoomInDir(opDir)!=null)
-							msg.source().tell("An error has caused the following exit to be one-way.");
+							msg.source().tell(_("An error has caused the following exit to be one-way."));
 						else
 						{
 							R.setRawExit(opDir, E);

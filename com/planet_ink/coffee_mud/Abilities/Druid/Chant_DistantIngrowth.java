@@ -49,7 +49,7 @@ public class Chant_DistantIngrowth extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell("Create growth where?");
+			mob.tell(_("Create growth where?"));
 			return false;
 		}
 
@@ -77,9 +77,9 @@ public class Chant_DistantIngrowth extends Chant
 				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if(anyRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
-				mob.tell("There IS such a place, but its in a cave where fungus rule, so your magic would fail.");
+				mob.tell(_("There IS such a place, but its in a cave where fungus rule, so your magic would fail."));
 			else
-				mob.tell("There IS such a place, but its not in a building, so your magic would fail.");
+				mob.tell(_("There IS such a place, but its not in a building, so your magic would fail."));
 			return false;
 		}
 

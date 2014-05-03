@@ -146,7 +146,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			alarmThis=mob.location().getExitInDir(dirCode);
 		if((alarmThis==null)||(!alarmThis.hasADoor()))
 		{
-			mob.tell("You can't set an alarm that way.");
+			mob.tell(_("You can't set an alarm that way."));
 			return false;
 		}
 
@@ -165,7 +165,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				sprung=false;
 				room1=mob.location();
 				room2=mob.location().getRoomInDir(dirCode);
-				mob.tell("You have set the alarm.");
+				mob.tell(_("You have set the alarm."));
 				beneficialAffect(mob,alarmThis,asLevel,0);
 			}
 			else
@@ -179,7 +179,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				}
 				else
 				{
-					mob.tell("You fail in your attempt to set an alarm.");
+					mob.tell(_("You fail in your attempt to set an alarm."));
 				}
 			}
 		}

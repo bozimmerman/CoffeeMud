@@ -56,7 +56,7 @@ public class WizInv extends StdCommand
 		   if(A!=null)
 			   A.unInvoke();
 		   else
-			   mob.tell("You are not wizinvisible!");
+			   mob.tell(_("You are not wizinvisible!"));
 		   return false;
 		}
 		else
@@ -64,7 +64,7 @@ public class WizInv extends StdCommand
 		{
 			if(CMath.bset(A.abilityCode(),abilityCode))
 			{
-				mob.tell("You have already faded from view!");
+				mob.tell(_("You have already faded from view!"));
 				return false;
 			}
 		}
@@ -86,10 +86,10 @@ public class WizInv extends StdCommand
 
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
-			mob.tell("You may uninvoke WIZINV with 'WIZINV OFF'.");
+			mob.tell(_("You may uninvoke WIZINV with 'WIZINV OFF'."));
 			return false;
 		}
-		mob.tell("Wizard invisibility is not available!");
+		mob.tell(_("Wizard invisibility is not available!"));
 		return false;
 	}
 

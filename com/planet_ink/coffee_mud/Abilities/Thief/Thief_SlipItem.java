@@ -77,7 +77,7 @@ public class Thief_SlipItem extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell("Slip what off of whom?");
+				mob.tell(_("Slip what off of whom?"));
 				return false;
 			}
 			itemToSteal=(String)commands.elementAt(0);
@@ -95,7 +95,7 @@ public class Thief_SlipItem extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));

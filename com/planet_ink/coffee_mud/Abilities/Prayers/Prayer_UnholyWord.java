@@ -79,7 +79,7 @@ public class Prayer_UnholyWord extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The unholy word has been spoken.");
+			mob.tell(_("The unholy word has been spoken."));
 	}
 
 	@Override

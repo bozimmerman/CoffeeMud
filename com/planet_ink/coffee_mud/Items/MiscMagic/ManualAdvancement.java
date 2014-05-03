@@ -65,11 +65,11 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 					if(mob.fetchEffect("Spell_ReadMagic")!=null)
 					{
 						if(this.usesRemaining()<=0)
-							mob.tell("The markings have been read off the parchment, and are no longer discernable.");
+							mob.tell(_("The markings have been read off the parchment, and are no longer discernable."));
 						else
 						{
 							this.setUsesRemaining(this.usesRemaining()-1);
-							mob.tell("The manual glows softly, enveloping you in its wisdom.");
+							mob.tell(_("The manual glows softly, enveloping you in its wisdom."));
 							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 								CMLib.leveler().level(mob);
 							else
@@ -77,7 +77,7 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 						}
 					}
 					else
-						mob.tell("The markings look magical, and are unknown to you.");
+						mob.tell(_("The markings look magical, and are unknown to you."));
 				}
 				return;
 			default:

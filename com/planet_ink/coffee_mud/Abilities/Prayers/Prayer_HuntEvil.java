@@ -67,14 +67,14 @@ public class Prayer_HuntEvil extends Prayer
 
 			if(nextDirection==999)
 			{
-				mob.tell("The hunt seems to pause here.");
+				mob.tell(_("The hunt seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("The hunt dries up here.");
+				mob.tell(_("The hunt dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -143,7 +143,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		if(gameHere(mob.location())!=null)
 		{
-			mob.tell("Try 'look'.");
+			mob.tell(_("Try 'look'."));
 			return false;
 		}
 

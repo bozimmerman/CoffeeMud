@@ -52,7 +52,7 @@ public class Deposit extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Deposit what or how much?");
+			mob.tell(_("Deposit what or how much?"));
 			return false;
 		}
 		final String thisName=CMParms.combine(commands,0);
@@ -62,7 +62,7 @@ public class Deposit extends StdCommand
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
-				mob.tell("You don't seem to be carrying that.");
+				mob.tell(_("You don't seem to be carrying that."));
 				return false;
 			}
 		}

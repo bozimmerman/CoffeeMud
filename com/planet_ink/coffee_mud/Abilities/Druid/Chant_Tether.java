@@ -84,7 +84,7 @@ public class Chant_Tether extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your tether has left you.");
+			mob.tell(_("Your tether has left you."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Chant_Tether extends Chant
 			lastRoom=mob.location();
 			if(mob.fetchEffect("Falling")!=null)
 			{
-				mob.tell("The tether keeps you from falling!");
+				mob.tell(_("The tether keeps you from falling!"));
 				mob.delEffect(mob.fetchEffect("Falling"));
 			}
 		}

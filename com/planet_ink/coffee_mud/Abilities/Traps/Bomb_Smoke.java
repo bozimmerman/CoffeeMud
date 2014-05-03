@@ -54,7 +54,7 @@ public class Bomb_Smoke extends StdBomb
 		||((((Item)P).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
 			if(mob!=null)
-				mob.tell("You something wooden to make this out of.");
+				mob.tell(_("You something wooden to make this out of."));
 			return false;
 		}
 		return true;

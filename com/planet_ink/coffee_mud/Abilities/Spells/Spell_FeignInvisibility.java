@@ -52,7 +52,7 @@ public class Spell_FeignInvisibility extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to fade back into view.");
+			mob.tell(_("You begin to fade back into view."));
 	}
 
 
@@ -82,7 +82,7 @@ public class Spell_FeignInvisibility extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.tell("You fade from view");
+				target.tell(_("You fade from view"));
 				beneficialAffect(mob,target,asLevel,mob.phyStats().level()*3);
 			}
 		}

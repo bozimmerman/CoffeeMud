@@ -333,7 +333,7 @@ public class StdExit implements Exit
 			if((hasADoor())&&(!isOpen())&&(mob.phyStats().height()>=0))
 			{
 				if(!CMLib.flags().canBeSeenBy(this,mob))
-					mob.tell("You can't go that way.");
+					mob.tell(_("You can't go that way."));
 				else
 					mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
 				return false;
@@ -342,7 +342,7 @@ public class StdExit implements Exit
 			&&(!CMLib.flags().isInFlight(mob))
 			&&(!CMLib.flags().isFalling(mob)))
 			{
-				mob.tell("You can't fly.");
+				mob.tell(_("You can't fly."));
 				return false;
 			}
 			if((CMLib.flags().isClimbing(this))
@@ -358,7 +358,7 @@ public class StdExit implements Exit
 				if((!CMLib.flags().isClimbing(mob))
 				&&(!CMLib.flags().isFalling(mob)))
 				{
-					mob.tell("You need to climb that way, if you know how.");
+					mob.tell(_("You need to climb that way, if you know how."));
 					return false;
 				}
 			}
@@ -405,7 +405,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_PUSH:
 			if((isOpen())||(!hasADoor()))
 			{
-				mob.tell("There is nothing to push over there.");
+				mob.tell(_("There is nothing to push over there."));
 				return false;
 			}
 			return true;
@@ -417,21 +417,21 @@ public class StdExit implements Exit
 		case CMMsg.TYP_PULL:
 			if((isOpen())||(!hasADoor()))
 			{
-				mob.tell("There is nothing to pull over there.");
+				mob.tell(_("There is nothing to pull over there."));
 				return false;
 			}
 			return true;
 		case CMMsg.TYP_LOCK:
 			if(!hasADoor())
 			{
-				mob.tell("There is nothing to lock that way!");
+				mob.tell(_("There is nothing to lock that way!"));
 				return false;
 			}
 		//$FALL-THROUGH$
 		case CMMsg.TYP_UNLOCK:
 			if(!hasADoor())
 			{
-				mob.tell("There is nothing to unlock that way!");
+				mob.tell(_("There is nothing to unlock that way!"));
 				return false;
 			}
 			if(isOpen())
@@ -442,7 +442,7 @@ public class StdExit implements Exit
 			else
 			if(!hasALock())
 			{
-				mob.tell("There is no lock!");
+				mob.tell(_("There is no lock!"));
 				return false;
 			}
 			else
@@ -472,7 +472,7 @@ public class StdExit implements Exit
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
 							return true;
 					}
-					mob.tell("You don't seem to have the key.");
+					mob.tell(_("You don't seem to have the key."));
 					return false;
 				}
 			}
@@ -482,7 +482,7 @@ public class StdExit implements Exit
 		}
 		if(msg.amITarget(this))
 		{
-			mob.tell("You can't do that.");
+			mob.tell(_("You can't do that."));
 			return false;
 		}
 		return true;
@@ -572,7 +572,7 @@ public class StdExit implements Exit
 			break;
 		case CMMsg.TYP_PULL:
 		case CMMsg.TYP_PUSH:
-			mob.tell("It doesn't appear to be doing any good.");
+			mob.tell(_("It doesn't appear to be doing any good."));
 			break;
 		case CMMsg.TYP_UNLOCK:
 			if((!hasADoor())||(!hasALock())||(isOpen())||(!isLocked()))

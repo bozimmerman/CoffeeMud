@@ -79,7 +79,7 @@ public class Fighter_Rallycry extends FighterSkill
 
 		if(canBeUninvoked())
 		{
-			mob.tell("You feel less rallied.");
+			mob.tell(_("You feel less rallied."));
 			mob.recoverMaxState();
 			if(mob.curState().getHitPoints()>mob.maxState().getHitPoints())
 				mob.curState().setHitPoints(mob.maxState().getHitPoints());

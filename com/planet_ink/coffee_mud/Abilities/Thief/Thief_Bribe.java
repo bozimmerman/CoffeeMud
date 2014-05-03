@@ -51,7 +51,7 @@ public class Thief_Bribe extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Bribe whom?");
+			mob.tell(_("Bribe whom?"));
 			return false;
 		}
 		final Vector V=new Vector();
@@ -80,7 +80,7 @@ public class Thief_Bribe extends ThiefSkill
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob)))
 			{
-				mob.tell("You can't bribe someone into doing that.");
+				mob.tell(_("You can't bribe someone into doing that."));
 				return false;
 			}
 		}
@@ -100,7 +100,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
-			mob.tell("You can't bribe someone to following you.");
+			mob.tell(_("You can't bribe someone to following you."));
 			return false;
 		}
 

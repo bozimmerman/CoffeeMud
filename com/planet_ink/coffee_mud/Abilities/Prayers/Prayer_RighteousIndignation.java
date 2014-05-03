@@ -55,7 +55,7 @@ public class Prayer_RighteousIndignation extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your righteous indignation fades.");
+			mob.tell(_("Your righteous indignation fades."));
 	}
 
 	@Override

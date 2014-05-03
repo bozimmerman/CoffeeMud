@@ -123,7 +123,7 @@ public class Thief_Distract extends ThiefSkill
 
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell("You are on the floor!");
+			mob.tell(_("You are on the floor!"));
 			return false;
 		}
 

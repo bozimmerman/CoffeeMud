@@ -90,7 +90,7 @@ public class Chant_WindGust extends Chant
 				}
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -100,7 +100,7 @@ public class Chant_WindGust extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell("There doesn't appear to be anyone here worth blowing around.");
+			mob.tell(_("There doesn't appear to be anyone here worth blowing around."));
 			return false;
 		}
 

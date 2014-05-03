@@ -83,7 +83,7 @@ public void unInvoke()
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You no longer feel a thirst for the energy of others.");
+		mob.tell(_("You no longer feel a thirst for the energy of others."));
 	}
 
 	@Override

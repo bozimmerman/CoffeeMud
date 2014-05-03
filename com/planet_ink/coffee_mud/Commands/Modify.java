@@ -47,7 +47,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC, ?] [NUMBER, TEXT]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC, ?] [NUMBER, TEXT]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -205,13 +205,13 @@ public class Modify extends StdCommand
 
 	protected void flunkRoomCmd(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID, ?] [TEXT]\n\r");
+		mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID, ?] [TEXT]\n\r"));
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
 	protected void flunkAreaCmd(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID, ?] [TEXT]\n\r");
+		mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID, ?] [TEXT]\n\r"));
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
@@ -220,7 +220,7 @@ public class Modify extends StdCommand
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -282,7 +282,7 @@ public class Modify extends StdCommand
 				}
 				else
 				{
-					mob.tell("Sorry Charlie!");
+					mob.tell(_("Sorry Charlie!"));
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 			}
@@ -416,7 +416,7 @@ public class Modify extends StdCommand
 		else
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ACCOUNT ([NAME])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ACCOUNT ([NAME])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -588,7 +588,7 @@ public class Modify extends StdCommand
 			{
 				if((commands.size()<4)||(!CMLib.players().playerExists(restStr)))
 				{
-					mob.tell("Unknown or invalid username given.\n\r");
+					mob.tell(_("Unknown or invalid username given.\n\r"));
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 				myArea.addSubOp(restStr);
@@ -674,7 +674,7 @@ public class Modify extends StdCommand
 		throws IOException
 	{
 		if(commands.size()<3)
-			mob.tell("modify which quest?  Use list quests.");
+			mob.tell(_("modify which quest?  Use list quests."));
 		else
 		{
 			int cmdDex=-1;
@@ -725,13 +725,13 @@ public class Modify extends StdCommand
 							boolean revert=false;
 							if(Q.name().length()==0)
 							{
-								mob.tell("You must specify a VALID quest string.  This one contained no name.");
+								mob.tell(_("You must specify a VALID quest string.  This one contained no name."));
 								revert=true;
 							}
 							else
 							if(Q.duration()<0)
 							{
-								mob.tell("You must specify a VALID quest string.  This one contained no duration.");
+								mob.tell(_("You must specify a VALID quest string.  This one contained no duration."));
 								revert=true;
 							}
 							else
@@ -740,7 +740,7 @@ public class Modify extends StdCommand
 								final Quest Q1=CMLib.quests().fetchQuest(q);
 								if(Q1.name().equalsIgnoreCase(Q.name())&&(Q1!=Q))
 								{
-									mob.tell("A quest with that name already exists.");
+									mob.tell(_("A quest with that name already exists."));
 									revert=true;
 								}
 							}
@@ -755,7 +755,7 @@ public class Modify extends StdCommand
 					case 0:
 					{
 						if(Q.running())
-							mob.tell("That quest is already running.");
+							mob.tell(_("That quest is already running."));
 						else
 						{
 							Q.startQuest();
@@ -769,7 +769,7 @@ public class Modify extends StdCommand
 					case 1:
 					{
 						if(!Q.running())
-							mob.tell("That quest is not running.");
+							mob.tell(_("That quest is not running."));
 						else
 						{
 							Q.stopQuest();
@@ -783,7 +783,7 @@ public class Modify extends StdCommand
 					case 2:
 					{
 						if(!Q.suspended())
-							mob.tell("That quest is not disabled.");
+							mob.tell(_("That quest is not disabled."));
 						else
 						{
 							Q.setSuspended(false);
@@ -795,7 +795,7 @@ public class Modify extends StdCommand
 					case 3:
 					{
 						if(Q.suspended())
-							mob.tell("That quest is already disabled.");
+							mob.tell(_("That quest is already disabled."));
 						else
 						{
 							if(Q.running())
@@ -862,13 +862,13 @@ public class Modify extends StdCommand
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -901,7 +901,7 @@ public class Modify extends StdCommand
 
 		if(commands.size()<5)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] (TEXT, ?) (VALUE)\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -939,7 +939,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY RACE [RACE ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY RACE [RACE ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -971,14 +971,14 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -1011,7 +1011,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY CLASS [CLASS ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY CLASS [CLASS ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -1043,7 +1043,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ABILITY [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ABILITY [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -1087,7 +1087,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY LANGUAGE [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY LANGUAGE [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -1131,7 +1131,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY CRAFTSKILL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY CRAFTSKILL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -1175,7 +1175,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rFormat: MODIFY COMPONENT [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rFormat: MODIFY COMPONENT [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -1273,7 +1273,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME] ([STAT],?) (VALUE)\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME] ([STAT],?) (VALUE)\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -1371,7 +1371,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MANUFACTURER [NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY MANUFACTURER [NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -1398,7 +1398,7 @@ public class Modify extends StdCommand
 
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MOB [MOB NAME] [LEVEL, ABILITY, REJUV, MISC, ?] [NUMBER, TEXT]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY MOB [MOB NAME] [LEVEL, ABILITY, REJUV, MISC, ?] [NUMBER, TEXT]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -1492,7 +1492,7 @@ public class Modify extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -1528,11 +1528,11 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("RECIPE"))
 		{
-			//mob.tell("Not yet implemented"); if(true) return true;
+			//mob.tell(_("Not yet implemented")); if(true) return true;
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRECIPES)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("Modify which recipe?  Name a common skill ID -- use list abilities to find one.");
+				mob.tell(_("Modify which recipe?  Name a common skill ID -- use list abilities to find one."));
 				return false;
 			}
 			final String name=CMParms.combine(commands,2);
@@ -1629,14 +1629,14 @@ public class Modify extends StdCommand
 		if(commandType.equals("EXPERTISE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES)) return errorOut(mob);
-			mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+			mob.tell(_("You can't modify components, you can only LIST, CREATE, and DESTROY them."));
 			return false;
 		}
 		else
 		if(commandType.equals("TITLE"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES)) return errorOut(mob);
-			mob.tell("You can't modify titles, you can only LIST, CREATE, and DESTROY them.");
+			mob.tell(_("You can't modify titles, you can only LIST, CREATE, and DESTROY them."));
 			return false;
 		}
 		else
@@ -1658,7 +1658,7 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY DAY [INT]\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY DAY [INT]\n\r"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
 				return false;
 			}
@@ -1672,7 +1672,7 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MONTH [INT]\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY MONTH [INT]\n\r"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
 				return false;
 			}
@@ -1686,7 +1686,7 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY YEAR [INT]\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY YEAR [INT]\n\r"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
 				return false;
 			}
@@ -1700,7 +1700,7 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY TIME [INT]\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY TIME [INT]\n\r"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
 				return false;
 			}
@@ -1719,7 +1719,7 @@ public class Modify extends StdCommand
 				return errorOut(mob);
 			if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
 			{
-				mob.tell("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file.");
+				mob.tell(_("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file."));
 				return true;
 			}
 			Object O=null;
@@ -1740,7 +1740,7 @@ public class Modify extends StdCommand
 				}
 			}
 			if(!somethingFound)
-				mob.tell("No Javascripts require approval at this time.");
+				mob.tell(_("No Javascripts require approval at this time."));
 		}
 		else
 		if(commandType.equals("USER")||commandType.equals("PLAYER"))
@@ -1855,7 +1855,7 @@ public class Modify extends StdCommand
 					}
 					if(mob.session()!=null)
 						mob.session().rawPrint(buf.toString());
-					mob.tell("Command completed.");
+					mob.tell(_("Command completed."));
 				}
 				else
 				{
@@ -1874,7 +1874,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			if(commands.size()<3)
-				mob.tell("Modify which government?  Use list governments.");
+				mob.tell(_("Modify which government?  Use list governments."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
@@ -1903,7 +1903,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
 			if(commands.size()<3)
-				mob.tell("Modify which faction?  Use list factions.");
+				mob.tell(_("Modify which faction?  Use list factions."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
@@ -1925,7 +1925,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			if(commands.size()<3)
-				mob.tell("Modify which clan?  Use clanlist.");
+				mob.tell(_("Modify which clan?  Use clanlist."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);

@@ -47,7 +47,7 @@ public class Spell_MeteorStorm extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth storming at.");
+			mob.tell(_("There doesn't appear to be anyone here worth storming at."));
 			return false;
 		}
 

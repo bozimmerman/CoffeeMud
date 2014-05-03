@@ -90,14 +90,14 @@ public class Thief_Espionage extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Commit espionage through whom?");
+			mob.tell(_("Commit espionage through whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You cannot do that with yourself?!");
+			mob.tell(_("You cannot do that with yourself?!"));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
@@ -116,7 +116,7 @@ public class Thief_Espionage extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))

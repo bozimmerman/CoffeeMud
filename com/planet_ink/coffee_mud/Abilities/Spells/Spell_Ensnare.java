@@ -100,7 +100,7 @@ public class Spell_Ensnare extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth ensnaring.");
+			mob.tell(_("There doesn't appear to be anyone here worth ensnaring."));
 			return false;
 		}
 

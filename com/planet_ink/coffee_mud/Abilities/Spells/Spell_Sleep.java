@@ -57,7 +57,7 @@ public class Spell_Sleep extends Spell
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell("You are way too drowsy.");
+			mob.tell(_("You are way too drowsy."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

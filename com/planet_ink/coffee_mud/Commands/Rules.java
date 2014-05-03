@@ -47,7 +47,7 @@ public class Rules extends StdCommand
 		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
-			mob.tell("This mud has no rules.  Welcome to chaos.");
+			mob.tell(_("This mud has no rules.  Welcome to chaos."));
 		return false;
 	}
 

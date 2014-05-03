@@ -107,7 +107,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			{
 				final int dmg=CMLib.dice().roll(1,50,50);
 				hpRemaining-=dmg;
-				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
+				if(invoker!=null) invoker.tell(_("Your oak is being chopped down!"));
 				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
@@ -135,7 +135,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				   &&(I.secretIdentity().equals(mob.Name()))
 				   &&(I.fetchEffect(ID())!=null))
 				{
-					mob.tell("Each druid is allowed but one oak at a time.");
+					mob.tell(_("Each druid is allowed but one oak at a time."));
 					return false;
 				}
 			}

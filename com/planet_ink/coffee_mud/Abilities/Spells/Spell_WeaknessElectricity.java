@@ -52,7 +52,7 @@ public class Spell_WeaknessElectricity extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your electric weakness is now gone.");
+			mob.tell(_("Your electric weakness is now gone."));
 
 		super.unInvoke();
 

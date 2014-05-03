@@ -109,7 +109,7 @@ public class Trap_SporeTrap extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell("You'll need to set down some diseased food first.");
+			mob.tell(_("You'll need to set down some diseased food first."));
 			return false;
 		}
 		return true;

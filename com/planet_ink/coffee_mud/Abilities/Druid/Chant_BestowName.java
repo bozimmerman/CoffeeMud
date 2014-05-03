@@ -65,19 +65,19 @@ public class Chant_BestowName extends Chant
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify the animal, and a name to give him.");
+			mob.tell(_("You must specify the animal, and a name to give him."));
 			return false;
 		}
 		String myName=((String)commands.lastElement()).trim();
 		commands.removeElementAt(commands.size()-1);
 		if(myName.length()==0)
 		{
-			mob.tell("You must specify a name.");
+			mob.tell(_("You must specify a name."));
 			return false;
 		}
 		if(myName.indexOf(' ')>=0)
 		{
-			mob.tell("Your name may not contain a space.");
+			mob.tell(_("Your name may not contain a space."));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Chant_BestowName extends Chant
 		if(target==null) return false;
 		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell("This chant only works on non-player animals in your group.");
+			mob.tell(_("This chant only works on non-player animals in your group."));
 			return false;
 		}
 

@@ -57,7 +57,7 @@ public class Prayer_Cannibalism extends Prayer
 
 		if((canBeUninvoked())&&(CMLib.flags().canSee(mob)))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell("Your cannibalistic hunger fades.");
+				mob.tell(_("Your cannibalistic hunger fades."));
 	}
 
 	@Override

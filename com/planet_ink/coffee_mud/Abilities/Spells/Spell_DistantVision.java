@@ -46,7 +46,7 @@ public class Spell_DistantVision extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Divine a vision of where?");
+			mob.tell(_("Divine a vision of where?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -75,7 +75,7 @@ public class Spell_DistantVision extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell("\n\r\n\r");
+				mob.tell(_("\n\r\n\r"));
 				final CMMsg msg2=CMClass.getMsg(mob,thisRoom,CMMsg.MSG_LOOK,null);
 				thisRoom.executeMsg(mob,msg2);
 			}

@@ -122,7 +122,7 @@ public class Skill_CollectBounty extends StdSkill
 		final Room R=mob.location();
 		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell("You are already collecting a bounty.  Be patient.");
+			mob.tell(_("You are already collecting a bounty.  Be patient."));
 			return false;
 		}
 

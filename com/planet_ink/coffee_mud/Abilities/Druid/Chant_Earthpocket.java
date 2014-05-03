@@ -55,7 +55,7 @@ public class Chant_Earthpocket extends Chant
 
 		if(canBeUninvoked())
 		{
-			mob.tell("Your earthpocket fades away, dumping its contents into your inventory!");
+			mob.tell(_("Your earthpocket fades away, dumping its contents into your inventory!"));
 			final List<Item> V=pocket.getContents();
 			for(int v=0;v<V.size();v++)
 			{
@@ -77,7 +77,7 @@ public class Chant_Earthpocket extends Chant
 		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_DELICATE)
 		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 		{
-			msg.source().tell("The dark pocket draws away from you, preventing your action.");
+			msg.source().tell(_("The dark pocket draws away from you, preventing your action."));
 			return false;
 		}
 		return true;
@@ -146,7 +146,7 @@ public class Chant_Earthpocket extends Chant
 
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("The earthpocket can only be summoned or seen in a cave.");
+			mob.tell(_("The earthpocket can only be summoned or seen in a cave."));
 			return false;
 		}
 

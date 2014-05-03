@@ -113,7 +113,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		final MOB target=getMark(mob);
 		if(target==null)
 		{
-			mob.tell("You'll need to mark someone first.");
+			mob.tell(_("You'll need to mark someone first."));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());

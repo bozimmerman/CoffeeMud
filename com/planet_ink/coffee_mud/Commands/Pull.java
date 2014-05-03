@@ -57,7 +57,7 @@ public class Pull extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell("You can't pull anything that way.");
+					mob.tell(_("You can't pull anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);

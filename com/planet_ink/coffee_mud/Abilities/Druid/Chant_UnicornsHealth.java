@@ -61,7 +61,7 @@ public class Chant_UnicornsHealth extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your health diminishes.");
+			mob.tell(_("Your health diminishes."));
 	}
 
 	@Override

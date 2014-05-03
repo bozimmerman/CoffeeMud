@@ -77,7 +77,7 @@ public class Fighter_KiStrike extends FighterSkill
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
-			mob.tell("You can't speak!");
+			mob.tell(_("You can't speak!"));
 			return false;
 		}
 

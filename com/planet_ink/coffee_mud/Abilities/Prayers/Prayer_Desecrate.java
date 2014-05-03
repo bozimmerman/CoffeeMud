@@ -56,14 +56,14 @@ public class Prayer_Desecrate extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell("You may only desecrate the dead.");
+			mob.tell(_("You may only desecrate the dead."));
 			return false;
 		}
 		if((((DeadBody)target).playerCorpse())
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell("You are not allowed to desecrate a players corpse.");
+			mob.tell(_("You are not allowed to desecrate a players corpse."));
 			return false;
 		}
 

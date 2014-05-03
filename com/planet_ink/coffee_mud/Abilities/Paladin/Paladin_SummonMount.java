@@ -103,12 +103,12 @@ public class Paladin_SummonMount extends StdAbility
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to call your mount.");
+			mob.tell(_("You must be outdoors to call your mount."));
 			return false;
 		}
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell("Your alignment has alienated you from your god.");
+			mob.tell(_("Your alignment has alienated you from your god."));
 			return false;
 		}
 		final Vector choices=new Vector();
@@ -127,7 +127,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 		if(choices.size()==0)
 		{
-			mob.tell("You must be further outdoors to call your mount.");
+			mob.tell(_("You must be further outdoors to call your mount."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();

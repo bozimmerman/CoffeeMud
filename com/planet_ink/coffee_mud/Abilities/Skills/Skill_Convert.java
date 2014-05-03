@@ -79,7 +79,7 @@ public class Skill_Convert extends StdSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("You must specify either a deity to convert yourself to, or a player to convert to your religion.");
+			mob.tell(_("You must specify either a deity to convert yourself to, or a player to convert to your religion."));
 			if(mob.isMonster())
 				CMLib.commands().postSay(mob,null,"I am unable to convert.",false,false);
 			return false;

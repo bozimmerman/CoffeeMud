@@ -67,7 +67,7 @@ public class Dummy extends Doll
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			{
-				msg.source().tell("You are not allowed to die.");
+				msg.source().tell(_("You are not allowed to die."));
 				return false;
 			}
 			else
@@ -90,7 +90,7 @@ public class Dummy extends Doll
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 			{
-				msg.source().tell("Dummys cant get anything.");
+				msg.source().tell(_("Dummys cant get anything."));
 				return false;
 			}
 		}

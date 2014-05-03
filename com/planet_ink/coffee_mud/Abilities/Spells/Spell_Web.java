@@ -105,7 +105,7 @@ public class Spell_Web extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth webbing.");
+			mob.tell(_("There doesn't appear to be anyone here worth webbing."));
 			return false;
 		}
 

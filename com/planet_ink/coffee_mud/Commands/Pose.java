@@ -49,19 +49,19 @@ public class Pose extends StdCommand
 			{
 				if((pstats.getSavedPose()==null)||(pstats.getSavedPose().length()==0))
 				{
-					mob.tell("You are not currently posing.");
+					mob.tell(_("You are not currently posing."));
 					return false;
 				}
 				pstats.setSavedPose("");
 				mob.setDisplayText("");
-				mob.tell("You stop posing.");
+				mob.tell(_("You stop posing."));
 			}
 			return false;
 		}
 		if(commands.size()<2)
 		{
 			if(mob.displayText().length()==0)
-				mob.tell("POSE how?");
+				mob.tell(_("POSE how?"));
 			else
 				mob.tell("Your current pose is: "+mob.displayText(mob));
 			return false;

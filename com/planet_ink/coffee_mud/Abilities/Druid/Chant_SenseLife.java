@@ -55,7 +55,7 @@ public class Chant_SenseLife extends Chant
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell("Your life echo sensations fade.");
+			mob.tell(_("Your life echo sensations fade."));
 		}
 	}
 
@@ -97,7 +97,7 @@ public class Chant_SenseLife extends Chant
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell("You do not feel any life beyond your own.");
+			mob.tell(_("You do not feel any life beyond your own."));
 		else
 		if(dirs.length()==0)
 			mob.tell("You feel a life force coming from "+last+".");

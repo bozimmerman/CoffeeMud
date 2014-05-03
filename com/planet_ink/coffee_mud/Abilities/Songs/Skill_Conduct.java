@@ -51,7 +51,7 @@ public class Skill_Conduct extends BardSkill
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
 		if((!auto)&&(SYMPHONY==null))
 		{
-			mob.tell("But you don't know how to play a symphony.");
+			mob.tell(_("But you don't know how to play a symphony."));
 			return false;
 		}
 		if(SYMPHONY==null)

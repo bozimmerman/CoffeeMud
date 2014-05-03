@@ -192,7 +192,7 @@ public class SkyWatcher extends StdCharClass
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
-			myChar.tell("Extreme emotions disrupt your chant.");
+			myChar.tell(_("Extreme emotions disrupt your chant."));
 			return false;
 		}
 		return true;

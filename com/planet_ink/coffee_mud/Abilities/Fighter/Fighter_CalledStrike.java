@@ -102,7 +102,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			if(!quiet)
-			mob.tell("You are too far away to perform a called strike!");
+			mob.tell(_("You are too far away to perform a called strike!"));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
-			mob.tell("You need a weapon to perform a called strike!");
+			mob.tell(_("You need a weapon to perform a called strike!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
@@ -160,7 +160,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			target=mob.getVictim();
 		if((target==null)||(target==mob))
 		{
-			mob.tell("Do this to whom?");
+			mob.tell(_("Do this to whom?"));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
@@ -184,7 +184,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		else
 		if(commands.size()<=0)
 		{
-			mob.tell("You must specify a body part to cut off.");
+			mob.tell(_("You must specify a body part to cut off."));
 			final StringBuffer str=new StringBuffer("Parts include: ");
 			for(int i=0;i<remainingLimbList.size();i++)
 				str.append((remainingLimbList.get(i))+", ");

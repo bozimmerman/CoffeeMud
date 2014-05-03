@@ -53,7 +53,7 @@ public class Spell_CharmWard extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your charm ward dissipates.");
+			mob.tell(_("Your charm ward dissipates."));
 
 		super.unInvoke();
 
@@ -146,7 +146,7 @@ public class Spell_CharmWard extends Spell
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already charmed.");
+			mob.tell(_("This place is already charmed."));
 			return false;
 		}
 

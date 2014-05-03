@@ -87,7 +87,7 @@ public class Prayer_DivineLuck extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your divine luck is over.");
+			mob.tell(_("Your divine luck is over."));
 	}
 
 	@Override

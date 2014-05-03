@@ -48,7 +48,7 @@ public class Chant_PlantPass extends Chant
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary.");
+			mob.tell(_("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -56,7 +56,7 @@ public class Chant_PlantPass extends Chant
 		final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{
-			mob.tell("There doesn't appear to be any of your plants here to travel through.");
+			mob.tell(_("There doesn't appear to be any of your plants here to travel through."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Chant_PlantPass extends Chant
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

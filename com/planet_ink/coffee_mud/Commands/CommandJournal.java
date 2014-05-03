@@ -73,7 +73,7 @@ public class CommandJournal extends StdCommand
 		   return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 		{
-			mob.tell("Transfer not allowed.");
+			mob.tell(_("Transfer not allowed."));
 			return true;
 		}
 		if((second.length()>0)&&(!CMath.isNumber(second)))
@@ -127,7 +127,7 @@ public class CommandJournal extends StdCommand
 										  to,
 										  subject,
 										  message);
-		mob.tell("Message transferred.");
+		mob.tell(_("Message transferred."));
 		return true;
 	}
 
@@ -149,7 +149,7 @@ public class CommandJournal extends StdCommand
 
 		final Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
-			mob.tell("This feature has been disabled.");
+			mob.tell(_("This feature has been disabled."));
 		else
 		{
 			final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
@@ -187,7 +187,7 @@ public class CommandJournal extends StdCommand
 	{
 		if((commands==null)||(commands.size()==1))
 		{
-			mob.tell("!!!!!");
+			mob.tell(_("!!!!!"));
 			return false;
 		}
 		JournalsLibrary.CommandJournal journal=null;
@@ -212,13 +212,13 @@ public class CommandJournal extends StdCommand
 		}
 		if(journal==null)
 		{
-			mob.tell("!!!!!");
+			mob.tell(_("!!!!!"));
 			return false;
 		}
 		if((journal.mask().length()>0)
 		&&(!CMLib.masking().maskCheck(journal.mask(),mob,true)))
 		{
-			mob.tell("This command is not available to you.");
+			mob.tell(_("This command is not available to you."));
 			return false;
 		}
 		if((!review(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME()))

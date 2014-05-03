@@ -51,7 +51,7 @@ public class Chant_VenomWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your anti-venom protection dissipates.");
+			mob.tell(_("Your anti-venom protection dissipates."));
 
 		super.unInvoke();
 

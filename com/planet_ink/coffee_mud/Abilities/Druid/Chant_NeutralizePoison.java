@@ -112,7 +112,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 				&&(target instanceof MOB))
 				{
-					((MOB)target).tell("You feel much better!");
+					((MOB)target).tell(_("You feel much better!"));
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverMaxState();
 				}

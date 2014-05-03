@@ -58,7 +58,7 @@ public class Skill_Meditation extends StdSkill
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> meditation.");
 				else
-					mob.tell("Your meditation ends.");
+					mob.tell(_("Your meditation ends."));
 			}
 		}
 	}
@@ -101,9 +101,9 @@ public class Skill_Meditation extends StdSkill
 		||(mob.curState().getThirst()<=0))
 		{
 			if(mob.curState().getThirst()<=0)
-				mob.tell("Your mouth is dry!");
+				mob.tell(_("Your mouth is dry!"));
 			else
-				mob.tell("Your stomach growls!");
+				mob.tell(_("Your stomach growls!"));
 			unInvoke();
 			return false;
 		}
@@ -131,17 +131,17 @@ public class Skill_Meditation extends StdSkill
 		final MOB target=mob;
 		if(mob.isInCombat())
 		{
-			mob.tell("You can't meditate while in combat!");
+			mob.tell(_("You can't meditate while in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You must be in a sitting, restful position to meditate.");
+			mob.tell(_("You must be in a sitting, restful position to meditate."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You are already meditating!");
+			mob.tell(_("You are already meditating!"));
 			return false;
 		}
 		// now see if it worked

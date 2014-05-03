@@ -100,7 +100,7 @@ public class Chant_SummonMount extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=new Vector();
@@ -119,7 +119,7 @@ public class Chant_SummonMount extends Chant
 		}
 		if(choices.size()==0)
 		{
-			mob.tell("You must be further outdoors to summon a mount.");
+			mob.tell(_("You must be further outdoors to summon a mount."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();

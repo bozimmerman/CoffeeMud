@@ -43,7 +43,7 @@ public class Pause extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -58,28 +58,28 @@ public class Pause extends StdCommand
 			if(!CMLib.threads().isAllSuspended())
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PAUSE))
-					mob.tell("You are not allowed to pause all objects.");
+					mob.tell(_("You are not allowed to pause all objects."));
 				else
 				{
 					CMLib.threads().suspendAll();
-					mob.tell("All objects have been suspended. Enter PAUSE again to resume.");
+					mob.tell(_("All objects have been suspended. Enter PAUSE again to resume."));
 				}
 			}
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell("All objects have been resumed.");
+				mob.tell(_("All objects have been resumed."));
 			}
 		}
 		else
 		if(cmd.equalsIgnoreCase("RESUME"))
 		{
 			if(!CMLib.threads().isAllSuspended())
-				mob.tell("Objects are not currently suspended.");
+				mob.tell(_("Objects are not currently suspended."));
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell("All objects have been resumed.");
+				mob.tell(_("All objects have been resumed."));
 			}
 		}
 		else

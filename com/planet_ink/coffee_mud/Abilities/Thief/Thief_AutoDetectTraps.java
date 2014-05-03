@@ -118,13 +118,13 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are no longer automatically detecting traps.");
+			target.tell(_("You are no longer automatically detecting traps."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_DetectTraps")==null))
 		{
-			target.tell("You don't know how to detect traps yet!");
+			target.tell(_("You don't know how to detect traps yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -134,7 +134,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 
 		if(success)
 		{
-			target.tell("You will now automatically detect traps when you enter a room.");
+			target.tell(_("You will now automatically detect traps when you enter a room."));
 			beneficialAffect(mob,target,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();

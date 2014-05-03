@@ -44,7 +44,7 @@ public class Quit extends StdCommand
 	{
 		if(mob.soulMate()==null)
 		{
-			mob.tell("Huh?");
+			mob.tell(CMLib.lang()._("Huh?"));
 			return;
 		}
 		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, "^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N");
@@ -71,7 +71,7 @@ public class Quit extends StdCommand
 				if((session.getLastPKFight()>0)
 				&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
 				{
-					mob.tell("You must wait a few more minutes before you are allowed to quit.");
+					mob.tell(_("You must wait a few more minutes before you are allowed to quit."));
 					return false;
 				}
 				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000)

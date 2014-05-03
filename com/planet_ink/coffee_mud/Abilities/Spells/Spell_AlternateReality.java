@@ -51,7 +51,7 @@ public class Spell_AlternateReality extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your reality returns to normal.");
+			mob.tell(_("Your reality returns to normal."));
 	}
 
 	@Override

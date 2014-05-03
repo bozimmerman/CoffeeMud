@@ -78,7 +78,7 @@ public class GConsider extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Consider whom?");
+			mob.tell(_("Consider whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -103,7 +103,7 @@ public class GConsider extends StdCommand
 		final int levelDiff=Math.abs(realDiff);
 		if(levelDiff<theDiff)
 		{
-			mob.tell("The perfect match!");
+			mob.tell(_("The perfect match!"));
 			return false;
 		}
 		else

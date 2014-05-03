@@ -47,7 +47,7 @@ public class Spell_Erase extends Spell
 
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Erase what?.");
+			mob.tell(_("Erase what?."));
 			return false;
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -55,7 +55,7 @@ public class Spell_Erase extends Spell
 
 		if(!(target instanceof Scroll)&&(!target.isReadable()))
 		{
-			mob.tell("You can't erase that.");
+			mob.tell(_("You can't erase that."));
 			return false;
 		}
 

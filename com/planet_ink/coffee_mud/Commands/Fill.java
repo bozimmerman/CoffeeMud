@@ -45,7 +45,7 @@ public class Fill extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Fill what, from what?");
+			mob.tell(_("Fill what, from what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

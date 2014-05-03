@@ -81,7 +81,7 @@ public class Thief_Snipe extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -89,7 +89,7 @@ public class Thief_Snipe extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -103,14 +103,14 @@ public class Thief_Snipe extends ThiefSkill
 		if((w==null)
 		||(!(w instanceof Weapon)))
 		{
-			mob.tell("You need a weapon to snipe.");
+			mob.tell(_("You need a weapon to snipe."));
 			return false;
 		}
 		final Weapon ww=(Weapon)w;
 		if(((ww.weaponClassification()!=Weapon.CLASS_RANGED)&&(ww.weaponClassification()!=Weapon.CLASS_THROWN))
 		||(w.maxRange()<=0))
 		{
-			mob.tell("You need a ranged weapon to snipe.");
+			mob.tell(_("You need a ranged weapon to snipe."));
 			return false;
 		}
 

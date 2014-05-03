@@ -91,7 +91,7 @@ public class Fighter_CircleTrip extends FighterSkill
 				}
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -119,19 +119,19 @@ public class Fighter_CircleTrip extends FighterSkill
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to circle trip!");
+			mob.tell(_("You are too far away to circle trip!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
 		{
-			mob.tell("You need at least two legs to do this.");
+			mob.tell(_("You need at least two legs to do this."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -140,7 +140,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth tripping.");
+			mob.tell(_("There doesn't appear to be anyone here worth tripping."));
 			return false;
 		}
 

@@ -54,7 +54,7 @@ public class Prayer_Fidelity extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your magical fidelity subsides.");
+			mob.tell(_("Your magical fidelity subsides."));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class Prayer_Fidelity extends Prayer
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				myChar.tell("You fidelity geas prevents you from doing that.");
+				myChar.tell(_("You fidelity geas prevents you from doing that."));
 				return false;
 			}
 		}

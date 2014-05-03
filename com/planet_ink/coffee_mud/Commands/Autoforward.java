@@ -47,18 +47,18 @@ public class Autoforward extends StdCommand
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 		{
-			mob.tell("This feature is not activated.");
+			mob.tell(_("This feature is not activated."));
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-			mob.tell("Autoemail forwarding has been turned on.");
+			mob.tell(_("Autoemail forwarding has been turned on."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-			mob.tell("Autoemail forwarding has been turned off.");
+			mob.tell(_("Autoemail forwarding has been turned off."));
 		}
 		return false;
 	}

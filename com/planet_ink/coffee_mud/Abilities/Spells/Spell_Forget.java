@@ -87,7 +87,7 @@ public class Spell_Forget extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You start remembering things again.");
+			mob.tell(_("You start remembering things again."));
 	}
 
 	@Override

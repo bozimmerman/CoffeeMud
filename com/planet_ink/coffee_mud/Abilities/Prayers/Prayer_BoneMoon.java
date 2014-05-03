@@ -119,7 +119,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under a bone moon.");
+			mob.tell(_("This place is already under a bone moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)

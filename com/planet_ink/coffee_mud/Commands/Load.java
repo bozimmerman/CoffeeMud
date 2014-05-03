@@ -72,7 +72,7 @@ public class Load extends StdCommand
 			if(tryArchon)
 				mob.tell("LOAD what? Try "+CMParms.toStringList(ARCHON_LIST)+" [CLASSNAME]");
 			else
-				mob.tell("Load what where?");
+				mob.tell(_("Load what where?"));
 			return false;
 		}
 		String what=(String)commands.elementAt(1);
@@ -100,10 +100,10 @@ public class Load extends StdCommand
 				}
 			}
 			if(baseAmmoItems.size()==0)
-				mob.tell("You don't seem to have any ammunition like that.");
+				mob.tell(_("You don't seem to have any ammunition like that."));
 			else
 			if((ammos.size()==0)&&(!what.equalsIgnoreCase("all")))
-				mob.tell("You can't seem to use that as ammunition.");
+				mob.tell(_("You can't seem to use that as ammunition."));
 			else
 			{
 				commands.removeElementAt(0);
@@ -116,10 +116,10 @@ public class Load extends StdCommand
 				}
 				boolean doneOne=false;
 				if(baseItems.size()==0)
-					mob.tell("You don't seem to have that.");
+					mob.tell(_("You don't seem to have that."));
 				else
 				if(items.size()==0)
-					mob.tell("You can't seem to load that.");
+					mob.tell(_("You can't seem to load that."));
 				else
 				for(final AmmunitionWeapon W : items)
 				{
@@ -194,7 +194,7 @@ public class Load extends StdCommand
 						final PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
 						if(CO==null)
 						{
-							mob.tell("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud.");
+							mob.tell(_("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud."));
 							return false;
 						}
 						final String[] args=new String[]{name};
@@ -204,7 +204,7 @@ public class Load extends StdCommand
 							final Object returnVal=M.invoke(CO,new Object[]{args,pout});
 							if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
 							{
-								mob.tell("Compile failed:");
+								mob.tell(_("Compile failed:"));
 								if(mob.session()!=null)
 									mob.session().rawOut(bout.toString());
 								return false;

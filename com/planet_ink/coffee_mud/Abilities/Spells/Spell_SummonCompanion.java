@@ -50,7 +50,7 @@ public class Spell_SummonCompanion extends Spell
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
-			mob.tell("You don't have any companions!");
+			mob.tell(_("You don't have any companions!"));
 			return false;
 		}
 
@@ -71,13 +71,13 @@ public class Spell_SummonCompanion extends Spell
 		}
 		if((target==null)&&(allHere))
 		{
-			mob.tell("Better look around first.");
+			mob.tell(_("Better look around first."));
 			return false;
 		}
 
 		if(target==null)
 		{
-			mob.tell("You can't seem to fixate on your companions.");
+			mob.tell(_("You can't seem to fixate on your companions."));
 			return false;
 		}
 
@@ -106,14 +106,14 @@ public class Spell_SummonCompanion extends Spell
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,true);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 					else
-						mob.tell("Some powerful magic stifles the spell.");
+						mob.tell(_("Some powerful magic stifles the spell."));
 				}
 				else
-					mob.tell("Some powerful magic stifles the spell.");
+					mob.tell(_("Some powerful magic stifles the spell."));
 			}
 
 		}

@@ -102,7 +102,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your invisibility to undead fades.");
+			mob.tell(_("Your invisibility to undead fades."));
 	}
 
 	@Override

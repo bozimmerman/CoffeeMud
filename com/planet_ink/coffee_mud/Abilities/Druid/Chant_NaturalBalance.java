@@ -59,7 +59,7 @@ public class Chant_NaturalBalance extends Chant
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> natural communion.");
 				else
-					mob.tell("Your communion with natural balance ends.");
+					mob.tell(_("Your communion with natural balance ends."));
 			}
 		}
 	}
@@ -149,12 +149,12 @@ public class Chant_NaturalBalance extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("You can't commune while in combat!");
+			mob.tell(_("You can't commune while in combat!"));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -163,7 +163,7 @@ public class Chant_NaturalBalance extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 

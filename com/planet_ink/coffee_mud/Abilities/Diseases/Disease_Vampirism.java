@@ -72,7 +72,7 @@ public class Disease_Vampirism extends Disease
 			   &&(msg.tool()!=null)
 			   &&(msg.tool().ID().equals("Skill_Swim")))
 			{
-				mob.tell("You can't swim!");
+				mob.tell(_("You can't swim!"));
 				return false;
 			}
 		}

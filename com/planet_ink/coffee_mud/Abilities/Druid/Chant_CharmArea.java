@@ -50,7 +50,7 @@ public class Chant_CharmArea extends Chant
 		   &&(!msg.amISource(invoker))
 		   &&(msg.source().amFollowing()!=invoker))
 		{
-			msg.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
+			msg.source().tell(_("You really don't feel like leaving this place.  It is just too beautiful."));
 			return false;
 		}
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -61,7 +61,7 @@ public class Chant_CharmArea extends Chant
 			   &&(msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
-				msg.source().tell("You feel too peaceful here.");
+				msg.source().tell(_("You feel too peaceful here."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
@@ -117,12 +117,12 @@ public class Chant_CharmArea extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already charmed.");
+			mob.tell(_("This place is already charmed."));
 			return false;
 		}
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -132,7 +132,7 @@ public class Chant_CharmArea extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		&&(!auto))
 		{
-			mob.tell("This chant does not work here.");
+			mob.tell(_("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

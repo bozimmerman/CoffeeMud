@@ -313,7 +313,7 @@ public class Reset extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<1)
 		{
-			mob.tell("Reset this ROOM, the whole AREA, or REJUV?");
+			mob.tell(_("Reset this ROOM, the whole AREA, or REJUV?"));
 			return false;
 		}
 		String s=(String)commands.elementAt(0);
@@ -323,7 +323,7 @@ public class Reset extends StdCommand
 			commands.removeElementAt(0);
 			if(commands.size()<1)
 			{
-				mob.tell("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA.");
+				mob.tell(_("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA."));
 				return false;
 			}
 			s=(String)commands.elementAt(0);
@@ -334,7 +334,7 @@ public class Reset extends StdCommand
 			if(s.equalsIgnoreCase("room"))
 			{
 				CMLib.threads().rejuv(mob.location(),tickID);
-				mob.tell("Done.");
+				mob.tell(_("Done."));
 			}
 			else
 			if(s.equalsIgnoreCase("area"))
@@ -342,11 +342,11 @@ public class Reset extends StdCommand
 				final Area A=mob.location().getArea();
 				for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 					CMLib.threads().rejuv(e.nextElement(),tickID);
-				mob.tell("Done.");
+				mob.tell(_("Done."));
 			}
 			else
 			{
-				mob.tell("Rejuv this ROOM, or the whole AREA?");
+				mob.tell(_("Rejuv this ROOM, or the whole AREA?"));
 				return false;
 			}
 		}
@@ -360,17 +360,17 @@ public class Reset extends StdCommand
 					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
 						S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
 				CMLib.map().resetRoom(mob.location(), true);
-				mob.tell("Done.");
+				mob.tell(_("Done."));
 			}
 			else
-				mob.tell("Cancelled.");
+				mob.tell(_("Cancelled."));
 		}
 		else
 		if(s.equalsIgnoreCase("INIFILE")||s.equalsIgnoreCase("coffeemud.ini"))
 		{
 			CMProps.instance().resetSecurityVars();
 			CMProps.instance().resetSystemVars();
-			mob.tell("Done.");
+			mob.tell(_("Done."));
 		}
 		else
 		if(s.equalsIgnoreCase("area"))
@@ -386,10 +386,10 @@ public class Reset extends StdCommand
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
 							S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
 					CMLib.map().resetArea(A);
-					mob.tell("Done.");
+					mob.tell(_("Done."));
 				}
 				else
-					mob.tell("Cancelled.");
+					mob.tell(_("Cancelled."));
 			}
 		}
 		else
@@ -402,10 +402,10 @@ public class Reset extends StdCommand
 			if(what.startsWith("EXPERTIS"))
 			{
 				M.delAllExpertises();
-				mob.tell("Done.");
+				mob.tell(_("Done."));
 			}
 			else
-				mob.tell("Can't reset that trait -- as its not defined.");
+				mob.tell(_("Can't reset that trait -- as its not defined."));
 		}
 		else
 		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS)))
@@ -448,9 +448,9 @@ public class Reset extends StdCommand
 				}
 			}
 			if(!somethingDone)
-				mob.tell("No rooms were found which needed renaming.");
+				mob.tell(_("No rooms were found which needed renaming."));
 			else
-				mob.tell("Done renumbering rooms.");
+				mob.tell(_("Done renumbering rooms."));
 		}
 		else
 		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESETUTILS))
@@ -603,7 +603,7 @@ public class Reset extends StdCommand
 			final String bank=CMParms.combine(commands,1);
 			if(bank.length()==0)
 			{
-				mob.tell("Which bank?");
+				mob.tell(_("Which bank?"));
 				return false;
 			}
 			final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
@@ -686,7 +686,7 @@ public class Reset extends StdCommand
 			}
 			else
 			{
-				mob.tell("Try ROOM, AREA, CATALOG, or WORLD.");
+				mob.tell(_("Try ROOM, AREA, CATALOG, or WORLD."));
 				return false;
 			}
 			if(recordedChanges!=null)
@@ -852,7 +852,7 @@ public class Reset extends StdCommand
 			if(mob.session()==null) return false;
 			if(commands.size()<2)
 			{
-				mob.tell("You need to specify a property or behavior to install.");
+				mob.tell(_("You need to specify a property or behavior to install."));
 				return false;
 			}
 			final String ID=(String)commands.elementAt(1);
@@ -1045,7 +1045,7 @@ public class Reset extends StdCommand
 			}
 			else
 			{
-				mob.tell("Try ROOM, AREA, CATALOG, or WORLD.");
+				mob.tell(_("Try ROOM, AREA, CATALOG, or WORLD."));
 				return false;
 			}
 			if(recordedChanges!=null)
@@ -1187,7 +1187,7 @@ public class Reset extends StdCommand
 						{
 							R.delItem(I);
 							somethingDone=true;
-							mob.tell(" deleted");
+							mob.tell(_(" deleted"));
 						}
 						else
 						if(returned>0)
@@ -1282,7 +1282,7 @@ public class Reset extends StdCommand
 							{
 								M.delItem(I);
 								somethingDone=true;
-								mob.tell("   deleted");
+								mob.tell(_("   deleted"));
 							}
 							else
 							if(returned>0)
@@ -1302,7 +1302,7 @@ public class Reset extends StdCommand
 									{
 										SK.getShop().delAllStoreInventory(I);
 										somethingDone=true;
-										mob.tell("   deleted");
+										mob.tell(_("   deleted"));
 									}
 									else
 									if(returned>0)
@@ -1340,7 +1340,7 @@ public class Reset extends StdCommand
 			catch(final java.io.IOException e){}
 			if(A.getAreaState()!=Area.State.ACTIVE)
 				A.setAreaState(Area.State.ACTIVE);
-			mob.tell("Done.");
+			mob.tell(_("Done."));
 		}
 		else
 		if(s.equalsIgnoreCase("manufacturers"))

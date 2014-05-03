@@ -53,7 +53,7 @@ public class Chant_Crossbreed extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your strange cross-fertility subsides.");
+			mob.tell(_("Your strange cross-fertility subsides."));
 	}
 
 	@Override

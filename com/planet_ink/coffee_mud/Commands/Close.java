@@ -45,7 +45,7 @@ public class Close extends StdCommand
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
-			mob.tell("Close what?");
+			mob.tell(_("Close what?"));
 			return false;
 		}
 		Environmental closeThis=null;

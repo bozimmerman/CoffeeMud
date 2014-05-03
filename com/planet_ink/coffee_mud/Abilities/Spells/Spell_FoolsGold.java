@@ -69,7 +69,7 @@ public class Spell_FoolsGold extends Spell
 	{
 		if((commands.size()==0)||(CMath.s_int(CMParms.combine(commands,0))==0))
 		{
-			mob.tell("You must specify how big of a pile of gold to create.");
+			mob.tell(_("You must specify how big of a pile of gold to create."));
 			return false;
 		}
 		final int amount=CMath.s_int(CMParms.combine(commands,0));

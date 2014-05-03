@@ -132,7 +132,7 @@ public class StdClanDonationList extends StdClanItem
 						mob.tell("There is nothing written on "+name()+".");
 				}
 				else
-					mob.tell("You can't see that!");
+					mob.tell(_("You can't see that!"));
 				return;
 			}
 			else

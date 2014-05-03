@@ -73,7 +73,7 @@ public class Song_Friendship extends Song
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell("You don't want to leave your friend.");
+			mob.tell(_("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -160,7 +160,7 @@ public class Song_Friendship extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't sing!");
+			mob.tell(_("You can't sing!"));
 			return false;
 		}
 

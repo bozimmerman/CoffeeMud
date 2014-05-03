@@ -63,7 +63,7 @@ public class Spell_FakeSpring extends Spell
 			{
 				if(msg.othersMessage()!=null)
 					msg.source().location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,msg.othersMessage());
-				msg.source().tell("You have drunk all you can.");
+				msg.source().tell(_("You have drunk all you can."));
 				return false;
 			}
 		}

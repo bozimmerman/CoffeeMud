@@ -104,18 +104,18 @@ public class Chant_SummonMoon extends Chant
 		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK)
 		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT))
 		{
-			mob.tell("You can only start this chant at night.");
+			mob.tell(_("You can only start this chant at night."));
 			return false;
 		}
 		if((target.domainType()&Room.INDOORS)==0)
 		{
-			mob.tell("This chant only works indoors.");
+			mob.tell(_("This chant only works indoors."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the summoned moon.");
+			mob.tell(_("This place is already under the summoned moon."));
 			return false;
 		}
 

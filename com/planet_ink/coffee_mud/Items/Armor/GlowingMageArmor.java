@@ -72,7 +72,7 @@ public class GlowingMageArmor extends StdArmor
 		||(msg.targetMinor()==CMMsg.TYP_PULL)
 		||(msg.targetMinor()==CMMsg.TYP_REMOVE))
 		{
-			mob.tell("The mage armor cannot be removed from where it is.");
+			mob.tell(_("The mage armor cannot be removed from where it is."));
 			return false;
 		}
 		return true;

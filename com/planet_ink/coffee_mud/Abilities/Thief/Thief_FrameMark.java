@@ -65,7 +65,7 @@ public class Thief_FrameMark extends ThiefSkill
 		final MOB target=getMark(mob);
 		if(target==null)
 		{
-			mob.tell("You need to have marked someone before you can frame him or her.");
+			mob.tell(_("You need to have marked someone before you can frame him or her."));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if((B==null)
 		||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),mob)))
 		{
-			mob.tell("You aren't wanted for anything here.");
+			mob.tell(_("You aren't wanted for anything here."));
 			return false;
 		}
 		final double goldRequired=target.phyStats().level() * 1000.0;

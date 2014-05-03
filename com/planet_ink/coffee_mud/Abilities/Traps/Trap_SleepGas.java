@@ -108,7 +108,7 @@ public class Trap_SleepGas extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell("You'll need to set down some slumberall poison first.");
+			mob.tell(_("You'll need to set down some slumberall poison first."));
 			return false;
 		}
 		return true;

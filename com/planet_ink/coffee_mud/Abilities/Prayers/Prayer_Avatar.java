@@ -63,7 +63,7 @@ public class Prayer_Avatar extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your unholy alliance has been severed.");
+			mob.tell(_("Your unholy alliance has been severed."));
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class Prayer_Avatar extends Prayer
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))
 		{
-			mob.tell("You have lost this ability for all time.");
+			mob.tell(_("You have lost this ability for all time."));
 			return false;
 		}
 		else

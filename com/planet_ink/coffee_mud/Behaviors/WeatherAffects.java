@@ -463,7 +463,7 @@ public class WeatherAffects extends PuddleMaker
 						break;
 					case Climate.WEATHER_SNOW:
 						if(C.weatherType(R)==Climate.WEATHER_SNOW)
-							S.mob().tell("^JSnowflakes fall lightly on you.^?");
+							S.mob().tell(_("^JSnowflakes fall lightly on you.^?"));
 						break;
 					case Climate.WEATHER_DUSTSTORM:
 						if(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)

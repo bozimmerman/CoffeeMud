@@ -776,14 +776,14 @@ public class StdItem implements Item
 					if((codes.get(i)&wearWhere)>0)
 						locs.append(", " + codes.name(i));
 				if(locs.length()==0)
-					mob.tell("You can't wear that there.");
+					mob.tell(_("You can't wear that there."));
 				else
 					mob.tell("You can't wear that on your "+locs.toString().substring(1).trim()+".");
 				return false;
 			}
 			else
 			{
-				mob.tell("You don't have anywhere you can wear that.");
+				mob.tell(_("You don't have anywhere you can wear that."));
 				return false;
 			}
 		}
@@ -885,7 +885,7 @@ public class StdItem implements Item
 			&&(msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
-			mob.tell("Please don't do that.");
+			mob.tell(_("Please don't do that."));
 			return false;
 		}
 		else
@@ -968,7 +968,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell("That looks too advanced for you.");
+				mob.tell(_("That looks too advanced for you."));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
@@ -981,13 +981,13 @@ public class StdItem implements Item
 						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
 						||(!canWear(mob,Wearable.WORN_HELD)))
 						{
-							mob.tell("Your hands are full.");
+							mob.tell(_("Your hands are full."));
 							return false;
 						}
 					}
 					else
 					{
-						mob.tell("You need hands to hold things.");
+						mob.tell(_("You need hands to hold things."));
 						return false;
 					}
 				}
@@ -1004,7 +1004,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell("That looks too advanced for you.");
+				mob.tell(_("That looks too advanced for you."));
 				return false;
 			}
 			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2));
@@ -1018,7 +1018,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell("That looks too advanced for you.");
+				mob.tell(_("That looks too advanced for you."));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
@@ -1036,7 +1036,7 @@ public class StdItem implements Item
 					}
 					else
 					{
-						mob.tell("You need hands to wield things.");
+						mob.tell(_("You need hands to wield things."));
 						return false;
 					}
 				}
@@ -1046,7 +1046,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_PULL:
 			if(msg.source().isMine(this))
 			{
-				mob.tell("You'll need to put that down first.");
+				mob.tell(_("You'll need to put that down first."));
 				return false;
 			}
 			if(!CMLib.flags().isGettable(this))
@@ -1062,7 +1062,7 @@ public class StdItem implements Item
 				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					mob.tell("You can't see that.");
+					mob.tell(_("You can't see that."));
 					return false;
 				}
 				if((mob.phyStats().level()<phyStats().level()-(10+(mob.phyStats().level()/5)))
@@ -1082,7 +1082,7 @@ public class StdItem implements Item
 				}
 				if((numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 				{
-					mob.tell("You can't carry that many items.");
+					mob.tell(_("You can't carry that many items."));
 					return false;
 				}
 				if(!CMLib.flags().isGettable(this))
@@ -1123,7 +1123,7 @@ public class StdItem implements Item
 				   &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				   &&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					mob.tell("You can't see that.");
+					mob.tell(_("You can't see that."));
 					return false;
 				}
 				if((!amWearingAt(Wearable.IN_INVENTORY))&&(!CMLib.flags().isRemovable(this)))
@@ -1174,7 +1174,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_DROP:
 			if(!mob.isMine(this))
 			{
-				mob.tell("You don't have that.");
+				mob.tell(_("You don't have that."));
 				return false;
 			}
 			if(!CMLib.flags().isDroppable(this))

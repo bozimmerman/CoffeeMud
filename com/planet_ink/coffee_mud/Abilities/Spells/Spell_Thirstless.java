@@ -70,7 +70,7 @@ public class Spell_Thirstless extends Spell
 
 		if(canBeUninvoked())
 		{
-			mob.tell("You are starting to feel thirstier.");
+			mob.tell(_("You are starting to feel thirstier."));
 			mob.curState().setThirst(0);
 		}
 	}
@@ -115,7 +115,7 @@ public class Spell_Thirstless extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.tell("You feel quenched!");
+				target.tell(_("You feel quenched!"));
 			}
 		}
 		else

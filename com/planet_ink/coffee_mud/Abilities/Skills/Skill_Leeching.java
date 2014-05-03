@@ -58,7 +58,7 @@ public class Skill_Leeching extends StdSkill
 		}
 		if(mob.isInCombat()&&(mob.getVictim()==target)&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to try that!");
+			mob.tell(_("You are too far away to try that!"));
 			return false;
 		}
 

@@ -1190,7 +1190,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		room.showHappens(CMMsg.MASK_ALWAYS, "The service conducted by "+mob.Name()+" has been cancelled.");
 		if(mob.location()!=room)
-			mob.tell("Your service has been cancelled.");
+			mob.tell(_("Your service has been cancelled."));
 		undoService(service.parishaners);
 		synchronized(services)
 		{

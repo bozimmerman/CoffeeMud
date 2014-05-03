@@ -47,7 +47,7 @@ public class Spell_MassSlow extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth slowing down.");
+			mob.tell(_("There doesn't appear to be anyone here worth slowing down."));
 			return false;
 		}
 

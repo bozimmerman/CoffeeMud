@@ -110,7 +110,7 @@ public class Chant_AnimalGrowth extends Chant
 		if(target==null) return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell("This chant only works on animals.");
+			mob.tell(_("This chant only works on animals."));
 			return false;
 		}
 

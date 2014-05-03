@@ -232,7 +232,7 @@ public class DrowWarrior extends DrowElf
 		{
 			if(CMLib.dice().rollPercentage() <= magicResistance)
 			{
-				msg.source().tell("The drow warrior resisted your spell!");
+				msg.source().tell(_("The drow warrior resisted your spell!"));
 				return false;
 			}
 		}

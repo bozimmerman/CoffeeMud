@@ -156,7 +156,7 @@ public class Spell_PhantomHound extends Spell
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to cast this spell!");
+			mob.tell(_("You must be in combat to cast this spell!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

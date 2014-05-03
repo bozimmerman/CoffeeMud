@@ -59,7 +59,7 @@ public class Chant_StarGazing extends Chant
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> star gazing.");
 				else
-					mob.tell("You stop star gazing.");
+					mob.tell(_("You stop star gazing."));
 			}
 		}
 	}
@@ -142,22 +142,22 @@ public class Chant_StarGazing extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("You can't star gaze while in combat!");
+			mob.tell(_("You can't star gaze while in combat!"));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		if(!mob.location().getArea().getClimateObj().canSeeTheStars(mob.location()))
 		{
-			mob.tell("You can't see the stars right now.");
+			mob.tell(_("You can't see the stars right now."));
 			return false;
 		}
 

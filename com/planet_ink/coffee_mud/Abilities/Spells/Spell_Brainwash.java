@@ -110,7 +110,7 @@ public class Spell_Brainwash extends Spell
 		{
 			if(commands.size()<2)
 			{
-				mob.tell("You must specify your target, followed by the message they will believe.");
+				mob.tell(_("You must specify your target, followed by the message they will believe."));
 				return false;
 			}
 			message=CMParms.combine(commands,1);

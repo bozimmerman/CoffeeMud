@@ -72,7 +72,7 @@ public class ClanReject extends StdCommand
 			}
 			if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
 			{
-				mob.tell("Everyone is already accepted.");
+				mob.tell(_("Everyone is already accepted."));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,false))

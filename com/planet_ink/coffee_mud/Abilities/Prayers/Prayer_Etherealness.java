@@ -85,7 +85,7 @@ public class Prayer_Etherealness extends Prayer
 				&&(!((Exit)msg.tool()).isOpen())
 				&&(msg.source().numItems()>0))
 				{
-					msg.source().tell("Your corporeal equipment, suspended in your form, will not pass through the door.");
+					msg.source().tell(_("Your corporeal equipment, suspended in your form, will not pass through the door."));
 					return false;
 				}
 				break;
@@ -105,18 +105,18 @@ public class Prayer_Etherealness extends Prayer
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_HANDS:
-				msg.source().tell("You fail to manipulate matter in this form.");
+				msg.source().tell(_("You fail to manipulate matter in this form."));
 				return false;
 			case CMMsg.TYP_KNOCK:
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_CLOSE:
-				msg.source().tell("You fail your attempt to affect matter in this form.");
+				msg.source().tell(_("You fail your attempt to affect matter in this form."));
 				return false;
 			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
-				msg.source().tell("You fail your attempt to affect matter in this form.");
+				msg.source().tell(_("You fail your attempt to affect matter in this form."));
 				msg.source().makePeace();
 				return false;
 			}

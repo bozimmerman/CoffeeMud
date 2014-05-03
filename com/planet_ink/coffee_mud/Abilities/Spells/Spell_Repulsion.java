@@ -111,7 +111,7 @@ public class Spell_Repulsion extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell("There doesn't appear to be anyone here worth repelling.");
+			mob.tell(_("There doesn't appear to be anyone here worth repelling."));
 			return false;
 		}
 

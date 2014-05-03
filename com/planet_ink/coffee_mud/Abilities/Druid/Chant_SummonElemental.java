@@ -102,7 +102,7 @@ public class Chant_SummonElemental extends Chant
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell("You can only control one elemental.");
+			mob.tell(_("You can only control one elemental."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

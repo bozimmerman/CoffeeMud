@@ -75,7 +75,7 @@ public class Dueler extends StdAbility
 				if((canBeUninvoked())
 				&&(!mob.amDead())
 				&&(CMLib.flags().isInTheGame(mob,true)))
-					mob.tell("Your duel has ended.");
+					mob.tell(_("Your duel has ended."));
 				if(!oldPVPStatus)
 					mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
 				oldCurState.copyInto(mob.curState());

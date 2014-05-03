@@ -60,7 +60,7 @@ public class Song_Rage extends Song
 		if(msg.sourceMinor()!=CMMsg.TYP_FLEE) return true;
 		if(msg.source().fetchEffect(this.ID())==null) return true;
 
-		msg.source().tell("You are too enraged to flee.");
+		msg.source().tell(_("You are too enraged to flee."));
 		return false;
 	}
 

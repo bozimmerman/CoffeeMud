@@ -354,7 +354,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					final String mudName=targetName.substring(targetName.indexOf('@')+1);
 					targetName=targetName.substring(0,targetName.indexOf('@'));
 					if((!(CMLib.intermud().i3online()))&&(!(CMLib.intermud().imc2online())))
-						mob.tell("Intermud is unavailable.");
+						mob.tell(_("Intermud is unavailable."));
 					else
 						CMLib.intermud().i3tell(mob,targetName,mudName,text);
 				}
@@ -681,7 +681,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 				{
 					if((month==bmonth)&&(day==bday))
-						mob.tell("Happy Birthday!");
+						mob.tell(_("Happy Birthday!"));
 					mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getStat(CharStats.STAT_AGE)+1);
 					mob.recoverCharStats();
 					mob.recoverPhyStats();
@@ -909,7 +909,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Item item=(Item)msg.target();
 		if(!CMLib.flags().canBeSeenBy(item,mob))
 		{
-			mob.tell("You can't see that!");
+			mob.tell(_("You can't see that!"));
 			return;
 		}
 
@@ -1243,7 +1243,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 
 		if(Say.length()==0)
-			mob.tell("You can't see anything!");
+			mob.tell(_("You can't see anything!"));
 		else
 		{
 			if(compress) Say.append("\n\r");
@@ -1264,12 +1264,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			if(itemsInTheDarkness>0)
-				mob.tell("      ^IThere is something here, but it's too dark to make out.^?\n\r");
+				mob.tell(_("      ^IThere is something here, but it's too dark to make out.^?\n\r"));
 			if(mobsInTheDarkness>1)
-				mob.tell("^MThe darkness conceals several others.^?\n\r");
+				mob.tell(_("^MThe darkness conceals several others.^?\n\r"));
 			else
 			if(mobsInTheDarkness>0)
-				mob.tell("^MYou are not alone, but it's too dark to tell.^?\n\r");
+				mob.tell(_("^MYou are not alone, but it's too dark to tell.^?\n\r"));
 		}
 	}
 
@@ -1372,18 +1372,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				mob.playerStats().adjHygiene(adjHygiene);
 				if(mob.playerStats().getHygiene()>(PlayerStats.HYGIENE_DELIMIT/2))
-					mob.tell("You feel a little cleaner, but are still very dirty.");
+					mob.tell(_("You feel a little cleaner, but are still very dirty."));
 				else
 				if(mob.playerStats().getHygiene()<1500)
-					mob.tell("You feel a little cleaner; almost perfect.");
+					mob.tell(_("You feel a little cleaner; almost perfect."));
 				else
-					mob.tell("You feel a little cleaner.");
+					mob.tell(_("You feel a little cleaner."));
 			}
 			else
 			if(adjHygiene==0)
-				mob.tell("You are already perfectly clean.");
+				mob.tell(_("You are already perfectly clean."));
 			else
-				mob.tell("You can't get any cleaner here.");
+				mob.tell(_("You can't get any cleaner here."));
 		}
 	}
 
@@ -1480,7 +1480,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			else
-				mob.tell("You don't see anything special.");
+				mob.tell(_("You don't see anything special."));
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 			{
 				mob.tell("Type  : "+exit.ID());
@@ -1490,7 +1490,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((image!=null)&&(image.length()>0)) mob.tell(image);
 		}
 		else
-			mob.tell("You can't see that way!");
+			mob.tell(_("You can't see that way!"));
 	}
 
 	protected void handleBeingMobLookedAt(CMMsg msg)
@@ -1648,7 +1648,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					mob.tell("There is nothing written on "+msg.target().name()+".");
 			}
 			else
-				mob.tell("You can't see that!");
+				mob.tell(_("You can't see that!"));
 		}
 	}
 
@@ -1813,7 +1813,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 		if(!CMLib.flags().canSee(mob))
 		{
-			mob.tell("You can't see anything!");
+			mob.tell(_("You can't see anything!"));
 			return;
 		}
 

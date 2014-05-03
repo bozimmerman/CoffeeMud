@@ -55,7 +55,7 @@ public class Prop_LocationBound extends Property
 			if(text().length()==0)
 			{
 				if(affected instanceof MOB)
-					msg.source().tell("You are not allowed to leave this place.");
+					msg.source().tell(_("You are not allowed to leave this place."));
 				else
 					msg.source().tell(affected.name()+" prevents you from taking it that way.");
 				return false;
@@ -66,7 +66,7 @@ public class Prop_LocationBound extends Property
 				if(whereTo!=R)
 				{
 					if(affected instanceof MOB)
-						msg.source().tell("You are not allowed to leave this place.");
+						msg.source().tell(_("You are not allowed to leave this place."));
 					else
 						msg.source().tell(affected.name()+" prevents you from taking it that way.");
 					return false;
@@ -78,7 +78,7 @@ public class Prop_LocationBound extends Property
 				if(whereTo.getArea()!=R.getArea())
 				{
 					if(affected instanceof MOB)
-						msg.source().tell("You are not allowed to leave this place.");
+						msg.source().tell(_("You are not allowed to leave this place."));
 					else
 						msg.source().tell(affected.name()+" prevents you from taking it that way.");
 					return false;
@@ -93,7 +93,7 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell("You are whisked back home!");
+							msg.source().tell(_("You are whisked back home!"));
 							tR.bringMobHere((MOB)affected,false);
 						}
 						else
@@ -106,7 +106,7 @@ public class Prop_LocationBound extends Property
 					else
 					{
 						if(affected instanceof MOB)
-							msg.source().tell("You are not allowed to leave this place.");
+							msg.source().tell(_("You are not allowed to leave this place."));
 						else
 							msg.source().tell(affected.name()+" prevents you from taking it that way.");
 					}
@@ -119,7 +119,7 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell("You are whisked back home!");
+							msg.source().tell(_("You are whisked back home!"));
 							A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
 						}
 						else
@@ -132,7 +132,7 @@ public class Prop_LocationBound extends Property
 					else
 					{
 						if(affected instanceof MOB)
-							msg.source().tell("You are not allowed to leave this place.");
+							msg.source().tell(_("You are not allowed to leave this place."));
 						else
 							msg.source().tell(affected.name()+" prevents you from taking it that way.");
 					}

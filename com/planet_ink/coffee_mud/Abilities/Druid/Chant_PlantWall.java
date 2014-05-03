@@ -161,12 +161,12 @@ public class Chant_PlantWall extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell("You really should be in ranged combat to use this chant.");
+			mob.tell(_("You really should be in ranged combat to use this chant."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -174,7 +174,7 @@ public class Chant_PlantWall extends Chant
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell("There is already a plant wall here.");
+				mob.tell(_("There is already a plant wall here."));
 				return false;
 			}
 		}

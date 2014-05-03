@@ -66,7 +66,7 @@ public class Undead_ColdTouch extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("The chill is lifted.");
+			mob.tell(_("The chill is lifted."));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class Undead_ColdTouch extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to touch!");
+			mob.tell(_("You are too far away to touch!"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);

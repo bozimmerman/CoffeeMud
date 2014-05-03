@@ -483,12 +483,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
 			&&(CV.voteStatus==Clan.VSTAT_STARTED))
 			{
-				mob.tell("This matter must be voted upon, but you already have a vote underway.");
+				mob.tell(_("This matter must be voted upon, but you already have a vote underway."));
 				return false;
 			}
 			if(CV.matter.equalsIgnoreCase(matter))
 			{
-				mob.tell("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see.");
+				mob.tell(_("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see."));
 				return false;
 			}
 		}
@@ -541,12 +541,12 @@ public class Clans extends StdLibrary implements ClanManager
 								+list+" should use CLANVOTE to participate.");
 					}
 				}
-				mob.tell("Your vote has started.  Use CLANVOTE to cast your vote.");
+				mob.tell(_("Your vote has started.  Use CLANVOTE to cast your vote."));
 				return false;
 			}
 		}
 		catch(final java.io.IOException e){}
-		mob.tell("Without a vote, this command can not be executed.");
+		mob.tell(_("Without a vote, this command can not be executed."));
 		return false;
 	}
 

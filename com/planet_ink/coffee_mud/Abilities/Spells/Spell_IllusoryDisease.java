@@ -106,7 +106,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to feel better.");
+			mob.tell(_("You begin to feel better."));
 	}
 
 

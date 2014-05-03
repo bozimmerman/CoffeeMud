@@ -49,7 +49,7 @@ public class Prayer_CallUndead extends Prayer
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
-			mob.tell("You don't have any controlled undead!");
+			mob.tell(_("You don't have any controlled undead!"));
 			return false;
 		}
 
@@ -71,13 +71,13 @@ public class Prayer_CallUndead extends Prayer
 		}
 		if((target==null)&&(allHere))
 		{
-			mob.tell("Better look around first.");
+			mob.tell(_("Better look around first."));
 			return false;
 		}
 
 		if(target==null)
 		{
-			mob.tell("Either they are all en route, or you can not fixate on your undead.");
+			mob.tell(_("Either they are all en route, or you can not fixate on your undead."));
 			return false;
 		}
 

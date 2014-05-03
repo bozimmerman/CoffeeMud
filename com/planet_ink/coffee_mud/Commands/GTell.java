@@ -45,7 +45,7 @@ public class GTell extends StdCommand
 		String text=CMParms.combine(commands,1);
 		if(text.length()==0)
 		{
-			mob.tell("Tell the group what?");
+			mob.tell(_("Tell the group what?"));
 			return false;
 		}
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
@@ -57,7 +57,7 @@ public class GTell extends StdCommand
 		{
 			final java.util.List<String> V=mob.playerStats().getGTellStack();
 			if(V.size()==0)
-				mob.tell("No telling.");
+				mob.tell(_("No telling."));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,2));

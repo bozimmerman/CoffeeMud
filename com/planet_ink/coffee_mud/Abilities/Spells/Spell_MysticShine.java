@@ -76,7 +76,7 @@ public class Spell_MysticShine extends Spell
 		||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
 		{
-			mob.tell("This magic only affects metallic items.");
+			mob.tell(_("This magic only affects metallic items."));
 			return false;
 		}
 

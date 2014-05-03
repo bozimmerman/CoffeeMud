@@ -71,7 +71,7 @@ public class Bomb_Spores extends StdBomb
 		if((!(P instanceof Food))||(V.size()==0))
 		{
 			if(mob!=null)
-				mob.tell("You need some diseased meat to make this out of.");
+				mob.tell(_("You need some diseased meat to make this out of."));
 			return false;
 		}
 		return true;

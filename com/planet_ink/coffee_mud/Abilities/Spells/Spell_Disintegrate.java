@@ -55,7 +55,7 @@ public class Spell_Disintegrate extends Spell
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{
-				mob.tell("You are not allowed to destroy a player corpse.");
+				mob.tell(_("You are not allowed to destroy a player corpse."));
 				return false;
 			}
 		}

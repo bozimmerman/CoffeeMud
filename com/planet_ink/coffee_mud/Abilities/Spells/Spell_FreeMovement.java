@@ -50,7 +50,7 @@ public class Spell_FreeMovement extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your uninhibiting protection dissipates.");
+			mob.tell(_("Your uninhibiting protection dissipates."));
 
 		super.unInvoke();
 

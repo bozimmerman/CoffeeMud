@@ -95,7 +95,7 @@ public class Prayer_LinkedHealth extends Prayer
 		if(target==null) return false;
 		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell("Your health is already linked with someones!");
+			mob.tell(_("Your health is already linked with someones!"));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)

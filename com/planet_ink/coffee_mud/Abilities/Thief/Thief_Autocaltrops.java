@@ -79,7 +79,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
-			((MOB)affected).tell("You stop throwing down caltrops.");
+			((MOB)affected).tell(_("You stop throwing down caltrops."));
 		super.unInvoke();
 	}
 
@@ -89,13 +89,13 @@ public class Thief_Autocaltrops extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are no longer automatically dropping caltrops.");
+			target.tell(_("You are no longer automatically dropping caltrops."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_Caltrops")==null))
 		{
-			target.tell("You don't know how to make and drop caltrops yet!");
+			target.tell(_("You don't know how to make and drop caltrops yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -105,7 +105,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 
 		if(success)
 		{
-			target.tell("You will now automatically drop caltrops around when you enter a room.");
+			target.tell(_("You will now automatically drop caltrops around when you enter a room."));
 			beneficialAffect(mob,target,asLevel,5+(3*getXLEVELLevel(mob)));
 			dropem(target,target.location());
 		}

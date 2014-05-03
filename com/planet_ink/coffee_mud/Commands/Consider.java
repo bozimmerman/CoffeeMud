@@ -180,7 +180,7 @@ public class Consider extends StdCommand
 			mob.tell(withWhat.toString()+".");
 		else
 		if(!(target instanceof MOB))
-			mob.tell("You don't have any particular thoughts about that.");
+			mob.tell(_("You don't have any particular thoughts about that."));
 		return lvlDiff;
 	}
 
@@ -191,7 +191,7 @@ public class Consider extends StdCommand
 		Physical target=null;
 		if(commands.size()<2)
 		{
-			mob.tell("Consider whom or what?");
+			mob.tell(_("Consider whom or what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

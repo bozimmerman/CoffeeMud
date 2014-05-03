@@ -75,14 +75,14 @@ public class Sniff extends StdCommand
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell("You don't see that here!");
+				mob.tell(_("You don't see that here!"));
 		}
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
 				if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
 				{
-					mob.tell("Sniff what?");
+					mob.tell(_("Sniff what?"));
 					return false;
 				}
 

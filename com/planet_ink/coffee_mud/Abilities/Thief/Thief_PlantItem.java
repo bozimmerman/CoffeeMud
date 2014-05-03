@@ -53,7 +53,7 @@ public class Thief_PlantItem extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("What would you like to plant on whom?");
+			mob.tell(_("What would you like to plant on whom?"));
 			return false;
 		}
 		final MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
@@ -64,7 +64,7 @@ public class Thief_PlantItem extends ThiefSkill
 		}
 		if(target==mob)
 		{
-			mob.tell("You cannot plant anything on yourself!");
+			mob.tell(_("You cannot plant anything on yourself!"));
 			return false;
 		}
 		commands.removeElement(commands.lastElement());

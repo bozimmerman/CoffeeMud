@@ -1044,7 +1044,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				s.setMob(target.soulMate());
 				target.soulMate().setSession(s);
 				target.setSession(null);
-				target.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
+				target.soulMate().tell(_("^HYour spirit has returned to your body...\n\r\n\r^N"));
 				CMLib.commands().postLook(target.soulMate(),true);
 				target.setSoulMate(null);
 			}
@@ -1057,10 +1057,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to dismount to loot the body.");
+					source.tell(_("You'll need to dismount to loot the body."));
 				else
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to disembark to loot the body.");
+					source.tell(_("You'll need to disembark to loot the body."));
 				else
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
@@ -1925,38 +1925,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				||(ticksHungry>CharState.DEATH_HUNGER_TICKS))
 				{
 					if(thirsty)
-						mob.tell("YOU ARE DYING OF THIRST!");
+						mob.tell(_("YOU ARE DYING OF THIRST!"));
 					if(hungry)
-						mob.tell("YOU ARE DYING OF HUNGER!");
+						mob.tell(_("YOU ARE DYING OF HUNGER!"));
 					CMLib.combat().postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>CharState.DEATH_THIRST_TICKS-30)
-					mob.tell("You are dehydrated, and near death.  DRINK SOMETHING!");
+					mob.tell(_("You are dehydrated, and near death.  DRINK SOMETHING!"));
 				else
 				if(ticksHungry>CharState.DEATH_HUNGER_TICKS-30)
-					mob.tell("You are starved, and near death.  EAT SOMETHING!");
+					mob.tell(_("You are starved, and near death.  EAT SOMETHING!"));
 				else
 				{
 					if(thirsty && ((ticksThirsty-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksThirsty>((CharState.DEATH_THIRST_TICKS/2)+(CharState.DEATH_THIRST_TICKS/4)))
-							mob.tell("You are dehydrated! Drink something!");
+							mob.tell(_("You are dehydrated! Drink something!"));
 						else
 						if(ticksThirsty>(CharState.DEATH_THIRST_TICKS/2))
-							mob.tell("You are parched! Drink something!");
+							mob.tell(_("You are parched! Drink something!"));
 						else
-							mob.tell("You are thirsty.");
+							mob.tell(_("You are thirsty."));
 					}
 					if((hungry) && ((ticksHungry-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksHungry>((CharState.DEATH_HUNGER_TICKS/2)+(CharState.DEATH_HUNGER_TICKS/4)))
-							mob.tell("You are starved! Eat something!");
+							mob.tell(_("You are starved! Eat something!"));
 						else
 						if(ticksHungry>(CharState.DEATH_HUNGER_TICKS/2))
-							mob.tell("You are famished! Eat something!");
+							mob.tell(_("You are famished! Eat something!"));
 						else
-							mob.tell("You are hungry.");
+							mob.tell(_("You are hungry."));
 					}
 				}
 			}
@@ -1999,14 +1999,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final Ability A=CMClass.getAbility("Prop_AstralSpirit");
 				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 				{
-					mob.tell("^HYou are now a spirit.^N");
+					mob.tell(_("^HYou are now a spirit.^N"));
 					if(whatToDo.startsWith("ASTRAL_R"))
 					{
 						A.setMiscText("SELF-RES");
-						mob.tell("^HFind your corpse and use ENTER [body name] to re-enter your body.^N");
+						mob.tell(_("^HFind your corpse and use ENTER [body name] to re-enter your body.^N"));
 					}
 					else
-						mob.tell("^HFind your corpse have someone resurrect it.^N");
+						mob.tell(_("^HFind your corpse have someone resurrect it.^N"));
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 				}

@@ -52,7 +52,7 @@ public class Chant_FodderSignal extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("The fodder signal stops flashing.");
+			mob.tell(_("The fodder signal stops flashing."));
 
 		super.unInvoke();
 

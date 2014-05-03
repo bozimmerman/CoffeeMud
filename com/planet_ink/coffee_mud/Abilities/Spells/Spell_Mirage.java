@@ -116,7 +116,7 @@ public class Spell_Mirage extends Spell
 	{
 		if(mob.location().getArea().properSize()<2)
 		{
-			mob.tell("This area is too small to cast this spell.");
+			mob.tell(_("This area is too small to cast this spell."));
 			return false;
 		}
 

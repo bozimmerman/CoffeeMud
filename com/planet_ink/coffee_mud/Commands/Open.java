@@ -94,7 +94,7 @@ public class Open extends StdCommand
 		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
-			mob.tell("Open what?");
+			mob.tell(_("Open what?"));
 			return false;
 		}
 		Environmental openThis=null;

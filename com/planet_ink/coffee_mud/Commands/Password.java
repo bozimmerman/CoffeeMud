@@ -70,14 +70,14 @@ public class Password extends StdCommand
 							{
 								final String ne2=this.input;
 								if(!pstats.matchesPassword(old))
-									mob.tell("Your old password was not entered correctly.");
+									mob.tell(_("Your old password was not entered correctly."));
 								else
 								if(!nep.equals(ne2))
-									mob.tell("Your new password was not entered the same way twice!");
+									mob.tell(_("Your new password was not entered the same way twice!"));
 								else
 								{
 									pstats.setPassword(nep);
-									mob.tell("Your password has been changed.");
+									mob.tell(_("Your password has been changed."));
 									if(pstats.getAccount()!=null)
 										CMLib.database().DBUpdateAccount(pstats.getAccount());
 									CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());

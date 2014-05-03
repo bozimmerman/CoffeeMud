@@ -74,7 +74,7 @@ public class Skill_Struggle extends BardSkill
 	{
 		if(!CMLib.flags().isBound(mob))
 		{
-			mob.tell("You don't seem to be bound by anything you can struggle against!");
+			mob.tell(_("You don't seem to be bound by anything you can struggle against!"));
 			return false;
 		}
 

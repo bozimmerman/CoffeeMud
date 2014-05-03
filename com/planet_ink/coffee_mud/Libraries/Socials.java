@@ -349,7 +349,7 @@ public class Socials extends StdLibrary implements SocialsList
 		final Vector<String> socialsParse=CMParms.parse(socialString);
 		if(socialsParse.size()==0)
 		{
-			mob.tell("Which social?");
+			mob.tell(_("Which social?"));
 			return false;
 		}
 		final String name=socialsParse.firstElement().toUpperCase().trim();
@@ -477,7 +477,7 @@ public class Socials extends StdLibrary implements SocialsList
 				for(int i=0;i<socials.size();i++)
 					if(socials.get(i).Name().equals(name+newOne))
 					{
-						mob.tell("This social already exists.  Pick it off the list above.");
+						mob.tell(_("This social already exists.  Pick it off the list above."));
 						pickNewSocial=true;
 						break;
 					}

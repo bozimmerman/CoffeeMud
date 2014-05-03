@@ -44,7 +44,7 @@ public class DrinkCmd extends StdCommand
 	{
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell("Drink what?");
+			mob.tell(_("Drink what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

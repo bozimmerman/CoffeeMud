@@ -49,7 +49,7 @@ public class Friends extends StdCommand
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
-				mob.tell("You have no friends listed.  Use FRIENDS ADD to add more.");
+				mob.tell(_("You have no friends listed.  Use FRIENDS ADD to add more."));
 			else
 			{
 				final StringBuffer str=new StringBuffer("Your listed friends are: ");
@@ -64,7 +64,7 @@ public class Friends extends StdCommand
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell("Add whom?");
+				mob.tell(_("Add whom?"));
 				return false;
 			}
 			name=CMStrings.capitalizeAndLower(name);
@@ -73,12 +73,12 @@ public class Friends extends StdCommand
 			else
 			if(!CMLib.players().playerExists(name))
 			{
-				mob.tell("No player by that name was found.");
+				mob.tell(_("No player by that name was found."));
 				return false;
 			}
 			if(h.contains(name))
 			{
-				mob.tell("That name is already on your list.");
+				mob.tell(_("That name is already on your list."));
 				return false;
 			}
 			h.add(name);
@@ -90,7 +90,7 @@ public class Friends extends StdCommand
 			final String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell("Remove whom?");
+				mob.tell(_("Remove whom?"));
 				return false;
 			}
 			if(!h.contains(name))

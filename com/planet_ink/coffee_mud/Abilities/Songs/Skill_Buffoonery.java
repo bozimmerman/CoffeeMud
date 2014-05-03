@@ -134,7 +134,7 @@ public class Skill_Buffoonery extends BardSkill
 			}
 			if(commands.size()<2)
 			{
-				mob.tell("You must specify a target, and what item to swap on the target!");
+				mob.tell(_("You must specify a target, and what item to swap on the target!"));
 				return false;
 			}
 		}

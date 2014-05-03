@@ -47,7 +47,7 @@ public class Spell_LocateObject extends Spell
 
 		if(commands.size()<1)
 		{
-			mob.tell("Locate what?");
+			mob.tell(_("Locate what?"));
 			return false;
 		}
 

@@ -84,7 +84,7 @@ public class Examine extends StdCommand
 						thisThang=exit;
 					else
 					{
-						mob.tell("You don't see anything that way.");
+						mob.tell(_("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -108,7 +108,7 @@ public class Examine extends StdCommand
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
-				mob.tell("You don't see that here!");
+				mob.tell(_("You don't see that here!"));
 		}
 		else
 		{

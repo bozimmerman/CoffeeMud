@@ -53,7 +53,7 @@ public class Chant_FeelCold extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your cold feeling is gone.");
+			mob.tell(_("Your cold feeling is gone."));
 
 		super.unInvoke();
 

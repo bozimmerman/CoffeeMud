@@ -78,7 +78,7 @@ public class Spell_Knock extends Spell
 		{
 			if(((Exit)openThis).isOpen())
 			{
-				mob.tell("That's already open!");
+				mob.tell(_("That's already open!"));
 				return false;
 			}
 		}
@@ -87,7 +87,7 @@ public class Spell_Knock extends Spell
 		{
 			if(((Container)openThis).isOpen())
 			{
-				mob.tell("That's already open!");
+				mob.tell(_("That's already open!"));
 				return false;
 			}
 		}

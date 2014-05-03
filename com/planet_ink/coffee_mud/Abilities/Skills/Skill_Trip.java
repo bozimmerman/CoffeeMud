@@ -95,7 +95,7 @@ public class Skill_Trip extends StdSkill
 				}
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -132,17 +132,17 @@ public class Skill_Trip extends StdSkill
 
 		if((!CMLib.flags().aliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to trip!");
+			mob.tell(_("You are too far away to trip!"));
 			return false;
 		}
 		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=0)&&(mob.charStats().getBodyPart(Race.BODY_TAIL)<=0))
 		{
-			mob.tell("You need legs or a tail to trip someone.");
+			mob.tell(_("You need legs or a tail to trip someone."));
 			return false;
 		}
 		if(target.riding()!=null)
@@ -177,7 +177,7 @@ public class Skill_Trip extends StdSkill
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,2,-1);
-					target.tell("You hit the floor!");
+					target.tell(_("You hit the floor!"));
 				}
 			}
 		}

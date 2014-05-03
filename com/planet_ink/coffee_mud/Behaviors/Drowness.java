@@ -348,7 +348,7 @@ public class Drowness extends StdBehavior
 		{
 			if(CMLib.dice().rollPercentage() <= magicResistance)
 			{
-				msg.source().tell("The drow resisted your spell!");
+				msg.source().tell(_("The drow resisted your spell!"));
 				return false;
 			}
 		}

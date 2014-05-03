@@ -101,7 +101,7 @@ public class Prayer_MassMobility extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("The aura of mobility around you fades.");
+			mob.tell(_("The aura of mobility around you fades."));
 	}
 
 

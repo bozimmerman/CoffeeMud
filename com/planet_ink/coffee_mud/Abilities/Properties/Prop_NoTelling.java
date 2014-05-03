@@ -53,9 +53,9 @@ public class Prop_NoTelling extends Property
 		&&((!(affected instanceof MOB))||(msg.source()==affected)))
 		{
 			if(affected instanceof MOB)
-				msg.source().tell("Your message drifts into oblivion.");
+				msg.source().tell(_("Your message drifts into oblivion."));
 			else
-				msg.source().tell("This is a no-tell area.");
+				msg.source().tell(_("This is a no-tell area."));
 			return false;
 		}
 		return true;

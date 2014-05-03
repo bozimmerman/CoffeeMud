@@ -47,12 +47,12 @@ public class AutoImprovement extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell("Skill improvement notifications are now off.");
+			mob.tell(_("Skill improvement notifications are now off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
-			mob.tell("Skill improvement notifications are now on.");
+			mob.tell(_("Skill improvement notifications are now on."));
 		}
 		return false;
 	}

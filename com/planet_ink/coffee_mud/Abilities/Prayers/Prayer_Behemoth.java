@@ -57,7 +57,7 @@ public class Prayer_Behemoth extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your behemoth size has subsided.");
+			mob.tell(_("Your behemoth size has subsided."));
 	}
 
 	@Override

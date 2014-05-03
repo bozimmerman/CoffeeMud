@@ -72,7 +72,7 @@ public class StdLawBook extends StdItem
 		{
 		case CMMsg.TYP_READ:
 			if(!CMLib.flags().canBeSeenBy(this,mob))
-				mob.tell("You can't see that!");
+				mob.tell(_("You can't see that!"));
 			else
 			if(!mob.isMonster())
 			{
@@ -80,7 +80,7 @@ public class StdLawBook extends StdItem
 				final LegalBehavior B=CMLib.law().getLegalBehavior(A);
 				if(B==null)
 				{
-					msg.source().tell("The pages appear blank, and damaged.");
+					msg.source().tell(_("The pages appear blank, and damaged."));
 					return;
 				}
 
@@ -88,7 +88,7 @@ public class StdLawBook extends StdItem
 				final Law theLaw=B.legalInfo(A2);
 				if(theLaw==null)
 				{
-					msg.source().tell("There is no law here.");
+					msg.source().tell(_("There is no law here."));
 					return;
 				}
 
@@ -157,7 +157,7 @@ public class StdLawBook extends StdItem
 				final Area A2=CMLib.law().getLegalObject(A);
 				if(A2==null)
 				{
-					msg.source().tell("The pages appear blank, and too damaged to write on.");
+					msg.source().tell(_("The pages appear blank, and too damaged to write on."));
 					return;
 				}
 				return;
@@ -386,7 +386,7 @@ public class StdLawBook extends StdItem
 									case Law.PUNISHMENTMASK_DETAIN:
 										if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 										{
-											mob.tell("You can not add this room as a detention center, as it is not in the area.");
+											mob.tell(_("You can not add this room as a detention center, as it is not in the area."));
 											abort=true;
 										}
 										else
@@ -395,7 +395,7 @@ public class StdLawBook extends StdItem
 											final String time=mob.session().prompt("Enter the amount of time before they are released: ","");
 											if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
 											{
-												mob.tell("Invalid entry.  Aborted.");
+												mob.tell(_("Invalid entry.  Aborted."));
 												abort=true;
 											}
 											else
@@ -409,7 +409,7 @@ public class StdLawBook extends StdItem
 										final String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
 										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
 										{
-											mob.tell("Invalid entry.  Aborted.");
+											mob.tell(_("Invalid entry.  Aborted."));
 											abort=true;
 										}
 										else
@@ -571,7 +571,7 @@ public class StdLawBook extends StdItem
 								s2.append(";");
 						}
 						changeTheLaw(A,B,mob,theLaw,"CRIME"+(theLaw.otherBits().size()+1),s2.toString());
-						mob.tell("Added.");
+						mob.tell(_("Added."));
 					}
 				}
 			}
@@ -610,9 +610,9 @@ public class StdLawBook extends StdItem
 							changeTheLaw(A,B,mob,theLaw,"CRIME"+(c+1),newBits[c]);
 						changeTheLaw(A,B,mob,theLaw,"CRIME"+(newBits.length+1),"");
 						if(newValue!=null)
-							mob.tell("Changed.");
+							mob.tell(_("Changed."));
 						else
-							mob.tell("Deleted.");
+							mob.tell(_("Deleted."));
 					}
 				}
 				else
@@ -667,7 +667,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
-							mob.tell("Added.");
+							mob.tell(_("Added."));
 						}
 					}
 				}
@@ -707,9 +707,9 @@ public class StdLawBook extends StdItem
 							changeTheLaw(A,B,mob,theLaw,"BANNED"+(c+1),newBits[c]);
 						changeTheLaw(A,B,mob,theLaw,"BANNED"+(newBits.length+1),"");
 						if(newValue!=null)
-							mob.tell("Changed.");
+							mob.tell(_("Changed."));
 						else
-							mob.tell("Deleted.");
+							mob.tell(_("Deleted."));
 					}
 				}
 				else
@@ -769,10 +769,10 @@ public class StdLawBook extends StdItem
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
-						mob.tell("That skill name or skill class is unknown.");
+						mob.tell(_("That skill name or skill class is unknown."));
 					else
 					if(filteredTable.containsKey(s.toUpperCase()))
-						mob.tell("That skill or skill class is already illegal.");
+						mob.tell(_("That skill or skill class is already illegal."));
 					else
 					{
 						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
@@ -786,7 +786,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,s.toUpperCase(),s2.toString());
-							mob.tell("Added.");
+							mob.tell(_("Added."));
 						}
 					}
 				}
@@ -825,7 +825,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 						changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
-						mob.tell("Changed.");
+						mob.tell(_("Changed."));
 					}
 				}
 				else
@@ -885,7 +885,7 @@ public class StdLawBook extends StdItem
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("PROPERTYTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"PROPERTYTAX",""+CMath.s_double(s));
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 				break;
 			case 2:
@@ -893,7 +893,7 @@ public class StdLawBook extends StdItem
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("SALESTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"SALESTAX",""+CMath.s_double(s));
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 				break;
 			case 3:
@@ -901,7 +901,7 @@ public class StdLawBook extends StdItem
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("CITTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"CITTAX",""+CMath.s_double(s));
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 				break;
 			case 4:
@@ -919,7 +919,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 						changeTheLaw(A,B,mob,theLaw,"TAXEVASION",s2.toString());
-						mob.tell("Changed.");
+						mob.tell(_("Changed."));
 					}
 					break;
 				}
@@ -932,7 +932,7 @@ public class StdLawBook extends StdItem
 					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
 					{
 						changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
-						mob.tell("Changed.");
+						mob.tell(_("Changed."));
 					}
 					break;
 				}
@@ -990,10 +990,10 @@ public class StdLawBook extends StdItem
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
-						mob.tell("That skill name or skill class is unknown.");
+						mob.tell(_("That skill name or skill class is unknown."));
 					else
 					if(filteredTable.containsKey("$"+s.toUpperCase()))
-						mob.tell("That skill or skill class is already an illegal influence.");
+						mob.tell(_("That skill or skill class is already an illegal influence."));
 					else
 					{
 						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
@@ -1007,7 +1007,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 							changeTheLaw(A,B,mob,theLaw,"$"+s.toUpperCase(),s2.toString());
-							mob.tell("Added.");
+							mob.tell(_("Added."));
 						}
 					}
 				}
@@ -1046,7 +1046,7 @@ public class StdLawBook extends StdItem
 									s2.append(";");
 							}
 						changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
-						mob.tell("Changed.");
+						mob.tell(_("Changed."));
 					}
 				}
 				else
@@ -1102,7 +1102,7 @@ public class StdLawBook extends StdItem
 								s2.append(";");
 						}
 					changeTheLaw(A,B,mob,theLaw,crimeName,s2.toString());
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 			}
 			else
@@ -1145,7 +1145,7 @@ public class StdLawBook extends StdItem
 			if(s.equalsIgnoreCase("A"))
 			{
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
-					mob.tell("You can not add this room as a release room, as it is not in the area.");
+					mob.tell(_("You can not add this room as a release room, as it is not in the area."));
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
 				{
@@ -1175,7 +1175,7 @@ public class StdLawBook extends StdItem
 							long x1=CMath.s_int(s);
 							x1=x1*1000/CMProps.getTickMillis();
 							changeTheLaw(A,B,mob,theLaw,"PAROLE"+x+"TIME",""+x1);
-							mob.tell("Changed.");
+							mob.tell(_("Changed."));
 						}
 					}
 				}
@@ -1192,7 +1192,7 @@ public class StdLawBook extends StdItem
 				else
 					s2.deleteCharAt(s2.length()-1);
 				changeTheLaw(A,B,mob,theLaw,"RELEASEROOM",s2.toString());
-				mob.tell("Changed.");
+				mob.tell(_("Changed."));
 			}
 		}
 	}
@@ -1233,7 +1233,7 @@ public class StdLawBook extends StdItem
 			if(s.equalsIgnoreCase("A"))
 			{
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
-					mob.tell("You can not add this room as a jail, as it is not in the area.");
+					mob.tell(_("You can not add this room as a jail, as it is not in the area."));
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))
 				{
@@ -1263,7 +1263,7 @@ public class StdLawBook extends StdItem
 							long x1=CMath.s_int(s);
 							x1=x1*1000/CMProps.getTickMillis();
 							changeTheLaw(A,B,mob,theLaw,"JAIL"+x+"TIME",""+x1);
-							mob.tell("Changed.");
+							mob.tell(_("Changed."));
 						}
 					}
 				}
@@ -1280,7 +1280,7 @@ public class StdLawBook extends StdItem
 				else
 					s2.deleteCharAt(s2.length()-1);
 				changeTheLaw(A,B,mob,theLaw,"JAIL",s2.toString());
-				mob.tell("Changed.");
+				mob.tell(_("Changed."));
 			}
 		}
 	}
@@ -1313,7 +1313,7 @@ public class StdLawBook extends StdItem
 					if(!s.equals(theLaw.getInternalStr("TRESPASSERS")))
 					{
 						changeTheLaw(A,B,mob,theLaw,"TRESPASSERS",s);
-						mob.tell("Changed.");
+						mob.tell(_("Changed."));
 					}
 				}
 			}
@@ -1333,7 +1333,7 @@ public class StdLawBook extends StdItem
 								s2.append(";");
 						}
 					changeTheLaw(A,B,mob,theLaw,"TRESPASSING",s2.toString());
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 			}
 		}
@@ -1357,7 +1357,7 @@ public class StdLawBook extends StdItem
 				if(!s.equals(theLaw.getInternalStr("PROTECTED")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"PROTECTED",s);
-					mob.tell("Changed.");
+					mob.tell(_("Changed."));
 				}
 			}
 		}
@@ -1404,7 +1404,7 @@ public class StdLawBook extends StdItem
 			if(!s.equals(theLaw.getInternalStr(modifiableTag)))
 			{
 				changeTheLaw(A,B,mob,theLaw,modifiableTag,s);
-				mob.tell("Changed.");
+				mob.tell(_("Changed."));
 			}
 		}
 	}

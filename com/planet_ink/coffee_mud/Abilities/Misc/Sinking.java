@@ -99,7 +99,7 @@ public class Sinking extends StdAbility
 			   ||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR))
 			&&(!CMLib.flags().isFlying(msg.source())))
 			{
-				msg.source().tell("You can't seem to get there from here.");
+				msg.source().tell(_("You can't seem to get there from here."));
 				return false;
 			}
 		}

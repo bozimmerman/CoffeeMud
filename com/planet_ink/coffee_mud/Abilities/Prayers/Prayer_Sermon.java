@@ -109,7 +109,7 @@ public class Prayer_Sermon extends Prayer
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell("You are too enthralled to leave.");
+			mob.tell(_("You are too enthralled to leave."));
 			return false;
 		}
 		else
@@ -138,7 +138,7 @@ public class Prayer_Sermon extends Prayer
 		}
 		if(h.size()==0)
 		{
-			mob.tell("There doesn't appear to be anyone here worth sermonizing to.");
+			mob.tell(_("There doesn't appear to be anyone here worth sermonizing to."));
 			return false;
 		}
 

@@ -64,67 +64,67 @@ public class Skill_WildernessLore extends StdSkill
 			switch(room.domainType())
 			{
 			case Room.DOMAIN_INDOORS_METAL:
-				mob.tell("You are in a metal structure.");
+				mob.tell(_("You are in a metal structure."));
 				break;
 			case Room.DOMAIN_OUTDOORS_SPACEPORT:
-				mob.tell("You are at a space port.");
+				mob.tell(_("You are at a space port."));
 				break;
 			case Room.DOMAIN_OUTDOORS_CITY:
-				mob.tell("You are on a city street.");
+				mob.tell(_("You are on a city street."));
 				break;
 			case Room.DOMAIN_OUTDOORS_WOODS:
-				mob.tell("You are in a forest.");
+				mob.tell(_("You are in a forest."));
 				break;
 			case Room.DOMAIN_OUTDOORS_ROCKS:
-				mob.tell("You are on a rocky plain.");
+				mob.tell(_("You are on a rocky plain."));
 				break;
 			case Room.DOMAIN_OUTDOORS_PLAINS:
-				mob.tell("You are on the plains.");
+				mob.tell(_("You are on the plains."));
 				break;
 			case Room.DOMAIN_OUTDOORS_UNDERWATER:
-				mob.tell("You are under the water.");
+				mob.tell(_("You are under the water."));
 				break;
 			case Room.DOMAIN_OUTDOORS_AIR:
-				mob.tell("You are up in the air.");
+				mob.tell(_("You are up in the air."));
 				break;
 			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				mob.tell("You are on the surface of the water.");
+				mob.tell(_("You are on the surface of the water."));
 				break;
 			case Room.DOMAIN_OUTDOORS_JUNGLE:
-				mob.tell("You are in a jungle.");
+				mob.tell(_("You are in a jungle."));
 				break;
 			case Room.DOMAIN_OUTDOORS_SWAMP:
-				mob.tell("You are in a swamp.");
+				mob.tell(_("You are in a swamp."));
 				break;
 			case Room.DOMAIN_OUTDOORS_DESERT:
-				mob.tell("You are in a desert.");
+				mob.tell(_("You are in a desert."));
 				break;
 			case Room.DOMAIN_OUTDOORS_HILLS:
-				mob.tell("You are in the hills.");
+				mob.tell(_("You are in the hills."));
 				break;
 			case Room.DOMAIN_OUTDOORS_MOUNTAINS:
-				mob.tell("You are on a mountain.");
+				mob.tell(_("You are on a mountain."));
 				break;
 			case Room.DOMAIN_INDOORS_STONE:
-				mob.tell("You are in a stone structure.");
+				mob.tell(_("You are in a stone structure."));
 				break;
 			case Room.DOMAIN_INDOORS_WOOD:
-				mob.tell("You are in a wooden structure.");
+				mob.tell(_("You are in a wooden structure."));
 				break;
 			case Room.DOMAIN_INDOORS_CAVE:
-				mob.tell("You are in a cave.");
+				mob.tell(_("You are in a cave."));
 				break;
 			case Room.DOMAIN_INDOORS_MAGIC:
-				mob.tell("You are in a magical place.");
+				mob.tell(_("You are in a magical place."));
 				break;
 			case Room.DOMAIN_INDOORS_UNDERWATER:
-				mob.tell("You are under the water.");
+				mob.tell(_("You are under the water."));
 				break;
 			case Room.DOMAIN_INDOORS_AIR:
-				mob.tell("You are up in a large indoor space.");
+				mob.tell(_("You are up in a large indoor space."));
 				break;
 			case Room.DOMAIN_INDOORS_WATERSURFACE:
-				mob.tell("You are inside, on the surface of the water.");
+				mob.tell(_("You are inside, on the surface of the water."));
 				break;
 			}
 			final int derivedClimate=room.getClimateType();

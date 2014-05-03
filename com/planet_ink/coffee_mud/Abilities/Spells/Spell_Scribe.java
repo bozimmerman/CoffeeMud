@@ -49,7 +49,7 @@ public class Spell_Scribe extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Scribe which spell onto what?");
+			mob.tell(_("Scribe which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
@@ -60,7 +60,7 @@ public class Spell_Scribe extends Spell
 		}
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't scribe onto that.");
+			mob.tell(_("You can't scribe onto that."));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Spell_Scribe extends Spell
 		}
 		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
 		{
-			mob.tell("That spell is too powerful to scribe.");
+			mob.tell(_("That spell is too powerful to scribe."));
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Spell_Scribe extends Spell
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell("You don't have enough experience to cast this spell.");
+			mob.tell(_("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		// lose all the mana!

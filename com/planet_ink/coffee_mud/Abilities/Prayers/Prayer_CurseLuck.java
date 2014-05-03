@@ -57,7 +57,7 @@ public class Prayer_CurseLuck extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your cursed luck fades.");
+			mob.tell(_("Your cursed luck fades."));
 	}
 
 	@Override

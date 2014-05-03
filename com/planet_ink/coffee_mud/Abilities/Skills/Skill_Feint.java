@@ -110,12 +110,12 @@ public class Skill_Feint extends StdSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to do this!");
+			mob.tell(_("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell("You can't do that from this range.");
+			mob.tell(_("You can't do that from this range."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);

@@ -78,7 +78,7 @@ public class Prop_Familiar extends Property
 				/*if(!familiarTo.amDead())
 				{
 					CMLib.leveler().postExperience(familiarTo,null,null,-50,false);
-					familiarTo.tell("You`ve just lost 50 experience points for losing your familiar");
+					familiarTo.tell(_("You`ve just lost 50 experience points for losing your familiar"));
 				}*/
 				familiarTo.recoverCharStats();
 				familiarTo.recoverPhyStats();

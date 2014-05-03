@@ -51,7 +51,7 @@ public class Spell_ResistGas extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your filtering protection dissipates.");
+			mob.tell(_("Your filtering protection dissipates."));
 
 		super.unInvoke();
 

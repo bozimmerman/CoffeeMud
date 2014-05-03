@@ -240,7 +240,7 @@ public class Falling extends StdAbility
 				}
 				if(msg.targetMajor(CMMsg.MASK_MOVE) &&(!hitTheCeiling))
 				{
-					msg.source().tell("You are too busy falling to do that right now.");
+					msg.source().tell(_("You are too busy falling to do that right now."));
 					return false;
 				}
 			}

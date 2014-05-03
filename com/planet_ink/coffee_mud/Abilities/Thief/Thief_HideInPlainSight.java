@@ -158,7 +158,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell("You are no longer hiding in plain site.");
+			M.tell(_("You are no longer hiding in plain site."));
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 			if(A!=null) A.unInvoke();
 			A=mob.fetchEffect(ID());
 			if(A!=null)
-				mob.tell("You are already hiding in plain site.");
+				mob.tell(_("You are already hiding in plain site."));
 			return false;
 		}
 

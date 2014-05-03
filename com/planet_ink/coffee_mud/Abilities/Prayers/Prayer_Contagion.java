@@ -61,7 +61,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		{
 			if(!mob.amDead())
 				spreadImmunity(mob);
-			mob.tell("The contagion fades.");
+			mob.tell(_("The contagion fades."));
 		}
 		super.unInvoke();
 	}

@@ -61,7 +61,7 @@ public class Skill_Satire extends BardSkill
 		if(target==null) return false;
 		if(mob==target)
 		{
-			mob.tell("Mock whom?!");
+			mob.tell(_("Mock whom?!"));
 			return false;
 		}
 		LegalBehavior B=null;
@@ -98,7 +98,7 @@ public class Skill_Satire extends BardSkill
 
 		if(forgivables.size()==0)
 		{
-			mob.tell("Noone you know is wanted for anything here.");
+			mob.tell(_("Noone you know is wanted for anything here."));
 			return false;
 		}
 

@@ -53,7 +53,7 @@ public class Chant_CaveIn extends Chant
 		&&(msg.source().phyStats().height()>=0)
 		&&((msg.tool()==affected)||(msg.target()==affected)))
 		{
-			msg.source().tell("This exit is blocked by rubble, and can not be moved through.");
+			msg.source().tell(_("This exit is blocked by rubble, and can not be moved through."));
 			return false;
 		}
 		else
@@ -120,13 +120,13 @@ public class Chant_CaveIn extends Chant
 		if(target==null) return false;
 		if((target instanceof Item)||(target instanceof Room))
 		{
-			mob.tell("This chant can only target exits or creatures.");
+			mob.tell(_("This chant can only target exits or creatures."));
 			return false;
 		}
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell("This chant only works in caves.");
+			mob.tell(_("This chant only works in caves."));
 			return false;
 		}
 

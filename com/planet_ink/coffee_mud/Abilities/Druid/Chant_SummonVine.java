@@ -145,7 +145,7 @@ public class Chant_SummonVine extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -154,13 +154,13 @@ public class Chant_SummonVine extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 
 		if(!mob.isInCombat())
 		{
-			mob.tell("Only the anger of combat can summon fighting vines.");
+			mob.tell(_("Only the anger of combat can summon fighting vines."));
 			return false;
 		}
 		final int material=RawMaterial.RESOURCE_HEMP;
@@ -183,7 +183,7 @@ public class Chant_SummonVine extends Chant
 					beneficialAffect(mob,target,asLevel,0);
 				}
 				else
-					mob.tell("Nature seems unwilling to heed to your call.");
+					mob.tell(_("Nature seems unwilling to heed to your call."));
 			}
 		}
 		else

@@ -99,7 +99,7 @@ public class Thief_Autosneak extends ThiefSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell("You are no longer automatically sneaking around.");
+			mob.tell(_("You are no longer automatically sneaking around."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -110,7 +110,7 @@ public class Thief_Autosneak extends ThiefSkill
 
 		if(success)
 		{
-			mob.tell("You will now automatically sneak around while you move.");
+			mob.tell(_("You will now automatically sneak around while you move."));
 			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();

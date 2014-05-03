@@ -61,7 +61,7 @@ public class Chant_CatsGrace extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You don't feel quite so graceful.");
+			mob.tell(_("You don't feel quite so graceful."));
 	}
 
 	@Override

@@ -80,10 +80,10 @@ public class Cow extends StdMOB implements Drink
 			final boolean thirsty=mob.curState().getThirst()<=0;
 			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
-				mob.tell("You are no longer thirsty.");
+				mob.tell(_("You are no longer thirsty."));
 			else
 			if(full)
-				mob.tell("You have drunk all you can.");
+				mob.tell(_("You have drunk all you can."));
 		}
 		else
 		if((msg.tool()==this)

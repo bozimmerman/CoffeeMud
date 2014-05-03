@@ -129,18 +129,18 @@ public class Paladin_Defend extends StdAbility
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell("You end your all-out defensive posture.");
+			mob.tell(_("You end your all-out defensive posture."));
 			return true;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to defend!");
+			mob.tell(_("You must be in combat to defend!"));
 			return false;
 		}
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell("You don't feel worthy of a good defence.");
+			mob.tell(_("You don't feel worthy of a good defence."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,mob,auto,asLevel))

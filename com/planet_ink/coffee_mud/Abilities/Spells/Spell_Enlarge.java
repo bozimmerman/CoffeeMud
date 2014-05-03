@@ -78,7 +78,7 @@ public class Spell_Enlarge extends Spell
 
 		if(mob.isMine(target))
 		{
-			mob.tell("You'd better put it down first.");
+			mob.tell(_("You'd better put it down first."));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)

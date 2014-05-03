@@ -59,7 +59,7 @@ public class Chant_DeepThoughts extends Chant
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> deep thinking.");
 				else
-					mob.tell("You stop thinking deeply.");
+					mob.tell(_("You stop thinking deeply."));
 			}
 		}
 	}
@@ -142,12 +142,12 @@ public class Chant_DeepThoughts extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("You can't think deeply while in combat!");
+			mob.tell(_("You can't think deeply while in combat!"));
 			return false;
 		}
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("You must be in a cave for this chant to work.");
+			mob.tell(_("You must be in a cave for this chant to work."));
 			return false;
 		}
 

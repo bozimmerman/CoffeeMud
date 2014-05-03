@@ -94,7 +94,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away from your target to strike!");
+			mob.tell(_("You are too far away from your target to strike!"));
 			return false;
 		}
 
@@ -106,7 +106,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell("You must be unarmed to perform the strike.");
+			mob.tell(_("You must be unarmed to perform the strike."));
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
 		{
-			mob.tell("You need hands to do this.");
+			mob.tell(_("You need hands to do this."));
 			return false;
 		}
 

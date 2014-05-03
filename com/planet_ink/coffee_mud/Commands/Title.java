@@ -43,13 +43,13 @@ public class Title extends StdCommand
 	{
 		if((mob.playerStats()==null)||(mob.playerStats().getTitles().size()==0))
 		{
-			mob.tell("You don't have any titles to select from.");
+			mob.tell(_("You don't have any titles to select from."));
 			return false;
 		}
 		final String currTitle=mob.playerStats().getTitles().get(0);
 		if(currTitle.startsWith("{")&&currTitle.endsWith("}"))
 		{
-			mob.tell("You can not change your current title.");
+			mob.tell(_("You can not change your current title."));
 			return false;
 		}
 		final PlayerStats ps=mob.playerStats();
@@ -84,10 +84,10 @@ public class Title extends StdCommand
 					final String which=ps.getTitles().get(num-1);
 					ps.getTitles().remove(num-1);
 					ps.getTitles().add(0,which);
-					mob.tell("Title changed accepted.");
+					mob.tell(_("Title changed accepted."));
 				}
 				else
-					mob.tell("No change");
+					mob.tell(_("No change"));
 			}
 		};
 		if(mob.session()!=null)

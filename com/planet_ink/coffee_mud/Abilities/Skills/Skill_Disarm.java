@@ -72,7 +72,7 @@ public class Skill_Disarm extends StdSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to do this!");
+			mob.tell(_("You must be in combat to do this!"));
 			return false;
 		}
 		final MOB victim=super.getTarget(mob, commands, givenTarget);
@@ -80,12 +80,12 @@ public class Skill_Disarm extends StdSkill
 		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
 		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
 		{
-			mob.tell("You are too far away to disarm!");
+			mob.tell(_("You are too far away to disarm!"));
 			return false;
 		}
 		if(mob.fetchWieldedItem()==null)
 		{
-			mob.tell("You need a weapon to disarm someone!");
+			mob.tell(_("You need a weapon to disarm someone!"));
 			return false;
 		}
 		Item hisWeapon=victim.fetchWieldedItem();

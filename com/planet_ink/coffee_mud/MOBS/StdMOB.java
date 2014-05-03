@@ -2583,7 +2583,7 @@ public class StdMOB implements MOB
 				&& (!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&& ((msg.tool() == null) || (!(msg.tool() instanceof Ability)) || (!((Ability) msg.tool()).isNowAnAutoEffect())))
 				{
-					srcM.tell("You like yourself too much.");
+					srcM.tell(_("You like yourself too much."));
 					if (victim == this)
 					{
 						victim = null;
@@ -2615,7 +2615,7 @@ public class StdMOB implements MOB
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
 				&& ((!(msg.tool() instanceof Ability)) || (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
-					srcM.tell("That is not EVEN a fair fight.");
+					srcM.tell(_("That is not EVEN a fair fight."));
 					srcM.setVictim(null);
 					if (victim == srcM)
 						setVictim(null);

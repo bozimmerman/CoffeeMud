@@ -71,7 +71,7 @@ public class Chant_Boulderbash extends Chant
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
 		{
-			mob.tell("This magic only works in caves, mountainous, or rocky regions, where the rocks will answer to your chant.");
+			mob.tell(_("This magic only works in caves, mountainous, or rocky regions, where the rocks will answer to your chant."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);

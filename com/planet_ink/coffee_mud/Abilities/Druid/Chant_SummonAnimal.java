@@ -115,14 +115,14 @@ public class Chant_SummonAnimal extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=outdoorChoices(mob.location());
 		int fromDir=-1;
 		if(choices.size()==0)
 		{
-			mob.tell("You must be further outdoors to summon an animal.");
+			mob.tell(_("You must be further outdoors to summon an animal."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();

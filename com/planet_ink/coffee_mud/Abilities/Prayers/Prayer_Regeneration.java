@@ -55,7 +55,7 @@ public class Prayer_Regeneration extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your regenerative powers go away.");
+			mob.tell(_("Your regenerative powers go away."));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Prayer_Regeneration extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already have regenerative powers.");
+			mob.tell(_("You already have regenerative powers."));
 			return false;
 		}
 

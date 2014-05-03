@@ -8494,7 +8494,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);
 									newRoom.send(follower,enterMsg);
-									follower.tell("\n\r\n\r");
+									follower.tell(CMLib.lang()._("\n\r\n\r"));
 									CMLib.commands().postLook(follower,true);
 								}
 							}

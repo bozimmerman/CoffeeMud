@@ -73,7 +73,7 @@ public class Trap_CaveIn extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-					mob.tell("You'll need to set down at least 100 pounds of wood first.");
+					mob.tell(_("You'll need to set down at least 100 pounds of wood first."));
 				return false;
 			}
 		}
@@ -83,7 +83,7 @@ public class Trap_CaveIn extends StdTrap
 			if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 			{
 				if(mob!=null)
-					mob.tell("You can only set this trap in caves.");
+					mob.tell(_("You can only set this trap in caves."));
 				return false;
 			}
 		}
@@ -103,7 +103,7 @@ public class Trap_CaveIn extends StdTrap
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell("The cave-in prevents entry or exit from here.");
+				msg.source().tell(_("The cave-in prevents entry or exit from here."));
 				return false;
 			}
 		}

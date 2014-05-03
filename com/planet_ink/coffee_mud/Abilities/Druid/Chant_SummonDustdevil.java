@@ -118,7 +118,7 @@ public class Chant_SummonDustdevil extends Chant
 			}
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				msg.source().tell("You can't fight!");
+				msg.source().tell(_("You can't fight!"));
 				msg.source().setVictim(null);
 				return false;
 			}
@@ -192,13 +192,13 @@ public class Chant_SummonDustdevil extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 

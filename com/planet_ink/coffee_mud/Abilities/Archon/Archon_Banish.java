@@ -187,7 +187,7 @@ public class Archon_Banish extends ArchonSkill
 
 		super.unInvoke();
 
-		mob.tell("You are released from banishment!");
+		mob.tell(_("You are released from banishment!"));
 		mob.getStartRoom().bringMobHere(mob,true);
 		if(prisonRoom!=null)
 		{

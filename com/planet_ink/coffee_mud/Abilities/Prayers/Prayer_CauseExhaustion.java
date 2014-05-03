@@ -69,7 +69,7 @@ public class Prayer_CauseExhaustion extends Prayer
 					&&(target.maxState().getFatigue()>Long.MIN_VALUE/2))
 						target.curState().setFatigue(CharState.FATIGUED_MILLIS+1);
 					target.curState().adjMovement(-harming,target.maxState());
-					target.tell("You feel slightly more fatigued!");
+					target.tell(_("You feel slightly more fatigued!"));
 				}
 			}
 		}

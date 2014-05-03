@@ -51,7 +51,7 @@ public class Chant_AcidWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your oily protection warms up.");
+			mob.tell(_("Your oily protection warms up."));
 
 		super.unInvoke();
 

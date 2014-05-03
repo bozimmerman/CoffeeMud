@@ -45,7 +45,7 @@ public class Transfer extends At
 		Room room=null;
 		if(commands.size()<3)
 		{
-			mob.tell("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!");
+			mob.tell(_("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -205,7 +205,7 @@ public class Transfer extends At
 			}
 		}
 		if(mob.playerStats().getTranPoofOut().length()==0)
-			mob.tell("Done.");
+			mob.tell(_("Done."));
 		return false;
 	}
 

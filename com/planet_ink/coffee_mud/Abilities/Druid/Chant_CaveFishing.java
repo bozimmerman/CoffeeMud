@@ -79,13 +79,13 @@ public class Chant_CaveFishing extends Chant
 			}
 			if(waterSrc==null)
 			{
-				mob.tell("There is no water source here to fish in.");
+				mob.tell(_("There is no water source here to fish in."));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell("This chant cannot be used outdoors.");
+			mob.tell(_("This chant cannot be used outdoors."));
 			return false;
 		}
 

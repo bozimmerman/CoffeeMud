@@ -281,7 +281,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A==null)
 			{
 				destroy();
-				msg.source().tell("You can't buy that.");
+				msg.source().tell(_("You can't buy that."));
 				return false;
 			}
 			if(A.getOwnerName().length()==0)
@@ -355,7 +355,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(CMLib.flags().canBeSeenBy(this,msg.source()))
 			{
 				if((landPropertyID()==null)||(landPropertyID().length()==0))
-					msg.source().tell("It appears to be a blank property title.");
+					msg.source().tell(_("It appears to be a blank property title."));
 				else
 				if((getOwnerName()==null)||(getOwnerName().length()==0))
 					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is available for ownership.");
@@ -363,7 +363,7 @@ public class StdTitle extends StdItem implements LandTitle
 					msg.source().tell("It states that the property herein known as '"+landPropertyID()+"' is deeded to "+getOwnerName()+".");
 			}
 			else
-				msg.source().tell("You can't see that!");
+				msg.source().tell(_("You can't see that!"));
 			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),"CANCEL",msg.othersCode(),msg.othersMessage());
 		}
 
@@ -423,7 +423,7 @@ public class StdTitle extends StdItem implements LandTitle
 			recoverPhyStats();
 			msg.source().tell(name()+" is now signed over to "+A.getOwnerName()+".");
 			if(A.rentalProperty())
-				msg.source().tell("This property is a rental.  Your rent will be paid every mud-month out of your bank account.");
+				msg.source().tell(_("This property is a rental.  Your rent will be paid every mud-month out of your bank account."));
 			else
 			{
 				final List<Room> allRooms=getAllTitledRooms();

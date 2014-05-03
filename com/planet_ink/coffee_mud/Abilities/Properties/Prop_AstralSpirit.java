@@ -100,7 +100,7 @@ public class Prop_AstralSpirit extends Property
 				final Vector<String> V=CMParms.parse(text().toUpperCase());
 				if(!V.contains("SELF-RES"))
 				{
-					mob.tell("You lack that power");
+					mob.tell(_("You lack that power"));
 					return false;
 				}
 			}
@@ -109,7 +109,7 @@ public class Prop_AstralSpirit extends Property
 			else
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				mob.tell("You are unable to attack in this incorporeal form.");
+				mob.tell(_("You are unable to attack in this incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -118,9 +118,9 @@ public class Prop_AstralSpirit extends Property
 			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
 				if(msg.sourceMajor(CMMsg.MASK_SOUND))
-					mob.tell("You are unable to make sounds in this incorporeal form.");
+					mob.tell(_("You are unable to make sounds in this incorporeal form."));
 				else
-					mob.tell("You are unable to do that this incorporeal form.");
+					mob.tell(_("You are unable to do that this incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}

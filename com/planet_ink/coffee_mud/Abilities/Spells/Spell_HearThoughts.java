@@ -123,7 +123,7 @@ public class Spell_HearThoughts extends Spell
 						thoughts.append(prefix).append(accounting).append("  ");
 					}
 					if(thoughts.length()==0)
-						mob.tell("You don't detect any other thoughts.\n\r");
+						mob.tell(_("You don't detect any other thoughts.\n\r"));
 					else
 						mob.tell(thoughts.append("\n\r").toString());
 				}

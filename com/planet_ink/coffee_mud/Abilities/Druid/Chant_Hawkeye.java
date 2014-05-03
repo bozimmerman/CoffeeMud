@@ -68,7 +68,7 @@ public class Chant_Hawkeye extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You lose your hawk-like vision.");
+			mob.tell(_("You lose your hawk-like vision."));
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class Destroy extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell("You are not allowed to do that here.");
+		mob.tell(_("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -53,7 +53,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY MOB [MOB NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY MOB [MOB NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
@@ -94,7 +94,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY MANUFACTURER [NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY MANUFACTURER [NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -123,7 +123,7 @@ public class Destroy extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ACCOUNT ([NAME])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ACCOUNT ([NAME])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -152,12 +152,12 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public static boolean players(MOB mob, Vector commands)
+	public boolean players(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY USER [USER NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY USER [USER NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
@@ -255,9 +255,9 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is UNLINK (N,S,E,W,U, or D)\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is UNLINK (N,S,E,W,U, or D)\n\r"));
 			else
-				mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ROOM ([DIRECTION],[ROOM ID])\n\r");
+				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ROOM ([DIRECTION],[ROOM ID])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -287,7 +287,7 @@ public class Destroy extends StdCommand
 		else
 		if(mob.isMonster())
 		{
-			mob.tell("Sorry Charlie!");
+			mob.tell(_("Sorry Charlie!"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 
@@ -296,13 +296,13 @@ public class Destroy extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,deadRoom,CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell("Sorry Charlie! Not your room!");
+				mob.tell(_("Sorry Charlie! Not your room!"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return;
 			}
 			if(mob.location()==deadRoom)
 			{
-				mob.tell("You dip! You have to leave this room first!");
+				mob.tell(_("You dip! You have to leave this room first!"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return;
 			}
@@ -311,7 +311,7 @@ public class Destroy extends StdCommand
 				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N"))
 					return;
 			CMLib.map().obliterateRoom(deadRoom);
-			mob.tell("The sound of massive destruction rings in your ears.");
+			mob.tell(_("The sound of massive destruction rings in your ears."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
 			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
 		}
@@ -376,13 +376,13 @@ public class Destroy extends StdCommand
 	{
 		if(mob.location().roomID().equals(""))
 		{
-			mob.tell("This command is invalid from within a GridLocaleChild room.");
+			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXIT [DIRECTION]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY EXIT [DIRECTION]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -396,7 +396,7 @@ public class Destroy extends StdCommand
 		}
 		if(mob.isMonster())
 		{
-			mob.tell("Sorry Charlie!");
+			mob.tell(_("Sorry Charlie!"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 
@@ -415,7 +415,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ITEM [ITEM NAME](@ room/[MOB NAME])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -495,7 +495,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY AREA [AREA NAME]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY AREA [AREA NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
 			return;
 		}
@@ -555,7 +555,7 @@ public class Destroy extends StdCommand
 				{
 					if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 					{
-						mob.tell("You dip!  You are IN that area!  Leave it first...");
+						mob.tell(_("You dip!  You are IN that area!  Leave it first..."));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
 						return;
 					}
@@ -574,7 +574,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY RACE [RACE ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY RACE [RACE ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -611,7 +611,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY COMPONENT [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY COMPONENT [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -633,7 +633,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -652,12 +652,12 @@ public class Destroy extends StdCommand
 
 	public boolean titles(MOB mob, Vector commands)
 	{
-		mob.tell("Destroying a title will not remove the title from all players who may have it.");
+		mob.tell(_("Destroying a title will not remove the title from all players who may have it."));
 		mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
 				 "mask for a few days to allow the system to remove the title from the players as they log in.\n\r");
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -685,7 +685,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY CLASS [CLASS ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY CLASS [CLASS ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -722,7 +722,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ABILITY [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ABILITY [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -780,7 +780,7 @@ public class Destroy extends StdCommand
 		final Social soc2=CMLib.socials().fetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
-			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
+			mob.tell(_("but fail to specify an EXISTING SOCIAL!\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -832,14 +832,14 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<4)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -869,7 +869,7 @@ public class Destroy extends StdCommand
 			commands.removeElementAt(0);
 			if(commands.size()==0)
 			{
-				mob.tell("Destroy what?");
+				mob.tell(_("Destroy what?"));
 				return false;
 			}
 			if(mob.location().fetchInhabitant(CMParms.combine(commands,0))!=null)
@@ -920,7 +920,7 @@ public class Destroy extends StdCommand
 						else
 						if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 						{
-							mob.tell("You must remove that first.");
+							mob.tell(_("You must remove that first."));
 							return false;
 						}
 						else
@@ -955,9 +955,9 @@ public class Destroy extends StdCommand
 			if(!didAnything)
 			{
 				if(V.size()==0)
-					mob.tell("You don't seem to be carrying that.");
+					mob.tell(_("You don't seem to be carrying that."));
 				else
-					mob.tell("You can't destroy that easily...");
+					mob.tell(_("You can't destroy that easily..."));
 			}
 			mob.location().recoverRoomStats();
 			mob.location().recoverRoomStats();
@@ -1132,7 +1132,7 @@ public class Destroy extends StdCommand
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
 			if(which<=0)
-				mob.tell("Please enter a valid player number to delete.  Use List nopurge for more information.");
+				mob.tell(_("Please enter a valid player number to delete.  Use List nopurge for more information."));
 			else
 			{
 				final StringBuffer newNoPurge=new StringBuffer("");
@@ -1145,7 +1145,7 @@ public class Destroy extends StdCommand
 							newNoPurge.append(B+"\n");
 					}
 				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
-				mob.tell("Ok.");
+				mob.tell(_("Ok."));
 			}
 		}
 		else
@@ -1181,7 +1181,7 @@ public class Destroy extends StdCommand
 				if(V.size()==0) V=null;
 			}
 			if(V==null)
-				mob.tell("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects.");
+				mob.tell(_("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects."));
 			else
 			{
 				final StringBuffer list=new StringBuffer("");
@@ -1203,11 +1203,11 @@ public class Destroy extends StdCommand
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
 			if(which<=0)
-				mob.tell("Please enter a valid ban number to delete.  Use List Banned for more information.");
+				mob.tell(_("Please enter a valid ban number to delete.  Use List Banned for more information."));
 			else
 			{
 				CMSecurity.unban(which);
-				mob.tell("Ok.");
+				mob.tell(_("Ok."));
 			}
 		}
 		else
@@ -1219,7 +1219,7 @@ public class Destroy extends StdCommand
 			if(which.length()>0)
 				whichT=findThread(which);
 			if(whichT==null)
-				mob.tell("Please enter a valid thread name to destroy.  Use List threads for a list.");
+				mob.tell(_("Please enter a valid thread name to destroy.  Use List threads for a list."));
 			else
 			{
 				CMLib.killThread(whichT,500,1);
@@ -1236,12 +1236,12 @@ public class Destroy extends StdCommand
 				which=CMath.s_int((String)commands.elementAt(2));
 			final Session S=CMLib.sessions().getAllSessionAt(which);
 			if(S==null)
-				mob.tell("Please enter a valid session number to delete.  Use SESSIONS for more information.");
+				mob.tell(_("Please enter a valid session number to delete.  Use SESSIONS for more information."));
 			else
 			{
 				CMLib.sessions().stopSessionAtAllCosts(S);
 				if(S.getStatus()==Session.SessionStatus.LOGOUTFINAL)
-					mob.tell("Ok.");
+					mob.tell(_("Ok."));
 				else
 					mob.tell("Failed to gracefully shutdown: "+S.getStatus().toString()+", but a forcable stop was issued.");
 			}
@@ -1252,7 +1252,7 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)) return errorOut(mob);
 			if(commands.size()<3)
 			{
-				mob.tell("Destroy which journal? Try List Journal");
+				mob.tell(_("Destroy which journal? Try List Journal"));
 				return errorOut(mob);
 			}
 			final List<String> V=CMLib.database().DBReadJournals();
@@ -1274,12 +1274,12 @@ public class Destroy extends StdCommand
 					break;
 				}
 			if(which<0)
-				mob.tell("Please enter a valid journal name to delete.  Use List Journals for more information.");
+				mob.tell(_("Please enter a valid journal name to delete.  Use List Journals for more information."));
 			else
 			if(mob.session().confirm("This will destroy all "+CMLib.database().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
 			{
 				CMLib.database().DBDeleteJournal(name,null);
-				mob.tell("It is done.");
+				mob.tell(_("It is done."));
 			}
 		}
 		else
@@ -1288,7 +1288,7 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("Destroy which faction?  Use list factions.");
+				mob.tell(_("Destroy which faction?  Use list factions."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
@@ -1365,7 +1365,7 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("Destroy which quest?  Use list quests.");
+				mob.tell(_("Destroy which quest?  Use list quests."));
 			else
 			{
 				String name=CMParms.combine(commands,2);
@@ -1392,7 +1392,7 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("Destroy which clan?  Use clanlist.");
+				mob.tell(_("Destroy which clan?  Use clanlist."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
@@ -1413,7 +1413,7 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("Destroy which government?  Use list governments.");
+				mob.tell(_("Destroy which government?  Use list governments."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
@@ -1431,7 +1431,7 @@ public class Destroy extends StdCommand
 					Log.sysOut("CreateEdit","Government '"+G.getName()+" destroyed by "+mob.Name()+".");
 				}
 				else
-					mob.tell("You can't delete the last remaining clan government.");
+					mob.tell(_("You can't delete the last remaining clan government."));
 			}
 		}
 		else

@@ -60,7 +60,7 @@ public class Spell_Blindness extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your vision returns.");
+			mob.tell(_("Your vision returns."));
 	}
 
 	@Override

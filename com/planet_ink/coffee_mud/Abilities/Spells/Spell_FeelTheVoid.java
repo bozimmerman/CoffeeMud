@@ -74,7 +74,7 @@ public class Spell_FeelTheVoid extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You are no longer in the void.");
+			mob.tell(_("You are no longer in the void."));
 	}
 
 

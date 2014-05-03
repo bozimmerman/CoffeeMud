@@ -55,7 +55,7 @@ public class Prayer_SenseUndead extends Prayer
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer as dark.");
+			mob.tell(_("Your senses are no longer as dark."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

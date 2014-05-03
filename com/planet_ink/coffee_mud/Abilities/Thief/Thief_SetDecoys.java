@@ -159,12 +159,12 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("Decoys have already been set here.");
+			mob.tell(_("Decoys have already been set here."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 

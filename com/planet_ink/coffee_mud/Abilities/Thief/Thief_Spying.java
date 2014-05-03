@@ -86,14 +86,14 @@ public class Thief_Spying extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Spy on whom?");
+			mob.tell(_("Spy on whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You cannot spy on yourself?!");
+			mob.tell(_("You cannot spy on yourself?!"));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
@@ -109,7 +109,7 @@ public class Thief_Spying extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))

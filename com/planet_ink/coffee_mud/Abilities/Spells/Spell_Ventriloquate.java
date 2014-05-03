@@ -47,7 +47,7 @@ public class Spell_Ventriloquate extends Spell
 
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify who or what to cast this on, and what you want said.");
+			mob.tell(_("You must specify who or what to cast this on, and what you want said."));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));

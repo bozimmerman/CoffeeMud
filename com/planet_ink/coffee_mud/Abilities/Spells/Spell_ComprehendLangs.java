@@ -53,7 +53,7 @@ public class Spell_ComprehendLangs extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You no longer feel so comprehensive.");
+			mob.tell(_("You no longer feel so comprehensive."));
 	}
 
 	@Override

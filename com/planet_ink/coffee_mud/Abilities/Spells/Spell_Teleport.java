@@ -65,7 +65,7 @@ public class Spell_Teleport extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Teleport to what area?");
+			mob.tell(_("Teleport to what area?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -84,7 +84,7 @@ public class Spell_Teleport extends Spell
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Spell_Teleport extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell("Your magic seems unable to take you to that area.");
+			mob.tell(_("Your magic seems unable to take you to that area."));
 			return false;
 		}
 
@@ -152,7 +152,7 @@ public class Spell_Teleport extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell("\n\r\n\r");
+					follower.tell(_("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

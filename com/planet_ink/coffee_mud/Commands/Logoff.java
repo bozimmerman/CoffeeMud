@@ -54,7 +54,7 @@ public class Logoff extends StdCommand
 			&&(session.getLastPKFight()>0)
 			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
 			{
-				mob.tell("You must wait a few more minutes before you are allowed to logout.");
+				mob.tell(_("You must wait a few more minutes before you are allowed to logout."));
 				return false;
 			}
 			try

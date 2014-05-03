@@ -64,12 +64,12 @@ public class Fighter_AxKick extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to kick!");
+			mob.tell(_("You are too far away to kick!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 		{
-			mob.tell("You need legs to do this.");
+			mob.tell(_("You need legs to do this."));
 			return false;
 		}
 

@@ -79,7 +79,7 @@ public class Prayer_Philosophy extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You stop pondering life and the mysteries of the universe.");
+			mob.tell(_("You stop pondering life and the mysteries of the universe."));
 	}
 
 

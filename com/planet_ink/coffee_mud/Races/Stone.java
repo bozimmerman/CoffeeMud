@@ -120,7 +120,7 @@ public class Stone extends StdRace
 				||(msg.sourceMinor()==CMMsg.TYP_RETREAT)
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			{
-				msg.source().tell("You can't really go anywhere -- you're a rock!");
+				msg.source().tell(_("You can't really go anywhere -- you're a rock!"));
 				return false;
 			}
 		}
@@ -136,7 +136,7 @@ public class Stone extends StdRace
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("Attack a rock?!");
+				msg.source().tell(_("Attack a rock?!"));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

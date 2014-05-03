@@ -114,7 +114,7 @@ public class Spell_FakeWeapon extends Spell
 		}
 		if(choice<0)
 		{
-			mob.tell("You must specify what kind of weapon to create: sword, dagger, mace, flail, staff, axe, or hammer.");
+			mob.tell(_("You must specify what kind of weapon to create: sword, dagger, mace, flail, staff, axe, or hammer."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

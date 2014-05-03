@@ -238,7 +238,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			}
 			if((DATA.size()==0)&&(IPS.size()==0)&&(!foundLegacy))
 			{
-				mob.tell("Multiwatch is already off.");
+				mob.tell(_("Multiwatch is already off."));
 				return false;
 			}
 			for(final Enumeration<List<MOB>> e=IPS.elements();e.hasMoreElements();)
@@ -260,7 +260,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(A!=null) M.delEffect(A);
 				}
 			}
-			mob.tell("Multiplay watcher is now turned off.");
+			mob.tell(_("Multiplay watcher is now turned off."));
 			DATA.clear();
 			IPS.clear();
 			return true;
@@ -341,7 +341,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		}
 		else
 		{
-			mob.tell("Try MULTIWATCH AUTO, MULTIWATCH STOP, or MULTIWATCH ADD name1 name2..");
+			mob.tell(_("Try MULTIWATCH AUTO, MULTIWATCH STOP, or MULTIWATCH ADD name1 name2.."));
 			return false;
 		}
 

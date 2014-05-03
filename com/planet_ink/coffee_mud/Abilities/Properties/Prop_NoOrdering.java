@@ -51,7 +51,7 @@ public class Prop_NoOrdering extends Property
 		&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)))
 		{
 			if(affected instanceof MOB)
-				msg.source().tell("You don't feel very commanding around here.");
+				msg.source().tell(_("You don't feel very commanding around here."));
 			else
 				msg.source().tell(msg.source(),msg.target(),null,"<T-NAME> isn't paying any attention to you.");
 			return false;

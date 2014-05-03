@@ -54,7 +54,7 @@ public class Spell_KnowBliss extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You feel less blissful.");
+			mob.tell(_("You feel less blissful."));
 			if((mob.isMonster())
 			   &&(!mob.amDead())
 			   &&(mob.location()!=null)
@@ -100,7 +100,7 @@ public class Spell_KnowBliss extends Spell
 		if(msg.amISource(mob)
 		&&(msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		{
-			mob.tell("Nah, you feel too happy to do that.");
+			mob.tell(_("Nah, you feel too happy to do that."));
 			mob.setVictim(null);
 			return false;
 		}

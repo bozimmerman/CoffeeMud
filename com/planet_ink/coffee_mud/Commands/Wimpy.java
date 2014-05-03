@@ -44,7 +44,7 @@ public class Wimpy extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Change your wimp level to what?");
+			mob.tell(_("Change your wimp level to what?"));
 			return false;
 		}
 		final String amt=CMParms.combine(commands,1);

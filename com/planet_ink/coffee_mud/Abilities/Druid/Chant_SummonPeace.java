@@ -74,7 +74,7 @@ public class Chant_SummonPeace extends Chant
 					final MOB inhab=mob.location().fetchInhabitant(i);
 					if((inhab!=null)&&(inhab.isInCombat()))
 					{
-						inhab.tell("You feel at peace.");
+						inhab.tell(_("You feel at peace."));
 						inhab.makePeace();
 					}
 				}

@@ -616,14 +616,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
-			mob.tell("You don't know how to do that.");
+			mob.tell(_("You don't know how to do that."));
 			return false;
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
-			mob.tell("You are not high enough level to do that.");
+			mob.tell(_("You are not high enough level to do that."));
 			return false;
 		}
 		return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
@@ -635,14 +635,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
-			mob.tell("You don't know how to do that.");
+			mob.tell(_("You don't know how to do that."));
 			return;
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
-			mob.tell("You are not high enough level to do that.");
+			mob.tell(_("You are not high enough level to do that."));
 			return;
 		}
 		evokableAbility.invoke(mob,commands,null,false,0);
@@ -1653,7 +1653,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					else
 					if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
 					{
-						mob.tell("Ok");
+						mob.tell(_("Ok"));
 						return -1;
 					}
 					else

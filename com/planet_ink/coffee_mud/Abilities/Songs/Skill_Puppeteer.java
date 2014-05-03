@@ -169,7 +169,7 @@ public class Skill_Puppeteer extends BardSkill
 		if((!target.Name().toLowerCase().endsWith(" puppet"))
 		&&(!target.Name().toLowerCase().endsWith(" marionette")))
 		{
-			mob.tell("That's not a puppet!");
+			mob.tell(_("That's not a puppet!"));
 			return false;
 		}
 

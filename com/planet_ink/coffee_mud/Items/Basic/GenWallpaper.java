@@ -246,7 +246,7 @@ public class GenWallpaper implements Item
 		else
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
-			mob.tell("Please don't do that.");
+			mob.tell(_("Please don't do that."));
 			return false;
 		}
 		else

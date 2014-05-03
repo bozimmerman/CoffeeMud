@@ -78,7 +78,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			}
 			if(detect==null)
 			{
-				mob.tell("You don't know how to detect traps!");
+				mob.tell(_("You don't know how to detect traps!"));
 				return false;
 			}
 		}

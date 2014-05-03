@@ -49,12 +49,12 @@ public class Skill_Write extends StdSkill
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell("You are too stupid to actually write anything.");
+			mob.tell(_("You are too stupid to actually write anything."));
 			return false;
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("What would you like to write on?");
+			mob.tell(_("What would you like to write on?"));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
@@ -63,7 +63,7 @@ public class Skill_Write extends StdSkill
 			target=mob.location().findItem(null,(String)commands.elementAt(0));
 			if((target!=null)&&(CMLib.flags().isGettable(target)))
 			{
-				mob.tell("You don't have that.");
+				mob.tell(_("You don't have that."));
 				return false;
 			}
 		}
@@ -80,19 +80,19 @@ public class Skill_Write extends StdSkill
 		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
 		||(!item.isReadable()))
 		{
-			mob.tell("You can't write on that.");
+			mob.tell(_("You can't write on that."));
 			return false;
 		}
 
 		if(item instanceof Scroll)
 		{
-			mob.tell("You can't write on a scroll.");
+			mob.tell(_("You can't write on a scroll."));
 			return false;
 		}
 
 		if(CMParms.combine(commands,1).toUpperCase().startsWith("FILE="))
 		{
-			mob.tell("You can't write that.");
+			mob.tell(_("You can't write that."));
 			return false;
 		}
 

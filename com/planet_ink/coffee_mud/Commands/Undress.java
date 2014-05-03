@@ -45,12 +45,12 @@ public class Undress extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Undress whom? What would you like to remove?");
+			mob.tell(_("Undress whom? What would you like to remove?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are in combat!");
+			mob.tell(_("Not while you are in combat!"));
 			return false;
 		}
 		commands.removeElementAt(0);

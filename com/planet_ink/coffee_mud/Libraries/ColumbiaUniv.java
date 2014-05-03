@@ -471,7 +471,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			teacher.tell("You are refusing to teach right now.");
+			teacher.tell(_("You are refusing to teach right now."));
 			return false;
 		}
 

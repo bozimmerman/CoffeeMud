@@ -67,7 +67,7 @@ public class Prayer_SunCurse extends Prayer
 		&&(mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
 		&&(CMLib.flags().isInTheGame(mob,false)))
 		{
-			mob.tell("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r");
+			mob.tell(_("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r"));
 			final Ability A=CMClass.getAbility("Spell_FleshStone");
 			if(A!=null)	A.invoke(mob,mob,true,0);
 			unInvoke();
@@ -87,7 +87,7 @@ public class Prayer_SunCurse extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.fetchEffect("Spell_FleshStone")==null))
-			mob.tell("Your sun curse is lifted.");
+			mob.tell(_("Your sun curse is lifted."));
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class Prayer_SunCurse extends Prayer
 		&&(target.location()!=null)
 		&&(target.location().getArea().getClimateObj().canSeeTheSun(target.location())))
 		{
-			mob.tell("This cannot be prayed for while the sun is shining on you.");
+			mob.tell(_("This cannot be prayed for while the sun is shining on you."));
 			return false;
 		}
 

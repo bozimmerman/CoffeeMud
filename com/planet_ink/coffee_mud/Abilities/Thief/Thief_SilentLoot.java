@@ -88,7 +88,7 @@ public class Thief_SilentLoot extends ThiefSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell("You are no longer automatically looting items from corpses silently.");
+			mob.tell(_("You are no longer automatically looting items from corpses silently."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -99,7 +99,7 @@ public class Thief_SilentLoot extends ThiefSkill
 
 		if(success)
 		{
-			mob.tell("You will now automatically loot items from corpses silently.");
+			mob.tell(_("You will now automatically loot items from corpses silently."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();

@@ -73,12 +73,12 @@ public class Fighter_BodyToss extends MonkSkill
 		final MOB target=mob.getVictim();
 		if(target==null)
 		{
-			mob.tell("You can only do this in combat!");
+			mob.tell(_("You can only do this in combat!"));
 			return false;
 		}
 		if(anyWeapons(mob))
 		{
-			mob.tell("You must be unarmed to use this skill.");
+			mob.tell(_("You must be unarmed to use this skill."));
 			return false;
 		}
 		if(mob.rangeToTarget()>0)
@@ -88,12 +88,12 @@ public class Fighter_BodyToss extends MonkSkill
 		}
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
 		{
-			mob.tell("You need arms to do this.");
+			mob.tell(_("You need arms to do this."));
 			return false;
 		}
 		if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))

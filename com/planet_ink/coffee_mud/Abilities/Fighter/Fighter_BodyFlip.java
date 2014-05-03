@@ -92,7 +92,7 @@ public class Fighter_BodyFlip extends FighterSkill
 				}
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -134,14 +134,14 @@ public class Fighter_BodyFlip extends FighterSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to do a body flip!");
+			mob.tell(_("You are too far away to do a body flip!"));
 			return false;
 		}
 		if(target.riding()!=null)
@@ -156,7 +156,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
 		{
-			mob.tell("You need at least two arms to do this.");
+			mob.tell(_("You need at least two arms to do this."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

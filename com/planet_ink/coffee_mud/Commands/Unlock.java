@@ -45,7 +45,7 @@ public class Unlock extends StdCommand
 		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
-			mob.tell("Unlock what?");
+			mob.tell(_("Unlock what?"));
 			return false;
 		}
 		Environmental unlockThis=null;

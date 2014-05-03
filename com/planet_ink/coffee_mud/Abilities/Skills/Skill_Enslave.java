@@ -304,9 +304,9 @@ public class Skill_Enslave extends StdSkill
 				if(mob.isInCombat())
 					return true; // let them finish fighting.
 				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
-					mob.tell("You have completed your masters task.");
+					mob.tell(_("You have completed your masters task."));
 				else
-					mob.tell("You have been released from your masters task.");
+					mob.tell(_("You have been released from your masters task."));
 				if((mob.isMonster())
 				&&(!mob.amDead())
 				&&(mob.location()!=null)
@@ -347,7 +347,7 @@ public class Skill_Enslave extends StdSkill
 
 		if(commands.size()<1)
 		{
-			mob.tell("You need to specify a target to enslave.");
+			mob.tell(_("You need to specify a target to enslave."));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget,false,true);

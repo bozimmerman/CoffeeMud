@@ -66,17 +66,17 @@ public class Druid_Bite extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to bite!");
+			mob.tell(_("You are too far away to bite!"));
 			return false;
 		}
 		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
-			mob.tell("You must be in your animal form to bite.");
+			mob.tell(_("You must be in your animal form to bite."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)<=0)
 		{
-			mob.tell("You must have a mouth to bite!");
+			mob.tell(_("You must have a mouth to bite!"));
 			return false;
 		}
 

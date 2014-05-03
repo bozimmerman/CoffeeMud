@@ -170,14 +170,14 @@ public class WaterSurface extends StdRoom implements Drink
 			&&(!hasBoat)
 			&&(!CMLib.flags().isInFlight(mob)))
 			{
-				mob.tell("You need to swim or ride a boat that way.");
+				mob.tell(CMLib.lang()._("You need to swim or ride a boat that way."));
 				return -1;
 			}
 			else
 			if(CMLib.flags().isSwimming(mob))
 				if(mob.phyStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
 				{
-					mob.tell("You are too encumbered to swim.");
+					mob.tell(CMLib.lang()._("You are too encumbered to swim."));
 					return -1;
 				}
 		}
@@ -186,7 +186,7 @@ public class WaterSurface extends StdRoom implements Drink
 		&&(!(msg.target() instanceof Exit))
 		&&((msg.source().riding()==null)||(!CMLib.flags().isSwimming(msg.source().riding()))))
 		{
-			msg.source().tell("You cannot rest here.");
+			msg.source().tell(CMLib.lang()._("You cannot rest here."));
 			return -1;
 		}
 		else
@@ -196,7 +196,7 @@ public class WaterSurface extends StdRoom implements Drink
 		{
 			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
-				msg.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell(CMLib.lang()._("You don't want to be drinking saltwater."));
 				return -1;
 			}
 			return 1;

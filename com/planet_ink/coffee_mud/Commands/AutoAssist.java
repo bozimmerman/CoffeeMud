@@ -47,12 +47,12 @@ public class AutoAssist extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
-			mob.tell("Autoassist has been turned on.");
+			mob.tell(_("Autoassist has been turned on."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
-			mob.tell("Autoassist has been turned off.");
+			mob.tell(_("Autoassist has been turned off."));
 		}
 		return false;
 	}

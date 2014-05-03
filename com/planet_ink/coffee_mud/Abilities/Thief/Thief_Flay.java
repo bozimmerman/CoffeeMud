@@ -58,7 +58,7 @@ public class Thief_Flay extends ThiefSkill
 		&&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_BACK))
 		||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_TORSO))))
 		{
-			msg.source().tell("The flayed marks on your back make wearing that too painful.");
+			msg.source().tell(_("The flayed marks on your back make wearing that too painful."));
 			return false;
 		}
 		return true;
@@ -89,7 +89,7 @@ public class Thief_Flay extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -97,7 +97,7 @@ public class Thief_Flay extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -123,7 +123,7 @@ public class Thief_Flay extends ThiefSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell("You cannot flay without a weapon!");
+				mob.tell(_("You cannot flay without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
@@ -139,7 +139,7 @@ public class Thief_Flay extends ThiefSkill
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 			{
-				mob.tell("You are too far away to try that!");
+				mob.tell(_("You are too far away to try that!"));
 				return false;
 			}
 		}

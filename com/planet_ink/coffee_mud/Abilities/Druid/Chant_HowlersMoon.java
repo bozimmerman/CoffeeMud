@@ -66,7 +66,7 @@ public class Chant_HowlersMoon extends Chant
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.amFollowing()==null))
 		{
-			mob.tell("You are no longer under the howlers moon.");
+			mob.tell(_("You are no longer under the howlers moon."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -192,12 +192,12 @@ public class Chant_HowlersMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell("You must be able to see the moon for this magic to work.");
+			mob.tell(_("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the howler's moon.");
+			mob.tell(_("This place is already under the howler's moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -214,14 +214,14 @@ public class Chant_HowlersMoon extends Chant
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=fillChoices(mob.location());
 		fromDir=-1;
 		if(choices.size()==0)
 		{
-			mob.tell("You must be further outdoors to summon an animal.");
+			mob.tell(_("You must be further outdoors to summon an animal."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();

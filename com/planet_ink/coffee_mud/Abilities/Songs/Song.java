@@ -335,7 +335,7 @@ public class Song extends StdAbility
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't sing!");
+			mob.tell(_("You can't sing!"));
 			return false;
 		}
 

@@ -105,7 +105,7 @@ public class Spell_PolymorphSelf extends Spell
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("You need to specify what to turn yourself into!");
+			mob.tell(_("You need to specify what to turn yourself into!"));
 			return false;
 		}
 		final String race=CMParms.combine(commands,0);

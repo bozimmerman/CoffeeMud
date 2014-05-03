@@ -42,7 +42,7 @@ public class Vassals extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell("The following players are in your service:");
+		mob.tell(_("The following players are in your service:"));
 		CMLib.database().vassals(mob,mob.Name());
 		return false;
 	}

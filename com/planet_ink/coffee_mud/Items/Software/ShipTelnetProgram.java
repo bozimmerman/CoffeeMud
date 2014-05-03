@@ -140,7 +140,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		final List<String> parsed=CMParms.parse(message);
 		if(parsed.size()!=3)
 		{
-			mob.tell("Incorrect usage, try: TELNET [HOST] [PORT]");
+			mob.tell(_("Incorrect usage, try: TELNET [HOST] [PORT]"));
 			return false;
 		}
 		try
@@ -179,7 +179,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 			if(sock!=null)
 				return true;
 		}
-		mob.tell("Software failure.");
+		mob.tell(_("Software failure."));
 		super.forceUpMenu();
 		super.forceNewMenuRead();
 		return true;

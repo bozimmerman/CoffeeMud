@@ -69,7 +69,7 @@ public class Chant_CheetahBurst extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to slow down to a normal speed.");
+			mob.tell(_("You begin to slow down to a normal speed."));
 	}
 
 	@Override

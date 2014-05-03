@@ -56,7 +56,7 @@ public class Wealth extends Inventory
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
-			mob.tell("You have no money on you.");
+			mob.tell(_("You have no money on you."));
 		else
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

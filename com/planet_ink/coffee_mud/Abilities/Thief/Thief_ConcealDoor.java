@@ -114,7 +114,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Which door would you like to conceal?");
+			mob.tell(_("Which door would you like to conceal?"));
 			return false;
 		}
 		Environmental chkE=null;
@@ -136,7 +136,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 		}
 		if((!auto)&&(X.phyStats().level()>((adjustedLevel(mob,asLevel)*2))))
 		{
-			mob.tell("You aren't good enough to conceal that door.");
+			mob.tell(_("You aren't good enough to conceal that door."));
 			return false;
 		}
 		if(X.isOpen())

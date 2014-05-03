@@ -71,14 +71,14 @@ public class Ranger_Track extends StdAbility
 
 			if(nextDirection==999)
 			{
-				mob.tell("The trail seems to pause here.");
+				mob.tell(_("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("The trail dries up here.");
+				mob.tell(_("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -137,7 +137,7 @@ public class Ranger_Track extends StdAbility
 
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
-			mob.tell("You can't see anything to track!");
+			mob.tell(_("You can't see anything to track!"));
 			return false;
 		}
 
@@ -145,7 +145,7 @@ public class Ranger_Track extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell("You stop tracking.");
+			mob.tell(_("You stop tracking."));
 			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) return true;
 		}
 
@@ -158,13 +158,13 @@ public class Ranger_Track extends StdAbility
 		final String mobName=CMParms.combine(commands,0);
 		if(mobName.length()==0)
 		{
-			mob.tell("Track whom?");
+			mob.tell(_("Track whom?"));
 			return false;
 		}
 
 		if(mob.location().fetchInhabitant(mobName)!=null)
 		{
-			mob.tell("Try 'look'.");
+			mob.tell(_("Try 'look'."));
 			return false;
 		}
 

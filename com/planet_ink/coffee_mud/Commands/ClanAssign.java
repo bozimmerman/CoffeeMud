@@ -48,7 +48,7 @@ public class ClanAssign extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You must specify the members name, and a new role.");
+			mob.tell(_("You must specify the members name, and a new role."));
 			return false;
 		}
 		String memberStr=(commands.size()>2)?(String)commands.get(commands.size()-2):"";

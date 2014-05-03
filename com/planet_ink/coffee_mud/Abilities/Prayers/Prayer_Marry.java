@@ -49,7 +49,7 @@ public class Prayer_Marry extends Prayer
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Whom to whom?");
+			mob.tell(_("Whom to whom?"));
 			return false;
 		}
 		final String name1=(String)commands.lastElement();
@@ -127,7 +127,7 @@ public class Prayer_Marry extends Prayer
 		}
 		if(witness==null)
 		{
-			mob.tell("You need a witness present.");
+			mob.tell(_("You need a witness present."));
 			return false;
 		}
 

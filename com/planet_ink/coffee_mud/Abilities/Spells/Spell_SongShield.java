@@ -50,7 +50,7 @@ public class Spell_SongShield extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your shield against songs fades.");
+			mob.tell(_("Your shield against songs fades."));
 
 		super.unInvoke();
 

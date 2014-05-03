@@ -72,7 +72,7 @@ public class Thief_StripItem extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell("Strip what off of whom?");
+				mob.tell(_("Strip what off of whom?"));
 				return false;
 			}
 			itemToSteal=(String)commands.elementAt(0);

@@ -69,7 +69,7 @@ public class Prayer_Atonement extends Prayer
 				mob.location().send(mob,msg);
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
-					target.tell("Good, pure thoughts fill your head.");
+					target.tell(_("Good, pure thoughts fill your head."));
 					final int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),0);
 					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), evilness);
 				}

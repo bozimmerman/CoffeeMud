@@ -85,7 +85,7 @@ public class Chant_FungalBloom extends Chant
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 

@@ -75,7 +75,7 @@ public class ATopics extends StdCommand
 		if(arcHelpFile.size()==0)
 		{
 			if(mob!=null)
-				mob.tell("No archon help is available.");
+				mob.tell(_("No archon help is available."));
 			return false;
 		}
 

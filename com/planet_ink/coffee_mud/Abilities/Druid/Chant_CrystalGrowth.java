@@ -49,7 +49,7 @@ public class Chant_CrystalGrowth extends Chant
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		final int material=RawMaterial.RESOURCE_CRYSTAL;
@@ -89,7 +89,7 @@ public class Chant_CrystalGrowth extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell("The chant failed for some reason...");
+					mob.tell(_("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;

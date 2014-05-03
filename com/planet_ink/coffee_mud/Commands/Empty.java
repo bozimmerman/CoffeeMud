@@ -49,7 +49,7 @@ public class Empty extends Drop
 		final Vector V=new Vector();
 		if(commands.size()<2)
 		{
-			mob.tell("Empty what where?");
+			mob.tell(_("Empty what where?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -81,7 +81,7 @@ public class Empty extends Drop
 
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("Empty it where?");
+			mob.tell(_("Empty it where?"));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Empty extends Drop
 				{
 					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell("You must remove that first.");
+						mob.tell(_("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -143,10 +143,10 @@ public class Empty extends Drop
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		if((V.size()==1)&&(V.firstElement()==target))
-			mob.tell("You can't empty something into itself!");
+			mob.tell(_("You can't empty something into itself!"));
 		else
 		if((V.size()==1)
 		&&(V.firstElement() instanceof Drink)

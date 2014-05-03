@@ -46,7 +46,7 @@ public class Bid extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()<2)
 		{
-			mob.tell("Bid how much on what?");
+			mob.tell(_("Bid how much on what?"));
 			return false;
 		}
 		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))

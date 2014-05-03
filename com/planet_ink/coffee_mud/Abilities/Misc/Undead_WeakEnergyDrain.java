@@ -98,7 +98,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		super.unInvoke();
 		if((canBeUninvoked())
 		&&(ID().equals("Undead_WeakEnergyDrain")))
-			mob.tell("The energy drain is lifted.");
+			mob.tell(_("The energy drain is lifted."));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		{
 			if(mob.rangeToTarget()>0)
 			{
-				mob.tell("You are too far away to touch!");
+				mob.tell(_("You are too far away to touch!"));
 				return false;
 			}
 			final MOB victim=mob.getVictim();

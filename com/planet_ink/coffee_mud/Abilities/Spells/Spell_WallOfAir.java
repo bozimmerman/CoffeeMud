@@ -124,7 +124,7 @@ public class Spell_WallOfAir extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell("You really should be in ranged combat to cast this.");
+			mob.tell(_("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -132,7 +132,7 @@ public class Spell_WallOfAir extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell("There is already a wall of air here.");
+				mob.tell(_("There is already a wall of air here."));
 				return false;
 			}
 		}

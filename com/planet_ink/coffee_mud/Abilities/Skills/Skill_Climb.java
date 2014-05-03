@@ -57,18 +57,18 @@ public class Skill_Climb extends StdSkill
 		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
-			mob.tell("Climb where?");
+			mob.tell(_("Climb where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(dirCode)==null)
 		||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell("You can't climb that way.");
+			mob.tell(_("You can't climb that way."));
 			return false;
 		}
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You need to stand up first!");
+			mob.tell(_("You need to stand up first!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -109,7 +109,7 @@ public class Spell_FlamingSword extends Spell
 		||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
 		{
-			mob.tell("This magic only affects metal swords.");
+			mob.tell(_("This magic only affects metal swords."));
 			return false;
 		}
 

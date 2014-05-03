@@ -117,7 +117,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 		if((E instanceof MOB)&&(oldFactions!=null))
 		{
 			if(!((MOB)E).amDead())
-				((MOB)E).tell("You've lost your slippery mind concentration.");
+				((MOB)E).tell(_("You've lost your slippery mind concentration."));
 			for(final Pair<Faction,Integer> p : oldFactions)
 				((MOB)E).addFaction(p.first.factionID(),p.second.intValue());
 			oldFactions=null;

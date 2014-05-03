@@ -164,7 +164,7 @@ public class Spell_StoreSpell extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Store which spell onto what?");
+			mob.tell(_("Store which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
@@ -203,7 +203,7 @@ public class Spell_StoreSpell extends Spell
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
-			mob.tell("That spell is too powerful to store.");
+			mob.tell(_("That spell is too powerful to store."));
 			return false;
 		}
 		Ability A=item.fetchEffect(ID());

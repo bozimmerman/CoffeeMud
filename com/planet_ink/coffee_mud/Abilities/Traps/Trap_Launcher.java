@@ -86,7 +86,7 @@ public class Trap_Launcher extends StdTrap
 		if(I==null)
 		{
 			if(mob!=null)
-				mob.tell("You'll need to set down a ranged weapon first.");
+				mob.tell(_("You'll need to set down a ranged weapon first."));
 			return false;
 		}
 		return true;

@@ -60,7 +60,7 @@ public class Skill_Haggle extends StdSkill
 
 		if((commands.size()<2)||((!cmd.equals("BUY")&&(!cmd.equals("SELL")))))
 		{
-			mob.tell("You must specify BUY, SELL, an item, and possibly a ShopKeeper (unless it is implied).");
+			mob.tell(_("You must specify BUY, SELL, an item, and possibly a ShopKeeper (unless it is implied)."));
 			return false;
 		}
 

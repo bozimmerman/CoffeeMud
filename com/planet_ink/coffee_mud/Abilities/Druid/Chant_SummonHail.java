@@ -70,14 +70,14 @@ public class Chant_SummonHail extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((!auto)
 		&&((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINTER_COLD)
 			&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)))
 		{
-			mob.tell("This chant requires a cold snap or a hail storm!");
+			mob.tell(_("This chant requires a cold snap or a hail storm!"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);

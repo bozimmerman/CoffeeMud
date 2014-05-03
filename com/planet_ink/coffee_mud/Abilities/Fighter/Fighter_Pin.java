@@ -80,7 +80,7 @@ public class Fighter_Pin extends FighterSkill
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell("You are pinned!");
+					mob.tell(_("You are pinned!"));
 				return false;
 			}
 		}
@@ -131,14 +131,14 @@ public class Fighter_Pin extends FighterSkill
 					if(mob.location()!=null)
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> release(s) <S-HIS-HER> pin.");
 					else
-						mob.tell("You release your pin.");
+						mob.tell(_("You release your pin."));
 				}
 				else
 				{
 					if(mob.location()!=null)
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> <S-IS-ARE> released from the pin");
 					else
-						mob.tell("You are released from the pin.");
+						mob.tell(_("You are released from the pin."));
 				}
 				CMLib.commands().postStand(mob,true);
 			}
@@ -155,7 +155,7 @@ public class Fighter_Pin extends FighterSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away from your target to pin them!");
+			mob.tell(_("You are too far away from your target to pin them!"));
 			return false;
 		}
 

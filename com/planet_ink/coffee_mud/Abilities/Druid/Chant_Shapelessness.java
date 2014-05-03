@@ -85,7 +85,7 @@ public class Chant_Shapelessness extends Chant
 				&&(!((Exit)msg.tool()).isOpen())
 				&&(msg.source().numItems()>0))
 				{
-					msg.source().tell("Your corporeal equipment, suspended in your shapeless form, will not pass through the door.");
+					msg.source().tell(_("Your corporeal equipment, suspended in your shapeless form, will not pass through the door."));
 					return false;
 				}
 				break;
@@ -105,7 +105,7 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_INSTALL:
 			case CMMsg.TYP_ENHANCE:
 			case CMMsg.TYP_REPAIR:
-				msg.source().tell("You have trouble manipulating matter in this form.");
+				msg.source().tell(_("You have trouble manipulating matter in this form."));
 				return false;
 			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
@@ -114,7 +114,7 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_CLOSE:
-				msg.source().tell("You fail your attempt to affect matter in this form.");
+				msg.source().tell(_("You fail your attempt to affect matter in this form."));
 				return false;
 			}
 		}
@@ -148,7 +148,7 @@ public class Chant_Shapelessness extends Chant
 		}
 		if((!auto)&&(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(),null)))
 		{
-			mob.tell("You must be able under the moons glow for this magic to work.");
+			mob.tell(_("You must be able under the moons glow for this magic to work."));
 			return false;
 		}
 

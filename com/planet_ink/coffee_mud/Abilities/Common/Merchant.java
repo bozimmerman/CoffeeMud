@@ -254,7 +254,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.numItems()+shop.totalStockSizeIncludingDuplicates())))
 			&&(!merchantM.isMine(this)))
 			{
-				merchantM.tell("You can't carry that many items.");
+				merchantM.tell(_("You can't carry that many items."));
 				return false;
 			}
 		}

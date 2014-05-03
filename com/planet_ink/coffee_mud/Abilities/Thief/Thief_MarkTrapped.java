@@ -80,7 +80,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What item would you like to mark as trapped?");
+			mob.tell(_("What item would you like to mark as trapped?"));
 			return false;
 		}
 		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
@@ -110,7 +110,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			if((!auto)
 			&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLEVELLevel(mob)*10))))
 			{
-				mob.tell("You aren't good enough to effectively mark anything that large.");
+				mob.tell(_("You aren't good enough to effectively mark anything that large."));
 				return false;
 			}
 		}

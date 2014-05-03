@@ -90,7 +90,7 @@ public class Chant_FurCoat extends Chant
 		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 		||(msg.targetMinor()==CMMsg.TYP_GET))
 		{
-			mob.tell("The fur coat cannot be removed from where it is.");
+			mob.tell(_("The fur coat cannot be removed from where it is."));
 			return false;
 		}
 		return true;
@@ -128,13 +128,13 @@ public class Chant_FurCoat extends Chant
 
 		if(Druid_ShapeShift.isShapeShifted(target))
 		{
-			mob.tell("You cannot invoke this chant in your present form.");
+			mob.tell(_("You cannot invoke this chant in your present form."));
 			return false;
 		}
 
 		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
 		{
-			mob.tell("You are already wearing something on your torso!");
+			mob.tell(_("You are already wearing something on your torso!"));
 			return false;
 		}
 

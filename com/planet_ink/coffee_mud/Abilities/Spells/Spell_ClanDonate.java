@@ -51,19 +51,19 @@ public class Spell_ClanDonate extends Spell
 		if(target==null) return false;
 		if(!mob.isMine(target))
 		{
-			mob.tell("You aren't holding that!");
+			mob.tell(_("You aren't holding that!"));
 			return false;
 		}
 
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell(_("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell("You are not authorized to draw from the power of your clan.");
+			mob.tell(_("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -71,12 +71,12 @@ public class Spell_ClanDonate extends Spell
 		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
 		{
-			mob.tell("Your clan does not have a donation home.");
+			mob.tell(_("Your clan does not have a donation home."));
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanDonateRoom))
 		{
-			mob.tell("This magic can not be used to donate from here.");
+			mob.tell(_("This magic can not be used to donate from here."));
 			return false;
 		}
 

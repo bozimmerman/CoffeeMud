@@ -72,7 +72,7 @@ public class Spell_WallOfForce extends Spell
 				&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 				&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
 			{
-				mob.tell("Malice neither escapes nor enters the wall of force.");
+				mob.tell(_("Malice neither escapes nor enters the wall of force."));
 				if(mob.isMonster())
 					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
@@ -132,7 +132,7 @@ public class Spell_WallOfForce extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell("You really should be in ranged combat to cast this.");
+			mob.tell(_("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -140,7 +140,7 @@ public class Spell_WallOfForce extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell("There is already a wall of force here.");
+				mob.tell(_("There is already a wall of force here."));
 				return false;
 			}
 		}

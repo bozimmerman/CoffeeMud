@@ -266,7 +266,7 @@ public class Shell extends StdCommand
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
 			if(dirs==null)
 			{
-				mob.tell("^xError: invalid directory!^N");
+				mob.tell(_("^xError: invalid directory!^N"));
 				return false;
 			}
 			final StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
@@ -319,9 +319,9 @@ public class Shell extends StdCommand
 				commands.addElement(".");
 			if(commands.size()<3)
 			{
-				mob.tell("^xError  : source and destination must be specified!^N");
-				mob.tell("^xOptions: -r = recurse into directories.^N");
-				mob.tell("^x       : -p = preserve paths.^N");
+				mob.tell(_("^xError  : source and destination must be specified!^N"));
+				mob.tell(_("^xOptions: -r = recurse into directories.^N"));
+				mob.tell(_("^x       : -p = preserve paths.^N"));
 				return false;
 			}
 			final String source=(String)commands.elementAt(1);
@@ -329,12 +329,12 @@ public class Shell extends StdCommand
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
-				mob.tell("^xError: invalid source!^N");
+				mob.tell(_("^xError: invalid source!^N"));
 				return false;
 			}
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no source files matched^N");
+				mob.tell(_("^xError: no source files matched^N"));
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
@@ -349,7 +349,7 @@ public class Shell extends StdCommand
 				{
 					if(dirs.length==1)
 					{
-						mob.tell("^xError: source can not be a directory!^N");
+						mob.tell(_("^xError: source can not be a directory!^N"));
 						return false;
 					}
 					continue;
@@ -383,7 +383,7 @@ public class Shell extends StdCommand
 				else
 				if(dirs.length>1)
 				{
-					mob.tell("^xError: destination must be a directory!^N");
+					mob.tell(_("^xError: destination must be a directory!^N"));
 					return false;
 				}
 				if(DF.mustOverwrite()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
@@ -418,7 +418,7 @@ public class Shell extends StdCommand
 			}
 			if((!newDir.canRead())||(!newDir.isDirectory()))
 			{
-				mob.tell("^xError: You are not authorized enter that directory.^N");
+				mob.tell(_("^xError: You are not authorized enter that directory.^N"));
 				return false;
 			}
 			pwd=changeTo;
@@ -433,12 +433,12 @@ public class Shell extends StdCommand
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
 			if(dirs==null)
 			{
-				mob.tell("^xError: invalid filename!^N");
+				mob.tell(_("^xError: invalid filename!^N"));
 				return false;
 			}
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no files matched^N");
+				mob.tell(_("^xError: no files matched^N"));
 				return false;
 			}
 			final java.util.List<CMFile> ddirs=sortDirsDown(dirs);
@@ -469,12 +469,12 @@ public class Shell extends StdCommand
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
 			if(dirs==null)
 			{
-				mob.tell("^xError: invalid filename!^N");
+				mob.tell(_("^xError: invalid filename!^N"));
 				return false;
 			}
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no files matched^N");
+				mob.tell(_("^xError: no files matched^N"));
 				return false;
 			}
 			for (final CMFile dir : dirs)
@@ -482,12 +482,12 @@ public class Shell extends StdCommand
 				final CMFile CF=dir;
 				if((CF==null)||(!CF.exists()))
 				{
-					mob.tell("^xError: file does not exist!^N");
+					mob.tell(_("^xError: file does not exist!^N"));
 					return false;
 				}
 				if(!CF.canRead())
 				{
-					mob.tell("^xError: access denied!^N");
+					mob.tell(_("^xError: access denied!^N"));
 					return false;
 				}
 				if(mob.session()!=null)
@@ -503,17 +503,17 @@ public class Shell extends StdCommand
 			final CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
 			{
-				mob.tell("^xError: file already exists!^N");
+				mob.tell(_("^xError: file already exists!^N"));
 				return false;
 			}
 			if(!CF.canWrite())
 			{
-				mob.tell("^xError: access denied!^N");
+				mob.tell(_("^xError: access denied!^N"));
 				return false;
 			}
 			if(!CF.mkdir())
 			{
-				mob.tell("^xError: makedirectory failed.^N");
+				mob.tell(_("^xError: makedirectory failed.^N"));
 				return false;
 			}
 			mob.tell("Directory '/"+CF.getAbsolutePath()+"' created.");
@@ -527,7 +527,7 @@ public class Shell extends StdCommand
 			final StringBuffer msg=new StringBuffer("");
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no files matched^N");
+				mob.tell(_("^xError: no files matched^N"));
 				return false;
 			}
 			for (final CMFile dir : dirs)
@@ -556,13 +556,13 @@ public class Shell extends StdCommand
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0)
 			{
-				mob.tell("^xError: you must specify a search string^N");
+				mob.tell(_("^xError: you must specify a search string^N"));
 				return false;
 			}
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true);
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no files found!^N");
+				mob.tell(_("^xError: no files found!^N"));
 				return false;
 			}
 			mob.session().print("\n\rSearching...");
@@ -587,7 +587,7 @@ public class Shell extends StdCommand
 			}
 			if(dirs2.size()==0)
 			{
-				mob.tell("\n\r^xError: no files matched^N");
+				mob.tell(_("\n\r^xError: no files matched^N"));
 				return false;
 			}
 			final StringBuffer msg=new StringBuffer("\n\r");
@@ -615,7 +615,7 @@ public class Shell extends StdCommand
 			if((!file.canWrite())
 			||(file.isDirectory()))
 			{
-				mob.tell("^xError: You are not authorized to create/modify that file.^N");
+				mob.tell(_("^xError: You are not authorized to create/modify that file.^N"));
 				return false;
 			}
 			StringBuffer buf=file.textUnformatted();
@@ -634,10 +634,10 @@ public class Shell extends StdCommand
 				{
 					for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
 						Resources.removeResource(i.next());
-					mob.tell("File saved.");
+					mob.tell(_("File saved."));
 				}
 				else
-					mob.tell("^XError: could not save the file!^N^.");
+					mob.tell(_("^XError: could not save the file!^N^."));
 				return true;
 			}
 			if(resolution==JournalsLibrary.MsgMkrResolution.CANCELFILE)
@@ -651,10 +651,10 @@ public class Shell extends StdCommand
 				commands.addElement(".");
 			if(commands.size()<3)
 			{
-				mob.tell("^xError  : source and destination must be specified!^N");
-				mob.tell("^xOptions: -r = recurse into directories.^N");
-				mob.tell("^x       : -f = force overwrites.^N");
-				mob.tell("^x       : -p = preserve paths.^N");
+				mob.tell(_("^xError  : source and destination must be specified!^N"));
+				mob.tell(_("^xOptions: -r = recurse into directories.^N"));
+				mob.tell(_("^x       : -f = force overwrites.^N"));
+				mob.tell(_("^x       : -p = preserve paths.^N"));
 				return false;
 			}
 			final String source=(String)commands.elementAt(1);
@@ -662,12 +662,12 @@ public class Shell extends StdCommand
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
-				mob.tell("^xError: invalid source!^N");
+				mob.tell(_("^xError: invalid source!^N"));
 				return false;
 			}
 			if(dirs.length==0)
 			{
-				mob.tell("^xError: no source files matched^N");
+				mob.tell(_("^xError: no source files matched^N"));
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
@@ -684,7 +684,7 @@ public class Shell extends StdCommand
 				{
 					if(dirs.length==1)
 					{
-						mob.tell("^xError: source can not be a directory!^N");
+						mob.tell(_("^xError: source can not be a directory!^N"));
 						return false;
 					}
 					continue;
@@ -718,7 +718,7 @@ public class Shell extends StdCommand
 				else
 				if(dirs.length>1)
 				{
-					mob.tell("^xError: destination must be a directory!^N");
+					mob.tell(_("^xError: destination must be a directory!^N"));
 					return false;
 				}
 				if(DF.mustOverwrite() && (!opts.forceOverwrites)){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
@@ -764,7 +764,7 @@ public class Shell extends StdCommand
 				commands.addElement(".");
 			if(commands.size()<3)
 			{
-				mob.tell("^xError  : first and second files be specified!^N");
+				mob.tell(_("^xError  : first and second files be specified!^N"));
 				return false;
 			}
 			final String firstFilename=(String)commands.elementAt(1);
@@ -773,7 +773,7 @@ public class Shell extends StdCommand
 			if((!file1.canRead())
 			||(file1.isDirectory()))
 			{
-				mob.tell("^xError: You are not authorized to read the first file.^N");
+				mob.tell(_("^xError: You are not authorized to read the first file.^N"));
 				return false;
 			}
 			String prefix="";
@@ -792,14 +792,14 @@ public class Shell extends StdCommand
 				}
 				else
 				{
-					mob.tell("^xError  : first and second files be specified!^N");
+					mob.tell(_("^xError  : first and second files be specified!^N"));
 					return false;
 				}
 			}
 			final CMFile file2=new CMFile(prefix+incorporateBaseDir(pwd,secondFilename),mob);
 			if((!file2.canRead())||(file2.isDirectory()))
 			{
-				mob.tell("^xError: You are not authorized to read the second file.^N");
+				mob.tell(_("^xError: You are not authorized to read the second file.^N"));
 				return false;
 			}
 			final StringBuilder text1=new StringBuilder("");
@@ -820,7 +820,7 @@ public class Shell extends StdCommand
 				str.append(d.text);
 				mob.session().colorOnlyPrintln(str.toString());
 			}
-			mob.tell("^HDONE.");
+			mob.tell(_("^HDONE."));
 			return false;
 		}
 		default:

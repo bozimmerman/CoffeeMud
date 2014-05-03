@@ -331,7 +331,7 @@ public class StdRace implements Race
 								&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 				{
 					if(srcExhausted)
-						msg.source().tell("You are exhausted!");
+						msg.source().tell(_("You are exhausted!"));
 					else
 					{
 						if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
@@ -339,7 +339,7 @@ public class StdRace implements Race
 						msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
 					}
 					if(meExhausted)
-						myChar.tell("You are exhausted!");
+						myChar.tell(_("You are exhausted!"));
 					else
 					{
 						if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
@@ -373,6 +373,12 @@ public class StdRace implements Race
 
 	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
 	@Override public boolean tick(Tickable myChar, int tickID){return true;}
+	
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+	
 	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{

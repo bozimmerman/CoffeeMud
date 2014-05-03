@@ -53,13 +53,13 @@ public class Thief_Sneak extends ThiefSkill
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
-			mob.tell("Sneak where?");
+			mob.tell(_("Sneak where?"));
 			return false;
 		}
 
 		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell("Sneak where?");
+			mob.tell(_("Sneak where?"));
 			return false;
 		}
 

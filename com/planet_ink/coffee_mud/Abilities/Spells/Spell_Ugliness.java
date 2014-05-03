@@ -60,7 +60,7 @@ public class Spell_Ugliness extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You begin to feel more like your regular pleasant self.");
+			mob.tell(_("You begin to feel more like your regular pleasant self."));
 	}
 
 	@Override

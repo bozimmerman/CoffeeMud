@@ -52,7 +52,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			M.tell("Your compelled faith is finally subsided.");
+			M.tell(_("Your compelled faith is finally subsided."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		&&(msg.target()!=null)
 		&&((msg.target()==invoker())||(msg.target().Name().equals(godName))))
 		{
-			msg.source().tell("Your faith is too undeniable.");
+			msg.source().tell(_("Your faith is too undeniable."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -114,7 +114,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		if((mob.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			if(!auto) mob.tell("You must worship a god to use this prayer.");
+			if(!auto) mob.tell(_("You must worship a god to use this prayer."));
 			return false;
 		}
 		final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());

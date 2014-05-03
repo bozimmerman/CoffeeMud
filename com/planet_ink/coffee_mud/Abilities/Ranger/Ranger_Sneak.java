@@ -84,26 +84,26 @@ public class Ranger_Sneak extends StdAbility
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
-			mob.tell("Sneak where?");
+			mob.tell(_("Sneak where?"));
 			return false;
 		}
 
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
-			mob.tell("You must be outdoors to do this.");
+			mob.tell(_("You must be outdoors to do this."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		&&(!auto))
 		{
-			mob.tell("You don't know how to sneak around a place like this.");
+			mob.tell(_("You don't know how to sneak around a place like this."));
 			return false;
 		}
 
 		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell("Sneak where?");
+			mob.tell(_("Sneak where?"));
 			return false;
 		}
 

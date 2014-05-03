@@ -60,7 +60,7 @@ public class Spell_Slow extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You begin to go back to a normal speed.");
+			mob.tell(_("You begin to go back to a normal speed."));
 	}
 
 

@@ -51,7 +51,7 @@ public class Chant_PrayerWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your ward against prayers fades.");
+			mob.tell(_("Your ward against prayers fades."));
 
 		super.unInvoke();
 

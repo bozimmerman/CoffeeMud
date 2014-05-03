@@ -51,7 +51,7 @@ public class Prayer_Revival extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your part in the revival is over.");
+			mob.tell(_("Your part in the revival is over."));
 		super.unInvoke();
 
 	}
@@ -165,7 +165,7 @@ public class Prayer_Revival extends Prayer
 		if((target.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(target.getWorshipCharID())==null))
 		{
-			target.tell("You must worship a god to use this prayer.");
+			target.tell(_("You must worship a god to use this prayer."));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)

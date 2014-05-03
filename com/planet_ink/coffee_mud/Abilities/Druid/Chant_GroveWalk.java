@@ -47,7 +47,7 @@ public class Chant_GroveWalk extends Chant
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify the name of the location of another grove where there is a druidic monument.");
+			mob.tell(_("You must specify the name of the location of another grove where there is a druidic monument."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -74,7 +74,7 @@ public class Chant_GroveWalk extends Chant
 		}catch(final NoSuchElementException e){}
 		if(!hereok)
 		{
-			mob.tell("There is no druidic monument here.  You can only use this chant in a druidic grove.");
+			mob.tell(_("There is no druidic monument here.  You can only use this chant in a druidic grove."));
 			return false;
 		}
 		if(newRoom==null)
@@ -113,7 +113,7 @@ public class Chant_GroveWalk extends Chant
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

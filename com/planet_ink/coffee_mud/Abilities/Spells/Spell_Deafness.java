@@ -60,7 +60,7 @@ public class Spell_Deafness extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your hearing returns.");
+			mob.tell(_("Your hearing returns."));
 	}
 
 	@Override

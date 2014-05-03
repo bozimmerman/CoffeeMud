@@ -121,7 +121,7 @@ public class ColorSet extends StdCommand
 		&&("DEFAULT".startsWith(CMParms.combine(commands,1).toUpperCase())))
 		{
 			pstats.setColorStr("");
-			mob.tell("Your colors have been changed back to default.");
+			mob.tell(_("Your colors have been changed back to default."));
 			return false;
 		}
 		if(clookup[0]==null)
@@ -169,7 +169,7 @@ public class ColorSet extends StdCommand
 				if(input.trim().length()==0)
 					return;
 				if((num<0)||(num>=theSet.length))
-					mob.tell("That is not a valid entry!");
+					mob.tell(_("That is not a valid entry!"));
 				else
 				{
 					final StringBuffer buf=new StringBuffer("");
@@ -192,7 +192,7 @@ public class ColorSet extends StdCommand
 							{
 								final int colorNum=CMath.s_int(this.input);
 								if(colorNum<0)
-									mob.tell("That is not a valid color!");
+									mob.tell(_("That is not a valid color!"));
 								else
 								{
 									clookup[0][theSet[num][1].charAt(0)]=clookup[0][ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum].charAt(0)];
@@ -233,7 +233,7 @@ public class ColorSet extends StdCommand
 								final int colorNum1=CMath.s_int(this.input);
 								if((colorNum1<0)||(!Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
 								{
-									mob.tell("That is not a valid Background color!");
+									mob.tell(_("That is not a valid Background color!"));
 									session.prompt(IC[0].reset());
 								}
 								else
@@ -246,7 +246,7 @@ public class ColorSet extends StdCommand
 										{
 											final int colorNum2=CMath.s_int(this.input);
 											if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
-												mob.tell("That is not a valid Foreground color!");
+												mob.tell(_("That is not a valid Foreground color!"));
 											else
 											{
 												clookup[0][theSet[num][1].charAt(0)]=CMLib.color().translateCMCodeToANSI("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1]+"|^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2]);

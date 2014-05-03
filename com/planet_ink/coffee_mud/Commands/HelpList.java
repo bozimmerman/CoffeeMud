@@ -46,12 +46,12 @@ public class HelpList extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell("No help is available.");
+			mob.tell(_("No help is available."));
 			return false;
 		}
 		if(helpStr.length()==0)
 		{
-			mob.tell("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list.");
+			mob.tell(_("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list."));
 			return false;
 		}
 		final StringBuilder thisTag=

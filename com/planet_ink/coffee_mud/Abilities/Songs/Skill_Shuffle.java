@@ -49,18 +49,18 @@ public class Skill_Shuffle extends BardSkill
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell("You must stand up first!");
+			mob.tell(_("You must stand up first!"));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(mob.location().numInhabitants()==1)
 		{
-			mob.tell("You are the only one here!");
+			mob.tell(_("You are the only one here!"));
 			return false;
 		}
 

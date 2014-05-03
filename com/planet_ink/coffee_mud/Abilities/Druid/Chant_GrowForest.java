@@ -54,7 +54,7 @@ public class Chant_GrowForest extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This magic won't work here.");
+			mob.tell(_("This magic won't work here."));
 			return false;
 		}
 

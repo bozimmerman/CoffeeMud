@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -94,10 +92,10 @@ public class UnderWater extends StdRoom implements Drink
 			final boolean thirsty=mob.curState().getThirst()<=0;
 			final boolean full=!mob.curState().adjThirst(((Drink)room).thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
-				mob.tell("You are no longer thirsty.");
+				mob.tell(CMLib.lang()._("You are no longer thirsty."));
 			else
 			if(full)
-				mob.tell("You have drunk all you can.");
+				mob.tell(CMLib.lang()._("You have drunk all you can."));
 		}
 
 		CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
@@ -173,7 +171,7 @@ public class UnderWater extends StdRoom implements Drink
 		||(msg.targetMinor()==CMMsg.TYP_GAS)||(msg.sourceMinor()==CMMsg.TYP_GAS))
 		{
 			if((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
-				msg.source().tell("That won't work underwater.");
+				msg.source().tell(CMLib.lang()._("That won't work underwater."));
 			return -1;
 		}
 		else
@@ -198,7 +196,7 @@ public class UnderWater extends StdRoom implements Drink
 		{
 			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
-				msg.source().tell("You don't want to be drinking saltwater.");
+				msg.source().tell(CMLib.lang()._("You don't want to be drinking saltwater."));
 				return -1;
 			}
 			return 1;

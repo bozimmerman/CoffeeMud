@@ -231,7 +231,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 
 		if(manaRequired>mob.curState().getMana())
 		{
-			mob.tell("You don't have enough mana.");
+			mob.tell(_("You don't have enough mana."));
 			return false;
 		}
 		mob.curState().adjMana(-manaRequired,mob.maxState());

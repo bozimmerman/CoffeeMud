@@ -43,7 +43,7 @@ public class Ver extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER));
-		mob.tell("(C) 2000-2014 Bo Zimmerman");
+		mob.tell(_("(C) 2000-2014 Bo Zimmerman"));
 		mob.tell("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>");
 		mob.tell("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>");
 		return false;

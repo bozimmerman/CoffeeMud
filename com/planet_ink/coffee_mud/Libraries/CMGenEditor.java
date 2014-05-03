@@ -168,7 +168,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newName.trim().length()==0)
 			{
 				if(oldVal.equals(oldOldVal))
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 				return oldVal;
 			}
 			else
@@ -206,7 +206,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				oldVal=CMParms.toStringList(curSet);
 			}
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -289,7 +289,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return newName;
 			}
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -315,7 +315,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				break;
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -353,7 +353,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				break;
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -376,7 +376,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				break;
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -399,7 +399,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				break;
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 		return oldVal;
 	}
 
@@ -495,7 +495,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(oldVal.equals(newVal))
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		return newVal;
 	}
 
@@ -537,7 +537,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(oldVal.equals(newVal))
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		return newVal;
 	}
 
@@ -618,7 +618,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(choice.equalsIgnoreCase("U"))
 			{
 				CMLib.catalog().updateCatalog(P);
-				mob.tell("Catalog update complete.");
+				mob.tell(_("Catalog update complete."));
 				Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((P instanceof MOB)?"MOB":"ITEM")+" "+P.Name());
 				P.setMiscText(P.text());
 			}
@@ -629,7 +629,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				P.setMiscText(P.text());
 			}
 			else
-				mob.tell("That wasn't a choice?!");
+				mob.tell(_("That wasn't a choice?!"));
 		}
 	}
 
@@ -645,39 +645,39 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell("Dead MOB name: '"+I.mobName()+"'.");
 		String newName=mob.session().prompt("Enter a new name\n\r:","");
 		if(newName.length()>0) I.setMobName(newName);
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Dead MOB Description: '"+I.mobDescription()+"'.");
 		newName=mob.session().prompt("Enter a new description\n\r:","");
 		if(newName.length()>0) I.setMobDescription(newName);
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Is a Players corpse: "+I.playerCorpse());
 		newName=mob.session().prompt("Enter a new true/false\n\r:","");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			I.setPlayerCorpse(Boolean.valueOf(newName.toLowerCase()).booleanValue());
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Dead mobs PK flag: "+I.mobPKFlag());
 		newName=mob.session().prompt("Enter a new true/false\n\r:","");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			I.setMobPKFlag(Boolean.valueOf(newName.toLowerCase()).booleanValue());
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		genCharStats(mob,I.charStats());
 		mob.tell("Killers Name: '"+I.killerName()+"'.");
 		newName=mob.session().prompt("Enter a new killer\n\r:","");
 		if(newName.length()>0) I.setKillerName(newName);
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Killer is a player: "+I.killerPlayer());
 		newName=mob.session().prompt("Enter a new true/false\n\r:","");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			I.setKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Time of death: "+CMLib.time().date2String(I.timeOfDeath()));
 		newName=mob.session().prompt("Enter a new value\n\r:","");
 		if(newName.length()>0) I.setTimeOfDeath(CMLib.time().string2Millis(newName));
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 		mob.tell("Last message string: "+I.lastMessage());
 		newName=mob.session().prompt("Enter a new value\n\r:","");
 		if(newName.length()>0) I.setLastMessage(newName);
-		else mob.tell("(no change)");
+		else mob.tell(_("(no change)"));
 	}
 
 	protected void genAuthor(MOB mob, Area A, int showNumber, int showFlag) throws IOException
@@ -718,7 +718,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -747,7 +747,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				A.setCurrency(newName.toUpperCase().trim());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
@@ -794,7 +794,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final String newNum=mob.session().prompt("Enter a new number:","");
 				final int val=CMath.s_int(newNum);
 				if(newNum.length()==0)
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 				else
 				switch(which)
 				{
@@ -806,28 +806,28 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					break;
 				case 3:
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
-						mob.tell("That value is before the dawn!");
+						mob.tell(_("That value is before the dawn!"));
 					else
 						TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]=val;
 					break;
 				case 4:
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
-						mob.tell("That value is before the dawn!");
+						mob.tell(_("That value is before the dawn!"));
 					else
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]>=val))
-						mob.tell("That value is before the day!");
+						mob.tell(_("That value is before the day!"));
 					else
 						TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]=val;
 					break;
 				case 5:
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAWN.ordinal()]>=val))
-						mob.tell("That value is before the dawn!");
+						mob.tell(_("That value is before the dawn!"));
 					else
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]>=val))
-						mob.tell("That value is before the day!");
+						mob.tell(_("That value is before the day!"));
 					else
 					if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]>=val))
-						mob.tell("That value is before the dusk!");
+						mob.tell(_("That value is before the dusk!"));
 					else
 						TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]=val;
 					break;
@@ -838,7 +838,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				newName="";
 				final String newNum=mob.session().prompt("Enter a new list (comma delimited)\n\r:","");
 				if(newNum.length()==0)
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 				else
 				switch(which)
 				{
@@ -901,16 +901,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									else
 									{
 										M.setClan(C.clanID(), roleID);
-										mob.tell("Clan added.");
+										mob.tell(_("Clan added."));
 									}
 								}
 								else
-									mob.tell("(no change)");
+									mob.tell(_("(no change)"));
 							}
 							else
 							{
 								M.setClan(C.clanID(), -1);
-								mob.tell("Clan removed.");
+								mob.tell(_("Clan removed."));
 							}
 						}
 						else
@@ -942,12 +942,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newName.length()>0)
 				{
 					if(CMLib.map().getDeity(newName)==null)
-						mob.tell("That deity does not exist.");
+						mob.tell(_("That deity does not exist."));
 					else
 						M.setWorshipCharID(CMLib.map().getDeity(newName).Name());
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -1135,7 +1135,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				break;
 			}
 		}
@@ -1165,7 +1165,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			CMLib.database().DBUpdatePassword(M.Name(),M.playerStats().getPasswordStr());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genEmail(MOB mob, AccountStats A, int showNumber, int showFlag) throws IOException
@@ -1202,9 +1202,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setDisplayText(newName);
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		if((E instanceof Item)&&(E.displayText().length()==0))
-			mob.tell("(blended)");
+			mob.tell(_("(blended)"));
 	}
 
 	protected void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
@@ -1223,7 +1223,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 	protected void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
@@ -1238,7 +1238,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.length()>0)
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genBurnout(MOB mob, Light I, int showNumber, int showFlag)
@@ -1259,7 +1259,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),newName,E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genSubOps(MOB mob, Area A, int showNumber, int showFlag)
@@ -1277,13 +1277,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(A.amISubOp(str))
 				{
 					A.delSubOp(str);
-					mob.tell("Staff removed.");
+					mob.tell(_("Staff removed."));
 				}
 				else
 				if(CMLib.players().playerExists(str))
 				{
 					A.addSubOp(str);
-					mob.tell("Staff added.");
+					mob.tell(_("Staff added."));
 				}
 				else
 					mob.tell("'"+str+"' is not recognized as a valid user name.");
@@ -1324,7 +1324,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// they must want it removed
 						A.removeParent(lookedUp);
 						lookedUp.removeChild(A);
-						mob.tell("Enter an area name to add or remove\n\r:");
+						mob.tell(_("Enter an area name to add or remove\n\r:"));
 					}
 					else
 					{
@@ -1380,7 +1380,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// this area is already a child to A, they must want it removed
 						A.removeChild(lookedUp);
 						lookedUp.removeParent(A);
-						mob.tell("Enter an area name to add or remove\n\r:");
+						mob.tell(_("Enter an area name to add or remove\n\r:"));
 					}
 					else
 					{
@@ -1412,7 +1412,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),newName,E.openWord(),E.closedText());
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
@@ -1431,7 +1431,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newName.length()>0)
 				E.setKeyName(newName);
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 		else
 		{
@@ -1455,7 +1455,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newName.length()>0)
 					E.setReadableText(newName);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 			else
 				E.setReadable(false);
@@ -1616,7 +1616,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(newName.length()>0)
 						E.setReadableText(newName);
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 		}
@@ -1647,7 +1647,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(newValue>=0)
 						((Drink)E).setLiquidType(newValue);
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 		}
@@ -1696,7 +1696,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell("'"+newName+"' is not a valid common skill.  Try ?.");
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				break;
 			}
 		}
@@ -1704,7 +1704,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((newCount.length()>0)&&(CMath.s_int(newCount)>0))
 			E.setTotalRecipePages(CMath.s_int(newCount));
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		final Ability A=CMClass.getAbility(E.getCommonSkillID());
 		final ItemCraftor C;
 		if((A!=null)&&(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))&&(A instanceof ItemCraftor))
@@ -1752,7 +1752,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					recipeList.remove(x-1);
 				else
 				if(newLine.length()==0)
-					mob.tell("(No change)");
+					mob.tell(_("(No change)"));
 				else
 				{
 					final String errors = new Checker().getErrors(newLine);
@@ -1779,7 +1779,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 				}
 				else
-					mob.tell("(No change)");
+					mob.tell(_("(No change)"));
 			}
 			E.setRecipeCodeLines(recipeList.toArray(new String[0]));
 		}
@@ -2008,7 +2008,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				&&(num!=CharStats.STAT_GENDER))
 					E.setStat(num,CMath.s_int(newVal));
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -2046,7 +2046,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.playerStats().getBirthday()[2]=CMLib.time().globalClock().getYear()-CMath.s_int(newVal);
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -2084,7 +2084,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					baseState.setStat(state,Integer.toString(CMath.s_int(newVal)));
 				}
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -2197,7 +2197,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newLevel>0)
 				E.setOpenDelayTicks(newLevel);
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 		else
 		{
@@ -2256,7 +2256,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(Container.CONTAIN_DESCS[i].startsWith(change.toUpperCase()))
 						found=i;
 				if(found<0)
-					mob.tell("Unknown type.  Try '?'.");
+					mob.tell(_("Unknown type.  Try '?'."));
 				else
 				if(found==0)
 					E.setContainTypes(0);
@@ -2281,7 +2281,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(newName.length()>0)
 						E.setKeyName(newName);
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 			else
@@ -2326,7 +2326,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genUses(MOB mob, Item I, int showNumber, int showFlag) throws IOException
@@ -2348,9 +2348,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMLib.flags().isCataloged(E))
 			{
 				if(CMLib.catalog().isCatalogObj(E.Name()))
-					mob.tell("*** This object is Cataloged **\n\r");
+					mob.tell(_("*** This object is Cataloged **\n\r"));
 				else
-					mob.tell("*** This object WAS cataloged and is still tied **\n\r");
+					mob.tell(_("*** This object WAS cataloged and is still tied **\n\r"));
 			}
 
 			if(E instanceof ShopKeeper)
@@ -2428,12 +2428,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((newText.length()==0)
 			&&(CMLib.map().getRoom(newText)==null)
 			&&(CMLib.map().getArea(newText)==null))
-				mob.tell("That property (room ID) doesn't exist!");
+				mob.tell(_("That property (room ID) doesn't exist!"));
 		}
 		if(newText.length()>0)
 			L.setLandPropertyID(newText);
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 
 	}
 
@@ -2467,11 +2467,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(I.getCurrency().length()>0)
 					I.setCurrency("");
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 			else
 			if((oldCurrency.length()==0)||(oldCurrency.equalsIgnoreCase(I.getCurrency())))
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			if(!CMLib.beanCounter().getAllCurrencies().contains(oldCurrency))
 			{
@@ -2502,7 +2502,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			||(CMath.isDouble(newDenom)
 				&&(!newDenom.equalsIgnoreCase("?"))
 				&&(CMath.s_double(newDenom)==I.getDenomination())))
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			else
 			if((newDenom.equalsIgnoreCase("?"))
 			||(!CMath.isDouble(newDenom))
@@ -2547,7 +2547,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String clanID=I.clanID();
 		I.setClanID(mob.session().prompt("Enter a new clan\n\r:",clanID));
 		if(I.clanID().equals(clanID))
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		final String clanType=ClanItem.CI_DESC[I.ciType()];
 		String s="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(s.equals("?")))
@@ -2558,7 +2558,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(s.equalsIgnoreCase(clanType))
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				break;
 			}
 			else
@@ -2690,13 +2690,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell("(Remember to create a GenAmmunition item with '"+AW.ammunitionType()+"' in the secret identity, and the uses remaining above 0!");
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			mob.tell("\n\rAmmo capacity: '"+AW.ammunitionCapacity()+"'.)");
 			final int newValue=CMath.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 			if(newValue>0)
 				AW.setAmmoCapacity(newValue);
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			AW.setAmmoRemaining(AW.ammunitionCapacity());
 		}
 		else
@@ -2714,13 +2714,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
 		final String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
 		if((newMinStr.length()==0)&&(newMaxStr.length()==0))
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 		else
 		{
 			W.setRanges(CMath.s_int(newMinStr),CMath.s_int(newMaxStr));
 			if((W.minRange()>W.maxRange())||(W.minRange()<0)||(W.maxRange()<0))
 			{
-				mob.tell("(defective entries.  resetting.)");
+				mob.tell(_("(defective entries.  resetting.)"));
 				W.setRanges(0,0);
 			}
 		}
@@ -2752,7 +2752,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					W.setWeaponType(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -2788,7 +2788,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					A.setTheme(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -2889,7 +2889,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					currMat=newValue;
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 		return currMat;
@@ -3004,7 +3004,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					E.setInstrumentType(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -3043,7 +3043,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 		}
-		mob.tell("(no change)");
+		mob.tell(_("(no change)"));
 	}
 	protected void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
@@ -3119,7 +3119,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genWeaponClassification(MOB mob, Weapon E, int showNumber, int showFlag)
@@ -3148,7 +3148,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					E.setWeaponClassification(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -3176,7 +3176,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.races(),-1).toString());
 			else
 			if(raceID.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			{
 				final Race R=CMClass.getRace(raceID);
@@ -3187,7 +3187,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					M.baseCharStats().getMyRace().setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 				}
 				else
-					mob.tell("Unknown race! Try '?'.");
+					mob.tell(_("Unknown race! Try '?'."));
 			}
 		}
 	}
@@ -3212,7 +3212,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.charClasses(),-1).toString());
 			else
 			if(classID.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			{
 				CharClass C=CMClass.getCharClass(classID);
@@ -3221,7 +3221,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(M.baseCharStats().getClassLevel(C)>=0)
 					{
 						if(M.baseCharStats().numClasses()<2)
-							mob.tell("Final class may not be removed.  To change a class, add the new one first.");
+							mob.tell(_("Final class may not be removed.  To change a class, add the new one first."));
 						else
 						{
 							final StringBuffer charClasses=new StringBuffer("");
@@ -3280,7 +3280,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					M.baseCharStats().setClassLevel(C,levels);
 				}
 				else
-					mob.tell("Unknown character class! Try '?'.");
+					mob.tell(_("Unknown character class! Try '?'."));
 			}
 		}
 	}
@@ -3318,7 +3318,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3367,7 +3367,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3411,7 +3411,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3498,7 +3498,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3579,7 +3579,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								parms=chosenOne.getParms();
 								parms=mob.session().prompt("Enter any behavior parameters (?)\n\r:"+parms);
-								if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+								if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell(_("no help!"));}
 							}
 							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
@@ -3598,7 +3598,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3670,7 +3670,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								parms=chosenOne.text();
 								parms=mob.session().prompt("Enter any effect parameters (?)\n\r:"+parms);
-								if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+								if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell(_("no help!"));}
 							}
 							chosenOne.setMiscText(parms.trim());
 							mob.tell(chosenOne.ID()+" added.");
@@ -3684,7 +3684,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -3714,7 +3714,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newValue>=0)
 					R.setRideBasis(newValue);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 	}
@@ -3787,7 +3787,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newType.trim().length()==0)
 			{
 				if(M.getWhatIsSoldMask()==oldMask)
-					mob.tell("(no change");
+					mob.tell(_("(no change"));
 				return;
 			}
 			if(newType.length()>0)
@@ -3843,8 +3843,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.clanItems(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.basicItems(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.mobTypes(),-1).toString());
-					mob.tell("* Plus! Any items on the ground.");
-					mob.tell("* Plus! Any mobs hanging around in the room.");
+					mob.tell(_("* Plus! Any items on the ground."));
+					mob.tell(_("* Plus! Any mobs hanging around in the room."));
 				}
 				else
 				{
@@ -3908,7 +3908,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 	protected void genEconomics1(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
@@ -3971,7 +3971,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				break;
 			}
 		}
@@ -4025,7 +4025,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newValue.length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				break;
 			}
 		}
@@ -4112,7 +4112,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -4174,7 +4174,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								{
 									parms=chosenOne.text();
 									parms=mob.session().prompt("Enter any effect parameters (?)\n\r:"+parms);
-									if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+									if(parms.equals("?")){ final StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell(_("no help!"));}
 								}
 								chosenOne.setMiscText(parms.trim());
 							}
@@ -4189,7 +4189,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -4309,7 +4309,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -4389,7 +4389,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -4458,7 +4458,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -4526,7 +4526,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 	
@@ -4623,7 +4623,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String val=mob.session().prompt(showNumber+". Radius (ENTER="+(CMLib.english().sizeDescShort(E.radius()))+"): ");
 			if((val==null)||(val.trim().length()==0))
 			{
-				mob.tell("(unchanged)");
+				mob.tell(_("(unchanged)"));
 				break;
 			}
 			Long newValue=parseSpaceDistance(val);
@@ -4645,7 +4645,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String val=mob.session().prompt(showNumber+". Coordinates in Space (ENTER="+(CMLib.english().coordDescShort(E.coordinates()))+"): ");
 			if((val==null)||(val.trim().length()==0))
 			{
-				mob.tell("(unchanged)");
+				mob.tell(_("(unchanged)"));
 				break;
 			}
 			List<String> utokens=CMParms.parseSpaces(val.toUpperCase(),true);
@@ -4731,7 +4731,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String val=mob.session().prompt(showNumber+". Speed in Space (ENTER="+(CMLib.english().speedDescShort(E.speed()))+"): ");
 			if((val==null)||(val.trim().length()==0))
 			{
-				mob.tell("(unchanged)");
+				mob.tell(_("(unchanged)"));
 				break;
 			}
 			val=val.trim();
@@ -4753,7 +4753,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String val=mob.session().prompt(showNumber+". Direction in Space (ENTER="+(CMLib.english().directionDescShort(E.direction()))+"): ");
 			if((val==null)||(val.trim().length()==0))
 			{
-				mob.tell("(unchanged)");
+				mob.tell(_("(unchanged)"));
 				break;
 			}
 			val=val.toLowerCase().trim();
@@ -4802,11 +4802,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		int codeVal=-1;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(codeVal!=0))
 		{
-			mob.tell("Wearing parameters\n\r0: Done");
+			mob.tell(_("Wearing parameters\n\r0: Done"));
 			if(!logicalAnd[0])
-				mob.tell("1: Able to wear on any ONE of these locations:");
+				mob.tell(_("1: Able to wear on any ONE of these locations:"));
 			else
-				mob.tell("1: Must be worn on ALL of these locations:");
+				mob.tell(_("1: Must be worn on ALL of these locations:"));
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int l=0;l<codes.total();l++)
 			{
@@ -4868,7 +4868,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newStat.length()>0)
 			E.setStat(Field,newStat);
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -4884,7 +4884,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newStat.length()>0)
 			E.setStat(Field,newStat);
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
@@ -4902,7 +4902,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((newName.length()>0)&&(!newName.equals("?")))
 			E.setStat(Field,newName);
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 	protected void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
 	{ E.setAcceptanceSettings(prompt(mob,E.getAcceptanceSettings(),showNumber,showFlag,"Clan Qualifications",false,false,CMLib.masking().maskHelp("\n","disallow"))); }
@@ -4960,7 +4960,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(setChanged)
 			E.setStat(Field,CMParms.toStringList(set));
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
@@ -5014,7 +5014,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(setChanged)
 			E.setStat(Field,CMParms.toStringList(set));
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 
@@ -5037,7 +5037,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 			newName=mob.session().prompt("Enter flag to toggle (?)\n\r:","").toUpperCase();
 			if(newName.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			if(CMParms.contains(Race.GENFLAG_DESCS,newName))
 			{
@@ -5056,7 +5056,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(str.toString());
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 		E.setStat("DISFLAGS",""+flags);
 	}
@@ -5080,7 +5080,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 			newName=mob.session().prompt("Enter a location to toggle (?)\n\r:","").toUpperCase();
 			if(newName.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			if(CMParms.containsIgnoreCase(codes.names(),newName))
 			{
@@ -5102,7 +5102,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(str.toString());
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 		E.setStat("WEAR",""+flags);
 	}
@@ -5118,7 +5118,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newName=mob.session().prompt("Enter a new value (?)\n\r:","");
 			if(newName.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_PHRASE_EXT.length))
 				E.setStat("AVAIL",""+CMath.s_int(newName));
@@ -5131,7 +5131,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(str.toString());
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -5146,7 +5146,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newName=mob.session().prompt("Enter a new value (?)\n\r:","");
 			if(newName.length()==0)
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 			else
 			if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_PHRASE_EXT.length))
 				E.setStat("PLAYER",""+CMath.s_int(newName));
@@ -5159,7 +5159,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(str.toString());
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -5209,7 +5209,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setStat("CAT",newName);
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 
@@ -5244,7 +5244,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setStat(flag,R2.getClass().getName());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genClassBuddy(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
@@ -5278,7 +5278,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setStat(flag,C2.getClass().getName());
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	protected void genClassRaceQuals(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
@@ -5330,7 +5330,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(found)
 						mob.tell("Race/RaceCat "+newName+" added.");
 					else
-						mob.tell("Could not find any race, racecat, or all.");
+						mob.tell(_("Could not find any race, racecat, or all."));
 				}
 			}
 			else
@@ -5368,11 +5368,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newName.length()>0)
 					E.bodyMask()[partNum]=CMath.s_int(newName);
 				else
-					mob.tell("(no change)");
+					mob.tell(_("(no change)"));
 			}
 		}
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 	protected void genPStats(MOB mob, Race R, int showNumber, int showFlag)
 		throws IOException
@@ -5427,7 +5427,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							checkChange=true;
 						}
 						else
-							mob.tell("(no change)");
+							mob.tell(_("(no change)"));
 					}
 					if(checkChange)
 					{
@@ -5446,7 +5446,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5503,12 +5503,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5566,12 +5566,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5637,7 +5637,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							checkChange=true;
 						}
 						else
-							mob.tell("(no change)");
+							mob.tell(_("(no change)"));
 					}
 					if(checkChange)
 					{
@@ -5656,7 +5656,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5713,12 +5713,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							R.setStat(field,CMLib.coffeeMaker().getCharStateStr(S));
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5770,12 +5770,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
 					}
 					else
-						mob.tell("(no change)");
+						mob.tell(_("(no change)"));
 				}
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				done=true;
 			}
 		}
@@ -5830,7 +5830,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing resource name, or the word new followed by a valid item name.");
+						mob.tell(_("That is neither an existing resource name, or the word new followed by a valid item name."));
 					else
 					{
 						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
@@ -5892,7 +5892,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -5932,7 +5932,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+						mob.tell(_("That is neither an existing item name, or the word new followed by a valid item name."));
 					else
 					{
 						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
@@ -5964,7 +5964,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6004,7 +6004,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+						mob.tell(_("That is neither an existing item name, or the word new followed by a valid item name."));
 					else
 					{
 						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
@@ -6036,7 +6036,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6111,7 +6111,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6134,7 +6134,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.equalsIgnoreCase("null"))
 		{
 			E.setStat("WEAPONCLASS","");
-			mob.tell("Human weapons set.");
+			mob.tell(_("Human weapons set."));
 		}
 		else
 		if(newName.length()>0)
@@ -6143,7 +6143,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(I==null)
 			{
 				mob.tell("'"+newName+"' is not in your inventory.");
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 			I=(Item)I.copyOf();
@@ -6153,7 +6153,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		else
 		{
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 			return;
 		}
 	}
@@ -6177,7 +6177,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newName=mob.session().prompt("Enter a comma-delimited list of 9 numbers, running from infant -> ancient\n\r:","");
 			if(newName.length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 			final List<String> V=CMParms.parseCommas(newName,true);
@@ -6244,7 +6244,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				flags=flags|CharClass.GENFLAG_NOEXP;
 			break;
 		default:
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 			break;
 		}
 		E.setStat("DISFLAGS",""+flags);
@@ -6289,7 +6289,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(_("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
 					else
 					if(A.isAutoInvoked())
 						mob.tell("'"+A.name()+"' cannot be named, as it is autoinvoked.");
@@ -6339,7 +6339,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6384,7 +6384,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing effect name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(_("That is neither an existing effect name, nor a valid one to add.  Use ? for a list."));
 					else
 					{
 						final StringBuffer str=new StringBuffer(A.ID()+"~");
@@ -6423,7 +6423,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6449,7 +6449,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		level=Integer.valueOf(CMath.s_int(mob.session().prompt("Enter the level of this skill ("+level+"): ",""+level)));
 		if(level.intValue()<=0)
 		{
-			mob.tell("Aborted.");
+			mob.tell(_("Aborted."));
 			return null;
 		}
 
@@ -6615,7 +6615,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(_("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
 					else
 					{
 						// add new one here
@@ -6672,7 +6672,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6717,7 +6717,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final Ability A=CMClass.getAbility(newName);
 					if(A==null)
-						mob.tell("That is neither an existing ability name, nor a valid one to add.  Use ? for a list.");
+						mob.tell(_("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
 					else
 					{
 						final StringBuffer str=new StringBuffer(A.ID()+";");
@@ -6753,7 +6753,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 		}
@@ -6946,7 +6946,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(choice.equalsIgnoreCase("D"))
 					{
 						if(me.getPositions().length==1)
-							mob.tell("You can't delete the last position.");
+							mob.tell(_("You can't delete the last position."));
 						else
 							me.delPosition(editMe);
 					}
@@ -7232,7 +7232,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.trim().length()==0)
 		{
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 			return false;
 		}
 		if((newName.equalsIgnoreCase("?"))&&(help!=null))
@@ -7569,7 +7569,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			else
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 		}
 	}
 
@@ -8168,7 +8168,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			&&(mob.session()!=null)
 			&&(!mob.session().isStopped()))
 			{
-				mob.tell("The name given cannot be chosen, as it is already being used.");
+				mob.tell(_("The name given cannot be chosen, as it is already being used."));
 				genName(mob,me,showNumber,showFlag);
 				newName=CMStrings.capitalizeAndLower(me.Name());
 				me.setName(oldName);
@@ -8182,7 +8182,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
 				&&(mob.session()!=null)&&(!mob.session().isStopped()))
 				{
-					mob.tell("The account can not be used, as it does not exist.");
+					mob.tell(_("The account can not be used, as it does not exist."));
 					accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Account",true,false,null));
 				}
 				if(!oldAccountName.equals(accountName))
@@ -8319,7 +8319,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
 			if(newName.trim().length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 			int newGovt=-1;
@@ -8381,7 +8381,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
 			if(newName.trim().length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 			int newRole=-1;
@@ -8423,7 +8423,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.trim().length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return;
 			}
 			CharClass newC=null;
@@ -8460,14 +8460,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.trim().length()==0)
 			{
-				mob.tell("(no change)");
+				mob.tell(_("(no change)"));
 				return oldRoomID;
 			}
 			final Room newRoom=CMLib.map().getRoom(newName);
 			if((newRoom==null)
 			||(CMLib.map().getExtendedRoomID(newRoom).length()==0)
 			||(!CMLib.law().doesOwnThisProperty(C.clanID(),newRoom)))
-				mob.tell("That is either not a valid room id, or that room is not owned by the clan.");
+				mob.tell(_("That is either not a valid room id, or that room is not owned by the clan."));
 			else
 				return CMLib.map().getExtendedRoomID(newRoom);
 		}
@@ -8690,7 +8690,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(s.length()>0)
 			A.setAccountExpiration(CMLib.time().string2Millis(s));
 		else
-			mob.tell("(no change)");
+			mob.tell(_("(no change)"));
 	}
 
 	@Override
@@ -8708,7 +8708,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			&&(CMLib.players().getLoadAccount(acctName)!=null)
 			&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
-				mob.tell("The name given cannot be chosen, as it is already being used.");
+				mob.tell(_("The name given cannot be chosen, as it is already being used."));
 				acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showFlag,"Name",true,false,null));
 			}
 			A.setAccountName(acctName);
@@ -8826,7 +8826,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
 				myArea.setStat(myArea.getStatCodes()[x],prompt(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
 			if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
-				mob.tell("*** Area Economics settings: ");
+				mob.tell(_("*** Area Economics settings: "));
 				genCurrency(mob,myArea,++showNumber,showFlag);
 				genEconomics1(mob,myArea,++showNumber,showFlag);
 				genEconomics2(mob,myArea,++showNumber,showFlag);

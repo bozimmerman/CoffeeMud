@@ -52,7 +52,7 @@ public class Chant_ColdWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your warm protection cools.");
+			mob.tell(_("Your warm protection cools."));
 
 		super.unInvoke();
 

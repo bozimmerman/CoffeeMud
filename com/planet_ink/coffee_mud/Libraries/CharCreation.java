@@ -231,7 +231,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					S.rawOut("\033[6z"+mxpText.toString()+"\n\r");
 			}
 			else
-				mob.tell("MXP codes have been disabled for this session.");
+				mob.tell(_("MXP codes have been disabled for this session."));
 		}
 		else
 		if(S.getClientTelnetMode(Session.TELNET_MXP))
@@ -244,7 +244,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 		{
 			if(!S.getClientTelnetMode(Session.TELNET_MSP))
-				mob.tell("MSP sounds have been disabled for this session.");
+				mob.tell(_("MSP sounds have been disabled for this session."));
 		}
 		else
 		if(S.getClientTelnetMode(Session.TELNET_MSP))
@@ -3335,7 +3335,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			val=(int)costs[curStatIndex][0];
 		if((curStat>=maxStat)&&(!quiet))
 		{
-			mob.tell("You cannot train that any further.");
+			mob.tell(_("You cannot train that any further."));
 			if(val<=0) val=1;
 			return -val;
 		}

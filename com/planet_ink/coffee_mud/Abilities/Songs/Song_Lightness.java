@@ -90,7 +90,7 @@ public class Song_Lightness extends Song
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your normal weight returns.");
+			mob.tell(_("Your normal weight returns."));
 	}
 
 	@Override

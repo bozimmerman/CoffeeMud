@@ -109,7 +109,7 @@ public class Spell_WizardLock extends Spell
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Wizard Lock what?.");
+			mob.tell(_("Wizard Lock what?."));
 			return false;
 		}
 		final String targetName=CMParms.combine(commands,0);
@@ -124,7 +124,7 @@ public class Spell_WizardLock extends Spell
 
 		if((!(target instanceof Container))&&(!(target instanceof Exit)))
 		{
-			mob.tell("You can't lock that.");
+			mob.tell(_("You can't lock that."));
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public class Spell_WizardLock extends Spell
 			final Container container=(Container)target;
 			if((!container.hasALid())||(!container.hasALock()))
 			{
-				mob.tell("You can't lock that!");
+				mob.tell(_("You can't lock that!"));
 				return false;
 			}
 		}
@@ -143,7 +143,7 @@ public class Spell_WizardLock extends Spell
 			final Exit exit=(Exit)target;
 			if(!exit.hasADoor())
 			{
-				mob.tell("You can't lock that!");
+				mob.tell(_("You can't lock that!"));
 				return false;
 			}
 		}

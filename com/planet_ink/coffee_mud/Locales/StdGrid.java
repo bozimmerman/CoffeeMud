@@ -874,7 +874,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 				if(direction<0)
 				{
-					mob.tell("Some great evil is preventing your movement that way.");
+					mob.tell(_("Some great evil is preventing your movement that way."));
 					return false;
 				}
 				msg.modify(msg.source(),

@@ -139,7 +139,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		if((!auto)&&((mob.getWorshipCharID().length()==0)
 					 ||(CMLib.map().getDeity(mob.getWorshipCharID())==null)))
 		{
-			mob.tell("You must worship a god to be intolerant.");
+			mob.tell(_("You must worship a god to be intolerant."));
 			return false;
 		}
 

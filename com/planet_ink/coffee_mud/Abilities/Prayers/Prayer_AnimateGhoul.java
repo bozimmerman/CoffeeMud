@@ -57,7 +57,7 @@ public class Prayer_AnimateGhoul extends Prayer
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell("You can't animate that.");
+			mob.tell(_("You can't animate that."));
 			return false;
 		}
 
@@ -65,7 +65,7 @@ public class Prayer_AnimateGhoul extends Prayer
 		if(body.playerCorpse()||(body.mobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
-			mob.tell("You can't animate that.");
+			mob.tell(_("You can't animate that."));
 			return false;
 		}
 		String race="a";
@@ -79,7 +79,7 @@ public class Prayer_AnimateGhoul extends Prayer
 
 		if(body.basePhyStats().level()<5)
 		{
-			mob.tell("This creature is too weak to create a ghoul from.");
+			mob.tell(_("This creature is too weak to create a ghoul from."));
 			return false;
 		}
 

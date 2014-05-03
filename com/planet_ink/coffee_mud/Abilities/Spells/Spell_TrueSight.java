@@ -52,7 +52,7 @@ public class Spell_TrueSight extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You no longer have true sight.");
+			mob.tell(_("You no longer have true sight."));
 	}
 
 	@Override

@@ -62,14 +62,14 @@ public class Snoop extends StdCommand
 				if(S.mob()!=null)
 					mob.tell("You stop snooping on "+S.mob().name()+".");
 				else
-					mob.tell("You stop snooping on someone.");
+					mob.tell(_("You stop snooping on someone."));
 				doneSomething=true;
 				S.setBeingSnoopedBy(mob.session(),false);
 			}
 		if(commands.size()==0)
 		{
 			if(!doneSomething)
-				mob.tell("Snoop on whom?");
+				mob.tell(_("Snoop on whom?"));
 			return false;
 		}
 		final String whom=CMParms.combine(commands,0);
@@ -79,7 +79,7 @@ public class Snoop extends StdCommand
 		{
 			if(S==mob.session())
 			{
-				mob.tell("no.");
+				mob.tell(_("no."));
 				return false;
 			}
 			else
@@ -87,7 +87,7 @@ public class Snoop extends StdCommand
 				SnoopOn=S;
 		}
 		if(SnoopOn==null)
-			mob.tell("You can't find anyone to snoop on by that name.");
+			mob.tell(_("You can't find anyone to snoop on by that name."));
 		else
 		if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
 			mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
@@ -102,7 +102,7 @@ public class Snoop extends StdCommand
 			{
 				if(snoop.elementAt(v)==mob.session())
 				{
-					mob.tell("This would create a snoop loop!");
+					mob.tell(_("This would create a snoop loop!"));
 					return false;
 				}
 				final List<Session> V=snoopingOn((Session)snoop.elementAt(v));

@@ -52,7 +52,7 @@ public class Chant_SenseMetal extends Chant
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer tuned to metals.");
+			mob.tell(_("Your senses are no longer tuned to metals."));
 	}
 
 	@Override

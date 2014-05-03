@@ -59,7 +59,7 @@ public class Spell_Misstep extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You don't feel quite so clumsy.");
+			mob.tell(_("You don't feel quite so clumsy."));
 	}
 
 

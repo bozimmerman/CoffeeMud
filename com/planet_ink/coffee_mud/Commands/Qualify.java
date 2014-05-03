@@ -294,7 +294,7 @@ public class Qualify  extends Skills
 				if(qual.length()>0)
 					mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
 				else
-					mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
+					mob.tell(_("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES."));
 			}
 			else
 			if(!mob.isMonster())
@@ -307,9 +307,9 @@ public class Qualify  extends Skills
 				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
 					msg.append("\n\r^HYou may learn ^w"+limits.nonCraftingSkills+"^H more non-crafting common skills.^N");
 				mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
-				mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
+				mob.tell(_("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
-					mob.tell("\n\rUse the TRAIN command to train for a new class.");
+					mob.tell(_("\n\rUse the TRAIN command to train for a new class."));
 			}
 		}
 		return false;

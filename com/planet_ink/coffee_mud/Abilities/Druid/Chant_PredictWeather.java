@@ -54,7 +54,7 @@ public class Chant_PredictWeather extends Chant
 			lastPrediction="";
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer sensitive to the weather.");
+			mob.tell(_("Your senses are no longer sensitive to the weather."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -93,7 +93,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 

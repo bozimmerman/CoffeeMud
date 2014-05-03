@@ -45,20 +45,20 @@ public class PlayerKill extends StdCommand
 		if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS")
 			||CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 		{
-			mob.tell("This option has been disabled.");
+			mob.tell(_("This option has been disabled."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!");
+			mob.tell(_("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!"));
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 			{
-				mob.tell("Once turned on, this flag may not be turned off again.");
+				mob.tell(_("Once turned on, this flag may not be turned off again."));
 				return false;
 			}
 
@@ -66,28 +66,28 @@ public class PlayerKill extends StdCommand
 			&&(mob.session().getLastPKFight()>0)
 			&&((System.currentTimeMillis()-mob.session().getLastPKFight())<(5*60*1000)))
 			{
-				mob.tell("You'll need to wait a few minutes before you can turn off your PK flag.");
+				mob.tell(_("You'll need to wait a few minutes before you can turn off your PK flag."));
 				return false;
 			}
 
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-			mob.tell("Your playerkill flag has been turned off.");
+			mob.tell(_("Your playerkill flag has been turned off."));
 		}
 		else
 		if(!mob.isMonster())
 		{
-			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
+			mob.tell(_("Turning on this flag will allow you to kill and be killed by other players."));
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
-				mob.tell("Once turned on, this flag may not be turned off again.");
+				mob.tell(_("Once turned on, this flag may not be turned off again."));
 			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-				mob.tell("Your playerkill flag has been turned on.");
+				mob.tell(_("Your playerkill flag has been turned on."));
 			}
 			else
-				mob.tell("Your playerkill flag remains OFF.");
+				mob.tell(_("Your playerkill flag remains OFF."));
 			if(!CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
-				mob.tell("Both players must have their playerkill flag turned on for sparring.");
+				mob.tell(_("Both players must have their playerkill flag turned on for sparring."));
 		}
 		return false;
 	}

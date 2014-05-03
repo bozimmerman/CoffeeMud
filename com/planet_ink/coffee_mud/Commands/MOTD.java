@@ -244,11 +244,11 @@ public class MOTD extends StdCommand
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 			{
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-				mob.tell("The daily messages have been turned on.");
+				mob.tell(_("The daily messages have been turned on."));
 			}
 			else
 			{
-				mob.tell("The daily messages are already on.");
+				mob.tell(_("The daily messages are already on."));
 			}
 		}
 		else
@@ -257,11 +257,11 @@ public class MOTD extends StdCommand
 			if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-				mob.tell("The daily messages have been turned off.");
+				mob.tell(_("The daily messages have been turned off."));
 			}
 			else
 			{
-				mob.tell("The daily messages are already off.");
+				mob.tell(_("The daily messages are already off."));
 			}
 		}
 		else

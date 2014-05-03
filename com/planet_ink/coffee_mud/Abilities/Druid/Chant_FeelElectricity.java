@@ -82,7 +82,7 @@ public class Chant_FeelElectricity extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your charged feeling is gone.");
+			mob.tell(_("Your charged feeling is gone."));
 
 		super.unInvoke();
 

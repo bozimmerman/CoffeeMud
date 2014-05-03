@@ -81,7 +81,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?");
+			mob.tell(_("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?"));
 			return false;
 		}
 		String mat=null;
@@ -297,7 +297,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(!success)
 		{
-			mob.tell("The metacraft failed.");
+			mob.tell(_("The metacraft failed."));
 			return false;
 		}
 		return true;

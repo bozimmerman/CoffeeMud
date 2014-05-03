@@ -117,7 +117,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(s.length()>0)
 						msg.source().tell(s);
 					else
-						msg.source().tell("This area is under the control of the Archons.");
+						msg.source().tell(_("This area is under the control of the Archons."));
 					return;
 				}
 				else
@@ -152,7 +152,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					final Room R=CMLib.map().roomLocation(this);
 					if(CMLib.clans().findRivalrousClan(msg.source())==null)
 					{
-						msg.source().tell("You must belong to an elligible clan to take a clan item.");
+						msg.source().tell(_("You must belong to an elligible clan to take a clan item."));
 						return false;
 					}
 					else
@@ -177,12 +177,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 						if(B!=null) rulingClan=B.rulingOrganization();
 						if(msg.source().getClanRole(rulingClan)==null)
 						{
-							msg.source().tell("You must conquer and fully control this area to take the clan flag.");
+							msg.source().tell(_("You must conquer and fully control this area to take the clan flag."));
 							return false;
 						}
 						if((B!=null)&&(!B.isFullyControlled()))
 						{
-							msg.source().tell("Your clan does not yet fully control the area.");
+							msg.source().tell(_("Your clan does not yet fully control the area."));
 							return false;
 						}
 					}
@@ -213,7 +213,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 						}
 						if(!ok)
 						{
-							msg.source().tell("You can not place a flag here, this place is controlled by the Archons.");
+							msg.source().tell(_("You can not place a flag here, this place is controlled by the Archons."));
 							return false;
 						}
 					}
@@ -260,14 +260,14 @@ public class StdClanFlag extends StdItem implements ClanItem
 						final Clan C=CMLib.clans().getClan(clanID());
 						if(C==null)
 						{
-							msg.source().tell("This ancient relic from a lost clan fades out of existence.");
+							msg.source().tell(_("This ancient relic from a lost clan fades out of existence."));
 							this.destroy();
 							return false;
 						}
 						relation=C.getClanRelations(rulingClan);
 						if(relation!=Clan.REL_WAR)
 						{
-							msg.source().tell("You must be at war with this clan to put down your flag on their area.");
+							msg.source().tell(_("You must be at war with this clan to put down your flag on their area."));
 							return false;
 						}
 					}

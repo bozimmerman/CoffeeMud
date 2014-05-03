@@ -95,7 +95,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			   ||CMClass.classID(O).equalsIgnoreCase("SELL")
 			   ||CMClass.classID(O).equalsIgnoreCase("GIVE")))
 			{
-			   msg.source().tell("The divine care not about such orders.");
+			   msg.source().tell(_("The divine care not about such orders."));
 			   return false;
 			}
 			noRecurse=true;

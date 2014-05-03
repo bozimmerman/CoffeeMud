@@ -56,9 +56,9 @@ public class Spell_Geas extends Spell
 		if(canBeUninvoked())
 		{
 			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
-				mob.tell("You have completed your geas.");
+				mob.tell(_("You have completed your geas."));
 			else
-				mob.tell("You have been released from your geas.");
+				mob.tell(_("You have been released from your geas."));
 
 			if((mob.isMonster())
 			&&(!mob.amDead())
@@ -122,7 +122,7 @@ public class Spell_Geas extends Spell
 
 		if(commands.size()<2)
 		{
-			mob.tell("You need to specify a target creature, and a geas to place on them.");
+			mob.tell(_("You need to specify a target creature, and a geas to place on them."));
 			return false;
 		}
 		final Vector name=CMParms.parse((String)commands.elementAt(0));

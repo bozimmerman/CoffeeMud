@@ -101,7 +101,7 @@ public class Prayer_CreateIdol extends Prayer
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			mob.tell("You must worship a god to use this prayer.");
+			mob.tell(_("You must worship a god to use this prayer."));
 			return false;
 		}
 

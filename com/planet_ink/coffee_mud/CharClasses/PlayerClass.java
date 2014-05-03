@@ -59,7 +59,7 @@ public class PlayerClass extends StdCharClass
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
-			mob.tell("This class cannot be learned.");
+			mob.tell(_("This class cannot be learned."));
 		return false;
 	}
 

@@ -51,10 +51,10 @@ public class NoSounds extends StdCommand
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
 				mob.session().changeTelnetMode(Session.TELNET_MSP,false);
 				mob.session().setClientTelnetMode(Session.TELNET_MSP,false);
-				mob.tell("MSP Sound/Music disabled.\n\r");
+				mob.tell(_("MSP Sound/Music disabled.\n\r"));
 			}
 			else
-				mob.tell("MSP Sound/Music already disabled.\n\r");
+				mob.tell(_("MSP Sound/Music already disabled.\n\r"));
 		}
 		return false;
 	}

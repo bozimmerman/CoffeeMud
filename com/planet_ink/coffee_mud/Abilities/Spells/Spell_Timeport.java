@@ -93,7 +93,7 @@ public class Spell_Timeport extends Spell
 		{
 			if(!canBeUninvoked())
 			{
-				msg.source().tell("The timeport spell on you fizzles away.");
+				msg.source().tell(_("The timeport spell on you fizzles away."));
 				affected.delEffect(this);
 			}
 			else
@@ -109,7 +109,7 @@ public class Spell_Timeport extends Spell
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
-					msg.source().tell("Nothing just happened.  You are time travelling, and can't do that.");
+					msg.source().tell(_("Nothing just happened.  You are time travelling, and can't do that."));
 					return false;
 				}
 		}

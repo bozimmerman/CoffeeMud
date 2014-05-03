@@ -101,7 +101,7 @@ public class Trap_RoomPit extends StdTrap
 		{
 			if(((Room)P).getRoomInDir(Directions.DOWN)!=null)
 			{
-				mob.tell("The flooring here won't support a pit.");
+				mob.tell(_("The flooring here won't support a pit."));
 				return false;
 			}
 		}

@@ -62,7 +62,7 @@ public class Chant_Bloodhound extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You lose your bloodhound nose.");
+			mob.tell(_("You lose your bloodhound nose."));
 	}
 
 	@Override

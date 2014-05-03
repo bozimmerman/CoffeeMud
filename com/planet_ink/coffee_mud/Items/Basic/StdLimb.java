@@ -200,7 +200,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	{
 		if(partNum()<0)
 		{
-			mob.tell("This limb looks malformed.");
+			mob.tell(_("This limb looks malformed."));
 			return false;
 		}
 		if(!canWear(mob,0))

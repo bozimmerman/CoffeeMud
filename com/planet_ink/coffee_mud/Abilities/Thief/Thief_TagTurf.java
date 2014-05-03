@@ -106,7 +106,7 @@ public class Thief_TagTurf extends ThiefSkill
 			{
 				A.unInvoke();
 				target.delEffect(A);
-				mob.tell("This place has been untagged.");
+				mob.tell(_("This place has been untagged."));
 				return true;
 			}
 			mob.tell("This place has already been tagged by "+A.text()+".");
@@ -116,14 +116,14 @@ public class Thief_TagTurf extends ThiefSkill
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
-			mob.tell("A place like this can't get your turf.");
+			mob.tell(_("A place like this can't get your turf."));
 			return false;
 		}
 		if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 		&&(CMLib.law().getLandTitle(mob.location())!=null)
 		&&(CMLib.law().getLandTitle(mob.location()).getOwnerName().length()>0))
 		{
-			mob.tell("You can't tag anothers property!");
+			mob.tell(_("You can't tag anothers property!"));
 			return false;
 		}
 

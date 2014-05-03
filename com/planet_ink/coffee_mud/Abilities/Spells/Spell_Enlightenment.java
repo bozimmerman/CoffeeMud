@@ -77,7 +77,7 @@ public class Spell_Enlightenment extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your newfound intellect quickly fades....");
+			mob.tell(_("Your newfound intellect quickly fades...."));
 	}
 
 

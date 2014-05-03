@@ -67,9 +67,9 @@ public class Expire extends StdCommand
 		if(commands.size()<1)
 		{
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-				mob.tell("You must use the format EXPIRE [ACCOUNT NAME] or EXPIRE [ACCOUNT NAME] [NUMBER OF DAYS/NEVER/NOW]");
+				mob.tell(_("You must use the format EXPIRE [ACCOUNT NAME] or EXPIRE [ACCOUNT NAME] [NUMBER OF DAYS/NEVER/NOW]"));
 			else
-				mob.tell("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS/NEVER/NOW]");
+				mob.tell(_("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS/NEVER/NOW]"));
 			return false;
 		}
 		else

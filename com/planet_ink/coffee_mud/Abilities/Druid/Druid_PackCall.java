@@ -131,18 +131,18 @@ public class Druid_PackCall extends StdAbility
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to call your pack.");
+			mob.tell(_("You must be outdoors to call your pack."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell("You must be in the wild to call your pack.");
+			mob.tell(_("You must be in the wild to call your pack."));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell("Only the anger of combat can call your pack.");
+			mob.tell(_("Only the anger of combat can call your pack."));
 			return false;
 		}
 		Druid_ShapeShift D=null;
@@ -154,13 +154,13 @@ public class Druid_PackCall extends StdAbility
 		}
 		if(D==null)
 		{
-			mob.tell("You must be in your animal form to call the pack.");
+			mob.tell(_("You must be in your animal form to call the pack."));
 			return false;
 		}
 
 		if(mob.totalFollowers()>=mob.maxFollowers())
 		{
-			mob.tell("You can't have any more followers!");
+			mob.tell(_("You can't have any more followers!"));
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class Druid_PackCall extends StdAbility
 
 		if(choices.size()==0)
 		{
-			mob.tell("Your call would not be heard here.");
+			mob.tell(_("Your call would not be heard here."));
 			return false;
 		}
 

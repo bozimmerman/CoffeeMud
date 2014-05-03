@@ -54,7 +54,7 @@ public class Bomb_Pepper extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_PEPPERS))
 		{
 			if(mob!=null)
-				mob.tell("You need some peppers to make this out of.");
+				mob.tell(_("You need some peppers to make this out of."));
 			return false;
 		}
 		return true;

@@ -97,7 +97,7 @@ public class Thief_Steal extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell("Steal what from whom?");
+				mob.tell(_("Steal what from whom?"));
 				return false;
 			}
 			itemToSteal=(String)commands.elementAt(0);
@@ -127,7 +127,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		if(target==mob)
 		{
-			mob.tell("You cannot steal from yourself.");
+			mob.tell(_("You cannot steal from yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -136,7 +136,7 @@ public class Thief_Steal extends ThiefSkill
 		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
-			mob.tell("You'll need to try and SWIPE that.");
+			mob.tell(_("You'll need to try and SWIPE that."));
 			return false;
 		}
 

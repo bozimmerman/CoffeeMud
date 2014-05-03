@@ -102,7 +102,7 @@ public class Chant_Stonewalking extends Chant
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> drawn out of the rocks.");
 				else
-					mob.tell("Your stone walk has ended.");
+					mob.tell(_("Your stone walk has ended."));
 			}
 	}
 
@@ -142,7 +142,7 @@ public class Chant_Stonewalking extends Chant
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
 		{
-			mob.tell("You must be near walls of stone or massive rock to use this chant.");
+			mob.tell(_("You must be near walls of stone or massive rock to use this chant."));
 			return false;
 		}
 		// the invoke method for spells receives as

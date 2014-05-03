@@ -84,7 +84,7 @@ public class EternityQuarterstaff extends Quarterstaff
 						{
 		   					final int healing=1+(int)Math.round(CMath.div(phyStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
-							target.tell("You feel a little better!");
+							target.tell(_("You feel a little better!"));
 							return;
 						}
 

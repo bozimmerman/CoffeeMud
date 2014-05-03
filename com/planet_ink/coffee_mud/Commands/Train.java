@@ -154,14 +154,14 @@ public class Train extends StdCommand
 		{
 			if(mob.getPractices()<7)
 			{
-				mob.tell("You don't seem to have enough practices to do that.");
+				mob.tell(_("You don't seem to have enough practices to do that."));
 				return false;
 			}
 		}
 		else
 		if(mob.getTrains()<=0)
 		{
-			mob.tell("You don't seem to have enough training sessions to do that.");
+			mob.tell(_("You don't seem to have enough training sessions to do that."));
 			return false;
 		}
 		else
@@ -205,7 +205,7 @@ public class Train extends StdCommand
 		}
 		if(teacher==mob)
 		{
-			mob.tell("You cannot train with yourself!");
+			mob.tell(_("You cannot train with yourself!"));
 			return false;
 		}
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
@@ -215,12 +215,12 @@ public class Train extends StdCommand
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			mob.tell("You are refusing training at this time.");
+			mob.tell(_("You are refusing training at this time."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(mob)||CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up for your training.");
+			mob.tell(_("You need to stand up for your training."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
@@ -234,12 +234,12 @@ public class Train extends StdCommand
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(teacher.isInCombat())
 		{
-			mob.tell("Your teacher seems busy right now.");
+			mob.tell(_("Your teacher seems busy right now."));
 			return false;
 		}
 
@@ -275,7 +275,7 @@ public class Train extends StdCommand
 			final int teachStat=teacher.charStats().getStat(abilityCode);
 			if(curStat>=teachStat)
 			{
-				mob.tell("You can only train with someone whose score is higher than yours.");
+				mob.tell(_("You can only train with someone whose score is higher than yours."));
 				return false;
 			}
 			curStat=mob.baseCharStats().getStat(abilityCode);
@@ -288,69 +288,69 @@ public class Train extends StdCommand
 		switch(abilityCode)
 		{
 		case 0:
-			mob.tell("You feel stronger!");
+			mob.tell(_("You feel stronger!"));
 			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 1:
-			mob.tell("You feel smarter!");
+			mob.tell(_("You feel smarter!"));
 			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 2:
-			mob.tell("You feel more dextrous!");
+			mob.tell(_("You feel more dextrous!"));
 			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 3:
-			mob.tell("You feel healthier!");
+			mob.tell(_("You feel healthier!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 4:
-			mob.tell("You feel more charismatic!");
+			mob.tell(_("You feel more charismatic!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 5:
-			mob.tell("You feel wiser!");
+			mob.tell(_("You feel wiser!"));
 			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 101:
-			mob.tell("You feel even healthier!");
+			mob.tell(_("You feel even healthier!"));
 			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+10);
 			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+10);
 			mob.curState().setHitPoints(mob.curState().getHitPoints()+10);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 102:
-			mob.tell("You feel more powerful!");
+			mob.tell(_("You feel more powerful!"));
 			mob.baseState().setMana(mob.baseState().getMana()+20);
 			mob.maxState().setMana(mob.maxState().getMana()+20);
 			mob.curState().setMana(mob.curState().getMana()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 103:
-			mob.tell("You feel more rested!");
+			mob.tell(_("You feel more rested!"));
 			mob.baseState().setMovement(mob.baseState().getMovement()+20);
 			mob.maxState().setMovement(mob.maxState().getMovement()+20);
 			mob.curState().setMovement(mob.curState().getMovement()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 104:
-			mob.tell("You feel more trainable!");
+			mob.tell(_("You feel more trainable!"));
 			mob.setTrains(mob.getTrains()+1);
 			mob.setPractices(mob.getPractices()-7);
 			break;
 		case 105:
-			mob.tell("You feel more educatable!");
+			mob.tell(_("You feel more educatable!"));
 			mob.setTrains(mob.getTrains()-1);
 			mob.setPractices(mob.getPractices()+5);
 			break;

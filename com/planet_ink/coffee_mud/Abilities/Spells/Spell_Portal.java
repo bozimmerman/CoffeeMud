@@ -83,13 +83,13 @@ public class Spell_Portal extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Create a portal to where?");
+			mob.tell(_("Create a portal to where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.GATE)!=null)
 		||(mob.location().getExitInDir(Directions.GATE)!=null))
 		{
-			mob.tell("A portal cannot be created here.");
+			mob.tell(_("A portal cannot be created here."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();

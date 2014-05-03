@@ -722,7 +722,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
 						if(!A.confirmValue(classFieldData))
 						{
-							mob.tell("Invalid value.  Aborted.");
+							mob.tell(_("Invalid value.  Aborted."));
 							continue;
 						}
 					}
@@ -774,7 +774,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final String prompt="Save to V)FS, F)ilesystem, or C)ancel (" + (recipe.wasVFS()?"V/f/c":"v/F/c")+"): ";
 			final String choice=mob.session().choose(prompt,"VFC",recipe.wasVFS()?"V":"F");
 			if(choice.equalsIgnoreCase("C"))
-				mob.tell("Cancelled.");
+				mob.tell(_("Cancelled."));
 			else
 			{
 				final boolean saveToVFS = choice.equalsIgnoreCase("V");
@@ -2451,7 +2451,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 							else
 								if(oldVal.equalsIgnoreCase(newVal))
-									mob.tell("(no change)");
+									mob.tell(_("(no change)"));
 						}
 						return newVal;
 					}
@@ -2874,7 +2874,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
 					if((!spaceOK) && (str.indexOf(' ') >= 0))
-						mob.tell("Spaces are not allowed here.");
+						mob.tell(_("Spaces are not allowed here."));
 					else
 						proceed=false;
 				}

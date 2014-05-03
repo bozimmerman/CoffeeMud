@@ -95,7 +95,7 @@ public class Spell_PassDoor extends Spell
 		{
 			if(dirCode<0)
 			{
-				mob.tell("Pass which direction?!");
+				mob.tell(_("Pass which direction?!"));
 				return false;
 			}
 
@@ -104,13 +104,13 @@ public class Spell_PassDoor extends Spell
 
 			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
-				mob.tell("You can't see anywhere to pass that way.");
+				mob.tell(_("You can't see anywhere to pass that way."));
 				return false;
 			}
 			//Exit opExit=room.getReverseExit(dirCode);
 			if(exit.isOpen())
 			{
-				mob.tell("But it looks free and clear that way!");
+				mob.tell(_("But it looks free and clear that way!"));
 				return false;
 			}
 		}
@@ -143,7 +143,7 @@ public class Spell_PassDoor extends Spell
 				mob.location().send(mob,msg);
 				mob.addEffect(this);
 				mob.recoverPhyStats();
-				mob.tell("\n\r\n\r");
+				mob.tell(_("\n\r\n\r"));
 				CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.delEffect(this);
 				mob.recoverPhyStats();

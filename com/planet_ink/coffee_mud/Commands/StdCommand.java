@@ -50,6 +50,12 @@ public class StdCommand implements Command
 
 	@Override public String[] getAccessWords(){return access;}
 	@Override public void initializeClass(){}
+	
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+	
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

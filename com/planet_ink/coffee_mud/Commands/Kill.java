@@ -59,7 +59,7 @@ public class Kill extends StdCommand
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell("Kill whom?");
+				mob.tell(_("Kill whom?"));
 				return false;
 			}
 			else

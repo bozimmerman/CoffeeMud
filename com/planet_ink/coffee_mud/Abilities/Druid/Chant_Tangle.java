@@ -124,7 +124,7 @@ public class Chant_Tangle extends Chant
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
-			mob.tell("There doesn't appear to be any plants here you can control!");
+			mob.tell(_("There doesn't appear to be any plants here you can control!"));
 			return false;
 		}
 

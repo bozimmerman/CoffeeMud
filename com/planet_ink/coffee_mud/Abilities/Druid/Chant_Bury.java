@@ -64,7 +64,7 @@ public class Chant_Bury extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -73,13 +73,13 @@ public class Chant_Bury extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell("This chant does not work here.");
+			mob.tell(_("This chant does not work here."));
 			return false;
 		}
 		Item hole=mob.location().findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
-			mob.tell("This chant will not work on desecrated ground.");
+			mob.tell(_("This chant will not work on desecrated ground."));
 			return false;
 		}
 		Item target=null;
@@ -92,7 +92,7 @@ public class Chant_Bury extends Chant
 		if((!(target instanceof DeadBody))
 		||(((DeadBody)target).rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell("You may only feed the dead to the earth.");
+			mob.tell(_("You may only feed the dead to the earth."));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Chant_Bury extends Chant
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell("You are not allowed to bury that corpse.");
+			mob.tell(_("You are not allowed to bury that corpse."));
 			return false;
 		}
 

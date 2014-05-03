@@ -281,7 +281,7 @@ public class Druid_GolemForm extends StdAbility
 		{
 			if((CMLib.dice().rollPercentage()<50))
 			{
-				mob.tell("Extreme emotions disrupt your change.");
+				mob.tell(_("Extreme emotions disrupt your change."));
 				return false;
 			}
 		}

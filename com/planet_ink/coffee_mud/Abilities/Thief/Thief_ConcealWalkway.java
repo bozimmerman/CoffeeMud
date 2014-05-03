@@ -100,7 +100,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("Which way would you like to conceal?");
+			mob.tell(_("Which way would you like to conceal?"));
 			return false;
 		}
 		Environmental chkE=null;
@@ -123,13 +123,13 @@ public class Thief_ConcealWalkway extends ThiefSkill
 		&&(R2!=null)
 		&&(!CMath.bset(R2.domainType(),Room.INDOORS)))
 		{
-			mob.tell("This only works on walkways into or within buildings.");
+			mob.tell(_("This only works on walkways into or within buildings."));
 			return false;
 		}
 		final Exit X=(Exit)chkE;
 		if((!auto)&&(X.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
 		{
-			mob.tell("You aren't good enough to conceal that direction.");
+			mob.tell(_("You aren't good enough to conceal that direction."));
 			return false;
 		}
 

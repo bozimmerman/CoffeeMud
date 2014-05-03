@@ -45,7 +45,7 @@ public class Feed extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Feed who what?");
+			mob.tell(_("Feed who what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -60,7 +60,7 @@ public class Feed extends StdCommand
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are in combat!");
+			mob.tell(_("Not while you are in combat!"));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -73,12 +73,12 @@ public class Feed extends StdCommand
 			}
 			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
-				mob.tell("You might want to remove that first.");
+				mob.tell(_("You might want to remove that first."));
 				return false;
 			}
 			if((!(item instanceof Food))&&(!(item instanceof Drink)))
 			{
-				mob.tell("You might want to try feeding them something edibile or drinkable.");
+				mob.tell(_("You might want to try feeding them something edibile or drinkable."));
 				return false;
 			}
 			if(target.isInCombat())

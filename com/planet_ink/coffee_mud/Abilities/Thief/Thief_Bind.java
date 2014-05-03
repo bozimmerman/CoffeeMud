@@ -146,7 +146,7 @@ public class Thief_Bind extends ThiefSkill
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))

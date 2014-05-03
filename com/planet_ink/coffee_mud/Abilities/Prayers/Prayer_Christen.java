@@ -63,12 +63,12 @@ public class Prayer_Christen extends Prayer
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you're fighting!");
+			mob.tell(_("Not while you're fighting!"));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			mob.tell("Christen whom what?");
+			mob.tell(_("Christen whom what?"));
 			return false;
 		}
 		String name=((String)commands.lastElement()).trim();
@@ -78,7 +78,7 @@ public class Prayer_Christen extends Prayer
 
 		if((!(target instanceof CagedAnimal))||(target.phyStats().ability()<=0)||(!target.isGeneric()))
 		{
-			mob.tell("You may only christen a child.");
+			mob.tell(_("You may only christen a child."));
 			return false;
 		}
 		if(name.length()==0)
@@ -88,7 +88,7 @@ public class Prayer_Christen extends Prayer
 		}
 		if(name.indexOf(' ')>=0)
 		{
-			mob.tell("The name may not have a space in it.");
+			mob.tell(_("The name may not have a space in it."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Prayer_Christen extends Prayer
 
 		if(CMLib.players().playerExists(name))
 		{
-			mob.tell("That name is already taken.  Please choose another.");
+			mob.tell(_("That name is already taken.  Please choose another."));
 			return false;
 		}
 

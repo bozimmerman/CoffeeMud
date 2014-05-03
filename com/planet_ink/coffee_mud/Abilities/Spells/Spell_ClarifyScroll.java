@@ -50,13 +50,13 @@ public class Spell_ClarifyScroll extends Spell
 
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't clarify that.");
+			mob.tell(_("You can't clarify that."));
 			return false;
 		}
 
 		if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
 		{
-			mob.tell("That scroll can not be enhanced any further.");
+			mob.tell(_("That scroll can not be enhanced any further."));
 			return false;
 		}
 

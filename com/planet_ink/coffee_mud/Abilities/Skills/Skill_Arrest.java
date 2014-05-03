@@ -87,7 +87,7 @@ public class Skill_Arrest extends StdSkill
 		if(target==null) return false;
 		if((mob==target)&&(!auto))
 		{
-			mob.tell("You can not arrest yourself.");
+			mob.tell(_("You can not arrest yourself."));
 			return false;
 		}
 

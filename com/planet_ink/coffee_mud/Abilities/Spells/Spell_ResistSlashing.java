@@ -50,7 +50,7 @@ public class Spell_ResistSlashing extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your slashing protection dissipates.");
+			mob.tell(_("Your slashing protection dissipates."));
 
 		super.unInvoke();
 

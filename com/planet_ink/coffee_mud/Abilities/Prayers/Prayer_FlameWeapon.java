@@ -151,7 +151,7 @@ public class Prayer_FlameWeapon extends Prayer
 			}
 			if(!(target instanceof Weapon))
 			{
-				mob.tell("You can only enflame weapons.");
+				mob.tell(_("You can only enflame weapons."));
 				return false;
 			}
 		}

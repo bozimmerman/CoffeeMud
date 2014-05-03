@@ -78,7 +78,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			mob.tell("A fire will need to be built first.");
+			mob.tell(_("A fire will need to be built first."));
 			return null;
 		}
 		return fire;
@@ -89,7 +89,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	{
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		if(((R.domainType()&Room.INDOORS)==Room.INDOORS)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
-			mob.tell("You can't signal anyone from here.");
+			mob.tell(_("You can't signal anyone from here."));
 			return false;
 		}
 		else
@@ -112,14 +112,14 @@ public class Fighter_SmokeSignals extends FighterSkill
 		||(weather==Climate.WEATHER_SNOW)
 		||(weather==Climate.WEATHER_THUNDERSTORM))
 		{
-			mob.tell("You won't be able to get a signal up in these weather conditions.");
+			mob.tell(_("You won't be able to get a signal up in these weather conditions."));
 			return false;
 		}
 
 
 		if(commands.size()==0)
 		{
-			mob.tell("You need to specify the message to send up in the smoke signals.");
+			mob.tell(_("You need to specify the message to send up in the smoke signals."));
 			return false;
 		}
 

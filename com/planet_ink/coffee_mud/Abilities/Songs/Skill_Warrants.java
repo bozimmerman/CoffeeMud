@@ -67,7 +67,7 @@ public class Skill_Warrants extends BardSkill
 					V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)
 				{
-					mob.tell("No one is wanted for anything here.");
+					mob.tell(_("No one is wanted for anything here."));
 					return false;
 				}
 				final StringBuffer buf=new StringBuffer("");

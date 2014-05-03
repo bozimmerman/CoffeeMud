@@ -131,9 +131,9 @@ public class Patroller extends ActiveTicker
 		&&(msg.source().riding()==host))
 		{
 			if(host instanceof MOB)
-				msg.source().tell("You must dismount before you can do that.");
+				msg.source().tell(_("You must dismount before you can do that."));
 			else
-				msg.source().tell("You must disembark before you can do that.");
+				msg.source().tell(_("You must disembark before you can do that."));
 			return false;
 		}
 		return super.okMessage(host,msg);

@@ -162,7 +162,7 @@ public class Thief_Panhandling extends ThiefSkill
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.tell("You stop panhandling.");
+			mob.tell(_("You stop panhandling."));
 	}
 
 
@@ -180,12 +180,12 @@ public class Thief_Panhandling extends ThiefSkill
 
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You must be sitting!");
+			mob.tell(_("You must be sitting!"));
 			return false;
 		}
 		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell("You must be on a city street to panhandle.");
+			mob.tell(_("You must be on a city street to panhandle."));
 			return false;
 		}
 

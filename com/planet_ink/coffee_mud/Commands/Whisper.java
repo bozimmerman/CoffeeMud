@@ -44,7 +44,7 @@ public class Whisper extends StdCommand
 	{
 		if(commands.size()==1)
 		{
-			mob.tell("Whisper what?");
+			mob.tell(_("Whisper what?"));
 			return false;
 		}
 		Environmental target=null;
@@ -72,7 +72,7 @@ public class Whisper extends StdCommand
 		final String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell("Whisper what?");
+			mob.tell(_("Whisper what?"));
 			return false;
 		}
 

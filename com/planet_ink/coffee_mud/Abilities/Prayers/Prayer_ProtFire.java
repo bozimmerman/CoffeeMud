@@ -53,7 +53,7 @@ public class Prayer_ProtFire extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your cool protection warms up.");
+			mob.tell(_("Your cool protection warms up."));
 
 		super.unInvoke();
 

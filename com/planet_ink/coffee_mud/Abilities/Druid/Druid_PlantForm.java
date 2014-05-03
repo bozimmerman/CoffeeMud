@@ -86,7 +86,7 @@ public class Druid_PlantForm extends StdAbility
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("Attack a plant?!");
+				msg.source().tell(_("Attack a plant?!"));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -223,13 +223,13 @@ public class Druid_PlantForm extends StdAbility
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to take on your plant form.");
+			mob.tell(_("You must be outdoors to take on your plant form."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell("You must be in the wild to take on your plant form.");
+			mob.tell(_("You must be in the wild to take on your plant form."));
 			return false;
 		}
 
@@ -273,7 +273,7 @@ public class Druid_PlantForm extends StdAbility
 		{
 			if((CMLib.dice().rollPercentage()<50))
 			{
-				mob.tell("Extreme emotions disrupt your change.");
+				mob.tell(_("Extreme emotions disrupt your change."));
 				return false;
 			}
 		}

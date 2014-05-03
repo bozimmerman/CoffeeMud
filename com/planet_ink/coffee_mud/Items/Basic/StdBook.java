@@ -85,7 +85,7 @@ public class StdBook extends StdItem
 		{
 		case CMMsg.TYP_READ:
 			if(!CMLib.flags().canBeSeenBy(this,mob))
-				mob.tell("You can't see that!");
+				mob.tell(_("You can't see that!"));
 			else
 			if((!mob.isMonster())
 			&&(mob.playerStats()!=null))
@@ -158,7 +158,7 @@ public class StdBook extends StdItem
 					final String subject=mob.session().prompt("Enter the name of the chapter (Chapter 1: Start of book),etc : ");
 					if(subject.trim().length()==0)
 					{
-						mob.tell("Aborted.");
+						mob.tell(_("Aborted."));
 						return;
 					}
 					final String messageTitle="The contents of this chapter";
@@ -166,7 +166,7 @@ public class StdBook extends StdItem
 					final List<String> vbuf=new Vector<String>();
 					if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
 					{
-						mob.tell("Aborted.");
+						mob.tell(_("Aborted."));
 						return;
 					}
 					final String message=CMParms.combineWith(vbuf, "\\n");
@@ -174,12 +174,12 @@ public class StdBook extends StdItem
 					&&(!admin)
 					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 					{
-						mob.tell("Illegal code, aborted.");
+						mob.tell(_("Illegal code, aborted."));
 						return;
 					}
 
 					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
-					mob.tell("Chapter added.");
+					mob.tell(_("Chapter added."));
 				}
 				return;
 			}

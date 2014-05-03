@@ -46,7 +46,7 @@ public class Boot extends StdCommand
 		if(mob.session()==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell("Boot out who?");
+			mob.tell(_("Boot out who?"));
 			return false;
 		}
 		final String whom=CMParms.combine(commands,0);
@@ -58,7 +58,7 @@ public class Boot extends StdCommand
 			{
 				if(S==mob.session())
 				{
-					mob.tell("Try QUIT.");
+					mob.tell(_("Try QUIT."));
 					return false;
 				}
 				if(S.mob()!=null)
@@ -78,7 +78,7 @@ public class Boot extends StdCommand
 			}
 		}
 		if(!boot)
-			mob.tell("You can't find anyone by that name or ip address.");
+			mob.tell(_("You can't find anyone by that name or ip address."));
 		return false;
 	}
 

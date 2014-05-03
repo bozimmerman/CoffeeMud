@@ -49,7 +49,7 @@ public class Retire extends StdCommand
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 
-		mob.tell("^HThis will delete your player from the system FOREVER!");
+		mob.tell(_("^HThis will delete your player from the system FOREVER!"));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
 			@Override public void showPrompt()
@@ -62,7 +62,7 @@ public class Retire extends StdCommand
 				if(input.trim().length()==0)
 					return;
 				if(!pstats.matchesPassword(input.trim()))
-					mob.tell("Password incorrect.");
+					mob.tell(_("Password incorrect."));
 				else
 				{
 					if(CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))

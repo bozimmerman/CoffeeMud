@@ -58,7 +58,7 @@ public class Email extends StdCommand
 
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
-				mob.tell("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received.");
+				mob.tell(_("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
 				return false;
 			}
 			final String name=CMParms.combine(commands,1);
@@ -97,9 +97,9 @@ public class Email extends StdCommand
 					||(CMath.bset(metaFlags,Command.METAFLAG_AS)))
 					{
 						if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
-							mob.tell("You have no email waiting, but then, it's probably been forwarded to you already.");
+							mob.tell(_("You have no email waiting, but then, it's probably been forwarded to you already."));
 						else
-							mob.tell("You have no email waiting.");
+							mob.tell(_("You have no email waiting."));
 						return false;
 					}
 					final Session S=mob.session();
@@ -118,7 +118,7 @@ public class Email extends StdCommand
 						return false;
 					final int num=CMath.s_int(s);
 					if((num<=0)||(num>mymsgs.size()))
-						mob.tell("That is not a valid number.");
+						mob.tell(_("That is not a valid number."));
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
@@ -156,14 +156,14 @@ public class Email extends StdCommand
 							&&(CMLib.players().getLoadPlayer(from)!=null))
 								execute(mob,new XVector(getAccessWords()[0],from),metaFlags);
 							else
-								mob.tell("You can not reply to this email.");
+								mob.tell(_("You can not reply to this email."));
 						}
 						else
 						if(s.equalsIgnoreCase("D"))
 						{
 							CMLib.database().DBDeleteJournal(journalName,key);
 							msgs.remove(thismsg);
-							mob.tell("Deleted.");
+							mob.tell(_("Deleted."));
 							break;
 						}
 					}
@@ -200,20 +200,20 @@ public class Email extends StdCommand
 				final String subject=mob.session().prompt("Email Subject: ","").trim();
 				if(subject.length()==0)
 				{
-					mob.tell("Aborted");
+					mob.tell(_("Aborted"));
 					return false;
 				}
 				if(mob.session()==null) return false;
 				String message=mob.session().prompt("Enter your message\n\r: ","").trim();
 				if(message.trim().length()==0)
 				{
-					mob.tell("Aborted");
+					mob.tell(_("Aborted"));
 					return false;
 				}
 				if(mob.session()==null) return false;
 				message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
 				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mob.Name(), M.Name(), subject, message);
-				mob.tell("Your email has been sent.");
+				mob.tell(_("Your email has been sent."));
 				return true;
 			}
 		}
@@ -264,7 +264,7 @@ public class Email extends StdCommand
 					  mob.Name(),
 					  "Password for "+mob.Name(),
 					  "Your new password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
-			mob.tell("You will receive an email with your new password shortly.  Goodbye.");
+			mob.tell(_("You will receive an email with your new password shortly.  Goodbye."));
 			if(mob.session()!=null)
 			{
 				try{Thread.sleep(1000);}catch(final Exception e){}

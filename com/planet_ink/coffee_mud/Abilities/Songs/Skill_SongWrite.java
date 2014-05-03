@@ -50,7 +50,7 @@ public class Skill_SongWrite extends BardSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Write which song onto what?");
+			mob.tell(_("Write which song onto what?"));
 			return false;
 		}
 		final Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
@@ -61,12 +61,12 @@ public class Skill_SongWrite extends BardSkill
 		}
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't write music on that.");
+			mob.tell(_("You can't write music on that."));
 			return false;
 		}
 		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
-			mob.tell("You need to be at full mana to cast this.");
+			mob.tell(_("You need to be at full mana to cast this."));
 			return false;
 		}
 

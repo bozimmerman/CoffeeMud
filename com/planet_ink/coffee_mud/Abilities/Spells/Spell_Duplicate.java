@@ -51,17 +51,17 @@ public class Spell_Duplicate extends Spell
 
 		if(!mob.isMine(target))
 		{
-			mob.tell("You'll need to pick it up first.");
+			mob.tell(_("You'll need to pick it up first."));
 			return false;
 		}
 		if(target instanceof ClanItem)
 		{
-			mob.tell("Clan items can not be duplicated.");
+			mob.tell(_("Clan items can not be duplicated."));
 			return false;
 		}
 		if(target instanceof ArchonOnly)
 		{
-			mob.tell("That item can not be duplicated.");
+			mob.tell(_("That item can not be duplicated."));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ public class Spell_Duplicate extends Spell
 		int expLoss=(level*multiPlier);
 		if((mob.getExperience()-expLoss)<0)
 		{
-			mob.tell("You don't have enough experience to cast this spell.");
+			mob.tell(_("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -48,13 +48,13 @@ public class Spell_Dragonfire extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth burning.");
+			mob.tell(_("There doesn't appear to be anyone here worth burning."));
 			return false;
 		}
 
 		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
-			mob.tell("You can't breathe!");
+			mob.tell(_("You can't breathe!"));
 			return false;
 		}
 

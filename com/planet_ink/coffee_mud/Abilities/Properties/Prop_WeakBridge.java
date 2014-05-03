@@ -75,7 +75,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 			if(CMLib.flags().isInFlight(mob)) return true;
 			if(!bridgeIsUp)
 			{
-				mob.tell("The bridge appears to be out.");
+				mob.tell(_("The bridge appears to be out."));
 				return false;
 			}
 		}
@@ -179,7 +179,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
 							&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
 							{
-								mob.tell("The bridge breaks under your weight!");
+								mob.tell(_("The bridge breaks under your weight!"));
 								if((!CMLib.flags().isFalling(mob))
 								&&(mob.location()==affected))
 								{

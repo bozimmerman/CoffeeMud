@@ -177,7 +177,7 @@ public class Inventory extends StdCommand
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
-			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
+			mob.tell(_("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
 		else
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());

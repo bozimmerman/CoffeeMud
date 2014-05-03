@@ -59,7 +59,7 @@ public class Spell_DeadenSmell extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You nose clears up.");
+			mob.tell(_("You nose clears up."));
 	}
 
 	@Override

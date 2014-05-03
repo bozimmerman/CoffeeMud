@@ -2517,7 +2517,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
 						dismissOfficer(officer);
 						W.setArrestingOfficer(myArea,null);
-						W.criminal().tell("\n\r\n\r");
+						W.criminal().tell(_("\n\r\n\r"));
 						if(W.criminal().isMonster())
 							CMLib.tracking().wanderAway(W.criminal(),true,true);
 					}

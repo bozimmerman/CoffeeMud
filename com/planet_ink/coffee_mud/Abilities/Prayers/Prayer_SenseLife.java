@@ -58,7 +58,7 @@ public class Prayer_SenseLife extends Prayer
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell("Your life sensations fade.");
+			mob.tell(_("Your life sensations fade."));
 		}
 	}
 
@@ -100,7 +100,7 @@ public class Prayer_SenseLife extends Prayer
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell("You do not sense any life beyond your own.");
+			mob.tell(_("You do not sense any life beyond your own."));
 		else
 		if(dirs.length()==0)
 			mob.tell("You sense a life force coming from "+last+".");

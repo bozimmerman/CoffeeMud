@@ -138,7 +138,7 @@ public class Thief_TrophyCount extends ThiefSkill
 				mob.session().rawPrintln(str.toString());
 			return true;
 		}
-		mob.tell("You failed to recall your count.");
+		mob.tell(_("You failed to recall your count."));
 		return false;
 	}
 }

@@ -95,7 +95,7 @@ public class Skill_Slip extends StdSkill
 				}
 			}
 			else
-				mob.tell("You regain your feet.");
+				mob.tell(_("You regain your feet."));
 		}
 	}
 
@@ -155,7 +155,7 @@ public class Skill_Slip extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,asLevel,2,-1);
-				target.tell("You hit the floor!");
+				target.tell(_("You hit the floor!"));
 			}
 		}
 		else

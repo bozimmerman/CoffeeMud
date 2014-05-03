@@ -48,7 +48,7 @@ public class Duel extends StdCommand
 		MOB target=null;
 		if(commands.size()<2)
 		{
-			mob.tell("Duel whom?");
+			mob.tell(_("Duel whom?"));
 			return false;
 		}
 
@@ -61,7 +61,7 @@ public class Duel extends StdCommand
 		}
 
 		if(mob==target)
-			mob.tell("You may not duel yourself.");
+			mob.tell(_("You may not duel yourself."));
 		else
 		if((mob.isMonster()))
 			mob.tell("You are not allowed to duel "+target.name(mob)+".");

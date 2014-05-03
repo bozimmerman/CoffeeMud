@@ -50,7 +50,7 @@ public class Spell_MagicItem extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Enchant which spell onto what?");
+			mob.tell(_("Enchant which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
@@ -94,14 +94,14 @@ public class Spell_MagicItem extends Spell
 		||(wandThis.ID().equals("Spell_MirrorImage"))
 		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
 		{
-			mob.tell("That spell cannot be used to enchant anything.");
+			mob.tell(_("That spell cannot be used to enchant anything."));
 			return false;
 		}
 
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
-			mob.tell("That spell is too powerful to enchant into anything.");
+			mob.tell(_("That spell is too powerful to enchant into anything."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Spell_MagicItem extends Spell
 		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell("You don't have enough experience to cast this spell.");
+			mob.tell(_("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		// lose all the mana!

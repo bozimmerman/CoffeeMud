@@ -42,7 +42,7 @@ public class Xml extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell("This command is deprecated, and no longer functions.");
+		mob.tell(_("This command is deprecated, and no longer functions."));
 		return false;
 	}
 

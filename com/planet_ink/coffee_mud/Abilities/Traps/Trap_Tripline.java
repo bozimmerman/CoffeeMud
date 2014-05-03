@@ -71,7 +71,7 @@ public class Trap_Tripline extends StdTrap
 		{
 			if(findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH)==null)
 			{
-				mob.tell("You'll need to set down at least a pound of cloth first.");
+				mob.tell(_("You'll need to set down at least a pound of cloth first."));
 				return false;
 			}
 		}

@@ -82,9 +82,9 @@ public class Thief_EscapeBonds extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 		{
 			if(!CMLib.flags().isBound(M))
-				M.tell("You slip free of your bonds.");
+				M.tell(_("You slip free of your bonds."));
 			else
-				M.tell("You stop trying to slip free of your bonds.");
+				M.tell(_("You stop trying to slip free of your bonds."));
 		}
 	}
 

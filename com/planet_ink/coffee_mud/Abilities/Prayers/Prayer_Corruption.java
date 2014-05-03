@@ -68,7 +68,7 @@ public class Prayer_Corruption extends Prayer
 				mob.location().send(mob,msg);
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
-					target.tell("Evil, vile thoughts fill your head.");
+					target.tell(_("Evil, vile thoughts fill your head."));
 					final int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),0)*-1;
 					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), evilness);
 				}

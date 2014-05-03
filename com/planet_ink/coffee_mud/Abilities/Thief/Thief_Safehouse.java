@@ -58,7 +58,7 @@ public class Thief_Safehouse extends ThiefSkill
 		&&(affected instanceof Room)
 		&&(isLaw(msg.source())))
 		{
-			msg.source().tell("You don't think there's anything going on in there.");
+			msg.source().tell(_("You don't think there's anything going on in there."));
 			return false;
 		}
 		return true;
@@ -133,12 +133,12 @@ public class Thief_Safehouse extends ThiefSkill
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell("This place is already a safehouse.");
+			mob.tell(_("This place is already a safehouse."));
 			return false;
 		}
 		if((!auto)&&(CMLib.law().getLegalBehavior(target)==null))
 		{
-			mob.tell("There is no law here!");
+			mob.tell(_("There is no law here!"));
 			return false;
 		}
 		if(!isGoodSafehouse(target))
@@ -159,7 +159,7 @@ public class Thief_Safehouse extends ThiefSkill
 				if((isGoodSafehouse(R))&&(!isLawHere(R)))
 					break;
 			}
-			mob.tell("A place like this can't be a safehouse.");
+			mob.tell(_("A place like this can't be a safehouse."));
 			if((isGoodSafehouse(R))&&(!isLawHere(R)))
 			{
 				V=CMLib.tracking().findBastardTheBestWay(target,new XVector(R),flags,50+(2*getXLEVELLevel(mob)));

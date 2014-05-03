@@ -260,7 +260,7 @@ public class AstroEngineering extends TechSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("What would you like to install, repair, or enhance?");
+			mob.tell(_("What would you like to install, repair, or enhance?"));
 			return false;
 		}
 		aborted = false;
@@ -283,7 +283,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(commands.size()<2)
 				{
-					mob.tell("You need to specify an item to install and a panel to install it into.");
+					mob.tell(_("You need to specify an item to install and a panel to install it into."));
 					return false;
 				}
 				else
@@ -301,7 +301,7 @@ public class AstroEngineering extends TechSkill
 					}
 					if(!(targetPanel instanceof Electronics.ElecPanel))
 					{
-						mob.tell("That's not an electronics panel.");
+						mob.tell(_("That's not an electronics panel."));
 						return false;
 					}
 					commands.remove(commands.size()-1);
@@ -359,12 +359,12 @@ public class AstroEngineering extends TechSkill
 		}
 		if(!(targetItem instanceof Electronics))
 		{
-			mob.tell("That's not an electronics item.");
+			mob.tell(_("That's not an electronics item."));
 			return false;
 		}
 		if(!(targetItem instanceof ShipComponent))
 		{
-			mob.tell("That's not a space ship component.");
+			mob.tell(_("That's not a space ship component."));
 			return false;
 		}
 		if(mob.isInCombat())

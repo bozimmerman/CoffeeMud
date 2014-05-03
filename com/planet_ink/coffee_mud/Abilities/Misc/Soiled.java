@@ -68,7 +68,7 @@ public class Soiled extends StdAbility
 			if(E instanceof MOB)
 			{
 				final MOB mob=(MOB)E;
-				mob.tell("You are no longer soiled.");
+				mob.tell(_("You are no longer soiled."));
 				final MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())

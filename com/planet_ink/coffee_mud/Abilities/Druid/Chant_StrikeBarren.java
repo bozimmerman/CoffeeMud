@@ -52,7 +52,7 @@ public class Chant_StrikeBarren extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your mystical barrenness fades.");
+			mob.tell(_("Your mystical barrenness fades."));
 
 		super.unInvoke();
 

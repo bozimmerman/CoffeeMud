@@ -44,7 +44,7 @@ public class Sleep extends StdCommand
 	{
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell("You are already asleep!");
+			mob.tell(_("You are already asleep!"));
 			return false;
 		}
 		final Room R=mob.location();

@@ -50,7 +50,7 @@ public class Skill_Befriend extends BardSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("You must specify someone to befriend!");
+			mob.tell(_("You must specify someone to befriend!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -58,7 +58,7 @@ public class Skill_Befriend extends BardSkill
 
 		if(target==mob)
 		{
-			mob.tell("You are already your own friend.");
+			mob.tell(_("You are already your own friend."));
 			return false;
 		}
 		if(target.phyStats().level()>mob.phyStats().level()+(mob.phyStats().level()/10))
@@ -68,7 +68,7 @@ public class Skill_Befriend extends BardSkill
 		}
 		if(!CMLib.flags().isMobile(target))
 		{
-			mob.tell("You can only befriend fellow travellers.");
+			mob.tell(_("You can only befriend fellow travellers."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Skill_Befriend extends BardSkill
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't speak!");
+			mob.tell(_("You can't speak!"));
 			return false;
 		}
 

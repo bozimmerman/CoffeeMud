@@ -43,7 +43,7 @@ public class Export extends StdCommand
 		{String.class,String.class,String.class,Integer.class,null,Area.class,Room.class}
 	};
 
-	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
+	public void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{
 		if(fileName==null) return;
 		if(mob==null) return;
@@ -52,7 +52,7 @@ public class Export extends StdCommand
 
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
-			if(S!=null) mob.tell("Here it is:\n\r\n\r");
+			if(S!=null) mob.tell(_("Here it is:\n\r\n\r"));
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
 			if(S!=null) S.rawPrintln(xml+"\n\r\n\r");
@@ -62,17 +62,17 @@ public class Export extends StdCommand
 		{
 			if(!CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 			{
-				if(S!=null) mob.tell("Mail forwarding is not enabled on this mud.");
+				if(S!=null) mob.tell(_("Mail forwarding is not enabled on this mud."));
 				return;
 			}
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
-				if(S!=null) mob.tell("No email box has been defined.");
+				if(S!=null) mob.tell(_("No email box has been defined."));
 				return;
 			}
 			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
-				if(S!=null) mob.tell("No email address has been defined.");
+				if(S!=null) mob.tell(_("No email address has been defined."));
 				return;
 			}
 			xml=xml.replace('\n',' ');
@@ -87,7 +87,7 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			if(S!=null) mob.tell("Writing file...");
+			if(S!=null) mob.tell(_("Writing file..."));
 			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
 			new CMFile(fileName,mob).saveText(xml);
@@ -121,9 +121,9 @@ public class Export extends StdCommand
 			if(S!=null)
 			{
 				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-					mob.tell("Export what?  Room, World, Player, Account, or Area?");
+					mob.tell(_("Export what?  Room, World, Player, Account, or Area?"));
 				else
-					mob.tell("Export what?  Room, World, Player, or Area?");
+					mob.tell(_("Export what?  Room, World, Player, or Area?"));
 			}
 			return false;
 		}
@@ -131,14 +131,14 @@ public class Export extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
-				if(S!=null) mob.tell("You are not allowed to export player data.");
+				if(S!=null) mob.tell(_("You are not allowed to export player data."));
 				return false;
 			}
 		}
 		else
 		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.EXPORT))
 		{
-			if(S!=null) mob.tell("You are not allowed to export room, mob, or item data.");
+			if(S!=null) mob.tell(_("You are not allowed to export room, mob, or item data."));
 			return false;
 		}
 
@@ -176,7 +176,7 @@ public class Export extends StdCommand
 
 			if(commands.size()==0)
 			{
-				if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address.");
+				if(S!=null) mob.tell(_("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address."));
 				return false;
 			}
 			fileName=CMParms.combine(commands,0);
@@ -190,7 +190,7 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
-					if(S!=null) mob.tell("You are not allowed to export to memory.");
+					if(S!=null) mob.tell(_("You are not allowed to export to memory."));
 					return false;
 				}
 				fileNameCode=4;
@@ -199,7 +199,7 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
-					if(S!=null) mob.tell("You are not allowed to export to a file.");
+					if(S!=null) mob.tell(_("You are not allowed to export to a file."));
 					return false;
 				}
 				final CMFile F=new CMFile(fileName,mob);
@@ -211,7 +211,7 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
+			if(S!=null) mob.tell(_("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address."));
 			return false;
 		}
 		executeInternal(mob,metaFlags,commandType,subType,fileName,Integer.valueOf(fileNameCode),S,area,room);
@@ -316,7 +316,7 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORT))
 				{
-					if(S!=null) mob.tell("You are not allowed to export world data.");
+					if(S!=null) mob.tell(_("You are not allowed to export world data."));
 					return Boolean.FALSE;
 				}
 				StringBuffer buf=new StringBuffer("");

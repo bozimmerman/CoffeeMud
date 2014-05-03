@@ -49,7 +49,7 @@ public class Prayer_SenseAlignment extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You already know your own alignment!.");
+			mob.tell(_("You already know your own alignment!."));
 			return false;
 		}
 

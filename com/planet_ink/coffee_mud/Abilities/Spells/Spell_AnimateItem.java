@@ -47,7 +47,7 @@ public class Spell_AnimateItem extends Spell
 
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what to cast this on, and then what you want it to emote.");
+			mob.tell(_("You must specify what to cast this on, and then what you want it to emote."));
 			return false;
 		}
 		final Vector V=new Vector();

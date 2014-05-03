@@ -287,7 +287,7 @@ public class Catalog extends StdCommand
 							final Session session=mob.session();
 							final String newCat=ID;
 							if(newCat.equalsIgnoreCase("GLOBAL")||newCat.equalsIgnoreCase("NONE")||newCat.equalsIgnoreCase("UNCATEGORIZED"))
-								mob.tell("That is not a valid new catagory to create.");
+								mob.tell(_("That is not a valid new catagory to create."));
 							else
 							if(session!=null)
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
@@ -300,7 +300,7 @@ public class Catalog extends StdCommand
 										{
 											currentCats.put(mob.Name(), newCat);
 											mob.tell("Your category is now '"+newCat+"' for new mob/item catalog additions.");
-											mob.tell("To change back to the global category, enter CATALOG CATAGORY NONE");
+											mob.tell(_("To change back to the global category, enter CATALOG CATAGORY NONE"));
 										}
 									}
 								});
@@ -309,13 +309,13 @@ public class Catalog extends StdCommand
 						{
 							currentCats.put(mob.Name(), ID);
 							mob.tell("Your category is now '"+ID+"' for new mob/item catalog additions.");
-							mob.tell("To change back to the global category, enter CATALOG CATAGORY NONE");
+							mob.tell(_("To change back to the global category, enter CATALOG CATAGORY NONE"));
 						}
 					}
 					else
 					{
 						currentCats.remove(mob.Name());
-						mob.tell("Your category is now '' (the global category).");
+						mob.tell(_("Your category is now '' (the global category)."));
 					}
 				}
 			}
@@ -481,7 +481,7 @@ public class Catalog extends StdCommand
 				final CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(P);
 				if(P instanceof MOB)
 				{
-					mob.tell("There is no extra mob data to edit. See help on CATALOG.");
+					mob.tell(_("There is no extra mob data to edit. See help on CATALOG."));
 				}
 				else
 				if(P instanceof Item)
@@ -507,7 +507,7 @@ public class Catalog extends StdCommand
 							data.setRate(0.0);
 							CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
 							Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
-							mob.tell("No drop item.");
+							mob.tell(_("No drop item."));
 							return false;
 						}
 						final String choice=mob.session().choose("Is this for L)ive mobs or D)ead ones ("+(data.getWhenLive()?"L":"D")+"): ","LD", (data.getWhenLive()?"L":"D"));
@@ -523,7 +523,7 @@ public class Catalog extends StdCommand
 						{
 							data.setMaskStr("");
 							data.setRate(0.0);
-							mob.tell("Mask removed.");
+							mob.tell(_("Mask removed."));
 						}
 						else
 						{
@@ -576,7 +576,7 @@ public class Catalog extends StdCommand
 					}
 				}
 				else
-					mob.tell("Scan what?");
+					mob.tell(_("Scan what?"));
 			}
 			else
 			if((((String)commands.firstElement()).equalsIgnoreCase("OVERLOOK"))
@@ -619,7 +619,7 @@ public class Catalog extends StdCommand
 					}
 				}
 				else
-					mob.tell("Scan what?");
+					mob.tell(_("Scan what?"));
 			}
 			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("CLEAN"))
@@ -682,7 +682,7 @@ public class Catalog extends StdCommand
 					}
 				}
 				else
-					mob.tell("Clean what?");
+					mob.tell(_("Clean what?"));
 			}
 			else
 			{
@@ -715,7 +715,7 @@ public class Catalog extends StdCommand
 			}
 		}
 		else
-			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name].");
+			mob.tell(_("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name]."));
 		return false;
 	}
 

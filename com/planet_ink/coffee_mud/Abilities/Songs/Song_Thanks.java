@@ -124,7 +124,7 @@ public class Song_Thanks extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell("You can't sing!");
+			mob.tell(_("You can't sing!"));
 			return false;
 		}
 

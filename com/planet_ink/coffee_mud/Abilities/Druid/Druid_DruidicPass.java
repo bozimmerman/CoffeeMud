@@ -61,20 +61,20 @@ public class Druid_DruidicPass extends StdAbility
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to perform the Druidic Pass.");
+			mob.tell(_("You must be outdoors to perform the Druidic Pass."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell("You must be in the wild to perform the Druidic Pass.");
+			mob.tell(_("You must be in the wild to perform the Druidic Pass."));
 			return false;
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
 		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
-			mob.tell("Pass which direction?!");
+			mob.tell(_("Pass which direction?!"));
 			return false;
 		}
 
@@ -83,7 +83,7 @@ public class Druid_DruidicPass extends StdAbility
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
-			mob.tell("You can't see anywhere to pass that way.");
+			mob.tell(_("You can't see anywhere to pass that way."));
 			return false;
 		}
 		final Exit opExit=room.getReverseExit(dirCode);
@@ -125,7 +125,7 @@ public class Druid_DruidicPass extends StdAbility
 				exit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
 				if(opExit!=null)
 					opExit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
-				mob.tell("\n\r\n\r");
+				mob.tell(_("\n\r\n\r"));
 				if(mob.fetchEffect(ID())==null)
 				{
 					mob.addEffect(this);

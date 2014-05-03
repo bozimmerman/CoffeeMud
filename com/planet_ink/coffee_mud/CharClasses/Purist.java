@@ -191,13 +191,13 @@ public class Purist extends Cleric
 			final int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
 			if(pct < 50)
 			{
-				myChar.tell("Your impurity disrupts the prayer.");
+				myChar.tell(_("Your impurity disrupts the prayer."));
 				return false;
 			}
 			final int hq=holyQuality((Ability)msg.tool());
 			if(hq==0)
 			{
-				myChar.tell("You most certainly should not be casting that.");
+				myChar.tell(_("You most certainly should not be casting that."));
 				return false;
 			}
 		}

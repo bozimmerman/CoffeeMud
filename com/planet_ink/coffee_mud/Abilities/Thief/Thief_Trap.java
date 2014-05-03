@@ -111,7 +111,7 @@ public class Thief_Trap extends ThiefSkill
 		{
 			if(mob.isInCombat())
 			{
-				mob.tell("You are too busy to be laying traps at the moment!");
+				mob.tell(_("You are too busy to be laying traps at the moment!"));
 				return false;
 			}
 
@@ -188,7 +188,7 @@ public class Thief_Trap extends ThiefSkill
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell("You have completed your task.");
+				mob.tell(_("You have completed your task."));
 				boolean permanent=false;
 				if((trapThis instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)trapThis))))
@@ -222,7 +222,7 @@ public class Thief_Trap extends ThiefSkill
 				}
 				else
 				{
-					mob.tell("You fail in your attempt.");
+					mob.tell(_("You fail in your attempt."));
 				}
 			}
 		}

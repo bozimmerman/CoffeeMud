@@ -63,7 +63,7 @@ public class Archon_Hush extends ArchonSkill
 				&&(msg.source().isMonster())
 				&&(msg.source().willFollowOrdersOf((MOB)affected)))))
 		{
-			msg.source().tell("Your message drifts into oblivion.");
+			msg.source().tell(_("Your message drifts into oblivion."));
 			return false;
 		}
 		return true;
@@ -79,7 +79,7 @@ public class Archon_Hush extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You are no longer hushed!");
+			mob.tell(_("You are no longer hushed!"));
 	}
 
 	@Override

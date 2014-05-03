@@ -182,7 +182,7 @@ public class DrowPriestess extends DrowElf
 		{
 			if(CMLib.dice().rollPercentage() <= magicResistance)
 			{
-				msg.source().tell("The drow priestess resisted your spell!");
+				msg.source().tell(_("The drow priestess resisted your spell!"));
 				return false;
 			}
 		}

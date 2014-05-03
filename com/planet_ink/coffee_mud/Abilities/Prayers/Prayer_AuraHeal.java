@@ -104,7 +104,7 @@ public class Prayer_AuraHeal extends Prayer
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
 				if(M.curState().getHitPoints()>oldHP)
-					M.tell("You feel a little better!");
+					M.tell(_("You feel a little better!"));
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -137,7 +137,7 @@ public class Prayer_AuraHeal extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("The aura of healing is already here.");
+			mob.tell(_("The aura of healing is already here."));
 			return false;
 		}
 		if(target.fetchEffect("Prayer_AuraHarm")!=null)

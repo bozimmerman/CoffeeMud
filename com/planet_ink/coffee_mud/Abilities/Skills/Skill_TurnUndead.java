@@ -76,7 +76,7 @@ public class Skill_TurnUndead extends StdSkill
 
 		if(CMLib.flags().isEvil(mob))
 		{
-			mob.tell("Only the riteous may turn the undead.");
+			mob.tell(_("Only the riteous may turn the undead."));
 			return false;
 		}
 

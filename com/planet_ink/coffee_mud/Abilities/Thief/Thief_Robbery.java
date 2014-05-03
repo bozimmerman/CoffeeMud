@@ -111,12 +111,12 @@ public class Thief_Robbery extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Rob what from whom?");
+			mob.tell(_("Rob what from whom?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 
@@ -141,7 +141,7 @@ public class Thief_Robbery extends ThiefSkill
 		}
 		if(target==mob)
 		{
-			mob.tell("You cannot rob yourself.");
+			mob.tell(_("You cannot rob yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

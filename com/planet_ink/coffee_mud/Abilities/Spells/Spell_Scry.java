@@ -119,7 +119,7 @@ public class Spell_Scry extends Spell
 			if(scryList.length()>0)
 				mob.tell("Cast on or revoke from whom?  You currently have "+name()+" on the following: "+scryList.toString()+".");
 			else
-				mob.tell("Cast on whom?");
+				mob.tell(_("Cast on whom?"));
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -180,7 +180,7 @@ public class Spell_Scry extends Spell
 				}
 			}
 			else
-				mob.tell("You attempt to invoke scrying, but fizzle the spell.");
+				mob.tell(_("You attempt to invoke scrying, but fizzle the spell."));
 
 		}
 		else

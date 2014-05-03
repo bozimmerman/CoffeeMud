@@ -56,7 +56,7 @@ public class Bomb_FlameBurst extends StdBomb
 		   &&(((Item)P).material()!=RawMaterial.RESOURCE_LAMPOIL))
 		{
 			if(mob!=null)
-				mob.tell("You need some lamp oil to make this out of.");
+				mob.tell(_("You need some lamp oil to make this out of."));
 			return false;
 		}
 		return true;

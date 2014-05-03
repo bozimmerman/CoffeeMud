@@ -44,7 +44,7 @@ public class Compare extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Compare what to what?");
+			mob.tell(_("Compare what to what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

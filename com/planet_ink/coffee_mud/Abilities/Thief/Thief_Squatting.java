@@ -92,7 +92,7 @@ public class Thief_Squatting extends ThiefSkill
 		if((canBeUninvoked())&&(mob.location()!=null))
 		{
 			if((failed)||(!CMLib.flags().isSitting(mob))||(room==null)||(title==null)||(mob.location()!=room))
-				mob.tell("You are no longer squatting.");
+				mob.tell(_("You are no longer squatting."));
 			else
 			if(title.getOwnerName().length()>0)
 			{
@@ -104,7 +104,7 @@ public class Thief_Squatting extends ThiefSkill
 			else
 			if(title.getOwnerName().length()>0)
 			{
-				mob.tell("Your squat has succeeded.  This property now belongs to you.");
+				mob.tell(_("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
 				title.updateTitle();
 				title.updateLot(new XVector(mob.name()));
@@ -130,7 +130,7 @@ public class Thief_Squatting extends ThiefSkill
 
 		if(CMLib.law().doesHavePriviledgesHere(mob,mob.location()))
 		{
-			mob.tell("This is your place already!");
+			mob.tell(_("This is your place already!"));
 			return false;
 		}
 		final LandTitle T=CMLib.law().getLandTitle(mob.location());
@@ -143,7 +143,7 @@ public class Thief_Squatting extends ThiefSkill
 		}
 		if(T==null)
 		{
-			mob.tell("This property is not available for sale, and cannot be squatted upon.");
+			mob.tell(_("This property is not available for sale, and cannot be squatted upon."));
 			return false;
 		}
 		MOB warnMOB=null;
@@ -168,18 +168,18 @@ public class Thief_Squatting extends ThiefSkill
 			}
 			if((warnMOB==null)||(!CMLib.flags().isInTheGame(warnMOB,true)))
 			{
-				mob.tell("The owners must be in the game for you to begin squatting.");
+				mob.tell(_("The owners must be in the game for you to begin squatting."));
 				return false;
 			}
 		}
 		if(!confirmed)
 		{
-			mob.tell("You cannot squat on an area for sale.");
+			mob.tell(_("You cannot squat on an area for sale."));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You must be sitting!");
+			mob.tell(_("You must be sitting!"));
 			return false;
 		}
 

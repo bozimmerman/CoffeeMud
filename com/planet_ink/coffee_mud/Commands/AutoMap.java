@@ -46,12 +46,12 @@ public class AutoMap extends StdCommand
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOMAP))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMAP));
-			mob.tell("Automap has been turned off.");
+			mob.tell(_("Automap has been turned off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMAP));
-			mob.tell("Automap has been turned on.");
+			mob.tell(_("Automap has been turned on."));
 		}
 		return false;
 	}

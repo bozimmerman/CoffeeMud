@@ -47,7 +47,7 @@ public class Spell_ArcaneMark extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what object you want the spell cast on, and the message you wish the object have marked upon it. ");
+			mob.tell(_("You must specify what object you want the spell cast on, and the message you wish the object have marked upon it. "));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);

@@ -68,7 +68,7 @@ public class Spell_Hungerless extends Spell
 
 		if(canBeUninvoked())
 		{
-			mob.tell("You are starting to feel hungrier.");
+			mob.tell(_("You are starting to feel hungrier."));
 			mob.curState().setHunger(0);
 		}
 	}
@@ -113,7 +113,7 @@ public class Spell_Hungerless extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.tell("You feel full!");
+				target.tell(_("You feel full!"));
 			}
 		}
 		else

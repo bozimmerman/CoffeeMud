@@ -82,7 +82,7 @@ public class Chant_SummonSeed extends Chant
 		}
 		if(s.length()==0)
 		{
-			mob.tell("Summon what kind of seed?  Try LIST as a parameter...");
+			mob.tell(_("Summon what kind of seed?  Try LIST as a parameter..."));
 			return false;
 		}
 		if(foundShortName==null)

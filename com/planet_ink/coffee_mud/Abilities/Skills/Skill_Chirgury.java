@@ -128,7 +128,7 @@ public class Skill_Chirgury extends StdSkill
 
 		if((partCode>1)&&(!(target instanceof DeadBody)))
 		{
-			mob.tell("That can only be removed from a corpse.");
+			mob.tell(_("That can only be removed from a corpse."));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Skill_Chirgury extends StdSkill
 		Weapon ww=null;
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell("You cannot perform chirurgy without a weapon!");
+			mob.tell(_("You cannot perform chirurgy without a weapon!"));
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Skill_Chirgury extends StdSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to try that!");
+			mob.tell(_("You are too far away to try that!"));
 			return false;
 		}
 

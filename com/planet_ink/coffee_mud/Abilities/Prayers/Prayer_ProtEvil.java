@@ -115,7 +115,7 @@ public class Prayer_ProtEvil extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your protection from evil fades.");
+			mob.tell(_("Your protection from evil fades."));
 	}
 
 	@Override

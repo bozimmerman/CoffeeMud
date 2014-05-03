@@ -45,20 +45,20 @@ public class Order extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Order who do to what?");
+			mob.tell(_("Order who do to what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell("Order them to do what?");
+			mob.tell(_("Order them to do what?"));
 			return false;
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
 		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
-			mob.tell("You may not order someone around with your AUTOASSIST flag off.");
+			mob.tell(_("You may not order someone around with your AUTOASSIST flag off."));
 			return false;
 		}
 
@@ -87,7 +87,7 @@ public class Order extends StdCommand
 			if(whomToOrder.equalsIgnoreCase("ALL"))
 				mob.tell("You don't see anyone called '"+whomToOrder+"' here.");
 			else
-				mob.tell("You don't see anyone here.");
+				mob.tell(_("You don't see anyone here."));
 			return false;
 		}
 

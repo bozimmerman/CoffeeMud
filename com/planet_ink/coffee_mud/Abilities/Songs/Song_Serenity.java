@@ -51,7 +51,7 @@ public class Song_Serenity extends Song
 		&&(msg.target()!=null))
 		{
 			msg.source().makePeace();
-			msg.source().tell("You feel too peaceful to fight.");
+			msg.source().tell(_("You feel too peaceful to fight."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

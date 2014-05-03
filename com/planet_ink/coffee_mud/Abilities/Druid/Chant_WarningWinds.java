@@ -55,7 +55,7 @@ public class Chant_WarningWinds extends Chant
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer attuned to the winds.");
+			mob.tell(_("Your senses are no longer attuned to the winds."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -142,7 +142,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(((target.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			target.tell("You must be outdoors for this chant to work.");
+			target.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 

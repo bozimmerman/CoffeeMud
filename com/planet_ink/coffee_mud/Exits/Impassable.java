@@ -50,7 +50,7 @@ public class Impassable extends GenExit
 		else
 		if(msg.targetMajor(CMMsg.MASK_MOVE))
 		{
-			mob.tell("You can't go that way.");
+			mob.tell(_("You can't go that way."));
 			return false;
 		}
 		return true;

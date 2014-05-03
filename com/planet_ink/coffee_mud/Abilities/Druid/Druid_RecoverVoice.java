@@ -93,7 +93,7 @@ public class Druid_RecoverVoice extends StdAbility
 
 		final List<Ability> offensiveAffects=returnOffensiveAffects(mob,mob);
 		if((!success)||(offensiveAffects.size()==0))
-			mob.tell("You failed in your vocal meditation.");
+			mob.tell(_("You failed in your vocal meditation."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_ALWAYS|CMMsg.MASK_MAGIC,null);

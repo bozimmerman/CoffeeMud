@@ -50,7 +50,7 @@ public class Thief_Forgery extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("What would you like to forge, and onto what?");
+			mob.tell(_("What would you like to forge, and onto what?"));
 			return false;
 		}
 		final Item target=mob.findItem(null,(String)commands.lastElement());
@@ -64,7 +64,7 @@ public class Thief_Forgery extends ThiefSkill
 		if((!target.isGeneric())
 		   ||((!(target instanceof Scroll))&&(!target.isReadable())))
 		{
-			mob.tell("You can't forge anything on that.");
+			mob.tell(_("You can't forge anything on that."));
 			return false;
 		}
 
@@ -102,13 +102,13 @@ public class Thief_Forgery extends ThiefSkill
 			{
 				if(!(target instanceof Scroll))
 				{
-					mob.tell("You can only forge a spell onto real scrollpaper.");
+					mob.tell(_("You can only forge a spell onto real scrollpaper."));
 					return false;
 				}
 				else
 				if(((Scroll)target).getSpells().size()>0)
 				{
-					mob.tell("That already has real spells on it!");
+					mob.tell(_("That already has real spells on it!"));
 					return false;
 				}
 				else

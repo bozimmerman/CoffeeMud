@@ -74,13 +74,13 @@ public class Prayer_Gateway extends Prayer
 			commands.addElement(CMLib.map().getRandomRoom().displayText());
 		if(commands.size()<1)
 		{
-			mob.tell("Pray for a gateway to where?");
+			mob.tell(_("Pray for a gateway to where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.GATE)!=null)
 		||(mob.location().getExitInDir(Directions.GATE)!=null))
 		{
-			mob.tell("A gateway cannot be created here.");
+			mob.tell(_("A gateway cannot be created here."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();

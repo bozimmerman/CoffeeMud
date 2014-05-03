@@ -77,7 +77,7 @@ public class Spell_GraceOfTheCat extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You begin to feel more like your regular clumsy self.");
+			mob.tell(_("You begin to feel more like your regular clumsy self."));
 	}
 
 

@@ -192,13 +192,13 @@ public class Trapper extends Thief
 					{
 						if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
 						{
-							myChar.tell("You don't know how to hide outside the wilderness.");
+							myChar.tell(_("You don't know how to hide outside the wilderness."));
 							return false;
 						}
 						else
 						if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
 						{
-							myChar.tell("You don't know how to sneak outside the wilderness.");
+							myChar.tell(_("You don't know how to sneak outside the wilderness."));
 							return false;
 						}
 					}

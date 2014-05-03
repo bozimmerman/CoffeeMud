@@ -78,7 +78,7 @@ public class Prop_PracticeDummy extends Property
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(unkillable))
 			{
-				msg.source().tell("You are not allowed to die.");
+				msg.source().tell(_("You are not allowed to die."));
 				return false;
 			}
 			else
@@ -102,7 +102,7 @@ public class Prop_PracticeDummy extends Property
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 			{
-				msg.source().tell("Dummys cant get anything.");
+				msg.source().tell(_("Dummys cant get anything."));
 				return false;
 			}
 		}

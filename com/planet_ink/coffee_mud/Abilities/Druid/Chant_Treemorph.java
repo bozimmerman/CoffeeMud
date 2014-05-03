@@ -110,7 +110,7 @@ public class Chant_Treemorph extends Chant
 				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
-					mob.tell("Trees can't do that.");
+					mob.tell(_("Trees can't do that."));
 					return false;
 				}
 			}

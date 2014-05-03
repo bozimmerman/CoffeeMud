@@ -675,7 +675,7 @@ public class StdRoom implements Room
 			case CMMsg.TYP_VALUE:
 				if(CMLib.coffeeShops().getShopKeeper(this)==null)
 				{
-					mob.tell("You can't shop here.");
+					mob.tell(_("You can't shop here."));
 					return false;
 				}
 				break;
@@ -684,7 +684,7 @@ public class StdRoom implements Room
 			case CMMsg.TYP_DIG:
 				if(CMLib.map().getExtendedRoomID(this).length()==0)
 				{
-					mob.tell("You can't really dig here.");
+					mob.tell(_("You can't really dig here."));
 					return false;
 				}
 				switch(this.domainType())
@@ -702,7 +702,7 @@ public class StdRoom implements Room
 						break;
 				//$FALL-THROUGH$
 				default:
-					mob.tell("You can't really dig here.");
+					mob.tell(_("You can't really dig here."));
 					return false;
 				}
 				break;
@@ -710,7 +710,7 @@ public class StdRoom implements Room
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
 				&&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
-					mob.tell("You can't do that here.");
+					mob.tell(_("You can't do that here."));
 					return false;
 				}
 				break;
@@ -811,9 +811,9 @@ public class StdRoom implements Room
 				break;
 			case CMMsg.TYP_READ:
 				if(CMLib.flags().canBeSeenBy(this,mob))
-					mob.tell("There is nothing written here.");
+					mob.tell(_("There is nothing written here."));
 				else
-					mob.tell("You can't see that!");
+					mob.tell(_("You can't see that!"));
 				break;
 			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects

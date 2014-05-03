@@ -69,7 +69,7 @@ public class Chant_WindSnatcher extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your wind snatcher fades away.");
+			mob.tell(_("Your wind snatcher fades away."));
 	}
 
 	@Override

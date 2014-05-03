@@ -49,7 +49,7 @@ public class Chant_VineWeave extends Chant
 	{
 		if(mob.location().resourceChoices()==null)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		if(((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -61,7 +61,7 @@ public class Chant_VineWeave extends Chant
 		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_WHEAT)))
 		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SEAWEED))))
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell(_("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_VINE;
@@ -96,7 +96,7 @@ public class Chant_VineWeave extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell("The chant failed for some reason...");
+					mob.tell(_("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;

@@ -142,7 +142,7 @@ public class Chant_PlantChoke extends Chant
 				myPlant=Chant_SummonPlants.buildPlant(mob,mob.location());
 			else
 			{
-				mob.tell("There doesn't appear to be any of your plants here to choke with.");
+				mob.tell(_("There doesn't appear to be any of your plants here to choke with."));
 				return false;
 			}
 		}

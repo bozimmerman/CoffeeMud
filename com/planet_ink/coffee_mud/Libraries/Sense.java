@@ -629,13 +629,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isBound(mob))
 		{
 			if(!quiet)
-				mob.tell("You are bound!");
+				mob.tell(_("You are bound!"));
 			return false;
 		}
 		if(isBoundOrHeld(mob))
 		{
 			if(!quiet)
-				mob.tell("You are paralyzed!");
+				mob.tell(_("You are paralyzed!"));
 			return false;
 		}
 		return true;
@@ -656,17 +656,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		if(mob.amDead()||(mob.curState().getHitPoints()<0))
 		{
-			mob.tell("You are DEAD!");
+			mob.tell(_("You are DEAD!"));
 			return false;
 		}
 		if(isSleeping(mob))
 		{
-			mob.tell("You are sleeping!");
+			mob.tell(_("You are sleeping!"));
 			return false;
 		}
 		if(!canMove(mob))
 		{
-			mob.tell("You can't move!");
+			mob.tell(_("You can't move!"));
 			return false;
 		}
 		return true;

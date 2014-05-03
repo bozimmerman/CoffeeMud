@@ -51,11 +51,11 @@ public class ANSI extends StdCommand
 			if(!CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
-				mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
+				mob.tell(_("^!ANSI^N ^Hcolour^N enabled.\n\r"));
 			}
 			else
 			{
-				mob.tell("^!ANSI^N is ^Halready^N enabled.\n\r");
+				mob.tell(_("^!ANSI^N is ^Halready^N enabled.\n\r"));
 			}
 			mob.session().setClientTelnetMode(Session.TELNET_ANSI,true);
 			mob.session().setServerTelnetMode(Session.TELNET_ANSI,true);

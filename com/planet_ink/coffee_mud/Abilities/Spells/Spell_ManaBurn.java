@@ -90,7 +90,7 @@ public class Spell_ManaBurn extends Spell
 
 		super.unInvoke();
 
-		mob.tell("You feel less drained.");
+		mob.tell(_("You feel less drained."));
 	}
 
 	@Override

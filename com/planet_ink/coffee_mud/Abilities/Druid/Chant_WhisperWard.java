@@ -71,7 +71,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public void doMyThing()
 	{
 		if(invoker!=null)
-			invoker.tell("** You hear the wind whisper to you; your ward has been triggered.");
+			invoker.tell(_("** You hear the wind whisper to you; your ward has been triggered."));
 		unInvoke();
 		return;
 	}
@@ -132,7 +132,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. ");
+			mob.tell(_("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. "));
 			return false;
 		}
 		final String triggerStr=((String)commands.lastElement()).trim().toUpperCase();

@@ -124,7 +124,7 @@ public class Mold extends StdRace
 					||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 					||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 				{
-					msg.source().tell("You can't really go anywhere -- you are a mold!");
+					msg.source().tell(_("You can't really go anywhere -- you are a mold!"));
 					return false;
 				}
 			}

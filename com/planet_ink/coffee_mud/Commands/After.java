@@ -66,7 +66,7 @@ public class After extends StdCommand implements Tickable
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
-			mob.tell("Ok.");
+			mob.tell(_("Ok."));
 			return false;
 		}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
@@ -115,7 +115,7 @@ public class After extends StdCommand implements Tickable
 		V.metaFlags=metaFlags;
 		afterCmds.add(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-		mob.tell("Ok.");
+		mob.tell(_("Ok."));
 		return false;
 	}
 

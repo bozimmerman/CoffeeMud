@@ -67,14 +67,14 @@ public class Chant_LocateAnimals extends Chant
 
 			if(nextDirection==999)
 			{
-				mob.tell("The trail seems to pause here.");
+				mob.tell(_("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell("The trail dries up here.");
+				mob.tell(_("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -129,7 +129,7 @@ public class Chant_LocateAnimals extends Chant
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already trying to locate animals.");
+			mob.tell(_("You are already trying to locate animals."));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -143,7 +143,7 @@ public class Chant_LocateAnimals extends Chant
 
 		if(animalHere(mob.location())!=null)
 		{
-			mob.tell("Try 'look'.");
+			mob.tell(_("Try 'look'."));
 			return false;
 		}
 

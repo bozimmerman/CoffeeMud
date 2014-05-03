@@ -98,7 +98,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		{
 			if(getDagger(mob)==null)
 			{
-				mob.tell("You'll need to set down some dagger-class weapons first.");
+				mob.tell(_("You'll need to set down some dagger-class weapons first."));
 				return false;
 			}
 		}

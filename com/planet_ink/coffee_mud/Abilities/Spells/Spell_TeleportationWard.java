@@ -53,7 +53,7 @@ public class Spell_TeleportationWard extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your teleportation ward dissipates.");
+			mob.tell(_("Your teleportation ward dissipates."));
 
 		super.unInvoke();
 
@@ -135,7 +135,7 @@ public class Spell_TeleportationWard extends Spell
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
-			mob.tell("This place is already under a teleportation ward.");
+			mob.tell(_("This place is already under a teleportation ward."));
 			return false;
 		}
 

@@ -106,7 +106,7 @@ public class Trap_Needle extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell("You'll need to set down some poison first.");
+			mob.tell(_("You'll need to set down some poison first."));
 			return false;
 		}
 		return true;

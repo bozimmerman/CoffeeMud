@@ -64,7 +64,7 @@ public class Spell_StoneFlesh extends Spell
 		if(revokeThis==null)
 		{
 			if(auto)
-				mob.tell("Nothing happens.");
+				mob.tell(_("Nothing happens."));
 			else
 				mob.tell(mob,target,null,"<T-NAME> can not be affected by this spell.");
 			return false;

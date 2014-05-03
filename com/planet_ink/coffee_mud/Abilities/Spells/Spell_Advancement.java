@@ -69,7 +69,7 @@ public class Spell_Advancement extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your temporary advancement has receded.");
+			mob.tell(_("Your temporary advancement has receded."));
 	}
 
 	@Override

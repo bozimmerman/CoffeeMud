@@ -76,7 +76,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while in combat!");
+			mob.tell(_("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -84,7 +84,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -97,7 +97,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(w.minRange()>0)||(w.maxRange()>0))
 		{
-			mob.tell("You need a close melee weapon to shadowstrike.");
+			mob.tell(_("You need a close melee weapon to shadowstrike."));
 			return false;
 		}
 

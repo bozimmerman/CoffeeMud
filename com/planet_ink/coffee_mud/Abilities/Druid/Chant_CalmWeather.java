@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -57,7 +56,7 @@ public class Chant_CalmWeather extends Chant
 			&&((newC.weatherType(null)==Climate.WEATHER_CLEAR)
 				||(newC.weatherType(null)==Climate.WEATHER_CLOUDY)))
 			{
-				mob.tell("^YYou have restored balance to the weather!^N");
+				mob.tell(CMLib.lang()._("^YYou have restored balance to the weather!^N"));
 				CMLib.leveler().postExperience(mob,null,null,25,false);
 				A=CMClass.getAbility("Chant_ControlWeather");
 				A.invoke(mob,area,true,0);
@@ -91,7 +90,7 @@ public class Chant_CalmWeather extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell("You must be outdoors for this chant to work.");
+			mob.tell(_("You must be outdoors for this chant to work."));
 			return false;
 		}
 		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
@@ -106,7 +105,7 @@ public class Chant_CalmWeather extends Chant
 		case Climate.WEATHER_RAIN:
 			break;
 		default:
-			mob.tell("The weather just doesn't get much calmer than this.");
+			mob.tell(_("The weather just doesn't get much calmer than this."));
 			return false;
 		}
 

@@ -45,12 +45,12 @@ public class NoTeach extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOTEACH));
-			mob.tell("You may now teach, train, or learn.");
+			mob.tell(_("You may now teach, train, or learn."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOTEACH));
-			mob.tell("You are no longer teaching, training, or learning.");
+			mob.tell(_("You are no longer teaching, training, or learning."));
 		}
 		return false;
 	}

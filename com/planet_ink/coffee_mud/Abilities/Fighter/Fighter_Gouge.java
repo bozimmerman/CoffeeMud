@@ -80,7 +80,7 @@ public class Fighter_Gouge extends MonkSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your eyes feel better.");
+			mob.tell(_("Your eyes feel better."));
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class Fighter_Gouge extends MonkSkill
 		||((mob.charStats().getMyRace().bodyMask()[Race.BODY_HAND]<=0)
 		   &&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)))
 		{
-			mob.tell("You need hands to gouge.");
+			mob.tell(_("You need hands to gouge."));
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public class Fighter_Gouge extends MonkSkill
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell("Your hands must be free to gouge.");
+			mob.tell(_("Your hands must be free to gouge."));
 			return false;
 		}
 

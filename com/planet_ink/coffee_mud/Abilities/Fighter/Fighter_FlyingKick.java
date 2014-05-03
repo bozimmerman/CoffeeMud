@@ -66,12 +66,12 @@ public class Fighter_FlyingKick extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{
-			mob.tell("You are too close to do a flying kick!");
+			mob.tell(_("You are too close to do a flying kick!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
 		{
-			mob.tell("You need at least two legs to do this.");
+			mob.tell(_("You need at least two legs to do this."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);

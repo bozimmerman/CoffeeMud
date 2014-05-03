@@ -107,7 +107,7 @@ public class Fighter_Behead extends FighterSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell("You cannot behead without a weapon!");
+				mob.tell(_("You cannot behead without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
@@ -118,7 +118,7 @@ public class Fighter_Behead extends FighterSkill
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 			{
-				mob.tell("You are too far away to try that!");
+				mob.tell(_("You are too far away to try that!"));
 				return false;
 			}
 			if(!CMLib.flags().isBoundOrHeld(target))

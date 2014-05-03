@@ -69,7 +69,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell("You are way too unconscious.");
+			mob.tell(_("You are way too unconscious."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

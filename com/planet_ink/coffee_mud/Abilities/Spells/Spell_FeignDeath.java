@@ -54,7 +54,7 @@ public class Spell_FeignDeath extends Spell
 		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
-			mob.tell("Your death is no longer feigned.");
+			mob.tell(_("Your death is no longer feigned."));
 		if((Body!=null)&&(deathRoom!=null)&&(deathRoom.isContent(Body)))
 		{
 			Body.destroy();
@@ -86,7 +86,7 @@ public class Spell_FeignDeath extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				mob.tell("You are unable to attack in this semi-incorporeal form.");
+				mob.tell(_("You are unable to attack in this semi-incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -95,9 +95,9 @@ public class Spell_FeignDeath extends Spell
 			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
 				if(msg.sourceMajor(CMMsg.MASK_SOUND))
-					mob.tell("You are unable to make sounds in this semi-incorporeal form.");
+					mob.tell(_("You are unable to make sounds in this semi-incorporeal form."));
 				else
-					mob.tell("You are unable to do that in this semi-incorporeal form.");
+					mob.tell(_("You are unable to do that in this semi-incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}

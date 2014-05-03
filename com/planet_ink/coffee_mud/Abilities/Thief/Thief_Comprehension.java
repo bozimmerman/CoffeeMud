@@ -56,7 +56,7 @@ public class Thief_Comprehension extends ThiefSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You are no longer comprehending languages.");
+			mob.tell(_("You are no longer comprehending languages."));
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class Thief_Comprehension extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already have comprehension.");
+			mob.tell(_("You already have comprehension."));
 			return false;
 		}
 

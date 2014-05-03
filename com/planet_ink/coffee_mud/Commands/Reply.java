@@ -47,7 +47,7 @@ public class Reply extends StdCommand
 		if(pstats==null) return false;
 		if(pstats.getReplyToMOB()==null)
 		{
-			mob.tell("No one has told you anything yet!");
+			mob.tell(_("No one has told you anything yet!"));
 			return false;
 		}
 		if((pstats.getReplyToMOB().Name().indexOf('@')<0)

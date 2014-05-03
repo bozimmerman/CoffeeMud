@@ -50,7 +50,7 @@ public class Spell_Nondetection extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your divination resistance field fades.");
+			mob.tell(_("Your divination resistance field fades."));
 
 		super.unInvoke();
 

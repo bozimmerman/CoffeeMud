@@ -67,7 +67,7 @@ public class Prayer_GodLight extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your vision returns.");
+			mob.tell(_("Your vision returns."));
 	}
 
 
@@ -111,7 +111,7 @@ public class Prayer_GodLight extends Prayer
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
-			mob.tell("This place already has the god light.");
+			mob.tell(_("This place already has the god light."));
 			return false;
 		}
 

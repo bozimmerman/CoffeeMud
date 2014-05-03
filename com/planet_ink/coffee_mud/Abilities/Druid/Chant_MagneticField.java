@@ -76,7 +76,7 @@ public class Chant_MagneticField extends Chant
 		||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 		||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 		{
-			msg.source().tell("Your metal armor is holding you in place!");
+			msg.source().tell(_("Your metal armor is holding you in place!"));
 			return false;
 		}
 		else
@@ -115,7 +115,7 @@ public class Chant_MagneticField extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("The magnetic field fades!");
+			mob.tell(_("The magnetic field fades!"));
 			CMLib.commands().postStand(mob,true);
 		}
 	}

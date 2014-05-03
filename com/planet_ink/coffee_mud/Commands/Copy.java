@@ -47,7 +47,7 @@ public class Copy extends StdCommand
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r");
+			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -262,7 +262,7 @@ public class Copy extends StdCommand
 					newRoom.setRoomID(room.getArea().getNewRoomID(room,dirCode));
 					if(newRoom.roomID().length()==0)
 					{
-						mob.tell("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?");
+						mob.tell(_("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 						return false;
 					}
@@ -305,7 +305,7 @@ public class Copy extends StdCommand
 					dirCode=Directions.getOpDirectionCode(dirCode);
 					if((editRoom==null)||(editRoom.getRoomInDir(dirCode)==null))
 					{
-						mob.tell("No opposite room exists to copy this exit into.");
+						mob.tell(_("No opposite room exists to copy this exit into."));
 						return false;
 					}
 				}

@@ -47,7 +47,7 @@ public class Wake extends StdCommand
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!CMLib.flags().isSleeping(mob))
-				mob.tell("You aren't sleeping!?");
+				mob.tell(_("You aren't sleeping!?"));
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");

@@ -76,7 +76,7 @@ public class Prayer_Conviction extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your enhanced conviction fades.");
+			mob.tell(_("Your enhanced conviction fades."));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class Prayer_Conviction extends Prayer
 		if(target==null) return false;
 		if(mob.getWorshipCharID().length()==0)
 		{
-			mob.tell("You must worship a god for this prayer to work.");
+			mob.tell(_("You must worship a god for this prayer to work."));
 			return false;
 		}
 		if(!target.getWorshipCharID().equals(mob.getWorshipCharID()))

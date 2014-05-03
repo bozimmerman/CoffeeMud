@@ -366,17 +366,17 @@ public class Skill_Juggle extends BardSkill
 		{
 			if(A==null)
 			{
-				mob.tell("Juggle what?");
+				mob.tell(_("Juggle what?"));
 				return false;
 			}
-			mob.tell("You stop juggling.");
+			mob.tell(_("You stop juggling."));
 			A.unInvoke();
 			return true;
 		}
 
 		if((A!=null)&&(A.juggles.size()>=A.maxJuggles()))
 		{
-			mob.tell("You are already juggling the most items you can.");
+			mob.tell(_("You are already juggling the most items you can."));
 			return false;
 		}
 
@@ -420,7 +420,7 @@ public class Skill_Juggle extends BardSkill
 
 		if(V.size()==0)
 		{
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 			return false;
 		}
 

@@ -53,7 +53,7 @@ public class Unload extends StdCommand
 			if(tryArchon)
 				mob.tell("UNLOAD what? Try "+CMParms.toStringList(ARCHON_LIST));
 			else
-				mob.tell("Unload what?");
+				mob.tell(_("Unload what?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,1);
@@ -77,10 +77,10 @@ public class Unload extends StdCommand
 					items.add((AmmunitionWeapon)I);
 			}
 			if(baseItems.size()==0)
-				mob.tell("You don't seem to have that.");
+				mob.tell(_("You don't seem to have that."));
 			else
 			if(items.size()==0)
-				mob.tell("You can't seem to unload that.");
+				mob.tell(_("You can't seem to unload that."));
 			else
 			for(final AmmunitionWeapon W : items)
 			{
@@ -141,19 +141,19 @@ public class Unload extends StdCommand
 					CMLib.help().unloadHelpFile(mob);
 					return false;
 				}
-				mob.tell("No access to help.");
+				mob.tell(_("No access to help."));
 			}
 			else
 			if(str.equalsIgnoreCase("inifile"))
 			{
 				CMProps.instance().resetSecurityVars();
 				CMProps.instance().resetSystemVars();
-				mob.tell("INI file entries have been unloaded.");
+				mob.tell(_("INI file entries have been unloaded."));
 			}
 			else
 			if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))
 			{
-				mob.tell("All soft resources unloaded.");
+				mob.tell(_("All soft resources unloaded."));
 				CMLib.factions().removeFaction(null);
 				Resources.clearResources();
 				CMProps.instance().resetSecurityVars();
@@ -195,7 +195,7 @@ public class Unload extends StdCommand
 							if(M.session()!=null) M.session().stopSession(true,true,true);
 						}
 						else
-							mob.tell("Can't unload yourself -- a destroy is involved, which would disrupt this process.");
+							mob.tell(_("Can't unload yourself -- a destroy is involved, which would disrupt this process."));
 					}
 					if(saveFirst)
 					{
@@ -265,7 +265,7 @@ public class Unload extends StdCommand
 			{
 				Resources.removeResource("skills/expertises.txt");
 				CMLib.expertises().recompileExpertises();
-				mob.tell("Expertise list unloaded and reloaded.");
+				mob.tell(_("Expertise list unloaded and reloaded."));
 				return false;
 			}
 			else

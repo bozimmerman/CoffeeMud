@@ -53,7 +53,7 @@ public class Thief_Appraise extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("What would you like to appraise?");
+			mob.tell(_("What would you like to appraise?"));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));

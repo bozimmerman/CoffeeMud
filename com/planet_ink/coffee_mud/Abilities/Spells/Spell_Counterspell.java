@@ -51,7 +51,7 @@ public class Spell_Counterspell extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your counterspell fades.");
+			mob.tell(_("Your counterspell fades."));
 
 		super.unInvoke();
 

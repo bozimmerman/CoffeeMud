@@ -78,7 +78,7 @@ public class Chant_Treeform extends Chant
 			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(msg.sourceMajor()>0))
 			{
-				mob.tell("Trees can't do that.");
+				mob.tell(_("Trees can't do that."));
 				return false;
 			}
 		}
@@ -86,7 +86,7 @@ public class Chant_Treeform extends Chant
 		{
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)||(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
 			{
-				msg.source().tell("Attack a tree?!");
+				msg.source().tell(_("Attack a tree?!"));
 				msg.source().setVictim(null);
 				mob.setVictim(null);
 				return false;
@@ -173,7 +173,7 @@ public class Chant_Treeform extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell("You must be outdoors to try this.");
+			mob.tell(_("You must be outdoors to try this."));
 			return false;
 		}
 
@@ -217,7 +217,7 @@ public class Chant_Treeform extends Chant
 					if(success)
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");
-						target.tell("To return to your flesh body, try to leave this area.");
+						target.tell(_("To return to your flesh body, try to leave this area."));
 					}
 				}
 			}

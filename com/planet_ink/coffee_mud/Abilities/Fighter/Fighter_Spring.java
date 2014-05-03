@@ -67,17 +67,17 @@ public class Fighter_Spring extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to make a spring attack!");
+			mob.tell(_("You are too far away to make a spring attack!"));
 			return false;
 		}
 		if(mob.curState().getMovement()<50)
 		{
-			mob.tell("You are too tired to make a spring attack.");
+			mob.tell(_("You are too tired to make a spring attack."));
 			return false;
 		}
 		if(mob.rangeToTarget()>=mob.location().maxRange())
 		{
-			mob.tell("There is no more room to spring back!");
+			mob.tell(_("There is no more room to spring back!"));
 			return false;
 		}
 

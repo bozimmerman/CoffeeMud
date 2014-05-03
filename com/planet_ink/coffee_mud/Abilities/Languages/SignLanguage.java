@@ -62,7 +62,7 @@ public class SignLanguage extends StdLanguage
 		String startFullMsg=fullMsgStr.substring(0,wordStart);
 		if(startFullMsg.indexOf("YELL(S)")>0)
 		{
-			msg.source().tell("You can't yell in sign language.");
+			msg.source().tell(_("You can't yell in sign language."));
 			return false;
 		}
 		final String oldStartFullMsg = startFullMsg;

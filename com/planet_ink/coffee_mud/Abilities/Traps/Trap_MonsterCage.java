@@ -114,7 +114,7 @@ public class Trap_MonsterCage extends StdTrap
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)
-				mob.tell("You'll need to set down a caged animal of some sort first.");
+				mob.tell(_("You'll need to set down a caged animal of some sort first."));
 			return false;
 		}
 		return true;

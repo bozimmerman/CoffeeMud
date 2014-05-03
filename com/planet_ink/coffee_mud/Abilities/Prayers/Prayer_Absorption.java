@@ -84,7 +84,7 @@ public class Prayer_Absorption extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("Umm.. ok. Done.");
+			mob.tell(_("Umm.. ok. Done."));
 			return false;
 		}
 		final Prayer_Absorption old=(Prayer_Absorption)mob.fetchEffect(ID());
@@ -93,7 +93,7 @@ public class Prayer_Absorption extends Prayer
 			if(old.absorbed!=null)
 				mob.tell("You have already absorbed "+old.absorbed.name()+" from someone.");
 			else
-				mob.tell("You have already absorbed a skill from someone.");
+				mob.tell(_("You have already absorbed a skill from someone."));
 			return false;
 		}
 

@@ -105,7 +105,7 @@ public class Questwins extends StdCommand
 			{
 				CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTDROPPED);
 				mob.delScript(foundS);
-				mob.tell("Quest dropped.");
+				mob.tell(_("Quest dropped."));
 				return false;
 			}
 		}

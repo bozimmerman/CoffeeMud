@@ -57,7 +57,7 @@ public class Chant_PeaceMoon extends Chant
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("You are no longer under the peace moon.");
+			mob.tell(_("You are no longer under the peace moon."));
 
 		super.unInvoke();
 
@@ -75,7 +75,7 @@ public class Chant_PeaceMoon extends Chant
 			   &&(msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
-				msg.source().tell("Nah, you feel too peaceful under that bright moon.");
+				msg.source().tell(_("Nah, you feel too peaceful under that bright moon."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
@@ -125,12 +125,12 @@ public class Chant_PeaceMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell("You must be able to see the moon for this magic to work.");
+			mob.tell(_("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the peace moon.");
+			mob.tell(_("This place is already under the peace moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)

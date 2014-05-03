@@ -72,7 +72,7 @@ public class Trap_Spark extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<10))
 			{
-				mob.tell("You'll need to set down at least 10 pounds of metal first.");
+				mob.tell(_("You'll need to set down at least 10 pounds of metal first."));
 				return false;
 			}
 		}

@@ -46,12 +46,12 @@ public class AutoGold extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell("Autogold has been turned off.");
+			mob.tell(_("Autogold has been turned off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
-			mob.tell("Autogold has been turned on.");
+			mob.tell(_("Autogold has been turned on."));
 		}
 		return false;
 	}

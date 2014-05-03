@@ -45,13 +45,13 @@ public class Give extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Give what to whom?");
+			mob.tell(_("Give what to whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell("To whom should I give that?");
+			mob.tell(_("To whom should I give that?"));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Give extends StdCommand
 				{
 					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell("You must remove that first.");
+						mob.tell(_("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
@@ -122,7 +122,7 @@ public class Give extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to be carrying that.");
+			mob.tell(_("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

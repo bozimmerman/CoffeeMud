@@ -119,7 +119,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			for(int g=0;g<theGroup.size();g++)
 			{
 				final MOB M=(MOB)theGroup.elementAt(g);
-				M.tell("You are told that it's safe and released.");
+				M.tell(_("You are told that it's safe and released."));
 				currRoom.bringMobHere(M,false);
 				CMLib.commands().postStand(M,true);
 				CMLib.commands().postLook(M,true);
@@ -176,7 +176,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			newRoom.send(follower,enterMsg);
 			follower.basePhyStats().setDisposition(follower.basePhyStats().disposition()|PhyStats.IS_SITTING);
 			follower.phyStats().setDisposition(follower.phyStats().disposition()|PhyStats.IS_SITTING);
-			//follower.tell("\n\r\n\r");
+			//follower.tell(_("\n\r\n\r"));
 			//CMLib.commands().postLook(follower,true);
 			return true;
 		}
@@ -217,14 +217,14 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 		{
-			mob.tell("You must be out on a street to contact your underground connections.");
+			mob.tell(_("You must be out on a street to contact your underground connections."));
 			return false;
 		}
 		final Area A=CMLib.map().areaLocation(target);
 		if((!CMLib.law().isACity(A))
 		&&(!auto))
 		{
-			mob.tell("You can only use this skill in cities.");
+			mob.tell(_("You can only use this skill in cities."));
 			return false;
 		}
 
@@ -268,7 +268,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		if(allTrails.size()==0)
 		{
-			mob.tell("Your informants tell you that there's no way they can get you out of here.");
+			mob.tell(_("Your informants tell you that there's no way they can get you out of here."));
 			return false;
 		}
 		final List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));

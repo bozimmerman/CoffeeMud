@@ -54,7 +54,7 @@ public class Spell_SummoningWard extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your summoning ward dissipates.");
+			mob.tell(_("Your summoning ward dissipates."));
 
 		super.unInvoke();
 
@@ -130,7 +130,7 @@ public class Spell_SummoningWard extends Spell
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
-			mob.tell("This place is already under a summoning ward.");
+			mob.tell(_("This place is already under a summoning ward."));
 			return false;
 		}
 

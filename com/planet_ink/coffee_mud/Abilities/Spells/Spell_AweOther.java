@@ -103,7 +103,7 @@ public class Spell_AweOther extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Invoke awe on whom and of whom?");
+			mob.tell(_("Invoke awe on whom and of whom?"));
 			return false;
 		}
 		final String aweWhom=CMParms.combine(commands,1);

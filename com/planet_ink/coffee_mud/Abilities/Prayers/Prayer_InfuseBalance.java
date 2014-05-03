@@ -66,7 +66,7 @@ public class Prayer_InfuseBalance extends Prayer
 			return;
 		if(canBeUninvoked())
 			if(affected instanceof MOB)
-				((MOB)affected).tell("Your infused balance fades.");
+				((MOB)affected).tell(_("Your infused balance fades."));
 
 		super.unInvoke();
 
@@ -82,7 +82,7 @@ public class Prayer_InfuseBalance extends Prayer
 		{
 			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))
 			{
-				msg.source().tell("Not right now -- you're in a service.");
+				msg.source().tell(_("Not right now -- you're in a service."));
 				msg.source().makePeace();
 				((MOB)msg.target()).makePeace();
 				return false;
@@ -90,7 +90,7 @@ public class Prayer_InfuseBalance extends Prayer
 		}
 		if((msg.sourceMinor() == CMMsg.TYP_LEAVE)&&(msg.source().isMonster()))
 		{
-			msg.source().tell("Not right now -- you're in a service.");
+			msg.source().tell(_("Not right now -- you're in a service."));
 			return false;
 		}
 		return super.okMessage(myHost, msg);
@@ -127,7 +127,7 @@ public class Prayer_InfuseBalance extends Prayer
 		{
 			if(D==null)
 			{
-				mob.tell("The faithless may not infuse balance in a room.");
+				mob.tell(_("The faithless may not infuse balance in a room."));
 				return false;
 			}
 			final Area A=mob.location().getArea();

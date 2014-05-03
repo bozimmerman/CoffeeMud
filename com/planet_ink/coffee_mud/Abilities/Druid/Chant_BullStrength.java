@@ -61,7 +61,7 @@ public class Chant_BullStrength extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You don't feel quite so strong.");
+			mob.tell(_("You don't feel quite so strong."));
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class Remove extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Remove what?");
+			mob.tell(_("Remove what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -67,7 +67,7 @@ public class Remove extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
-			mob.tell("You don't seem to be wearing that.");
+			mob.tell(_("You don't seem to be wearing that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{

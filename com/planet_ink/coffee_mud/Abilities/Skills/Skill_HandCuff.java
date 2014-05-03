@@ -129,7 +129,7 @@ public class Skill_HandCuff extends StdSkill
 		&&(msg.source().isMonster())
 		&&(msg.source().getVictim()!=mob))
 		{
-			msg.source().tell("You may not assault this prisoner.");
+			msg.source().tell(_("You may not assault this prisoner."));
 			if(mob.getVictim()==msg.source())
 			{
 				mob.makePeace();
@@ -184,7 +184,7 @@ public class Skill_HandCuff extends StdSkill
 	{
 		if(mob.isInCombat()&&(!auto))
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))

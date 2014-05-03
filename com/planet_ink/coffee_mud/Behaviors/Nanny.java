@@ -328,7 +328,7 @@ public class Nanny extends StdBehavior
 					msg.source().makePeace();
 				}
 				else
-					msg.source().tell("You can't do that here.");
+					msg.source().tell(_("You can't do that here."));
 			}
 			return false;
 		}

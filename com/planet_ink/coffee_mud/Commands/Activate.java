@@ -46,7 +46,7 @@ public class Activate extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
-			mob.tell("Activate what?");
+			mob.tell(_("Activate what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

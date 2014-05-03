@@ -55,7 +55,7 @@ public class Follow extends StdCommand
 		}
 		else
 		if(errorsOk)
-			mob.tell("You aren't following anyone!");
+			mob.tell(_("You aren't following anyone!"));
 		return true;
 	}
 
@@ -130,7 +130,7 @@ public class Follow extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell("Follow whom?");
+			mob.tell(_("Follow whom?"));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Follow extends StdCommand
 		final MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("I don't see them here.");
+			mob.tell(_("I don't see them here."));
 			return false;
 		}
 		if((target.isMonster())&&(!mob.isMonster()))

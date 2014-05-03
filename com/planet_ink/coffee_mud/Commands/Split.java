@@ -44,7 +44,7 @@ public class Split extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Split what, how much?");
+			mob.tell(_("Split what, how much?"));
 			return false;
 		}
 		final String itemID=CMParms.combine(commands,1);
@@ -71,7 +71,7 @@ public class Split extends StdCommand
 			}
 			if(num==0)
 			{
-				mob.tell("No one appears to be eligible to receive any of your money.");
+				mob.tell(_("No one appears to be eligible to receive any of your money."));
 				return false;
 			}
 
@@ -105,7 +105,7 @@ public class Split extends StdCommand
 			final int howMuch=CMath.s_int((String)commands.lastElement());
 			if(howMuch<=0)
 			{
-				mob.tell("Split what, how much?");
+				mob.tell(_("Split what, how much?"));
 				return false;
 			}
 			commands.remove(commands.size()-1);
@@ -115,7 +115,7 @@ public class Split extends StdCommand
 		}
 		else
 		{
-			mob.tell("Split what, how much?");
+			mob.tell(_("Split what, how much?"));
 			return false;
 		}
 		return false;

@@ -67,7 +67,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.tell("You feel more polite.");
+				mob.tell(_("You feel more polite."));
 			}
 	}
 

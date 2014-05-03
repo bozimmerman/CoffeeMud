@@ -94,14 +94,14 @@ public class Thief_Evesdrop extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Evesdrop on whom?");
+			mob.tell(_("Evesdrop on whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You cannot evesdrop on yourself?!");
+			mob.tell(_("You cannot evesdrop on yourself?!"));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
@@ -117,7 +117,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(_("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))

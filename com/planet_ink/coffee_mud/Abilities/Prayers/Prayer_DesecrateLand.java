@@ -57,7 +57,7 @@ public class Prayer_DesecrateLand extends Prayer
 		&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 		{
-			msg.source().tell("This place is blocking holy magic!");
+			msg.source().tell(_("This place is blocking holy magic!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -71,7 +71,7 @@ public class Prayer_DesecrateLand extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already desecrated.");
+			mob.tell(_("This place is already desecrated."));
 			return false;
 		}
 

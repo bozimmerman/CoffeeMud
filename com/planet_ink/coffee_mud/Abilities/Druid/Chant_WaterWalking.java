@@ -75,7 +75,7 @@ public class Chant_WaterWalking extends Chant
 				||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 			&&(msg.target()==mob.location().getRoomInDir(Directions.UP)))
 			{
-				msg.source().tell("Your water walking magic prevents you from ascending from the water surface.");
+				msg.source().tell(_("Your water walking magic prevents you from ascending from the water surface."));
 				return false;
 			}
 			else
@@ -120,7 +120,7 @@ public class Chant_WaterWalking extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("You have a sinking feeling that your water walking ability is gone.");
+			mob.tell(_("You have a sinking feeling that your water walking ability is gone."));
 	}
 
 

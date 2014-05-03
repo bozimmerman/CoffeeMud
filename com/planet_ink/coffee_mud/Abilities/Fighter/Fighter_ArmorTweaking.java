@@ -125,7 +125,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell("You are a bit too busy to do that right now.");
+			mob.tell(_("You are a bit too busy to do that right now."));
 			return false;
 		}
 		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));

@@ -126,7 +126,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		&&(mob.session().getPreviousCMD()!=null)
 		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message)<0))
 		{
-			mob.tell("The wand fizzles in an irritating way.");
+			mob.tell(_("The wand fizzles in an irritating way."));
 			return false;
 		}
 		return true;
@@ -251,7 +251,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell("You feel refreshed!");
+					target.tell(_("You feel refreshed!"));
 					return;
 				}
 				else
@@ -262,7 +262,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell("You feel refreshed!");
+					target.tell(_("You feel refreshed!"));
 					return;
 				}
 				else

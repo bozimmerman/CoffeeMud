@@ -74,7 +74,7 @@ public class Spell_Summon extends Spell
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		if((commands.size()<1)&&(!auto))
 		{
-			mob.tell("Summon whom?");
+			mob.tell(_("Summon whom?"));
 			return false;
 		}
 		else
@@ -97,7 +97,7 @@ public class Spell_Summon extends Spell
 
 		if((mob.location().fetchInhabitant(areaName)!=null)&&(!auto))
 		{
-			mob.tell("Better look around first.");
+			mob.tell(_("Better look around first."));
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class Spell_Summon extends Spell
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						if(follower.isMonster()
 						&&(follower.getStartRoom()!=null)
 						&&(follower.getStartRoom().getArea().name().equals(oldRoom.getArea().name())))
@@ -169,10 +169,10 @@ public class Spell_Summon extends Spell
 						CMLib.commands().postLook(follower,true);
 					}
 					else
-						mob.tell("Some powerful magic stifles the spell.");
+						mob.tell(_("Some powerful magic stifles the spell."));
 				}
 				else
-					mob.tell("Some powerful magic stifles the spell.");
+					mob.tell(_("Some powerful magic stifles the spell."));
 			}
 
 		}

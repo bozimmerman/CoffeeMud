@@ -77,14 +77,14 @@ public class Song_Dexterity extends Song
 				amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
 			else
 			{
-				mob.tell("Sing about how much dexterity?");
+				mob.tell(_("Sing about how much dexterity?"));
 				return false;
 			}
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))
 		{
-			mob.tell("You can't sing away that much dexterity.");
+			mob.tell(_("You can't sing away that much dexterity."));
 			return false;
 		}
 

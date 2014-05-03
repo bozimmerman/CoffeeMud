@@ -46,7 +46,7 @@ public class Prayer_Sanctum extends Prayer
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
-			mob.tell("You feel your muscles unwilling to cooperate.");
+			mob.tell(_("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		return true;
@@ -68,7 +68,7 @@ public class Prayer_Sanctum extends Prayer
 				&&(msg.source().amFollowing().getClanRole(text())==null)))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
-			msg.source().tell("You feel your muscles unwilling to cooperate.");
+			msg.source().tell(_("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -125,7 +125,7 @@ public class Prayer_Sanctum extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already a sanctum.");
+			mob.tell(_("This place is already a sanctum."));
 			return false;
 		}
 

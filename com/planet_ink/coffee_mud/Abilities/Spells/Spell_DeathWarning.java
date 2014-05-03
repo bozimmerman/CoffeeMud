@@ -70,7 +70,7 @@ public class Spell_DeathWarning extends Spell
 			final int hitPoints=mob.curState().getHitPoints();
 			mob.curState().setHitPoints(1);
 			final Room room=mob.location();
-			mob.tell("^SYou receive a warning of your impending death!!^N");
+			mob.tell(_("^SYou receive a warning of your impending death!!^N"));
 			mob.doCommand(commands,0);
 			if(mob.location()!=room)
 			{
@@ -102,7 +102,7 @@ public class Spell_DeathWarning extends Spell
 				commands.add("FLEE");
 			else
 			{
-				mob.tell("You need to specify what you want to do should the warning arrives!");
+				mob.tell(_("You need to specify what you want to do should the warning arrives!"));
 				return false;
 			}
 		}

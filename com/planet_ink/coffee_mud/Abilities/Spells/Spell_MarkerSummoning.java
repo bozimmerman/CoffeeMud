@@ -70,13 +70,13 @@ public class Spell_MarkerSummoning extends Spell
 		}catch(final NoSuchElementException nse){}
 		if(oldRoom==null)
 		{
-			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");
+			mob.tell(_("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
 			return false;
 		}
 		final Room newRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
-			mob.tell("But your marker is HERE!");
+			mob.tell(_("But your marker is HERE!"));
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Spell_MarkerSummoning extends Spell
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
+						follower.tell(_("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}

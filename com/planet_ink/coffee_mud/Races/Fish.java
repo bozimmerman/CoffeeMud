@@ -119,7 +119,7 @@ public class Fish extends StdRace
 		&&(msg.tool() instanceof Exit)
 		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0))
 		{
-			((MOB)affected).tell("That way looks too dry.");
+			((MOB)affected).tell(_("That way looks too dry."));
 			return false;
 		}
 		return true;

@@ -97,7 +97,7 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 				target.curState().setFatigue(0);
 				target.curState().setHunger(target.maxState().getHunger());
 				target.curState().setThirst(target.maxState().getThirst());
-				target.tell("You feel refreshed!");
+				target.tell(_("You feel refreshed!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}

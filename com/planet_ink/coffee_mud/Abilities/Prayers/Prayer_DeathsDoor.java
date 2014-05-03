@@ -87,7 +87,7 @@ public class Prayer_DeathsDoor extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your deaths door protection fades.");
+			mob.tell(_("Your deaths door protection fades."));
 	}
 
 	@Override

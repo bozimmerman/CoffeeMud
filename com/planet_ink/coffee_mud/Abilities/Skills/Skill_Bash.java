@@ -79,7 +79,7 @@ public class Skill_Bash extends StdSkill
 		final Item thisShield=getShield(mob);
 		if(thisShield==null)
 		{
-			mob.tell("You must have a shield to perform a bash.");
+			mob.tell(_("You must have a shield to perform a bash."));
 			return false;
 		}
 

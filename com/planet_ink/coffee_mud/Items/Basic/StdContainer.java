@@ -113,19 +113,19 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(newitem.amWearingAt(Wearable.WORN_WIELD))
 					{
-						mob.tell("You are already wielding that!");
+						mob.tell(_("You are already wielding that!"));
 						return false;
 					}
 					else
 					if(newitem.amWearingAt(Wearable.WORN_HELD))
 					{
-						mob.tell("You are holding that!");
+						mob.tell(_("You are holding that!"));
 						return false;
 					}
 					else
 					if(!newitem.amWearingAt(Wearable.IN_INVENTORY))
 					{
-						mob.tell("You are wearing that!");
+						mob.tell(_("You are wearing that!"));
 						return false;
 					}
 					else
@@ -204,7 +204,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if((newitem.numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 						{
-							mob.tell("You can't carry that many items.");
+							mob.tell(_("You can't carry that many items."));
 							return false;
 						}
 						else
@@ -227,7 +227,7 @@ public class StdContainer extends StdItem implements Container
 				else
 				if(((numberOfItems()>mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 				{
-					mob.tell("You can't carry that many items.");
+					mob.tell(_("You can't carry that many items."));
 					return false;
 				}
 				break;
@@ -240,7 +240,7 @@ public class StdContainer extends StdItem implements Container
 						if((!CMLib.flags().canBeSeenBy(newitem,mob))
 						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
-							mob.tell("You can't see that.");
+							mob.tell(_("You can't see that."));
 							return false;
 						}
 						else
@@ -252,7 +252,7 @@ public class StdContainer extends StdItem implements Container
 						else
 							return true;
 					}
-					mob.tell("You don't see that here.");
+					mob.tell(_("You don't see that here."));
 					return false;
 				}
 				break;
@@ -300,7 +300,7 @@ public class StdContainer extends StdItem implements Container
 				else
 				if(!hasALock)
 				{
-					mob.tell("There is no lock!");
+					mob.tell(_("There is no lock!"));
 					return false;
 				}
 				else
@@ -330,7 +330,7 @@ public class StdContainer extends StdItem implements Container
 							&&(CMLib.flags().canBeSeenBy(item,mob)))
 								return true;
 						}
-						mob.tell("You don't have the key.");
+						mob.tell(_("You don't have the key."));
 						return false;
 					}
 				}

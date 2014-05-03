@@ -99,7 +99,7 @@ public class StdFood extends StdItem implements Food
 					msg.setValue((amountEaten<amountOfNourishment)?amountEaten:0);
 					return true;
 				}
-				mob.tell("You don't have that.");
+				mob.tell(_("You don't have that."));
 				return false;
 			}
 		}
@@ -133,10 +133,10 @@ public class StdFood extends StdItem implements Food
 				amountOfNourishment-=amountEaten;
 				final boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
 				if((hungry)&&(mob.curState().getHunger()>0))
-					mob.tell("You are no longer hungry.");
+					mob.tell(_("You are no longer hungry."));
 				else
 				if(full)
-					mob.tell("You are full.");
+					mob.tell(_("You are full."));
 				if(amountOfNourishment<=0)
 					this.destroy();
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))

@@ -86,7 +86,7 @@ public class Trap_WeaponSwing extends StdTrap
 			final Item I=getPoison(mob);
 			if(I==null)
 			{
-				mob.tell("You'll need to set down a melee weapon first.");
+				mob.tell(_("You'll need to set down a melee weapon first."));
 				return false;
 			}
 		}

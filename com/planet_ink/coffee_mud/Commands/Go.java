@@ -84,7 +84,7 @@ public class Go extends StdCommand
 		{
 			if(!CMath.bset(R.domainType(),Room.INDOORS))
 			{
-				mob.tell("You aren't indoors.");
+				mob.tell(_("You aren't indoors."));
 				return false;
 			}
 
@@ -104,7 +104,7 @@ public class Go extends StdCommand
 			}
 			if(direction<0)
 			{
-				mob.tell("There is no direct way out of this place.  Try a direction.");
+				mob.tell(_("There is no direct way out of this place.  Try a direction."));
 				return false;
 			}
 		}

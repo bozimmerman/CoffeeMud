@@ -71,7 +71,7 @@ public class Prayer_Sacrifice extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell("You may only sacrifice the dead.");
+			mob.tell(_("You may only sacrifice the dead."));
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class Prayer_Sacrifice extends Prayer
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell("You are not allowed to sacrifice that corpse.");
+			mob.tell(_("You are not allowed to sacrifice that corpse."));
 			return false;
 		}
 

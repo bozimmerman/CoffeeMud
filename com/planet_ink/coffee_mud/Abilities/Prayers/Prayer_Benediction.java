@@ -76,7 +76,7 @@ public class Prayer_Benediction extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your benediction fades.");
+			mob.tell(_("Your benediction fades."));
 	}
 
 	@Override

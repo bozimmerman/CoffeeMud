@@ -85,7 +85,7 @@ public class Disease_Lockjaw extends Disease
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK)))
 		{
-			mob.tell("You can't open your mouth!");
+			mob.tell(_("You can't open your mouth!"));
 			return false;
 		}
 

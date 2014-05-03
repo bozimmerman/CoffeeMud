@@ -283,7 +283,7 @@ public class Play extends StdAbility
 		if(instrument==null)
 		{
 			if(noisy)
-				mob.tell("You need an instrument!");
+				mob.tell(CMLib.lang()._("You need an instrument!"));
 			return null;
 		}
 		if((requiredInstrumentType>=0)&&(instrument.instrumentType()!=requiredInstrumentType))
@@ -416,7 +416,7 @@ public class Play extends StdAbility
 			}
 			if(instrument==null)
 			{
-				mob.tell("You need an instrument!");
+				mob.tell(_("You need an instrument!"));
 				return false;
 			}
 			if((requiredInstrumentType()>=0)&&(instrument.instrumentType()!=requiredInstrumentType()))

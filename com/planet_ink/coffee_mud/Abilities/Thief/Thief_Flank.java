@@ -109,19 +109,19 @@ public class Thief_Flank extends ThiefSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell("You must be in combat to flank!");
+			mob.tell(_("You must be in combat to flank!"));
 			return false;
 		}
 		MOB target=mob.getVictim();
 		if(target.getVictim()==mob)
 		{
-			mob.tell("You can't flank someone who is attacking you!");
+			mob.tell(_("You can't flank someone who is attacking you!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell("You need to stand up!");
+			mob.tell(_("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))

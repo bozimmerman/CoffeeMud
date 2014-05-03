@@ -54,12 +54,12 @@ public class Fighter_BullRush extends FighterSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Bullrush whom which direction?");
+			mob.tell(_("Bullrush whom which direction?"));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell("You can only do this in the rage of combat!");
+			mob.tell(_("You can only do this in the rage of combat!"));
 			return false;
 		}
 		String str=(String)commands.lastElement();

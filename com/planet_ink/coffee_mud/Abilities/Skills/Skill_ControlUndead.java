@@ -120,7 +120,7 @@ public class Skill_ControlUndead extends StdSkill
 			&&(mob.amFollowing()!=null)
 			&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 			{
-				mob.tell("You don't want to leave your master.");
+				mob.tell(_("You don't want to leave your master."));
 				return false;
 			}
 			else
@@ -222,7 +222,7 @@ public class Skill_ControlUndead extends StdSkill
 
 		if(CMLib.flags().isGood(mob))
 		{
-			mob.tell("Only the wicked may control the undead.");
+			mob.tell(_("Only the wicked may control the undead."));
 			return false;
 		}
 

@@ -65,17 +65,17 @@ public class Dragonbreath extends StdAbility
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth breathing on.");
+			mob.tell(_("There doesn't appear to be anyone here worth breathing on."));
 			return false;
 		}
 		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
-			mob.tell("You can't breathe!");
+			mob.tell(_("You can't breathe!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
 		{
-			mob.tell("You don't have a mouth!");
+			mob.tell(_("You don't have a mouth!"));
 			return false;
 		}
 		char colorc='f';

@@ -115,7 +115,7 @@ public class Injury extends StdAbility implements HealthCondition
 		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(canBeUninvoked())&&(!((MOB)E).amDead()))
-			((MOB)E).tell("Your injuries are healed.");
+			((MOB)E).tell(_("Your injuries are healed."));
 	}
 
 	@Override
