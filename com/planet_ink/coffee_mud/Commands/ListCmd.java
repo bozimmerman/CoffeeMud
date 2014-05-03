@@ -550,8 +550,8 @@ public class ListCmd extends StdCommand
 	{
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
-		final StringBuilder lines=new StringBuilder(CMStrings.padRight("Room ID#",COL_LEN1)+"| "
-										   +CMStrings.padRight("Room Type",COL_LEN2)+"| "
+		final StringBuilder lines=new StringBuilder(CMStrings.padRight(_("Room ID#"),COL_LEN1)+"| "
+										   +CMStrings.padRight(_("Room Type"),COL_LEN2)+"| "
 										   +"Resource\n\r");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
@@ -579,8 +579,8 @@ public class ListCmd extends StdCommand
 	{
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(40.0,viewerS);
-		final StringBuilder lines=new StringBuilder(CMStrings.padRight("Area",COL_LEN1)+"| "
-										   +CMStrings.padRight("Clan",COL_LEN2)+"| "
+		final StringBuilder lines=new StringBuilder(CMStrings.padRight(_("Area"),COL_LEN1)+"| "
+										   +CMStrings.padRight(_("Clan"),COL_LEN2)+"| "
 										   +"Controlled\n\r");
 		if(!these.hasMoreElements()) return lines;
 		Area thisThang=null;
@@ -797,8 +797,8 @@ public class ListCmd extends StdCommand
 			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(50.0,viewerS);
 			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
 			lines=new StringBuilder("^x")
-			.append(CMStrings.padRight("Script File",COL_LEN1))
-			.append(CMStrings.padRight("Usage",COL_LEN2))
+			.append(CMStrings.padRight(_("Script File"),COL_LEN1))
+			.append(CMStrings.padRight(_("Usage"),COL_LEN2))
 			.append("^.^N\n\r");
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
@@ -833,9 +833,9 @@ public class ListCmd extends StdCommand
 			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
 			final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 			lines=new StringBuilder("^x")
-			.append(CMStrings.padRight("Script File",COL_LEN1))
-			.append(CMStrings.padRight("Host",COL_LEN2))
-			.append(CMStrings.padRight("Location",COL_LEN3))
+			.append(CMStrings.padRight(_("Script File"),COL_LEN1))
+			.append(CMStrings.padRight(_("Host"),COL_LEN2))
+			.append(CMStrings.padRight(_("Location"),COL_LEN3))
 			.append("^.^N\n\r");
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
@@ -1087,7 +1087,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
 		if(V!=null)
 		{
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight("From",COL_LEN2)+" Entry^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight(_("From"),COL_LEN2)+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
@@ -1193,15 +1193,15 @@ public class ListCmd extends StdCommand
 		final int COL_LEN7=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
 		final StringBuilder head=new StringBuilder("");
 		head.append("[");
-		head.append(CMStrings.padRight("Race",COL_LEN1)+" ");
-		head.append(CMStrings.padRight("Class",COL_LEN2)+" ");
-		head.append(CMStrings.padRight("Lvl",COL_LEN3)+" ");
-		head.append(CMStrings.padRight("Hours",COL_LEN4)+" ");
+		head.append(CMStrings.padRight(_("Race"),COL_LEN1)+" ");
+		head.append(CMStrings.padRight(_("Class"),COL_LEN2)+" ");
+		head.append(CMStrings.padRight(_("Lvl"),COL_LEN3)+" ");
+		head.append(CMStrings.padRight(_("Hours"),COL_LEN4)+" ");
 		switch(sortBy)
 		{
-		case 6: head.append(CMStrings.padRight("E-Mail",COL_LEN5)+" "); break;
-		case 7: head.append(CMStrings.padRight("IP Address",COL_LEN5)+" "); break;
-		default: head.append(CMStrings.padRight("Last",COL_LEN6)+" "); break;
+		case 6: head.append(CMStrings.padRight(_("E-Mail"),COL_LEN5)+" "); break;
+		case 7: head.append(CMStrings.padRight(_("IP Address"),COL_LEN5)+" "); break;
+		default: head.append(CMStrings.padRight(_("Last"),COL_LEN6)+" "); break;
 		}
 
 		head.append("] Character name\n\r");
@@ -1287,12 +1287,12 @@ public class ListCmd extends StdCommand
 		final StringBuilder head=new StringBuilder("");
 		head.append("^X");
 		head.append("[");
-		head.append(CMStrings.padRight("Account",COL_LEN1)+" ");
-		head.append(CMStrings.padRight("Last",COL_LEN2)+" ");
+		head.append(CMStrings.padRight(_("Account"),COL_LEN1)+" ");
+		head.append(CMStrings.padRight(_("Last"),COL_LEN2)+" ");
 		switch(sortBy)
 		{
-			default : head.append(CMStrings.padRight("E-Mail",COL_LEN3)+" "); break;
-			case 7: head.append(CMStrings.padRight("IP Address",COL_LEN3)+" "); break;
+			default : head.append(CMStrings.padRight(_("E-Mail"),COL_LEN3)+" "); break;
+			case 7: head.append(CMStrings.padRight(_("IP Address"),COL_LEN3)+" "); break;
 		}
 
 		head.append("] Characters^.^N\n\r");
@@ -1522,7 +1522,7 @@ public class ListCmd extends StdCommand
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
 			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
 			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight("Name",COL_LEN2)+" Status^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(_("Name"),COL_LEN2)+" Status^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(i);
@@ -1579,7 +1579,7 @@ public class ListCmd extends StdCommand
 			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
 			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
 			buf.append("\n\r^xJournals List:^.^N\n\r");
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight("Name",COL_LEN2)+" Messages^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(_("Name"),COL_LEN2)+" Messages^.^N\n\r");
 			for(int i=0;i<journals.size();i++)
 			{
 				final String journal=journals.get(i);
@@ -1660,8 +1660,8 @@ public class ListCmd extends StdCommand
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
-		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight(_("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		int col=0;
 		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0)) mask=null;
@@ -1961,11 +1961,11 @@ public class ListCmd extends StdCommand
 		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
 		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(36.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
-		str.append(CMStrings.padRight("Resource",COL_LEN1)+" ");
-		str.append(CMStrings.padRight("Material",COL_LEN2)+" ");
-		str.append(CMStrings.padRight("Val",COL_LEN3)+" ");
-		str.append(CMStrings.padRight("Freq",COL_LEN4)+" ");
-		str.append(CMStrings.padRight("Str",COL_LEN5)+" ");
+		str.append(CMStrings.padRight(_("Resource"),COL_LEN1)+" ");
+		str.append(CMStrings.padRight(_("Material"),COL_LEN2)+" ");
+		str.append(CMStrings.padRight(_("Val"),COL_LEN3)+" ");
+		str.append(CMStrings.padRight(_("Freq"),COL_LEN4)+" ");
+		str.append(CMStrings.padRight(_("Str"),COL_LEN5)+" ");
 		str.append("Locales\n\r");
 		for(final int i : RawMaterial.CODES.ALL())
 		{
@@ -2521,15 +2521,15 @@ public class ListCmd extends StdCommand
 	public void listManufacturers(MOB mob, Vector commands)
 	{
 		final StringBuffer str=new StringBuffer("");
-		str.append(CMStrings.padRight("Name", 20)).append(" ");
-		str.append(CMStrings.padRight("Tech", 5)).append(" ");
-		str.append(CMStrings.padRight("Eff.", 4)).append(" ");
-		str.append(CMStrings.padRight("Rel.", 4)).append(" ");
+		str.append(CMStrings.padRight(_("Name"), 20)).append(" ");
+		str.append(CMStrings.padRight(_("Tech"), 5)).append(" ");
+		str.append(CMStrings.padRight(_("Eff."), 4)).append(" ");
+		str.append(CMStrings.padRight(_("Rel."), 4)).append(" ");
 		str.append("!");
-		str.append(CMStrings.padRight("Name", 20)).append(" ");
-		str.append(CMStrings.padRight("Tech", 5)).append(" ");
-		str.append(CMStrings.padRight("Eff.", 4)).append(" ");
-		str.append(CMStrings.padRight("Rel.", 4));
+		str.append(CMStrings.padRight(_("Name"), 20)).append(" ");
+		str.append(CMStrings.padRight(_("Tech"), 5)).append(" ");
+		str.append(CMStrings.padRight(_("Eff."), 4)).append(" ");
+		str.append(CMStrings.padRight(_("Rel."), 4));
 		str.append("\n\r");
 		str.append(CMStrings.repeat("-", 75)).append("\n\r");
 		final List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
@@ -2569,8 +2569,8 @@ public class ListCmd extends StdCommand
 		for(final String key : CMLib.tech().getMakeRegisteredKeys())
 		{
 			str.append("Registered key: "+key+" : "+(CMLib.tech().isCurrentActive(key)?"Activated":"Suspended")+"\n\r");
-			str.append(CMStrings.padRight("Name", 30)).append(" ");
-			str.append(CMStrings.padRight("Room", 30)).append(" ");
+			str.append(CMStrings.padRight(_("Name"), 30)).append(" ");
+			str.append(CMStrings.padRight(_("Room"), 30)).append(" ");
 			str.append("\n\r");
 			str.append(CMStrings.repeat("-", 75)).append("\n\r");
 			for(final Electronics e : CMLib.tech().getMakeRegisteredElectronics(key))
@@ -2746,11 +2746,11 @@ public class ListCmd extends StdCommand
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
 		final StringBuffer lines=new StringBuffer("\n\r^x");
 		lines.append(CMStrings.padRight("#",3)+"| ");
-		lines.append(CMStrings.padRight("Status",9)+"| ");
-		lines.append(CMStrings.padRight("Valid",5)+"| ");
-		lines.append(CMStrings.padRight("Name",17)+"| ");
-		lines.append(CMStrings.padRight("IP",17)+"| ");
-		lines.append(CMStrings.padRight("Idle",17)+"^.^N\n\r");
+		lines.append(CMStrings.padRight(_("Status"),9)+"| ");
+		lines.append(CMStrings.padRight(_("Valid"),5)+"| ");
+		lines.append(CMStrings.padRight(_("Name"),17)+"| ");
+		lines.append(CMStrings.padRight(_("IP"),17)+"| ");
+		lines.append(CMStrings.padRight(_("Idle"),17)+"^.^N\n\r");
 		final Vector broken=new Vector();
 		for(final Session S : CMLib.sessions().allIterable())
 		{
@@ -2764,8 +2764,8 @@ public class ListCmd extends StdCommand
 			}
 			else
 			{
-				set[2]=CMStrings.padRight("N/A",5)+"| ";
-				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
+				set[2]=CMStrings.padRight(_("N/A"),5)+"| ";
+				set[3]=CMStrings.padRight(_("NAMELESS"),17)+"| ";
 			}
 			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);

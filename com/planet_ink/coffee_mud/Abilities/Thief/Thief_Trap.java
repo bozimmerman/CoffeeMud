@@ -87,21 +87,21 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight("Affects",17)+" Requires\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Trap Name",15)+" "+CMStrings.padRight(_("Affects"),17)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),15)+" ");
 				if(T.canAffect(Ability.CAN_ROOMS))
-					buf.append(CMStrings.padRight("Rooms",17)+" ");
+					buf.append(CMStrings.padRight(_("Rooms"),17)+" ");
 				else
 				if(T.canAffect(Ability.CAN_EXITS))
-					buf.append(CMStrings.padRight("Exits, Containers",17)+" ");
+					buf.append(CMStrings.padRight(_("Exits, Containers"),17)+" ");
 				else
 				if(T.canAffect(Ability.CAN_ITEMS))
-					buf.append(CMStrings.padRight("Items",17)+" ");
+					buf.append(CMStrings.padRight(_("Items"),17)+" ");
 				else
-					buf.append(CMStrings.padRight("Unknown",17)+" ");
+					buf.append(CMStrings.padRight(_("Unknown"),17)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());

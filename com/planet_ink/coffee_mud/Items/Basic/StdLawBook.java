@@ -215,8 +215,8 @@ public class StdLawBook extends StdItem
 	}
 	public String shortLawHeader()
 	{
-		return CMStrings.padRight("Crime",19)+" "
-			+CMStrings.padRight("Flags",24)+" "
+		return CMStrings.padRight(_("Crime"),19)+" "
+			+CMStrings.padRight(_("Flags"),24)+" "
 			+"Sentence";
 	}
 
@@ -540,7 +540,7 @@ public class StdLawBook extends StdItem
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
+			str.append(CMStrings.padRight(_("#  Words"),20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
 				final String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
@@ -629,7 +629,7 @@ public class StdLawBook extends StdItem
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("#  Items",20)+" "+shortLawHeader()+"\n\r");
+			str.append(CMStrings.padRight(_("#  Items"),20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.bannedSubstances().size();x++)
 			{
 				final String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
@@ -726,7 +726,7 @@ public class StdLawBook extends StdItem
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("#  Ability",20)+" "+shortLawHeader()+"\n\r");
+			str.append(CMStrings.padRight(_("#  Ability"),20)+" "+shortLawHeader()+"\n\r");
 			final Hashtable filteredTable=new Hashtable();
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
@@ -948,7 +948,7 @@ public class StdLawBook extends StdItem
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("#  Effect",20)+" "+shortLawHeader()+"\n\r");
+			str.append(CMStrings.padRight(_("#  Effect"),20)+" "+shortLawHeader()+"\n\r");
 			final Hashtable filteredTable=new Hashtable();
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
@@ -1063,7 +1063,7 @@ public class StdLawBook extends StdItem
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("#  Law Name",20)+" "+shortLawHeader()+"\n\r");
+			str.append(CMStrings.padRight(_("#  Law Name"),20)+" "+shortLawHeader()+"\n\r");
 			str.append("1. ASSAULT           "+shortLawDesc(theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
 			str.append("2. MURDER            "+shortLawDesc(theLaw.basicCrimes().get("MURDER"))+"\n\r");
 			str.append("3. NUDITY            "+shortLawDesc(theLaw.basicCrimes().get("NUDITY"))+"\n\r");

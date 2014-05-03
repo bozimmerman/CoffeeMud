@@ -686,7 +686,7 @@ public class Masonry extends CraftingSkill
 		{
 			final String mask=CMParms.combine(commands,1);
 			final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",colWidth)+" Stone required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),colWidth)+" Stone required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
 				if(((r!=BUILD_MONUMENT)

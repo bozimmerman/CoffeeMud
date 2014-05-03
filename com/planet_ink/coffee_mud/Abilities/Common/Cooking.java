@@ -705,7 +705,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",colWidth)+"^.^? ^B^~wIngredients required^N\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("^xRecipe"),colWidth)+"^.^? ^B^~wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				final List<String> Vr=allRecipes.get(r);

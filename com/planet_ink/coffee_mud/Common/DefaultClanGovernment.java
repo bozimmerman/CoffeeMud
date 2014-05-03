@@ -721,7 +721,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				}
 
 			final int commandColLen = funcMaxLen;
-			str.append(CMStrings.padRight("Command",commandColLen-1)).append("!");
+			str.append(CMStrings.padRight(CMLib.lang()._("Command"),commandColLen-1)).append("!");
 			for(int p=0;p<posses.length;p++)
 			{
 				final ClanPosition pos = sortedPositions.get(p);

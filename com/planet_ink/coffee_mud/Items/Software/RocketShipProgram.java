@@ -66,12 +66,12 @@ public class RocketShipProgram extends GenShipProgram
 	protected String buildActivationMenu(List<ShipEngine> engines)
 	{
 		final StringBuilder str=new StringBuilder();
-		str.append("^X").append(CMStrings.centerPreserve(" -- Fight Status -- ",60)).append("^.^N\n\r");
+		str.append("^X").append(CMStrings.centerPreserve(_(" -- Fight Status -- "),60)).append("^.^N\n\r");
 		final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
 		if(ship==null)
-			str.append("^Z").append(CMStrings.centerPreserve(" -- Can Not Determine -- ",60)).append("^.^N\n\r");
+			str.append("^Z").append(CMStrings.centerPreserve(_(" -- Can Not Determine -- "),60)).append("^.^N\n\r");
 		else
 		if(ship.getIsDocked() != null)
 		{
@@ -82,7 +82,7 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		else
 		if((shipSpaceObject==null)||(!CMLib.map().isObjectInSpace(shipSpaceObject)))
-			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");
+			str.append("^Z").append(CMStrings.centerPreserve(_(" -- System Malfunction-- "),60)).append("^.^N\n\r");
 		else
 		{
 			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.Distance.LightMinute.dm);
@@ -99,23 +99,23 @@ public class RocketShipProgram extends GenShipProgram
 					break;
 				}
 
-			str.append("^H").append(CMStrings.padRight("Speed",10));
+			str.append("^H").append(CMStrings.padRight(_("Speed"),10));
 			str.append("^N").append(CMStrings.padRight(displayPerSec(ship.speed()),20));
-			str.append("^H").append(CMStrings.padRight("Direction",10));
+			str.append("^H").append(CMStrings.padRight(_("Direction"),10));
 			final String dirStr=display(ship.direction());
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
 			str.append("\n\r");
-			str.append("^H").append(CMStrings.padRight("Location",10));
+			str.append("^H").append(CMStrings.padRight(_("Location"),10));
 			if(orbitingPlanet!=null)
 				str.append("^N").append(CMStrings.padRight("orbiting "+orbitingPlanet.name(),50));
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
-			str.append("^H").append(CMStrings.padRight("Facing",10));
+			str.append("^H").append(CMStrings.padRight(_("Facing"),10));
 			final String facStr=display(ship.facing());
 			str.append("^N").append(CMStrings.padRight(facStr,20));
 			if(altitudePlanet!=null)
 			{
-				str.append("^H").append(CMStrings.padRight("Altitude",10));
+				str.append("^H").append(CMStrings.padRight(_("Altitude"),10));
 				str.append("^N").append(CMStrings.padRight(display((CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius())/10),20));
 			}
 			else
@@ -130,22 +130,22 @@ public class RocketShipProgram extends GenShipProgram
 			str.append(noActivationMenu);
 		else
 		{
-			str.append("^X").append(CMStrings.centerPreserve(" -- Engines -- ",60)).append("^.^N\n\r");
+			str.append("^X").append(CMStrings.centerPreserve(_(" -- Engines -- "),60)).append("^.^N\n\r");
 			int engineNumber=1;
 			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,9));
 				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
-				str.append("^H").append(CMStrings.padRight("Fuel",5));
+				str.append("^H").append(CMStrings.padRight(_("Fuel"),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(engine.getFuelRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(engine.Name(),24));
 				str.append("^.^N\n\r");
 				engineNumber++;
 			}
 			str.append("^N\n\r");
-			str.append("^X").append(CMStrings.centerPreserve(" -- Commands -- ",60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight("[ENGINEHELP] : Give details about engine commands.",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]",60)).append("\n\r");
+			str.append("^X").append(CMStrings.centerPreserve(_(" -- Commands -- "),60)).append("^.^N\n\r");
+			str.append("^H").append(CMStrings.padRight(_("[ENGINEHELP] : Give details about engine commands."),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(_("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}

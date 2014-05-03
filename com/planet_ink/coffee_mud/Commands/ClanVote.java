@@ -86,7 +86,7 @@ public class ClanVote extends StdCommand
 				else
 				{
 					msg.append(" "+CMStrings.padRight("#",3)
-							   +CMStrings.padRight("Status",15)
+							   +CMStrings.padRight(_("Status"),15)
 							   +"Command to execute\n\r");
 					for(int v=0;v<votesForYou.size();v++)
 					{

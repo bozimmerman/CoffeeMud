@@ -127,7 +127,7 @@ public class Thief_TrophyCount extends ThiefSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("Name",20)+"Kills\n\r");
+			str.append(CMStrings.padRight(_("Name"),20)+"Kills\n\r");
 			for(final Enumeration e=theList.elements();e.hasMoreElements();)
 			{
 				final String[] one=(String[])e.nextElement();

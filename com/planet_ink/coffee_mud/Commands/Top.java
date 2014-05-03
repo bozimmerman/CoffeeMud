@@ -71,7 +71,7 @@ public class Top extends StdCommand
 		{
 			final String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
 			str.append("^xTop "+(doPlayers?"Characters":"Accounts")+" "+desc+"\n\r^x"+slashes+"^.^N ^x"+slashes+"^.^N ^x"+slashes+"^.^N\n\r");
-			str.append(CMStrings.padRight("^HPVP Kills", width)+"^. "+CMStrings.padRight("^HXP Gained", width)+"^. "+CMStrings.padRight("^HQuests Completed", width)+"^.^N\n\r");
+			str.append(CMStrings.padRight("^HPVP Kills", width)+"^. "+CMStrings.padRight("^HXP Gained", width)+"^. "+CMStrings.padRight(_("^HQuests Completed"), width)+"^.^N\n\r");
 			set1=doPlayers?
 				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.PVPKILLS):
 				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.PVPKILLS);
@@ -92,7 +92,7 @@ public class Top extends StdCommand
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N\n\r");
 			}
 			str.append("\n\r");
-			str.append(CMStrings.padRight("^HMins Online", width)+"^. "+CMStrings.padRight("^HRooms Explored", width)+"^. "+CMStrings.padRight("^HQuestPoints Earned", width)+"^.^N\n\r");
+			str.append(CMStrings.padRight("^HMins Online", width)+"^. "+CMStrings.padRight("^HRooms Explored", width)+"^. "+CMStrings.padRight(_("^HQuestPoints Earned"), width)+"^.^N\n\r");
 			set1=doPlayers?
 					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.MINUTES_ON):
 					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.MINUTES_ON);

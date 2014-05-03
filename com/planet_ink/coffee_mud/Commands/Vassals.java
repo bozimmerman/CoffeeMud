@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -10,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,7 +45,39 @@ public class Vassals extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(_("The following players are in your service:"));
-		CMLib.database().vassals(mob,mob.Name());
+		List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob,mob.Name());
+		final StringBuilder str=new StringBuilder("");
+		str.append("[");
+		str.append(CMStrings.padRight(_("Race"),8)+" ");
+		str.append(CMStrings.padRight(_("Class"),10)+" ");
+		str.append(CMStrings.padRight(_("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(_("Exp/Lvl"),17));
+		str.append("] Character name\n\r");
+		for(PlayerLibrary.ThinPlayer tM : players)
+		{
+			final MOB M=CMLib.players().getPlayer(tM.name);
+			if(M==null)
+			{
+				str.append("[");
+				str.append(CMStrings.padRight(tM.race,8)+" ");
+				str.append(CMStrings.padRight(tM.charClass,10)+" ");
+				str.append(CMStrings.padRight(Integer.toString(tM.level),4)+" ");
+				str.append(CMStrings.padRight(tM.exp+"/"+tM.expLvl,17));
+				str.append("] "+CMStrings.padRight(tM.name,15));
+				str.append("\n\r");
+			}
+			else
+			{
+				str.append("[");
+				str.append(CMStrings.padRight(M.charStats().getMyRace().name(),8)+" ");
+				str.append(CMStrings.padRight(M.charStats().getCurrentClass().name(M.charStats().getCurrentClassLevel()),10)+" ");
+				str.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
+				str.append(CMStrings.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
+				str.append("] "+CMStrings.padRight(M.name(),15));
+				str.append("\n\r");
+			}
+		}
+		mob.tell(str.toString());
 		return false;
 	}
 

@@ -159,7 +159,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBTouchJournalMessage(String key, long newDate);
 	public String DBReadUserOnly(MOB mob);
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
-	public void vassals(MOB mob, String liegeID);
+	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID);
 	public DVector worshippers(String deityID);
 	public List<PlayerData> DBReadAllPlayerData(String playerID);
 	public List<PlayerData> DBReadData(String playerID, String section);

@@ -58,8 +58,8 @@ public class Spell_DetectSentience extends Spell
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer lines=new StringBuffer("^x");
-				lines.append(CMStrings.padRight("Name",25)+"| ");
-				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
+				lines.append(CMStrings.padRight(_("Name"),25)+"| ");
+				lines.append(CMStrings.padRight(_("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);

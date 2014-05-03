@@ -240,7 +240,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
 				};
-			buf.append(CMStrings.padRight("Chant",cols[0])+" "+CMStrings.padRight("Level",cols[1])+" Ingredients\n\r");
+			buf.append(CMStrings.padRight("Chant",cols[0])+" "+CMStrings.padRight(_("Level"),cols[1])+" Ingredients\n\r");
 			final boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{

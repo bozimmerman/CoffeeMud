@@ -100,8 +100,8 @@ public class DBInterface implements DatabaseEngine
 	{return MOBloader.parseTattoo(tattoo);}
 
 	@Override
-	public void vassals(MOB mob, String liegeID)
-	{MOBloader.vassals(mob,liegeID);}
+	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
+	{return MOBloader.vassals(mob,liegeID);}
 
 	@Override
 	public DVector worshippers(String deityID)

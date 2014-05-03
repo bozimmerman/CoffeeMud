@@ -59,10 +59,10 @@ public class Config extends StdCommand
 		if(mob.playerStats()!=null)
 		{
 			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-			msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
+			msg.append(CMStrings.padRight(_("LINEWRAP"),15)+": "+wrap);
 			msg.append("\n\r");
 			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-			msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
+			msg.append(CMStrings.padRight(_("PAGEBREAK"),15)+": "+pageBreak);
 			msg.append("\n\r");
 		}
 		mob.tell(msg.toString());

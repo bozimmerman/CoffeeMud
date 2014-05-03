@@ -74,7 +74,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public String getFormattedDate(Environmental E)
 	{
-		String date=CMStrings.padRight("Unknown",11);
+		String date=CMStrings.padRight(_("Unknown"),11);
 		if(E!=null)
 		{
 			final TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():((CMLib.map().roomLocation(E)!=null)?CMLib.map().roomLocation(E).getArea().getTimeObj():null);

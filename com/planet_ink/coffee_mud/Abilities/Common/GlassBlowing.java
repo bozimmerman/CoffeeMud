@@ -238,7 +238,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" Sand required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" Sand required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

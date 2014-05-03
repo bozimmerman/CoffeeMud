@@ -67,7 +67,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",colWidth)+" Requires\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Bomb Name"),colWidth)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);

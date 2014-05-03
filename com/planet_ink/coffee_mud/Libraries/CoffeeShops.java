@@ -767,7 +767,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 
-			final String c="^x["+CMStrings.padRight("Cost",4+csize)+"] "+CMStrings.padRight("Product",Math.max(totalWidth-csize,5));
+			final String c="^x["+CMStrings.padRight(_("Cost"),4+csize)+"] "+CMStrings.padRight("Product",Math.max(totalWidth-csize,5));
 			str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
 			int colNum=0;
 			int rowNum=0;
@@ -1618,7 +1618,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 									  String mask)
 	{
 		final StringBuffer str=new StringBuffer("");
-		str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight("Bid",6)+"] Buy^.^N\n\r");
+		str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight(_("Bid"),6)+"] Buy^.^N\n\r");
 		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
 		for(int v=0;v<auctions.size();v++)
 		{

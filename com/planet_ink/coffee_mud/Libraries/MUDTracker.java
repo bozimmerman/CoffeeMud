@@ -1206,7 +1206,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			theDirTrail.add(Directions.getDirectionChar(getRoomDirection(R,RA,empty))+" ");
 		}
 		final StringBuffer theTrail=new StringBuffer("");
-		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight("Trail",30)+": ");
+		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight(_("Trail"),30)+": ");
 		String lastDir="";
 		int lastNum=0;
 		while(theDirTrail.size()>0)
@@ -1249,13 +1249,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			final Room R=trailV.get(1);
-			theTrail.append("\n\r"+CMStrings.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
-			theTrail.append("\n\r"+CMStrings.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
+			theTrail.append("\n\r"+CMStrings.padRight(_("From"),30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
+			theTrail.append("\n\r"+CMStrings.padRight(_("Room"),30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}
 		if((areaNames)&&(areasDone.size()>0))
 		{
-			theTrail.append("\n\r"+CMStrings.padRight("Areas",30)+":");
+			theTrail.append("\n\r"+CMStrings.padRight(_("Areas"),30)+":");
 			for (final Area A : areasDone)
 			{
 				theTrail.append(" \""+A.name()+"\",");

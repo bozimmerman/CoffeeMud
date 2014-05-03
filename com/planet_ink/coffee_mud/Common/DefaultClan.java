@@ -697,7 +697,7 @@ public class DefaultClan implements Clan
 		if(CMLib.clans().numClans()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^x"+CMStrings.padRight("Clan Relations",16)+":^.^N \n\r");
+			msg.append("^x"+CMStrings.padRight(CMLib.lang()._("Clan Relations"),16)+":^.^N \n\r");
 			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				final Clan C=e.nextElement();

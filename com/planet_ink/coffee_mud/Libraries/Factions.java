@@ -680,7 +680,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
-				list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Align",6)+"\n\r");
+				list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight(_("Align"),6)+"\n\r");
 				for(final Enumeration<FRange> e=me.ranges();e.hasMoreElements();)
 				{
 					final Faction.FRange FR=e.nextElement();
@@ -847,7 +847,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction change adjustment Factors with Zapper Masks:\n\r");
-				list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight("Loss",6)+"\n\r");
+				list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight(_("Loss"),6)+"\n\r");
 				final StringBuffer choices=new StringBuffer("");
 				int numFactors=0;
 				for(final Enumeration<Faction.FZapFactor> e=me.factors();e.hasMoreElements();)
@@ -970,10 +970,10 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction Change Triggers:\n\r");
-				list.append("    "+CMStrings.padRight("Type",15)
-						+" "+CMStrings.padRight("Direction",10)
-						+" "+CMStrings.padRight("Factor",10)
-						+" "+CMStrings.padRight("Flags",20)
+				list.append("    "+CMStrings.padRight(_("Type"),15)
+						+" "+CMStrings.padRight(_("Direction"),10)
+						+" "+CMStrings.padRight(_("Factor"),10)
+						+" "+CMStrings.padRight(_("Flags"),20)
 						+" Mask\n\r");
 				int numChanges=0;
 				final StringBuffer choices=new StringBuffer("");
@@ -1096,9 +1096,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Ability allowances:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight("Ability masks",40)
-						+" "+CMStrings.padRight("Low value",10)
-						+" "+CMStrings.padRight("High value",10)
+						+CMStrings.padRight(_("Ability masks"),40)
+						+" "+CMStrings.padRight(_("Low value"),10)
+						+" "+CMStrings.padRight(_("High value"),10)
 						+"\n\r");
 				int numUsages=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");
@@ -1209,9 +1209,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Effects/Behaviors:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight("Ability/Behavior ID",25)
-						+" "+CMStrings.padRight("MOB Mask",20)
-						+" "+CMStrings.padRight("Parameters",20)
+						+CMStrings.padRight(_("Ability/Behavior ID"),25)
+						+" "+CMStrings.padRight(_("MOB Mask"),20)
+						+" "+CMStrings.padRight(_("Parameters"),20)
 						+"\n\r");
 				int numAffBehavs=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");
@@ -1344,10 +1344,10 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Reaction Commands/Effects/Behaviors:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight("Range",15)
-						+" "+CMStrings.padRight("MOB Mask",18)
-						+" "+CMStrings.padRight("Able/Beh/Cmd",15)
-						+" "+CMStrings.padRight("Parameters",18)
+						+CMStrings.padRight(_("Range"),15)
+						+" "+CMStrings.padRight(_("MOB Mask"),18)
+						+" "+CMStrings.padRight(_("Able/Beh/Cmd"),15)
+						+" "+CMStrings.padRight(_("Parameters"),18)
 						+"\n\r");
 				int numReactions=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");

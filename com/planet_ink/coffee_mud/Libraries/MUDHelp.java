@@ -275,13 +275,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				currencies.addElement(CMLib.beanCounter().getCurrency(forMOB.location()));
 			final StringBuilder help=new StringBuilder("");
 			if(worldCurrency)
-				help.append("\n\r"+CMStrings.padRight("World Currencies",20)+":");
+				help.append("\n\r"+CMStrings.padRight(_("World Currencies"),20)+":");
 			for (final String currency : currencies)
 			{
 				if(worldCurrency)
-					help.append("\n\r"+CMStrings.padRight("Currency",20)+":");
+					help.append("\n\r"+CMStrings.padRight(_("Currency"),20)+":");
 				else
-					help.append("\n\r"+CMStrings.padRight("Local Currency",20)+":");
+					help.append("\n\r"+CMStrings.padRight(_("Local Currency"),20)+":");
 				if(currency.length()==0)
 					help.append("default");
 				else
@@ -464,22 +464,22 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					switch(type)
 					{
 					case Ability.ACODE_SPELL:
-						prepend.append(CMStrings.padRight("Spell",9));
+						prepend.append(CMStrings.padRight(_("Spell"),9));
 						break;
 					case Ability.ACODE_PRAYER:
-						prepend.append(CMStrings.padRight("Prayer",9));
+						prepend.append(CMStrings.padRight(_("Prayer"),9));
 						break;
 					case Ability.ACODE_CHANT:
-						prepend.append(CMStrings.padRight("Chant",9));
+						prepend.append(CMStrings.padRight(_("Chant"),9));
 						break;
 					case Ability.ACODE_SUPERPOWER:
-						prepend.append(CMStrings.padRight("SuperPower",9));
+						prepend.append(CMStrings.padRight(_("SuperPower"),9));
 						break;
 					case Ability.ACODE_SONG:
-						prepend.append(CMStrings.padRight("Song",9));
+						prepend.append(CMStrings.padRight(_("Song"),9));
 						break;
 					default:
-						prepend.append(CMStrings.padRight("Skill",9));
+						prepend.append(CMStrings.padRight(_("Skill"),9));
 						break;
 					}
 					prepend.append(": "+A.name());

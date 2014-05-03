@@ -72,7 +72,7 @@ public class Skill_Warrants extends BardSkill
 				}
 				final StringBuffer buf=new StringBuffer("");
 				final int colWidth=ListingLibrary.ColFixer.fixColWidth(14,mob.session());
-				buf.append(CMStrings.padRight("Name",colWidth)+" "+CMStrings.padRight("Victim",colWidth)+" "+CMStrings.padRight("Witness",colWidth)+" Crime\n\r");
+				buf.append(CMStrings.padRight("Name",colWidth)+" "+CMStrings.padRight("Victim",colWidth)+" "+CMStrings.padRight(_("Witness"),colWidth)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
 					final LegalWarrant W=V.get(v);

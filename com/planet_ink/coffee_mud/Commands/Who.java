@@ -55,11 +55,11 @@ public class Who extends StdCommand
 		final StringBuilder head=new StringBuilder("");
 		head.append("^x[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			head.append(CMStrings.padRight("Race",colWidths[0])+" ");
+			head.append(CMStrings.padRight(_("Race"),colWidths[0])+" ");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-			head.append(CMStrings.padRight("Class",colWidths[1])+" ");
+			head.append(CMStrings.padRight(_("Class"),colWidths[1])+" ");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-			head.append(CMStrings.padRight("Level",colWidths[2]));
+			head.append(CMStrings.padRight(_("Level"),colWidths[2]));
 		head.append("] Character name^.^N\n\r");
 		return head.toString();
 	}

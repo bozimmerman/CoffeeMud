@@ -1267,10 +1267,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final PlayerAccount acct=loginObj.acct;
 		final StringBuffer buf = new StringBuffer("");
 		buf.append("^X");
-		buf.append(CMStrings.padRight("Character",20));
-		buf.append(" " + CMStrings.padRight("Race",10));
-		buf.append(" " + CMStrings.padRight("Level",5));
-		buf.append(" " + CMStrings.padRight("Class",15));
+		buf.append(CMStrings.padRight(_("Character"),20));
+		buf.append(" " + CMStrings.padRight(_("Race"),10));
+		buf.append(" " + CMStrings.padRight(_("Level"),5));
+		buf.append(" " + CMStrings.padRight(_("Class"),15));
 		buf.append("^.^N\n\r");
 		for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 		{
@@ -2335,7 +2335,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
 						+"^N: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"^N/^w"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N\n\r");
 			}
-			statstr.append("^w"+CMStrings.padRight("STATS TOTAL",15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
+			statstr.append("^w"+CMStrings.padRight(_("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
 			session.println(statstr.toString());
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 			&&(!mob.baseCharStats().getMyRace().classless())

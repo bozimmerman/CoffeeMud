@@ -135,6 +135,11 @@ public class IMudInterface implements ImudServices, Serializable
 		port=Port;
 	}
 
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+	
 	public void setChannelsMap(List<CMChannel> channels)
 	{
 		this.channels=channels;
@@ -398,19 +403,19 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					final StringBuilder response=new StringBuilder("");
 					if((lk.visible_name.length()>0)&&(!lk.visible_name.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Name",10)).append(": ^N").append(lk.visible_name).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Name"),10)).append(": ^N").append(lk.visible_name).append("\n\r");
 					if((lk.title.length()>0)&&(!lk.title.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Title",10)).append(": ^N").append(lk.title).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Title"),10)).append(": ^N").append(lk.title).append("\n\r");
 					if((lk.real_name.length()>0)&&(!lk.real_name.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Real Name",10)).append(": ^N").append(lk.real_name).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Real Name"),10)).append(": ^N").append(lk.real_name).append("\n\r");
 					if((lk.e_mail.length()>0)&&(!lk.e_mail.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Email",10)).append(": ^N").append(lk.e_mail).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Email"),10)).append(": ^N").append(lk.e_mail).append("\n\r");
 					if((lk.loginout_time.length()>0)&&(!lk.loginout_time.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Logged",10)).append(": ^N").append(lk.loginout_time).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Logged"),10)).append(": ^N").append(lk.loginout_time).append("\n\r");
 					if((lk.ip_time.length()>0)&&(!lk.ip_time.equals("0")))
-						response.append("^H").append(CMStrings.padRight("IP Time",10)).append(": ^N").append(lk.ip_time).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("IP Time"),10)).append(": ^N").append(lk.ip_time).append("\n\r");
 					if((lk.extra.length()>0)&&(!lk.extra.equals("0")))
-						response.append("^H").append(CMStrings.padRight("Extra",10)).append(": ^N").append(lk.extra).append("\n\r");
+						response.append("^H").append(CMStrings.padRight(_("Extra"),10)).append(": ^N").append(lk.extra).append("\n\r");
 					smob.tell(response.toString());
 				}
 			}

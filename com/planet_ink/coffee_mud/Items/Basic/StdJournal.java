@@ -433,9 +433,9 @@ public class StdJournal extends StdItem
 		{
 			buf.append("#\n\r "+CMStrings.padRight("#",6)
 					   +((shortFormat)?"":""
-					   +CMStrings.padRight("From",11)
-					   +CMStrings.padRight("To",11))
-					   +CMStrings.padRight("Date",20)
+					   +CMStrings.padRight(_("From"),11)
+					   +CMStrings.padRight(_("To"),11))
+					   +CMStrings.padRight(_("Date"),20)
 					   +"Subject\n\r");
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)

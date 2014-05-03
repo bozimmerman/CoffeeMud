@@ -458,6 +458,8 @@ public class MOBloader
 			final String lsIP=DBConnections.getRes(R,"CMLSIP");
 			thisUser.email=DBConnections.getRes(R,"CMEMAL");
 			thisUser.ip=lsIP;
+			thisUser.exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
+			thisUser.expLvl=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
 			return thisUser;
 		}catch(final Exception e)
 		{
@@ -533,62 +535,17 @@ public class MOBloader
 		return new MOB.Tattoo(tattoo, tickDown);
 	}
 
-	public void vassals(MOB mob, String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
 	{
 		DBConnection D=null;
+		List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
 		try
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
-			final StringBuilder head=new StringBuilder("");
-			head.append("[");
-			head.append(CMStrings.padRight("Race",8)+" ");
-			head.append(CMStrings.padRight("Class",10)+" ");
-			head.append(CMStrings.padRight("Lvl",4)+" ");
-			head.append(CMStrings.padRight("Exp/Lvl",17));
-			head.append("] Character name\n\r");
-			final HashSet<String> done=new HashSet<String>();
-			if(R!=null) while(R.next())
-			{
-				final String username=DBConnections.getRes(R,"CMUSERID");
-				final MOB M=CMLib.players().getPlayer(username);
-				if(M==null)
-				{
-					done.add(username);
-					String cclass=DBConnections.getRes(R,"CMCLAS");
-					final int x=cclass.lastIndexOf(';');
-					if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
-					final String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-					final List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
-					int level=0;
-					for(final String lvl : lvls)
-						level+=CMath.s_int(lvl);
-					final int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
-					final int exlv=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
-					head.append("[");
-					head.append(CMStrings.padRight(race,8)+" ");
-					head.append(CMStrings.padRight(cclass,10)+" ");
-					head.append(CMStrings.padRight(Integer.toString(level),4)+" ");
-					head.append(CMStrings.padRight(exp+"/"+exlv,17));
-					head.append("] "+CMStrings.padRight(username,15));
-					head.append("\n\r");
-				}
-			}
-			for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
-			{
-				final MOB M=e.nextElement();
-				if((M.getLiegeID().equals(liegeID))&&(!done.contains(M.Name())))
-				{
-					head.append("[");
-					head.append(CMStrings.padRight(M.charStats().getMyRace().name(),8)+" ");
-					head.append(CMStrings.padRight(M.charStats().getCurrentClass().name(M.charStats().getCurrentClassLevel()),10)+" ");
-					head.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
-					head.append(CMStrings.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
-					head.append("] "+CMStrings.padRight(M.name(),15));
-					head.append("\n\r");
-				}
-			}
-			mob.tell(head.toString());
+			if(R!=null) 
+			while(R.next())
+				list.add(this.parseThinUser(R));
 		}
 		catch(final Exception sqle)
 		{
@@ -598,6 +555,7 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
+		return list;
 	}
 
 	public DVector worshippers(String deityID)

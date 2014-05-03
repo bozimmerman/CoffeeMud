@@ -205,7 +205,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(8,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Level",cols[1])+" "+CMStrings.padRight("Capacity",cols[2])+" Wood required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Level",cols[1])+" "+CMStrings.padRight(_("Capacity"),cols[2])+" Wood required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

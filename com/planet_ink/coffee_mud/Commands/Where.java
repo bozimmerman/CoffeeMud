@@ -86,8 +86,8 @@ public class Where extends StdCommand
 		&&(!overrideSet))
 		{
 			final StringBuffer lines=new StringBuffer("^x");
-			lines.append(CMStrings.padRight("Name",17)+"| ");
-			lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
+			lines.append(CMStrings.padRight(_("Name"),17)+"| ");
+			lines.append(CMStrings.padRight(_("Location"),17)+"^.^N\n\r");
 			String who=CMParms.combineWithQuotes(commands,1);
 			if(who.length()==0)
 			{
@@ -112,7 +112,7 @@ public class Where extends StdCommand
 					}
 					else
 					{
-						lines.append(CMStrings.padRight("NAMELESS",17)+"| ");
+						lines.append(CMStrings.padRight(_("NAMELESS"),17)+"| ");
 						lines.append("NOWHERE");
 						lines.append("\n\r");
 					}
@@ -506,7 +506,7 @@ public class Where extends StdCommand
 				}
 			}
 			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r");
-			msg.append("^x"+CMStrings.padRight("Area Name",35)+CMStrings.padRight("Level",6)+CMStrings.padRight("Alignment",20)+CMStrings.padRight("Pop",10)+"^.^?\n\r");
+			msg.append("^x"+CMStrings.padRight("Area Name",35)+CMStrings.padRight("Level",6)+CMStrings.padRight("Alignment",20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 			{
 				final Area A=(Area)scores.elementAt(i,1);

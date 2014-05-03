@@ -196,12 +196,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final StringBuffer buf=new StringBuffer("");
-			buf.append(CMStrings.padRight("Item",cols[0])+" "
-					   +CMStrings.padRight("Exp",cols[1])+" "
-					   +CMStrings.padRight("Material#1",cols[2])+" "
-					   +CMStrings.padRight("Amt#1",cols[3])+" "
-					   +CMStrings.padRight("Material#2",cols[4])+" "
-					   +CMStrings.padRight("Amt#2",cols[5])+"\n\r");
+			buf.append(CMStrings.padRight(_("Item"),cols[0])+" "
+					   +CMStrings.padRight(_("Exp"),cols[1])+" "
+					   +CMStrings.padRight(_("Material#1"),cols[2])+" "
+					   +CMStrings.padRight(_("Amt#1"),cols[3])+" "
+					   +CMStrings.padRight(_("Material#2"),cols[4])+" "
+					   +CMStrings.padRight(_("Amt#2"),cols[5])+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

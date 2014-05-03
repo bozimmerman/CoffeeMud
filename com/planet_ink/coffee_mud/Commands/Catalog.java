@@ -335,9 +335,9 @@ public class Catalog extends StdCommand
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
 					list.append("^HMobs ("+(cat)+")\n\r^N");
-					list.append(CMStrings.padRight("Name",34)+" ");
+					list.append(CMStrings.padRight(_("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
-					list.append(CMStrings.padRight("Name",34)+" ");
+					list.append(CMStrings.padRight(_("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
 					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogMobNames(cat);
@@ -370,10 +370,10 @@ public class Catalog extends StdCommand
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
 					list.append("^HItems ("+(cat)+")\n\r^N");
-					list.append(CMStrings.padRight("Name",34)+" ");
+					list.append(CMStrings.padRight(_("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
-					list.append(CMStrings.padRight("Rate",6)+" ");
-					list.append(CMStrings.padRight("Mask",31)+" ");
+					list.append(CMStrings.padRight(_("Rate"),6)+" ");
+					list.append(CMStrings.padRight(_("Mask"),31)+" ");
 					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogItemNames(cat);
 					for (final String name : names)

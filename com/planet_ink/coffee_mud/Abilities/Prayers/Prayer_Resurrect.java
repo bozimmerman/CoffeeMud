@@ -78,9 +78,9 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			final String name=CMParms.combine(commands,0);
 			if(name.equalsIgnoreCase("list"))
 			{
-				mob.tell("^x"+CMStrings.padRight("Guardian",15)
-						+CMStrings.padRight("Child name",45)
-						+CMStrings.padRight("Birth date",16)+"^?");
+				mob.tell("^x"+CMStrings.padRight(_("Guardian"),15)
+						+CMStrings.padRight(_("Child name"),45)
+						+CMStrings.padRight(_("Birth date"),16)+"^?");
 				for(int i=0;i<allObjs.size();i++)
 				{
 					body=allObjs.elementAt(i);

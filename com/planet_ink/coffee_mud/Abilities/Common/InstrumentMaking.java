@@ -174,7 +174,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(10,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Type",cols[2])+" Material required\n\r");
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight(_("Type"),cols[2])+" Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

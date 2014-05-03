@@ -77,6 +77,8 @@ public interface PlayerLibrary extends CMLibrary
 		public long last=0;
 		public String email="";
 		public String ip="";
+		public int exp=0;
+		public int expLvl=0;
 	}
 
 	public static class ThinnerPlayer

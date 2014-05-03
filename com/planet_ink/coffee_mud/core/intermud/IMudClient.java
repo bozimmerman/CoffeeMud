@@ -543,15 +543,15 @@ public class IMudClient implements I3Interface
 	public String getMudInfo(I3Mud mudToShow)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
-		buf.append(CMStrings.padRight("Address",10)+": "+mudToShow.address+"\n\r");
-		buf.append(CMStrings.padRight("Port",10)+": "+mudToShow.player_port+"\n\r");
-		buf.append(CMStrings.padRight("Admin@",10)+": "+mudToShow.admin_email+"\n\r");
-		buf.append(CMStrings.padRight("Base",10)+": "+mudToShow.base_mudlib+"\n\r");
-		buf.append(CMStrings.padRight("MudLib",10)+": "+mudToShow.mudlib+"\n\r");
-		buf.append(CMStrings.padRight("Type",10)+": "+mudToShow.mud_type+"\n\r");
-		buf.append(CMStrings.padRight("Driver",10)+": "+mudToShow.driver+"\n\r");
-		buf.append(CMStrings.padRight("Status",10)+": "+mudToShow.status+"\n\r");
+		buf.append(CMStrings.padRight(_("Name"),10)+": "+mudToShow.mud_name+"\n\r");
+		buf.append(CMStrings.padRight(_("Address"),10)+": "+mudToShow.address+"\n\r");
+		buf.append(CMStrings.padRight(_("Port"),10)+": "+mudToShow.player_port+"\n\r");
+		buf.append(CMStrings.padRight(_("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
+		buf.append(CMStrings.padRight(_("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
+		buf.append(CMStrings.padRight(_("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
+		buf.append(CMStrings.padRight(_("Type"),10)+": "+mudToShow.mud_type+"\n\r");
+		buf.append(CMStrings.padRight(_("Driver"),10)+": "+mudToShow.driver+"\n\r");
+		buf.append(CMStrings.padRight(_("Status"),10)+": "+mudToShow.status+"\n\r");
 		return buf.toString();
 	}
 
@@ -621,15 +621,15 @@ public class IMudClient implements I3Interface
 		else
 		for(final I3Mud mudToShow : muds)
 		{
-			buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
-			buf.append(CMStrings.padRight("Address",10)+": "+mudToShow.address+"\n\r");
-			buf.append(CMStrings.padRight("Port",10)+": "+mudToShow.player_port+"\n\r");
-			buf.append(CMStrings.padRight("Admin@",10)+": "+mudToShow.admin_email+"\n\r");
-			buf.append(CMStrings.padRight("Base",10)+": "+mudToShow.base_mudlib+"\n\r");
-			buf.append(CMStrings.padRight("MudLib",10)+": "+mudToShow.mudlib+"\n\r");
-			buf.append(CMStrings.padRight("Type",10)+": "+mudToShow.mud_type+"\n\r");
-			buf.append(CMStrings.padRight("Driver",10)+": "+mudToShow.driver+"\n\r");
-			buf.append(CMStrings.padRight("Status",10)+": "+mudToShow.status+"\n\r");
+			buf.append(CMStrings.padRight(_("Name"),10)+": "+mudToShow.mud_name+"\n\r");
+			buf.append(CMStrings.padRight(_("Address"),10)+": "+mudToShow.address+"\n\r");
+			buf.append(CMStrings.padRight(_("Port"),10)+": "+mudToShow.player_port+"\n\r");
+			buf.append(CMStrings.padRight(_("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
+			buf.append(CMStrings.padRight(_("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
+			buf.append(CMStrings.padRight(_("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
+			buf.append(CMStrings.padRight(_("Type"),10)+": "+mudToShow.mud_type+"\n\r");
+			buf.append(CMStrings.padRight(_("Driver"),10)+": "+mudToShow.driver+"\n\r");
+			buf.append(CMStrings.padRight(_("Status"),10)+": "+mudToShow.status+"\n\r");
 		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
@@ -730,7 +730,7 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster()) return;
 		final StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
 		final Hashtable channels=imc2.query_channels();
-		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight("Owner",20)+"\n\r");
+		buf.append(CMStrings.padRight("Name", 22)+CMStrings.padRight("Policy",25)+CMStrings.padRight(_("Owner"),20)+"\n\r");
 		final Enumeration e = channels.keys();
 		while (e.hasMoreElements())
 		{

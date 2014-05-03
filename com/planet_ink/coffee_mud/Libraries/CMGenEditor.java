@@ -6558,14 +6558,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String header=showNumber+". Class Abilities: ";
 			final String spaces=CMStrings.repeat(" ",2+(""+showNumber).length());
 			parts.append("\n\r");
-			parts.append(spaces+CMStrings.padRight("Lvl",3)+" "
-							   +CMStrings.padRight("Skill",25)+" "
-							   +CMStrings.padRight("Proff",5)+" "
-							   +CMStrings.padRight("Gain",5)+" "
-							   +CMStrings.padRight("Secret",6)+" "
-							   +CMStrings.padRight("Parm",7)+" "
-							   +CMStrings.padRight("Preq",7)+" "
-							   +CMStrings.padRight("Mask",6)+"\n\r"
+			parts.append(spaces+CMStrings.padRight(_("Lvl"),3)+" "
+							   +CMStrings.padRight(_("Skill"),25)+" "
+							   +CMStrings.padRight(_("Proff"),5)+" "
+							   +CMStrings.padRight(_("Gain"),5)+" "
+							   +CMStrings.padRight(_("Secret"),6)+" "
+							   +CMStrings.padRight(_("Parm"),7)+" "
+							   +CMStrings.padRight(_("Preq"),7)+" "
+							   +CMStrings.padRight(_("Mask"),6)+"\n\r"
 							   );
 			for(int i=0;i<=maxAbledLevel;i++)
 			{
