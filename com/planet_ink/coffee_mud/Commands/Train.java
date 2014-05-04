@@ -281,7 +281,7 @@ public class Train extends StdCommand
 			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
-		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> train(s) with <T-NAMESELF>."));
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);

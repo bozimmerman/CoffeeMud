@@ -48,7 +48,7 @@ public class Copy extends StdCommand
 		if(commands.size()<1)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		int number=1;
@@ -80,7 +80,7 @@ public class Copy extends StdCommand
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -123,7 +123,7 @@ public class Copy extends StdCommand
 							else
 							{
 								mob.tell(""+name+"' should be 'room' or 'exit'.");
-								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 								return false;
 							}
 						}
@@ -131,7 +131,7 @@ public class Copy extends StdCommand
 					if(E==null)
 					{
 						mob.tell("Room ID '"+name+"' does not exist.  You can also try exit <dir> and room <dir>.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -164,7 +164,7 @@ public class Copy extends StdCommand
 		if(E==null)
 		{
 			mob.tell("There's no such thing in the living world as a '"+name+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		Room room=mob.location();
@@ -189,9 +189,9 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java Plane.");
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s instantiate from the Java Plane.",""+number,newMOB.name()));
 					else
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 instantiates from the Java Plane.",newMOB.name()));
 					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" mob "+newMOB.Name()+".");
 				}
 			}
@@ -220,12 +220,12 @@ public class Copy extends StdCommand
 					if(number>1)
 					{
 						if(newItem.name().toLowerCase().endsWith("s"))
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+" falls "+end+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2 falls @x3.",""+number,newItem.name(),end));
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s falls "+end+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s falls @x3.",""+number,newItem.name(),end));
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" fall "+end+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 fall @x2.",newItem.name(),end));
 					Log.sysOut("SysopUtils",mob.Name()+" "+number+" copied "+newItem.ID()+" item.");
 				}
 			}
@@ -263,7 +263,7 @@ public class Copy extends StdCommand
 					if(newRoom.roomID().length()==0)
 					{
 						mob.tell(_("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 					newRoom.setArea(room.getArea());
@@ -280,13 +280,13 @@ public class Copy extends StdCommand
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.displayText(mob)+"s fall "+inDirName+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s fall @x3.",""+number,newRoom.displayText(mob),inDirName));
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.displayText(mob)+" falls "+inDirName+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
 						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+newRoom.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.displayText(mob)+" falls "+inDirName+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
 					room=newRoom;
 				}
 			}
@@ -319,7 +319,7 @@ public class Copy extends StdCommand
 					}
 					final boolean useShipDirs=(editRoom instanceof SpaceShip)||(editRoom.getArea() instanceof SpaceShip);
 					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
-					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+inDirName+".");
+					room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}
 			}
 			else
@@ -377,7 +377,7 @@ public class Copy extends StdCommand
 			else
 			{
 				mob.tell("I can't just make a copy of a '"+E.name()+"'.\n\r");
-				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				break;
 			}
 		}

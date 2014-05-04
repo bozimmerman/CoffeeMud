@@ -99,10 +99,9 @@ public class Bid extends StdCommand
 		{
 			final Environmental thisThang=(Environmental)V.elementAt(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
-					CMMsg.MSG_BID,"<S-NAME> bid(s) "+bidStr+" on <O-NAME> with <T-NAMESELF>.",
-					CMMsg.MSG_BID,"<S-NAME> bid(s) '"+bidStr+"' on <O-NAME> with <T-NAMESELF>.",
-					CMMsg.MSG_BID,"<S-NAME> place(s) a bid with <T-NAMESELF>."
-					);
+					CMMsg.MSG_BID,_("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
+					CMMsg.MSG_BID,_("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),
+					CMMsg.MSG_BID,_("<S-NAME> place(s) a bid with <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

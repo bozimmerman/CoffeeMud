@@ -77,7 +77,7 @@ public class Duel extends StdCommand
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
 				final long time = CMProps.getTickMillis() * duelTicks;
-				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
+				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, _("^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> @x1 seconds to consider.^.^N",""+(time/1000)));
 				target.tell("^NEnter ^HDUEL "+mob.name(target)+"^N to accept this challenge and begin fighting.");
 				return true;
 			}

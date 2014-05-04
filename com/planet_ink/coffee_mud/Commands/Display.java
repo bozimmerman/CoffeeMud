@@ -104,7 +104,7 @@ public class Display extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			final Environmental giveThis=(Environmental)V.elementAt(i);
-			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,"<O-NAME> show(s) <T-NAME> to <S-NAMESELF>.");
+			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,_("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 			if(mob.location().okMessage(recipient,newMsg))
 			{
 				recipient.tell(recipient,giveThis,mob,_("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));

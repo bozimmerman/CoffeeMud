@@ -90,7 +90,7 @@ public class Unlock extends StdCommand
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
 						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
-						opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+inDirName+" is unlocked from the other side.");
+						opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 is unlocked from the other side.",opE.name(),inDirName));
 					}
 				}
 			}

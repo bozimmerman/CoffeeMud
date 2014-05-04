@@ -52,7 +52,7 @@ public class Sleep extends StdCommand
 			return false;
 		if(commands.size()<=1)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,"<S-NAME> lay(s) down and take(s) a nap.");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,_("<S-NAME> lay(s) down and take(s) a nap."));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 			return false;

@@ -74,7 +74,7 @@ public class Dress extends StdCommand
 			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)&&(target.isMonster()))
 			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)&&(target.isMonster())))
 			{
-				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
+				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>."));
 				item.unWear();
 				target.moveItemTo(item);
 				item.wearIfPossible(target);
@@ -126,7 +126,7 @@ public class Dress extends StdCommand
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);
-								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
+								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 							}
 							else
 								mob.tell("You cannot seem to get "+item.name()+" on "+target.name(mob)+".");

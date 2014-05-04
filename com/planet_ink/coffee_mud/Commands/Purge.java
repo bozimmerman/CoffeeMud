@@ -51,7 +51,7 @@ public class Purge extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is PURGE MOB [MOB NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 
@@ -67,19 +67,19 @@ public class Purge extends StdCommand
 			{
 				mob.tell(deadMOB.name()+" is a PLAYER!!\n\r");
 				if(!doneSomething)
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return false;
 			}
 			doneSomething=true;
 			deadMOB.killMeDead(false);
-			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
+			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 vanishes in a puff of smoke.",deadMOB.name()));
 			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
 		if(!doneSomething)
 		{
 			mob.tell("I don't see '"+mobID+" here.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 		return true;
@@ -91,7 +91,7 @@ public class Purge extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is PURGE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Purge extends StdCommand
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -139,7 +139,7 @@ public class Purge extends StdCommand
 		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
 		while(deadItem!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 disintegrates!",deadItem.name()));
 			deadItem.destroy();
 			mob.location().recoverRoomStats();
 			doneSomething=true;
@@ -151,7 +151,7 @@ public class Purge extends StdCommand
 		if(!doneSomething)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		return true;

@@ -107,7 +107,7 @@ public class ClanAccept extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getEntryScript());
-							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
+							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANENTRY"));
 							S.executeMsg(M, msg2);
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);

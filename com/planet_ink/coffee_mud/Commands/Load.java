@@ -132,7 +132,7 @@ public class Load extends StdCommand
 					while((ammunition != null)
 					&&((W.ammunitionRemaining() < W.ammunitionCapacity())||(!doneOne)))
 					{
-						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,"<S-NAME> reload(s) <T-NAME> with <O-NAME>.");
+						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,_("<S-NAME> reload(s) <T-NAME> with <O-NAME>."));
 						if(mob.location().okMessage(mob,newMsg))
 						{
 							doneOne=true;

@@ -105,7 +105,7 @@ public class ClanExile extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANEXIT"));
 							S.executeMsg(M, msg2);
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);

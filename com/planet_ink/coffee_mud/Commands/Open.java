@@ -72,7 +72,7 @@ public class Open extends StdCommand
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
 						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
-						opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+inDirName+" opens.");
+						opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 opens.",opE.name(),inDirName));
 					}
 					return true;
 				}

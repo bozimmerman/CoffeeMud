@@ -47,7 +47,7 @@ public class Quit extends StdCommand
 			mob.tell(CMLib.lang()._("Huh?"));
 			return;
 		}
-		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, "^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N");
+		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, CMLib.lang()._("^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N"));
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg))||force)
 		{

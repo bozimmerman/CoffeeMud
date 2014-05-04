@@ -89,7 +89,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))+" closes.");
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
 				}
 			}
 		}

@@ -121,7 +121,7 @@ public class Throw extends StdCommand
 							}
 					}
 				}
-				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,_("<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -132,8 +132,8 @@ public class Throw extends StdCommand
 			final int opDir=Directions.getOpDirectionCode(dir);
 			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 			final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
-			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+inDir.toLowerCase()+".");
-			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+fromDir.toLowerCase()+".");
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,_("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
+			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,_("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

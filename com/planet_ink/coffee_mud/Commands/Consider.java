@@ -70,7 +70,7 @@ public class Consider extends StdCommand
 	{
 		final Room R=mob.location();
 		if(R==null) return 0;
-		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,_("<S-NAME> consider(s) <T-NAMESELF>."),_("<S-NAME> consider(s) <T-NAMESELF>."));
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
 		int lvlDiff=0;

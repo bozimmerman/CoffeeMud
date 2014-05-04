@@ -127,7 +127,7 @@ public class Give extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			giveThis=(Item)V.elementAt(i);
-			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			if(giveThis instanceof Coins)

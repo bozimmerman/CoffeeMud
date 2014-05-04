@@ -58,7 +58,7 @@ public class Knock extends StdCommand
 				mob.tell("You don't see '"+knockWhat.toLowerCase()+"' here.");
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50));
+			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 
@@ -76,14 +76,14 @@ public class Knock extends StdCommand
 				mob.tell("You can't knock on "+E.name()+"!");
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50));
+			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				E=mob.location().getPairedExit(dir);
 				final Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(E!=null)&&(E.hasADoor())
-				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,"You hear a knock on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50)))
+				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,_("You hear a knock on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50))))
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					final Vector V=new Vector();
@@ -104,7 +104,7 @@ public class Knock extends StdCommand
 							{
 								final boolean useShipDirs=(R2 instanceof SpaceShip)||(R2.getArea() instanceof SpaceShip);
 								final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir2):Directions.getInDirectionName(dir2);
-								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,"You hear a knock "+inDirName+"."+CMLib.protocol().msp("knock.wav",50));
+								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,_("You hear a knock @x1.@x2",inDirName,CMLib.protocol().msp("knock.wav",50)));
 							}
 						}
 					}

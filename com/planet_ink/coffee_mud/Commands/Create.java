@@ -48,13 +48,13 @@ public class Create extends StdCommand
 		if(mob.location().roomID().equals(""))
 		{
 			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(commands.size()<4)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE EXIT [DIRECTION] [EXIT TYPE]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class Create extends StdCommand
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -71,7 +71,7 @@ public class Create extends StdCommand
 		if(thisExit==null)
 		{
 			mob.tell("You have failed to specify a valid exit type '"+Locale+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -95,7 +95,7 @@ public class Create extends StdCommand
 		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up "+(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))+".\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly a portal opens up @x1.\n\r",(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
@@ -131,7 +131,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -155,7 +155,7 @@ public class Create extends StdCommand
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return;
 					}
 				}
@@ -183,7 +183,7 @@ public class Create extends StdCommand
 		if(newItem==null)
 		{
 			mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -200,14 +200,14 @@ public class Create extends StdCommand
 		{
 			((Room)dest).addItem(newItem);
 			newItem.setContainer(setContainer);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 drops from the sky.",newItem.name()));
 		}
 		else
 		if(dest instanceof MOB)
 		{
 			((MOB)dest).addItem(newItem);
 			newItem.setContainer(setContainer);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops into "+dest.name()+"'s arms.");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 drops into @x2's arms.",newItem.name(),dest.name()));
 		}
 
 		if((newItem.isGeneric())&&(doGenerica))
@@ -221,7 +221,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE MANUFACTURER [NEW NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -231,7 +231,7 @@ public class Create extends StdCommand
 		{
 			mob.tell(_("DefaultManufacturer not found."));
 			Log.errOut("DefaultManufacturer was not found in common classes.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -240,7 +240,7 @@ public class Create extends StdCommand
 		||manufacturerID.equalsIgnoreCase("RANDOM"))
 		{
 			mob.tell("There's already a manufacturer called '"+manufacturerID+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -256,7 +256,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE USER [PLAYER NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -265,13 +265,13 @@ public class Create extends StdCommand
 		if(M!=null)
 		{
 			mob.tell("There is already a player called '"+M.Name()+"'!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(!CMLib.login().isOkName(mobID,false))
 		{
 			mob.tell("'"+mobID+"' is not a valid name.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		mobID=CMStrings.capitalizeAndLower(mobID);
@@ -290,13 +290,13 @@ public class Create extends StdCommand
 		if(mob.location().roomID().equals(""))
 		{
 			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(commands.size()<4)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -304,7 +304,7 @@ public class Create extends StdCommand
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -314,7 +314,7 @@ public class Create extends StdCommand
 		if(thisRoom==null)
 		{
 			mob.tell("You have failed to specify a valid room type '"+Locale+"'.\n\rThe format is CREATE ROOM [DIRECTION] ([ROOM TYPE] / LINK [ROOM ID]) \n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		final Room room=mob.location();
@@ -323,7 +323,7 @@ public class Create extends StdCommand
 		if(thisRoom.roomID().length()==0)
 		{
 			mob.tell(_("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
@@ -346,7 +346,7 @@ public class Create extends StdCommand
 		if(commands.size()<4)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ACCOUNT [NAME] [PASSWORD]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -357,13 +357,13 @@ public class Create extends StdCommand
 		if(thisAcct!=null)
 		{
 			mob.tell("Account '"+AcctName+"' already exists!\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(!CMLib.login().isOkName(AcctName,false))
 		{
 			mob.tell("Name '"+AcctName+"' is not permitted.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
@@ -411,7 +411,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE MOB [MOB NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -428,7 +428,7 @@ public class Create extends StdCommand
 		if(newMOB==null)
 		{
 			mob.tell("There's no such thing as a '"+mobID+"'.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
@@ -447,7 +447,7 @@ public class Create extends StdCommand
 		newMOB.bringToLife(mob.location(),true);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
-		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
+		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 instantiates from the Java Plane.",newMOB.name()));
 		if((newMOB.isGeneric())&&(doGenerica))
 			CMLib.genEd().genMiscSet(mob,newMOB);
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
@@ -459,7 +459,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE RACE [RACE ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		String raceID=CMParms.combine(commands,2);
@@ -485,7 +485,7 @@ public class Create extends StdCommand
 		if(raceID.indexOf(' ')>=0)
 		{
 			mob.tell("'"+raceID+"' is an invalid race id, because it contains a space.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(GR==null)
@@ -507,7 +507,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE AREA [AREA NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String areaName=CMParms.combine(commands,2);
@@ -515,7 +515,7 @@ public class Create extends StdCommand
 		if(A!=null)
 		{
 			mob.tell("An area with the name '"+A.name()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		String areaType="";
@@ -554,7 +554,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rFormat: CREATE COMPONENT [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		String skillID=CMParms.combine(commands,2);
@@ -562,14 +562,14 @@ public class Create extends StdCommand
 		if(A==null)
 		{
 			mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		skillID=A.ID();
 		if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())!=null)
 		{
 			mob.tell("'"+A.ID()+"' already exists, you'll need to destroy it first.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
@@ -581,7 +581,7 @@ public class Create extends StdCommand
 		if(error!=null)
 		{
 			mob.tell(error);
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
@@ -604,7 +604,7 @@ public class Create extends StdCommand
 				if(V.get(v).length()>0)
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String parms=CMParms.combineWithQuotes(commands,2);
@@ -612,7 +612,7 @@ public class Create extends StdCommand
 		if(skillID.indexOf(' ')>=0)
 		{
 			mob.tell(_("Spaces are not allowed in expertise codes."));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		String WKID=CMStrings.replaceAll(skillID.toUpperCase(),"@X1","");
@@ -620,14 +620,14 @@ public class Create extends StdCommand
 		if(CMLib.expertises().getStages(WKID)>0)
 		{
 			mob.tell("'"+WKID+"' already exists, you'll need to destroy it first.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String error=CMLib.expertises().confirmExpertiseLine(parms,null,false);
 		if(error!=null)
 		{
 			mob.tell(error);
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
@@ -653,7 +653,7 @@ public class Create extends StdCommand
 				if(V.get(v).length()>0)
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String parms=CMParms.combineWithQuotes(commands,2);
@@ -661,14 +661,14 @@ public class Create extends StdCommand
 		if(CMLib.titles().isExistingAutoTitle(skillID))
 		{
 			mob.tell("'"+skillID+"' already exists, you'll need to destroy it first.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String error=CMLib.titles().evaluateAutoTitle(parms,false);
 		if(error!=null)
 		{
 			mob.tell(error);
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
@@ -684,7 +684,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ABILITY [ABILITY ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String classD=CMParms.combine(commands,2);
@@ -692,13 +692,13 @@ public class Create extends StdCommand
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid  id, because it contains a space.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
@@ -714,7 +714,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE LANGUAGE [LANGUAGE ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String classD=CMParms.combine(commands,2);
@@ -722,13 +722,13 @@ public class Create extends StdCommand
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid  id, because it contains a space.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final Language CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
@@ -744,7 +744,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE CRAFTSKILL [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String classD=CMParms.combine(commands,2);
@@ -752,13 +752,13 @@ public class Create extends StdCommand
 		if((A!=null)&&(A.isGeneric()))
 		{
 			mob.tell("A generic ability with the ID '"+A.ID()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid  id, because it contains a space.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final Ability CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
@@ -774,14 +774,14 @@ public class Create extends StdCommand
 		if(commands.size()<4)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String classD=CMParms.combine(commands,3);
@@ -789,7 +789,7 @@ public class Create extends StdCommand
 		if(A==null)
 		{
 			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
@@ -797,7 +797,7 @@ public class Create extends StdCommand
 		if(subMap.containsKey(classD.toUpperCase().trim()))
 		{
 			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+A.ID()+"' already exists.  Try DESTROY or MODIFY.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
@@ -814,7 +814,7 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE CLASS [CLASS ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		String classD=CMParms.combine(commands,2);
@@ -822,7 +822,7 @@ public class Create extends StdCommand
 		if((C!=null)&&(C.isGeneric()))
 		{
 			mob.tell("A generic class with the ID '"+C.ID()+"' already exists!");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		CharClass CR=null;
@@ -841,7 +841,7 @@ public class Create extends StdCommand
 		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid class id, because it contains a space.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(CR==null)
@@ -866,14 +866,14 @@ public class Create extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		final String stuff=CMParms.combine(commands,2);
 		if(CMLib.socials().fetchSocial(stuff,false)!=null)
 		{
 			mob.tell("The social '"+stuff+"' already exists.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		CMLib.socials().modifySocialInterface(mob,stuff);
@@ -1050,7 +1050,7 @@ public class Create extends StdCommand
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 				mob.tell(_("Include a name!"));
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
 			final String err=CMLib.quests().createHoliday(named,mob.location().getArea().name(),true);
@@ -1058,7 +1058,7 @@ public class Create extends StdCommand
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 				mob.tell(err);
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
 			else
@@ -1347,7 +1347,7 @@ public class Create extends StdCommand
 					{
 						for(int i=0;i<num;i++)
 							mob.location().addItem(CMLib.materials().makeItemResource(matCode),ItemPossessor.Expire.Player_Drop);
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, "Suddenly "+num+" "+RawMaterial.CODES.NAME(matCode)+" fall from the sky.");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, _("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
 					}
 					else
 					{

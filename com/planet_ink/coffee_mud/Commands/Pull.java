@@ -82,7 +82,7 @@ public class Pull extends Go
 			mob.tell("You don't see '"+itemName+"' here.");
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,"<S-NAME> pull(s) <T-NAME>"+dir+".");
+		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,_("<S-NAME> pull(s) <T-NAME>@x1.",dir));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

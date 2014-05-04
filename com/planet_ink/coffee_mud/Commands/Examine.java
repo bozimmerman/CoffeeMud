@@ -101,7 +101,7 @@ public class Examine extends StdCommand
 						name=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
-				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,_("@x1@x2 closely.",textMsg,name));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(thisThang instanceof Room))

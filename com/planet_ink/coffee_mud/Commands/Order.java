@@ -155,7 +155,7 @@ public class Order extends StdCommand
 				mob.tell("You can't order '"+target.name(mob)+"' around.");
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,_("^T<S-NAME> order(s) <T-NAMESELF> to '@x1'^?.",order));
 				if((mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);

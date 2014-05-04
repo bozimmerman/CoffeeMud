@@ -65,13 +65,13 @@ public class Rebuke extends StdCommand
 		}
 
 		CMMsg msg=null;
-		msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+target.Name()+".");
+		msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,_("<S-NAME> rebuke(s) @x1.",target.Name()));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		if((target.amFollowing()==mob)&&(target.location()!=null))
 		{
 			final Room R=target.location();
-			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,"<S-NAME> stop(s) following <T-NAMESELF>.");
+			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,_("<S-NAME> stop(s) following <T-NAMESELF>."));
 			// no room OKaffects, since the damn leader may not be here.
 			if(target.okMessage(mob,msg))
 				R.send(mob,msg);

@@ -257,7 +257,7 @@ public class Say extends StdCommand
 		final String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,_("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 
@@ -292,7 +292,7 @@ public class Say extends StdCommand
 					if(dirCode>=0)
 						opDirCode=Directions.getOpDirectionCode(dirCode);
 					final String inDirName=(dirCode<0)?"":(useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode));
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+inDirName+"^?");
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,_("^TYou hear someone yell '@x1' @x2^?",combinedCommands,inDirName));
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{

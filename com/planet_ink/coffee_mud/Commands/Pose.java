@@ -73,7 +73,7 @@ public class Pose extends StdCommand
 		else
 			combinedCommands=" "+combinedCommands.trim();
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
-		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,"^E"+mob.name()+combinedCommands+" ^?",emote,emote);
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,_("^E@x1@x2 ^?",mob.name(),combinedCommands),emote,emote);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

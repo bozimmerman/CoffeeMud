@@ -59,7 +59,7 @@ public class Serve extends StdCommand
 			mob.tell("I don't see "+CMParms.combine(commands,0)+" here.");
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,_("<S-NAME> swear(s) fealty to <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

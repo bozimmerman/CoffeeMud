@@ -101,7 +101,7 @@ public class Practice extends StdCommand
 		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;
-		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> practice(s) '"+myAbility.name()+"' with <T-NAMESELF>.");
+		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> practice(s) '@x1' with <T-NAMESELF>.",myAbility.name()));
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		teacherAbility.practice(teacher,mob);

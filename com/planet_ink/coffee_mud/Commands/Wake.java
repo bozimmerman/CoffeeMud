@@ -50,7 +50,7 @@ public class Wake extends StdCommand
 				mob.tell(_("You aren't sleeping!?"));
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,_("<S-NAME> awake(s) and stand(s) up."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -69,7 +69,7 @@ public class Wake extends StdCommand
 				mob.tell(M.name(mob)+" is awake!");
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to wake <T-NAME> up.");
+			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to wake <T-NAME> up."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

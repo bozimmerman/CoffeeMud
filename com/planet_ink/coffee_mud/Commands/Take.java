@@ -140,7 +140,7 @@ public class Take extends StdCommand
 			for(int i=0;i<V.size();i++)
 			{
 				final Item giveThis=(Item)V.elementAt(i);
-				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
+				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,_("<T-NAME> take(s) <O-NAME> from <S-NAMESELF>."));
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
 				if(!mob.isMine(giveThis)) mob.moveItemTo(giveThis);

@@ -1052,9 +1052,9 @@ public class Test extends StdCommand
 				RideZapper.setMiscText("-RACE +Dwarf");
 				mob.tell("Test#13-1: "+RideZapper.accountForYourself());
 				IS=giveTo(CMClass.getItem("Boat"),RideZapper,mobs[0],mobs[1],3);
-				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
+				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,_("<S-NAME> mount(s) <T-NAMESELF>."));
 				if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
-				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_MOUNT,"<S-NAME> mount(s) <T-NAMESELF>.");
+				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_MOUNT,_("<S-NAME> mount(s) <T-NAMESELF>."));
 				if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
 				if(mobs[0].riding()!=IS[0]){ mob.tell(_("Error13-1")); return false;}
 				if(mobs[1].riding()==IS[1]){ mob.tell(_("Error13-2")); return false;}
@@ -1068,9 +1068,9 @@ public class Test extends StdCommand
 				WearZapper.setMiscText("-RACE +Dwarf");
 				mob.tell("Test#14-1: "+WearZapper.accountForYourself());
 				IS=giveTo(CMClass.getWeapon("Sword"),WearZapper,mobs[0],mobs[1],0);
-				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
+				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_WIELD,_("<S-NAME> wield(s) <T-NAMESELF>."));
 				if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
-				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
+				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,_("<S-NAME> wield(s) <T-NAMESELF>."));
 				if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
 				if(IS[0].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell(_("Error14-1")); return false;}
 				if(!IS[1].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell(_("Error14-2")); return false;}

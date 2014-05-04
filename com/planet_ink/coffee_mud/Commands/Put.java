@@ -172,7 +172,7 @@ public class Put extends StdCommand
 		{
 			putThis=(Item)V.elementAt(i);
 			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
-			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
+			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,_("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
 			if(mob.location().okMessage(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)

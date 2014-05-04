@@ -86,7 +86,7 @@ public class Feed extends StdCommand
 				mob.tell("Not while "+target.name(mob)+" is in combat!");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> feed(s) @x1 to <T-NAMESELF>.",item.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

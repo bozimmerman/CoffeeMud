@@ -133,7 +133,7 @@ public class Possess extends StdCommand
 			mob.tell("You may not possess '"+MOBname+"'.");
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, "<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
+		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, _("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg)))
 		{

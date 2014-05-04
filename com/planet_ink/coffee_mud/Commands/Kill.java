@@ -93,7 +93,7 @@ public class Kill extends StdCommand
 
 		if(reallyKill)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

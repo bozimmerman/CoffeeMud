@@ -118,7 +118,7 @@ public class Fill extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			final Environmental fillThis=(Environmental)V.elementAt(i);
-			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
+			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,_("<S-NAME> fill(s) <T-NAME> from <O-NAME>."));
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))

@@ -79,7 +79,7 @@ public class Sell extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			final Item thisThang=(Item)V.elementAt(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>.");
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,_("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

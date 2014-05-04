@@ -203,7 +203,7 @@ public class Save extends StdCommand
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(firstCommand)!=null)
@@ -212,7 +212,7 @@ public class Save extends StdCommand
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(lastCommand)!=null)
@@ -221,7 +221,7 @@ public class Save extends StdCommand
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		{

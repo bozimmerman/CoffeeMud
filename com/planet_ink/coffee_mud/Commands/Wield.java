@@ -67,7 +67,7 @@ public class Wield extends StdCommand
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
 			{
 				final Item item=items.get(i);
-				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");
+				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,_("<S-NAME> wield(s) <T-NAME>."));
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}

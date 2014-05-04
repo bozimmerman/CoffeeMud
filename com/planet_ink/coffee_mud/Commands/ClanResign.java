@@ -79,7 +79,7 @@ public class ClanResign extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANEXIT"));
 							S.executeMsg(mob, msg2);
 							S.dequeResponses();
 							S.tick(mob,Tickable.TICKID_MOB);

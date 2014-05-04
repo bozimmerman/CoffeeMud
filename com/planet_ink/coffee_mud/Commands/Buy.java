@@ -112,7 +112,7 @@ public class Buy extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			final Environmental thisThang=(Environmental)V.elementAt(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,_("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

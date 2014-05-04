@@ -50,7 +50,7 @@ public class Dismount extends StdCommand
 				mob.tell(_("But you aren't riding anything?!"));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString(mob)+" <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
@@ -76,7 +76,7 @@ public class Dismount extends StdCommand
 				mob.tell(RI.name(mob)+" may not want you to do that.");
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,_("<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

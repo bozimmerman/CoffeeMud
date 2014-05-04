@@ -117,7 +117,7 @@ public class Dig extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) digging.");
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) digging."));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

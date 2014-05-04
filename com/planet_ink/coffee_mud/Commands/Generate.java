@@ -73,7 +73,7 @@ public class Generate extends StdCommand
 		CMLib.database().DBUpdateExits(oldR);
 		final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
-		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+dirName);
+		oldR.showHappens(CMMsg.MSG_OK_VISUAL,_("A new place materializes to the @x1",dirName));
 	}
 
 	@Override
@@ -236,14 +236,14 @@ public class Generate extends StdCommand
 			if(V.elementAt(v) instanceof MOB)
 			{
 				((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((MOB)V.elementAt(v)).name()+" appears.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((MOB)V.elementAt(v)).name()));
 				Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
 			}
 			else
 			if(V.elementAt(v) instanceof Item)
 			{
 				mob.location().addItem((Item)V.elementAt(v));
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((Item)V.elementAt(v)).name()+" appears.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((Item)V.elementAt(v)).name()));
 				Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
 			}
 			else

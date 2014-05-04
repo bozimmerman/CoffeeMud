@@ -54,7 +54,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY MOB [MOB NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 
@@ -70,11 +70,11 @@ public class Destroy extends StdCommand
 			{
 				mob.tell(deadMOB.name()+" is a PLAYER!!\n\r");
 				if(!doneSomething)
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return false;
 			}
 			doneSomething=true;
-			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
+			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 vanishes in a puff of smoke.",deadMOB.name()));
 			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
 			deadMOB.destroy();
 			mob.location().delInhabitant(deadMOB);
@@ -84,7 +84,7 @@ public class Destroy extends StdCommand
 		if(!doneSomething)
 		{
 			mob.tell("I don't see '"+mobID+" here.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 		return true;
@@ -95,7 +95,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY MANUFACTURER [NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -105,7 +105,7 @@ public class Destroy extends StdCommand
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
 			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -120,11 +120,11 @@ public class Destroy extends StdCommand
 	public void accounts(MOB mob, Vector commands)
 	throws IOException
 	{
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> wave(s) <S-HIS-HER> hands around the heavens."));
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ACCOUNT ([NAME])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		final String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
@@ -132,7 +132,7 @@ public class Destroy extends StdCommand
 		if(theAccount==null)
 		{
 			mob.tell("There is no account called '"+accountName+"'!\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		final String playerList = CMParms.toStringList(theAccount.getPlayers());
@@ -158,7 +158,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY USER [USER NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Destroy extends StdCommand
 		if(!found)
 		{
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' does not exist!\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 
@@ -258,7 +258,7 @@ public class Destroy extends StdCommand
 				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is UNLINK (N,S,E,W,U, or D)\n\r"));
 			else
 				mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ROOM ([DIRECTION],[ROOM ID])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		boolean confirmed=false;
@@ -281,14 +281,14 @@ public class Destroy extends StdCommand
 				mob.tell("You have failed to specify a direction.  Try ("+Directions.LETTERS()+").\n\r");
 			else
 				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or ("+Directions.LETTERS()+").\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		else
 		if(mob.isMonster())
 		{
 			mob.tell(_("Sorry Charlie!"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 
 		}
@@ -297,13 +297,13 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,deadRoom,CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell(_("Sorry Charlie! Not your room!"));
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}
 			if(mob.location()==deadRoom)
 			{
 				mob.tell(_("You dip! You have to leave this room first!"));
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}
 
@@ -312,7 +312,7 @@ public class Destroy extends StdCommand
 					return;
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell(_("The sound of massive destruction rings in your ears."));
-			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,_("The sound of massive destruction rings in your ears."));
 			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
 		}
 		else
@@ -366,7 +366,7 @@ public class Destroy extends StdCommand
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 			final String inDirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+inDirName+".");
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A wall of inhibition falls @x1.",inDirName));
 			final String dirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+dirName+" from room "+mob.location().roomID()+".");
 		}
@@ -377,13 +377,13 @@ public class Destroy extends StdCommand
 		if(mob.location().roomID().equals(""))
 		{
 			mob.tell(_("This command is invalid from within a GridLocaleChild room."));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY EXIT [DIRECTION]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 
@@ -391,13 +391,13 @@ public class Destroy extends StdCommand
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		if(mob.isMonster())
 		{
 			mob.tell(_("Sorry Charlie!"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 
 		}
@@ -407,7 +407,7 @@ public class Destroy extends StdCommand
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))+".");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A wall of inhibition falls @x1.",(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
@@ -416,7 +416,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -443,7 +443,7 @@ public class Destroy extends StdCommand
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -465,7 +465,7 @@ public class Destroy extends StdCommand
 		while(deadItem!=null)
 		{
 			mob.location().recoverRoomStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 disintegrates!",deadItem.name()));
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
 			if(srchMob!=null)
@@ -483,7 +483,7 @@ public class Destroy extends StdCommand
 		if(!doneSomething)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		return true;
@@ -496,7 +496,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY AREA [AREA NAME]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 			return;
 		}
 		boolean confirmed=false;
@@ -525,7 +525,7 @@ public class Destroy extends StdCommand
 						if(A==null)
 						{
 							mob.tell("There is no such area as '"+((String)commands.elementAt(i))+"'");
-							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 							return;
 						}
 						areaNames.remove(A.Name());
@@ -539,7 +539,7 @@ public class Destroy extends StdCommand
 			if(CMLib.map().getArea(areaName)==null)
 			{
 				mob.tell("There is no such area as '"+areaName+"'");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 				return;
 			}
 			final Area A=CMLib.map().getArea(areaName);
@@ -556,7 +556,7 @@ public class Destroy extends StdCommand
 					if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 					{
 						mob.tell(_("You dip!  You are IN that area!  Leave it first..."));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 						return;
 					}
 					confirmed=true;
@@ -575,7 +575,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY RACE [RACE ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -584,13 +584,13 @@ public class Destroy extends StdCommand
 		if(R==null)
 		{
 			mob.tell("'"+raceID+"' is an invalid race id.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(R.isGeneric()))
 		{
 			mob.tell("'"+R.ID()+"' is not generic, and may not be deleted.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		final String oldRID=R.ID();
@@ -612,7 +612,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY COMPONENT [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -620,7 +620,7 @@ public class Destroy extends StdCommand
 		if(CMLib.ableMapper().getAbilityComponentMap().get(classID.toUpperCase())==null)
 		{
 			mob.tell("'"+classID+"' does not exist, try LIST COMPONENTS.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		CMLib.ableMapper().alterAbilityComponentFile(classID,true);
@@ -634,7 +634,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY EXPERTISE [CODE ID or HELP line]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -658,7 +658,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -666,7 +666,7 @@ public class Destroy extends StdCommand
 		if(!CMLib.titles().isExistingAutoTitle(classID))
 		{
 			mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		CMLib.titles().dispossesTitle(classID);
@@ -686,7 +686,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY CLASS [CLASS ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -695,13 +695,13 @@ public class Destroy extends StdCommand
 		if(C==null)
 		{
 			mob.tell("'"+classID+"' is an invalid class id.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(C.isGeneric()))
 		{
 			mob.tell("'"+C.ID()+"' is not generic, and may not be deleted.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		CMClass.delCharClass(C);
@@ -723,7 +723,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY ABILITY [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 
@@ -732,20 +732,20 @@ public class Destroy extends StdCommand
 		if(A==null)
 		{
 			mob.tell("'"+classID+"' is an invalid ability id.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
 			mob.tell("'"+A.ID()+"' is not generic, and may not be deleted.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		final Object O=CMClass.getObjectOrPrototype(A.ID());
 		if(!(O instanceof Ability))
 		{
 			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.getSimpleClassName(O)+".");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
@@ -760,7 +760,7 @@ public class Destroy extends StdCommand
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		else
@@ -772,7 +772,7 @@ public class Destroy extends StdCommand
 					||therest.equalsIgnoreCase("ALL"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}
 		}
@@ -781,7 +781,7 @@ public class Destroy extends StdCommand
 		if(soc2==null)
 		{
 			mob.tell(_("but fail to specify an EXISTING SOCIAL!\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 		if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
@@ -833,14 +833,14 @@ public class Destroy extends StdCommand
 		if(commands.size()<4)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String eachOrAll=(String)commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final String classD=CMParms.combine(commands,3);
@@ -849,7 +849,7 @@ public class Destroy extends StdCommand
 		if(!subMap.containsKey(classD.toUpperCase().trim()))
 		{
 			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+classD+"' does not exist! Try LIST ALLQUALIFYS");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		subMap.remove(classD.toUpperCase().trim());
@@ -1162,7 +1162,7 @@ public class Destroy extends StdCommand
 			if(num<0)
 			{
 				mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
@@ -1346,7 +1346,7 @@ public class Destroy extends StdCommand
 			if(P==null)
 			{
 				mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
@@ -1357,7 +1357,7 @@ public class Destroy extends StdCommand
 				Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
 			}
 			else
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 		}
 		else
 		if(commandType.equals("QUEST"))
