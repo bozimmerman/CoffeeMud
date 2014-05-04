@@ -121,7 +121,7 @@ public class Spell_Telepathy extends Spell
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)<10)
 					adjective+="unwise, ";
 
-				mob.tell(target.Name()+" is a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+".");
+				mob.tell(_("@x1 is a @x2@x3 @x4.",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name()));
 				if(thoughts.length()==0)
 					mob.tell(_("You don't detect any other thoughts."));
 				else

@@ -530,7 +530,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 		}
 		else
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^N^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^N^.");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,_("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),_("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
 		if((chan.flags.contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC))
 		&&(pStats!=null)
 		&&(pStats.getAccount()!=null)

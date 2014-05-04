@@ -83,7 +83,7 @@ public class Spell_Grease extends Spell
 						switch(greaseEffect)
 						{
 							case SIT:
-								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) and slide(s) around in the grease!"));
 								mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
 								if(mob.location().okMessage(mob,msg2))
 									mob.location().send(mob,msg2);
@@ -93,7 +93,7 @@ public class Spell_Grease extends Spell
 								if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)||(weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 								{
-									msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
+									msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,_("<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease."));
 									weapon.unWear();
 									if(mob.location().okMessage(mob,msg2))
 										mob.location().send(mob,msg2);
@@ -102,9 +102,9 @@ public class Spell_Grease extends Spell
 							case BOTH:
 								weapon = mob.fetchWieldedItem();
 								if(weapon != null)
-									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
+									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon."));
 								else
-									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
+									msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) in the grease and fall(s) down."));
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
@@ -112,7 +112,7 @@ public class Spell_Grease extends Spell
 									if((weapon!=null)&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*4))
 									&&((weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)||(weapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 									{
-										msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
+										msg2=CMClass.getMsg(mob,weapon,null,CMMsg.MSG_DROP,_("<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease."));
 										weapon.unWear();
 										if(mob.location().okMessage(mob,msg2))
 											mob.location().send(mob,msg2);
@@ -120,7 +120,7 @@ public class Spell_Grease extends Spell
 								}
 								return false;
 							default:
-								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
+								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) and slide(s) around in the grease!"));
 								if(mob.location().okMessage(mob,msg2))
 								{
 									mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);

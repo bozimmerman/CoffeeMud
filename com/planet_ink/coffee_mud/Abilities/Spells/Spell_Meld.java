@@ -88,13 +88,13 @@ public class Spell_Meld extends Spell
 		final Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
 		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
-			mob.tell("You don't seem to have a '"+((String)commands.elementAt(0))+"'.");
+			mob.tell(_("You don't seem to have a '@x1'.",((String)commands.elementAt(0))));
 			return false;
 		}
 		final Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));
 		if((itemTwo==null)||(!CMLib.flags().canBeSeenBy(itemTwo,mob)))
 		{
-			mob.tell("You don't seem to have a '"+CMParms.combine(commands,1)+"'.");
+			mob.tell(_("You don't seem to have a '@x1'.",CMParms.combine(commands,1)));
 			return false;
 		}
 
@@ -134,7 +134,7 @@ public class Spell_Meld extends Spell
 			}
 			else
 			{
-				mob.tell(itemOne.name()+" and "+itemTwo.name()+" aren't worn in compatible places, and thus can't be melded.");
+				mob.tell(_("@x1 and @x2 aren't worn in compatible places, and thus can't be melded.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 		}
@@ -143,22 +143,22 @@ public class Spell_Meld extends Spell
 		{
 			if(!itemOne.fitsOn(Wearable.WORN_HELD))
 			{
-				mob.tell(itemOne.name()+" can't be held, and thus can't be melded with "+itemTwo.name()+".");
+				mob.tell(_("@x1 can't be held, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 			if(!itemTwo.fitsOn(Wearable.WORN_HELD))
 			{
-				mob.tell(itemTwo.name()+" can't be held, and thus can't be melded with "+itemOne.name()+".");
+				mob.tell(_("@x1 can't be held, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
 				return false;
 			}
 			if(itemOne.rawLogicalAnd())
 			{
-				mob.tell(itemOne.name()+" is two handed, and thus can't be melded with "+itemTwo.name()+".");
+				mob.tell(_("@x1 is two handed, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 			if(itemTwo.rawLogicalAnd())
 			{
-				mob.tell(itemTwo.name()+" is two handed, and thus can't be melded with "+itemOne.name()+".");
+				mob.tell(_("@x1 is two handed, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
 				return false;
 			}
 		}
@@ -195,7 +195,7 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),_("^S<S-NAME> meld(s) @x1 and @x2.^?",itemOne.name(),itemTwo.name()));
 			final CMMsg msg2=CMClass.getMsg(mob,itemTwo,this,verbalCastCode(mob,itemOne,auto),null);
 			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{

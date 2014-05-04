@@ -224,7 +224,7 @@ public class GenCharClass extends StdCharClass
 				if(!CMLib.masking().maskCheck(qualifications,mob,true))
 				{
 					if(!quiet)
-						mob.tell("You must meet the following qualifications to be a "+name()+":\n"+getStatQualDesc());
+						mob.tell(_("You must meet the following qualifications to be a @x1:\n@x2",name(),getStatQualDesc()));
 					return false;
 				}
 			}

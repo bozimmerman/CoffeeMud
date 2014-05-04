@@ -105,7 +105,7 @@ public class Thief_SenseLaw extends ThiefSkill
 				&&((mob.location()!=oldroom)||(!buf.toString().equals(lastReport)))
 				&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 				{
-					mob.tell("You sense: "+buf.toString());
+					mob.tell(_("You sense: @x1",buf.toString()));
 					oldroom=mob.location();
 					helpProficiency(mob, 0);
 					lastReport=buf.toString();

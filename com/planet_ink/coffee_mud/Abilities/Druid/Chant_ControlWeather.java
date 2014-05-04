@@ -90,7 +90,7 @@ public class Chant_ControlWeather extends Chant
 		if((A!=null)&&(A.abilityCode()==1))
 		{
 			final long remaining=A.tickDown*CMProps.getTickMillis();
-			mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
+			mob.tell(_("This area is under an enchantment of climactic balance, which can not be controlled for @x1.",mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)));
 			return false;
 		}
 		int size=mob.location().getArea().numberOfProperIDedRooms();
@@ -105,7 +105,7 @@ public class Chant_ControlWeather extends Chant
 			{
 				mob.location().send(mob,msg);
 				if((A!=null)&&(A.invoker()!=mob))
-					mob.tell("You successfully wrest control of the weather from "+A.invoker().name()+".");
+					mob.tell(_("You successfully wrest control of the weather from @x1.",A.invoker().name()));
 				if(A!=null) A.unInvoke();
 				beneficialAffect(mob,mob.location().getArea(),asLevel,0);
 			}

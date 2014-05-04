@@ -99,7 +99,7 @@ public class Skill_ControlUndead extends StdSkill
 		{
 			if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))
 			{
-				msg.source().tell("You're too submissive towards "+invoker().name());
+				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
 				if(invoker().getVictim()==msg.source())
 				{
 					invoker().makePeace();
@@ -107,7 +107,7 @@ public class Skill_ControlUndead extends StdSkill
 				}
 			}
 			else
-				msg.source().tell("You're too submissive towards "+invoker().name());
+				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
 			return false;
 		}
 		else
@@ -128,7 +128,7 @@ public class Skill_ControlUndead extends StdSkill
 			&&(mob.amFollowing()!=null)
 			&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 			{
-				msg.source().tell("You're too submissive towards "+invoker().name());
+				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
 				return false;
 			}
 		}
@@ -259,7 +259,7 @@ public class Skill_ControlUndead extends StdSkill
 							CMLib.combat().makePeaceInGroup(mob);
 							invoker=mob;
 							if(target.amFollowing()!=mob)
-								mob.tell(target.name(mob)+" seems unwilling to obey you.");
+								mob.tell(_("@x1 seems unwilling to obey you.",target.name(mob)));
 						}
 					}
 					else

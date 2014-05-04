@@ -63,7 +63,7 @@ public class Song_SingleMindedness extends Song
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(themsg.sourceMinor()!=msg.sourceMinor()))
 		{
-			msg.source().tell(msg.source(),null,null,"The only thing you have a mind to do is '"+themsg.sourceMessage()+"'.");
+			msg.source().tell(msg.source(),null,null,_("The only thing you have a mind to do is '@x1'.",themsg.sourceMessage()));
 			return false;
 		}
 		return super.okMessage(ticking,msg);

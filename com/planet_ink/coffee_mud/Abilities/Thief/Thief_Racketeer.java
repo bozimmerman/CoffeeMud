@@ -88,11 +88,11 @@ public class Thief_Racketeer extends ThiefSkill
 		{
 			if(invoker()==source)
 			{
-				source.tell(((Physical)msg.target()).name(source)+" is currently under your protection.");
+				source.tell(_("@x1 is currently under your protection.",((Physical)msg.target()).name(source)));
 			}else
 			{
-				source.tell(((Physical)msg.target()).name(source)+" is under "+invoker().name(source)+"'s protection.");
-				invoker().tell("Word on the street is that "+source.name(invoker())+" is hassling "+((Physical)msg.target()).name(invoker())+" who is under your protection.");
+				source.tell(_("@x1 is under @x2's protection.",((Physical)msg.target()).name(source),invoker().name(source)));
+				invoker().tell(_("Word on the street is that @x1 is hassling @x2 who is under your protection.",source.name(invoker()),((Physical)msg.target()).name(invoker())));
 			}
 			return false;
 		}
@@ -137,7 +137,7 @@ public class Thief_Racketeer extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(mob.isInCombat())
@@ -149,26 +149,25 @@ public class Thief_Racketeer extends ThiefSkill
 				&&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
 				&&(target.fetchBehavior("ItemRefitter")==null))
 		{
-			mob.tell("You can't get protection money from "+target.name(mob)+".");
+			mob.tell(_("You can't get protection money from @x1.",target.name(mob)));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
-				mob.tell(target.name(mob)+" has already been extracted from today.");
+				mob.tell(_("@x1 has already been extracted from today.",target.name(mob)));
 			else
 			{
-				mob.tell(target.name(mob)+" is already under "+A.invoker().name(mob)+"'s protection.");
-				A.invoker().tell("Word on the street is that "+mob.name(A.invoker())+" is trying to push into your business with "
-									+target.name()+".");
+				mob.tell(_("@x1 is already under @x2's protection.",target.name(mob),A.invoker().name(mob)));
+				A.invoker().tell(_("Word on the street is that @x1 is trying to push into your business with @x2.",mob.name(A.invoker()),target.name()));
 			}
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(!target.mayIFight(mob))
 		{
-			mob.tell("You cannot racketeer "+target.charStats().himher()+".");
+			mob.tell(_("You cannot racketeer @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
@@ -176,8 +175,7 @@ public class Thief_Racketeer extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "
-					+CMLib.beanCounter().nameCurrencyShort(target,amount)+" of protection money from <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> extract(s) @x1 of protection money from <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,amount)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

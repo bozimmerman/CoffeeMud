@@ -80,7 +80,7 @@ public class Spell_PhantomHound extends Spell
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
 				{
 					final Room R=beast.location();
-					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, "<S-NAME> vanish(es)!");
+					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, _("<S-NAME> vanish(es)!"));
 					if(beast.amDead()) beast.setLocation(null);
 					beast.destroy();
 				}
@@ -94,7 +94,7 @@ public class Spell_PhantomHound extends Spell
 					if(pointsLeft<0)
 					{
 						final Room R=beast.location();
-						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, "<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!");
+						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, _("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
 						if(beast.amDead()) beast.setLocation(null);
 						beast.destroy();
 					}
@@ -195,7 +195,7 @@ public class Spell_PhantomHound extends Spell
 				beast.text();
 				beast.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(beast,null);
-				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
 				if(victim!=null)

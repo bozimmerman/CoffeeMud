@@ -150,9 +150,9 @@ public class Spell_DetectGold extends Spell
 		if((dirs.length()!=0)||(last.length()!=0))
 		{
 			if(dirs.length()==0)
-				mob.tell("You sense golden emanations coming from "+last+".");
+				mob.tell(_("You sense golden emanations coming from @x1.",last));
 			else
-				mob.tell("You sense golden emanations coming from "+dirs.substring(2)+", and "+last+".");
+				mob.tell(_("You sense golden emanations coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 	@Override

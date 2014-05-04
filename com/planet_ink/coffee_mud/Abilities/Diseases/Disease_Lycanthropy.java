@@ -211,7 +211,7 @@ public class Disease_Lycanthropy extends Disease
 			&&(A.getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
 			{
 				changed=true;
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a "+lycanRace().name()+"!");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into a @x1!",lycanRace().name()));
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();

@@ -337,16 +337,16 @@ public class Cleric extends StdCharClass
 				return true;
 
 			if(hq==0)
-				myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+				myChar.tell(_("The evil nature of @x1 disrupts your prayer.",A.name()));
 			else
 			if(hq==1000)
-				myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+				myChar.tell(_("The goodness of @x1 disrupts your prayer.",A.name()));
 			else
 			if(CMLib.flags().isGood(myChar))
-				myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+				myChar.tell(_("The anti-good nature of @x1 disrupts your thought.",A.name()));
 			else
 			if(CMLib.flags().isEvil(myChar))
-				myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
+				myChar.tell(_("The anti-evil nature of @x1 disrupts your thought.",A.name()));
 			return false;
 		}
 		return true;

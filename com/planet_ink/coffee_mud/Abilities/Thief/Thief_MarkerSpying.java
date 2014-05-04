@@ -91,7 +91,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		{
 			final CMMsg msg2=(CMMsg)msg.copyOf();
 			msg2.modify(invoker(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null);
-			invoker().tell("You remember something else from "+msg.source().Name()+"'s papers:");
+			invoker().tell(_("You remember something else from @x1's papers:",msg.source().Name()));
 			msg.target().executeMsg(invoker(),msg2);
 		}
 	}
@@ -102,7 +102,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if((invoker!=null)&&(affected!=null))
-				invoker.tell("You are no longer spying on "+affected.name()+".");
+				invoker.tell(_("You are no longer spying on @x1.",affected.name()));
 		}
 		super.unInvoke();
 	}
@@ -139,7 +139,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,_("You are now spying on <T-NAME>.  Enter 'spy <targetname>' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

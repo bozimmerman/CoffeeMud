@@ -73,7 +73,7 @@ public class Chant_AnimalSpy extends Chant
 				final Ability A=invoker.fetchEffect(this.ID());
 				if(A!=null)
 					invoker.delEffect(A);
-				invoker.tell("Your connection with '"+spy.name()+"' fades.");
+				invoker.tell(_("Your connection with '@x1' fades.",spy.name()));
 			}
 		}
 		super.unInvoke();
@@ -150,13 +150,13 @@ public class Chant_AnimalSpy extends Chant
 			if((!CMLib.flags().isAnimalIntelligence(target))
 			||(target.amFollowing()!=mob))
 			{
-				mob.tell("You have no animal follower named '"+mobName+"' here.");
+				mob.tell(_("You have no animal follower named '@x1' here.",mobName));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell("You have no animal follower named '"+mobName+"' here.");
+			mob.tell(_("You have no animal follower named '@x1' here.",mobName));
 			return false;
 		}
 

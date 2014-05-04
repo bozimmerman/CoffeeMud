@@ -148,7 +148,7 @@ public class Prop_Artifact extends Property
 			&&(msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.source().isMonster()))
 			{
-				msg.source().tell("You are not allowed to possess "+affected.Name());
+				msg.source().tell(_("You are not allowed to possess @x1",affected.Name()));
 				return false;
 			}
 			if(nocast&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
@@ -169,13 +169,13 @@ public class Prop_Artifact extends Property
 					room=((MOB)msg.target()).location();
 				if(room==null) room=CMLib.map().roomLocation(affected);
 				if(room!=null)
-					room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles around "+affected.Name()+" and is absorbed into the air.");
+					room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
 				return false;
 			}
 			else
 			if(nocast&&(msg.tool() instanceof Ability))
 			{
-				msg.source().tell("That doesn't appear to work on "+affected.name());
+				msg.source().tell(_("That doesn't appear to work on @x1",affected.name()));
 				return false;
 			}
 		}
@@ -183,7 +183,7 @@ public class Prop_Artifact extends Property
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
 		&&(msg.source()==((Item)affected).owner()))
 		{
-			msg.source().tell("^HYou lose your hold over "+affected.name()+"^?");
+			msg.source().tell(_("^HYou lose your hold over @x1^?",affected.name()));
 			final Room R=CMLib.map().roomLocation(msg.source());
 			R.moveItemTo((Item)affected);
 			if(autoreset)

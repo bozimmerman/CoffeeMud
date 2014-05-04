@@ -71,7 +71,7 @@ public class Skill_Shuffle extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> shuffle(s) around, bumping into everyone.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> shuffle(s) around, bumping into everyone."));
 			final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

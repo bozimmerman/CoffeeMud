@@ -57,7 +57,7 @@ public class Spell_EnchantArmor extends Spell
 		}
 		if(target.phyStats().ability()>2)
 		{
-			mob.tell(target.name(mob)+" cannot be enchanted further.");
+			mob.tell(_("@x1 cannot be enchanted further.",target.name(mob)));
 			return false;
 		}
 
@@ -66,7 +66,7 @@ public class Spell_EnchantArmor extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,50);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell("The effort causes you to lose "+experienceToLose+" experience.");
+		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

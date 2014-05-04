@@ -207,7 +207,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,_("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -228,7 +228,7 @@ public class Thief_Listen extends ThiefSkill
 			{
 				if(((proficiency()+(getXLEVELLevel(mob)*10))>(50+levelsHeard))||(room==mob.location()))
 				{
-					mob.tell("You definitely hear "+numberHeard+" creature(s).");
+					mob.tell(_("You definitely hear @x1 creature(s).",""+numberHeard));
 					if(proficiency()>((room==mob.location())?50:75))
 					{
 						sourceRoom=mob.location();

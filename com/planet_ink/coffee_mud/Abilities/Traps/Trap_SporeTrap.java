@@ -124,9 +124,9 @@ public class Trap_SporeTrap extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap which sends spores flying around!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a trap which sends spores flying around!")))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

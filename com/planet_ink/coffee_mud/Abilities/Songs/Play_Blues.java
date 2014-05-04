@@ -60,7 +60,7 @@ public class Play_Blues extends Play
 					myChar.tell(_("You really don't feel like it."));
 				else
 				if(msg.amITarget(myChar))
-					msg.source().tell(myChar.name()+" doesn't look like "+myChar.charStats().heshe()+" feels like it.");
+					msg.source().tell(_("@x1 doesn't look like @x2 feels like it.",myChar.name(),myChar.charStats().heshe()));
 				return false;
 			}
 		}

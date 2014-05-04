@@ -73,7 +73,7 @@ public class Thief_Graffiti extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> write(s) graffiti here.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> write(s) graffiti here."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

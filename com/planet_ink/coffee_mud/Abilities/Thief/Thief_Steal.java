@@ -110,7 +110,7 @@ public class Thief_Steal extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
@@ -122,7 +122,7 @@ public class Thief_Steal extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell("You cannot steal from "+target.charStats().himher()+".");
+			mob.tell(_("You cannot steal from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)

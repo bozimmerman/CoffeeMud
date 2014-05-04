@@ -144,9 +144,9 @@ public class Prayer_SenseDisease extends Prayer
 			mob.tell(_("You do not sense any disease."));
 		else
 		if(dirs.length()==0)
-			mob.tell("You sense disease coming from "+last+".");
+			mob.tell(_("You sense disease coming from @x1.",last));
 		else
-			mob.tell("You sense disease coming from "+dirs.substring(2)+", and "+last+".");
+			mob.tell(_("You sense disease coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override

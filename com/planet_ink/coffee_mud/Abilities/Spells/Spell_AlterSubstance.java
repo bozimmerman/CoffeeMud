@@ -60,10 +60,10 @@ public class Spell_AlterSubstance extends Spell
 			final Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
-				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
+				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 reverts to its natural form.",I.name()));
 			else
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.name(((MOB)I.owner()))+" reverts to its natural form.");
+				((MOB)I.owner()).tell(_("@x1 reverts to its natural form.",I.name(((MOB)I.owner()))));
 		}
 		super.unInvoke();
 	}
@@ -106,7 +106,7 @@ public class Spell_AlterSubstance extends Spell
 		}
 		if(newMaterial<0)
 		{
-			mob.tell("'"+material+"' is not a known substance!");
+			mob.tell(_("'@x1' is not a known substance!",material));
 			return false;
 		}
 
@@ -122,7 +122,7 @@ public class Spell_AlterSubstance extends Spell
 			{
 				mob.location().send(mob,msg);
 				material=CMStrings.capitalizeAndLower(material);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> change(s) into @x1!",material));
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
 				final String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);

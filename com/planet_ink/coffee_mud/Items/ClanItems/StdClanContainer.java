@@ -78,7 +78,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 					removeFromOwnerContainer();
 					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is dropped!",name()));
 				}
 			}
 			lastClanCheck=System.currentTimeMillis();

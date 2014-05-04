@@ -69,7 +69,7 @@ public class Disease_Lyme extends Disease
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25)))
 		{
-			mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
+			mob.tell(_("Your headaches make you forget @x1!",msg.tool().name()));
 			return false;
 		}
 

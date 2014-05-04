@@ -119,7 +119,7 @@ public class Spell_Sleep extends Spell
 
 		if((!auto)&&target.isInCombat())
 		{
-			mob.tell(target.name(mob)+" is in combat, and would not be affected.");
+			mob.tell(_("@x1 is in combat, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -127,7 +127,7 @@ public class Spell_Sleep extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(target.charStats().HeShe()+" can't hear your words.");
+			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 

@@ -92,7 +92,7 @@ public class Skill_FalseArrest extends BardSkill
 
 		if(B==null)
 		{
-			mob.tell(target.name(mob)+" is not wanted for anything, anywhere.");
+			mob.tell(_("@x1 is not wanted for anything, anywhere.",target.name(mob)));
 			return false;
 		}
 
@@ -112,13 +112,13 @@ public class Skill_FalseArrest extends BardSkill
 			beneficialWordsFizzle(mob,target,"<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve.");
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frown(s) at <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> frown(s) at <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(!B.arrest(A2,mob,target))
 			{
-				mob.tell("You are not able to arrest "+target.name(mob)+" at this time.");
+				mob.tell(_("You are not able to arrest @x1 at this time.",target.name(mob)));
 				return false;
 			}
 		}

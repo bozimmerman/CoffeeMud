@@ -131,7 +131,7 @@ public class Chant_Fertility extends Chant
 						A.unInvoke();
 					else
 					{
-						mob.tell("The magical barrenness upon "+target.name(mob)+" is too powerful.");
+						mob.tell(_("The magical barrenness upon @x1 is too powerful.",target.name(mob)));
 						return false;
 					}
 				}

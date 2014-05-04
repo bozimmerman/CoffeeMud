@@ -65,17 +65,17 @@ public class Spell_WizardLock extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(_("@x1 appears to be magically locked.",affected.name()));
 			return false;
 		case CMMsg.TYP_UNLOCK:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(_("@x1 appears to be magically locked.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
-			mob.tell(affected.name()+" appears to be magically protected.");
+			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		default:
 			break;
@@ -150,7 +150,7 @@ public class Spell_WizardLock extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already magically locked!");
+			mob.tell(_("@x1 is already magically locked!",target.name(mob)));
 			return false;
 		}
 

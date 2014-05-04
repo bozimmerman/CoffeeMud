@@ -98,7 +98,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name(mob)+" must be prone or bound first.");
+			mob.tell(_("@x1 must be prone or bound first.",target.name(mob)));
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -106,7 +106,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			final Item I=target.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 			{
-				mob.tell(target.name(mob)+" must be undressed first.");
+				mob.tell(_("@x1 must be undressed first.",target.name(mob)));
 				return false;
 			}
 		}
@@ -116,7 +116,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,_("<S-NAME> tar(s) and feather(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

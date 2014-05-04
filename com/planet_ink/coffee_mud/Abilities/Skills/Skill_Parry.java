@@ -85,7 +85,7 @@ public class Skill_Parry extends StdSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(getXLEVELLevel(mob)),false))
 					&&(mob.location().okMessage(mob,msg2)))
 					{

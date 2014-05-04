@@ -91,7 +91,7 @@ public class Chant_Reabsorb extends Chant
 		}
 		if(!(target.owner() instanceof Room))
 		{
-			mob.tell("You need to put "+target.name(mob)+" on the ground first.");
+			mob.tell(_("You need to put @x1 on the ground first.",target.name(mob)));
 			return false;
 		}
 		final int type=mob.location().domainType();
@@ -127,7 +127,7 @@ public class Chant_Reabsorb extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ground reabsorbs "+target.name()+".");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground reabsorbs @x1.",target.name()));
 					target.destroy();
 				}
 			}

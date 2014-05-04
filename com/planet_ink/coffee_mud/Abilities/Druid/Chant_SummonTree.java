@@ -63,7 +63,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		final Chant_SummonTree newChant=new Chant_SummonTree();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,_("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

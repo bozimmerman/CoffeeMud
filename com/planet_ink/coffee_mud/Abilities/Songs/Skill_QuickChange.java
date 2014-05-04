@@ -141,7 +141,7 @@ public class Skill_QuickChange extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> perform(s) a quick costume change.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> perform(s) a quick costume change."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -123,16 +123,16 @@ public class Chant_NaturalBalance extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> empathize(s) with the plants."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> learn(s) from the birds."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> watch(es) the insects."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_HANDS|CMMsg.MASK_ALWAYS,"<S-NAME> hug(s) the ground."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> inhale(s) the fresh air."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> watch(es) the plants grow."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> become(s) one with life."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> find(s) clarity in the natural world."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> empathize(s) with the plants.")); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> learn(s) from the birds.")); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> watch(es) the insects.")); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_HANDS|CMMsg.MASK_ALWAYS,_("<S-NAME> hug(s) the ground.")); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> inhale(s) the fresh air.")); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> watch(es) the plants grow.")); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> become(s) one with life.")); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> find(s) clarity in the natural world.")); break;
 				}
 			}
 		}
@@ -176,7 +176,7 @@ public class Chant_NaturalBalance extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> begin(s) to commune with the natural balance...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),_("^S<S-NAME> begin(s) to commune with the natural balance...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -66,7 +66,7 @@ public class Disease_Migraines extends Disease
 				return true;
 			if(forgotten.contains(msg.tool()))
 			{
-				mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
+				mob.tell(_("Your headaches make you forget @x1!",msg.tool().name()));
 				return false;
 			}
 			if(mob.fetchAbility(msg.tool().ID())==msg.tool())
@@ -74,7 +74,7 @@ public class Disease_Migraines extends Disease
 				if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+35))
 				{
 					forgotten.add((Ability)msg.tool());
-					mob.tell("Your headaches make you forget "+msg.tool().name()+"!");
+					mob.tell(_("Your headaches make you forget @x1!",msg.tool().name()));
 					return false;
 				}
 				else

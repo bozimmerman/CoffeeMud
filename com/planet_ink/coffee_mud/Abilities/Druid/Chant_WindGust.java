@@ -82,7 +82,7 @@ public class Chant_WindGust extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Chant_WindGust extends Chant
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"<T-NAME> get(s) blown back!");
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("<T-NAME> get(s) blown back!"));
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						if((msg.value()<=0)&&(target.location()==mob.location()))

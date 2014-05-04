@@ -91,7 +91,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				amputate();
 			}
 			else
-				mob.tell(mob,target,null,"You failed to cut off <T-YOUPOSS> '"+gone+"'.");
+				mob.tell(mob,target,null,_("You failed to cut off <T-YOUPOSS> '@x1'.",gone));
 			unInvoke();
 		}
 		return super.okMessage(myHost,msg);
@@ -117,7 +117,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
 			if(!quiet)
-			mob.tell("You cannot amputate with "+wp.name()+"!");
+			mob.tell(_("You cannot amputate with @x1!",wp.name()));
 			return false;
 		}
 		return true;
@@ -150,7 +150,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				target=mob.location().fetchInhabitant(s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				mob.tell("You can't see '"+s+"' here.");
+				mob.tell(_("You can't see '@x1' here.",s));
 				return false;
 			}
 			if(target!=null)
@@ -165,7 +165,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name(mob)+" already has a call against one of "+target.charStats().hisher()+" limbs.");
+			mob.tell(_("@x1 already has a call against one of @x2 limbs.",target.name(mob),target.charStats().hisher()));
 			return false;
 		}
 
@@ -176,7 +176,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.name(mob)+" to cut off!");
+				mob.tell(_("There is nothing left on @x1 to cut off!",target.name(mob)));
 			return false;
 		}
 		if(mob.isMonster())
@@ -209,7 +209,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				}
 			if(gone.length()==0)
 			{
-				mob.tell("'"+off+"' is not a valid body part.");
+				mob.tell(_("'@x1' is not a valid body part.",off));
 				final StringBuffer str=new StringBuffer("Parts include: ");
 				for(int i=0;i<remainingLimbList.size();i++)
 					str.append((remainingLimbList.get(i))+", ");
@@ -229,7 +229,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> call(s) '@x1'!^</FIGHT^>^?",gone));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

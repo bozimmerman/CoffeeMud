@@ -274,7 +274,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 			return;
-		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMLib.protocol().msp("doh.wav",60));
+		mob.tell(_("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r@x1",CMLib.protocol().msp("doh.wav",60)));
 		if(!mob.isMonster())
 		{
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
@@ -300,7 +300,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
-		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
+		mob.tell(_("^HYou are now a level @x1 @x2^N.\n\r",""+mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())));
 		curClass.unLevel(mob);
 		Ability A=null;
 		final Vector<Ability> lose=new Vector<Ability>();
@@ -316,7 +316,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		{
 			A=lose.elementAt(l);
 			mob.delAbility(A);
-			mob.tell("^HYou have forgotten "+A.name()+".^N.\n\r");
+			mob.tell(_("^HYou have forgotten @x1.^N.\n\r",A.name()));
 			A=mob.fetchEffect(A.ID());
 			if((A!=null)&&(A.isNowAnAutoEffect()))
 			{
@@ -346,7 +346,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				final int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				amount-=sireShare;
 				if(postExperience(sire,null,"",-sireShare,true))
-					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
+					sire.tell(_("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
 			}
 		}
 		if((amount>2)&&(!mob.isMonster()))
@@ -526,7 +526,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				if(A!=null)
 				{
 					final String type=Ability.ACODE_DESCS[(A.classificationCode()&Ability.ALL_ACODES)].toLowerCase();
-					mob.tell("^NYou have learned the "+type+" ^H"+A.name()+"^?.^N");
+					mob.tell(_("^NYou have learned the @x1 ^H@x2^?.^N",type,A.name()));
 				}
 			}
 
@@ -648,10 +648,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(!quiet)
 		{
 			if(amount>1)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homageMessage+".^N");
+				mob.tell(_("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
 			else
 			if(amount>0)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homageMessage+".^N");
+				mob.tell(_("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
 		}
 
 		if((mob.getExperience()>=mob.getExpNextLevel())

@@ -52,12 +52,12 @@ public class Prayer_Divorce extends Prayer
 		if(target==null) return false;
 		if(!target.isMarriedToLiege())
 		{
-			mob.tell(target.name(mob)+" is not married!");
+			mob.tell(_("@x1 is not married!",target.name(mob)));
 			return false;
 		}
 		if(target.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band")!=null)
 		{
-			mob.tell(target.name(mob)+" must remove the wedding band first.");
+			mob.tell(_("@x1 must remove the wedding band first.",target.name(mob)));
 			return false;
 		}
 

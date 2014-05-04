@@ -195,14 +195,14 @@ public class Skill_HandCuff extends StdSkill
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
 				{
 					A.unInvoke();
 					return true;
 				}
 				return false;
 			}
-			mob.tell(target.name(mob)+" doesn't appear to be handcuffed.");
+			mob.tell(_("@x1 doesn't appear to be handcuffed.",target.name(mob)));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -210,12 +210,12 @@ public class Skill_HandCuff extends StdSkill
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(target.name(mob)+" has no warrants out here.");
+			mob.tell(_("@x1 has no warrants out here.",target.name(mob)));
 			return false;
 		}
 		if((CMLib.flags().isStanding(target))&&(!auto))
 		{
-			mob.tell(target.name(mob)+" doesn't look willing to cooperate.");
+			mob.tell(_("@x1 doesn't look willing to cooperate.",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -229,7 +229,7 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),"<S-NAME> handcuff(s) <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),_("<S-NAME> handcuff(s) <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

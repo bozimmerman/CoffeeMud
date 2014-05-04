@@ -159,15 +159,15 @@ public class Spell_KnowFate extends Spell
 				if(draws>0)
 					addendum=" with "+draws+" draws.";
 				if(iwin>hewin)
-					mob.tell(iwin+"% of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
+					mob.tell(_("@x1% of the time, you defeat @x2 with @x3 hit points left@x4.",""+iwin,target.charStats().himher(),""+(ihp/iwin),addendum));
 				else
 				if(hewin>iwin)
-					mob.tell(hewin+"% of the time you die, and "+target.charStats().himher()+" still has "+(hehp/hewin)+" hit points left"+addendum+".");
+					mob.tell(_("@x1% of the time you die, and @x2 still has @x3 hit points left@x4.",""+hewin,target.charStats().himher(),""+(hehp/hewin),addendum));
 				else
 				if(iwin>0)
-					mob.tell("Half of the time, you defeat "+target.charStats().himher()+" with "+(ihp/iwin)+" hit points left"+addendum+".");
+					mob.tell(_("Half of the time, you defeat @x1 with @x2 hit points left@x3.",target.charStats().himher(),""+(ihp/iwin),addendum));
 				else
-					mob.tell("You can't hurt each other .. there were "+(draws*5)+"% draws.");
+					mob.tell(_("You can't hurt each other .. there were @x1% draws.",""+(draws*5)));
 				//Log.debugOut(fakeS.afkMessage());
 			}
 		}

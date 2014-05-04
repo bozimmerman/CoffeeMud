@@ -56,7 +56,7 @@ public class Prayer_FortifyFood extends Prayer
 
 		if(!(target instanceof Food))
 		{
-			mob.tell(target.name(mob)+" is not edible.");
+			mob.tell(_("@x1 is not edible.",target.name(mob)));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Prayer_FortifyFood extends Prayer
 
 		if(((Food)target).nourishment()>1000)
 		{
-			mob.tell(target.name(mob)+" is already well fortified.");
+			mob.tell(_("@x1 is already well fortified.",target.name(mob)));
 			return false;
 		}
 

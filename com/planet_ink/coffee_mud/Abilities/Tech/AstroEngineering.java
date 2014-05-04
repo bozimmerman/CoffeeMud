@@ -132,7 +132,7 @@ public class AstroEngineering extends TechSkill
 			AstroEngineering A=(AstroEngineering)mob.fetchAbility(ID());
 			if(A!=null)
 				A.lastCastHelp=System.currentTimeMillis();
-			mob.tell(mob,null,null,"You gain some new insights about "+CMLib.english().makePlural(experName.toLowerCase())+".");
+			mob.tell(mob,null,null,_("You gain some new insights about @x1.",CMLib.english().makePlural(experName.toLowerCase())));
 		}
 	}
 
@@ -147,16 +147,16 @@ public class AstroEngineering extends TechSkill
 				final MOB mob=(MOB)affected;
 				final Room room=mob.location();
 				if((aborted)||(room==null))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) "+op.verb+".");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) @x1.",op.verb));
 				else
 				if(failure)
 				{
-					mob.location().show(mob,targetItem,CMMsg.MSG_OK_VISUAL,"<S-NAME> mess(es) up "+op.verb+" <T-NAME>.");
+					mob.location().show(mob,targetItem,CMMsg.MSG_OK_VISUAL,_("<S-NAME> mess(es) up @x1 <T-NAME>.",op.verb));
 				}
 				else
 				if(op==Operation.INSTALL)
 				{
-					final CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,"<S-NAME> install(s) <O-NAME> into <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetPanel,targetItem,CMMsg.MSG_INSTALL,_("<S-NAME> install(s) <O-NAME> into <T-NAME>."));
 					msg.setValue(50+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -167,7 +167,7 @@ public class AstroEngineering extends TechSkill
 				else
 				if(op==Operation.REPAIR)
 				{
-					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,"<S-NAME> <S-IS-ARE> done trying to repair <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_REPAIR,_("<S-NAME> <S-IS-ARE> done trying to repair <T-NAME>."));
 					msg.setValue(CMLib.dice().roll(1, proficiency()/2, getBonus(mob,(Electronics)targetItem,50)));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -178,7 +178,7 @@ public class AstroEngineering extends TechSkill
 				else
 				{
 					String verb=altverb;
-					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,"<S-NAME> <S-IS-ARE> done "+verb+" <T-NAME>.");
+					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,_("<S-NAME> <S-IS-ARE> done @x1 <T-NAME>.",verb));
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
 					{
@@ -214,7 +214,7 @@ public class AstroEngineering extends TechSkill
 				String verb=op.verb;
 				if(op==Operation.ENHANCE)
 					verb=altverb;
-				mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+" <T-NAME>.");
+				mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> <S-IS-ARE> almost done @x1 <T-NAME>.",verb));
 			}
 			else
 			if(((baseTickSpan-tickDown)%4)==0)
@@ -226,8 +226,8 @@ public class AstroEngineering extends TechSkill
 				if(op==Operation.ENHANCE)
 					verb=altverb;
 				mob.location().show(mob,targetItem,this,CMMsg.MSG_NOISYMOVEMENT,
-						"<S-NAME> continue(s) "+verb+" <T-NAME> ("+pct+"% completed).",
-						null,"<S-NAME> continue(s) "+verb+" <T-NAME>.");
+						_("<S-NAME> continue(s) @x1 <T-NAME> (@x2% completed).",verb,""+pct),
+						null,_("<S-NAME> continue(s) @x1 <T-NAME>.",verb));
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
@@ -296,7 +296,7 @@ public class AstroEngineering extends TechSkill
 					}
 					if((targetPanel==null)||(!CMLib.flags().canBeSeenBy(targetPanel,mob)))
 					{
-						mob.tell("You don't see '"+panelName+"' here.");
+						mob.tell(_("You don't see '@x1' here.",panelName));
 						return false;
 					}
 					if(!(targetPanel instanceof Electronics.ElecPanel))
@@ -354,7 +354,7 @@ public class AstroEngineering extends TechSkill
 		}
 		if((targetItem==null)||(!CMLib.flags().canBeSeenBy(targetItem,mob)))
 		{
-			mob.tell("You don't see '"+itemName+"' here.");
+			mob.tell(_("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		if(!(targetItem instanceof Electronics))
@@ -425,7 +425,7 @@ public class AstroEngineering extends TechSkill
 			baseTickSpan=baseTickSpan/2;
 		if(baseTickSpan<minTicks)
 			baseTickSpan=minTicks;
-		mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+op.verb+" <T-NAME>"+((targetPanel!=null)?" into "+targetPanel.name():"")+".");
+		mob.location().show(mob,targetItem,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) @x1 <T-NAME>@x2.",op.verb,((targetPanel!=null)?" into "+targetPanel.name():"")));
 		beneficialAffect(mob, mob, asLevel, baseTickSpan);
 
 		return !failure;

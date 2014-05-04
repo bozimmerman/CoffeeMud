@@ -84,7 +84,7 @@ public class Chant_Blight extends Chant
 				final Item I=R.getItem(i);
 				if((I!=null)&&(isBlightable(I.material())))
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" withers away.");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 withers away.",I.name()));
 					I.destroy();
 					break;
 				}

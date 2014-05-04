@@ -95,13 +95,13 @@ public class Play_Cymbals extends Play_Instrument
 					if(levelDiff<0) levelDiff=0;
 					if(proficiencyCheck(mob,-(levelDiff*25),false))
 					{
-						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,P.name()+" begin(s) to glow!");
+						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,_("@x1 begin(s) to glow!",P.name()));
 						if(R.okMessage(mob,msg))
 						{
 							R.send(mob,msg);
 							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_UNLOCK,null);
 							CMLib.utensils().roomAffectFully(msg,R,dirCode);
-							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
 							CMLib.utensils().roomAffectFully(msg,R,dirCode);
 						}
 					}

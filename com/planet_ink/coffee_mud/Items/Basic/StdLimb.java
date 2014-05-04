@@ -205,7 +205,7 @@ public class StdLimb extends StdItem implements FalseLimb
 		}
 		if(!canWear(mob,0))
 		{
-			mob.tell("You don't have any empty sockets to wear "+name()+" on.");
+			mob.tell(_("You don't have any empty sockets to wear @x1 on.",name()));
 			return false;
 		}
 		return true;

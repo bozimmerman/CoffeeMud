@@ -81,7 +81,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 				if(!mob.location().isContent(w))
 					return true;
 			}
-			final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
+			final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,_("<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

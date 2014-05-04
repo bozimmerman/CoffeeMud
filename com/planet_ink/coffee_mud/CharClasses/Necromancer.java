@@ -181,7 +181,7 @@ public class Necromancer extends Cleric
 			final Race newRace=CMClass.getRace("Lich");
 			if(newRace!=null)
 			{
-				myChar.tell("The dark powers are transforming you into a "+newRace.name()+"!!");
+				myChar.tell(_("The dark powers are transforming you into a @x1!!",newRace.name()));
 				myChar.baseCharStats().setMyRace(newRace);
 				myChar.recoverCharStats();
 			}
@@ -217,10 +217,10 @@ public class Necromancer extends Cleric
 					&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
 					{
 						if(!aChar.isMonster())
-							M.tell("^RYou just felt the death of "+aChar.Name()+".^N");
+							M.tell(_("^RYou just felt the death of @x1.^N",aChar.Name()));
 						else
 						if((M.location()!=myRoom)&&(myRoom.getArea().Name().equals(M.location().getArea().Name())))
-							M.tell("^RYou just felt the death of "+aChar.Name()+" somewhere nearby.^N");
+							M.tell(_("^RYou just felt the death of @x1 somewhere nearby.^N",aChar.Name()));
 					}
 				}
 			}

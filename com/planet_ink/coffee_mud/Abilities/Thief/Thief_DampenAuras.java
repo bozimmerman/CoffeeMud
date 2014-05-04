@@ -84,7 +84,7 @@ public class Thief_DampenAuras extends ThiefSkill
 		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(!((MOB)E).amDead()))
-			((MOB)E).tell("You noticed the aura dampening is wearing away on "+E.name()+".");
+			((MOB)E).tell(_("You noticed the aura dampening is wearing away on @x1.",E.name()));
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class Thief_DampenAuras extends ThiefSkill
 					}
 				}
 				if(items.length()>2)
-					target.tell("You've dampened the auras on the following items: "+items.substring(2));
+					target.tell(_("You've dampened the auras on the following items: @x1",items.substring(2)));
 				target.location().recoverRoomStats();
 			}
 		}

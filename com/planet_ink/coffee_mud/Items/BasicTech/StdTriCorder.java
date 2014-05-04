@@ -177,42 +177,42 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			case CMMsg.TYP_WRITE:
 				if(this.amWearingAt(Wearable.IN_INVENTORY))
 				{
-					msg.source().tell(name()+" needs to be held first.");
+					msg.source().tell(_("@x1 needs to be held first.",name()));
 					return false;
 				}
 				if(!activated())
 				{
-					msg.source().tell(name()+" is not activated/booted up.");
+					msg.source().tell(_("@x1 is not activated/booted up.",name()));
 					return false;
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
 				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
-					msg.source().tell(name()+" needs to be held first.");
+					msg.source().tell(_("@x1 needs to be held first.",name()));
 					return false;
 				}
 				if((msg.targetMessage()==null)&&(activated()))
 				{
-					msg.source().tell(name()+" is already booted up.");
+					msg.source().tell(_("@x1 is already booted up.",name()));
 					return false;
 				}
 				else
 				if(powerRemaining()<=0)
 				{
-					msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
+					msg.source().tell(_("@x1 won't seem to power up. Perhaps it needs power?",name()));
 					return false;
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
-					msg.source().tell(name()+" needs to be held first.");
+					msg.source().tell(_("@x1 needs to be held first.",name()));
 					return false;
 				}
 				if((msg.targetMessage()==null)&&(!activated()))
 				{
-					msg.source().tell(name()+" is already shut down.");
+					msg.source().tell(_("@x1 is already shut down.",name()));
 					return false;
 				}
 				break;
@@ -266,7 +266,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					boolean menuRead=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'");
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, _("<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
 					{
@@ -311,7 +311,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()) && (!amWearingAt(Wearable.IN_INVENTORY)))
-					msg.source().tell(name()+" is currently "+(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r"));
+					msg.source().tell(_("@x1 is currently @x2",name(),(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r")));
 				return;
 			case CMMsg.TYP_ACTIVATE:
 				if(!activated())
@@ -320,7 +320,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					setActiveMenu("");
 					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					{
-						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
+						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> boot(s) up <T-NAME>."));
 						forceReadersMenu();
 					}
 				}
@@ -341,7 +341,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, _("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
@@ -368,7 +368,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, _("<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
 						if(msg2.target().okMessage(M, msg2))
@@ -381,7 +381,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				{
 					activate(false);
 					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) down <T-NAME>.");
+						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shut(s) down <T-NAME>."));
 					deactivateSystem();
 				}
 				break;
@@ -444,7 +444,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					final List<MOB> readers=getCurrentReaders();
 					for(final MOB M : readers)
 						if(CMLib.flags().canBeSeenBy(this, M))
-							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\r"+newMsgs.toString()+"\n\r^.^N'");
+							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, _("<T-NAME> says '^N\n\r@x1\n\r^.^N'",newMsgs.toString()));
 				}
 			}
 		}
@@ -482,7 +482,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			{
 				final MOB M=(MOB)owner();
 				if(CMLib.flags().canBeSeenBy(this, M))
-					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "The screen on <T-NAME> goes blank.");
+					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, _("The screen on <T-NAME> goes blank."));
 			}
 		}
 	}

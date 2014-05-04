@@ -95,7 +95,7 @@ public class Prayer_Gateway extends Prayer
 
 		if(newRoom==null)
 		{
-			mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -121,8 +121,8 @@ public class Prayer_Gateway extends Prayer
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
-			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),"A blinding, divine gateway appears here.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),_("^S<S-NAME> @x1 for a blinding, divine gateway here.^?",prayWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),_("A blinding, divine gateway appears here."));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

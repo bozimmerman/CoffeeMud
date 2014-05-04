@@ -122,7 +122,7 @@ public class Thief_Assassinate extends ThiefSkill
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=room.getRoomInDir(nextDirection);

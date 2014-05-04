@@ -153,7 +153,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						}
 						if(soFar>=itemCap)
 						{
-							msg.source().tell("There is no more room in here to drop "+msg.target().Name()+".");
+							msg.source().tell(_("There is no more room in here to drop @x1.",msg.target().Name()));
 							if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
 								msg.source().tell(_("You should consider bundling up some of those resources."));
 							return false;
@@ -166,7 +166,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						{final Item I=R.getItem(i); if(I!=null) soFar+=I.phyStats().weight();}
 						if((soFar+targetI.phyStats().weight())>=maxWeight)
 						{
-							msg.source().tell("There is no room in here to put "+targetI.Name()+".");
+							msg.source().tell(_("There is no room in here to put @x1.",targetI.Name()));
 							return false;
 						}
 					}

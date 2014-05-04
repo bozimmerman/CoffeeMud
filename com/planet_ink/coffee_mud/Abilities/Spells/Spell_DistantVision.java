@@ -60,7 +60,7 @@ public class Spell_DistantVision extends Spell
 
 		if(thisRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(_("You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 

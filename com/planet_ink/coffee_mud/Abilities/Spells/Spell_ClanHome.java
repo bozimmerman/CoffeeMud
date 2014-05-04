@@ -82,7 +82,7 @@ public class Spell_ClanHome extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,mob,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,mob,auto),_("^S<S-NAME> invoke(s) a teleportation spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,8 +93,8 @@ public class Spell_ClanHome extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of red smoke.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of red smoke.");
+					final CMMsg enterMsg=CMClass.getMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of red smoke."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of red smoke."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&clanHomeRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

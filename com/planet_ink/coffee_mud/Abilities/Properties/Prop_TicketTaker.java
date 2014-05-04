@@ -98,7 +98,7 @@ public class Prop_TicketTaker extends Property
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=cost())
 					{
 						final String costStr=CMLib.beanCounter().nameCurrencyShort(currency,cost());
-						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+costStr+" to <T-NAME>.");
+						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> give(s) @x1 to <T-NAME>.",costStr));
 						CMLib.beanCounter().subtractMoney(mob,currency,cost());
 					}
 				}
@@ -136,7 +136,7 @@ public class Prop_TicketTaker extends Property
 						if(myHost instanceof MOB)
 							CMLib.commands().postSay((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else
-							mob.tell("You'll need "+costStr+" to board.");
+							mob.tell(_("You'll need @x1 to board.",costStr));
 						return false;
 					}
 					break;

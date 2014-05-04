@@ -70,7 +70,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

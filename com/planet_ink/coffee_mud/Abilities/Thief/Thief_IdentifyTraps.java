@@ -135,11 +135,11 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			if((!success)||(theTrap==null))
 			{
 				if(!auto)
-					mob.tell("You can't identify the trap on "+unlockThis.name()+".");
+					mob.tell(_("You can't identify the trap on @x1.",unlockThis.name()));
 				success=false;
 			}
 			else
-				mob.tell("The trap that is on "+unlockThis.name()+" is "+theTrap.name()+" of quality level "+theTrap.abilityCode()+".");
+				mob.tell(_("The trap that is on @x1 is @x2 of quality level @x3.",unlockThis.name(),theTrap.name(),""+theTrap.abilityCode()));
 			lastChecked=unlockThis;
 		}
 		else

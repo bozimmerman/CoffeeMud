@@ -98,7 +98,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					}
 					if(hasALid()&&(!isOpen()))
 					{
-						msg.source().tell(name()+" is closed.");
+						msg.source().tell(_("@x1 is closed.",name()));
 						return false;
 					}
 					msg.modify(msg.source(),msg.target(),msg.tool(),
@@ -107,21 +107,21 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 							   msg.othersMajor()|CMMsg.TYP_ENTER,null);
 					return true;
 				}
-				msg.source().tell("You cannot sit on "+name()+".");
+				msg.source().tell(_("You cannot sit on @x1.",name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_SLEEP:
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot sleep on "+name()+".");
+				msg.source().tell(_("You cannot sleep on @x1.",name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot mount "+name()+", try Enter.");
+				msg.source().tell(_("You cannot mount @x1, try Enter.",name()));
 				return false;
 			}
 			break;

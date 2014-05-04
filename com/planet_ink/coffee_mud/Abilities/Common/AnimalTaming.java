@@ -108,7 +108,7 @@ public class AnimalTaming extends CommonSkill
 							if(amount>1)
 								s="of "+amount+" ";
 							s+="of "+animal.charStats().hisher()+" behaviors";
-							mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
+							mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to tame @x1 @x2.",animal.name(),s));
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
@@ -210,7 +210,7 @@ public class AnimalTaming extends CommonSkill
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="taming "+M.name();
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) taming "+M.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) taming @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

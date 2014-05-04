@@ -101,9 +101,9 @@ public class Immunities extends StdAbility
 			{
 				final Room R=CMLib.map().roomLocation(msg.target());
 				if(msg.target()!=msg.source())
-					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) immune to "+immunityName+" attacks from <S-NAME>.");
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));
 				else
-					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) immune to "+immunityName+".");
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) immune to @x1.",immunityName));
 			}
 			return false;
 		}

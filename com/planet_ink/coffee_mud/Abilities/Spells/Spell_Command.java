@@ -59,14 +59,14 @@ public class Spell_Command extends Spell
 				commands.addElement("FLEE");
 			else
 			{
-				mob.tell("Command "+((String)V.elementAt(0))+" to do what?");
+				mob.tell(_("Command @x1 to do what?",((String)V.elementAt(0))));
 				return false;
 			}
 		}
 
 		if((!target.mayIFight(mob))||(!target.isMonster()))
 		{
-			mob.tell("You can't command "+target.name(mob)+".");
+			mob.tell(_("You can't command @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -93,7 +93,7 @@ public class Spell_Command extends Spell
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't command "+target.name(mob)+" to do that.");
+					mob.tell(_("You can't command @x1 to do that.",target.name(mob)));
 					return false;
 				}
 			}

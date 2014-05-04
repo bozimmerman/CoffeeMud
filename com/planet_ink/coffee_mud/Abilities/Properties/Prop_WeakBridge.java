@@ -191,7 +191,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							}
 							else
 							{
-								mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,"The bridge breaks under your weight!");
+								mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,_("The bridge breaks under your weight!"));
 								mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fall(s) to <S-HIS-HER> death!!"));
 								mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 							}

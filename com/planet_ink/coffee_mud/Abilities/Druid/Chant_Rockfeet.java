@@ -105,7 +105,7 @@ public int castingQuality(MOB mob, Physical target)
 		&&(target.getWearPositions(Wearable.WORN_FEET)==0))
 		{
 			if(!auto)
-				mob.tell(target.name(mob)+" doesn't have hands or feet to affect...");
+				mob.tell(_("@x1 doesn't have hands or feet to affect...",target.name(mob)));
 			return false;
 		}
 

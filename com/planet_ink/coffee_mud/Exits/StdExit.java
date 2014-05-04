@@ -254,7 +254,7 @@ public class StdExit implements Exit
 	protected void mountLadder(MOB mob, Rideable ladder)
 	{
 		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
 		if((mob.location().okMessage(mob,msg))
@@ -335,7 +335,7 @@ public class StdExit implements Exit
 				if(!CMLib.flags().canBeSeenBy(this,mob))
 					mob.tell(_("You can't go that way."));
 				else
-					mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
+					mob.tell(_("The @x1 is @x2.",doorName(),closeWordPastTense()));
 				return false;
 			}
 			if((CMLib.flags().isFlying(this))
@@ -374,12 +374,12 @@ public class StdExit implements Exit
 			{
 				if(!hasADoor())
 				{
-					mob.tell("There is nothing to "+closeWord()+"!");
+					mob.tell(_("There is nothing to @x1!",closeWord()));
 					return false;
 				}
 				return true;
 			}
-			mob.tell("The "+doorName()+" is already "+closeWordPastTense()+".");
+			mob.tell(_("The @x1 is already @x2.",doorName(),closeWordPastTense()));
 			return false;
 		}
 		case CMMsg.TYP_OPEN:
@@ -387,17 +387,17 @@ public class StdExit implements Exit
 			if(openWord().length()==0) setExitParams(doorName(),"open",closeWord(),closedText());
 			if(!hasADoor())
 			{
-				mob.tell("There is nothing to "+openWord()+" that way!");
+				mob.tell(_("There is nothing to @x1 that way!",openWord()));
 				return false;
 			}
 			if(isOpen())
 			{
-				mob.tell("The "+doorName()+" is already "+openWordPastTense()+"!");
+				mob.tell(_("The @x1 is already @x2!",doorName(),openWordPastTense()));
 				return false;
 			}
 			if(isLocked()&&hasALock())
 			{
-				mob.tell("The "+doorName()+" is locked.");
+				mob.tell(_("The @x1 is locked.",doorName()));
 				return false;
 			}
 			return true;
@@ -436,7 +436,7 @@ public class StdExit implements Exit
 			}
 			if(isOpen())
 			{
-				mob.tell("The "+doorName()+" is already "+openWord()+"!");
+				mob.tell(_("The @x1 is already @x2!",doorName(),openWord()));
 				return false;
 			}
 			else
@@ -449,13 +449,13 @@ public class StdExit implements Exit
 			{
 				if((!isLocked())&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 				{
-					mob.tell("The "+doorName()+" is not locked.");
+					mob.tell(_("The @x1 is not locked.",doorName()));
 					return false;
 				}
 				else
 				if((isLocked())&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 				{
-					mob.tell("The "+doorName()+" is already locked.");
+					mob.tell(_("The @x1 is already locked.",doorName()));
 					return false;
 				}
 				else

@@ -168,7 +168,7 @@ public class Trapper extends Thief
 				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),myChar.phyStats().level()));
 				if(xp>125) xp=125;
 				if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
-					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+((MOB)msg.target()).name(myChar)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,_("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))

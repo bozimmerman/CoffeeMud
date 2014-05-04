@@ -76,7 +76,7 @@ public class Skill_Revoke extends StdSkill
 
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("Revoke from what?  You don't see '"+whatToRevoke+"' here.");
+			mob.tell(_("Revoke from what?  You don't see '@x1' here.",whatToRevoke));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Skill_Revoke extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,_("<S-NAME> revoke(s) @x1 from @x2",revokeThis.name(),target.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

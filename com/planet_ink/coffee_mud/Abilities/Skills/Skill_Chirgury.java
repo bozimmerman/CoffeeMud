@@ -67,7 +67,7 @@ public class Skill_Chirgury extends StdSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Remove what from whom? Parts include: "+CMParms.toStringList(parts));
+			mob.tell(_("Remove what from whom? Parts include: @x1",CMParms.toStringList(parts)));
 			return false;
 
 		}
@@ -89,7 +89,7 @@ public class Skill_Chirgury extends StdSkill
 			final StringBuilder str=new StringBuilder("");
 			for(final Object[] o : parts)
 				str.append(", ").append(o[0].toString());
-			mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+str.toString().substring(2));
+			mob.tell(_("'@x1' is not a valid part to remove.  Try one of these: @x2",part,str.toString().substring(2)));
 			return false;
 		}
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
@@ -102,7 +102,7 @@ public class Skill_Chirgury extends StdSkill
 		if((partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
 		{
-			mob.tell(target.name(mob)+" doesn't have a "+part);
+			mob.tell(_("@x1 doesn't have a @x2",target.name(mob),part));
 			return false;
 		}
 
@@ -110,19 +110,19 @@ public class Skill_Chirgury extends StdSkill
 			for(final String raceCat : badRaceCats)
 				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 				{
-					mob.tell(target.name(mob)+" doesn't have a "+part);
+					mob.tell(_("@x1 doesn't have a @x2",target.name(mob),part));
 					return false;
 				}
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))
 		{
-			mob.tell("A baby can not be removed from "+target.name(mob)+".");
+			mob.tell(_("A baby can not be removed from @x1.",target.name(mob)));
 			return false;
 		}
 
 		if((target instanceof MOB)&&((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target))))
 		{
-			mob.tell(((MOB)target).charStats().HeShe()+" must be bound, and asleep on an operating bed before you can perform chirurgy.");
+			mob.tell(_("@x1 must be bound, and asleep on an operating bed before you can perform chirurgy.",((MOB)target).charStats().HeShe()));
 			return false;
 		}
 
@@ -135,7 +135,7 @@ public class Skill_Chirgury extends StdSkill
 		Ability oldChirge=target.fetchEffect(ID());
 		if((oldChirge!=null)&&(oldChirge.text().indexOf(";"+parts[partCode])>=0))
 		{
-			mob.tell("That has already been removed from "+target.name(mob)+".");
+			mob.tell(_("That has already been removed from @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -150,7 +150,7 @@ public class Skill_Chirgury extends StdSkill
 		ww=(Weapon)w;
 		if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
 		{
-			mob.tell("You cannot perform chirurgy with a "+ww.name()+"!");
+			mob.tell(_("You cannot perform chirurgy with a @x1!",ww.name()));
 			return false;
 		}
 
@@ -253,7 +253,7 @@ public class Skill_Chirgury extends StdSkill
 						baby.setMobDescription(baby.description());
 						baby.text();
 						mob.location().addItem(baby,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,baby,null,CMMsg.MSG_GET,"<S-NAME> remove(s) <T-NAME> from "+target.name()+".");
+						mob.location().show(mob,baby,null,CMMsg.MSG_GET,_("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()));
 					}
 				}
 			}

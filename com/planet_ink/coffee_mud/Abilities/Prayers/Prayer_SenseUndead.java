@@ -73,7 +73,7 @@ public class Prayer_SenseUndead extends Prayer
 			{
 				final MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-					((MOB)affected).tell(mob.name((MOB)affected)+" gives off a cold dark vibe.");
+					((MOB)affected).tell(_("@x1 gives off a cold dark vibe.",mob.name((MOB)affected)));
 			}
 		}
 		return true;

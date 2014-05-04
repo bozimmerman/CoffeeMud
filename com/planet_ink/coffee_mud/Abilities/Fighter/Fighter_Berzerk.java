@@ -128,7 +128,7 @@ public class Fighter_Berzerk extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,_("<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

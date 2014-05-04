@@ -134,7 +134,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 			else
 			{
-				mob.tell("You can't turn "+target.name(mob)+" into a '"+race+"'!");
+				mob.tell(_("You can't turn @x1 into a '@x2'!",target.name(mob),race));
 				return false;
 			}
 		}
@@ -160,7 +160,7 @@ public class Spell_ImprovedPolymorph extends Spell
 
 		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell("You can't turn "+target.name(mob)+" into a '"+R.name()+"'!");
+			mob.tell(_("You can't turn @x1 into a '@x2'!",target.name(mob),R.name()));
 			return false;
 		}
 
@@ -203,7 +203,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(target.name(mob)+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			mob.tell(_("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 
@@ -221,7 +221,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) a @x1!",newRace.name()));
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);

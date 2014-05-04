@@ -66,7 +66,7 @@ public class Fighter_Cleave extends FighterSkill
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

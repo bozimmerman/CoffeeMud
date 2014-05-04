@@ -83,7 +83,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -156,18 +156,18 @@ public class Fighter_CircleTrip extends FighterSkill
 
 				if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				{
-					mob.tell(target.name(mob)+" is already on the floor!");
+					mob.tell(_("@x1 is already on the floor!",target.name(mob)));
 					return false;
 				}
 
 				if(target.riding()!=null)
 				{
-					mob.tell("You can't trip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
+					mob.tell(_("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 					return false;
 				}
 				if(CMLib.flags().isInFlight(target))
 				{
-					mob.tell(target.name(mob)+" is flying and can't be tripped!");
+					mob.tell(_("@x1 is flying and can't be tripped!",target.name(mob)));
 					return false;
 				}
 

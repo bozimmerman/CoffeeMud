@@ -93,7 +93,7 @@ public class Prayer_Blindness extends Prayer
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(target.name(mob)+" has no eyes, and would not be affected.");
+			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 

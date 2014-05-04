@@ -51,18 +51,18 @@ public class Prayer_CreateWater extends Prayer
 		if(target==null) return false;
 		if((!(target instanceof Drink))||((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
-			mob.tell("You can not create water inside "+target.name(mob)+".");
+			mob.tell(_("You can not create water inside @x1.",target.name(mob)));
 			return false;
 		}
 		final Drink D=(Drink)target;
 		if(D.containsDrink()&&(D.liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
-			mob.tell(target.name(mob)+" already contains another liquid, and must be emptied first.");
+			mob.tell(_("@x1 already contains another liquid, and must be emptied first.",target.name(mob)));
 			return false;
 		}
 		if(D.containsDrink()&&(D.liquidRemaining()>=D.liquidHeld()))
 		{
-			mob.tell(target.name(mob)+" is full.");
+			mob.tell(_("@x1 is full.",target.name(mob)));
 			return false;
 		}
 
@@ -81,9 +81,9 @@ public class Prayer_CreateWater extends Prayer
 				D.setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 				D.setLiquidRemaining(D.liquidHeld());
 				if(target.owner() instanceof Room)
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fills up with water!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 fills up with water!",target.name()));
 				else
-					mob.tell(target.name(mob)+" fills up with water!");
+					mob.tell(_("@x1 fills up with water!",target.name(mob)));
 			}
 		}
 		else

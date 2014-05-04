@@ -143,13 +143,13 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 
 			if(CMLib.flags().canBeSeenBy(mob,target))
 			{
-				mob.tell(target.name(mob)+" is watching you way too closely.");
+				mob.tell(_("@x1 is watching you way too closely.",target.name(mob)));
 				return false;
 			}
 
 			if(mob.baseWeight()<(target.baseWeight()-100))
 			{
-				mob.tell(target.name(mob)+" is too big to knock out!");
+				mob.tell(_("@x1 is too big to knock out!",target.name(mob)));
 				return false;
 			}
 		}

@@ -79,19 +79,19 @@ public class Play_LoveSong extends Play
 					switch(CMLib.dice().roll(1,5,0))
 					{
 					case 1:
-						mob.tell("You feel strange urgings towards "+M.name(mob)+".");
+						mob.tell(_("You feel strange urgings towards @x1.",M.name(mob)));
 						break;
 					case 2:
-						mob.tell("You have strong happy feelings towards "+M.name(mob)+".");
+						mob.tell(_("You have strong happy feelings towards @x1.",M.name(mob)));
 						break;
 					case 3:
-						mob.tell("You feel very appreciative of "+M.name(mob)+".");
+						mob.tell(_("You feel very appreciative of @x1.",M.name(mob)));
 						break;
 					case 4:
-						mob.tell("You feel very close to "+M.name(mob)+".");
+						mob.tell(_("You feel very close to @x1.",M.name(mob)));
 						break;
 					case 5:
-						mob.tell("You feel lovingly towards "+M.name(mob)+".");
+						mob.tell(_("You feel lovingly towards @x1.",M.name(mob)));
 						break;
 					}
 				}catch(final Exception e){}

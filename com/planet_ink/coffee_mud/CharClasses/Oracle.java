@@ -264,7 +264,7 @@ public class Oracle extends Cleric
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if((newAbilityIDs.size()==0)&&(numNonQualified(mob)>=maxNonQualified(mob)))
-				mob.tell("^NYou have learned no new secrets this level, as you already know ^H"+numNonQualified(mob)+"/"+maxNonQualified(mob)+"^? secret skills.^N");
+				mob.tell(_("^NYou have learned no new secrets this level, as you already know ^H@x1/@x2^? secret skills.^N",""+numNonQualified(mob),""+maxNonQualified(mob)));
 		}
 	}
 }

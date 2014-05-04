@@ -92,7 +92,7 @@ public class Archon_Hush extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(target.Name()+" is released from his hushing.");
+			mob.tell(_("@x1 is released from his hushing.",target.Name()));
 			return true;
 		}
 

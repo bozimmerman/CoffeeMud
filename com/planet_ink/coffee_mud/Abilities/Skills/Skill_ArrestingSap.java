@@ -199,12 +199,12 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		{
 			if(mob.baseWeight()<(target.baseWeight()-450))
 			{
-				mob.tell(target.name(mob)+" is way to big to knock out!");
+				mob.tell(_("@x1 is way to big to knock out!",target.name(mob)));
 				return false;
 			}
 			if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 			{
-				mob.tell(target.name(mob)+" has no warrants out here.");
+				mob.tell(_("@x1 has no warrants out here.",target.name(mob)));
 				return false;
 			}
 		}

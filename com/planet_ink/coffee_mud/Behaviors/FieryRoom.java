@@ -203,7 +203,7 @@ public class FieryRoom
 					final Ability burn = CMClass.getAbility("Burning");
 					if (burn != null)
 					{
-						mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION, _("@x1 begins to burn!",target.Name()));
 						burn.invoke(M, target, true, 0);
 						target.recoverPhyStats();
 					}
@@ -224,7 +224,7 @@ public class FieryRoom
 			final Ability burn = CMClass.getAbility("Burning");
 			if((burn != null)&&(CMLib.dice().rollPercentage()>60))
 			{
-				which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
+				which.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("@x1 begins to burn!",target.Name()));
 				burn.invoke(mob,target,true,0);
 				target.recoverPhyStats();
 			}

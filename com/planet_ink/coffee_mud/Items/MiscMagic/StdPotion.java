@@ -180,7 +180,7 @@ public class StdPotion extends StdDrink implements Potion
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
 					drinkIfAble(mob,mob);
-					mob.tell(name()+" vanishes!");
+					mob.tell(_("@x1 vanishes!",name()));
 					destroy();
 					mob.recoverPhyStats();
 				}
@@ -201,7 +201,7 @@ public class StdPotion extends StdDrink implements Potion
 			if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 			{
 				drinkIfAble(msg.source(),(Physical)msg.target());
-				msg.source().tell(name()+" vanishes!");
+				msg.source().tell(_("@x1 vanishes!",name()));
 				destroy();
 				msg.source().recoverPhyStats();
 				((Physical)msg.target()).recoverPhyStats();

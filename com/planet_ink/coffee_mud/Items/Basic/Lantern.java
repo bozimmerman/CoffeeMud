@@ -68,18 +68,18 @@ public class Lantern extends LightSource
 					{
 						if(((Drink)msg.tool()).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)
 						{
-							mob.tell("You can only fill "+name()+" with lamp oil!");
+							mob.tell(_("You can only fill @x1 with lamp oil!",name()));
 							return false;
 						}
 						final Drink thePuddle=(Drink)msg.tool();
 						if(!thePuddle.containsDrink())
 						{
-							mob.tell(thePuddle.name()+" is empty.");
+							mob.tell(_("@x1 is empty.",thePuddle.name()));
 							return false;
 						}
 						return true;
 					}
-					mob.tell("You can't fill "+name()+" from that.");
+					mob.tell(_("You can't fill @x1 from that.",name()));
 					return false;
 				default:
 					break;

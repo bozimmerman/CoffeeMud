@@ -113,7 +113,7 @@ public class Play_Dirge extends Play
 							CMLib.leveler().postExperience(follower,null,null,expGained,false);
 					}
 					R.recoverRoomStats();
-					R.showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" fades away.");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 fades away.",target.name()));
 					target.destroy();
 				}
 			}

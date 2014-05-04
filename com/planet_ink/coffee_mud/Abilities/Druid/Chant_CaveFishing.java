@@ -111,12 +111,12 @@ public class Chant_CaveFishing extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Fish start swimming around in @x1!",target.name()));
 					beneficialAffect(mob, target, asLevel,0);
 					final Chant_CaveFishing A=(Chant_CaveFishing)target.fetchEffect(ID());
 					if(A!=null)
 					{
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Fish start swimming around in @x1!",target.name()));
 						A.previousResource=target.myResource();
 						target.setResource(RawMaterial.CODES.FISHES()[CMLib.dice().roll(1,RawMaterial.CODES.FISHES().length,-1)]);
 					}

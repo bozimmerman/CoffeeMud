@@ -116,7 +116,7 @@ public class Embroidering extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		final int duration=getDuration(30,mob,1,3);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) embroidering on <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),_("<S-NAME> start(s) embroidering on <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -81,7 +81,7 @@ public class Chant_LocatePlants extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("Your sense plant life "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("Your sense plant life @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 

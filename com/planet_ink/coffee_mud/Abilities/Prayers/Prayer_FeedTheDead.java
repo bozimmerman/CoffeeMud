@@ -61,7 +61,7 @@ public class Prayer_FeedTheDead extends Prayer
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()))
 			{
-				mob.tell("You cannot feed "+amount+" experience.");
+				mob.tell(_("You cannot feed @x1 experience.",""+amount));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);

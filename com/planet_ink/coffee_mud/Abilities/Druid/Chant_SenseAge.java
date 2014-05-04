@@ -66,7 +66,7 @@ public class Chant_SenseAge extends Chant
 				final Ability A=target.fetchEffect("Age");
 				if((!(target instanceof MOB))&&(A==null))
 				{
-					mob.tell("You have no way to determining the age of "+target.name(mob)+".");
+					mob.tell(_("You have no way to determining the age of @x1.",target.name(mob)));
 					success=false;
 				}
 				else
@@ -74,16 +74,16 @@ public class Chant_SenseAge extends Chant
 				{
 					final MOB M=(MOB)target;
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
-						mob.tell("You can't determine how old "+target.name(mob)+" is with this magic.");
+						mob.tell(_("You can't determine how old @x1 is with this magic.",target.name(mob)));
 					else
-						mob.tell(target.name(mob)+" is "+CMLib.english().startWithAorAn(M.baseCharStats().ageName().toLowerCase())+" "+M.baseCharStats().raceName()+", aged "+M.baseCharStats().getStat(CharStats.STAT_AGE)+" years.");
+						mob.tell(_("@x1 is @x2 @x3, aged @x4 years.",target.name(mob),CMLib.english().startWithAorAn(M.baseCharStats().ageName().toLowerCase()),M.baseCharStats().raceName(),""+M.baseCharStats().getStat(CharStats.STAT_AGE)));
 				}
 				else
 				{
 					String s=A.displayText();
 					if(s.startsWith("(")) s=s.substring(1);
 					if(s.endsWith(")")) s=s.substring(0,s.length()-1);
-					mob.tell(target.name(mob)+" is "+s+".");
+					mob.tell(_("@x1 is @x2.",target.name(mob),s));
 				}
 			}
 		}

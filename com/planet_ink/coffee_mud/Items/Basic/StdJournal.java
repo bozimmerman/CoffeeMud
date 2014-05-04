@@ -67,7 +67,7 @@ public class StdJournal extends StdItem
 			&&(!admin)
 			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 			{
-				msg.source().tell("You are not allowed to write on "+name());
+				msg.source().tell(_("You are not allowed to write on @x1",name()));
 				return false;
 			}
 			return true;
@@ -96,7 +96,7 @@ public class StdJournal extends StdItem
 				final long lastTime=mob.playerStats().getLastDateTime();
 				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
-					mob.tell("You are not allowed to read "+name()+".");
+					mob.tell(_("You are not allowed to read @x1.",name()));
 					return;
 				}
 				int which=-1;
@@ -200,13 +200,13 @@ public class StdJournal extends StdItem
 									final MOB M=CMLib.players().getLoadPlayer(from);
 									if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf('@')<0))
 									{
-										mob.tell("Player '"+from+"' does not exist, or has no email address.");
+										mob.tell(_("Player '@x1' does not exist, or has no email address.",from));
 										repeat=true;
 									}
 									else
-									if(!mob.session().choose("Send email to "+M.Name()+" (Y/n)?","YN\n","Y").equalsIgnoreCase("N"))
+									if(!mob.session().choose(_("Send email to @x1 (Y/n)?",M.Name()),_("YN\n"),_("Y")).equalsIgnoreCase("N"))
 									{
-										final String replyMsg=mob.session().prompt("Enter your email response\n\r: ");
+										final String replyMsg=mob.session().prompt(_("Enter your email response\n\r: "));
 										if((replyMsg.trim().length()>0) && (read != null))
 										{
 											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
@@ -230,7 +230,7 @@ public class StdJournal extends StdItem
 								{
 									String journal;
 									try {
-										journal=mob.session().prompt("Enter the journal to transfer this msg to: ","",30000);
+										journal=mob.session().prompt(_("Enter the journal to transfer this msg to: "),"",30000);
 									}
 									catch(final IOException e)
 									{
@@ -257,7 +257,7 @@ public class StdJournal extends StdItem
 										if(realName==null)
 											realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 										if(realName==null)
-											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
+											mob.tell(_("The journal '@x1' does not presently exist.  Aborted.",journal));
 										else
 										{
 											final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
@@ -293,7 +293,7 @@ public class StdJournal extends StdItem
 								{
 									if(read != null)
 									{
-										final String replyMsg=mob.session().prompt("Enter your response\n\r: ");
+										final String replyMsg=mob.session().prompt(_("Enter your response\n\r: "));
 										if(replyMsg.trim().length()>0)
 										{
 											CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
@@ -332,7 +332,7 @@ public class StdJournal extends StdItem
 				   &&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)||admin)
 				   &&(!mob.isMonster()))
 				{
-					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
+					if(mob.session().confirm(_("Delete all journal entries? Are you sure (y/N)?"),_("N")))
 						CMLib.database().DBDeleteJournal(name(),null);
 				}
 				else
@@ -343,9 +343,9 @@ public class StdJournal extends StdItem
 						to=mob.Name();
 					else
 					if(CMath.s_bool(getParm("MAILBOX"))
-					||mob.session().confirm("Is this a private message (y/N)?","N"))
+					||mob.session().confirm(_("Is this a private message (y/N)?"),_("N")))
 					{
-						to=mob.session().prompt("To whom:");
+						to=mob.session().prompt(_("To whom:"));
 						if(((!to.toUpperCase().trim().startsWith("MASK=")
 								||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)&&(!admin))))
 						&&(!CMLib.players().playerExists(to)))
@@ -354,7 +354,7 @@ public class StdJournal extends StdItem
 							return;
 						}
 					}
-					String subject=mob.session().prompt("Enter a subject: ");
+					String subject=mob.session().prompt(_("Enter a subject: "));
 					if(subject.trim().length()==0)
 					{
 						mob.tell(_("Aborted."));
@@ -364,7 +364,7 @@ public class StdJournal extends StdItem
 					   &&(!admin)
 					   &&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 						subject=subject.substring(4);
-					final String message=mob.session().prompt("Enter your message\n\r: ");
+					final String message=mob.session().prompt(_("Enter your message\n\r: "));
 					if(message.trim().length()==0)
 					{
 						mob.tell(_("Aborted."));
@@ -402,7 +402,7 @@ public class StdJournal extends StdItem
 			{
 				lastReadTo=msg.source();
 				lastDateRead=newestDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has "+newestDate[1]+" new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		else
@@ -418,7 +418,7 @@ public class StdJournal extends StdItem
 			{
 				lastReadTo=msg.source();
 				lastDateRead=newestDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has "+newestDate[1]+" new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		super.executeMsg(myHost,msg);

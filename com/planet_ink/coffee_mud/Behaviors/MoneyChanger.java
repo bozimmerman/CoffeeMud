@@ -182,7 +182,7 @@ public class MoneyChanger extends StdBehavior
 				if((value>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
+					final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?"));
 					C.setOwner(observer);
 					final long num=C.getNumberOfCoins();
 					final String curr=C.getCurrency();

@@ -94,7 +94,7 @@ public class Prop_SparringRoom extends Property
 			if(R==null) R=target.getStartRoom();
 			R.bringMobHere(target,false);
 			target.bringToLife(R,true);
-			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 			deathRoom.recoverRoomStats();
 			return false;
 		}

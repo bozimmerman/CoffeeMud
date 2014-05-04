@@ -52,7 +52,7 @@ public class Spell_Farsight extends Spell
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> get(s) a far off look, but the spell fizzles.");
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?"));
 			int limit=mob.phyStats().level()/5;
 			if(limit<0) limit=1;
 			if(mob.location().okMessage(mob,msg))
@@ -98,7 +98,7 @@ public class Spell_Farsight extends Spell
 					else
 					if(dirCode<0)
 					{
-						mob.tell("\n\r'"+whatToOpen+"' is not a valid direction.");
+						mob.tell(_("\n\r'@x1' is not a valid direction.",whatToOpen));
 						commands.removeAllElements();
 						success=false;
 					}

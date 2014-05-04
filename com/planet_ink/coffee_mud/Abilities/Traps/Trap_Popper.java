@@ -48,9 +48,9 @@ public class Trap_Popper extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a noise trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a **POP** trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a **POP** trap!")))
 			{
 				super.spring(target);
 				final Area A=target.location().getArea();

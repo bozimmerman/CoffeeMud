@@ -91,7 +91,7 @@ public class Chant_HoldAnimal extends Chant
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(target.charStats().HeShe()+" is not an animal!");
+			mob.tell(_("@x1 is not an animal!",target.charStats().HeShe()));
 			return false;
 		}
 

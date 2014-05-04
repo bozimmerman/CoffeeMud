@@ -53,12 +53,12 @@ public class Spell_ArcaneMark extends Spell
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if((!(target instanceof Item))||(!target.isGeneric()))
 		{
-			mob.tell("You can't can't cast this on "+target.name(mob)+".");
+			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 		final String message=CMParms.combine(commands,1);
@@ -70,7 +70,7 @@ public class Spell_ArcaneMark extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

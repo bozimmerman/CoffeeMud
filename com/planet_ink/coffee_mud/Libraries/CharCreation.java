@@ -346,7 +346,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			S.setScript(script);
 			final Room oldRoom=mob.location();
 			mob.setLocation(CMLib.map().getRandomRoom());
-			final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CHARCREATION");
+			final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("CHARCREATION"));
 			S.executeMsg(mob, msg2);
 			S.dequeResponses();
 			S.tick(mob,Tickable.TICKID_MOB);
@@ -2866,7 +2866,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(mob==session.mob())
 				reloadTerminal(mob);
 			mob.bringToLife(mob.getStartRoom(),true);
-			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,_("<S-NAME> appears!"));
 		}
 		mob.playerStats().leveledDateTime(0);
 		CMLib.database().DBCreateCharacter(mob);
@@ -3093,7 +3093,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			mob.bringToLife(startRoom,false);
 			CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-			startRoom.showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+			startRoom.showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,_("<S-NAME> appears!"));
 		}
 		else
 		{
@@ -3126,7 +3126,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			showTheNews(mob);
 			mob.bringToLife(mob.location(),resetStats);
 			CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,_("<S-NAME> appears!"));
 		}
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -3142,7 +3142,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				follower.setFollowing(mob); // before for bestow names sake
 				follower.bringToLife(R,false);
 				follower.setFollowing(mob);
-				R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+				R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,_("<S-NAME> appears!"));
 			}
 		}
 		final PlayerStats pstats = mob.playerStats();

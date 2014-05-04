@@ -107,7 +107,7 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 			final Room prevRoom=msg.source().location();
 			final Room otherRoom=CMLib.map().getRoom(text());
 			if(otherRoom==null)
-				msg.source().tell("You are whisked nowhere at all, since '"+text()+"' is nowhere to be found.");
+				msg.source().tell(_("You are whisked nowhere at all, since '@x1' is nowhere to be found.",text()));
 			else
 			if(prevRoom!=otherRoom)
 			{

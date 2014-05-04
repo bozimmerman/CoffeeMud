@@ -144,9 +144,9 @@ public class ItemRefitter extends StdBehavior
 			((Item)msg.tool()).basePhyStats().setHeight(0);
 			((Item)msg.tool()).recoverPhyStats();
 
-			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
+			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> @x1.",costStr));
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?");
+			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?"));
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);

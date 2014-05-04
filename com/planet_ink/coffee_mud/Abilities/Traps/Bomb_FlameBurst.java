@@ -71,7 +71,7 @@ public class Bomb_FlameBurst extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the flame burst!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the flame burst!"));
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(affected.name()+" flames all over <T-NAME>!")+CMLib.protocol().msp("fireball.wav",30)))
 			{

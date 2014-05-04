@@ -135,7 +135,7 @@ public class Spell_Clone extends Spell
 					myMonster.setVictim(mob.getVictim());
 					CMLib.commands().postFollow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
-						mob.tell(myMonster.name()+" seems unwilling to follow you.");
+						mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
@@ -182,7 +182,7 @@ public class Spell_Clone extends Spell
 		newMOB.delAllBehaviors();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

@@ -113,7 +113,7 @@ public class BodyPiercing extends CommonSkill
 		&&(CMLib.flags().aliveAwakeMobile(target,true))
 		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(target.Name()+" doesn't want any piercings.");
+			mob.tell(_("@x1 doesn't want any piercings.",target.Name()));
 			return false;
 		}
 

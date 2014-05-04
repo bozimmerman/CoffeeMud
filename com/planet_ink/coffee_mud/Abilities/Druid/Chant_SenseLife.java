@@ -100,9 +100,9 @@ public class Chant_SenseLife extends Chant
 			mob.tell(_("You do not feel any life beyond your own."));
 		else
 		if(dirs.length()==0)
-			mob.tell("You feel a life force coming from "+last+".");
+			mob.tell(_("You feel a life force coming from @x1.",last));
 		else
-			mob.tell("You feel a life force coming from "+dirs.substring(2)+", and "+last+".");
+			mob.tell(_("You feel a life force coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override

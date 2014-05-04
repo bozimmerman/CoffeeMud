@@ -121,13 +121,13 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
-			mob.tell("You can't talk "+target.name(mob)+" into a kamikaze mission.");
+			mob.tell(_("You can't talk @x1 into a kamikaze mission.",target.name(mob)));
 			return false;
 		}
 
 		if((s.length()==0)||(CMParms.parse(s).size()==0))
 		{
-			mob.tell("Send "+target.charStats().himher()+" which direction?");
+			mob.tell(_("Send @x1 which direction?",target.charStats().himher()));
 			return false;
 		}
 
@@ -140,7 +140,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
+			mob.tell(_("@x1 requires @x2 to do this.",target.charStats().HeShe(),costWords));
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		if(bombFound==null)
 		{
-			mob.tell(target.name(mob)+" must have some bombs for this to work.");
+			mob.tell(_("@x1 must have some bombs for this to work.",target.name(mob)));
 			return false;
 		}
 
@@ -168,13 +168,13 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze "+s+", but no deal is reached.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze @x1, but no deal is reached.^?",s));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze @x1 for @x2.^?",s,costWords));
 
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverPhyStats();

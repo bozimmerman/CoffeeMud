@@ -97,7 +97,7 @@ public class Spell_ManaShield extends Spell
 		}
 		if(oldOne)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Spell_ManaShield extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,CMStrings.capitalizeAndLower(adjective()).trim()+" protective aura of mana surrounds <T-NAME>.");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 protective aura of mana surrounds <T-NAME>.",CMStrings.capitalizeAndLower(adjective()).trim()));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

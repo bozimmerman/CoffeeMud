@@ -103,7 +103,7 @@ public class Paladin_Defend extends StdAbility
 					unInvoke();
 				if(mob.location()!=null)
 				{
-					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage."))
+					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage.")))
 					{
 						final MOB victim=mob.getVictim();
 						if((victim!=null)&&(victim.getVictim()==mob))
@@ -154,7 +154,7 @@ public class Paladin_Defend extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,_("^S<S-NAME> assume(s) an all-out defensive posture.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

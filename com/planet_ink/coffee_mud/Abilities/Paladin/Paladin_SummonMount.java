@@ -148,7 +148,7 @@ public class Paladin_SummonMount extends StdAbility
 				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
@@ -158,7 +158,7 @@ public class Paladin_SummonMount extends StdAbility
 					if(target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(target.name(mob)+" seems unwilling to follow you.");
+						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				invoker=mob;
 				target.addNonUninvokableEffect((Ability)copyOf());

@@ -175,7 +175,7 @@ public class Sinking extends StdAbility
 			}
 			isTreading=false;
 			mob.recoverPhyStats();
-			mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
+			mob.tell(_("\n\r\n\rYOU ARE SINKING @x1!!\n\r\n\r",addStr.toUpperCase()));
 			CMLib.tracking().walk(mob,direction,false,false);
 			R=mob.location();
 			if((R!=null)&&(!canSinkFrom(R,direction)))
@@ -220,10 +220,10 @@ public class Sinking extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks @x1.",addStr));
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks in from @x1.",(reversed()?"below":"above")));
 				return true;
 			}
 			if(reversed())

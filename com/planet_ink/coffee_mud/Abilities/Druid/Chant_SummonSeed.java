@@ -87,7 +87,7 @@ public class Chant_SummonSeed extends Chant
 		}
 		if(foundShortName==null)
 		{
-			mob.tell("'"+s+"' is an unknown type of vegetation.");
+			mob.tell(_("'@x1' is an unknown type of vegetation.",s));
 			return false;
 		}
 

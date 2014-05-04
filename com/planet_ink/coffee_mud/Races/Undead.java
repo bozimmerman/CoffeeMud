@@ -81,7 +81,7 @@ public class Undead extends StdRace
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(myHost instanceof MOB)
 		&&(ID().equals("Undead")))
-			msg.source().tell(name()+" stinks of grime and decay.");
+			msg.source().tell(_("@x1 stinks of grime and decay.",name()));
 	}
 
 	@Override
@@ -152,9 +152,9 @@ public class Undead extends StdRace
 				if(msg.tool()!=null)
 					immunityName=msg.tool().name();
 				if(mob!=msg.source())
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+" attacks from <T-NAME>.");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) immune to @x1 attacks from <T-NAME>.",immunityName));
 				else
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+".");
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) immune to @x1.",immunityName));
 				return false;
 			}
 		}

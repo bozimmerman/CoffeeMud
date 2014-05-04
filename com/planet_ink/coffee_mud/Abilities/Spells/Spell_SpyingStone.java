@@ -62,7 +62,7 @@ public class Spell_SpyingStone extends Spell
 				for(final String m : msgs)
 					str.append(m).append("\n\r");
 				if(str.length()==0) str.append("Nothing!");
-				room.showHappens(CMMsg.MSG_SPEAK, affected,"^S<S-NAME> grow(s) a mouth and say(s) '^N"+str.toString()+"^S'^N");
+				room.showHappens(CMMsg.MSG_SPEAK, affected,_("^S<S-NAME> grow(s) a mouth and say(s) '^N@x1^S'^N",str.toString()));
 				msgs.clear();
 			}
 		}
@@ -87,7 +87,7 @@ public class Spell_SpyingStone extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already a spying stone!");
+			mob.tell(_("@x1 is already a spying stone!",target.name(mob)));
 			return false;
 		}
 

@@ -367,14 +367,14 @@ public class StdDeity extends StdMOB implements Deity
 		case CMMsg.TYP_SERVE:
 			if(msg.source().getMyDeity()==this)
 			{
-				msg.source().tell("You already worship "+name()+".");
+				msg.source().tell(_("You already worship @x1.",name()));
 				if(msg.source().isMonster())
 					CMLib.commands().postSay(msg.source(),null,"I already worship "+msg.source().getMyDeity().name()+".");
 				return false;
 			}
 			if(msg.source().getMyDeity()!=null)
 			{
-				msg.source().tell("You already worship "+msg.source().getMyDeity().name()+".");
+				msg.source().tell(_("You already worship @x1.",msg.source().getMyDeity().name()));
 				if(msg.source().isMonster())
 					CMLib.commands().postSay(msg.source(),null,"I already worship "+msg.source().getMyDeity().name()+".");
 				return false;
@@ -383,7 +383,7 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
 				{
-					msg.source().tell("You are unworthy of serving "+name()+".");
+					msg.source().tell(_("You are unworthy of serving @x1.",name()));
 					if(msg.source().isMonster())
 						CMLib.commands().postSay(msg.source(),null,"I am unworthy of serving "+name()+".");
 					return false;
@@ -392,7 +392,7 @@ public class StdDeity extends StdMOB implements Deity
 			else
 			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source(),true))
 			{
-				msg.source().tell("You are unworthy of "+name()+".");
+				msg.source().tell(_("You are unworthy of @x1.",name()));
 				if(msg.source().isMonster())
 					CMLib.commands().postSay(msg.source(),null,"I am unworthy of "+name()+".");
 				return false;
@@ -401,7 +401,7 @@ public class StdDeity extends StdMOB implements Deity
 		case CMMsg.TYP_REBUKE:
 			if(!msg.source().getWorshipCharID().equals(Name()))
 			{
-				msg.source().tell("You do not worship "+name()+".");
+				msg.source().tell(_("You do not worship @x1.",name()));
 				return false;
 			}
 			break;
@@ -906,13 +906,13 @@ public class StdDeity extends StdMOB implements Deity
 					if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					{
 						removePowers(msg.source());
-						msg.source().tell("You feel the wrath of "+name()+"!");
+						msg.source().tell(_("You feel the wrath of @x1!",name()));
 						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 							msg.source().charStats().getCurrentClass().unLevel(msg.source());
 					}
 					else
 					{
-						msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
+						msg.source().tell(_("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
 						CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
@@ -1076,7 +1076,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(M.getWorshipCharID().equals(Name()))
 				{
 					if(!M.isMonster())
-						M.tell("Services for "+Name()+" are now starting at "+room.displayText(null)+".");
+						M.tell(_("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
 					else
 					if(!CMLib.flags().isATrackingMonster(M))
 					{
@@ -1188,7 +1188,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(A!=null) A.unInvoke();
 			}
 		}
-		room.showHappens(CMMsg.MASK_ALWAYS, "The service conducted by "+mob.Name()+" has been cancelled.");
+		room.showHappens(CMMsg.MASK_ALWAYS, _("The service conducted by @x1 has been cancelled.",mob.Name()));
 		if(mob.location()!=room)
 			mob.tell(_("Your service has been cancelled."));
 		undoService(service.parishaners);
@@ -1228,7 +1228,7 @@ public class StdDeity extends StdMOB implements Deity
 						{
 							if((blacklist==M)&&((++blackmarks)>30))
 							{
-								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,_("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
 								if((M.location()!=null)&&(M.okMessage(M,msg)))
 									M.location().send(M,msg);
 								blackmarks=0;
@@ -1243,7 +1243,7 @@ public class StdDeity extends StdMOB implements Deity
 								blackmarks++;
 								lastBlackmark=System.currentTimeMillis();
 								if((blackmarks%5)==0)
-									M.tell("You feel dirtied by the disappointment of "+name()+".");
+									M.tell(_("You feel dirtied by the disappointment of @x1.",name()));
 							}
 						}
 						else
@@ -1254,7 +1254,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if((blacklist==M)&&((++blackmarks)>30))
 						{
-							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
+							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,_("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
 							if((M.location()!=null)&&(M.okMessage(M,msg)))
 								M.location().send(M,msg);
 						}
@@ -1266,7 +1266,7 @@ public class StdDeity extends StdMOB implements Deity
 							blackmarks++;
 							lastBlackmark=System.currentTimeMillis();
 							if(blackmarks==1)
-								M.tell("Woshipper, you have disappointed "+name()+". Make amends or face my wrath!");
+								M.tell(_("Woshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
 						}
 					}
 					else

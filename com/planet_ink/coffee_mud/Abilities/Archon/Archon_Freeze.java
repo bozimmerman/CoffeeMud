@@ -98,7 +98,7 @@ public class Archon_Freeze extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(target.Name()+" is released from his freezedness.");
+			mob.tell(_("@x1 is released from his freezedness.",target.Name()));
 			return true;
 		}
 

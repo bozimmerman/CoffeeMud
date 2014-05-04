@@ -90,7 +90,7 @@ public class Spell_GroupStatus extends Spell
 				{
 					if(!reporteds.contains("LOWHITPOINTS"))
 					{
-						invoker().tell(mob.Name()+" is low on hit points.");
+						invoker().tell(_("@x1 is low on hit points.",mob.Name()));
 						reporteds.add("LOWHITPOINTS");
 					}
 				}
@@ -111,7 +111,7 @@ public class Spell_GroupStatus extends Spell
 					&&(!affects.contains(A.ID())))
 					{
 						affects.add(A.ID());
-						invoker().tell(mob.Name()+" is now affected by "+A.name()+".");
+						invoker().tell(_("@x1 is now affected by @x2.",mob.Name(),A.name()));
 					}
 				}
 			}
@@ -129,7 +129,7 @@ public class Spell_GroupStatus extends Spell
 		{
 			if(!reporteds.contains("DEATH"))
 			{
-				invoker().tell(affected.Name()+" is dying.");
+				invoker().tell(_("@x1 is dying.",affected.Name()));
 				reporteds.add("DEATH");
 			}
 		}

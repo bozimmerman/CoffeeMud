@@ -76,7 +76,7 @@ public class Prayer_GuardianHearth extends Prayer
 					&&((M.Name().equals(text()))
 						||(M.getClanRole(text())!=null))))
 				{
-					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,"The guardian hearth protect(s) <S-NAME>!");
+					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,_("The guardian hearth protect(s) <S-NAME>!"));
 					break;
 				}
 			}

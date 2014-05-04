@@ -123,7 +123,7 @@ public class Spell_AchillesArmor extends Spell
 					name=msg.tool().name();
 				else
 					name="the "+msg.tool().name();
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The armor around <S-NAME> blocks "+name+" attack from <T-NAME>!");
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The armor around <S-NAME> blocks @x1 attack from <T-NAME>!",name));
 				return false;
 			}
 			CMLib.combat().postDeath(msg.source(),mob,msg);

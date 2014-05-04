@@ -57,7 +57,7 @@ public class Skill_ScrollCopy extends StdSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 
@@ -87,7 +87,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(thisSpell==null)
 		{
-			mob.tell("That is not written on "+target.name(mob)+".");
+			mob.tell(_("That is not written on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(success)
 		{
-			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> memorize(s) '"+thisSpell.name()+"' from <T-NAME>."))
+			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,_("<S-NAME> memorize(s) '@x1' from <T-NAME>.",thisSpell.name())))
 			{
 				thisSpell.teach(T,mob);
 				if((mob.fetchAbility(thisSpell.ID())!=null)
@@ -122,7 +122,7 @@ public class Skill_ScrollCopy extends StdSkill
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to memorize '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");
+			mob.location().show(mob,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to memorize '@x1' from @x2, but fail(s).",thisSpell.name(),target.name()));
 		return success;
 	}
 

@@ -212,7 +212,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				if(returnToRoom==null)
 				{
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, "You must be at an entrance to reset the area."));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, _("You must be at an entrance to reset the area.")));
 					return;
 				}
 				final Area A=this.getParentArea();
@@ -246,7 +246,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									final Room R=e.nextElement();
 									R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 								}
-								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance has been reset."));
+								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance has been reset.")));
 								CMLib.map().delArea(this);
 								destroy();
 								return;
@@ -254,7 +254,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 					}
 				}
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance failed to reset."));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance failed to reset.")));
 			}
 		}
 	}
@@ -378,7 +378,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("area")))
 					{
-						msg.source().tell("The area id '"+idName+"' has not been defined in the data file.");
+						msg.source().tell(_("The area id '@x1' has not been defined in the data file.",idName));
 						return false;
 					}
 					final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -430,13 +430,11 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 					catch(final CMException cme)
 					{
-						msg.source().tell("Required ids for "+idName+" were missing: "+cme.getMessage());
+						msg.source().tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 						return false;
 					}
 					for(final MOB M : myGroup)
-						M.tell("^x------------------------------------------------------\n\r" +
-								 "Preparing to enter "+Name()+", please stand by...\n\r" +
-								 "------------------------------------------------------^N^.");
+						M.tell(_("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
 					try
 					{
 						piece=CMLib.percolator().processLikeParm("AREA", piece, definedIDs);

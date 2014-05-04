@@ -65,7 +65,7 @@ public class Spell_TrueSight extends Spell
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,msg.target().name()+" is truly "+msg.target().Name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,_("@x1 is truly @x2.",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		return true;
 	}
 

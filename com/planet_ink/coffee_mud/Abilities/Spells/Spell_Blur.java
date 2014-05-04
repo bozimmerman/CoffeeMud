@@ -62,7 +62,7 @@ public class Spell_Blur extends Spell
 			final int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(CMLib.dice().rollPercentage()<(pctDodge*2))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> can't seem to focus on <S-NAME>."));
 				if(mob.location().okMessage(mob,msg2))
 					mob.location().send(mob,msg2);
 				return false;

@@ -570,15 +570,15 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			if(atmoResource==0)
 			{
-				R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushes out of the room.");
+				R.showHappens(CMMsg.MSG_OK_ACTION, _("@x1 rushes out of the room.",RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()));
 				if((notifyRoom!=null)&&(notifyRoom!=R))
-					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushes out of the room.");
+					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, _("@x1 rushes out of the room.",RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()));
 			}
 			else
 			{
-				R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(atmoResource).toLowerCase()+" rushes into the room.");
+				R.showHappens(CMMsg.MSG_OK_ACTION, _("@x1 rushes into the room.",RawMaterial.CODES.NAME(atmoResource).toLowerCase()));
 				if((notifyRoom!=null)&&(notifyRoom!=R))
-					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(atmoResource).toLowerCase()+" rushes into the room.");
+					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, _("@x1 rushes into the room.",RawMaterial.CODES.NAME(atmoResource).toLowerCase()));
 			}
 			if(atmoResource==getAtmosphere())
 				R.setAtmosphere(-1);
@@ -643,7 +643,7 @@ public class StdSpaceShip implements Area, SpaceShip
 						if((M!=null)
 						&&(!M.isMonster())
 						&&(!CMLib.flags().canBreatheThis(M,RawMaterial.RESOURCE_NOTHING)))
-							M.tell("The "+RawMaterial.CODES.NAME(atmo).toLowerCase()+" is seaming a bit stale.");
+							M.tell(_("The @x1 is seaming a bit stale.",RawMaterial.CODES.NAME(atmo).toLowerCase()));
 					}
 				}
 			}

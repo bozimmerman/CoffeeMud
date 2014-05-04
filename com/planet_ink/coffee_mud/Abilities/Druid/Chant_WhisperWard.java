@@ -153,7 +153,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
-			mob.tell("You must specify the trigger event that will cause the wind to whisper to you.\n\r'"+triggerStr+"' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r");
+			mob.tell(_("You must specify the trigger event that will cause the wind to whisper to you.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
 			return false;
 		}
 
@@ -165,12 +165,12 @@ public class Chant_WhisperWard extends Chant implements Trap
 			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell("You can't can't cast this on "+target.name(mob)+".");
+			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -46,12 +46,12 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) looking at some "+caltropTypeName()+"caltrops on the floor.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) looking at some @x1caltrops on the floor.",caltropTypeName()));
 		else
 		if(mob.curState().getMana()>6)
 		{
 			mob.curState().adjMana(-CMLib.dice().roll(3+getX1Level(mob),8,20),mob.maxState());
-			mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground sparkle and confuse <T-NAME>");
+			mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,_("The @x1caltrops on the ground sparkle and confuse <T-NAME>",caltropTypeName()));
 		}
 		// does not set sprung flag -- as this trap never goes out of use
 	}

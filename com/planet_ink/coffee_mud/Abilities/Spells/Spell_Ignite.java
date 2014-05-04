@@ -72,7 +72,7 @@ public class Spell_Ignite extends Spell
 			}
 			break;
 		}
-		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" ignites!");
+		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ignites!",I.name()));
 		final Ability B=CMClass.getAbility("Burning");
 		if(B!=null)
 			B.invoke(mob,I,true,durationOfBurn);
@@ -86,7 +86,7 @@ public class Spell_Ignite extends Spell
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
 		{
-			mob.tell("You can't ignite '"+target.name(mob)+"'!");
+			mob.tell(_("You can't ignite '@x1'!",target.name(mob)));
 			return false;
 		}
 

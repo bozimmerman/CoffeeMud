@@ -65,13 +65,13 @@ public class Thief_Bribe extends ThiefSkill
 		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3)
 		||(!target.isMonster()))
 		{
-			mob.tell("You can't bribe "+target.name(mob)+".");
+			mob.tell(_("You can't bribe @x1.",target.name(mob)));
 			return false;
 		}
 
 		if(commands.size()<1)
 		{
-			mob.tell("Bribe "+target.charStats().himher()+" to do what?");
+			mob.tell(_("Bribe @x1 to do what?",target.charStats().himher()));
 			return false;
 		}
 
@@ -92,7 +92,7 @@ public class Thief_Bribe extends ThiefSkill
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't bribe "+target.name(mob)+" to do that.");
+					mob.tell(_("You can't bribe @x1 to do that.",target.name(mob)));
 					return false;
 				}
 			}
@@ -118,20 +118,20 @@ public class Thief_Bribe extends ThiefSkill
 
 		if((!success)||(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but no deal is reached.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '@x1', but no deal is reached.^?",CMParms.combine(commands,0)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<amountRequired)
 			{
 				final String costWords=CMLib.beanCounter().nameCurrencyShort(currency,amountRequired);
-				mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
+				mob.tell(_("@x1 requires @x2 to do this.",target.charStats().HeShe(),costWords));
 			}
 			success=false;
 		}
 		else
 		{
 			final String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> bribe(s) <T-NAMESELF> to '@x1' for @x2.^?",CMParms.combine(commands,0),costWords));
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverPhyStats();
 			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);

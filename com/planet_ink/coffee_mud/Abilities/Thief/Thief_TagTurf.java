@@ -58,7 +58,7 @@ public class Thief_TagTurf extends ThiefSkill
 		&&(!msg.tool().ID().equals("Thief_TurfWar"))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
-			msg.source().tell("You definitely aren't allowed to do that on "+text()+"'s turf.");
+			msg.source().tell(_("You definitely aren't allowed to do that on @x1's turf.",text()));
 			return false;
 		}
 		return true;
@@ -76,12 +76,12 @@ public class Thief_TagTurf extends ThiefSkill
 			if((msg.source().Name().equals(text()))
 			||((msg.source().getClanRole(text())!=null) && CMLib.clans().checkClanPrivilege(msg.source(), Clan.Function.CLAN_BENEFITS)))
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
-										CMMsg.MSG_OK_VISUAL,"This is your turf.",
+										CMMsg.MSG_OK_VISUAL,_("This is your turf."),
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
 			else
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
-										CMMsg.MSG_OK_VISUAL,"This turf has been claimed by "+text()+".",
+										CMMsg.MSG_OK_VISUAL,_("This turf has been claimed by @x1.",text()),
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
 		}
@@ -109,7 +109,7 @@ public class Thief_TagTurf extends ThiefSkill
 				mob.tell(_("This place has been untagged."));
 				return true;
 			}
-			mob.tell("This place has already been tagged by "+A.text()+".");
+			mob.tell(_("This place has already been tagged by @x1.",A.text()));
 			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)

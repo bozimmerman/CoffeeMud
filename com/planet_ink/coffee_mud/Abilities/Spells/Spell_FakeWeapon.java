@@ -87,13 +87,13 @@ public class Spell_FakeWeapon extends Spell
 						room=msg.source().location();
 					if(room==null) room=CMLib.map().roomLocation(affected);
 					if(room!=null)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles around "+affected.Name()+" and is absorbed into the air.");
+						room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
 					return false;
 				}
 				else
 				if(msg.tool() instanceof Ability)
 				{
-					msg.source().tell("That doesn't appear to work on "+affected.name());
+					msg.source().tell(_("That doesn't appear to work on @x1",affected.name()));
 					return false;
 				}
 			}
@@ -188,7 +188,7 @@ public class Spell_FakeWeapon extends Spell
 				weapon.setBaseValue(0);
 				weapon.recoverPhyStats();
 				mob.addItem(weapon);
-				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
+				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> own(s) <O-NAME>!"));
 				beneficialAffect(mob,weapon,asLevel,0);
 			}
 		}

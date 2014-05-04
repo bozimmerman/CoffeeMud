@@ -56,7 +56,7 @@ public class Spell_AnimateWeapon extends Spell
 			{
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(invoker(),invoker().getVictim())+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(invoker().getVictim()), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
 											CMLib.dice().roll(1,affected.phyStats().damage(),5),
@@ -68,19 +68,19 @@ public class Spell_AnimateWeapon extends Spell
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 twiches a bit.",affected.name()));
 				break;
 			case 2:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is looking for trouble.",affected.name()));
 				break;
 			case 3:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" practices its moves.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 practices its moves.",affected.name()));
 				break;
 			case 4:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
 				break;
 			}
 		}
@@ -119,7 +119,7 @@ public class Spell_AnimateWeapon extends Spell
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" stops moving.");
+			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops moving.",affected.name()));
 		super.unInvoke();
 	}
 

@@ -126,7 +126,7 @@ public class Spell_Summon extends Spell
 
 		if((oldRoom==null)||(target==null))
 		{
-			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
+			mob.tell(_("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Spell_Summon extends Spell
 
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(target.name(mob)+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			mob.tell(_("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 
@@ -152,7 +152,7 @@ public class Spell_Summon extends Spell
 				final MOB follower=target;
 				final Room newRoom=mob.location();
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
+				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
 				if(oldRoom.okMessage(follower,leaveMsg))
 				{
 					if(newRoom.okMessage(follower,enterMsg))

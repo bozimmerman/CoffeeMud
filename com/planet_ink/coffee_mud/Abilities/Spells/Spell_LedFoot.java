@@ -97,7 +97,7 @@ public class Spell_LedFoot extends Spell
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_FOOT)==0))
 		{
-			mob.tell(target.name(mob)+" has no feet, and would not be affected.");
+			mob.tell(_("@x1 has no feet, and would not be affected.",target.name(mob)));
 			return false;
 		}
 

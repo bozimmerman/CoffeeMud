@@ -725,7 +725,7 @@ public class Mood extends StdAbility
 		final String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
 		if(entered.trim().length()==0)
 		{
-			mob.tell("You are currently in "+moodName+" mood.");
+			mob.tell(_("You are currently in @x1 mood.",moodName));
 			return false;
 		}
 		if(entered.equalsIgnoreCase("RANDOM"))
@@ -765,16 +765,16 @@ public class Mood extends StdAbility
 			for (final String[] element : MOODS)
 				choices+=", "+element[0];
 			if(entered.equalsIgnoreCase("LIST"))
-				mob.tell("Mood choices include: "+choices.substring(2));
+				mob.tell(_("Mood choices include: @x1",choices.substring(2)));
 			else
-				mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
+				mob.tell(_("'@x1' is not a known mood. Choices include: @x2",entered,choices.substring(2)));
 			return false;
 		}
 		if(moodCode.equalsIgnoreCase(choice))
 		{
 			if(origEntered.equalsIgnoreCase("RANDOM"))
 				return false;
-			mob.tell("You are already in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
+			mob.tell(_("You are already in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
 			return false;
 		}
 
@@ -782,7 +782,7 @@ public class Mood extends StdAbility
 		{
 			if(origEntered.equalsIgnoreCase("RANDOM"))
 				return false;
-			mob.tell("You must meet the following criteria to be in that mood: "+CMLib.masking().maskDesc(mask,true));
+			mob.tell(_("You must meet the following criteria to be in that mood: @x1",CMLib.masking().maskDesc(mask,true)));
 			return false;
 		}
 
@@ -791,7 +791,7 @@ public class Mood extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) to be in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appear(s) to be in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))

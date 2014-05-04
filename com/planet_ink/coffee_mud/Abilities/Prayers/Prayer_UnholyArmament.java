@@ -84,7 +84,7 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos<0)
 			{
 				if(mob.getWorshipCharID().length()>0)
-					mob.tell(mob.getWorshipCharID()+" can see that you are already completely armed.");
+					mob.tell(_("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
 				else
 					mob.tell(_("The gods can see that you are already armed."));
 				return false;
@@ -228,7 +228,7 @@ public class Prayer_UnholyArmament extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" materializes out of the ground.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 materializes out of the ground.",I.name()));
 			}
 		}
 		else

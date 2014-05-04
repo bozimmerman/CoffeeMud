@@ -276,7 +276,7 @@ public class Archon_Multiwatch extends ArchonSkill
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);
 				else
-					mob.tell("'"+name+"' is not online.");
+					mob.tell(_("'@x1' is not online.",name));
 			}
 			if(V.size()>1)
 			{
@@ -291,7 +291,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					}
 				}
 				IPS.put("MANUAL"+(IPS.size()+1),V);
-				mob.tell("Manual Watch #"+IPS.size()+" added.");
+				mob.tell(_("Manual Watch #@x1 added.",""+IPS.size()));
 			}
 			return true;
 		}

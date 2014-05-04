@@ -87,7 +87,7 @@ public class Chant_EndureRust extends Chant
 		}
 		else
 		{
-			mob.tell("This chant won't affect "+target.name(mob)+".");
+			mob.tell(_("This chant won't affect @x1.",target.name(mob)));
 			return false;
 		}
 

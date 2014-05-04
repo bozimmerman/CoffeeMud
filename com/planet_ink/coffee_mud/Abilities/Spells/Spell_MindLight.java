@@ -55,7 +55,7 @@ public class Spell_MindLight extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The mind light starts to fade.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The mind light starts to fade."));
 		}
 	}
 
@@ -114,7 +114,7 @@ public class Spell_MindLight extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _("@x1he mind light envelopes everyone.^?",(auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

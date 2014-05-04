@@ -127,7 +127,7 @@ public class Spell_PassDoor extends Spell
 		else
 		if(auto)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and turn(s) translucent.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> shimmer(s) and turn(s) translucent.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -137,7 +137,7 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

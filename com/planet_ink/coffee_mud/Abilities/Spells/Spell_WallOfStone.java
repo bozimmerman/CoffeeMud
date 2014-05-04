@@ -68,7 +68,7 @@ public class Spell_WallOfStone extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with "+w.name()+".^</FIGHT^>^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the wall of stone with @x1.^</FIGHT^>^?",w.name()));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{

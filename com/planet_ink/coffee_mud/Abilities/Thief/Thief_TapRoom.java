@@ -194,13 +194,13 @@ public class Thief_TapRoom extends ThiefSkill
 						{
 							canBeUninvoked=true;
 							unInvoke();
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"Oh no! You've lost your tap line! It was all for naught!",null,null));
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("Oh no! You've lost your tap line! It was all for naught!"),null,null));
 						}
 						else
 						{
 							final RawMaterial I=lineV.get(0);
 							CMLib.materials().destroyResourcesValue(msg.source(),1,I.material(),0,null);
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"You stretch out another length of tap-line here using some of <T-NAME>",null,"<S-NAME> do(es) something in the corner with <T-NAME>"));
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("You stretch out another length of tap-line here using some of <T-NAME>"),null,_("<S-NAME> do(es) something in the corner with <T-NAME>")));
 							int roomsLeft=0;
 							if(p.size()>3)
 								roomsLeft=CMath.s_int(p.get(3));
@@ -219,7 +219,7 @@ public class Thief_TapRoom extends ThiefSkill
 				{
 					canBeUninvoked=true;
 					unInvoke();
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"The tap line is broken.",null,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("The tap line is broken."),null,null));
 				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -367,7 +367,7 @@ public class Thief_TapRoom extends ThiefSkill
 			TR.setMiscText("DST;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
 			if(cups!=null)
 				cups[1].addNonUninvokableEffect(TR);
-			mob.tell("You should now walk to a listening room and put down the last cup.  Your skill will allow you to stretch the line "+level+" rooms.");
+			mob.tell(_("You should now walk to a listening room and put down the last cup.  Your skill will allow you to stretch the line @x1 rooms.",""+level));
 			target.recoverRoomStats();
 		}
 		else

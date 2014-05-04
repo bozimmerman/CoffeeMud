@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,7 +53,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
+			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 wither@x2 away.",littlePlants.name(),(littlePlants.name().startsWith("s")?"":"s")));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -122,7 +121,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

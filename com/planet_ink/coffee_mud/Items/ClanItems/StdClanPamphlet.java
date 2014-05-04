@@ -102,7 +102,7 @@ public class StdClanPamphlet extends StdClanItem
 								CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
 								final ClanItem I=(ClanItem)copyOf();
 								mob.addItem(I);
-								final CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+								final CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 								if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
 									mob.location().send(mob,newMsg);
 								if(!M.isMine(I))

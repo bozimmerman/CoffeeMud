@@ -237,7 +237,7 @@ public class Skill_Enslave extends StdSkill
 					final MOB myMaster=getMaster();
 					if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 					{
-						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
+						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> rebel(s) against <T-NAMESELF>!"));
 						final MOB master=getMaster();
 						unMaster(mob);
 						setMiscText("");
@@ -250,7 +250,7 @@ public class Skill_Enslave extends StdSkill
 					else
 					if(CMLib.dice().rollPercentage()<50)
 					{
-						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> escape(s) <T-NAMESELF>!");
+						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> escape(s) <T-NAMESELF>!"));
 						CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 					}
 				}
@@ -354,13 +354,13 @@ public class Skill_Enslave extends StdSkill
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(target.name(mob)+" would be too stupid to understand your instructions!");
+			mob.tell(_("@x1 would be too stupid to understand your instructions!",target.name(mob)));
 			return false;
 		}
 
 		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		{
-			mob.tell(target.name(mob)+" must be bound first.");
+			mob.tell(_("@x1 must be bound first.",target.name(mob)));
 			return false;
 		}
 

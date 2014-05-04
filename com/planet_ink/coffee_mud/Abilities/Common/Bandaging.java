@@ -131,7 +131,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		if(duration<3) duration=3;
 		verb="bandaging "+target.name();
 		bandaging=target;
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

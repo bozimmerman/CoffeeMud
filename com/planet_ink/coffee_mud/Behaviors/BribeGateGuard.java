@@ -402,7 +402,7 @@ public class BribeGateGuard extends StdBehavior
 							return true;
 						}
 						final CMMsg msgs = CMClass.getMsg(monster, mob, CMMsg.MSG_NOISYMOVEMENT,
-							"<S-NAME> won't let <T-NAME> through there.");
+							_("<S-NAME> won't let <T-NAME> through there."));
 						if (monster.location().okMessage(monster, msgs))
 						{
 							monster.location().send(monster, msgs);
@@ -550,11 +550,11 @@ public class BribeGateGuard extends StdBehavior
 			else
 			if(getBalance(source) < price())
 			{
-				CMMsg msg2=CMClass.getMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,"^E<S-NAME> look(s) carefully at <O-NAME>.^?");
+				CMMsg msg2=CMClass.getMsg(observer,null,msg.tool(),CMMsg.MSG_EMOTE,_("^E<S-NAME> look(s) carefully at <O-NAME>.^?"));
 				msg.addTrailerMsg(msg2);
-				msg2=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm afraid that this is insufficient.'^?.");
+				msg2=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'I'm afraid that this is insufficient.'^?."));
 				msg.addTrailerMsg(msg2);
-				msg2=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+				msg2=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 				msg.addTrailerMsg(msg2);
 				charge(( (Coins) msg.tool()).value(), observer, msg.source());
 			}
@@ -625,7 +625,7 @@ public class BribeGateGuard extends StdBehavior
 			{
 				if (getMyKeyTo(mob, e) != null)
 				{
-					final CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_LOCK, "<S-NAME> lock(s) <T-NAME>.");
+					final CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_LOCK, _("<S-NAME> lock(s) <T-NAME>."));
 					if (mob.location().okMessage(mob, msg))
 					{
 						CMLib.utensils().roomAffectFully(msg, mob.location(), dir);
@@ -638,7 +638,7 @@ public class BribeGateGuard extends StdBehavior
 		{
 			if (getMyKeyTo(mob, e) != null)
 			{
-				final CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_UNLOCK, "<S-NAME> unlock(s) <T-NAME>.");
+				final CMMsg msg = CMClass.getMsg(mob, e, CMMsg.MSG_UNLOCK, _("<S-NAME> unlock(s) <T-NAME>."));
 				if (mob.location().okMessage(mob, msg))
 				{
 					CMLib.utensils().roomAffectFully(msg, mob.location(), dir);

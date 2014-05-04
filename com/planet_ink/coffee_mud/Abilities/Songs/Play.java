@@ -265,7 +265,7 @@ public class Play extends StdAbility
 			if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 			{
 				if(noisy)
-					mob.tell("You need to free your hands to play "+mob.riding().name()+".");
+					mob.tell(CMLib.lang()._("You need to free your hands to play @x1.",mob.riding().name()));
 				return null;
 			}
 			instrument=(MusicalInstrument)mob.riding();
@@ -289,7 +289,7 @@ public class Play extends StdAbility
 		if((requiredInstrumentType>=0)&&(instrument.instrumentType()!=requiredInstrumentType))
 		{
 			if(noisy)
-				mob.tell("This song can only be played on "+MusicalInstrument.TYPE_DESC[requiredInstrumentType].toLowerCase()+".");
+				mob.tell(CMLib.lang()._("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType].toLowerCase()));
 			return null;
 		}
 		return instrument;
@@ -399,7 +399,7 @@ public class Play extends StdAbility
 			{
 				if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 				{
-					mob.tell("You need to free your hands to play "+mob.riding().name()+".");
+					mob.tell(_("You need to free your hands to play @x1.",mob.riding().name()));
 					return false;
 				}
 				instrument=(MusicalInstrument)mob.riding();
@@ -421,7 +421,7 @@ public class Play extends StdAbility
 			}
 			if((requiredInstrumentType()>=0)&&(instrument.instrumentType()!=requiredInstrumentType()))
 			{
-				mob.tell("This song can only be played on "+MusicalInstrument.TYPE_DESC[requiredInstrumentType()].toLowerCase()+".");
+				mob.tell(_("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType()].toLowerCase()));
 				return false;
 			}
 		}
@@ -434,7 +434,7 @@ public class Play extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) playing "+name()+" due to <S-HIS-HER> armor!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) playing @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 

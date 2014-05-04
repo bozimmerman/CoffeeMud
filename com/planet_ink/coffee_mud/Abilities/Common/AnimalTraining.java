@@ -104,7 +104,7 @@ public class AnimalTraining extends CommonSkill
 						else
 						{
 							final String s=" to "+skillto;
-							mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to train "+animal.name()+" "+s+".");
+							mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to train @x1 @x2.",animal.name(),s));
 							if(skill instanceof Behavior)
 								animal.addBehavior((Behavior)skill);
 							else
@@ -258,7 +258,7 @@ public class AnimalTraining extends CommonSkill
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="training "+M.name();
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) training "+M.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) training @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

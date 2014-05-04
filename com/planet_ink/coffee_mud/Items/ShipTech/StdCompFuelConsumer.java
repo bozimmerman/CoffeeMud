@@ -97,7 +97,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	protected void engineShutdown()
 	{
 		final MOB deity=CMLib.map().deity();
-		final CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, "<T-NAME> sputters and shuts itself down.");
+		final CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, _("<T-NAME> sputters and shuts itself down."));
 		final Room R=CMLib.map().roomLocation(this);
 		if((R!=null)&&(R.okMessage(deity, msg)))
 			R.send(deity, msg);

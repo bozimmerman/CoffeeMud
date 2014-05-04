@@ -162,15 +162,15 @@ public class StdWand extends StdItem implements Wand
 				message=message.trim();
 				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
-					mob.tell(me.name()+" glows faintly for a moment, then fades.");
+					mob.tell(CMLib.lang()._("@x1 glows faintly for a moment, then fades.",me.name()));
 				else
 				{
 					Ability A=me.getSpell();
 					if(A==null)
-						mob.tell("Something seems wrong with "+me.name()+".");
+						mob.tell(CMLib.lang()._("Something seems wrong with @x1.",me.name()));
 					else
 					if(me.usesRemaining()<=0)
-						mob.tell(me.name()+" seems spent.");
+						mob.tell(CMLib.lang()._("@x1 seems spent.",me.name()));
 					else
 					{
 						wandUse.setInvoker(mob);
@@ -181,7 +181,7 @@ public class StdWand extends StdItem implements Wand
 							if(target!=null)
 								V.addElement(target.name());
 							V.addAll(CMParms.parse(message));
-							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
 							int level=me.phyStats().level();
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());

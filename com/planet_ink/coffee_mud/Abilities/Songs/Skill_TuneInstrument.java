@@ -58,7 +58,7 @@ public class Skill_TuneInstrument extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already tuned.");
+			mob.tell(_("@x1 is already tuned.",target.name(mob)));
 			return false;
 		}
 
@@ -69,7 +69,7 @@ public class Skill_TuneInstrument extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> tune(s) <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> tune(s) <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

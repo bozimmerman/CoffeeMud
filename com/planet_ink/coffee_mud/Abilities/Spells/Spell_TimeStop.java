@@ -62,7 +62,7 @@ public class Spell_TimeStop extends Spell
 			if(affected instanceof Room)
 			{
 				final Room room=(Room)affected;
-				room.showHappens(CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
+				room.showHappens(CMMsg.MSG_OK_VISUAL, _("Time starts moving again..."));
 				if(invoker!=null)
 				{
 					final Ability me=invoker.fetchEffect(ID());
@@ -84,7 +84,7 @@ public class Spell_TimeStop extends Spell
 				CMLib.threads().resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
-					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Time starts moving again...");
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("Time starts moving again..."));
 					final Ability me=mob.location().fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
@@ -161,7 +161,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?");
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_("@x1ime suddenly STOPS!^?",(auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

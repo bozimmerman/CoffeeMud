@@ -97,7 +97,7 @@ public class Skill_CenterOfAttention extends BardSkill
 			case 9: targetStr="<T-YOUPOSS> escapades"; break;
 			default: targetStr="<T-YOUPOSS> stunts"; break;
 			}
-			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, "<S-NAME> "+verbStr+" "+targetStr+".");
+			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, _("<S-NAME> @x1 @x2.",verbStr,targetStr));
 		}
 
 		return true;

@@ -106,7 +106,7 @@ public class Chant_TremorSense extends Chant
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell("You feel footsteps "+Directions.getInDirectionName(dir));
+						invoker.tell(_("You feel footsteps @x1",Directions.getInDirectionName(dir)));
 				}
 			}
 			else
@@ -120,7 +120,7 @@ public class Chant_TremorSense extends Chant
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell("You feel a ferocious rumble "+Directions.getInDirectionName(dir));
+						invoker.tell(_("You feel a ferocious rumble @x1",Directions.getInDirectionName(dir)));
 				}
 			}
 		}
@@ -156,7 +156,7 @@ public class Chant_TremorSense extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")+"<T-NAME> gain(s) a sense of the earth!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("@x1<T-NAME> gain(s) a sense of the earth!^?",(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

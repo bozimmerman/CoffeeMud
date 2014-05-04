@@ -47,9 +47,9 @@ public class Trap_Gluey extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> clean(s) off "+affected.name()+"!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> clean(s) off @x1!",affected.name()));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's kinda sticky."))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> notice(s) something about @x1 .. it's kinda sticky.",affected.name())))
 			{
 				super.spring(target);
 				if(affected instanceof Item)

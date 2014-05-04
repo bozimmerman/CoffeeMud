@@ -147,7 +147,7 @@ public class Thief_Mark extends ThiefSkill
 		if((A!=null)&&(((Thief_Mark)A).mark==target))
 		{
 			mob.delEffect(A);
-			mob.tell("You remove your mark from "+target.name(mob));
+			mob.tell(_("You remove your mark from @x1",target.name(mob)));
 			return true;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -160,7 +160,7 @@ public class Thief_Mark extends ThiefSkill
 
 		if(!success)
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> mark(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

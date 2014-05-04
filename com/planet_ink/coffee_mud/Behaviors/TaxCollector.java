@@ -229,7 +229,7 @@ public class TaxCollector extends StdBehavior
 						paidAmount-=CMath.div(paidAmount,numProperties);
 					}
 				}
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,"<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>."));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,_("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
 			}
 		}
 	}
@@ -252,13 +252,13 @@ public class TaxCollector extends StdBehavior
 			final String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
 			if((!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(mob))))
 			{
-				msg.source().tell(mob.name(msg.source())+" refuses your money.");
+				msg.source().tell(_("@x1 refuses your money.",mob.name(msg.source())));
 				CMLib.commands().postSay(mob,msg.source(),"I don't accept that kind of currency.",false,false);
 				return false;
 			}
 			if(coins<owe[OWE_TOTAL])
 			{
-				msg.source().tell(mob.name(msg.source())+" refuses your money.");
+				msg.source().tell(_("@x1 refuses your money.",mob.name(msg.source())));
 				CMLib.commands().postSay(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
 				return false;
 			}

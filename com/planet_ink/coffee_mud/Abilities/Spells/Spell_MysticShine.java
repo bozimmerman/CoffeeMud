@@ -58,7 +58,7 @@ public class Spell_MysticShine extends Spell
 		// undo the affects of this spell
 		final Room room=CMLib.map().roomLocation(affected);
 		if((canBeUninvoked())&&(room!=null))
-			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,"The gleam upon <S-NAME> dims.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,_("The gleam upon <S-NAME> dims."));
 		super.unInvoke();
 		if((canBeUninvoked())&&(room!=null))
 			room.recoverRoomStats();

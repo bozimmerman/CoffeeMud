@@ -68,7 +68,7 @@ public class Spell_ComprehendLangs extends Spell
 			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 			&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.othersMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("The smoke signals seem to say '@x1'.",msg.othersMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
@@ -81,17 +81,17 @@ public class Spell_ComprehendLangs extends Spell
 				if(str!=null)
 				{
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+msg.tool().name()+")"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
 					else
 					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(msg.targetMessage(),str)+" (translated from "+msg.tool().name()+")"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
 					else
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 					{
 						String otherMes=msg.othersMessage();
 						if(msg.target()!=null)
 							otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+msg.tool().name()+")"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
 					}
 				}
 			}

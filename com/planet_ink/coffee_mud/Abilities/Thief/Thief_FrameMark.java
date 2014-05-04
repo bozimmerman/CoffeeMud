@@ -82,7 +82,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell("You'll need at least "+costWords+" on hand to frame "+target.name(mob)+".");
+			mob.tell(_("You'll need at least @x1 on hand to frame @x2.",costWords,target.name(mob)));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Thief_FrameMark extends ThiefSkill
 
 		CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frame(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> frame(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

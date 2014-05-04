@@ -85,13 +85,13 @@ public class Thief_StripItem extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
+			mob.tell(_("You cannot strip anything off of @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -100,12 +100,12 @@ public class Thief_StripItem extends ThiefSkill
 		final Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
-			mob.tell(target.name(mob)+" doesn't seem to be wearing '"+itemToSteal+"'.");
+			mob.tell(_("@x1 doesn't seem to be wearing '@x2'.",target.name(mob),itemToSteal));
 			return false;
 		}
 		if(stolen.amWearingAt(Wearable.WORN_WIELD))
 		{
-			mob.tell(target.name(mob)+" is wielding "+stolen.name()+"! Try disarm!");
+			mob.tell(_("@x1 is wielding @x2! Try disarm!",target.name(mob),stolen.name()));
 			return false;
 		}
 

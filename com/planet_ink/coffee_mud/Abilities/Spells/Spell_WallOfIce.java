@@ -70,7 +70,7 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				final Room room=mob.location();
-				final CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?"));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{

@@ -1070,7 +1070,7 @@ public class StdMOB implements MOB
 		{
 			location().delInhabitant(this);
 			if ((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
-				location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> vanish(es) in a puff of smoke.");
+				location().show(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> vanish(es) in a puff of smoke."));
 		}
 		if(playerStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
@@ -2112,7 +2112,7 @@ public class StdMOB implements MOB
 			{
 				curState().setHitPoints(1);
 				if ((msg.tool() != null) && (msg.tool() != this) && (msg.tool() instanceof MOB))
-					((MOB) msg.tool()).tell(name((MOB)msg.tool()) + " is immortal, and can not die.");
+					((MOB) msg.tool()).tell(_("@x1 is immortal, and can not die.",name((MOB)msg.tool())));
 				tell("You are immortal, and can not die.");
 				return false;
 			}
@@ -2200,7 +2200,7 @@ public class StdMOB implements MOB
 						&& (!(isMine(msg.target())
 						&& (msg.target() instanceof Item))))
 						{
-							srcM.tell("You don't see '" + ((Item)msg.target()).name(this) + "' here.");
+							srcM.tell(_("You don't see '@x1' here.",((Item)msg.target()).name(this)));
 							return false;
 						}
 						if (!CMLib.flags().canTaste(this))
@@ -2220,7 +2220,7 @@ public class StdMOB implements MOB
 					&& (!((isInCombat()) && (msg.target() == victim)))
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS)))
 					{
-						srcM.tell("You don't see '" + ((Physical)msg.target()).name(this) + "' here.");
+						srcM.tell(_("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
 						return false;
 					}
 					if (!CMLib.flags().aliveAwakeMobile(this, false))
@@ -2553,13 +2553,13 @@ public class StdMOB implements MOB
 				}
 				if ((useRange >= 0) && (maxRange(tool) < useRange))
 				{
-					srcM.tell("You are too far away from " + trgM.name(srcM) + " to use " + tool.name() + ".");
+					srcM.tell(_("You are too far away from @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					return false;
 				}
 				else
 				if ((useRange >= 0) && (minRange(tool) > useRange))
 				{
-					srcM.tell("You are too close to " + trgM.name(srcM) + " to use " + tool.name() + ".");
+					srcM.tell(_("You are too close to @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					if ((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
 					&& (tool instanceof Weapon)
 					&& (!((Weapon) tool).amWearingAt(Wearable.IN_INVENTORY)))
@@ -2598,7 +2598,7 @@ public class StdMOB implements MOB
 						&& ((((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 					|| ((srcM == this) && (srcM.isMonster()))))
 				{
-					srcM.tell("You may not attack " + name(srcM) + ".");
+					srcM.tell(_("You may not attack @x1.",name(srcM)));
 					srcM.setVictim(null);
 					if (victim == srcM)
 						setVictim(null);
@@ -2686,7 +2686,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
-				srcM.tell(srcM, this, null, "You can't do that to <T-NAMESELF>.");
+				srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
 				return false;
 			case CMMsg.TYP_TEACH:
 				if((msg.target() instanceof MOB)
@@ -2696,24 +2696,24 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_PULL:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
 				{
-					srcM.tell(srcM, this, null, "You can't do that to <T-NAMESELF>.");
+					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				if (phyStats().weight() > (srcM.maxCarry() / 2))
 				{
-					srcM.tell(srcM, this, null, "<T-NAME> is too big for you to pull.");
+					srcM.tell(srcM, this, null, _("<T-NAME> is too big for you to pull."));
 					return false;
 				}
 				break;
 			case CMMsg.TYP_PUSH:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
 				{
-					srcM.tell(srcM, this, null, "You can't do that to <T-NAMESELF>.");
+					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				if (phyStats().weight() > srcM.maxCarry())
 				{
-					srcM.tell(srcM, this, null, "<T-NAME> is too heavy for you to push.");
+					srcM.tell(srcM, this, null, _("<T-NAME> is too heavy for you to push."));
 					return false;
 				}
 				break;
@@ -2721,7 +2721,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_DISMOUNT:
 				if (!(this instanceof Rideable))
 				{
-					srcM.tell(srcM, this, null, "You can't do that to <T-NAMESELF>.");
+					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				break;
@@ -2736,13 +2736,13 @@ public class StdMOB implements MOB
 					return true;
 				if ((getWearPositions(Wearable.WORN_ARMS) == 0) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
-					srcM.tell(name(srcM) + " is unable to accept that from you.");
+					srcM.tell(_("@x1 is unable to accept that from you.",name(srcM)));
 					return false;
 				}
 				if ((!CMLib.flags().canBeSeenBy(msg.tool(), this))
 						&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
-					srcM.tell(name(srcM) + " can't see what you are giving.");
+					srcM.tell(_("@x1 can't see what you are giving.",name(srcM)));
 					return false;
 				}
 				final int GC = msg.targetMajor() & CMMsg.MASK_ALWAYS;
@@ -2758,7 +2758,7 @@ public class StdMOB implements MOB
 							GC | CMMsg.MSG_GET | CMMsg.MASK_INTERMSG, null);
 					if (!location().okMessage(msg.target(), msg2))
 					{
-						srcM.tell(((Physical)msg.target()).name(srcM) + " cannot seem to accept " + ((Physical)msg.tool()).name(this) + ".");
+						srcM.tell(_("@x1 cannot seem to accept @x2.",((Physical)msg.target()).name(srcM),((Physical)msg.tool()).name(this)));
 						return false;
 					}
 				}
@@ -2766,7 +2766,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_FOLLOW:
 				if (totalFollowers() + srcM.totalFollowers() >= maxFollowers())
 				{
-					srcM.tell(name(srcM) + " can't accept any more followers.");
+					srcM.tell(_("@x1 can't accept any more followers.",name(srcM)));
 					return false;
 				}
 				if ((CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF) > 0)
@@ -2777,12 +2777,12 @@ public class StdMOB implements MOB
 				{
 					if (phyStats.level() > (srcM.phyStats().level() + CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						srcM.tell(name(srcM) + " is too advanced for you.");
+						srcM.tell(_("@x1 is too advanced for you.",name(srcM)));
 						return false;
 					}
 					if (phyStats.level() < (srcM.phyStats().level() - CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						srcM.tell(name(srcM) + " is too inexperienced for you.");
+						srcM.tell(_("@x1 is too inexperienced for you.",name(srcM)));
 						return false;
 					}
 				}
@@ -2941,7 +2941,7 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_READ:
 				if ((CMLib.flags().canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
-					srcM.tell("There is nothing written on " + name(srcM));
+					srcM.tell(_("There is nothing written on @x1",name(srcM)));
 				break;
 			case CMMsg.TYP_SIT:
 				CMLib.commands().handleSit(msg);
@@ -3179,7 +3179,7 @@ public class StdMOB implements MOB
 								&& (A.getAreaState() != Area.State.FROZEN)
 								&& (A.getAreaState() != Area.State.STOPPED))
 									lastTickedTime = CMLib.utensils().processVariableEquipment(this);
-								room.showOthers(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> appears!");
+								room.showOthers(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> appears!"));
 							}
 						}
 					}
@@ -3303,7 +3303,7 @@ public class StdMOB implements MOB
 							}
 							if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
 							{
-								R.show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> fall(s) asleep from exhaustion!!");
+								R.show(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> fall(s) asleep from exhaustion!!"));
 								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
 								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
 							}

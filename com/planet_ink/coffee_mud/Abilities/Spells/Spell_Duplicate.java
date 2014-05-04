@@ -84,7 +84,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 
 		expLoss=getXPCOSTAdjustment(mob,-expLoss);
-		mob.tell("You lose "+(-expLoss)+" experience points.");
+		mob.tell(_("You lose @x1 experience points.",""+(-expLoss)));
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -96,7 +96,7 @@ public class Spell_Duplicate extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Item newTarget=(Item)target.copyOf();
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 blurs and divides into two!",target.name()));
 				CMLib.utensils().disenchantItem(newTarget);
 				if(newTarget.amDestroyed())
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades away!"));

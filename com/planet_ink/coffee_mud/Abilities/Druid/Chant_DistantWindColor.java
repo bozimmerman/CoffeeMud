@@ -75,7 +75,7 @@ public class Chant_DistantWindColor extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
@@ -92,15 +92,15 @@ public class Chant_DistantWindColor extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) about a far away place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) about a far away place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String msg2=Chant_WindColor.getWindColor(mob,newRoom);
 				if(msg2.length()==0)
-					mob.tell("The winds at "+newRoom.displayText(mob)+" are clear.");
+					mob.tell(_("The winds at @x1 are clear.",newRoom.displayText(mob)));
 				else
-					mob.tell("The winds at "+newRoom.displayText(mob)+" are "+msg2+".");
+					mob.tell(_("The winds at @x1 are @x2.",newRoom.displayText(mob),msg2));
 			}
 		}
 		else

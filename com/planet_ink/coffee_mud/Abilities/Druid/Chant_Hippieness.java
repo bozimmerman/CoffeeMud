@@ -186,7 +186,7 @@ public class Chant_Hippieness extends Chant
 		if(target==null) return false;
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(target.name(mob)+" is not smart enough to be a hippy.");
+			mob.tell(_("@x1 is not smart enough to be a hippy.",target.name(mob)));
 			return false;
 		}
 

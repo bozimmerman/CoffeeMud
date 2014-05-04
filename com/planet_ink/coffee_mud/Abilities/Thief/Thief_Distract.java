@@ -131,7 +131,7 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to distract "+mob.getVictim().name()+"!");
+			mob.tell(_("You are too far away to distract @x1!",mob.getVictim().name()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

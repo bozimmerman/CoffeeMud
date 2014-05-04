@@ -58,7 +58,7 @@ public class Poison_Firebreather extends Poison_Liquor
 		{
 			if(CMLib.dice().rollPercentage()<40)
 			{
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CMLib.protocol().msp("fireball.wav",20));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> belch(es) fire!@x1",CMLib.protocol().msp("fireball.wav",20)));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB target=room.fetchInhabitant(i);
@@ -85,7 +85,7 @@ public class Poison_Firebreather extends Poison_Liquor
 				}
 			}
 			else
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) smoke!");
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> belch(es) smoke!"));
 			disableHappiness=true;
 		}
 		return super.tick(ticking,tickID);

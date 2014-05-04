@@ -61,17 +61,17 @@ public class Spell_WizardsChest extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
-			mob.tell(affected.name()+" appears to be magically protected.");
+			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		case CMMsg.TYP_UNLOCK:
-			mob.tell(affected.name()+" appears to be magically protected.");
+			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
-			mob.tell(affected.name()+" appears to be magically protected.");
+			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		default:
 			break;
@@ -91,7 +91,7 @@ public class Spell_WizardsChest extends Spell
 		{
 			final Container container=(Container)affected;
 			container.setLidsNLocks(container.hasALid(),true,container.hasALock(),false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> pop(s) open!"));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> pop(s) open!")));
 		}
 	}
 
@@ -115,13 +115,13 @@ public class Spell_WizardsChest extends Spell
 
 		if(!((Container)target).isOpen())
 		{
-			mob.tell(target.name(mob)+" must be opened before this magic will work.");
+			mob.tell(_("@x1 must be opened before this magic will work.",target.name(mob)));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already a wizards chest!");
+			mob.tell(_("@x1 is already a wizards chest!",target.name(mob)));
 			return false;
 		}
 

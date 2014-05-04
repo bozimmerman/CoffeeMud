@@ -90,7 +90,7 @@ public class Chant_SongWard extends Chant
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+msg.tool().name()+"!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The ward around <S-NAME> inhibits @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -105,7 +105,7 @@ public class Chant_SongWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

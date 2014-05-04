@@ -91,7 +91,7 @@ public class Farming extends GatheringSkill
 					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					room.showHappens(CMMsg.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
+					room.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 pound@x2 of @x3 have grown here.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -304,7 +304,7 @@ public class Farming extends GatheringSkill
 
 		mine.destroy();
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) planting "+foundShortName+".");
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) planting @x1.",foundShortName));
 		verb="planting "+foundShortName;
 		displayText="You are planting "+foundShortName;
 		room=mob.location();

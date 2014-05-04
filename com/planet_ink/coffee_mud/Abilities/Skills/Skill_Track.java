@@ -98,7 +98,7 @@ public class Skill_Track extends StdSkill
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if((mob.isMonster())&&(mob.location()!=null))
 				{
 					final Room oldRoom=mob.location();
@@ -118,7 +118,7 @@ public class Skill_Track extends StdSkill
 								if(oldRoom.okMessage(mob,msg))
 								{
 									relock=true;
-									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
 									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
@@ -126,7 +126,7 @@ public class Skill_Track extends StdSkill
 							if(oldRoom.okMessage(mob,msg))
 							{
 								reclose=true;
-								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
+								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.openWord()));
 								CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
@@ -163,7 +163,7 @@ public class Skill_Track extends StdSkill
 										CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.closeWord()));
 											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 										}
 										if((opExit.hasALock())&&(relock))
@@ -171,7 +171,7 @@ public class Skill_Track extends StdSkill
 											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 											if(nextRoom.okMessage(mob,msg))
 											{
-												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
+												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lock(s) <T-NAMESELF>."));
 												CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 											}
 										}

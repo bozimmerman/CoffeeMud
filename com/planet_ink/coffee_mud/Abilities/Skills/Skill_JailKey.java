@@ -92,7 +92,7 @@ public class Skill_JailKey extends StdSkill
 					mob.tell(_("You must specify a **JAIL** door direction."));
 				else
 				if(E.isOpen())
-					mob.tell(E.name()+" is open already.");
+					mob.tell(_("@x1 is open already.",E.name()));
 				else
 					mob.tell(_("That's not a jail door."));
 			}
@@ -101,13 +101,13 @@ public class Skill_JailKey extends StdSkill
 
 		if(!unlockThis.hasALock())
 		{
-			mob.tell("There is no lock on "+unlockThis.name()+"!");
+			mob.tell(_("There is no lock on @x1!",unlockThis.name()));
 			return false;
 		}
 
 		if(unlockThis.isOpen())
 		{
-			mob.tell(unlockThis.name()+" is open!");
+			mob.tell(_("@x1 is open!",unlockThis.name()));
 			return false;
 		}
 

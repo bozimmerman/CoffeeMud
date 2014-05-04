@@ -109,9 +109,9 @@ public class Trap_Launcher extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off "+name+" trap!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off @x1 trap!",name));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> struck by "+name+" trap!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> <S-IS-ARE> struck by @x1 trap!",name)))
 			{
 				super.spring(target);
 				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);

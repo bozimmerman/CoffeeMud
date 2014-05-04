@@ -69,9 +69,9 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		final Room R=mob.location();
 		if(R==null) return;
 		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLEVELLevel(invoker())*5)))
-			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,"A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled.");
+			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled."));
 		else
-		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,"A decoy pops up, confusing <S-NAME>!"))
+		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,_("A decoy pops up, confusing <S-NAME>!")))
 		{
 			int max=R.maxRange();
 			final int level=getXLEVELLevel(invoker())+2;
@@ -79,7 +79,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{
 				final int r=mob.rangeToTarget();
-				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,"<S-NAME> advance(s) toward(s) the decoy."))
+				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,_("<S-NAME> advance(s) toward(s) the decoy.")))
 					break;
 				if(mob.rangeToTarget()==r)
 					break;

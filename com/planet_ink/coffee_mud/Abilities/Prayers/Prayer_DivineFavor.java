@@ -94,7 +94,7 @@ public class Prayer_DivineFavor extends Prayer
 			if(deityM!=null)
 			{
 				struckDownToday=true;
-				((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,deityM.name()+" strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!");
+				((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,_("@x1 strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!",deityM.name()));
 				CMLib.combat().postDeath(deityM,((MOB)affected).getVictim(),null);
 			}
 		}
@@ -108,7 +108,7 @@ public class Prayer_DivineFavor extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

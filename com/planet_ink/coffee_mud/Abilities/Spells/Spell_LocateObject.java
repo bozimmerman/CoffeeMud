@@ -163,7 +163,7 @@ public class Spell_LocateObject extends Spell
 					if(itemsFound.size()>=maxFound) break;
 				}
 				if(itemsFound.size()==0)
-					mob.tell("Your magic fails to focus on anything called '"+what+"'.");
+					mob.tell(_("Your magic fails to focus on anything called '@x1'.",what));
 				else
 				{
 					while(itemsFound.size()>maxFound)

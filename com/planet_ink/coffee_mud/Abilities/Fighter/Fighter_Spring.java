@@ -107,7 +107,7 @@ public class Fighter_Spring extends FighterSkill
 				CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,"^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?");
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,_("^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{

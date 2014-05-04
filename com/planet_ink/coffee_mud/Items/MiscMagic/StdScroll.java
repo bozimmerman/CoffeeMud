@@ -129,7 +129,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
-				mob.tell(name()+" glows softly.");
+				mob.tell(_("@x1 glows softly.",name()));
 				me.setReadableScrollBy(mob.Name());
 			}
 			if(me.isReadableScrollBy(mob.Name()))

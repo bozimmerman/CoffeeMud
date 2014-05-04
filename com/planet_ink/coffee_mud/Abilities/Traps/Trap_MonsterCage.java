@@ -127,9 +127,9 @@ public class Trap_MonsterCage extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) opening a monster cage!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) opening a monster cage!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trip(s) open a caged monster!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trip(s) open a caged monster!")))
 			{
 				super.spring(target);
 				final Item I=CMClass.getItem("GenCaged");

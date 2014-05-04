@@ -96,9 +96,9 @@ public class Trap_Avalanche extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off an avalanche!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off an avalanche!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) an avalanche!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) an avalanche!")))
 			{
 				super.spring(target);
 				if((affected!=null)

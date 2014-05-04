@@ -62,7 +62,7 @@ public class Spell_FloatingDisc extends Spell
 		{
 			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
-				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
+				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME> now floats back @x1",((wasntMine)?"down to the ground":"into <S-HIS-HER> hands.")));
 				item.unWear();
 			}
 			if(wasntMine)
@@ -99,7 +99,7 @@ public class Spell_FloatingDisc extends Spell
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
 		{
-			mob.tell("You cannot float "+target.name(mob)+"!");
+			mob.tell(_("You cannot float @x1!",target.name(mob)));
 			return false;
 		}
 

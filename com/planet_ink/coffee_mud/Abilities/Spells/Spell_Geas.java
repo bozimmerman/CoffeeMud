@@ -131,7 +131,7 @@ public class Spell_Geas extends Spell
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(target.name(mob)+" is too stupid to understand the instructions!");
+			mob.tell(_("@x1 is too stupid to understand the instructions!",target.name(mob)));
 			return false;
 		}
 

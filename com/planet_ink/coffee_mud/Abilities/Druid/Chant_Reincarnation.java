@@ -146,7 +146,7 @@ public class Chant_Reincarnation extends Chant
 			||(newRace.ID().equals("StdRace")))
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
-				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
+				mob.tell(_("You are being reincarnated as a @x1!!",newRace.name()));
 			msg.source().recoverCharStats();
 			msg.source().recoverPhyStats();
 			super.canBeUninvoked=false; // without this, bring to life removes it
@@ -161,10 +161,10 @@ public class Chant_Reincarnation extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,"<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>."))
+			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,_("<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>.")))
 				target.delEffect(target.fetchEffect(ID()));
 			else
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>.");
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>."));
 			return false;
 		}
 		if(target.isMonster())
@@ -177,7 +177,7 @@ public class Chant_Reincarnation extends Chant
 		final Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
 		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
 		{
-			mob.tell(target.name(mob)+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
+			mob.tell(_("@x1 is a player, so you must be group members, and your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 

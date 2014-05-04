@@ -130,7 +130,7 @@ public class Spell_DetectWeaknesses extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,"<S-YOUPOSS> knowledge of "+text()+" fades.");
+				mob.tell(mob,null,null,_("<S-YOUPOSS> knowledge of @x1 fades.",text()));
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public class Chant_Earthquake extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);

@@ -71,7 +71,7 @@ public class Chant_WindColor extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			final String prediction=getWindColor((MOB)affected,((MOB)affected).location());
-			if(prediction.length()>0) ((MOB)affected).tell("The winds are "+prediction+".");
+			if(prediction.length()>0) ((MOB)affected).tell(_("The winds are @x1.",prediction));
 		}
 		return true;
 	}

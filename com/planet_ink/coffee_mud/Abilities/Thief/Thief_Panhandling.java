@@ -66,7 +66,7 @@ public class Thief_Panhandling extends ThiefSkill
 				unInvoke();
 			else
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
 		}
 	}
 

@@ -115,7 +115,7 @@ public class Spell_PolymorphSelf extends Spell
 		final Race R=CMClass.getRace(race);
 		if((R==null)||(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell("You can't turn yourself into "+CMLib.english().startWithAorAn(race)+"!");
+			mob.tell(_("You can't turn yourself into @x1!",CMLib.english().startWithAorAn(race)));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)
@@ -169,7 +169,7 @@ public class Spell_PolymorphSelf extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+CMLib.english().startWithAorAn(newRace.name())+"!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);

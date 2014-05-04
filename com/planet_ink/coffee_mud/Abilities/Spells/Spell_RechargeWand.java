@@ -78,11 +78,11 @@ public class Spell_RechargeWand extends Spell
 					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
 					if(!(willBreak))
 					{
-						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly!");
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME> glow(s) brightly!"));
 					}
 					else
 					{
-						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic.");
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic."));
 					}
 				}
 			}

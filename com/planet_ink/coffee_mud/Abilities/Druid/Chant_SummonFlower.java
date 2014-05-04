@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -107,7 +106,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		final Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -47,7 +47,7 @@ public class Spell_SummonMarker extends Spell
 	{
 
 		if((canBeUninvoked())&&(invoker()!=null)&&(affected!=null)&&(affected instanceof Room))
-			invoker().tell("Your marker in '"+((Room)affected).displayText()+"' dissipates.");
+			invoker().tell(_("Your marker in '@x1' dissipates.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 

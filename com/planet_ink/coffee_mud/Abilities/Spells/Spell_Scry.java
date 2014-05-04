@@ -117,7 +117,7 @@ public class Spell_Scry extends Spell
 				if(scries.elementAt(e,2)==mob)
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
 			if(scryList.length()>0)
-				mob.tell("Cast on or revoke from whom?  You currently have "+name()+" on the following: "+scryList.toString()+".");
+				mob.tell(_("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
 			else
 				mob.tell(_("Cast on whom?"));
 			return false;
@@ -143,7 +143,7 @@ public class Spell_Scry extends Spell
 			newRoom=target.location();
 		else
 		{
-			mob.tell("You can't seem to focus on '"+mobName+"'.");
+			mob.tell(_("You can't seem to focus on '@x1'.",mobName));
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Spell_Scry extends Spell
 		else
 		if((A!=null)||(scries.contains(target)))
 		{
-			mob.tell("You can't seem to focus on '"+mobName+"'.");
+			mob.tell(_("You can't seem to focus on '@x1'.",mobName));
 			return false;
 		}
 

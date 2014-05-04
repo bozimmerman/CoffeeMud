@@ -64,7 +64,7 @@ public class Chant_SenseMetal extends Chant
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		   ||((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"You sense metals strongly in the earth here.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("You sense metals strongly in the earth here."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
 	}
 

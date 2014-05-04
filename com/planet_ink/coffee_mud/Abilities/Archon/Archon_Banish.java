@@ -248,7 +248,7 @@ public class Archon_Banish extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(target.Name()+" is released from banishment.");
+			mob.tell(_("@x1 is released from banishment.",target.Name()));
 			return true;
 		}
 
@@ -273,7 +273,7 @@ public class Archon_Banish extends ArchonSkill
 				{
 					A.prison().bringMobHere(target,false);
 					mob.location().send(mob,msg);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison().displayText() + "!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> banished to @x1!",A.prison().displayText()));
 					Log.sysOut("Banish",mob.Name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
 				}
 

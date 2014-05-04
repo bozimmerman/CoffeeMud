@@ -62,7 +62,7 @@ public class Thief_Pick extends ThiefSkill
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
 		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
 		{
-			mob.tell("There is no lock on "+unlockThis.name()+"!");
+			mob.tell(_("There is no lock on @x1!",unlockThis.name()));
 			return false;
 		}
 

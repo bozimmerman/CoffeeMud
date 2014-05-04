@@ -96,7 +96,7 @@ public class Archon_Record extends ArchonSkill
 		{
 			target.delEffect(A);
 			if(target.playerStats()!=null) target.playerStats().setLastUpdated(0);
-			mob.tell(target.Name()+" will no longer be recorded.");
+			mob.tell(_("@x1 will no longer be recorded.",target.Name()));
 			return true;
 		}
 
@@ -107,7 +107,7 @@ public class Archon_Record extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F<S-NAME> begin(s) recording <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("^F<S-NAME> begin(s) recording <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -130,7 +130,7 @@ public class Archon_Record extends ArchonSkill
 						target.setSession(F);
 					A2.sess=F;
 					target.addNonUninvokableEffect(A2);
-					mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
+					mob.tell(_("Enter RECORD @x1 again to stop recording.",target.Name()));
 				}
 			}
 		}

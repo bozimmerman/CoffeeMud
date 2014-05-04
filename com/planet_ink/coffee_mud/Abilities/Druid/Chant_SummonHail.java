@@ -120,7 +120,7 @@ public class Chant_SummonHail extends Chant
 						I=null;
 					}
 					if((I!=null)&&(I.amWearingAt(Wearable.WORN_HEAD)))
-						target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,"Hailstones bounce harmlessly off <T-NAME> being worn by <S-NAME>.");
+						target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,_("Hailstones bounce harmlessly off <T-NAME> being worn by <S-NAME>."));
 					else
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
 				}

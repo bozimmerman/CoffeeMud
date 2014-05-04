@@ -73,7 +73,7 @@ public class Thief_SilentOpen extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> open(s) <T-NAME>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> open(s) <T-NAME>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

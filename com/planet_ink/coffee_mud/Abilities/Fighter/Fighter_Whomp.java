@@ -144,13 +144,13 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+" strength to do that.");
+			mob.tell(_("You need at least an @x1 strength to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 			return false;
 		}
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-250)))
 		{
-			mob.tell(target.name(mob)+" is way too big to knock out!");
+			mob.tell(_("@x1 is way too big to knock out!",target.name(mob)));
 			return false;
 		}
 

@@ -326,7 +326,7 @@ public class Song extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> hit(s) a foul note on "+name()+" due to <S-HIS-HER> armor!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> hit(s) a foul note on @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 

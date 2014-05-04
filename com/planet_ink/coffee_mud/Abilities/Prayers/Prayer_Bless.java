@@ -71,7 +71,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
+				((MOB)((Item)affected).owner()).tell(_("The blessing on @x1 fades.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}
@@ -189,7 +189,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				while((I!=null)&&(!alreadyDone.contains(I)))
 				{
 					alreadyDone.add(I);
-					final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,_("<S-NAME> release(s) <T-NAME>."));
 					target.location().send(target,msg2);
 					endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					I.recoverPhyStats();

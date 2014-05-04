@@ -78,7 +78,7 @@ public class Spell_Teleport extends Spell
 
 		if(candidates.size()==0)
 		{
-			mob.tell("You don't know of an area called '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(_("You don't know of an area called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public class Spell_Teleport extends Spell
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),_("^S<S-NAME> invoke(s) a teleportation spell.^?"));
 		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
@@ -140,8 +140,8 @@ public class Spell_Teleport extends Spell
 			for (final Object element : h)
 			{
 				final MOB follower=(MOB)element;
-				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

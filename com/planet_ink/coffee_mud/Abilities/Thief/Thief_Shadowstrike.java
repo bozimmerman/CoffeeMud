@@ -91,7 +91,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 			return false;
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name(mob)+" is watching you too closely.");
+			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		final Item w=mob.fetchWieldedItem();

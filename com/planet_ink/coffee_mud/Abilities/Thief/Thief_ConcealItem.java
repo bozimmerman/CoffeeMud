@@ -102,7 +102,7 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -88,14 +88,14 @@ public class Spell_IncreaseGravity extends Spell
 			if(affected instanceof Room)
 			{
 				final Room room=(Room)affected;
-				room.showHappens(CMMsg.MSG_OK_VISUAL, "Gravity returns to normal...");
+				room.showHappens(CMMsg.MSG_OK_VISUAL, _("Gravity returns to normal..."));
 			}
 			else
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(mob.location()!=gravityRoom()))
-					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, "Your weight returns to normal..");
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("Your weight returns to normal.."));
 			}
 		}
 		super.unInvoke();
@@ -179,7 +179,7 @@ public class Spell_IncreaseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _("@x1ravity begins to increase!^?",(auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

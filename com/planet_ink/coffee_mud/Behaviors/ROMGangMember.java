@@ -88,7 +88,7 @@ public class ROMGangMember extends StdBehavior
 			observer.location().show(observer,victim,CMMsg.MSG_NOISYMOVEMENT,_("With a scream of rage, <S-NAME> attack(s) <T-NAME>."));
 			break;
 		case 2:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'What's slimy "+vicParms+" trash like you doing around here?'^?");
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'What's slimy @x1 trash like you doing around here?'^?",vicParms));
 			break;
 		case 3:
 			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?"));

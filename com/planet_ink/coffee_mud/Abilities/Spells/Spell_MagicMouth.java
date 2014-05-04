@@ -50,7 +50,7 @@ public class Spell_MagicMouth extends Spell
 
 	public void doMyThing()
 	{
-		myRoomContainer.showHappens(CMMsg.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
+		myRoomContainer.showHappens(CMMsg.MSG_NOISE,_("\n\r\n\r@x1 says '@x2'.\n\r\n\r",affected.name(),message));
 		unInvoke();
 		return;
 	}
@@ -123,12 +123,12 @@ public class Spell_MagicMouth extends Spell
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell("You can't can't cast this on "+target.name(mob)+".");
+			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -150,7 +150,7 @@ public class Spell_MagicMouth extends Spell
 			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
-			mob.tell("You must specify the trigger event that will cause the mouth to speak.\n\r'"+triggerStr+"' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r");
+			mob.tell(_("You must specify the trigger event that will cause the mouth to speak.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
 			return false;
 		}
 
@@ -162,7 +162,7 @@ public class Spell_MagicMouth extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

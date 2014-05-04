@@ -48,7 +48,7 @@ public class Prayer_EarthMud extends Prayer
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The mud in '"+((Room)affected).displayText()+"' dries up.");
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The mud in '@x1' dries up.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 

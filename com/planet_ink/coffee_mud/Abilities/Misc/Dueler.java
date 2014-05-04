@@ -132,9 +132,9 @@ public class Dueler extends StdAbility
 			final Room deathRoom=target.location();
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 			final CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
-					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
+					CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 			deathRoom.send(target, msg2);
 			CMLib.combat().doDeathPostProcessing(msg);
 			target.makePeace();
@@ -209,7 +209,7 @@ public class Dueler extends StdAbility
 		if(target==null) target=mob;
 		if(!(target instanceof MOB)) return false;
 		if(((MOB)target).location()==null) return false;
-		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling!^?"))
+		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,_("^R<S-NAME> and <T-NAME> start(s) dueling!^?")))
 		{
 			final MOB tmob = (MOB)target;
 			Dueler A;

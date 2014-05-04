@@ -115,14 +115,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(student==null) return true;
 		if(!student.clans().iterator().hasNext())
 		{
-			teacher.tell(student.name()+" is not a member of a clan.");
-			student.tell("You need to belong to a clan before you can learn "+name()+".");
+			teacher.tell(_("@x1 is not a member of a clan.",student.name()));
+			student.tell(_("You need to belong to a clan before you can learn @x1.",name()));
 			return false;
 		}
 		final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(student, Clan.Function.ENCHANT);
 		if(p==null)
 		{
-			teacher.tell(student.name()+" is not authorized to draw from the power of "+student.charStats().hisher()+" clan.");
+			teacher.tell(_("@x1 is not authorized to draw from the power of @x2 clan.",student.name(),student.charStats().hisher()));
 			student.tell(_("You must be authorized to draw from the power of your clan to learn this skill."));
 			return false;
 		}
@@ -292,7 +292,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		expRequired=getXPCOSTAdjustment(mob,expRequired);
 		if((clanC!=null)&&(clanC.getExp()<expRequired))
 		{
-			mob.tell("You need "+expRequired+" to do that, but your "+clanTypeName+" has only "+clanC.getExp()+" experience points.");
+			mob.tell(_("You need @x1 to do that, but your @x2 has only @x3 experience points.",""+expRequired,clanTypeName,""+clanC.getExp()));
 			return false;
 		}
 		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,parsedVars.autoGenerate,null);

@@ -59,7 +59,7 @@ public class Thief_PlantItem extends ThiefSkill
 		final MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+(String)commands.lastElement()+"' here.");
+			mob.tell(_("You don't see '@x1' here.",(String)commands.lastElement()));
 			return false;
 		}
 		if(target==mob)
@@ -82,7 +82,7 @@ public class Thief_PlantItem extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,"<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>.",CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,_("<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>."),CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

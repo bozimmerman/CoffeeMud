@@ -123,7 +123,7 @@ public class TemporaryImmunity extends StdAbility
 		&&(set.contains(msg.tool().ID())))
 		{
 			if(msg.source()!=msg.target())
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+msg.tool().name()+".");
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) immune to @x1.",msg.tool().name()));
 			return false;
 		}
 		return true;

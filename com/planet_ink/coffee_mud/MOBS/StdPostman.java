@@ -880,7 +880,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						return false;
 					if(!(msg.tool() instanceof Item))
 					{
-						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
+						mob.tell(_("@x1 doesn't look interested.",mob.charStats().HeShe()));
 						return false;
 					}
 					if(CMLib.flags().isEnspelled((Item)msg.tool()) || CMLib.flags().isOnFire((Item)msg.tool()))
@@ -954,7 +954,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					if(postalChain().length()>0)
 						str.append("\n\rThis branch is part of the "+postalChain()+" postal chain.");
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
-					mob.tell("Use 'say \""+name()+"\" open' to open a box here"+((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+".")));
+					mob.tell(_("Use 'say \"@x1\" open' to open a box here@x2",name(),((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+"."))));
 					return false;
 				}
 				return true;

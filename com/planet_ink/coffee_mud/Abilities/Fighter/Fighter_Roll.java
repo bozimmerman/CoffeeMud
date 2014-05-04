@@ -96,7 +96,7 @@ public class Fighter_Roll extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> roll(s) with the hit."));
+			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> roll(s) with the hit.")));
 			helpProficiency(mob, 0);
 			regain=-1;
 		}

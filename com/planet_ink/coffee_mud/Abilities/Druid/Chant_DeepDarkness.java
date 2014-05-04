@@ -58,7 +58,7 @@ public class Chant_DeepDarkness extends Chant
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The deep darkness starts to lift.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The deep darkness starts to lift."));
 		}
 	}
 
@@ -119,7 +119,7 @@ public class Chant_DeepDarkness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), _("@x1arkness descends.^?",(auto?"D":"^S<S-NAME> chant(s) deeply and d")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

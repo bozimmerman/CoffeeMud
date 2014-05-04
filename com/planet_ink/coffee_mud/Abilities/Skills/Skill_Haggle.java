@@ -68,7 +68,7 @@ public class Skill_Haggle extends StdSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(CMStrings.capitalizeAndLower(cmd)+" what?");
+			mob.tell(_("@x1 what?",CMStrings.capitalizeAndLower(cmd)));
 			return false;
 		}
 

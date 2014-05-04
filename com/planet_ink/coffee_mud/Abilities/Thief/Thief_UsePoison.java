@@ -68,26 +68,26 @@ public class Thief_UsePoison extends ThiefSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if((!(target instanceof Food))
 		&&(!(target instanceof Drink))
 		&&(!(target instanceof Weapon)))
 		{
-			mob.tell("You don't know how to poison "+target.name(mob)+".");
+			mob.tell(_("You don't know how to poison @x1.",target.name(mob)));
 			return false;
 		}
 		final Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((poison==null)||(!CMLib.flags().canBeSeenBy(poison,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		final List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
-			mob.tell(poison.name()+" is not a poison!");
+			mob.tell(_("@x1 is not a poison!",poison.name()));
 			return false;
 		}
 		final Drink dPoison=(Drink)poison;
@@ -97,7 +97,7 @@ public class Thief_UsePoison extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> attempt(s) to poison <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> attempt(s) to poison <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

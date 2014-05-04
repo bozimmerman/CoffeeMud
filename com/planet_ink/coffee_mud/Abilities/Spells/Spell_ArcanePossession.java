@@ -62,7 +62,7 @@ public class Spell_ArcanePossession extends Spell
 		   ||(msg.targetMinor()==CMMsg.TYP_WIELD))
 		&&(msg.source()!=owner))
 		{
-			msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+			msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 			CMLib.commands().postDrop(msg.source(),affected,true,false,false);
 			return false;
 		}

@@ -68,7 +68,7 @@ public class Druid_KnowPlants extends StdAbility
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
 		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
-			mob.tell("Your plant knowledge can tell you nothing about "+I.name(mob)+".");
+			mob.tell(_("Your plant knowledge can tell you nothing about @x1.",I.name(mob)));
 			return false;
 		}
 

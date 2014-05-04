@@ -83,7 +83,7 @@ public class Spell_Timeport extends Spell
 		}
 		super.unInvoke();
 		if(room!=null)
-			room.show(mob, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
+			room.show(mob, null, CMMsg.MSG_OK_VISUAL, _("<S-NAME> reappear(s)!"));
 	}
 
 	@Override

@@ -118,7 +118,7 @@ public class Thief_Trap extends ThiefSkill
 			final String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{
-				mob.tell("Trap what, with what kind of trap? Use "+cmdWord+" list for a list.");
+				mob.tell(_("Trap what, with what kind of trap? Use @x1 list for a list.",cmdWord));
 				return false;
 			}
 			String name;
@@ -148,7 +148,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 			if(theTrap==null)
 			{
-				mob.tell("'"+name+"' is not a valid trap name.  Try "+cmdWord.toUpperCase()+" LIST.");
+				mob.tell(_("'@x1' is not a valid trap name.  Try @x2 LIST.",name,cmdWord.toUpperCase()));
 				return false;
 			}
 

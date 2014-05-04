@@ -82,7 +82,7 @@ public class Spell_Shelter extends Spell
 				if(mob==null) break;
 				mob.tell(_("You return to your previous location."));
 
-				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of nowhere!"));
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -159,8 +159,8 @@ public class Spell_Shelter extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),"<S-NAME> disappear(s) into oblivion.");
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of nowhere."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),_("<S-NAME> disappear(s) into oblivion."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

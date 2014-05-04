@@ -82,7 +82,7 @@ public class Prayer_FlameWeapon extends Prayer
 					{
 						int flameDamage = (int) Math.round( Math.random() * 6 );
 						flameDamage *= (super.getXLEVELLevel(invoker())+(super.getX1Level(invoker())));
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"^RThe flame around "+affected.name()+" "+CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!^?"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,_("^RThe flame around @x1 @x2 <T-NAME>!^?",affected.name(),CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage))));
 						final CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 						msg3.setValue(flameDamage);
 						msg.addTrailerMsg(msg3);
@@ -106,12 +106,12 @@ public class Prayer_FlameWeapon extends Prayer
 				||((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 				{
 					if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-						((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).name()+" consume it.");
+						((MOB)((Item)affected).owner()).tell(_("The flames around @x1 consume it.",((Item)affected).name()));
 					destroyMe=(Item)affected;
 				}
 				else
 				if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-					((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).name()+" fade.");
+					((MOB)((Item)affected).owner()).tell(_("The flames around @x1 fade.",((Item)affected).name()));
 			}
 		}
 		super.unInvoke();
@@ -158,7 +158,7 @@ public class Prayer_FlameWeapon extends Prayer
 
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already enflamed.");
+			mob.tell(_("@x1 is already enflamed.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

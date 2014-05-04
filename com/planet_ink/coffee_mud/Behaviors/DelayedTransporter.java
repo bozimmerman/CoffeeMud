@@ -109,7 +109,7 @@ public class DelayedTransporter extends ActiveTicker
 						final String roomName=(String)destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
 						final Room otherRoom=CMLib.map().getRoom(roomName);
 						if(otherRoom==null)
-							inhab.tell("You are whisked nowhere at all, since '"+roomName+"' is nowhere to be found.");
+							inhab.tell(_("You are whisked nowhere at all, since '@x1' is nowhere to be found.",roomName));
 						else
 							otherRoom.bringMobHere(inhab,true);
 						transportees.remove(inhab.Name());

@@ -93,7 +93,7 @@ public class Spell_Laughter extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(target.charStats().HeShe()+" can't hear your words.");
+			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 

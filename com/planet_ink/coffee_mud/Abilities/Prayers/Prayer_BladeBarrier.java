@@ -65,7 +65,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> "+name().toLowerCase()+" disappears.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> @x1 disappears.",name().toLowerCase()));
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> "+name().toLowerCase()+".");
+			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> @x1.",name().toLowerCase()));
 			return false;
 		}
 

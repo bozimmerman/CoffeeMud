@@ -69,7 +69,7 @@ public class Prayer_CurseItem extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
+				((MOB)((Item)affected).owner()).tell(_("The curse on @x1 is lifted.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}
@@ -93,7 +93,7 @@ public class Prayer_CurseItem extends Prayer
 		final MOB mob=msg.source();
 		if((msg.tool()==item)&&(msg.sourceMinor()==CMMsg.TYP_THROW))
 		{
-			mob.tell("You can't seem to get rid of "+item.name()+".");
+			mob.tell(_("You can't seem to get rid of @x1.",item.name()));
 			return false;
 		}
 		else
@@ -107,15 +107,15 @@ public class Prayer_CurseItem extends Prayer
 			{
 				if(item.amWearingAt(Wearable.WORN_WIELD)||item.amWearingAt(Wearable.WORN_HELD))
 				{
-					mob.tell("You can't seem to let go of "+item.name()+".");
+					mob.tell(_("You can't seem to let go of @x1.",item.name()));
 					return false;
 				}
-				mob.tell("You can't seem to remove "+item.name()+".");
+				mob.tell(_("You can't seem to remove @x1.",item.name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_DROP:
-			mob.tell("You can't seem to get rid of "+item.name()+".");
+			mob.tell(_("You can't seem to get rid of @x1.",item.name()));
 			return false;
 		}
 		return true;

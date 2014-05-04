@@ -67,7 +67,7 @@ public class StdBook extends StdItem
 			&&(!admin)
 			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 			{
-				msg.source().tell("You are not allowed to write on "+name());
+				msg.source().tell(_("You are not allowed to write on @x1",name()));
 				return false;
 			}
 			return true;
@@ -95,7 +95,7 @@ public class StdBook extends StdItem
 				final long lastTime=mob.playerStats().getLastDateTime();
 				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
-					mob.tell("You are not allowed to read "+name()+".");
+					mob.tell(_("You are not allowed to read @x1.",name()));
 					return;
 				}
 				int which=-1;
@@ -155,7 +155,7 @@ public class StdBook extends StdItem
 				if(!mob.isMonster())
 				{
 					final String to="ALL";
-					final String subject=mob.session().prompt("Enter the name of the chapter (Chapter 1: Start of book),etc : ");
+					final String subject=mob.session().prompt(_("Enter the name of the chapter (Chapter 1: Start of book),etc : "));
 					if(subject.trim().length()==0)
 					{
 						mob.tell(_("Aborted."));

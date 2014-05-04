@@ -84,7 +84,7 @@ public class Spell_Stoneskin extends Spell
 		&&((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&((msg.value())>0)&&(msg.tool() instanceof Weapon)))
 		{
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"The stone skin around <S-NAME> absorbs the attack from <T-NAME>."));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("The stone skin around <S-NAME> absorbs the attack from <T-NAME>.")));
 			if((--HitsRemaining)<=0)
 				unInvoke();
 		}

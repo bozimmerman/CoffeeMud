@@ -54,7 +54,7 @@ public class Spell_Silence extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_ACTION, "The sounds here begin to return.");
+			room.showHappens(CMMsg.MSG_OK_ACTION, _("The sounds here begin to return."));
 		super.unInvoke();
 	}
 
@@ -137,7 +137,7 @@ public class Spell_Silence extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_("@x1ilence falls like a blanket.^?",(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

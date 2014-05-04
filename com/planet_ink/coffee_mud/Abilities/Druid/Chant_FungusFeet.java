@@ -138,7 +138,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 
 		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
 		{
-			mob.tell(target.name(mob)+" has no feet!");
+			mob.tell(_("@x1 has no feet!",target.name(mob)));
 			return false;
 		}
 

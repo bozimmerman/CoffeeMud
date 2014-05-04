@@ -112,7 +112,7 @@ public class Chant_HowlersMoon extends Chant
 				final int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				CMLib.tracking().walk(target,opDir,false,false);
@@ -206,7 +206,7 @@ public class Chant_HowlersMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
+				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}

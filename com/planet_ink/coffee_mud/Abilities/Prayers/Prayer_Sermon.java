@@ -98,7 +98,7 @@ public class Prayer_Sermon extends Prayer
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amITarget(mob.amFollowing())))
 		{
-			mob.tell("You admire "+mob.amFollowing().charStats().himher()+" too much.");
+			mob.tell(_("You admire @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -117,7 +117,7 @@ public class Prayer_Sermon extends Prayer
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell("You believe in "+mob.amFollowing().name()+" too much.");
+			mob.tell(_("You believe in @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Prayer_Sermon extends Prayer
 						{
 							if(target.getVictim()==mob)
 								target.makePeace();
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) nodding and shouting praises to "+hisHerDiety(mob)+".");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) nodding and shouting praises to @x1.",hisHerDiety(mob)));
 							CMLib.commands().postFollow(target,mob,true);
 						}
 					}

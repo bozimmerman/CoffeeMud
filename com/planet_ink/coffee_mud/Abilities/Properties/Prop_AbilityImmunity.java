@@ -97,7 +97,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 				||(CMLib.english().containsString(d.name(),diseases.get(i))))
 				{
 					if(msg.target() instanceof MOB)
-						((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
+						((MOB)msg.target()).tell(_("You are immune to @x1.",msg.tool().name()));
 					if(msg.source()!=msg.target())
 					{
 						final String s=(String)messages.elementAt(i);

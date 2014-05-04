@@ -47,7 +47,7 @@ public class Spell_Refit extends Spell
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!(target instanceof Armor))
-		{	mob.tell(target.name(mob)+" cannot be refitted."); return false;}
+		{	mob.tell(_("@x1 cannot be refitted.",target.name(mob))); return false;}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -64,7 +64,7 @@ public class Spell_Refit extends Spell
 				mob.location().send(mob,msg);
 
 				if(target.phyStats().height()==0)
-					mob.tell("Nothing happens to "+target.name(mob)+".");
+					mob.tell(_("Nothing happens to @x1.",target.name(mob)));
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to magically resize itself!"));

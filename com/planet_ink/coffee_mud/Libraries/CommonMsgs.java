@@ -363,9 +363,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					final boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
 					CMMsg msg=null;
 					if((!CMLib.flags().isSeen(mob))||(!CMLib.flags().isSeen(target)))
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name(mob))+"\"^>You tell <T-NAME> '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name(target))+"\"^><S-NAME> tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,_("^t^<TELL \"@x1\"^>You tell <T-NAME> '@x2'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),text),CMMsg.MSG_TELL,_("^t^<TELL \"@x1\"^><S-NAME> tell(s) you '@x2'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),text),CMMsg.NO_EFFECT,null);
 					else
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name(mob))+"\"^>You tell "+target.name(mob)+" '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name(target))+"\"^>"+mob.Name()+" tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,_("^t^<TELL \"@x1\"^>You tell @x2 '@x3'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),target.name(mob),text),CMMsg.MSG_TELL,_("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),CMMsg.NO_EFFECT,null);
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))
 					{
@@ -416,8 +416,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(target.name(mob))+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?"
-					,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.NO_EFFECT,null);
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,_("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(target.name(mob)),text),CMMsg.MSG_SPEAK,_("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(mob.name(target)),text),CMMsg.NO_EFFECT,null);
 				gmcpSaySend("say",mob, target, msg);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
@@ -481,18 +480,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final int x=(int)(sniffedmob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 			if(x<=1)
-				sniffingmob.tell(sniffedmob.name(sniffingmob)+" has a slight aroma about "+sniffedmob.charStats().himher()+".");
+				sniffingmob.tell(_("@x1 has a slight aroma about @x2.",sniffedmob.name(sniffingmob),sniffedmob.charStats().himher()));
 			else
 			if(x<=3)
-				sniffingmob.tell(sniffedmob.name(sniffingmob)+" smells pretty sweaty.");
+				sniffingmob.tell(_("@x1 smells pretty sweaty.",sniffedmob.name(sniffingmob)));
 			else
 			if(x<=7)
-				sniffingmob.tell(sniffedmob.name(sniffingmob)+" stinks pretty bad.");
+				sniffingmob.tell(_("@x1 stinks pretty bad.",sniffedmob.name(sniffingmob)));
 			else
 			if(x<15)
-				sniffingmob.tell(sniffedmob.name(sniffingmob)+" smells most foul.");
+				sniffingmob.tell(_("@x1 smells most foul.",sniffedmob.name(sniffingmob)));
 			else
-				sniffingmob.tell(sniffedmob.name(sniffingmob)+" reeks of noxious odors.");
+				sniffingmob.tell(_("@x1 reeks of noxious odors.",sniffedmob.name(sniffingmob)));
 		}
 	}
 
@@ -557,7 +556,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 			recallingmob.location().delInhabitant(recallingmob);
 			((Room)msg.target()).addInhabitant(recallingmob);
-			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plane.");
+			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of the Java Plane."));
 
 			recallingmob.setLocation(((Room)msg.target()));
 			if((recallingmob.riding()!=null)
@@ -732,7 +731,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					for(final int i: CharStats.CODES.MAX())
 						if((max+mob.charStats().getStat(i))<=0)
 						{
-							mob.tell("Your max "+CharStats.CODES.DESC(CharStats.CODES.toMAXBASE(i)).toLowerCase()+" has fallen below 1!");
+							mob.tell(_("Your max @x1 has fallen below 1!",CharStats.CODES.DESC(CharStats.CODES.toMAXBASE(i)).toLowerCase()));
 							CMLib.combat().postDeath(null,mob,null);
 							break;
 						}
@@ -1001,7 +1000,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMLib.flags().canSmell(msg.source()))
 			s=RawMaterial.CODES.SMELL(item.material()).toLowerCase();
 		if((s!=null)&&(s.length()>0))
-			msg.source().tell(msg.source(),item,null,"<T-NAME> has a "+s+" smell.");
+			msg.source().tell(msg.source(),item,null,_("<T-NAME> has a @x1 smell.",s));
 	}
 
 	@Override
@@ -1476,15 +1475,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					}
 					final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
 					if(seenThatWay.length()>0)
-						mob.tell("Yonder, you can also see: "+seenThatWay.toString());
+						mob.tell(_("Yonder, you can also see: @x1",seenThatWay.toString()));
 				}
 			}
 			else
 				mob.tell(_("You don't see anything special."));
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 			{
-				mob.tell("Type  : "+exit.ID());
-				mob.tell("Misc   : "+exit.text());
+				mob.tell(_("Type  : @x1",exit.ID()));
+				mob.tell(_("Misc   : @x1",exit.text()));
 			}
 			final String image=CMLib.protocol().mxpImage(exit," ALIGN=RIGHT H=70 W=70");
 			if((image!=null)&&(image.length()>0)) mob.tell(image);
@@ -1625,27 +1624,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						final StringBuffer buf=Resources.getFileResource(text.substring(5),true);
 						if((buf!=null)&&(buf.length()>0))
-							mob.tell("It says '"+buf.toString()+"'.");
+							mob.tell(_("It says '@x1'.",buf.toString()));
 						else
 						if(msg.target() instanceof Electronics)
-							mob.tell("There is nothing on "+((Electronics)msg.target()).name(mob)+".");
+							mob.tell(_("There is nothing on @x1.",((Electronics)msg.target()).name(mob)));
 						else
 						if(msg.target() instanceof Physical)
-							mob.tell("There is nothing written on "+((Physical)msg.target()).name(mob)+".");
+							mob.tell(_("There is nothing written on @x1.",((Physical)msg.target()).name(mob)));
 						else
-							mob.tell("There is nothing written on "+msg.target().name()+".");
+							mob.tell(_("There is nothing written on @x1.",msg.target().name()));
 					}
 					else
-						mob.tell("It says '"+text+"'.");
+						mob.tell(_("It says '@x1'.",text));
 				}
 				else
 				if(msg.target() instanceof Electronics)
-					mob.tell("There is nothing on "+((Electronics)msg.target()).name(mob)+".");
+					mob.tell(_("There is nothing on @x1.",((Electronics)msg.target()).name(mob)));
 				else
 				if(msg.target() instanceof Physical)
-					mob.tell("There is nothing written on "+((Physical)msg.target()).name(mob)+".");
+					mob.tell(_("There is nothing written on @x1.",((Physical)msg.target()).name(mob)));
 				else
-					mob.tell("There is nothing written on "+msg.target().name()+".");
+					mob.tell(_("There is nothing written on @x1.",msg.target().name()));
 			}
 			else
 				mob.tell(_("You can't see that!"));

@@ -73,7 +73,7 @@ public class Chant_FindMate extends Chant
 				}
 				if(mate!=null)
 				{
-					mob.tell("You peer longingly at "+mate.name()+".");
+					mob.tell(_("You peer longingly at @x1.",mate.name()));
 
 					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
 					if(I!=null)    CMLib.commands().postRemove(mob,I,false);
@@ -107,7 +107,7 @@ public class Chant_FindMate extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("You want to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("You want to continue @x1.",Directions.getDirectionName(nextDirection)));
 				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 				if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
 				{
@@ -172,7 +172,7 @@ public class Chant_FindMate extends Chant
 		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
 		{
-			mob.tell(target.name(mob)+" is incapable of mating!");
+			mob.tell(_("@x1 is incapable of mating!",target.name(mob)));
 			return false;
 		}
 

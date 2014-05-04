@@ -57,7 +57,7 @@ public class StdLawBook extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
-			msg.source().tell("You are not allowed to write on "+name()+". Try reading it.");
+			msg.source().tell(_("You are not allowed to write on @x1. Try reading it.",name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -244,7 +244,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("MODLAW"));
 		if(oldLaw==null)
 		{
-			if(mob.session().confirm("This is not presently a crime, would you like to make it one (Y/n)?","Y"))
+			if(mob.session().confirm(_("This is not presently a crime, would you like to make it one (Y/n)?"),_("Y")))
 			{
 				oldLaw=new String[Law.BIT_NUMBITS];
 				oldLaw[Law.BIT_CRIMENAME]="Name of the crime";
@@ -267,20 +267,20 @@ public class StdLawBook extends StdItem
 			str.append("5. Justification : "+oldLaw[Law.BIT_WARNMSG]+"\n\r");
 			str.append("6. DELETE THIS CRIME\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
-			final String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
+			final String s=mob.session().choose(_("Enter a number to modify or RETURN: "),"123456\n","\n");
 			final int x=CMath.s_int(s);
 			if(x==0) return oldLaw;
 			oldLaw=oldLaw.clone();
 			switch(x)
 			{
 			case 1:
-				oldLaw[Law.BIT_CRIMENAME]=mob.session().prompt("Enter a new name for this crime: ",oldLaw[Law.BIT_CRIMENAME]);
+				oldLaw[Law.BIT_CRIMENAME]=mob.session().prompt(_("Enter a new name for this crime: "),oldLaw[Law.BIT_CRIMENAME]);
 				break;
 			case 5:
-				oldLaw[Law.BIT_WARNMSG]=mob.session().prompt("Shame/Justification Message: ",oldLaw[Law.BIT_WARNMSG]);
+				oldLaw[Law.BIT_WARNMSG]=mob.session().prompt(_("Shame/Justification Message: "),oldLaw[Law.BIT_WARNMSG]);
 				break;
 			case 6:
-				if(mob.session().confirm("Are you sure you want to delete this crime (y/N)?","N"))
+				if(mob.session().confirm(_("Are you sure you want to delete this crime (y/N)?"),_("N")))
 					return null;
 				break;
 			case 4:
@@ -374,7 +374,7 @@ public class StdLawBook extends StdItem
 							{
 								if(indexIfExists>=0)
 								{
-									mob.tell("'"+V2.elementAt(indexIfExists,1)+"' has been removed.");
+									mob.tell(_("'@x1' has been removed.",V2.elementAt(indexIfExists,1).toString()));
 									V2.removeElementAt(indexIfExists);
 								}
 								else
@@ -390,9 +390,9 @@ public class StdLawBook extends StdItem
 											abort=true;
 										}
 										else
-										if(mob.session().confirm("Add this room as a new detention center room (y/N)? ","N"))
+										if(mob.session().confirm(_("Add this room as a new detention center room (y/N)? "),_("N")))
 										{
-											final String time=mob.session().prompt("Enter the amount of time before they are released: ","");
+											final String time=mob.session().prompt(_("Enter the amount of time before they are released: "),"");
 											if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
 											{
 												mob.tell(_("Invalid entry.  Aborted."));
@@ -406,7 +406,7 @@ public class StdLawBook extends StdItem
 										break;
 									case Law.PUNISHMENTMASK_FINE:
 									{
-										final String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
+										final String fine=mob.session().prompt(_("Enter the amount of the fine in base-gold value: "),"");
 										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
 										{
 											mob.tell(_("Invalid entry.  Aborted."));
@@ -420,14 +420,14 @@ public class StdLawBook extends StdItem
 									if(!abort)
 									{
 										V2.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
-										mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been added.");
+										mob.tell(_("'@x1@x2' has been added.",V2.elementAt(V2.size()-1,1).toString(),parm));
 									}
 									else
-										mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been aborted.");
+										mob.tell(_("'@x1@x2' has been aborted.",V2.elementAt(V2.size()-1,1).toString(),parm));
 								}
 							}
 							else
-								mob.tell("'"+t+"' is not a valid flag.  Unchanged.");
+								mob.tell(_("'@x1' is not a valid flag.  Unchanged.",t));
 						}
 						final StringBuffer newSentence=new StringBuffer("");
 						for(int v2=0;v2<V2.size();v2++)
@@ -442,7 +442,7 @@ public class StdLawBook extends StdItem
 						oldLaw[Law.BIT_SENTENCE]=newSentence.toString().trim();
 					}
 					else
-						mob.tell("'"+t+"' is not a valid sentence.  Unchanged.");
+						mob.tell(_("'@x1' is not a valid sentence.  Unchanged.",t));
 				}
 				break;
 			case 3:
@@ -487,7 +487,7 @@ public class StdLawBook extends StdItem
 						}
 					}
 					String restLoca=CMParms.combineWithQuotes(allloca1,0).trim();
-					restLoca=mob.session().prompt("Enter any other location masks ("+restLoca+"): ",restLoca);
+					restLoca=mob.session().prompt(_("Enter any other location masks (@x1): ",restLoca),restLoca);
 					oldLaw[Law.BIT_CRIMELOCS]=(s2.toString()+" "+restLoca).trim();
 					break;
 				}
@@ -551,13 +551,13 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter number to modify, A, or RETURN: ","");
+			String s=mob.session().prompt(_("\n\rEnter number to modify, A, or RETURN: "),"");
 			if(s.length()==0)
 				break;
 			else
 			if(s.equalsIgnoreCase("A"))
 			{
-				s=mob.session().prompt("\n\rEnter some key words to make illegal: ","");
+				s=mob.session().prompt(_("\n\rEnter some key words to make illegal: "),"");
 				if(s.length()>0)
 				{
 					final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
@@ -640,21 +640,21 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter number to modify, A, or RETURN: ","");
+			String s=mob.session().prompt(_("\n\rEnter number to modify, A, or RETURN: "),"");
 			if(s.length()==0)
 				break;
 			else
 			if(s.equalsIgnoreCase("A"))
 			{
-				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal (?)\n\r: ","");
+				s=mob.session().prompt(_("\n\rEnter item key words or resource types to make illegal (?)\n\r: "),"");
 				if(s.equals("?"))
-					mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.CODES.NAMES()));
+					mob.tell(_("Valid resources: @x1",CMParms.toStringList(RawMaterial.CODES.NAMES())));
 				else
 				if(s.length()>0)
 				{
 					s=s.toUpperCase();
 					final boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
-					if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
+					if(resource||mob.session().confirm(_("'@x1' is not a known resource.  Add as a key word anyway (y/N)?",s),_("N")))
 					{
 						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
@@ -755,13 +755,13 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter number to modify, A, or RETURN: ","");
+			String s=mob.session().prompt(_("\n\rEnter number to modify, A, or RETURN: "),"");
 			if(s.length()==0)
 				break;
 			else
 			if(s.equalsIgnoreCase("A"))
 			{
-				s=mob.session().prompt("\n\rEnter a skill name to make illegal: ","");
+				s=mob.session().prompt(_("\n\rEnter a skill name to make illegal: "),"");
 				if(s.length()>0)
 				{
 					final Ability AB=CMClass.findAbility(s);
@@ -875,13 +875,13 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter a number to modify: ","");
+			String s=mob.session().prompt(_("\n\rEnter a number to modify: "),"");
 			final int x=CMath.s_int(s);
 			if(x==0) break;
 			switch(x)
 			{
 			case 1:
-				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("PROPERTYTAX"));
+				s=mob.session().prompt(_("Enter a new tax amount: "),theLaw.getInternalStr("PROPERTYTAX"));
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("PROPERTYTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"PROPERTYTAX",""+CMath.s_double(s));
@@ -889,7 +889,7 @@ public class StdLawBook extends StdItem
 				}
 				break;
 			case 2:
-				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("SALESTAX"));
+				s=mob.session().prompt(_("Enter a new tax amount: "),theLaw.getInternalStr("SALESTAX"));
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("SALESTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"SALESTAX",""+CMath.s_double(s));
@@ -897,7 +897,7 @@ public class StdLawBook extends StdItem
 				}
 				break;
 			case 3:
-				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("CITTAX"));
+				s=mob.session().prompt(_("Enter a new tax amount: "),theLaw.getInternalStr("CITTAX"));
 				if(CMath.s_double(s)!=CMath.s_double(theLaw.getInternalStr("CITTAX")))
 				{
 					changeTheLaw(A,B,mob,theLaw,"CITTAX",""+CMath.s_double(s));
@@ -927,8 +927,8 @@ public class StdLawBook extends StdItem
 				{
 					String room2="/";
 					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMLib.map().getRoom(room2)==null))
-						room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
-					final String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
+						room2=mob.session().prompt(_("Enter a new room ID (RETURN=@x1, *=any): ",room),room);
+					final String item2=mob.session().prompt(_("Enter an optional container name (RETURN=@x1): ",item),item);
 					if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
 					{
 						changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
@@ -976,13 +976,13 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter number to modify, A, or RETURN: ","");
+			String s=mob.session().prompt(_("\n\rEnter number to modify, A, or RETURN: "),"");
 			if(s.length()==0)
 				break;
 			else
 			if(s.equalsIgnoreCase("A"))
 			{
-				s=mob.session().prompt("\n\rEnter a skill name to make an illegal influence: ","");
+				s=mob.session().prompt(_("\n\rEnter a skill name to make an illegal influence: "),"");
 				if(s.length()>0)
 				{
 					final Ability AB=CMClass.findAbility(s);
@@ -1074,7 +1074,7 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			final String s=mob.session().prompt("\n\rEnter number to modify or RETURN: ","");
+			final String s=mob.session().prompt(_("\n\rEnter number to modify or RETURN: "),"");
 			final int x=CMath.s_int(s);
 			String crimeName="";
 			if((x>0)&&(x<=6))
@@ -1140,14 +1140,14 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter 'A' to add a new release room, or enter a number to modify: ","");
+			String s=mob.session().prompt(_("\n\rEnter 'A' to add a new release room, or enter a number to modify: "),"");
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell(_("You can not add this room as a release room, as it is not in the area."));
 				else
-				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
+				if(mob.session().confirm(_("Add this room as a new release room (y/N)? "),_("N")))
 				{
 					V.add(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
@@ -1160,7 +1160,7 @@ public class StdLawBook extends StdItem
 				{
 					if(x>4)
 					{
-						if(mob.session().confirm("Remove this room as a release room (y/N)? ","N"))
+						if(mob.session().confirm(_("Remove this room as a release room (y/N)? "),_("N")))
 						{
 							V.remove(x-5);
 							changed=true;
@@ -1169,7 +1169,7 @@ public class StdLawBook extends StdItem
 					else
 					{
 						final long oldTime=CMath.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*CMProps.getTickMillis()/1000;
-						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
+						s=mob.session().prompt(_("Enter a new number of seconds (@x1): ",""+oldTime),""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
 							long x1=CMath.s_int(s);
@@ -1228,14 +1228,14 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
-			String s=mob.session().prompt("\n\rEnter 'A' to add a new jail room, or enter a number to modify: ","");
+			String s=mob.session().prompt(_("\n\rEnter 'A' to add a new jail room, or enter a number to modify: "),"");
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell(_("You can not add this room as a jail, as it is not in the area."));
 				else
-				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))
+				if(mob.session().confirm(_("Add this room as a new jail room (y/N)? "),_("N")))
 				{
 					V.add(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
@@ -1248,7 +1248,7 @@ public class StdLawBook extends StdItem
 				{
 					if(x>4)
 					{
-						if(mob.session().confirm("Remove this room as a jail room (y/N)? ","N"))
+						if(mob.session().confirm(_("Remove this room as a jail room (y/N)? "),_("N")))
 						{
 							V.remove(x-5);
 							changed=true;
@@ -1257,7 +1257,7 @@ public class StdLawBook extends StdItem
 					else
 					{
 						final long oldTime=CMath.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*CMProps.getTickMillis()/1000;
-						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
+						s=mob.session().prompt(_("Enter a new number of seconds (@x1): ",""+oldTime),""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
 							long x1=CMath.s_int(s);
@@ -1293,11 +1293,11 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			mob.tell("1. Trespassers : "+CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS")));
-			mob.tell("2. Law         : "+shortLawDesc(theLaw.basicCrimes().get("TRESPASSING")));
+			mob.tell(_("1. Trespassers : @x1",CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS"))));
+			mob.tell(_("2. Law         : @x1",shortLawDesc(theLaw.basicCrimes().get("TRESPASSING"))));
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				return;
-			final String prompt=mob.session().choose("Enter one to change or RETURN: ","12\n","\n");
+			final String prompt=mob.session().choose(_("Enter one to change or RETURN: "),"12\n","\n");
 			final int x=CMath.s_int(prompt);
 			if((x<=0)||(x>2))
 				return;
@@ -1306,7 +1306,7 @@ public class StdLawBook extends StdItem
 				String s="?";
 				while(s.trim().equals("?"))
 				{
-					s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("TRESPASSERS")+"]\n\r: ",theLaw.getInternalStr("TRESPASSERS"));
+					s=mob.session().prompt(_("Enter a new mask, ? for help, or RETURN=[@x1]\n\r: ",theLaw.getInternalStr("TRESPASSERS")),theLaw.getInternalStr("TRESPASSERS"));
 					if(s.trim().equals("?"))
 						mob.tell(CMLib.masking().maskHelp("\n\r","arrests"));
 					else
@@ -1344,13 +1344,13 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		mob.tell("Protected victims: "+CMLib.masking().maskDesc(theLaw.getInternalStr("PROTECTED")));
+		mob.tell(_("Protected victims: @x1",CMLib.masking().maskDesc(theLaw.getInternalStr("PROTECTED"))));
 		if((theLaw.hasModifiableLaws())&&(allowedToModify))
 		{
 			String s="?";
 			while(s.trim().equals("?"))
 			{
-				s=mob.session().prompt("Enter a new mask, ? for help, or RETURN=["+theLaw.getInternalStr("PROTECTED")+"]\n\r: ",theLaw.getInternalStr("PROTECTED"));
+				s=mob.session().prompt(_("Enter a new mask, ? for help, or RETURN=[@x1]\n\r: ",theLaw.getInternalStr("PROTECTED")),theLaw.getInternalStr("PROTECTED"));
 				if(s.trim().equals("?"))
 					mob.tell(CMLib.masking().maskHelp("\n\r","protects"));
 				else
@@ -1394,13 +1394,13 @@ public class StdLawBook extends StdItem
 			}
 		}
 		if(duhOfficers.length()==0) duhOfficers.append("No Officers Found!\n\r");
-		mob.tell("1. Area Judge: \n\r"+duhJudge+"\n\r2. Area Officers: \n\r"+duhOfficers.toString());
+		mob.tell(_("1. Area Judge: \n\r@x1\n\r2. Area Officers: \n\r@x2",duhJudge,duhOfficers.toString()));
 		if(theLaw.hasModifiableNames()&&theLaw.hasModifiableLaws()&&allowedToModify)
 		{
-			final int w=CMath.s_int(mob.session().choose("Enter one to modify, or RETURN to cancel: ","12\n",""));
+			final int w=CMath.s_int(mob.session().choose(_("Enter one to modify, or RETURN to cancel: "),"12\n",""));
 			if(w==0) return;
 			final String modifiableTag=(w==1)?"JUDGE":"OFFICERS";
-			final String s=mob.session().prompt("Enter key words from officials name(s) ["+theLaw.getInternalStr(modifiableTag)+"]\n\r: ",theLaw.getInternalStr(modifiableTag));
+			final String s=mob.session().prompt(_("Enter key words from officials name(s) [@x1]\n\r: ",theLaw.getInternalStr(modifiableTag)),theLaw.getInternalStr(modifiableTag));
 			if(!s.equals(theLaw.getInternalStr(modifiableTag)))
 			{
 				changeTheLaw(A,B,mob,theLaw,modifiableTag,s);

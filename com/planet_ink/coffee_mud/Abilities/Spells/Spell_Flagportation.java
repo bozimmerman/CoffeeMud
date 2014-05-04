@@ -139,7 +139,7 @@ public class Spell_Flagportation extends Spell
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),"^S<S-NAME> invoke(s) a flagportating teleportation spell.^?");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),_("^S<S-NAME> invoke(s) a flagportating teleportation spell.^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -150,8 +150,8 @@ public class Spell_Flagportation extends Spell
 			for (final Object element : h)
 			{
 				final MOB follower=(MOB)element;
-				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&(newRoom!=null)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

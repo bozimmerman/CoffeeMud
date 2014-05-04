@@ -76,7 +76,7 @@ public class Spell_ResistArrows extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((AmmunitionWeapon)msg.tool()).ammunitionType()+" from <T-NAME>!");
+			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> absorbs the @x1 from <T-NAME>!",((AmmunitionWeapon)msg.tool()).ammunitionType()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

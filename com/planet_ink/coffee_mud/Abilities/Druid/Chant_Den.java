@@ -130,7 +130,7 @@ public class Chant_Den extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Your den, carefully covered, appears to the "+Directions.getDirectionName(d)+"!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Your den, carefully covered, appears to the @x1!",Directions.getDirectionName(d)));
 				final Room newRoom=CMClass.getLocale("CaveRoom");
 				newRoom.setDisplayText("A musty den");
 				newRoom.setDescription("You are in a dark rocky den!");

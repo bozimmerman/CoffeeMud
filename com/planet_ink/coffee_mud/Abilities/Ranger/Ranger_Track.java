@@ -85,7 +85,7 @@ public class Ranger_Track extends StdAbility
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);

@@ -104,7 +104,7 @@ public class Chant_AntTrain extends Chant
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
 		{
-			mob.tell("The ants can't carry "+target.name(mob)+"!");
+			mob.tell(_("The ants can't carry @x1!",target.name(mob)));
 			return false;
 		}
 

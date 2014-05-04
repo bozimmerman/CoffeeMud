@@ -127,7 +127,7 @@ public class Archon_Metacraft extends ArchonSkill
 			material=RawMaterial.CODES.FIND_StartsWith(mat);
 		if((mat!=null)&&(material<0))
 		{
-			mob.tell("'"+mat+"' is not a recognized material.");
+			mob.tell(_("'@x1' is not a recognized material.",mat));
 			return false;
 		}
 		ItemCraftor skill=null;
@@ -177,7 +177,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(skillsToUse.size()==0)
 		{
-			mob.tell("'"+recipe+"' can not be made with any of the known crafting skills.");
+			mob.tell(_("'@x1' can not be made with any of the known crafting skills.",recipe));
 			return false;
 		}
 
@@ -250,12 +250,12 @@ public class Archon_Metacraft extends ArchonSkill
 					if(toWHERE.equals("HERE"))
 					{
 						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears here.");
+						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,_("@x1 appears here.",building.name()));
 					}
 					else
 					{
 						mob.moveItemTo(building);
-						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
+						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,_("@x1 appears in <S-YOUPOSS> hands.",building.name()));
 					}
 				}
 			else
@@ -269,7 +269,7 @@ public class Archon_Metacraft extends ArchonSkill
 		{
 			final CMFile file = new CMFile(toWHERE,mob);
 			if(!file.canWrite())
-				mob.tell("Unable to open file '"+toWHERE+"' for writing.");
+				mob.tell(_("Unable to open file '@x1' for writing.",toWHERE));
 			else
 			{
 				xml.append("</ITEMS>");
@@ -292,7 +292,7 @@ public class Archon_Metacraft extends ArchonSkill
 					xml.append(str);
 				}
 				file.saveText(xml);
-				mob.tell("File '"+file.getAbsolutePath()+"' written.");
+				mob.tell(_("File '@x1' written.",file.getAbsolutePath()));
 			}
 		}
 		if(!success)

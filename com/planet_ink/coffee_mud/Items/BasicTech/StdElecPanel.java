@@ -95,7 +95,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 						final Ability installA=msg.source().fetchAbility("AstroEngineering");
 						if(installA==null)
 						{
-							msg.source().tell("You don't know how to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
+							msg.source().tell(_("You don't know how to install @x1 into @x2.",((ShipComponent)msg.tool()).name(msg.source()),name(msg.source())));
 							return false;
 						}
 						else
@@ -109,7 +109,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			case CMMsg.TYP_INSTALL:
 				if(msg.value()<=0)
 				{
-					msg.source().tell("You failed to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
+					msg.source().tell(_("You failed to install @x1 into @x2.",((ShipComponent)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
 				}
 				break;
@@ -145,7 +145,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> connect(s) <T-NAME>.");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> connect(s) <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:

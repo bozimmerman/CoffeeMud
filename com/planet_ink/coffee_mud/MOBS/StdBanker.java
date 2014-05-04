@@ -512,7 +512,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						bankLedger(borrowerName,"Loan of "+old.Name()+": "+msg.source().Name());
 						addItem(old);
 						final double amt=((Coins)old).getTotalValue();
-						final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+						final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 						if(location().okMessage(this,newMsg))
 						{
 							location().send(this,newMsg);
@@ -562,7 +562,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							delDepositInventory(withdrawerName,depositInventoryItem);
 
 							addItem(old);
-							final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+							final CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 							if(location().okMessage(this,newMsg))
 							{
 								location().send(this,newMsg);
@@ -756,7 +756,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					if(!(msg.tool() instanceof Item))
 					{
-						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
+						mob.tell(_("@x1 doesn't look interested.",mob.charStats().HeShe()));
 						return false;
 					}
 					if(CMLib.flags().isEnspelled((Item)msg.tool()) || CMLib.flags().isOnFire((Item)msg.tool()))

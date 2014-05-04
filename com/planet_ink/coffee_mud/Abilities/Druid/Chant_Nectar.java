@@ -58,7 +58,7 @@ public class Chant_Nectar extends Chant
 			final Item littleSpring=(Item)affected;
 			final Room SpringLocation=CMLib.map().roomLocation(littleSpring);
 			if(canBeUninvoked())
-				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
+				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dries up.",littleSpring.name()));
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
@@ -166,7 +166,7 @@ public class Chant_Nectar extends Chant
 				if(A!=null) newItem.addNonUninvokableEffect(A);
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
 				drank=new Vector();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,asLevel,0);

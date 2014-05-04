@@ -70,7 +70,7 @@ public class GenMirror extends GenItem
 		&&(mob!=msg.source()))
 		{
 			oncePerRound=true;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" reflects the vicious magic!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 reflects the vicious magic!",name()));
 			final Ability A=(Ability)msg.tool();
 			A.invoke(mob,msg.source(),true,phyStats().level());
 			return false;

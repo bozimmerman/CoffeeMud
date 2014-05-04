@@ -94,7 +94,7 @@ public class Spell_Enthrall extends Spell
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
-			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -113,7 +113,7 @@ public class Spell_Enthrall extends Spell
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell("You like "+mob.amFollowing().name()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -204,7 +204,7 @@ public class Spell_Enthrall extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(target.charStats().HeShe()+" can't hear your words.");
+			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -238,7 +238,7 @@ public class Spell_Enthrall extends Spell
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(target.name(mob)+" seems unwilling to follow you.");
+							mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 					}
 				}
 			}

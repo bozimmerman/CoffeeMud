@@ -77,7 +77,7 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					final Room room=mob.location();
-					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with @x1.^</FIGHT^>^?",w.name()));
 					CMLib.color().fixSourceFightColor(msg2);
 					if(room.okMessage(mob,msg2))
 					{
@@ -117,7 +117,7 @@ public class Prayer_Monolith extends Prayer
 			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) "+msg.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
+				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fire(s) @x1 at <T-NAME>.  The missile enters the monolith of air.",msg.tool().name()));
 				final MOB M=CMClass.getFactoryMOB();
 				M.setLocation(mob.location());
 				M.setName("The monolith of air");
@@ -143,7 +143,7 @@ public class Prayer_Monolith extends Prayer
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?"))
+					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?")))
 					{
 						amountRemaining-=mob.phyStats().damage();
 						if(amountRemaining<0)

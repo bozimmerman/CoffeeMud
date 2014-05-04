@@ -112,18 +112,18 @@ public class Thief_DetectTraps extends ThiefSkill
 			if((!success)||(theTrap==null))
 			{
 				if(!auto)
-					mob.tell("You don't find any traps on "+unlockThis.name()+add+".");
+					mob.tell(_("You don't find any traps on @x1@x2.",unlockThis.name(),add));
 				success=false;
 			}
 			else
 			{
 				if(theTrap.disabled())
-					mob.tell(unlockThis.name()+add+" is trapped, but the trap looks disabled for the moment.");
+					mob.tell(_("@x1@x2 is trapped, but the trap looks disabled for the moment.",unlockThis.name(),add));
 				else
 				if(theTrap.sprung())
-					mob.tell(unlockThis.name()+add+" is trapped, and the trap looks sprung.");
+					mob.tell(_("@x1@x2 is trapped, and the trap looks sprung.",unlockThis.name(),add));
 				else
-					mob.tell(unlockThis.name()+add+" definitely looks trapped.");
+					mob.tell(_("@x1@x2 definitely looks trapped.",unlockThis.name(),add));
 			}
 			lastChecked=unlockThis;
 		}

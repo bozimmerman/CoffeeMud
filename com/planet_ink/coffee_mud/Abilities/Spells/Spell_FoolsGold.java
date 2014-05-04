@@ -103,7 +103,7 @@ public class Spell_FoolsGold extends Spell
 				gold.basePhyStats().setWeight(0);
 				gold.recoverPhyStats();
 				mob.addItem(gold);
-				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
+				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> hold(s) <O-NAME>."));
 				destroyOnNextTick=false;
 				beneficialAffect(mob,gold,asLevel,0);
 			}

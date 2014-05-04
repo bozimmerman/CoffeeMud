@@ -244,7 +244,7 @@ public class Socials extends StdLibrary implements SocialsList
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.session().rawPrintln(showNumber+". Others Effect type: "+((me.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.othersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
+		String newName=mob.session().choose(_("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),_("WMSVH"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -283,7 +283,7 @@ public class Socials extends StdLibrary implements SocialsList
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.session().rawPrintln(showNumber+". Target Effect type: "+((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE")))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
+		String newName=mob.session().choose(_("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),_("WMSVH"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -317,7 +317,7 @@ public class Socials extends StdLibrary implements SocialsList
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.session().rawPrintln(showNumber+". Your action type: "+((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement: ","WMSL","");
+		String newName=mob.session().choose(_("Change W)ords, M)ovement (small), S)ound, L)arge Movement: "),_("WMSL"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -357,7 +357,7 @@ public class Socials extends StdLibrary implements SocialsList
 		List<Social> socials=getSocialsSet(socialsParse.firstElement());
 		if(((socials==null)||(socials.size()==0))
 		&&((mob.session()==null)
-			||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
+			||(!mob.session().confirm(_("The social '@x1' does not exist.  Create it (y/N)? ",name),_("N")))))
 			return false;
 		if(socials==null)
 			socials=new Vector<Social>();
@@ -414,7 +414,7 @@ public class Socials extends StdLibrary implements SocialsList
 				if(selection<0)
 				{
 					mob.session().rawPrintln(str.toString());
-					s=mob.session().prompt("\n\rSelect an option or RETURN: ","");
+					s=mob.session().prompt(_("\n\rSelect an option or RETURN: "),"");
 					if(!CMath.isInteger(s))
 					{
 						soc=null;
@@ -433,7 +433,7 @@ public class Socials extends StdLibrary implements SocialsList
 					newOne="?";
 					while((newOne.equals("?"))&&(!mob.session().isStopped()))
 					{
-						newOne=mob.session().prompt("\n\rNew target (?): ","").toUpperCase().trim();
+						newOne=mob.session().prompt(_("\n\rNew target (?): "),"").toUpperCase().trim();
 						if(newOne.equals("?"))
 							mob.session().println("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF");
 					}
@@ -466,7 +466,7 @@ public class Socials extends StdLibrary implements SocialsList
 				if(newOne.equalsIgnoreCase("NONE")) newOne="";
 				else
 				if(!newOne.equals("ALL")&&!newOne.equals("SELF")
-				&&!mob.session().confirm("'"+newOne+"' is a non-standard target.  Are you sure (y/N)? ","N"))
+				&&!mob.session().confirm(_("'@x1' is a non-standard target.  Are you sure (y/N)? ",newOne),_("N")))
 				{
 					rest="";
 					pickNewSocial=true;
@@ -499,25 +499,25 @@ public class Socials extends StdLibrary implements SocialsList
 				while(!ok)
 				{
 					int showNumber=0;
-					soc.setYou_see(CMLib.genEd().prompt(mob,soc.You_see(),++showNumber,showFlag,"You-see string",false,true));
+					soc.setYou_see(CMLib.genEd().prompt(mob,soc.You_see(),++showNumber,showFlag,_("You-see string"),false,true));
 					if(soc.sourceCode()==CMMsg.MSG_OK_ACTION) soc.setSourceCode(CMMsg.MSG_HANDS);
 					modifySocialSourceCode(mob,soc,++showNumber,showFlag);
-					soc.setThird_party_sees(CMLib.genEd().prompt(mob,soc.Third_party_sees(),++showNumber,showFlag,"Others-see string",false,true));
+					soc.setThird_party_sees(CMLib.genEd().prompt(mob,soc.Third_party_sees(),++showNumber,showFlag,_("Others-see string"),false,true));
 					if(soc.othersCode()==CMMsg.MSG_OK_ACTION) soc.setOthersCode(CMMsg.MSG_HANDS);
 					modifySocialOthersCode(mob,soc,++showNumber,showFlag);
 					if(soc.Name().endsWith(" <T-NAME>"))
 					{
-						soc.setTarget_sees(CMLib.genEd().prompt(mob,soc.Target_sees(),++showNumber,showFlag,"Target-sees string",false,true));
+						soc.setTarget_sees(CMLib.genEd().prompt(mob,soc.Target_sees(),++showNumber,showFlag,_("Target-sees string"),false,true));
 						if(soc.targetCode()==CMMsg.MSG_OK_ACTION) soc.setTargetCode(CMMsg.MSG_HANDS);
 						modifySocialTargetCode(mob,soc,++showNumber,showFlag);
 					}
 					if(soc.Name().endsWith(" <T-NAME>")||soc.Name().endsWith(" <I-NAME>")||soc.Name().endsWith(" <V-NAME>")||soc.Name().endsWith(" <E-NAME>")||(soc.Name().endsWith(" ALL")))
-						soc.setSee_when_no_target(CMLib.genEd().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,"You-see when no target",false,true));
-					soc.setMSPfile(CMLib.genEd().prompt(mob,soc.MSPfile(),++showNumber,showFlag,"Sound file",true,false));
+						soc.setSee_when_no_target(CMLib.genEd().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,_("You-see when no target"),false,true));
+					soc.setMSPfile(CMLib.genEd().prompt(mob,soc.MSPfile(),++showNumber,showFlag,_("Sound file"),true,false));
 					resaveSocials=true;
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					final String input = mob.session().prompt("Edit which (or DELETE)? ","");
+					final String input = mob.session().prompt(_("Edit which (or DELETE)? "),"");
 					showFlag=CMath.s_int(input);
 					if((input!=null)&&(input.equalsIgnoreCase("DELETE")))
 					{

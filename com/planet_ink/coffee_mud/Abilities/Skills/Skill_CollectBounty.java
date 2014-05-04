@@ -130,19 +130,19 @@ public class Skill_CollectBounty extends StdSkill
 
 		if(judge==null)
 		{
-			mob.tell("You must present "+target.name(mob)+" to the judge.");
+			mob.tell(_("You must present @x1 to the judge.",target.name(mob)));
 			return false;
 		}
 
 		final List<LegalWarrant> warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
-			mob.tell(target.name(mob)+" is not wanted for anything here.");
+			mob.tell(_("@x1 is not wanted for anything here.",target.name(mob)));
 			return false;
 		}
 		if((target.amDead())||(!CMLib.flags().isInTheGame(target,true)))
 		{
-			mob.tell(target.name(mob)+" is not _really_ here.");
+			mob.tell(_("@x1 is not _really_ here.",target.name(mob)));
 			return false;
 		}
 		for(int w=0;w<warrants.size();w++)
@@ -150,7 +150,7 @@ public class Skill_CollectBounty extends StdSkill
 			final LegalWarrant W=warrants.get(w);
 			if(W.crime().equalsIgnoreCase("pardoned"))
 			{
-				mob.tell(target.name(mob)+" has been pardoned, and is no longer a criminal.");
+				mob.tell(_("@x1 has been pardoned, and is no longer a criminal.",target.name(mob)));
 				return false;
 			}
 		}
@@ -163,7 +163,7 @@ public class Skill_CollectBounty extends StdSkill
 		final Area legalA=CMLib.law().getLegalObject(R);
 		if((success)&&(legalA!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) <T-NAMESELF> in to @x1 for the bounty.",judge.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -191,7 +191,7 @@ public class Skill_CollectBounty extends StdSkill
 					W=warrants.get(i);
 					gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
 				}
-				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
+				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> pay(s) <T-NAMESELF> the bounty of @x1 on @x2.",CMLib.beanCounter().nameCurrencyShort(judge,gold),target.Name()));
 				final String currency=CMLib.beanCounter().getCurrency(judge);
 				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,gold);
 			}

@@ -86,7 +86,7 @@ public class Chant_SweetScent extends Chant
 								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
 								&&(CMLib.flags().canSmell(M)))
 								{
-									M.tell(M,null,null,"You smell something irresistable "+Directions.getInDirectionName(dir)+".");
+									M.tell(M,null,null,_("You smell something irresistable @x1.",Directions.getInDirectionName(dir)));
 									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 										CMLib.tracking().walk(M,dir,false,false);
 								}
@@ -129,7 +129,7 @@ public class Chant_SweetScent extends Chant
 		if(target==null) return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{
-			mob.tell(target.name(mob)+" is not one of your plants!");
+			mob.tell(_("@x1 is not one of your plants!",target.name(mob)));
 			return false;
 		}
 

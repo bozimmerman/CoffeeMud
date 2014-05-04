@@ -134,7 +134,7 @@ public class Thief_Shadow extends ThiefSkill
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
-				invoker.tell("You lost "+shadowing.charStats().himher()+".");
+				invoker.tell(_("You lost @x1.",shadowing.charStats().himher()));
 				unInvoke();
 				return false;
 			}
@@ -179,7 +179,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				invoker.delEffect(this);
 				setAffectedOne(shadowing);
-				invoker.tell("You are no longer shadowing "+shadowing.name()+".");
+				invoker.tell(_("You are no longer shadowing @x1.",shadowing.name()));
 			}
 			shadowing=null;
 		}
@@ -229,7 +229,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name(mob)+" is watching you too closely.");
+			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -248,7 +248,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,_("You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

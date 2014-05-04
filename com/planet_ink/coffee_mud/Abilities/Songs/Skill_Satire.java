@@ -120,7 +120,7 @@ public class Skill_Satire extends BardSkill
 				criminalFail(B,A2,mob,target);
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,"<S-NAME> mock(s) <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,_("<S-NAME> mock(s) <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -128,7 +128,7 @@ public class Skill_Satire extends BardSkill
 			{
 				if(B.aquit(A2, M, null))
 				{
-					room.show(M, target, CMMsg.MSG_OK_VISUAL, "<T-NAME>, smiling, forget(s) <S-YOUPOSS> crime.");
+					room.show(M, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME>, smiling, forget(s) <S-YOUPOSS> crime."));
 					return false;
 				}
 			}

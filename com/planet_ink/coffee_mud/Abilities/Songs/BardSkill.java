@@ -56,7 +56,7 @@ public class BardSkill extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> clumsy armor!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> clumsy armor!",name()));
 			return false;
 		}
 		return true;

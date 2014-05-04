@@ -127,9 +127,9 @@ public class StdClanDonationList extends StdClanItem
 					for(int i=0;i<sorted.size();i++)
 						text.append(((String)((Object[])sorted.elementAt(i))[1])+"\n\r");
 					if(text.length()>0)
-						mob.tell("It says '"+text.toString()+"'.");
+						mob.tell(_("It says '@x1'.",text.toString()));
 					else
-						mob.tell("There is nothing written on "+name()+".");
+						mob.tell(_("There is nothing written on @x1.",name()));
 				}
 				else
 					mob.tell(_("You can't see that!"));

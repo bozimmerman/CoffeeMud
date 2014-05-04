@@ -99,12 +99,12 @@ public class Trap_Greasy extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,CMStrings.capitalizeAndLower(affected.name())+" is covered in grease!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 is covered in grease!",CMStrings.capitalizeAndLower(affected.name()))))
 			{
 				super.spring(target);
-				target.location().show(target,affected,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) the greasy <T-NAME>!");
+				target.location().show(target,affected,null,CMMsg.MSG_DROP,_("<S-NAME> drop(s) the greasy <T-NAME>!"));
 				if(((--times)<=0)&&(canBeUninvoked())&&(affected instanceof Item))
 					disable();
 				else

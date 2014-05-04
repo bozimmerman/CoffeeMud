@@ -73,7 +73,7 @@ public class Chant_PlantPass extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"', perhaps you have nothing growing there?");
+			mob.tell(_("You can't seem to fixate on a place called '@x1', perhaps you have nothing growing there?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -95,8 +95,8 @@ public class Chant_PlantPass extends Chant
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from the ground.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> <S-IS-ARE> sucked into "+myPlant.name()+".");
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> emerge(s) from the ground."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

@@ -146,7 +146,7 @@ public class Prayer_Position extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell("The trail from "+lastPosition.name()+" to here is: "+trailTo(lastPosition,mob.location()));
+				mob.tell(_("The trail from @x1 to here is: @x2",lastPosition.name(),trailTo(lastPosition,mob.location())));
 				lastPosition=mob.location();
 			}
 		}

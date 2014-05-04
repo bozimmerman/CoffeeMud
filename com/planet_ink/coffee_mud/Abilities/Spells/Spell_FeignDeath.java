@@ -106,7 +106,7 @@ public class Spell_FeignDeath extends Spell
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
 		   &&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(mob.name(msg.source())+" doesn't seem to be here.");
+			msg.source().tell(_("@x1 doesn't seem to be here.",mob.name(msg.source())));
 			return false;
 		}
 		return true;
@@ -160,9 +160,9 @@ public class Spell_FeignDeath extends Spell
 			}
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
 			msg=CMClass.getMsg(target,null,null,
-					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+					CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 			if(deathRoom.okMessage(target,msg))
 			{
 				deathRoom.send(target,msg);

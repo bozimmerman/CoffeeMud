@@ -78,7 +78,7 @@ public class Fighter_DualParry extends FighterSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack with @x2!",attackerWeapon.name(),myOtherWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

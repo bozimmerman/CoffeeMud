@@ -91,7 +91,7 @@ public class Skill_Subdue extends StdSkill
 			&&(CMLib.flags().canBeSeenBy(whom, msg.source())))
 			{
 				final double actualHitPct = CMath.div(whom.curState().getHitPoints()-whomDamage,whom.baseState().getHitPoints());
-				msg.source().tell(msg.source(),whom,null,"<T-NAME> is "+CMath.toPct(actualHitPct)+" health away from being overcome.");
+				msg.source().tell(msg.source(),whom,null,_("<T-NAME> is @x1 health away from being overcome.",CMath.toPct(actualHitPct)));
 			}
 
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -113,7 +113,7 @@ public class Skill_Subdue extends StdSkill
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected instanceof MOB))
-			((MOB)affected).tell("You are no longer trying to subdue "+whom.name());
+			((MOB)affected).tell(_("You are no longer trying to subdue @x1",whom.name()));
 		super.unInvoke();
 	}
 

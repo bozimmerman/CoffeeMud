@@ -168,7 +168,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							&&(CMLib.flags().canBeSeenBy(this,M))
 							&&(!CMLib.flags().isAnimalIntelligence(M)))
 							{
-								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
+								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> guard(s) @x1 closely.",name()));
 								return false;
 							}
 						}
@@ -235,7 +235,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				}
 				if(!foundOne)
 				{
-					msg.source().tell("You are guarding "+name()+" too closely.");
+					msg.source().tell(_("You are guarding @x1 too closely.",name()));
 					return false;
 				}
 			}
@@ -250,10 +250,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 				final LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
 				final String rulingClan=(B!=null)?B.rulingOrganization():"";
 				if(rulingClan.length()==0)
-					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently neutral.");
+					msg.source().tell(_("Area '@x1' is presently neutral.",msg.source().location().getArea().name()));
 				else
 				{
-					msg.source().tell("Area '"+msg.source().location().getArea().name()+"' is presently controlled by "+rulingClan+".");
+					msg.source().tell(_("Area '@x1' is presently controlled by @x2.",msg.source().location().getArea().name(),rulingClan));
 					if(!rulingClan.equals(clanID()))
 					{
 						int relation=Clan.REL_WAR;

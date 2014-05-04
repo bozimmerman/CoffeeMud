@@ -76,7 +76,7 @@ public class Prayer_HolyDay extends Prayer
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 		&&(msg.source()!=invoker()))
 		{
-			msg.source().tell("You are not allowed to work on the holy day of "+godName+".");
+			msg.source().tell(_("You are not allowed to work on the holy day of @x1.",godName));
 			return false;
 		}
 		else
@@ -88,7 +88,7 @@ public class Prayer_HolyDay extends Prayer
 			||(msg.sourceMinor()==CMMsg.TYP_DEPOSIT))
 		&&(msg.source()!=invoker()))
 		{
-			msg.source().tell("You are not allowed to work or do commerce on the holy day of "+godName+".");
+			msg.source().tell(_("You are not allowed to work or do commerce on the holy day of @x1.",godName));
 			return false;
 		}
 		else
@@ -102,7 +102,7 @@ public class Prayer_HolyDay extends Prayer
 				B=CMLib.law().getLegalBehavior(msg.source().location());
 			if((B!=null)&&(B.controlPoints()>0))
 			{
-				msg.source().tell("There can be no conquest on the holy day of "+godName+".");
+				msg.source().tell(_("There can be no conquest on the holy day of @x1.",godName));
 				return false;
 			}
 		}
@@ -164,7 +164,7 @@ public class Prayer_HolyDay extends Prayer
 					godName=mob.getWorshipCharID();
 					if((godName.length()==0)||(CMLib.map().getDeity(godName)==null))
 						godName="the gods";
-					R.showHappens(CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("A holy day of @x1 has begun!",godName));
 				}
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 			}

@@ -57,13 +57,13 @@ public class Prayer_Marry extends Prayer
 		MOB husband=mob.location().fetchInhabitant(name1);
 		if((husband==null)||(!CMLib.flags().canBeSeenBy(mob,husband)))
 		{
-			mob.tell("You don't see "+name1+" here!");
+			mob.tell(_("You don't see @x1 here!",name1));
 			return false;
 		}
 		MOB wife=mob.location().fetchInhabitant(name2);
 		if((wife==null)||(!CMLib.flags().canBeSeenBy(mob,wife)))
 		{
-			mob.tell("You don't see "+name2+" here!");
+			mob.tell(_("You don't see @x1 here!",name2));
 			return false;
 		}
 		if(wife.charStats().getStat(CharStats.STAT_GENDER)=='M')
@@ -74,45 +74,45 @@ public class Prayer_Marry extends Prayer
 		}
 		if(wife.isMarriedToLiege())
 		{
-			mob.tell(wife.name()+" is already married!!");
+			mob.tell(_("@x1 is already married!!",wife.name()));
 			return false;
 		}
 		if(husband.isMarriedToLiege())
 		{
-			mob.tell(husband.name()+" is already married!!");
+			mob.tell(_("@x1 is already married!!",husband.name()));
 			return false;
 		}
 		if(wife.getLiegeID().length()>0)
 		{
-			mob.tell(wife.name()+" is lieged to "+wife.getLiegeID()+", and cannot marry.");
+			mob.tell(_("@x1 is lieged to @x2, and cannot marry.",wife.name(),wife.getLiegeID()));
 			return false;
 		}
 		if(husband.getLiegeID().length()>0)
 		{
-			mob.tell(husband.name()+" is lieged to "+husband.getLiegeID()+", and cannot marry.");
+			mob.tell(_("@x1 is lieged to @x2, and cannot marry.",husband.name(),husband.getLiegeID()));
 			return false;
 		}
 		if((wife.isMonster())||(wife.playerStats()==null))
 		{
-			mob.tell(wife.name()+" must be a player to marry.");
+			mob.tell(_("@x1 must be a player to marry.",wife.name()));
 			return false;
 		}
 		if((husband.isMonster())||(husband.playerStats()==null))
 		{
-			mob.tell(wife.name()+" must be a player to marry.");
+			mob.tell(_("@x1 must be a player to marry.",wife.name()));
 			return false;
 		}
 		CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_BIRTHS);
 		Item I=husband.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band");
 		if(I==null)
 		{
-			mob.tell(husband.name()+" isn't wearing a wedding band!");
+			mob.tell(_("@x1 isn't wearing a wedding band!",husband.name()));
 			return false;
 		}
 		I=wife.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band");
 		if(I==null)
 		{
-			mob.tell(wife.name()+" isn't wearing a wedding band!");
+			mob.tell(_("@x1 isn't wearing a wedding band!",wife.name()));
 			return false;
 		}
 		MOB witness=null;

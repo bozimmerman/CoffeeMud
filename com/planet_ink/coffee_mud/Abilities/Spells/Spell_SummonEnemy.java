@@ -148,7 +148,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.text();
 		monster.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(monster,null);
-		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);
 		return(monster);

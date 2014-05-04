@@ -157,7 +157,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if(M.location()!=null)
 			{
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Someone steps out of the shadows and whispers something to @x1.",M.name()));
 				M.tell(_("'It is done.'"));
 			}
 		}
@@ -215,7 +215,7 @@ public class Thief_ContractHit extends ThiefSkill
 			target=V.get(CMLib.dice().roll(1,V.size(),-1));
 		if(target==null)
 		{
-			mob.tell("You've never heard of '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(_("You've never heard of '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		if(target==mob)
@@ -225,7 +225,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(!mob.mayIFight(target))
 		{
-			mob.tell("You are not allowed to put out a hit on "+target.name(mob)+".");
+			mob.tell(_("You are not allowed to put out a hit on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -236,7 +236,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name(mob)+".");
+			mob.tell(_("You'll need at least @x1 to put a hit out on @x2.",costWords,target.name(mob)));
 			return false;
 		}
 
@@ -248,7 +248,7 @@ public class Thief_ContractHit extends ThiefSkill
 		levelDiff*=10;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,_("<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

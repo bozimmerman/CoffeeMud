@@ -86,7 +86,7 @@ public class Fighter_Behead extends FighterSkill
 		final Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
-			mob.tell(target.name(mob)+" has no head!");
+			mob.tell(_("@x1 has no head!",target.name(mob)));
 			return false;
 		}
 
@@ -97,7 +97,7 @@ public class Fighter_Behead extends FighterSkill
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 		{
-			mob.tell("You are not allowed to behead "+target.Name()+" at this time.");
+			mob.tell(_("You are not allowed to behead @x1 at this time.",target.Name()));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Fighter_Behead extends FighterSkill
 			ww=(Weapon)w;
 			if(ww.weaponType()!=Weapon.TYPE_SLASHING)
 			{
-				mob.tell("You cannot behead with a "+ww.name()+"!");
+				mob.tell(_("You cannot behead with a @x1!",ww.name()));
 				return false;
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -123,7 +123,7 @@ public class Fighter_Behead extends FighterSkill
 			}
 			if(!CMLib.flags().isBoundOrHeld(target))
 			{
-				mob.tell(target.charStats().HeShe()+" is not bound and would resist.");
+				mob.tell(_("@x1 is not bound and would resist.",target.charStats().HeShe()));
 				return false;
 			}
 		}

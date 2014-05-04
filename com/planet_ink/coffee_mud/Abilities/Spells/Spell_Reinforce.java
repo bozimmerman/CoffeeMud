@@ -47,10 +47,10 @@ public class Spell_Reinforce extends Spell
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
-		{	mob.tell(target.name(mob)+" cannot be reinforced."); return false;}
+		{	mob.tell(_("@x1 cannot be reinforced.",target.name(mob))); return false;}
 		else
 		if(target.usesRemaining()<100)
-		{	mob.tell(target.name(mob)+" must be repaired before it can be reinforced."); return false;}
+		{	mob.tell(_("@x1 must be repaired before it can be reinforced.",target.name(mob))); return false;}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -65,7 +65,7 @@ public class Spell_Reinforce extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.usesRemaining()>=150)
-					mob.tell(target.name(mob)+" cannot be reinforced further.");
+					mob.tell(_("@x1 cannot be reinforced further.",target.name(mob)));
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to glow and harden!"));

@@ -89,7 +89,7 @@ public class Spell_SongShield extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"The shield around <S-NAME> blocks off "+msg.tool().name()+"!");
+			mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,_("The shield around <S-NAME> blocks off @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

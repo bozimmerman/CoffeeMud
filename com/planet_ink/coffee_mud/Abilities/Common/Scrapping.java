@@ -91,7 +91,7 @@ public class Scrapping extends CommonSkill
 						amount=amount*abilityCode();
 						String s="s";
 						if(amount==1) s="";
-						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to scrap "+amount+" pound"+s+" of "+foundShortName+".");
+						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 						for(int i=0;i<amount;i++)
 						{
 							final Item newFound=(Item)found.copyOf();
@@ -204,7 +204,7 @@ public class Scrapping extends CommonSkill
 		playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),"<S-NAME> start(s) scrapping "+I.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),_("<S-NAME> start(s) scrapping @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

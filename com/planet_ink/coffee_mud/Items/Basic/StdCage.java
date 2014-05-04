@@ -65,7 +65,7 @@ public class StdCage extends StdContainer
 						final MOB M=((CagedAnimal)E).unCageMe();
 						if(M!=null)
 							M.bringToLife(R,true);
-						R.show(M,null,this,CMMsg.MSG_OK_ACTION,"<S-NAME> escapes from <O-NAME>!");
+						R.show(M,null,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> escapes from <O-NAME>!"));
 						E.destroy();
 					}
 				}

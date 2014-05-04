@@ -83,7 +83,7 @@ public class Fighter_BodyToss extends MonkSkill
 		}
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell("You must get closer to "+target.charStats().himher()+" first!");
+			mob.tell(_("You must get closer to @x1 first!",target.charStats().himher()));
 			return false;
 		}
 		if(CMLib.flags().isSitting(mob))
@@ -98,7 +98,7 @@ public class Fighter_BodyToss extends MonkSkill
 		}
 		if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))
 		{
-			mob.tell(target.name(mob)+" is too big for you to toss!");
+			mob.tell(_("@x1 is too big for you to toss!",target.name(mob)));
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Fighter_BodyToss extends MonkSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),"^F^<FIGHT^><S-NAME> pick(s) up <T-NAMESELF> and toss(es) <T-HIM-HER> into the air!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("^F^<FIGHT^><S-NAME> pick(s) up <T-NAMESELF> and toss(es) <T-HIM-HER> into the air!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

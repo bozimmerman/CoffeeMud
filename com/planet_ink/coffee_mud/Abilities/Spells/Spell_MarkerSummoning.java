@@ -109,8 +109,8 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=0;i<inhabs.size();i++)
 				{
 					final MOB follower=(MOB)inhabs.elementAt(i);
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appear(s) in a burst of light."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl."));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
@@ -130,9 +130,9 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=0;i<items.size();i++)
 				{
 					final Item I=(Item)items.elementAt(i);
-					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
+					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 disappears in a summoning swirl!",I.name()));
 					newRoom.moveItemTo(I);
-					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");
+					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears in a burst of light!",I.name()));
 				}
 			}
 

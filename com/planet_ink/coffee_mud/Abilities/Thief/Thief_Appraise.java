@@ -59,7 +59,7 @@ public class Thief_Appraise extends ThiefSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -70,7 +70,7 @@ public class Thief_Appraise extends ThiefSkill
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> appraise(s) <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> appraise(s) <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

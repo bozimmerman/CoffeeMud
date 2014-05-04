@@ -125,7 +125,7 @@ public class Thief_TurfWar extends ThiefSkill
 				if((M!=null)&&(!M.isMonster())&&(M!=attacker)&&(isADefender(R,M)))
 				{
 					defender=M;
-					R.showHappens(CMMsg.MSG_OK_ACTION,M.name()+" arrives to defend this turf! Let the war begin!");
+					R.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 arrives to defend this turf! Let the war begin!",M.name()));
 					defenderPKILLMask=defender.getBitmap() & MOB.ATT_PLAYERKILL;
 					defender.setBitmap(defender.getBitmap() | MOB.ATT_PLAYERKILL);
 					attacker.setVictim(defender);
@@ -168,14 +168,14 @@ public class Thief_TurfWar extends ThiefSkill
 			if((attacker!=null)&&(attacker.location()==R)
 			&&((defender==null)||(defender.location()!=R)))
 			{
-				R.showHappens(CMMsg.MSG_OK_ACTION,attacker.Name()+" has won the turf war!");
+				R.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 has won the turf war!",attacker.Name()));
 				final Ability A=R.fetchEffect("Thief_TagTurf");
 				if(A!=null) A.unInvoke();
 			}
 			else
 			if((attacker!=null)&&(attacker.location()!=R)
 			&&((defender!=null)&&defender.location()==R))
-				R.showHappens(CMMsg.MSG_OK_ACTION,defender.Name()+" has won the turf war!");
+				R.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 has won the turf war!",defender.Name()));
 		}
 		super.unInvoke();
 	}
@@ -247,7 +247,7 @@ public class Thief_TurfWar extends ThiefSkill
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 					if((S.mob()!=null)&&(S.mob()!=mob)&&(isADefender(R,S.mob())))
-						S.mob().tell(mob.name(mob)+" has declared a turf war at '"+R.displayText(mob)+"'.  You must immediately go and defend it to keep your tag.");
+						S.mob().tell(_("@x1 has declared a turf war at '@x2'.  You must immediately go and defend it to keep your tag.",mob.name(mob),R.displayText(mob)));
 				setTimeOfNextCast(mob);
 			}
 		}

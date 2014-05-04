@@ -92,7 +92,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		||(!(item instanceof Weapon))
 		||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
 		{
-			mob.tell(victim.charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(_("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
 			return false;
 		}
 

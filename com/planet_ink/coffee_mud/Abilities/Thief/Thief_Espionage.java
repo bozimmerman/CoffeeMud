@@ -80,7 +80,7 @@ public class Thief_Espionage extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if((invoker!=null)&&(affected!=null))
-				invoker.tell("You are no longer committing espionage with "+affected.name()+".");
+				invoker.tell(_("You are no longer committing espionage with @x1.",affected.name()));
 		}
 		super.unInvoke();
 	}
@@ -121,7 +121,7 @@ public class Thief_Espionage extends ThiefSkill
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name(mob)+" is watching you too closely.");
+			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -139,7 +139,7 @@ public class Thief_Espionage extends ThiefSkill
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,"You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,_("You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

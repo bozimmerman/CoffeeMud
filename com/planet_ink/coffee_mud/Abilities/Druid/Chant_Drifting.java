@@ -136,7 +136,7 @@ public class Chant_Drifting extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already "+name()+".");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already @x1.",name()));
 			return false;
 		}
 

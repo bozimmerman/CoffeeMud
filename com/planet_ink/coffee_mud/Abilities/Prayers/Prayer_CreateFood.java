@@ -61,7 +61,7 @@ public class Prayer_CreateFood extends Prayer
 				final Item newItem=CMClass.getBasicItem("StdFood");
 				newItem.setBaseValue(1);
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 drops from the sky.",newItem.name()));
 				mob.location().recoverPhyStats();
 			}
 		}

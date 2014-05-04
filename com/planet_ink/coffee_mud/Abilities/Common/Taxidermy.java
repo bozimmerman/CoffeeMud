@@ -213,7 +213,7 @@ public class Taxidermy extends CraftingSkill
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
 		playSound="scissor.wav";
-		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),"<S-NAME> start(s) stuffing "+I.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),_("<S-NAME> start(s) stuffing @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

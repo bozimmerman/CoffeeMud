@@ -73,7 +73,7 @@ public class Spell_BigMouth extends Spell
 					final boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
-						mob.tell("You fail to eat "+target.name(mob)+".");
+						mob.tell(_("You fail to eat @x1.",target.name(mob)));
 						if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
 						&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
 						&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
@@ -90,7 +90,7 @@ public class Spell_BigMouth extends Spell
 				else
 				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
 				{
-					mob.tell("You can not eat "+((Item)msg.target()).name(mob)+".");
+					mob.tell(_("You can not eat @x1.",((Item)msg.target()).name(mob)));
 					return false;
 				}
 
@@ -102,7 +102,7 @@ public class Spell_BigMouth extends Spell
 			}
 			else
 			{
-				mob.tell(((Physical)msg.target()).name(mob)+" is just too large for you to eat!");
+				mob.tell(_("@x1 is just too large for you to eat!",((Physical)msg.target()).name(mob)));
 				return false;
 			}
 		}
@@ -138,7 +138,7 @@ public class Spell_BigMouth extends Spell
 						if(msg2.value()<=0)
 						{
 							Stomach().bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,_("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> slide(s) down the gullet into the stomach!"));
 							Stomach().send(TastyMorsel,enterMsg);
 						}
 					}
@@ -231,7 +231,7 @@ public class Spell_BigMouth extends Spell
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
-											   "<S-NAME> digest(s) <T-NAMESELF>!!");
+											   _("<S-NAME> digest(s) <T-NAMESELF>!!"));
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));

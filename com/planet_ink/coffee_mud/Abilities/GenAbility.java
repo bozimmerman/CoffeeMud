@@ -226,7 +226,7 @@ public class GenAbility extends StdAbility
 		&&(((String)V(ID,V_CMSK)).length()>0)
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob,true)))
 		{
-			mob.tell("You do not meet the requirements: "+CMLib.masking().maskDesc((String)V(ID,V_CMSK)));
+			mob.tell(_("You do not meet the requirements: @x1",CMLib.masking().maskDesc((String)V(ID,V_CMSK))));
 			return false;
 		}
 		// dont forget to allow super. calls to Spell.invoke, Chant.invoke, etc.. based on classification?
@@ -239,7 +239,7 @@ public class GenAbility extends StdAbility
 				target=givenTarget;
 			if(target.fetchEffect(this.ID())!=null)
 			{
-				mob.tell((MOB)target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
+				mob.tell((MOB)target,null,null,_("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 				return false;
 			}
 		}
@@ -261,7 +261,7 @@ public class GenAbility extends StdAbility
 					target=givenTarget;
 				if(target.fetchEffect(this.ID())!=null)
 				{
-					mob.tell("This place is already affected by "+name()+".");
+					mob.tell(_("This place is already affected by @x1.",name()));
 					return false;
 				}
 				break;
@@ -290,7 +290,7 @@ public class GenAbility extends StdAbility
 		&&(((String)V(ID,V_TMSK)).length()>0)
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_TMSK), target,true)))
 		{
-			mob.tell("The target is invalid: "+CMLib.masking().maskDesc((String)V(ID,V_TMSK)));
+			mob.tell(_("The target is invalid: @x1",CMLib.masking().maskDesc((String)V(ID,V_TMSK))));
 			return false;
 		}
 
@@ -322,7 +322,7 @@ public class GenAbility extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> armor!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget, auto, asLevel))

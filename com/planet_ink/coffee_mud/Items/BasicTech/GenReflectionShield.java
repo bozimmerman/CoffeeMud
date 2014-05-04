@@ -74,10 +74,10 @@ public class GenReflectionShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
 			}
 			else
-				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
 		}
 		return false;
 	}

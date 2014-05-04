@@ -66,7 +66,7 @@ public class Disease_Amnesia extends Disease
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
 		{
-			mob.tell("You can't remember "+msg.tool().name()+"!");
+			mob.tell(_("You can't remember @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

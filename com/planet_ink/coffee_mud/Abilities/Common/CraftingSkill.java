@@ -1099,10 +1099,7 @@ public class CraftingSkill extends GatheringSkill
 			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
 				buf.append(CMLib.ableMapper().getAbilityComponentDesc(mob,componentsRequirements,r));
-			mob.tell("You lack the necessary materials to "
-					+doingWhat.toLowerCase()
-					+", the requirements are: "
-					+buf.toString()+".");
+			mob.tell(_("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
 		return new LinkedList<Object>();
@@ -1206,7 +1203,7 @@ public class CraftingSkill extends GatheringSkill
 		displayText="You are deconstructing "+buildingI.name();
 		verb="deconstructing "+buildingI.name();
 		messedUp=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) deconstructing and studying <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

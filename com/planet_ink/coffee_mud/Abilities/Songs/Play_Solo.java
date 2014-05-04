@@ -61,16 +61,16 @@ public class Play_Solo extends Play
 				if(((otherBard.phyStats().level()+CMLib.dice().roll(1,30,0)+getXLEVELLevel(otherBard))>(myChar.phyStats().level()+CMLib.dice().roll(1,20,0)+getXLEVELLevel(myChar)))
 				&&(otherBard.location()!=null))
 				{
-					if((otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
+					if((otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!")))
 					&&((otherBard.location()==originRoom)
 							||(originRoom==null)
-							||originRoom.showOthers(otherBard, myChar, null, CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!")))
+							||originRoom.showOthers(otherBard, myChar, null, CMMsg.MSG_OK_ACTION,_("<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))))
 								unplayMe(myChar,null);
 				}
 				else
 				if(otherBard.location()!=null)
 				{
-					otherBard.tell("You can't seem to upstage "+myChar.name()+"'s solo.");
+					otherBard.tell(_("You can't seem to upstage @x1's solo.",myChar.name()));
 					if(!invoker().curState().adjMana(-10,invoker().maxState()))
 						unplayMe(myChar,null);
 					return false;
@@ -140,7 +140,7 @@ public class Play_Solo extends Play
 					final int reqMana=songsToCancel.size()*10;
 					if(mob.curState().getMana()<reqMana)
 					{
-						mob.tell("You needed "+reqMana+" mana to play this solo!");
+						mob.tell(_("You needed @x1 mana to play this solo!",""+reqMana));
 						return false;
 					}
 					mob.curState().adjMana(-reqMana,mob.maxState());

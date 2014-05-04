@@ -75,9 +75,9 @@ public class Spell_LimbRack extends Spell
 			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
 			{
 				if(text().equalsIgnoreCase("ARMSONLY"))
-					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> has <S-HIS-HER> arms TORN OFF!"));
 				else
-					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
 				Amputator A=(Amputator)mob.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
 				boolean success=true;
@@ -115,7 +115,7 @@ public class Spell_LimbRack extends Spell
 		&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.name(mob)+" to rack off!");
+				mob.tell(_("There is nothing left on @x1 to rack off!",target.name(mob)));
 			return false;
 		}
 

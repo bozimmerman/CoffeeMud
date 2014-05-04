@@ -249,7 +249,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					CMLib.commands().postSay(this,mob,"Auctioning "+I.name()+" will cost a listing fee of "+depositAmt+", proceed?",true,false);
-					try{if(!mob.session().confirm("(Y/N):","Y",10000)) return false;}catch(final Exception e){return false;}
+					try{if(!mob.session().confirm(_("(Y/N):"),_("Y"),10000)) return false;}catch(final Exception e){return false;}
 					lastMsgData=new AuctionData();
 					lastMsgData.auctioningI=(Item)msg.tool();
 					lastMsgData.auctioningM=msg.source();
@@ -301,7 +301,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
+							if(!msg.source().session().confirm(_("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),_("N"),10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}
@@ -376,7 +376,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm("This will cancel your auction on "+data.auctioningI.name()+", are you sure (y/N)?","N",10000))
+							if(!msg.source().session().confirm(_("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),_("N"),10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}

@@ -135,7 +135,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 							while((I!=null)&&(!alreadyDone.contains(I)))
 							{
 								alreadyDone.add(I);
-								final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,_("<S-NAME> release(s) <T-NAME>."));
 								target.location().send(target,msg2);
 								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverPhyStats();

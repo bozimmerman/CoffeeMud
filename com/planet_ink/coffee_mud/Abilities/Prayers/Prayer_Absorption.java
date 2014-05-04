@@ -59,7 +59,7 @@ public class Prayer_Absorption extends Prayer
 		if((canBeUninvoked())&&(absorbed!=null)&&(M!=null))
 		{
 			M.delAbility(absorbed);
-			M.tell("You forget all about "+absorbed.name()+".");
+			M.tell(_("You forget all about @x1.",absorbed.name()));
 			absorbed=null;
 		}
 	}
@@ -91,7 +91,7 @@ public class Prayer_Absorption extends Prayer
 		if(old!=null)
 		{
 			if(old.absorbed!=null)
-				mob.tell("You have already absorbed "+old.absorbed.name()+" from someone.");
+				mob.tell(_("You have already absorbed @x1 from someone.",old.absorbed.name()));
 			else
 				mob.tell(_("You have already absorbed a skill from someone."));
 			return false;
@@ -133,7 +133,7 @@ public class Prayer_Absorption extends Prayer
 				absorbed=(Ability)absorbed.copyOf();
 				absorbed.setSavable(false);
 				mob.addAbility(absorbed);
-				mob.tell("You have absorbed "+absorbed.name()+"!");
+				mob.tell(_("You have absorbed @x1!",absorbed.name()));
 				beneficialAffect(mob,mob,asLevel,15);
 			}
 		}

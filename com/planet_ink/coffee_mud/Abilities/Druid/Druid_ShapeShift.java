@@ -140,7 +140,7 @@ public class Druid_ShapeShift extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public int getClassLevel(MOB mob)
@@ -284,7 +284,7 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				try
 				{
-				if(!mob.session().confirm("You have not yet chosen your form, would you like to now (Y/n)?","Y"))
+				if(!mob.session().confirm(_("You have not yet chosen your form, would you like to now (Y/n)?"),_("Y")))
 					return false;
 				final StringBuffer str=new StringBuffer("Choose from the following:\n\r");
 				final StringBuffer choices=new StringBuffer("");
@@ -384,7 +384,7 @@ public class Druid_ShapeShift extends StdAbility
 					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 				}
 			}
-			mob.tell("'"+parm+"' is an illegal form!\n\rValid forms include: \n\r"+list.toString());
+			mob.tell(_("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));
 			return false;
 		}
 
@@ -412,7 +412,7 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);

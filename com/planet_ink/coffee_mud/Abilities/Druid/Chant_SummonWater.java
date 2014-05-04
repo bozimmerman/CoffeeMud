@@ -100,12 +100,12 @@ public class Chant_SummonWater extends Chant
 
 				if(newItem==null)
 				{
-					mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
+					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,asLevel,0);

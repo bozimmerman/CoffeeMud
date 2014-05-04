@@ -144,10 +144,10 @@ public class Power_TrapSense extends SuperPower
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))
-				mob.tell("You sense a trap to "+last+".");
+				mob.tell(_("You sense a trap to @x1.",last));
 			else
 			if((dirs.length()>2)&&(last.length()>0))
-				mob.tell("You sense a trap to "+dirs.substring(2)+", and "+last+".");
+				mob.tell(_("You sense a trap to @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 

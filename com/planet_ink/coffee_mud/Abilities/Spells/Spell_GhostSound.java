@@ -54,46 +54,46 @@ public class Spell_GhostSound extends Spell
 		switch(CMLib.dice().roll(1,14,0))
 		{
 		case 1:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear something coming up behind you.");
+				_("You hear something coming up behind you."));
 				break;
 		case 2:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear somebody screaming in the distance.");
+				_("You hear somebody screaming in the distance."));
 				break;
 		case 3:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear the snarl of a large ferocious beast.");
+				_("You hear the snarl of a large ferocious beast."));
 				break;
 		case 4:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear complete silence.");
+				_("You hear complete silence."));
 				break;
 		case 5:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"CLANK! Someone just dropped their sword.");
+				_("CLANK! Someone just dropped their sword."));
 				break;
 		case 6:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear a bird singing.");
+				_("You hear a bird singing."));
 				break;
 		case 7:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear a cat dying.");
+				_("You hear a cat dying."));
 				break;
 		case 8:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear some people talking.");
+				_("You hear some people talking."));
 				break;
 		case 9:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear singing.");
+				_("You hear singing."));
 				break;
 		case 10:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear a cow mooing.");
+				_("You hear a cow mooing."));
 				break;
 		case 11:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear your shadow.");
+				_("You hear your shadow."));
 				break;
 		case 12:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear someone trying to sneak by you.");
+				_("You hear someone trying to sneak by you."));
 				break;
 		case 13:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear an annoying beeping sound.");
+				_("You hear an annoying beeping sound."));
 				break;
 		case 14:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				"You hear your heart beating in your chest.");
+				_("You hear your heart beating in your chest."));
 				break;
 		}
 		return super.tick(ticking,tickID);

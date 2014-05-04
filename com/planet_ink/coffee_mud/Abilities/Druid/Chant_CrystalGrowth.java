@@ -99,7 +99,7 @@ public class Chant_CrystalGrowth extends Chant
 				final Ability A2=CMClass.getAbility("Chant_Brittle");
 				if(A2!=null) building.addNonUninvokableEffect(A2);
 
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"a tiny crystal fragment drops out of the stone, swells and grows, forming into "+building.name()+".");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("a tiny crystal fragment drops out of the stone, swells and grows, forming into @x1.",building.name()));
 				mob.location().recoverPhyStats();
 			}
 		}

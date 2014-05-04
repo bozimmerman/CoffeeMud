@@ -91,7 +91,7 @@ public class Archon_Injure extends ArchonSkill
 			if(part==null)
 				mob.tell(target,null,null,_("<S-NAME> has no parts."));
 			else
-				mob.tell(target,null,null,"<S-NAME> has no part called '"+part.toLowerCase()+"'.");
+				mob.tell(target,null,null,_("<S-NAME> has no part called '@x1'.",part.toLowerCase()));
 			return false;
 		}
 

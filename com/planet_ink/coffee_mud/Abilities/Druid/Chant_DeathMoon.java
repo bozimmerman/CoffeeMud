@@ -133,7 +133,7 @@ public class Chant_DeathMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
+				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}

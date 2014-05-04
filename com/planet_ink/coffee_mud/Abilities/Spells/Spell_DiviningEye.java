@@ -64,13 +64,13 @@ public class Spell_DiviningEye extends Spell
 		final Ability A=CMLib.english().getToEvoke(mob, commands);
 		if(A==null)
 		{
-			mob.tell("'"+commandStr+"' does not refer to any diviner spell you know.");
+			mob.tell(_("'@x1' does not refer to any diviner spell you know.",commandStr));
 			return false;
 		}
 		if(((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 		||((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_DIVINATION))
 		{
-			mob.tell("'"+A.name()+"' is not a diviner spell you know.");
+			mob.tell(_("'@x1' is not a diviner spell you know.",A.name()));
 			return false;
 		}
 

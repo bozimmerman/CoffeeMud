@@ -61,7 +61,7 @@ public class Fighter_CounterAttack extends FighterSkill
 		{
 			if(msg.tool().ID().equals("Skill_Parry"))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!");
+				final CMMsg msg2=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!"));
 				msg.addTrailerMsg(msg2);
 			}
 			else

@@ -263,7 +263,7 @@ public class GenWallpaper implements Item
 		case CMMsg.TYP_GET:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
-				mob.tell("You can't get "+name()+".");
+				mob.tell(_("You can't get @x1.",name()));
 				return false;
 			}
 			break;

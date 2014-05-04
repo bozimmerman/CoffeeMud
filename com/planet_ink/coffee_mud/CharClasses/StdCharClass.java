@@ -220,7 +220,7 @@ public class StdCharClass implements CharClass
 				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
 				{
 					if(!quiet)
-						mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
+						mob.tell(_("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
 					return false;
 				}
 			}
@@ -254,7 +254,7 @@ public class StdCharClass implements CharClass
 			if(currentClassID.equals(changeToClassID))
 			{
 				if(!quiet)
-					mob.tell("But you are already a "+name()+"!");
+					mob.tell(_("But you are already a @x1!",name()));
 				return false;
 			}
 			if(currentClassID.equalsIgnoreCase("StdCharClass")) // this is the starting character rule
@@ -274,14 +274,14 @@ public class StdCharClass implements CharClass
 				if(multiClassFirstRule.equals("APP")&&(getSubClassRule()==SubClassRule.ANY))
 					return true;
 				if(!quiet)
-					mob.tell("You can't train to be a "+name()+"!");
+					mob.tell(_("You can't train to be a @x1!",name()));
 				return false;
 			}
 			else
 			if(curClass.getSubClassRule()==SubClassRule.NONE)
 			{
 				if(!quiet)
-					mob.tell("You can't train to be a "+name()+"!");
+					mob.tell(_("You can't train to be a @x1!",name()));
 				return false;
 			}
 			else
@@ -297,7 +297,7 @@ public class StdCharClass implements CharClass
 					if((changeToBaseClassID.equals(changeToClassID))||(changeToBaseClassID.equals(currentBaseClassID)))
 						return true;
 					if(!quiet)
-						mob.tell("You must be a "+changeToBaseClassID+" type to become a "+name()+".");
+						mob.tell(_("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
 				return false;
 			}
@@ -307,7 +307,7 @@ public class StdCharClass implements CharClass
 					return true;
 				else
 				if(multiClassFirstRule.equals("NO")||(multiClassSecondRule.equals("NO")))
-					mob.tell("You should be happy to be a "+curClass.name()+".");
+					mob.tell(_("You should be happy to be a @x1.",curClass.name()));
 				else
 				if(multiClassFirstRule.equals("SUB")|| multiClassSecondRule.equals("SUB"))
 				{
@@ -326,7 +326,7 @@ public class StdCharClass implements CharClass
 					if(doesBaseHaveAnAny)
 						return true;
 					if(!quiet)
-						mob.tell("You must be a "+changeToBaseClassID+" type to become a "+name()+".");
+						mob.tell(_("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
 			}
 			return false;
@@ -570,7 +570,7 @@ public class StdCharClass implements CharClass
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
 		&&(mob.fetchWieldedItem()!=null))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+E.name()+".");
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fumble(s) horribly with @x1.",E.name()));
 			return false;
 		}
 		return true;
@@ -951,7 +951,7 @@ public class StdCharClass implements CharClass
 				if((msg.target() instanceof Weapon)
 				&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
 					||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(Integer.valueOf(((Weapon)msg.target()).weaponClassification()))))))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,_("<T-NAME> feel(s) a bit strange in your hands."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				break;
 			}
 			case CMMsg.TYP_WEAR:

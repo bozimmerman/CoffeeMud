@@ -81,7 +81,7 @@ public class Thief_Bind extends ThiefSkill
 			{
 				if(canBeUninvoked())
 				{
-					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName.toLowerCase()+" binding <S-HIM-HER>."))
+					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against @x1 binding <S-HIM-HER>.",ropeName.toLowerCase())))
 					{
 						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().phyStats().level());
 						if(amountRemaining<0)
@@ -89,7 +89,7 @@ public class Thief_Bind extends ThiefSkill
 					}
 				}
 				else
-					msg.source().tell("You are constricted by "+ropeName.toLowerCase()+" and can't move!");
+					msg.source().tell(_("You are constricted by @x1 and can't move!",ropeName.toLowerCase()));
 				return false;
 			}
 		}
@@ -121,7 +121,7 @@ public class Thief_Bind extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+ropeName+".");
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of @x1.",ropeName));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -157,14 +157,14 @@ public class Thief_Bind extends ThiefSkill
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
 				{
 					A.unInvoke();
 					return true;
 				}
 				return false;
 			}
-			mob.tell(target.name(mob)+" doesn't appear to be bound with ropes.");
+			mob.tell(_("@x1 doesn't appear to be bound with ropes.",target.name(mob)));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove(target)&&(!auto)))
 		{
-			mob.tell(target.name(mob)+" doesn't look willing to cooperate.");
+			mob.tell(_("@x1 doesn't look willing to cooperate.",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as

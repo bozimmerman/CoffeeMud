@@ -52,7 +52,7 @@ public class Prayer_AnimateGhoul extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.name(mob)+" doesn't look dead yet.");
+			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))
@@ -131,7 +131,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
-				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{

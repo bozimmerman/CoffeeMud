@@ -233,7 +233,7 @@ public class Hunting extends CommonSkill
 			}
 		}
 		final int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) hunting.");
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) hunting."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

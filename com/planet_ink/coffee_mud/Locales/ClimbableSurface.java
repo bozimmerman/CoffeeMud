@@ -47,7 +47,7 @@ public class ClimbableSurface extends StdRoom
 	public void mountLadder(MOB mob, Rideable ladder)
 	{
 		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
 		if((mob.location().okMessage(mob,msg))

@@ -186,18 +186,18 @@ public class Spell_SummonMonster extends Spell
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		if(victim!=null)
 		{
 			if(newMOB.getVictim()!=victim) 
 				newMOB.setVictim(victim);
-			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		if(newMOB.amDead()||newMOB.amDestroyed())
 			return null;

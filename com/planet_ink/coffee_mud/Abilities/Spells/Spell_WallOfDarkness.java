@@ -65,7 +65,7 @@ public class Spell_WallOfDarkness extends Spell
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
 			{
-				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
+				mob.tell(_("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
 				return false;
 			}
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -74,7 +74,7 @@ public class Spell_WallOfDarkness extends Spell
 			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
+				mob.tell(_("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
 				if(mob.isMonster())
 					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;

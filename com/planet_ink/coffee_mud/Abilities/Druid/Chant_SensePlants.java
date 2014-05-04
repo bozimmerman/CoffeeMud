@@ -62,7 +62,7 @@ public class Chant_SensePlants extends Chant
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your senses are no longer sensitive to "+word()+".");
+			mob.tell(_("Your senses are no longer sensitive to @x1.",word()));
 	}
 	public String itsHere(MOB mob, Room R)
 	{
@@ -99,10 +99,10 @@ public class Chant_SensePlants extends Chant
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))
-				mob.tell("You sense "+word()+" to "+last+".");
+				mob.tell(_("You sense @x1 to @x2.",word(),last));
 			else
 			if((dirs.length()>2)&&(last.length()>0))
-				mob.tell("You sense "+word()+" to "+dirs.substring(2)+", and "+last+".");
+				mob.tell(_("You sense @x1 to @x2, and @x3.",word(),dirs.substring(2),last));
 		}
 	}
 
@@ -134,7 +134,7 @@ public class Chant_SensePlants extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing "+word()+".");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing @x1.",word()));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

@@ -92,7 +92,7 @@ public class Ranger_FindWater extends StdAbility
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The water trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The water trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);

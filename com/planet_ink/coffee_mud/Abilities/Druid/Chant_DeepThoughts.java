@@ -116,16 +116,16 @@ public class Chant_DeepThoughts extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> contemplate(s) the great depths."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> listen(s) to the wisdom of the stones."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> stare(s) at a single stone."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> mentally embrace(s) the earth."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> inhale(s) wisdom and dust."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> watch(es) the unchanging stones and feel(s) their history."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> become(s) one with the earth."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feel(s) the inner warmth of the great deep."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> find(s) clarity in the stones."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> contemplate(s) the great depths.")); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> listen(s) to the wisdom of the stones.")); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> stare(s) at a single stone.")); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> mentally embrace(s) the earth.")); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> inhale(s) wisdom and dust.")); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> watch(es) the unchanging stones and feel(s) their history.")); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> become(s) one with the earth.")); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feel(s) the inner warmth of the great deep.")); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> find(s) clarity in the stones.")); break;
 				}
 			}
 		}
@@ -160,7 +160,7 @@ public class Chant_DeepThoughts extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),_("^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

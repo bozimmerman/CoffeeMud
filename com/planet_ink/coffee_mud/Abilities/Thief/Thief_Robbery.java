@@ -82,7 +82,7 @@ public class Thief_Robbery extends ThiefSkill
 			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
 			{
-				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
+				msg.source().tell(_("@x1 looks unwilling to do business with you.",affected.name()));
 				return false;
 			}
 		}
@@ -129,14 +129,14 @@ public class Thief_Robbery extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
-			mob.tell("You cannot rob from "+target.charStats().himher()+".");
+			mob.tell(_("You cannot rob from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)

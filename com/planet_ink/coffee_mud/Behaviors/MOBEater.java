@@ -169,14 +169,14 @@ public class MOBEater extends ActiveTicker
 										   CMMsg.MSG_EAT,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 										   CMMsg.MSG_NOISYMOVEMENT,
-										   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
+										   _("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
 				if(mob.location().okMessage(TastyMorsel,EatMsg))
 				{
 					mob.location().send(TastyMorsel,EatMsg);
 					if(EatMsg.value()==0)
 					{
 						Stomach.bringMobHere(TastyMorsel,false);
-						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> slide(s) down the gullet into the stomach!"));
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -200,7 +200,7 @@ public class MOBEater extends ActiveTicker
 										   TastyMorsel,
 										   null,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
-										   "<S-NAME> digest(s) <T-NAMESELF>!!");
+										   _("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(TastyMorsel.curState().getHitPoints() * CMath.div(pctAcidHp, 100));

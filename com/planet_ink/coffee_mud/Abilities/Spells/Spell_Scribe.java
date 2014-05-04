@@ -55,7 +55,7 @@ public class Spell_Scribe extends Spell
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Scroll))
@@ -90,7 +90,7 @@ public class Spell_Scribe extends Spell
 			}
 		if(scrollThis==null)
 		{
-			mob.tell("You don't know how to scribe '"+spellName+"'.");
+			mob.tell(_("You don't know how to scribe '@x1'.",spellName));
 			return false;
 		}
 		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
@@ -103,7 +103,7 @@ public class Spell_Scribe extends Spell
 		if(numSpells<0) numSpells=1;
 		if(scroll.getSpells().size()>numSpells)
 		{
-			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
+			mob.tell(_("You aren't powerful enough to scribe any more spells onto @x1.",scroll.name()));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Spell_Scribe extends Spell
 		for(final Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))
 			{
-				mob.tell("That spell is already scribed onto "+scroll.name()+".");
+				mob.tell(_("That spell is already scribed onto @x1.",scroll.name()));
 				return false;
 			}
 
@@ -127,14 +127,14 @@ public class Spell_Scribe extends Spell
 
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
+		mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

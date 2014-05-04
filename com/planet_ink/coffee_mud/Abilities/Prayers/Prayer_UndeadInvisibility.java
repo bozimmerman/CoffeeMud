@@ -77,7 +77,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("You don't see "+target.name(msg.source()));
+				msg.source().tell(_("You don't see @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -125,7 +125,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

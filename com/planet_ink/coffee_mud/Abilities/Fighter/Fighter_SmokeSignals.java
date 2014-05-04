@@ -60,7 +60,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
 		&&(msg.othersMessage()!=null))
-			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.targetMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,_("The smoke signals seem to say '@x1'.",msg.targetMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}
 
@@ -134,7 +134,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				final String str=CMParms.combine(commands,0);
-				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
+				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,_("You see some smoke signals in the distance."));
 				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)

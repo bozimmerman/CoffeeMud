@@ -54,7 +54,7 @@ public class Prayer_Atonement extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
-			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
+			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,_("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
 
 		if(success&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 		{

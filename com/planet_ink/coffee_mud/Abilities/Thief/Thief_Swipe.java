@@ -109,7 +109,7 @@ public class Thief_Swipe extends ThiefSkill
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
+			mob.tell(_("You cannot swipe from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)

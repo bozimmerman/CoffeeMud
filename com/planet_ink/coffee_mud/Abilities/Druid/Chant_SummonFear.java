@@ -83,7 +83,7 @@ public class Chant_SummonFear extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?"));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND,null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{

@@ -69,7 +69,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
+				((MOB)((Item)affected).owner()).tell(_("The blessing on @x1 fades.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}

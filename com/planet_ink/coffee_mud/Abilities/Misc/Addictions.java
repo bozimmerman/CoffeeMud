@@ -79,13 +79,13 @@ public class Addictions extends StdAbility
 				puffCredit=null;
 			switch(CMLib.dice().roll(1,7,0))
 			{
-			case 1: ((MOB)ticking).tell("Man, you could sure use some "+text()+"."); break;
-			case 2: ((MOB)ticking).tell("Wouldn't some "+text()+" be great right about now?"); break;
-			case 3: ((MOB)ticking).tell("You are seriously craving "+text()+"."); break;
-			case 4: ((MOB)ticking).tell("There's got to be some "+text()+" around here somewhere."); break;
-			case 5: ((MOB)ticking).tell("You REALLY want some "+text()+"."); break;
-			case 6: ((MOB)ticking).tell("You NEED some "+text()+", NOW!"); break;
-			case 7: ((MOB)ticking).tell("Some "+text()+" would be lovely."); break;
+			case 1: ((MOB)ticking).tell(_("Man, you could sure use some @x1.",text())); break;
+			case 2: ((MOB)ticking).tell(_("Wouldn't some @x1 be great right about now?",text())); break;
+			case 3: ((MOB)ticking).tell(_("You are seriously craving @x1.",text())); break;
+			case 4: ((MOB)ticking).tell(_("There's got to be some @x1 around here somewhere.",text())); break;
+			case 5: ((MOB)ticking).tell(_("You REALLY want some @x1.",text())); break;
+			case 6: ((MOB)ticking).tell(_("You NEED some @x1, NOW!",text())); break;
+			case 7: ((MOB)ticking).tell(_("Some @x1 would be lovely.",text())); break;
 			}
 
 		}

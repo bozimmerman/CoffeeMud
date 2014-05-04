@@ -52,7 +52,7 @@ public class Prayer_Omnipresence extends Prayer
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but the is unanswered.");
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> "+prayWord(mob)+" for the power of omnipresence.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));
 			int numLayers=super.getXLEVELLevel(mob) + 1;
 			if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 				numLayers += ((super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this)));

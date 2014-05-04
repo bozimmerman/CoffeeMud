@@ -105,7 +105,7 @@ public class Skill_Puppeteer extends BardSkill
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
 							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
-					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 					CMLib.combat().postDamage(M,M.getVictim(),affected,
 											CMLib.dice().roll(1,affected.phyStats().level()+(2*getXLEVELLevel(M)),1),
@@ -117,19 +117,19 @@ public class Skill_Puppeteer extends BardSkill
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" walks around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 walks around.",affected.name()));
 				break;
 			case 2:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" waves its little arms.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 waves its little arms.",affected.name()));
 				break;
 			case 3:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" hugs you.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 hugs you.",affected.name()));
 				break;
 			case 4:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
 				break;
 			}
 		}
@@ -145,7 +145,7 @@ public class Skill_Puppeteer extends BardSkill
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" stops moving.");
+			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops moving.",affected.name()));
 		super.unInvoke();
 	}
 
@@ -163,7 +163,7 @@ public class Skill_Puppeteer extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already animated!");
+			mob.tell(_("@x1 is already animated!",target.name(mob)));
 			return false;
 		}
 		if((!target.Name().toLowerCase().endsWith(" puppet"))

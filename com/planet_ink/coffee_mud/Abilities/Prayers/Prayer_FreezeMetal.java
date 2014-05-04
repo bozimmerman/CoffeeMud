@@ -69,9 +69,9 @@ public class Prayer_FreezeMetal extends Prayer
 		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
 			if(I.amWearingAt(Wearable.IN_INVENTORY))
-				msg.source().tell(affected.name()+" is too cold!");
+				msg.source().tell(_("@x1 is too cold!",affected.name()));
 			else
-				msg.source().tell(affected.name()+" is frozen stuck!");
+				msg.source().tell(_("@x1 is frozen stuck!",affected.name()));
 			return false;
 		}
 		return true;

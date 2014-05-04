@@ -56,7 +56,7 @@ public class Spell_AweOther extends Spell
 			&&(msg.source().getVictim()!=target)
 			&&(msg.source().location()==target.location()))
 			{
-				msg.source().tell("You are too much in awe of "+target.name(msg.source()));
+				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -93,7 +93,7 @@ public class Spell_AweOther extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less in awe of "+text()+".");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less in awe of @x1.",text()));
 	}
 
 
@@ -138,7 +138,7 @@ public class Spell_AweOther extends Spell
 					if(A!=null)
 					{
 						A.setMiscText(CMStrings.capitalizeAndLower(aweWhom));
-						R.show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) a new awe of "+CMStrings.capitalizeAndLower(aweWhom)+"!");
+						R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) a new awe of @x1!",CMStrings.capitalizeAndLower(aweWhom)));
 					}
 				}
 			}

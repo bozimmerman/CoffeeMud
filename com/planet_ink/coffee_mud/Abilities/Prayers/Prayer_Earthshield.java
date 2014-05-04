@@ -85,7 +85,7 @@ public class Prayer_Earthshield extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

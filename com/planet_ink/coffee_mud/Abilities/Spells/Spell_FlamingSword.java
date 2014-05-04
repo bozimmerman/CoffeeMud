@@ -87,7 +87,7 @@ public class Spell_FlamingSword extends Spell
 		if(item==null) return;
 		final Room room=CMLib.map().roomLocation(item);
 		if((canBeUninvoked())&&(room!=null))
-			room.showHappens(CMMsg.MSG_OK_VISUAL,item,"<S-YOUPOSS> flaming sword is consumed!");
+			room.showHappens(CMMsg.MSG_OK_VISUAL,item,_("<S-YOUPOSS> flaming sword is consumed!"));
 		super.unInvoke();
 		if((canBeUninvoked())&&(room!=null))
 		{

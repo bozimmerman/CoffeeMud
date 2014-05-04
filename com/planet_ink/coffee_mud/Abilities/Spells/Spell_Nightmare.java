@@ -116,25 +116,25 @@ public class Spell_Nightmare extends Spell
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> struggle(s) with an imaginary foe."); break;
+						_("<S-NAME> struggle(s) with an imaginary foe.")); break;
 					case 2:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> scream(s) in horror!"); break;
+						_("<S-NAME> scream(s) in horror!")); break;
 					case 3:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> beg(s) for mercy."); break;
+						_("<S-NAME> beg(s) for mercy.")); break;
 					case 4:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> grab(s) <S-HIS-HER> head and cr(ys)."); break;
+						_("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
 					case 5:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> whimper(s)."); break;
+						_("<S-NAME> whimper(s).")); break;
 					case 6:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> look(s) terrified!"); break;
+						_("<S-NAME> look(s) terrified!")); break;
 					case 7:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> swipe(s) at <S-HIS-HER> feet and arms."); break;
+						_("<S-NAME> swipe(s) at <S-HIS-HER> feet and arms.")); break;
 					case 8:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> claw(s) at the air."); break;
+						_("<S-NAME> claw(s) at the air.")); break;
 					case 9:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> shiver(s) in fear."); break;
+						_("<S-NAME> shiver(s) in fear.")); break;
 					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						"<S-NAME> shake(s) in anticipation of horror!"); break;
+						_("<S-NAME> shake(s) in anticipation of horror!")); break;
 					}
 					amountRemaining-=(int)Math.round(CMath.mul(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),2.5));
 					if(amountRemaining<0)

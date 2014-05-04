@@ -110,9 +110,9 @@ public class Unbinding extends CommonSkill
 				{
 					removing.unInvoke();
 					if(found.fetchEffect(removing.ID())==null)
-						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to remove "+removing.name()+" from "+found.name()+".");
+						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to remove @x1 from @x2.",removing.name(),found.name()));
 					else
-						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> fail(s) to remove "+removing.name()+" from "+found.name()+".");
+						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> fail(s) to remove @x1 from @x2.",removing.name(),found.name()));
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public class Unbinding extends CommonSkill
 		final List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
 		if(affects.size()==0)
 		{
-			mob.tell(target.name(mob)+" does not have any bindings you can remove.");
+			mob.tell(_("@x1 does not have any bindings you can remove.",target.name(mob)));
 			return false;
 		}
 		final Ability A=affects.get(0);
@@ -152,7 +152,7 @@ public class Unbinding extends CommonSkill
 
 		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=4;
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> begin(s) to unbind <T-NAMESELF>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> begin(s) to unbind <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

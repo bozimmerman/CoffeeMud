@@ -1021,7 +1021,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				mob.tell("You don't see anyone called '"+commands.get(commands.size()-1)+"' here buying or selling.");
+				mob.tell(_("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;
@@ -1430,7 +1430,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				mob.addItem(C);
 				return C;
 			}
-			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denomination)+".");
+			mob.tell(_("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)));
 			final List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
 			for(int v=0;v<V.size();v++)
 				if(V.get(v).getDenomination()==denomination)
@@ -1638,7 +1638,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(max>3000) max=3000;
 					if(maxToGive>max)
 					{
-						mob.tell("You can only handle "+max+" at a time.");
+						mob.tell(_("You can only handle @x1 at a time.",""+max));
 						return -1;
 					}
 					final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
@@ -1646,7 +1646,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						if(throwError)
 						{
-							mob.tell("You can't get anything from "+fromWhat.name()+".");
+							mob.tell(_("You can't get anything from @x1.",fromWhat.name()));
 							return -1;
 						}
 					}
@@ -1670,7 +1670,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(throwError)
 				{
-					mob.tell("You don't see '"+packCheckName+"' here.");
+					mob.tell(_("You don't see '@x1' here.",packCheckName));
 					return -1;
 				}
 			}

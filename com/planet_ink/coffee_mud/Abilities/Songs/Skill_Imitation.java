@@ -107,8 +107,8 @@ public class Skill_Imitation extends BardSkill
 		}
 		if((cmd.length()==0)||(found==null))
 		{
-			if(found!=null) mob.tell("'"+cmd+"' is not something you know how to imitate.");
-			mob.tell("Spells/Skills you may imitate: "+str.toString()+".");
+			if(found!=null) mob.tell(_("'@x1' is not something you know how to imitate.",cmd));
+			mob.tell(_("Spells/Skills you may imitate: @x1.",str.toString()));
 			return true;
 		}
 		if(target==null) target=mob.getVictim();

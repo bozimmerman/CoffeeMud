@@ -59,12 +59,12 @@ public class Spell_Enlarge extends Spell
 		{
 			final Item I=(Item)affected;
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.name((MOB)I.owner())+" in your inventory shrinks back to size.");
+				((MOB)I.owner()).tell(_("@x1 in your inventory shrinks back to size.",I.name((MOB)I.owner())));
 			else
 			{
 				final Room R=CMLib.map().roomLocation(I);
 				if(R!=null)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" shrinks back to normal size.");
+					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 shrinks back to normal size.",I.name()));
 			}
 		}
 		super.unInvoke();
@@ -83,7 +83,7 @@ public class Spell_Enlarge extends Spell
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already HUGE!");
+			mob.tell(_("@x1 is already HUGE!",target.name(mob)));
 			return false;
 		}
 

@@ -51,7 +51,7 @@ public class Prayer_SenseProfessions extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell("You already know your own "+senseWhatStr()+"!.");
+			mob.tell(_("You already know your own @x1!.",senseWhatStr()));
 			return false;
 		}
 
@@ -79,9 +79,9 @@ public class Prayer_SenseProfessions extends Prayer
 						professionsV.addElement(A.name() + " ("+A.proficiency()+"%)");
 				}
 				if(professionsV.size()==0)
-					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> has no "+senseWhatStr()+".");
+					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> has no @x1.",senseWhatStr()));
 				else
-					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> understands the following "+senseWhatStr()+": " + CMParms.toStringList(professionsV));
+					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> understands the following @x1: @x2",senseWhatStr(),CMParms.toStringList(professionsV)));
 			}
 		}
 		else

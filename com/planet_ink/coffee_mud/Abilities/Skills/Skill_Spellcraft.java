@@ -101,7 +101,7 @@ public class Skill_Spellcraft extends StdSkill
 				final Ability A=(Ability)copyOf();
 				A.setMiscText(msg.tool().ID());
 				lastID=msg.tool().ID();
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,"<T-NAME> casts '"+msg.tool().name()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,_("<T-NAME> casts '@x1'.",msg.tool().name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				helpProficiency(mob, 0);
 			}
 		}

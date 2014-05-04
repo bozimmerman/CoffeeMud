@@ -187,7 +187,7 @@ public class Prop_ItemTransporter extends Property
 		{
 			if(!setDestination())
 			{
-				msg.source().tell("The transporter has no possible ItemTransReceiver with the code '"+text()+"'.");
+				msg.source().tell(_("The transporter has no possible ItemTransReceiver with the code '@x1'.",text()));
 				return false;
 			}
 		}

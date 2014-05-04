@@ -104,7 +104,7 @@ public class Foraging extends GatheringSkill
 							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to gather "+amount+" pound"+s+" of "+foundShortName+".");
+					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -158,7 +158,7 @@ public class Foraging extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) foraging.");
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) foraging."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			// herb/locale customisation for jeremy

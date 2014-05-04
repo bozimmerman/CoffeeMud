@@ -73,7 +73,7 @@ public class Butchering extends GatheringSkill
 						commonTell(mob,"You messed up your butchering completely.");
 					else
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
+						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
 						final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
 						final Vector diseases=new Vector();
 						for(int i=0;i<body.numEffects();i++)
@@ -166,7 +166,7 @@ public class Butchering extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) butchering <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) butchering <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

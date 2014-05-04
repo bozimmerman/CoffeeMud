@@ -142,7 +142,7 @@ public class Skill_Map extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,_("<S-NAME> start(s) mapping on <T-NAMESELF>."),CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,_("<S-NAME> start(s) mapping on <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

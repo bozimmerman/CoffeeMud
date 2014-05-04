@@ -311,7 +311,7 @@ public class Drowness extends StdBehavior
 	{
 		if(CMLib.flags().isSitting(mob))
 			mob.phyStats().setDisposition(mob.phyStats().disposition() - PhyStats.IS_SITTING);
-		mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
+		mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;
 	}

@@ -86,7 +86,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
@@ -207,7 +207,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> begin(s) to track <T-NAMESELF>.",null,"<S-NAME> begin(s) to track <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> begin(s) to track <T-NAMESELF>."),null,_("<S-NAME> begin(s) to track <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{
 				mob.location().send(mob,msg);

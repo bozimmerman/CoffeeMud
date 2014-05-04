@@ -82,7 +82,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				if(mob!=invoker)
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg2);
 					if(mob.location().okMessage(mob,msg2))
 						mob.location().send(mob,msg2);

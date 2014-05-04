@@ -82,7 +82,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)E).owner()!=null)
 		&&(((Item)E).owner() instanceof Room))
 		{
-			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,E.name()+" stops dancing!");
+			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops dancing!",E.name()));
 		}
 	}
 
@@ -143,7 +143,7 @@ public class Dance_Swords extends Dance
 			{
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Weapon)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 				{
 					final int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
@@ -157,19 +157,19 @@ public class Dance_Swords extends Dance
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 twiches a bit.",affected.name()));
 				break;
 			case 2:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is looking for trouble.",affected.name()));
 				break;
 			case 3:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" practices its moves.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 practices its moves.",affected.name()));
 				break;
 			case 4:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
 				break;
 			}
 		}

@@ -104,7 +104,7 @@ public void unInvoke()
 		&&(msg.source().curState().getMana()>0))
 		{
 			final MOB sourceM = msg.source();
-			final CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");
+			final CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> siphon(s) mana from <T-NAME>!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				final int maxManaRestore = 3;

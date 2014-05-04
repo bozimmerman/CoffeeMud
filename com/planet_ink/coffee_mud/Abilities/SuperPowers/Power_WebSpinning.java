@@ -85,7 +85,7 @@ public class Power_WebSpinning extends SuperPower
 			if(msg.target()==affected)
 			{
 				if(msg.targetMinor()==CMMsg.TYP_GET)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,"<T-NAME> is covered in sticky webbing!",null,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is covered in sticky webbing!"),null,null));
 				else
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
 				&&(((Item)affected).owner()==msg.source()))

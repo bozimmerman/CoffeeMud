@@ -93,7 +93,7 @@ public class Age extends StdAbility
 				{
 					final Room R=CMLib.map().roomLocation(affected);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 died.",affected.name()));
 					((Item)affected).destroy();
 				}
 			}
@@ -212,7 +212,7 @@ public class Age extends StdAbility
 					final MOB babe=C.unCageMe();
 					if((babe==null)||(babe.baseCharStats()==null))
 					{
-						R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" JUST DIED OF DEFORMITIES!!");
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 JUST DIED OF DEFORMITIES!!",affected.name()));
 						((Item)affected).destroy();
 					}
 					else
@@ -486,8 +486,8 @@ public class Age extends StdAbility
 					if(liege != null)
 					{
 						if(liege!=babe.amFollowing())
-							babe.amFollowing().tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
-						liege.tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+							babe.amFollowing().tell(_("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
+						liege.tell(_("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
 					}
 					CMLib.database().DBUpdatePlayer(newMan);
 					newMan.removeFromGame(false,true);
@@ -512,8 +512,8 @@ public class Age extends StdAbility
 					}
 					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
-						babe.amFollowing().tell(babe.Name()+" has just grown up to be a mob.");
-					liege.tell(babe.Name()+" has just grown up to be a mob.");
+						babe.amFollowing().tell(_("@x1 has just grown up to be a mob.",babe.Name()));
+					liege.tell(_("@x1 has just grown up to be a mob.",babe.Name()));
 					A=babe.fetchEffect(ID());
 					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
@@ -649,7 +649,7 @@ public class Age extends StdAbility
 							String s=displayText();
 							if(s.startsWith("("))s=s.substring(1);
 							if(s.endsWith(")"))s=s.substring(0,s.length()-1);
-							msg.source().tell(Name()+" is "+s);
+							msg.source().tell(_("@x1 is @x2",Name(),s));
 						}
 					}
 				}

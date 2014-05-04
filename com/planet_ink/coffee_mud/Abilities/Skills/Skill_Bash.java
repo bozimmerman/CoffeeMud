@@ -85,7 +85,7 @@ public class Skill_Bash extends StdSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name(mob)+" must stand up first!");
+			mob.tell(_("@x1 must stand up first!",target.name(mob)));
 			return false;
 		}
 

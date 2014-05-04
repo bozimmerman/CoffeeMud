@@ -82,7 +82,7 @@ public class Spell_Boomerang extends Spell
 			{
 				if(!owner.isMine(I))
 				{
-					owner.tell(I.name(owner)+" returns to your inventory!");
+					owner.tell(_("@x1 returns to your inventory!",I.name(owner)));
 					I.unWear();
 					I.setContainer(null);
 					owner.moveItemTo(I);
@@ -108,7 +108,7 @@ public class Spell_Boomerang extends Spell
 		&&(text().length()==0))
 		{
 			setMiscText(msg.source().Name());
-			msg.source().tell(affected.name()+" will now return back to you.");
+			msg.source().tell(_("@x1 will now return back to you.",affected.name()));
 			makeNonUninvokable();
 		}
 		if((affected instanceof Item)&&(text().length()>0))
@@ -163,7 +163,7 @@ public class Spell_Boomerang extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows slightly!"));
-				mob.tell(target.name(mob)+" will now await someone to GET it before acknowleding its new master.");
+				mob.tell(_("@x1 will now await someone to GET it before acknowleding its new master.",target.name(mob)));
 				setMiscText("");
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();

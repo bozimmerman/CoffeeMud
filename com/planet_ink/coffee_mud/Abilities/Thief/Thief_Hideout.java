@@ -84,7 +84,7 @@ public class Thief_Hideout extends ThiefSkill
 				if(mob==null) break;
 				mob.tell(_("You slip back onto the streets."));
 
-				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> walk(s) in out of nowhere.");
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> walk(s) in out of nowhere."));
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -191,7 +191,7 @@ public class Thief_Hideout extends ThiefSkill
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
 
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> slip(s) away.");
-			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> duck(s) into the hideout.");
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> duck(s) into the hideout."));
 			if(thisRoom.okMessage(mob,msg) && newRoom.okMessage(mob,enterMsg))
 			{
 				if(mob.isInCombat())

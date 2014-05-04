@@ -123,7 +123,7 @@ public class Fighter_Gouge extends MonkSkill
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)<=0))
 		{
-			mob.tell(target.name(mob)+" has no eyes!");
+			mob.tell(_("@x1 has no eyes!",target.name(mob)));
 			return false;
 		}
 
@@ -163,7 +163,7 @@ public class Fighter_Gouge extends MonkSkill
 					if(A2!=null)
 					{
 						A2.setMiscText(mob.Name()+"/"+gone);
-						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,"<DAMAGE> <T-NAME>.");
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,_("<DAMAGE> <T-NAME>."));
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
 						if(!A2.invoke(mob,new XVector(msg2),target,true,0))
 						{

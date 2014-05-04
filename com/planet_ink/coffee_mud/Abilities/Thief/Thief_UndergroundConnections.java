@@ -62,7 +62,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				unInvoke();
 			else
 			{
-				currRoom.showHappens(CMMsg.MSG_OK_ACTION,theNoun+" goes by.");
+				currRoom.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 goes by.",theNoun));
 				currRoom=currRoom.getRoomInDir(pathOut.get(0).intValue());
 				pathOut.remove(0);
 				if(currRoom!=null)
@@ -77,16 +77,16 @@ public class Thief_UndergroundConnections extends ThiefSkill
 							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
-							case 1: M.tell("You think you are being taken through '"+roomDesc+"'."); break;
-							case 2: M.tell("You might be going through '"+roomDesc+"' now."); break;
-							case 3: M.tell("Now you are definitely going through '"+roomDesc+"'."); break;
-							case 4: M.tell("You are being taken through '"+roomDesc+"', you think."); break;
-							case 5: M.tell("Sounds like '"+roomDesc+"' now."); break;
-							case 6: M.tell("Now this might be '"+roomDesc+"'."); break;
-							case 7: M.tell("You're going through '"+roomDesc+"'."); break;
-							case 8: M.tell("Sounds like this could be '"+roomDesc+"'."); break;
-							case 9: M.tell("You are probably going through '"+roomDesc+"' now."); break;
-							case 10: M.tell("Sounds like you are being taken through '"+roomDesc+"'."); break;
+							case 1: M.tell(_("You think you are being taken through '@x1'.",roomDesc)); break;
+							case 2: M.tell(_("You might be going through '@x1' now.",roomDesc)); break;
+							case 3: M.tell(_("Now you are definitely going through '@x1'.",roomDesc)); break;
+							case 4: M.tell(_("You are being taken through '@x1', you think.",roomDesc)); break;
+							case 5: M.tell(_("Sounds like '@x1' now.",roomDesc)); break;
+							case 6: M.tell(_("Now this might be '@x1'.",roomDesc)); break;
+							case 7: M.tell(_("You're going through '@x1'.",roomDesc)); break;
+							case 8: M.tell(_("Sounds like this could be '@x1'.",roomDesc)); break;
+							case 9: M.tell(_("You are probably going through '@x1' now.",roomDesc)); break;
+							case 10: M.tell(_("Sounds like you are being taken through '@x1'.",roomDesc)); break;
 							}
 						}
 					}
@@ -161,7 +161,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public boolean bringMOBHere(Room newRoom, MOB follower, String leaveStr, String enterStr)
 	{
 		final Room thisRoom=follower.location();
-		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"You are joined by <S-NAME>.");
+		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("You are joined by <S-NAME>."));
 		final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE,leaveStr,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,leaveStr);
 		if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 		{

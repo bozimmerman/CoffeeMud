@@ -85,7 +85,7 @@ public class Spell_KnowOrigin extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(target.name(mob)+" seems to come from '"+R.displayText(mob)+"'.");
+				mob.tell(_("@x1 seems to come from '@x2'.",target.name(mob),R.displayText(mob)));
 			}
 		}
 		else

@@ -75,10 +75,10 @@ public class RocketShipProgram extends GenShipProgram
 		else
 		if(ship.getIsDocked() != null)
 		{
-			str.append("^H").append(CMStrings.padRight("Docked at ^w"+ship.getIsDocked().displayText(null),60)).append("^.^N\n\r");
+			str.append("^H").append(CMStrings.padRight(_("Docked at ^w@x1",ship.getIsDocked().displayText(null)),60)).append("^.^N\n\r");
 			final SpaceObject planet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
 			if(planet!=null)
-				str.append("^H").append(CMStrings.padRight("On Planet ^w"+planet.Name(),60)).append("^.^N\n\r");
+				str.append("^H").append(CMStrings.padRight(_("On Planet ^w@x1",planet.Name()),60)).append("^.^N\n\r");
 		}
 		else
 		if((shipSpaceObject==null)||(!CMLib.map().isObjectInSpace(shipSpaceObject)))
@@ -107,7 +107,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight(_("Location"),10));
 			if(orbitingPlanet!=null)
-				str.append("^N").append(CMStrings.padRight("orbiting "+orbitingPlanet.name(),50));
+				str.append("^N").append(CMStrings.padRight(_("orbiting @x1",orbitingPlanet.name()),50));
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
 			str.append("^H").append(CMStrings.padRight(_("Facing"),10));
@@ -134,7 +134,7 @@ public class RocketShipProgram extends GenShipProgram
 			int engineNumber=1;
 			for(final ShipEngine engine : engines)
 			{
-				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,9));
+				str.append("^H").append(CMStrings.padRight(_("ENGINE@x1",""+engineNumber),9));
 				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
 				str.append("^H").append(CMStrings.padRight(_("Fuel"),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(engine.getFuelRemaining()),11));

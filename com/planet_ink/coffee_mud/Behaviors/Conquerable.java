@@ -774,7 +774,7 @@ public class Conquerable extends Arrest
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source())))
 			{
 				final MOB target=(MOB)msg.target();
-				msg.source().tell(target.name(msg.source())+" is a fellow "+holdingClan+" member, and you must respect "+target.charStats().himher()+".");
+				msg.source().tell(_("@x1 is a fellow @x2 member, and you must respect @x3.",target.name(msg.source()),holdingClan,target.charStats().himher()));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -881,7 +881,7 @@ public class Conquerable extends Arrest
 		mob.setName(clanID);
 		if(myArea!=null)
 			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
-				if(!((Room)e.nextElement()).show(mob,myArea,null,CMMsg.MSG_AREAAFFECT,null,CMMsg.MSG_AREAAFFECT,"CONQUEST",CMMsg.MSG_AREAAFFECT,null))
+				if(!((Room)e.nextElement()).show(mob,myArea,null,CMMsg.MSG_AREAAFFECT,null,CMMsg.MSG_AREAAFFECT,_("CONQUEST"),CMMsg.MSG_AREAAFFECT,null))
 				{
 					Log.errOut("Conquest","Conquest was stopped in "+myArea.name()+" for "+clanID+".");
 					return;

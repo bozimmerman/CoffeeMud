@@ -481,7 +481,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(teacher.isMonster())
 				CMLib.commands().postSay(teacher,student,"You are refusing training at this time.",true,false);
 			else
-				teacher.tell(student.name()+" is refusing training at this time.");
+				teacher.tell(_("@x1 is refusing training at this time.",student.name()));
 			return false;
 		}
 
@@ -503,7 +503,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,"You already know '"+teachWhat+"'.",true,false);
 				else
-					teacher.tell(student.name()+" already knows how to do that.");
+					teacher.tell(_("@x1 already knows how to do that.",student.name()));
 				return false;
 			}
 		}
@@ -517,7 +517,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,"You already know "+theExpertise.name,true,false);
 				else
-					teacher.tell(student.name()+" already knows "+theExpertise.name);
+					teacher.tell(_("@x1 already knows @x2",student.name(),theExpertise.name));
 				return false;
 			}
 
@@ -526,7 +526,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);
 				else
-					teacher.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()));
+					teacher.tell(_("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",student.name(),theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())));
 				return false;
 			}
 			if(!theExpertise.meetsCostRequirements(student))
@@ -534,7 +534,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,"I'm sorry, but to learn the expertise '"+theExpertise.name+"' requires: "+theExpertise.costDescription(),true,false);
 				else
-					teacher.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
+					teacher.tell(_("Training for that expertise requires @x1.",theExpertise.costDescription()));
 				return false;
 			}
 			teachWhat=theExpertise.name;
@@ -543,11 +543,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			if((!teacher.isMonster())
 			&&(student.session()!=null)
-			&&(!student.session().confirm("\n\r"+teacher.Name()+" wants to teach you "+teachWhat+".  Is this Ok (y/N)?","N",5000)))
+			&&(!student.session().confirm(_("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),_("N"),5000)))
 			{
 				if(student.session()!=null)
 					student.session().println("\n\r");
-				teacher.tell(student.charStats().HeShe()+" does not want you to.");
+				teacher.tell(_("@x1 does not want you to.",student.charStats().HeShe()));
 				return false;
 			}
 		}
@@ -561,7 +561,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			catch(final Exception e1)
 			{
 			}
-			teacher.tell(student.charStats().HeShe()+" does not answer you.");
+			teacher.tell(_("@x1 does not answer you.",student.charStats().HeShe()));
 			return false;
 		}
 		return true;
@@ -604,7 +604,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Environmental tool=(teachObj instanceof Environmental)?(Environmental)teachObj:null;
 		final String teachWhat=teachObj.name();
 		final String ID=teachObj.ID();
-		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'^<LEARN NAME=\""+ID+"\" /^>.");
+		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,_("<S-NAME> teach(es) <T-NAMESELF> '@x1'^<LEARN NAME=\"@x2\" /^>.",teachWhat,ID));
 		if(!teacher.location().okMessage(teacher,msg))
 			return false;
 		teacher.location().send(teacher,msg);

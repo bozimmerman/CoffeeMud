@@ -54,7 +54,7 @@ public class Spell_IceSheet extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The ice sheet melts.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The ice sheet melts."));
 		super.unInvoke();
 	}
 
@@ -105,7 +105,7 @@ public class Spell_IceSheet extends Spell
 		{
 			final MOB mob=msg.source();
 			final Room room=(Room)affected;
-			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,"\n\r<T-NAME> is covered in ice.",null,null));
+			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,_("\n\r<T-NAME> is covered in ice."),null,null));
 		}
 	}
 

@@ -83,7 +83,7 @@ public class Prayer_Christen extends Prayer
 		}
 		if(name.length()==0)
 		{
-			mob.tell("Christen "+target.name(mob)+" what?");
+			mob.tell(_("Christen @x1 what?",target.name(mob)));
 			return false;
 		}
 		if(name.indexOf(' ')>=0)

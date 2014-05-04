@@ -447,7 +447,7 @@ public class Patroller extends ActiveTicker
 				}
 
 				tickStatus=Tickable.STATUS_MISC+17;
-				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
+				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,_("<S-NAME> goes @x1.",Directions.getDirectionName(direction)));
 				tickStatus=Tickable.STATUS_MISC+18;
 				if(thatRoom!=null)
 					thatRoom.moveItemTo(I);
@@ -455,7 +455,7 @@ public class Patroller extends ActiveTicker
 				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
 					tickStatus=Tickable.STATUS_MISC+20;
-					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
+					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,_("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))));
 					tickStatus=Tickable.STATUS_MISC+21;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
@@ -514,14 +514,14 @@ public class Patroller extends ActiveTicker
 						CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 						if(mob.location().okMessage(mob,msg))
 						{
-							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
+							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
 							CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 						}
 					}
 					CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(mob.location().okMessage(mob,msg))
 					{
-						msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
+						msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
 						CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 					}
 				}

@@ -53,7 +53,7 @@ public class Spell_Ventriloquate extends Spell
 		final Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target==mob) return false;
@@ -69,7 +69,7 @@ public class Spell_Ventriloquate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<T-NAME> say(s) '"+CMParms.combine(commands,1)+"'^?");
+				mob.location().show(mob,target,CMMsg.MSG_SPEAK,_("^T<T-NAME> say(s) '@x1'^?",CMParms.combine(commands,1)));
 			}
 
 		}

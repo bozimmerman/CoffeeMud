@@ -122,7 +122,7 @@ public class Chant_SummonElemental extends Chant
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name(mob)+" seems unwilling to follow you.");
+					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
@@ -190,7 +190,7 @@ public class Chant_SummonElemental extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);

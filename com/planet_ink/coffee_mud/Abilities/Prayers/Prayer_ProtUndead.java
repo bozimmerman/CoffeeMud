@@ -119,7 +119,7 @@ public class Prayer_ProtUndead extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

@@ -136,7 +136,7 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,_("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
 			final CMMsg msg2=CMClass.getMsg(mob,M,this,getActivityMessageType(),null);
 			if(!recentlyTraded.contains(mob.Name()))
 			{

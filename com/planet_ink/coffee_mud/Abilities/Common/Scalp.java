@@ -76,7 +76,7 @@ public class Scalp extends CommonSkill
 						commonTell(mob,"You messed up your scalping completely.");
 					else
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),"<S-NAME> manage(s) to scalp <O-NAME>.");
+						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to scalp <O-NAME>."));
 						lastSoManyScalps.addElement(body);
 						if(lastSoManyScalps.size()>100)
 							lastSoManyScalps.removeElementAt(0);
@@ -150,7 +150,7 @@ public class Scalp extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) scalping <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) scalping <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -159,7 +159,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		}
 		catch(final Exception e)
 		{
-			mob.tell("Telnet software failure: "+e.getMessage());
+			mob.tell(_("Telnet software failure: @x1",e.getMessage()));
 			return false;
 		}
 	}

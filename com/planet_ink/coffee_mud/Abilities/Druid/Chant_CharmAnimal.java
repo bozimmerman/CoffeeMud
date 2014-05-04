@@ -96,7 +96,7 @@ public class Chant_CharmAnimal extends Chant
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
-			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -115,7 +115,7 @@ public class Chant_CharmAnimal extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell("You like "+mob.amFollowing().name()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -195,7 +195,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(target.name(mob)+" is not an animal!");
+			mob.tell(_("@x1 is not an animal!",target.name(mob)));
 			return false;
 		}
 
@@ -228,7 +228,7 @@ public class Chant_CharmAnimal extends Chant
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(target.name(mob)+" seems unwilling to follow you.");
+							mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 					}
 				}
 			}

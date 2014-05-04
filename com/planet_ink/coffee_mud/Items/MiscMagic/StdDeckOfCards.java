@@ -292,7 +292,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 				final Room R=CMLib.map().roomLocation(this);
 				if(R!=null)
 					R.show(msg.source(),null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,
-							"<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>.");
+							_("<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>."));
 			}
 			return false;
 		}

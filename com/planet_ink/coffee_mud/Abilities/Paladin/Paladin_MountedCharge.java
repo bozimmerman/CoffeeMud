@@ -126,7 +126,7 @@ public class Paladin_MountedCharge extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,"<S-NAME> ride(s) hard at <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,_("<S-NAME> ride(s) hard at <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -91,7 +91,7 @@ public class Prayer_CurseLuck extends Prayer
 				if(msg.tool()!=null)
 					permProts.add(msg.tool());
 				prots--;
-				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> cursed luck trips!");
+				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> cursed luck trips!"));
 				if(prots==0)
 					unInvoke();
 			}

@@ -664,7 +664,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean canFocusOn(MOB officer, MOB criminal)
 	{
-		final CMMsg msg=CMClass.getMsg(officer,criminal,CMMsg.MSG_LOOK,"<S-NAME> look(s) closely at <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(officer,criminal,CMMsg.MSG_LOOK,_("<S-NAME> look(s) closely at <T-NAME>."));
 		if((officer!=null)&&(officer.location()!=null)&&(criminal.location()==officer.location()))
 		{
 			if(!officer.location().okMessage(officer,msg))

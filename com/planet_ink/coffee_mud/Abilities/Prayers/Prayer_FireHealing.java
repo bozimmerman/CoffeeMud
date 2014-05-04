@@ -75,7 +75,7 @@ public class Prayer_FireHealing extends Prayer
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The flame attack heals <S-NAME> "+recovery+" points.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The flame attack heals <S-NAME> @x1 points.",""+recovery));
 			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;
 		}

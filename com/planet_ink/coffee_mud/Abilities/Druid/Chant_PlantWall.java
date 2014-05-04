@@ -71,7 +71,7 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> fire(s) at the plant wall with @x1.^</FIGHT^>^?",msg.tool().name()));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -91,7 +91,7 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F<S-NAME> hack(s) at the plant wall with @x1.^?",w.name()));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -112,7 +112,7 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
+				final CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?"));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 					mob.location().send(mob,msg2);

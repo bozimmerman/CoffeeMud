@@ -166,7 +166,7 @@ public class Chant_Hibernation extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,_("<S-NAME> begin(s) to hibernate..."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

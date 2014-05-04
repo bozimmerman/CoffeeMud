@@ -934,7 +934,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final CMMsg msg=CMClass.getMsg(mob,cookingPot,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,cookingPot,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) @x1 something in <T-NAME>.",cookWord()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

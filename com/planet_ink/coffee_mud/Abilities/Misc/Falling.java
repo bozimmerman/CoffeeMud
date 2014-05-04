@@ -98,7 +98,7 @@ public class Falling extends StdAbility
 			if(!hitTheCeiling)
 			{
 				hitTheCeiling=true;
-				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ceiling."+CMLib.protocol().msp("splat.wav",50));
+				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the ceiling.@x1",CMLib.protocol().msp("splat.wav",50)));
 				CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			return true;
@@ -108,12 +108,12 @@ public class Falling extends StdAbility
 		if(R!=null)
 		{
 			if(isAirRoom(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CMLib.protocol().msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) falling.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
 			if(isWaterSurface(R)||isUnderWater(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CMLib.protocol().msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the water.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CMLib.protocol().msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);
@@ -161,11 +161,11 @@ public class Falling extends StdAbility
 			{
 				if(mob.phyStats().weight()<1)
 				{
-					mob.tell("\n\r\n\rYou are floating gently "+addStr+".\n\r\n\r");
+					mob.tell(_("\n\r\n\rYou are floating gently @x1.\n\r\n\r",addStr));
 				}
 				else
 				{
-					mob.tell("\n\r\n\rYOU ARE FALLING "+addStr.toUpperCase()+"!!\n\r\n\r");
+					mob.tell(_("\n\r\n\rYOU ARE FALLING @x1!!\n\r\n\r",addStr.toUpperCase()));
 					final int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
 					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
@@ -205,10 +205,10 @@ public class Falling extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if(canFallFrom(room,direction))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> falls @x1.",addStr));
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> falls in from @x1.",(reversed()?"below":"above")));
 				return true;
 			}
 			if(reversed())

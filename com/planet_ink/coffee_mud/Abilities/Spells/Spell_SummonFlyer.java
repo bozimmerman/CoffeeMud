@@ -128,11 +128,11 @@ public class Spell_SummonFlyer extends Spell
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)
-						mob.tell(target.name(mob) + " seems unwilling to follow you.");
+						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				else
 				{
-					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?");
+					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
 					target.setVictim(squabble);
 				}
 			}
@@ -176,7 +176,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

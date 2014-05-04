@@ -61,7 +61,7 @@ public class Chant_Farsight extends Chant
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a far off vision, but the magic fades.");
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) for a far off vision.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) for a far off vision.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +107,7 @@ public class Chant_Farsight extends Chant
 					else
 					if(dirCode<0)
 					{
-						mob.tell("\n\r'"+whatToOpen+"' is not a valid direction.");
+						mob.tell(_("\n\r'@x1' is not a valid direction.",whatToOpen));
 						commands.removeAllElements();
 						success=false;
 					}

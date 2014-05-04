@@ -65,13 +65,13 @@ public class Chant_SensePregnancy extends Chant
 				mob.location().send(mob,msg);
 				final Ability A=target.fetchEffect("Pregnancy");
 				if((A==null)||(A.displayText().length()==0))
-					mob.tell(target.name(mob)+" is not pregnant.");
+					mob.tell(_("@x1 is not pregnant.",target.name(mob)));
 				else
 				{
 					String s=A.displayText();
 					if(s.startsWith("(")) s=s.substring(1);
 					if(s.endsWith(")")) s=s.substring(0,s.length()-1);
-					mob.tell(target.name(mob)+" is "+s+".");
+					mob.tell(_("@x1 is @x2.",target.name(mob),s));
 				}
 			}
 		}

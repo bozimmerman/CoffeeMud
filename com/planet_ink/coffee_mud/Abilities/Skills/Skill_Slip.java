@@ -87,7 +87,7 @@ public class Skill_Slip extends StdSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
@@ -127,12 +127,12 @@ public class Skill_Slip extends StdSkill
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(target.name(mob)+" is flying and can't slip!");
+			mob.tell(_("@x1 is flying and can't slip!",target.name(mob)));
 			return false;
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell("You can't make someone "+target.riding().stateString(target)+" "+target.riding().name()+" slip!");
+			mob.tell(_("You can't make someone @x1 @x2 slip!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

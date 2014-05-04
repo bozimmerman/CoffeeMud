@@ -101,7 +101,7 @@ public class Fighter_Sweep extends FighterSkill
 		final Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell("You cannot sweep with "+wp.name()+"!");
+			mob.tell(_("You cannot sweep with @x1!",wp.name()));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Fighter_Sweep extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

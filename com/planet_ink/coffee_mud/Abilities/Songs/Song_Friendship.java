@@ -62,7 +62,7 @@ public class Song_Friendship extends Song
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amITarget(mob.amFollowing())))
 		{
-			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -81,7 +81,7 @@ public class Song_Friendship extends Song
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell("You like "+mob.amFollowing().name()+" too much.");
+			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 

@@ -52,7 +52,7 @@ public class Spell_FutureDeath extends Spell
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)));
 		if((!target.mayIFight(mob))||(levelDiff>=(3+((mob.phyStats().level()+(getXLEVELLevel(mob)))/10))))
 		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
+			mob.tell(_("@x1 looks too powerful.",target.charStats().HeShe()));
 			return false;
 		}
 

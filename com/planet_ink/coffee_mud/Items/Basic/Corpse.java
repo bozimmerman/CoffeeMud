@@ -152,7 +152,7 @@ public class Corpse extends GenContainer implements DeadBody
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
-			msg.source().tell(name()+" has definitely started to decay.");
+			msg.source().tell(_("@x1 has definitely started to decay.",name()));
 		super.executeMsg(myHost, msg);
 
 	}
@@ -210,7 +210,7 @@ public class Corpse extends GenContainer implements DeadBody
 					else
 					if(mobPKFlag())
 					{
-						msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
+						msg.source().tell(_("You can not get that.  @x1 was not a player killer.",mobName()));
 						return false;
 					}
 				}

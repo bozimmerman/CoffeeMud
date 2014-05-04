@@ -129,7 +129,7 @@ public class Prop_AstralSpirit extends Property
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
 		   &&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
-			mob.tell(mob.name()+" doesn't seem to be here.");
+			mob.tell(_("@x1 doesn't seem to be here.",mob.name()));
 			return false;
 		}
 		return true;

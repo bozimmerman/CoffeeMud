@@ -271,7 +271,7 @@ public class DrowWarrior extends DrowElf
 	{
 		if(phyStats().disposition() == PhyStats.IS_SITTING)
 			phyStats().setDisposition(phyStats().disposition() - PhyStats.IS_SITTING);
-		this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
+		this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;
 	}

@@ -125,7 +125,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
 		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))
 		{
-			mob.tell("You don't see any doors called '"+typed+"' here.");
+			mob.tell(_("You don't see any doors called '@x1' here.",typed));
 			return false;
 		}
 		final Exit X=(Exit)chkE;
@@ -153,7 +153,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

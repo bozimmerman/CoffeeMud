@@ -83,7 +83,7 @@ public class Spell_Permanency extends Spell
 				}
 				if(theOne==null)
 				{
-					mob.tell("There does not appear to be any of your spells on "+target.name(mob)+" which can be made permanent.");
+					mob.tell(_("There does not appear to be any of your spells on @x1 which can be made permanent.",target.name(mob)));
 					return false;
 				}
 				else
@@ -91,7 +91,7 @@ public class Spell_Permanency extends Spell
 				&&(theOne.enchantQuality()==Ability.QUALITY_MALICIOUS)
 				&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 				{
-					mob.tell("You can not make "+theOne.name()+" permanent here.");
+					mob.tell(_("You can not make @x1 permanent here.",theOne.name()));
 					return false;
 				}
 				else
@@ -116,7 +116,7 @@ public class Spell_Permanency extends Spell
 						||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 							CMLib.database().DBUpdateExits(R);
 					}
-					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
+					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("The quality of @x1 inside <T-NAME> glows!",theOne.name()));
 				}
 			}
 

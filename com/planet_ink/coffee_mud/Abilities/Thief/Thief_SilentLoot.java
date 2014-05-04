@@ -69,7 +69,7 @@ public class Thief_SilentLoot extends ThiefSkill
 					mob.location().addItem(item,ItemPossessor.Expire.Monster_EQ);
 					final MOB victim=mob.getVictim();
 					mob.setVictim(null);
-					final CMMsg msg2=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+					final CMMsg msg2=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("You silently autoloot <T-NAME> from the corpse of @x1",msg.source().name(mob)),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 					if(mob.location().okMessage(mob,msg2))
 					{
 						mob.location().send(mob,msg2);

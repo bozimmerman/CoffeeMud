@@ -954,7 +954,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{
-				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
+				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> disappears!"));
 				corpseRoom.bringMobHere(rejuvedMOB,false);
 			}
 			Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
@@ -1001,7 +1001,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(XPLevel>=0)
 					{
 						final int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
-						rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
+						rejuvedMOB.tell(_("^*You regain @x1 experience points.^?^.",""+expLost));
 						CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 					}
 				}
@@ -1015,7 +1015,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
 					final int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
-					rejuvedMOB.tell("^*You regain "+expRestored+" experience points.^?^.");
+					rejuvedMOB.tell(_("^*You regain @x1 experience points.^?^.",""+expRestored));
 					CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 				}
 			}

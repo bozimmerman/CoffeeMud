@@ -197,18 +197,18 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // this must be before postFollow due to the effects on conquest.
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		if(victim!=null)
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);
 

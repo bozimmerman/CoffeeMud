@@ -64,7 +64,7 @@ public class Prayer_BlessedHearth extends Prayer
 					&&((M.Name().equals(text()))
 						||(M.getClanRole(text())!=null))))
 				{
-					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,"The blessed powers block the unholy magic from <S-NAMESELF>.");
+					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,_("The blessed powers block the unholy magic from <S-NAMESELF>."));
 					return false;
 				}
 			}

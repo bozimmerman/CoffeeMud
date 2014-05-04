@@ -179,7 +179,7 @@ public class Chant_SummonSapling extends Chant
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name(mob)+" seems unwilling to follow you.");
+					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
@@ -228,7 +228,7 @@ public class Chant_SummonSapling extends Chant
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 		if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

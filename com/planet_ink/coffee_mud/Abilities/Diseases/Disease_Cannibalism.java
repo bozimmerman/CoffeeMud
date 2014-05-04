@@ -110,7 +110,7 @@ public class Disease_Cannibalism extends Disease
 			if((food!=null)
 			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
 			{
-				final CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
+				final CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> attempt(s) to eat @x1, but can't stomach it....^?",food.Name()));
 				if(mob.location().okMessage(mob,newMessage))
 					mob.location().send(mob,newMessage);
 				return false;

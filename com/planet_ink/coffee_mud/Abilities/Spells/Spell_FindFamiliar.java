@@ -81,7 +81,7 @@ public class Spell_FindFamiliar extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,100);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell("The effort causes you to lose "+experienceToLose+" experience.");
+		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -97,7 +97,7 @@ public class Spell_FindFamiliar extends Spell
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name(mob)+" seems unwilling to follow you.");
+					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
@@ -201,7 +201,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		return(newMOB);
 

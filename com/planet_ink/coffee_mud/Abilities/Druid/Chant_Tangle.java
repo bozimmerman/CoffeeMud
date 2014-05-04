@@ -75,7 +75,7 @@ public class Chant_Tangle extends Chant
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against <O-NAME>.");
+				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <O-NAME>."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 				if(amountRemaining<0)
 					unInvoke();
@@ -98,7 +98,7 @@ public class Chant_Tangle extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,thePlants,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>.");
+				mob.location().show(mob,null,thePlants,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -155,7 +155,7 @@ public class Chant_Tangle extends Chant
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!");
+							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!"));
 						}
 					}
 				}

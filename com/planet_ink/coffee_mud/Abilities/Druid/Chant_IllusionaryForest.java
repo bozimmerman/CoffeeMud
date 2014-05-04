@@ -55,7 +55,7 @@ public class Chant_IllusionaryForest extends Chant
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The appearance of this place changes..."));
 		super.unInvoke();
 	}
 

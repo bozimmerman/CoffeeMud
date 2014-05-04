@@ -67,7 +67,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
 			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,6,adjustedLevel(invoker(),0)),
 					CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The "+caltropTypeName()+"caltrops on the ground <DAMAGE> <T-NAME>.");
@@ -112,7 +112,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(CMStrings.capitalizeFirstLetter(caltropTypeName())+"Caltrops have already been tossed down here.");
+			mob.tell(_("@x1Caltrops have already been tossed down here.",CMStrings.capitalizeFirstLetter(caltropTypeName())));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -121,7 +121,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> throw(s) down "+caltropTypeName()+"caltrops!"))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;

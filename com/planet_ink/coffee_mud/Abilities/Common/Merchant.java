@@ -482,7 +482,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,"<S-NAME> review(s) <S-HIS-HER> inventory.");
+			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,_("<S-NAME> review(s) <S-HIS-HER> inventory."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return true;
@@ -512,7 +512,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
-			mob.tell(iname+" has been removed from your inventory list.");
+			mob.tell(_("@x1 has been removed from your inventory list.",iname));
 			return true;
 		}
 
@@ -586,7 +586,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return false;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_SELL,"<S-NAME> put(s) <T-NAME> up for sale.");
+		final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_SELL,_("<S-NAME> put(s) <T-NAME> up for sale."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

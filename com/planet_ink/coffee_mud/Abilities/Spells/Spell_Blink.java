@@ -94,16 +94,16 @@ public class Spell_Blink extends Spell
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
 						break;
 					case 1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>.");
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>."));
 						break;
 					case 2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>.");
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>."));
 						break;
 					case -1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>.");
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>."));
 						break;
 					case -2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>.");
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>."));
 						break;
 					}
 				}

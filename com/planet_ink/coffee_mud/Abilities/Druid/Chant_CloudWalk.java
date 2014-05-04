@@ -95,7 +95,7 @@ public class Chant_CloudWalk extends Chant
 					   &&(M.location()==mob.location())
 					   &&(M.fetchEffect(ID())==null))
 					{
-						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
+						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) to fly around!"));
 						beneficialAffect(mob,M,0,0);
 					}
 				}
@@ -138,7 +138,7 @@ public class Chant_CloudWalk extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> start(s) to fly around!");
+					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) to fly around!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}

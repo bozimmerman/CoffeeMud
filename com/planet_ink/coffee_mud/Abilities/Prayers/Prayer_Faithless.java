@@ -70,12 +70,12 @@ public class Prayer_Faithless extends Prayer
 		if(target==null) return false;
 		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
-			mob.tell(target.name(mob)+" can not be affected by this prayer.");
+			mob.tell(_("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
 		}
 		if(CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target))
 		{
-			if(!auto)mob.tell(target.name(mob)+" can not be affected by this prayer.");
+			if(!auto)mob.tell(_("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
 		}
 
@@ -98,7 +98,7 @@ public class Prayer_Faithless extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to lose faith!^?");
-			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,"<S-NAME> LOSE(S) FAITH!!!");
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,_("<S-NAME> LOSE(S) FAITH!!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))

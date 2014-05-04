@@ -96,9 +96,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void gas(MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a gas trap set in <T-NAME>.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a gas trap set in <T-NAME>."));
 		else
-		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
+		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a trap set in <T-NAME>!")))
 			if(mob.phyStats().level()>15)
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The room fills with gas!"));
@@ -136,9 +136,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void needle(MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a needle trap set in <T-NAME>.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a needle trap set in <T-NAME>."));
 		else
-		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <T-NAME>!"))
+		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a needle trap set in <T-NAME>!")))
 		{
 			final MOB target=mob;
 			int dmg=CMLib.dice().roll(target.phyStats().level(),5,1);
@@ -159,9 +159,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void blade(MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a blade trap set in <T-NAME>.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a blade trap set in <T-NAME>."));
 		else
-		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <T-NAME>!"))
+		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a blade trap set in <T-NAME>!")))
 		{
 			final MOB target=mob;
 			int dmg=CMLib.dice().roll(target.phyStats().level(),2,0);
@@ -181,9 +181,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	public void victimOfSpell(MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magic trap set in <T-NAME>.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a magic trap set in <T-NAME>."));
 		else
-		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
+		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a trap set in <T-NAME>!")))
 		{
 			String spell=text();
 			final int x=spell.indexOf(';');
@@ -214,9 +214,9 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 		else
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a trap door beneath <S-HIS-HER> feet.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a trap door beneath <S-HIS-HER> feet."));
 		else
-		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!"))
+		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!")))
 		{
 			if((myPit==null)||(myPitUp==null))
 			{

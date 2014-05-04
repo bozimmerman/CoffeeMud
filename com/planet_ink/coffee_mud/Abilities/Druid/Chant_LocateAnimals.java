@@ -81,7 +81,7 @@ public class Chant_LocateAnimals extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -176,7 +176,7 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> chant(s) for the animals.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> chant(s) for the animals.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -100,7 +100,7 @@ public class Chant_ChargeMetal extends Chant
 		&&((lastMsg==null)||(lastMsg.get()!=msg)))
 		{
 			lastMsg=new WeakReference<CMMsg>(msg);
-			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
+			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,_("<O-NAME> attracts a charge to <S-NAME>!"));
 			if(mob.okMessage(mob, msg))
 				msg.modify(msg.source(),
 							mob,
@@ -173,7 +173,7 @@ public class Chant_ChargeMetal extends Chant
 		else
 		if(target instanceof Item)
 		{
-			mob.tell(target.name(mob)+" is not made of metal!");
+			mob.tell(_("@x1 is not made of metal!",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as

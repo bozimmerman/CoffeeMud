@@ -120,7 +120,7 @@ public class Spell_Cogniportive extends Spell
 				setMiscText(establishHome(mob,me,true));
 			final Room home=CMLib.map().getRoom(text());
 			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Strange fizzled sparks fly from @x1.",me.name()));
 			else
 			{
 				final Set<MOB> h=properTargets(mob,null,false);
@@ -130,8 +130,8 @@ public class Spell_Cogniportive extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
 					if(thisRoom.isInhabitant(follower)
 					&&thisRoom.okMessage(follower,leaveMsg)
 					&&(!home.isInhabitant(follower))
@@ -215,7 +215,7 @@ public class Spell_Cogniportive extends Spell
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name(mob)+" is already cogniportive!");
+			mob.tell(_("@x1 is already cogniportive!",target.name(mob)));
 			return false;
 		}
 

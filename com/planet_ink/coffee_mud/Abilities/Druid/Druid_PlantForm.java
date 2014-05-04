@@ -134,7 +134,7 @@ public class Druid_PlantForm extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public void setRaceName(MOB mob)
@@ -290,7 +290,7 @@ public class Druid_PlantForm extends StdAbility
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);
 			}
 		}

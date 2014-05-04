@@ -73,7 +73,7 @@ public class Spell_FreeMovement extends Spell
 			final Ability A=(Ability)msg.tool();
 			if(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 			{
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,_("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
 				return false;
 			}
 			final MOB newMOB=CMClass.getFactoryMOB();
@@ -86,7 +86,7 @@ public class Spell_FreeMovement extends Spell
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
-					msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
+					msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,_("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
 					newMOB.destroy();
 					return false;
 				}

@@ -83,7 +83,7 @@ public class Prayer_SenseAllergies extends Prayer
 								allergies.addElement(R.name());
 						}
 					}
-					mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is allergic to "+CMParms.toStringList(V) +".");
+					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> is allergic to @x1.",CMParms.toStringList(V)));
 				}
 			}
 		}

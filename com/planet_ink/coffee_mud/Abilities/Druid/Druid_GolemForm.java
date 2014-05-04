@@ -167,7 +167,7 @@ public class Druid_GolemForm extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public void setRaceName(MOB mob)
@@ -296,7 +296,7 @@ public class Druid_GolemForm extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				raceName=getRaceName(classLevel);
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);

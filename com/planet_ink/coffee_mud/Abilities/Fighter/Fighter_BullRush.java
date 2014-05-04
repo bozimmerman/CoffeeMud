@@ -67,7 +67,7 @@ public class Fighter_BullRush extends FighterSkill
 		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell("'"+str+"' is not a valid direction.");
+			mob.tell(_("'@x1' is not a valid direction.",str));
 			return false;
 		}
 		final String direction=Directions.getInDirectionName(dirCode);

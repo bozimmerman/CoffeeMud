@@ -88,7 +88,7 @@ public class Prayer_Rockskin extends Prayer
 			&&(msg.tool() instanceof Weapon))
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"The rock skin around <S-NAME> absorbs the attack from <T-NAME>."));
+				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("The rock skin around <S-NAME> absorbs the attack from <T-NAME>.")));
 				if((--HitsRemaining)<=0)
 					unInvoke();
 			}

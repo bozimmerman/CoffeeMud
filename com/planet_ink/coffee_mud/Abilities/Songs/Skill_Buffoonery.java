@@ -141,13 +141,13 @@ public class Skill_Buffoonery extends BardSkill
 		final Item I=mob.findItem(null,(String)commands.lastElement());
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");
+			mob.tell(_("You don't seem to have '@x1'.",((String)commands.lastElement())));
 			return false;
 		}
 		if(((I instanceof Armor)&&(I.basePhyStats().armor()>1))
 		||((I instanceof Weapon)&&(I.basePhyStats().damage()>1)))
 		{
-			mob.tell(I.name(mob)+" is not buffoonish enough!");
+			mob.tell(_("@x1 is not buffoonish enough!",I.name(mob)));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -160,7 +160,7 @@ public class Skill_Buffoonery extends BardSkill
 		{
 			if(!freePosition(target))
 			{
-				mob.tell(target.name(mob)+" has no free wearing positions!");
+				mob.tell(_("@x1 has no free wearing positions!",target.name(mob)));
 				return false;
 			}
 		}
@@ -192,7 +192,7 @@ public class Skill_Buffoonery extends BardSkill
 					final Vector free=getFreeWearingPositions(target);
 					if(free.size()<1)
 					{
-						mob.tell(target.name(mob)+" has no free wearing positions!");
+						mob.tell(_("@x1 has no free wearing positions!",target.name(mob)));
 						return false;
 					}
 					if((free.contains(Long.valueOf(Wearable.WORN_WIELD)))

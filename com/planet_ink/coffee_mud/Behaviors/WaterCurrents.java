@@ -143,12 +143,12 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						final CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+						final CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> swept @x1 by the current.",Directions.getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,false);
-							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
+							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -156,9 +156,9 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof Item)
 					{
 						I=(Item)todo.elementAt(m);
-						R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is swept @x2 by the current.",I.name(),Directions.getDirectionName(dir).toLowerCase()));
 						R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-						R2.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
+						R2.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is swept in from @x2 by the current.",I.name(),Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 					}
 				}
 			}

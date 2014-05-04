@@ -60,7 +60,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
-				mob.tell("You cannot shoot with "+wp.name()+"!");
+				mob.tell(_("You cannot shoot with @x1!",wp.name()));
 			return false;
 		}
 		return true;

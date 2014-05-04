@@ -907,7 +907,7 @@ public class StdRoom implements Room
 					if((M!=null)&&(M.getStartRoom()!=null))
 					{
 						final Room startRoom=CMLib.map().getRoom(M.getStartRoom());
-						M.tell("Your corpse has been moved to "+startRoom.displayText());
+						M.tell(_("Your corpse has been moved to @x1",startRoom.displayText()));
 						startRoom.moveItemTo(D);
 					}
 				}

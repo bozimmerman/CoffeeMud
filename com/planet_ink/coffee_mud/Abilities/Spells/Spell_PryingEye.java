@@ -124,7 +124,7 @@ public class Spell_PryingEye extends Spell
 			final int dir=Directions.getDirectionCode(o.toString());
 			if(dir<0)
 			{
-				mob.tell("'"+o.toString()+"' is not a valid direction.");
+				mob.tell(_("'@x1' is not a valid direction.",o.toString()));
 				return false;
 			}
 			directions.add(Integer.valueOf(dir));
@@ -175,7 +175,7 @@ public class Spell_PryingEye extends Spell
 				eyeM.resetToMaxState();
 				eyeM.bringToLife(R,true);
 				CMLib.beanCounter().clearZeroMoney(eyeM,null);
-				R.showOthers(eyeM,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				R.showOthers(eyeM,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 				eyeM.setStartRoom(null); // keep before postFollow for Conquest
 				if(eyeM.amDead()||eyeM.amDestroyed())
 					return false;

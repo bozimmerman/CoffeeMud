@@ -131,7 +131,7 @@ public class Herbology extends CommonSkill
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
 		final int duration=getDuration(15,mob,1,2);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> stud(ys) "+target.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> stud(ys) @x1.",target.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

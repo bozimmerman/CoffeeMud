@@ -199,8 +199,8 @@ public class Chant_PlantMaze extends Chant
 					final MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
-					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
+					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of @x1.",thePlants.name()));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),_("<S-NAME> disappear(s) into @x1.",thePlants.name()));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

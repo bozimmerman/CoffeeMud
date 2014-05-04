@@ -84,7 +84,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -128,7 +128,7 @@ public class Fighter_BodyFlip extends FighterSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name(mob)+" is already on the floor!");
+			mob.tell(_("@x1 is already on the floor!",target.name(mob)));
 			return false;
 		}
 
@@ -146,12 +146,12 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell("You can't flip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
+			mob.tell(_("You can't flip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(target.name(mob)+" is flying and can't be flipped over!");
+			mob.tell(_("@x1 is flying and can't be flipped over!",target.name(mob)));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)

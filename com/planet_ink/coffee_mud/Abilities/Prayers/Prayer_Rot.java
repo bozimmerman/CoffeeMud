@@ -209,7 +209,7 @@ public class Prayer_Rot extends Prayer
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
 		{
-			mob.tell("You cannot rot "+target.name(mob)+"!");
+			mob.tell(_("You cannot rot @x1!",target.name(mob)));
 			return false;
 		}
 
@@ -252,7 +252,7 @@ public class Prayer_Rot extends Prayer
 					((Potion)target).setSpellList("Prayer_DrunkenStupor");
 				}
 				if(doneSomething)
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" appears rotted!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears rotted!",target.name()));
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}

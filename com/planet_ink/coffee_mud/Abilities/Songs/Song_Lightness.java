@@ -73,7 +73,7 @@ public class Song_Lightness extends Song
 			if((((Item)msg.target()).phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))
 			&&(!mob.isMine(msg.target())))
 			{
-				mob.tell(((Item)msg.target()).name(mob)+" is too heavy.");
+				mob.tell(_("@x1 is too heavy.",((Item)msg.target()).name(mob)));
 				return false;
 			}
 		}

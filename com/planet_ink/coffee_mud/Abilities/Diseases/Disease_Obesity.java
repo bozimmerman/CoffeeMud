@@ -172,7 +172,7 @@ public class Disease_Obesity extends Disease
 			else
 				str="morbidly obese";
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is "+str+".\n\r",
+										  CMMsg.MSG_OK_VISUAL,_("\n\r@x1 is @x2.\n\r",affected.name(),str),
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
 		}

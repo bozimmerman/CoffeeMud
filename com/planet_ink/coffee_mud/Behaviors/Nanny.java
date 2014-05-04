@@ -267,7 +267,7 @@ public class Nanny extends StdBehavior
 			if(isDropOffable(msg.tool()))
 			{
 				final String pronoun=this.getPronoun(new XVector(msg.tool()));
-				msg.source().tell(msg.source(),host,msg.tool(),"<T-NAME> won't accept <O-NAME>.  You should probably leave your "+pronoun+" here.");
+				msg.source().tell(msg.source(),host,msg.tool(),_("<T-NAME> won't accept <O-NAME>.  You should probably leave your @x1 here.",pronoun));
 				return false;
 			}
 			if(msg.tool() instanceof Coins)
@@ -279,7 +279,7 @@ public class Nanny extends StdBehavior
 					if(host instanceof MOB)
 						CMLib.commands().postSay((MOB)host,msg.source(),"I'm don't accept "+CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination())+".  I can only accept "+CMLib.beanCounter().getDenominationName(myCurrency)+".");
 					else
-						msg.source().tell("The "+place+" doesn't accept "+CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination())+".  It only accepts "+CMLib.beanCounter().getDenominationName(myCurrency)+".");
+						msg.source().tell(_("The @x1 doesn't accept @x2.  It only accepts @x3.",place,CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
 					return false;
 				}
 			}
@@ -305,9 +305,9 @@ public class Nanny extends StdBehavior
 			}
 			else
 			if(amt.length()>0)
-				msg.source().tell("You'll need to pay "+place+" fees of "+amt+" first.");
+				msg.source().tell(_("You'll need to pay @x1 fees of @x2 first.",place,amt));
 			else
-				msg.source().tell("You'll need to pay your "+place+" fees  for "+obj.name()+" first.");
+				msg.source().tell(_("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
 			return false;
 		}
 		else
@@ -367,9 +367,9 @@ public class Nanny extends StdBehavior
 					}
 					else
 					if(amt.length()>0)
-						msg.source().tell("You'll need to pay "+place+" fees of "+amt+" for "+obj.name()+" first.");
+						msg.source().tell(_("You'll need to pay @x1 fees of @x2 for @x3 first.",place,amt,obj.name()));
 					else
-						msg.source().tell("You'll need to pay your "+place+" fees  for "+obj.name()+" first.");
+						msg.source().tell(_("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
 				}
 				return false;
 			}
@@ -587,7 +587,7 @@ public class Nanny extends StdBehavior
 				if((change>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?");
+					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
 					C.setOwner((MOB)host);
 					final long num=C.getNumberOfCoins();
 					final String curr=C.getCurrency();
@@ -617,7 +617,7 @@ public class Nanny extends StdBehavior
 						if(((MOB)P).amFollowing()!=msg.source())
 						{
 							CMLib.commands().postSay((MOB)host,msg.source(),"Hmm, '"+P.name()+"' doesn't seem ready to leave.  Now get along!",true,false);
-							msg.source().location().send((MOB)P,CMClass.getMsg((MOB)P,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,"<S-NAME> follow(s) <T-NAMESELF>."));
+							msg.source().location().send((MOB)P,CMClass.getMsg((MOB)P,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,_("<S-NAME> follow(s) <T-NAMESELF>.")));
 							if(((MOB)P).amFollowing()!=msg.source())
 								((MOB)P).setFollowing(msg.source());
 						}

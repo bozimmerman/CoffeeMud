@@ -342,7 +342,7 @@ public class StdRideable extends StdContainer implements Rideable
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(msg.source())))
 			{
-				msg.source().tell("You cannot advance while "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(_("You cannot advance while @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				return false;
 			}
 			break;
@@ -350,7 +350,7 @@ public class StdRideable extends StdContainer implements Rideable
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(msg.source())))
 			{
-				msg.source().tell("You cannot retreat while "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(_("You cannot retreat while @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				return false;
 			}
 			break;
@@ -362,7 +362,7 @@ public class StdRideable extends StdContainer implements Rideable
 				{
 					if(!amRiding((Rider)msg.tool()))
 					{
-						msg.source().tell(msg.tool().name()+" is not "+stateString((Rider)msg.tool())+" "+name(msg.source())+"!");
+						msg.source().tell(_("@x1 is not @x2 @x3!",msg.tool().name(),stateString((Rider)msg.tool()),name(msg.source())));
 						if(((Rider)msg.tool()).riding()==this)
 							((Rider)msg.tool()).setRiding(null);
 						return false;
@@ -371,7 +371,7 @@ public class StdRideable extends StdContainer implements Rideable
 				else
 				if(!amRiding(msg.source()))
 				{
-					msg.source().tell("You are not "+stateString(msg.source())+" "+name(msg.source())+"!");
+					msg.source().tell(_("You are not @x1 @x2!",stateString(msg.source()),name(msg.source())));
 					if(msg.source().riding()==this)
 						msg.source().setRiding(null);
 					return false;
@@ -383,7 +383,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_SIT:
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(_("You are @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				msg.source().setRiding(this);
 				return false;
 			}
@@ -399,9 +399,9 @@ public class StdRideable extends StdContainer implements Rideable
 				&&(!amRiding(msg.source())))
 				{
 					// for items
-					msg.source().tell(name(msg.source())+" is full.");
+					msg.source().tell(_("@x1 is full.",name(msg.source())));
 					// for mobs
-					// msg.source().tell("No more can fit on "+name(msg.source())+".");
+					// msg.source().tell(_("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
 				return true;
@@ -409,7 +409,7 @@ public class StdRideable extends StdContainer implements Rideable
 			else
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot sit on "+name(msg.source())+".");
+				msg.source().tell(_("You cannot sit on @x1.",name(msg.source())));
 				return false;
 			}
 			break;
@@ -418,7 +418,7 @@ public class StdRideable extends StdContainer implements Rideable
 			&&(((!msg.amITarget(this))&&(msg.target()!=null))
 			   ||((rideBasis()!=Rideable.RIDEABLE_SLEEP)&&(rideBasis()!=Rideable.RIDEABLE_ENTERIN))))
 			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(_("You are @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				msg.source().setRiding(this);
 				return false;
 			}
@@ -432,9 +432,9 @@ public class StdRideable extends StdContainer implements Rideable
 				&&(!amRiding(msg.source())))
 				{
 					// for items
-					msg.source().tell(name(msg.source())+" is full.");
+					msg.source().tell(_("@x1 is full.",name(msg.source())));
 					// for mobs
-					// msg.source().tell("No more can fit on "+name(msg.source())+".");
+					// msg.source().tell(_("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
 				return true;
@@ -442,7 +442,7 @@ public class StdRideable extends StdContainer implements Rideable
 			else
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot lie down on "+name(msg.source())+".");
+				msg.source().tell(_("You cannot lie down on @x1.",name(msg.source())));
 				return false;
 			}
 			break;
@@ -450,13 +450,13 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(null,msg.source(),null,_("<T-NAME> <T-IS-ARE> @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				msg.source().setRiding(this);
 				return false;
 			}
 			if((riding()==msg.target())&&(msg.tool() instanceof Item))
 			{
-				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> already "+stateString(msg.source())+" "+name(msg.source())+"!");
+				msg.source().tell(null,msg.source(),null,_("<T-NAME> <T-IS-ARE> already @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				return false;
 			}
 			if(msg.amITarget(this))
@@ -464,29 +464,29 @@ public class StdRideable extends StdContainer implements Rideable
 				final Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
 				{
-					msg.source().tell(null,whoWantsToRide,null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name(msg.source())+"!");
+					msg.source().tell(null,whoWantsToRide,null,_("<T-NAME> <T-IS-ARE> @x1 @x2!",stateString(msg.source()),name(msg.source())));
 					whoWantsToRide.setRiding(this);
 					return false;
 				}
 				if((msg.tool() instanceof MOB)
 				&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
 				{
-					msg.source().tell(((MOB)msg.tool()).name(msg.source())+" won't let you do that.");
+					msg.source().tell(_("@x1 won't let you do that.",((MOB)msg.tool()).name(msg.source())));
 					return false;
 				}
 				else
 				if(riding()==whoWantsToRide)
 				{
 					if(msg.tool() instanceof Physical)
-						msg.source().tell(((Physical)msg.tool()).name(msg.source())+" can not be mounted to "+name(msg.source())+"!");
+						msg.source().tell(_("@x1 can not be mounted to @x2!",((Physical)msg.tool()).name(msg.source()),name(msg.source())));
 					else
-						msg.source().tell(msg.tool().name()+" can not be mounted to "+name(msg.source())+"!");
+						msg.source().tell(_("@x1 can not be mounted to @x2!",msg.tool().name(),name(msg.source())));
 					return false;
 				}
 				else
 				if(msg.tool() instanceof Rideable)
 				{
-					msg.source().tell(((Rideable)msg.tool()).name(msg.source())+" is not allowed on "+name(msg.source())+".");
+					msg.source().tell(_("@x1 is not allowed on @x2.",((Rideable)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
 				}
 				if(msg.tool()==null)
@@ -495,7 +495,7 @@ public class StdRideable extends StdContainer implements Rideable
 					case Rideable.RIDEABLE_ENTERIN:
 					case Rideable.RIDEABLE_SIT:
 					case Rideable.RIDEABLE_SLEEP:
-						msg.source().tell(name(msg.source())+" can not be mounted in this way.");
+						msg.source().tell(_("@x1 can not be mounted in this way.",name(msg.source())));
 						return false;
 					default:
 						break;
@@ -504,9 +504,9 @@ public class StdRideable extends StdContainer implements Rideable
 				&&(!amRiding(whoWantsToRide)))
 				{
 					// for items
-					msg.source().tell(name(msg.source())+" is full.");
+					msg.source().tell(_("@x1 is full.",name(msg.source())));
 					// for mobs
-					// msg.source().tell("No more can fit on "+name(msg.source())+".");
+					// msg.source().tell(_("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
 				// protects from standard item rejection
@@ -541,7 +541,7 @@ public class StdRideable extends StdContainer implements Rideable
 							   ||(!(riding() instanceof MOB))
 							   ||(((MOB)riding()).basePhyStats().weight()<(basePhyStats().weight()/5))))
 							{
-								msg.source().tell(name(msg.source())+" doesn't seem to be moving.");
+								msg.source().tell(_("@x1 doesn't seem to be moving.",name(msg.source())));
 								return false;
 							}
 						break;
@@ -567,12 +567,12 @@ public class StdRideable extends StdContainer implements Rideable
 					}
 					if(!ok)
 					{
-						msg.source().tell("You cannot ride "+name(msg.source())+" that way.");
+						msg.source().tell(_("You cannot ride @x1 that way.",name(msg.source())));
 						return false;
 					}
 					if(CMLib.flags().isSitting(msg.source()))
 					{
-						msg.source().tell("You cannot crawl while "+stateString(msg.source())+" "+name(msg.source())+".");
+						msg.source().tell(_("You cannot crawl while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 						return false;
 					}
 				}
@@ -599,7 +599,7 @@ public class StdRideable extends StdContainer implements Rideable
 			&&(rideBasis()!=Rideable.RIDEABLE_TABLE)
 			&&(rideBasis()!=Rideable.RIDEABLE_SIT))
 			{
-				msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name(msg.source())+".");
+				msg.source().tell(_("You can not do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 				return false;
 			}
 			return super.okMessage(myHost,msg);
@@ -615,7 +615,7 @@ public class StdRideable extends StdContainer implements Rideable
 		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(CMLib.flags().isStanding(msg.source())))))
 		{
 			// some of the above applies to genrideable items only
-			msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name(msg.source())+".");
+			msg.source().tell(_("You can not do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

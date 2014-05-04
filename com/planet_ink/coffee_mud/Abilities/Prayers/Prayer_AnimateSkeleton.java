@@ -87,7 +87,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		int it=0;
 		while(it<R.numItems())
 		{
@@ -122,7 +122,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.name(mob)+" doesn't look dead yet.");
+			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))

@@ -83,7 +83,7 @@ public class Thief_Embezzle extends ThiefSkill
 			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
 			{
-				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
+				msg.source().tell(_("@x1 looks unwilling to do business with you.",affected.name()));
 				return false;
 			}
 		}
@@ -116,12 +116,12 @@ public class Thief_Embezzle extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(!(target instanceof Banker))
 		{
-			mob.tell("You can't embezzle from "+target.name(mob)+"'s accounts.");
+			mob.tell(_("You can't embezzle from @x1's accounts.",target.name(mob)));
 			return false;
 		}
 		if(mob.isInCombat())
@@ -133,14 +133,14 @@ public class Thief_Embezzle extends ThiefSkill
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name(mob)+" is watching "+target.charStats().hisher()+" books too closely.");
+			mob.tell(_("@x1 is watching @x2 books too closely.",target.name(mob),target.charStats().hisher()));
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 
 		if(!target.mayIFight(mob))
 		{
-			mob.tell("You cannot embezzle from "+target.charStats().himher()+".");
+			mob.tell(_("You cannot embezzle from @x1.",target.charStats().himher()));
 			return false;
 		}
 
@@ -157,7 +157,7 @@ public class Thief_Embezzle extends ThiefSkill
 		myCoins=bank.findDepositInventory(myAcct,"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
-			mob.tell("You don't have your own account with "+target.name(mob)+".");
+			mob.tell(_("You don't have your own account with @x1.",target.name(mob)));
 			return false;
 		}
 		final List<String> accounts=bank.getAccountNames();

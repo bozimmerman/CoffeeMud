@@ -61,7 +61,7 @@ public class Prayer_HolyShield extends Prayer
 		&&((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.source().location()!=null))
 		{
-			msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> holy shield block(s) the unholy magic from <T-NAMESELF>.");
+			msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> holy shield block(s) the unholy magic from <T-NAMESELF>."));
 			return false;
 		}
 		return super.okMessage(host,msg);

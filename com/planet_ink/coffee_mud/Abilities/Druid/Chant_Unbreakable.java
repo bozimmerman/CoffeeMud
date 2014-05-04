@@ -74,7 +74,7 @@ public class Chant_Unbreakable extends Chant
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
-			msg.source().tell(affected.name()+" is unbreakable!");
+			msg.source().tell(_("@x1 is unbreakable!",affected.name()));
 			return false;
 		}
 
@@ -92,7 +92,7 @@ public class Chant_Unbreakable extends Chant
 			if(((affected!=null)&&(affected instanceof Item))
 			&&((((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB)))
-				((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
+				((MOB)((Item)affected).owner()).tell(_("The enchantment on @x1 fades.",((Item)affected).name()));
 		}
 		super.unInvoke();
 	}
@@ -106,7 +106,7 @@ public class Chant_Unbreakable extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already unbreakable.");
+			mob.tell(_("@x1 is already unbreakable.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

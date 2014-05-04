@@ -72,7 +72,7 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{
-				msg.source().tell(((Drink)msg.target()).name(msg.source())+" is full.");
+				msg.source().tell(_("@x1 is full.",((Drink)msg.target()).name(msg.source())));
 				return false;
 			}
 		}
@@ -99,7 +99,7 @@ public class Spell_FakeSpring extends Spell
 
 				if(newItem==null)
 				{
-					mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
+					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
 
@@ -112,7 +112,7 @@ public class Spell_FakeSpring extends Spell
 				W.setThirstQuenched(0);
 				W.recoverPhyStats();
 				mob.location().addItem((Item)W);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();

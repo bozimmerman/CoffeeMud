@@ -87,7 +87,7 @@ public class Spell_ClanDonate extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				final MOB victim=mob.getVictim();
@@ -102,10 +102,10 @@ public class Spell_ClanDonate extends Spell
 				if(proceed)
 				{
 					mob.location().send(mob,msg);
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appears!");
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appears!"));
 					if(clanDonateRoom.okMessage(mob,msg))
 					{
-						mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
+						mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> vanishes!"));
 						if(!clanDonateRoom.isContent(target))
 							clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
 						if(!(target.amDestroyed()))

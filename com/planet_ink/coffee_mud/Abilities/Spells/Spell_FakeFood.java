@@ -85,7 +85,7 @@ public class Spell_FakeFood extends Spell
 					final Food F2=(Food)F.copyOf();
 					F2.recoverPhyStats();
 					mob.location().addItem(F2,ItemPossessor.Expire.Resource);
-					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,"<O-NAME> appears!");
+					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,_("<O-NAME> appears!"));
 				}
 			}
 		}

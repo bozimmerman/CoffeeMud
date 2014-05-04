@@ -122,7 +122,7 @@ public class Chant_DruidicConnection extends Chant
 						I.destroy();
 				}
 			}
-			invoker.tell("You have destroyed your connection with "+affected.name()+"!");
+			invoker.tell(_("You have destroyed your connection with @x1!",affected.name()));
 			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
 				((Room)e.nextElement()).recoverRoomStats();
 		}

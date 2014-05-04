@@ -63,7 +63,7 @@ public class Skill_Befriend extends BardSkill
 		}
 		if(target.phyStats().level()>mob.phyStats().level()+(mob.phyStats().level()/10))
 		{
-			mob.tell(target.charStats().HeShe()+" is a bit too powerful to befriend.");
+			mob.tell(_("@x1 is a bit too powerful to befriend.",target.charStats().HeShe()));
 			return false;
 		}
 		if(!CMLib.flags().isMobile(target))
@@ -74,7 +74,7 @@ public class Skill_Befriend extends BardSkill
 
 		if(!target.isMonster())
 		{
-			mob.tell("You need to ask "+target.charStats().himher());
+			mob.tell(_("You need to ask @x1",target.charStats().himher()));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Skill_Befriend extends BardSkill
 
 		if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
 		{
-			mob.tell(target,null,null,"<S-NAME> is not a fellow "+mob.charStats().getMyRace().racialCategory()+".");
+			mob.tell(target,null,null,_("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()));
 			return false;
 		}
 
@@ -97,7 +97,7 @@ public class Skill_Befriend extends BardSkill
 			final int mine=target.fetchFaction(F.factionID());
 			if(F.fetchRange(his)!=F.fetchRange(mine))
 			{
-				mob.tell(target,null,null,"<S-NAME> is not "+F.fetchRangeName(mine)+", like yourself.");
+				mob.tell(target,null,null,_("<S-NAME> is not @x1, like yourself.",F.fetchRangeName(mine)));
 				return false;
 			}
 		}
@@ -112,7 +112,7 @@ public class Skill_Befriend extends BardSkill
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(target.charStats().HeShe()+" can't hear your words.");
+			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -128,14 +128,14 @@ public class Skill_Befriend extends BardSkill
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> befriend(s) <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> befriend(s) <T-NAME>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				CMLib.commands().postFollow(target,mob,false);
 				CMLib.combat().makePeaceInGroup(mob);
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name(mob)+" seems unwilling to be your friend.");
+					mob.tell(_("@x1 seems unwilling to be your friend.",target.name(mob)));
 			}
 		}
 		else

@@ -105,7 +105,7 @@ public class Chant_WindSnatcher extends Chant
 		if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
 		   &&(isSpell(msg.tool().ID())))
 		{
-			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+msg.tool().name()+".");
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("A form around <S-NAME> snatches @x1.",msg.tool().name()));
 			return false;
 		}
 		return true;

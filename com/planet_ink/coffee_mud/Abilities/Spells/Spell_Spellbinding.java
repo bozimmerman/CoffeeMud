@@ -136,7 +136,7 @@ public class Spell_Spellbinding extends Spell
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
 					if(!alreadyWanding)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,"The magic of '"+s+"' swells within you!",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,_("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 		}
 		else
@@ -199,7 +199,7 @@ public class Spell_Spellbinding extends Spell
 			||(A.ID().equals(ID()))
 			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
-				mob.tell("You can't bind '"+A.ID()+"'.");
+				mob.tell(_("You can't bind '@x1'.",A.ID()));
 				return false;
 			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
@@ -213,7 +213,7 @@ public class Spell_Spellbinding extends Spell
 			||((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
 			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
-				mob.tell("You can't bind '"+((String)commands.elementAt(v))+"'.");
+				mob.tell(_("You can't bind '@x1'.",((String)commands.elementAt(v))));
 				return false;
 			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
@@ -226,7 +226,7 @@ public class Spell_Spellbinding extends Spell
 		final int curMana=mob.curState().getMana();
 		if(curMana<totalcost)
 		{
-			mob.tell("You need "+totalcost+" mana to bind those spells.");
+			mob.tell(_("You need @x1 mana to bind those spells.",""+totalcost));
 			return false;
 		}
 		DVector thePriorKey=null;

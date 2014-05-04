@@ -77,7 +77,7 @@ public class Chant_DistantGrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
@@ -98,12 +98,12 @@ public class Chant_DistantGrowth extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),"^S<S-NAME> chant(s) about a far away place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) about a far away place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
-				mob.tell("You feel a distant connection with "+newItem.name());
+				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
 			}
 		}
 		else

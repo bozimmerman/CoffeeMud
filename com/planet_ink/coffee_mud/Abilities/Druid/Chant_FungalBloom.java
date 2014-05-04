@@ -103,7 +103,7 @@ public class Chant_FungalBloom extends Chant
 		}
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{
-			mob.tell(target.name(mob)+" is not a fungus!");
+			mob.tell(_("@x1 is not a fungus!",target.name(mob)));
 			return false;
 		}
 
@@ -119,7 +119,7 @@ public class Chant_FungalBloom extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.setDescription("It seems to be getting puffier and puffier!");
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 seems to be puffing up!",target.name()));
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);

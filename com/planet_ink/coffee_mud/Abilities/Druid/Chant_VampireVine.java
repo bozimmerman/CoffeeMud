@@ -105,11 +105,11 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(newMOB.name()+" seems unwilling to follow you.");
+			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);
 	}

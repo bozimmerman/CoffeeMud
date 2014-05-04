@@ -335,7 +335,7 @@ public class PokerDealer extends StdBehavior
 			// the pot.
 			if(!currency.equals(theMoneyDropped.getCurrency()))
 			{
-				playerDroppingMoney.tell("That is not the proper currency.  This table is only dealing in "+CMLib.beanCounter().getDenominationName(currency)+".");
+				playerDroppingMoney.tell(_("That is not the proper currency.  This table is only dealing in @x1.",CMLib.beanCounter().getDenominationName(currency)));
 				return false;
 			}
 
@@ -350,7 +350,7 @@ public class PokerDealer extends StdBehavior
 					// if they havn't antied enough, abort their drop attempt.
 					if(theMoneyDropped.getTotalValue()<anti)
 					{
-						msg.source().tell("Thats not enough.  The anti is "+antiAmount(host)+".");
+						msg.source().tell(_("Thats not enough.  The anti is @x1.",antiAmount(host)));
 						return false;
 					}
 
@@ -360,9 +360,9 @@ public class PokerDealer extends StdBehavior
 						final double change=theMoneyDropped.getTotalValue()-anti;
 						Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
 						final CMMsg changeMsg=CMClass.getMsg(playerDroppingMoney,C,null,
-													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"You anti up, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change.",
+													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,_("You anti up, picking up @x1 in change.",CMLib.beanCounter().abbreviatedPrice(currency,change)),
 													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null,
-													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"<S-NAME> antis up.");
+													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,_("<S-NAME> antis up."));
 						msg.addTrailerMsg(changeMsg);
 						// now we want to clear the drop message,
 						// and modify the amount actually being dropped.
@@ -397,7 +397,7 @@ public class PokerDealer extends StdBehavior
 				if(whoseTurn==null)
 					playerDroppingMoney.tell(_("You can not bet at this time.  Please wait your turn."));
 				else
-					playerDroppingMoney.tell("It is "+whoseTurn.name()+"'s turn to bet right now.  Please wait for the dealer to call on you.");
+					playerDroppingMoney.tell(_("It is @x1's turn to bet right now.  Please wait for the dealer to call on you.",whoseTurn.name()));
 				// abort the message
 				return false;
 			}
@@ -414,7 +414,7 @@ public class PokerDealer extends StdBehavior
 
 					// if they havn't given enough to call, allow it, but let them know.
 					if(theMoneyDropped.getTotalValue()<amountNeededToCall)
-						msg.source().tell("That won't be enough.  You'll still need to drop "+CMLib.beanCounter().abbreviatedPrice(currency,amountNeededToCall-theMoneyDropped.getTotalValue())+" more to call.");
+						msg.source().tell(_("That won't be enough.  You'll still need to drop @x1 more to call.",CMLib.beanCounter().abbreviatedPrice(currency,amountNeededToCall-theMoneyDropped.getTotalValue())));
 					else
 					// if they give too much, make change
 					if(theMoneyDropped.getTotalValue()>amountNeededToCall)
@@ -422,9 +422,9 @@ public class PokerDealer extends StdBehavior
 						final double change=theMoneyDropped.getTotalValue()-amountNeededToCall;
 						Coins C=CMLib.beanCounter().makeBestCurrency(currency,change);
 						final CMMsg changeMsg=CMClass.getMsg(playerDroppingMoney,C,null,
-													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"You see the bet, picking up "+CMLib.beanCounter().abbreviatedPrice(currency,change)+" in change."+instructions,
+													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,_("You see the bet, picking up @x1 in change.@x2",CMLib.beanCounter().abbreviatedPrice(currency,change),instructions),
 													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null,
-													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,"<S-NAME> see(s) the bet.");
+													  CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,_("<S-NAME> see(s) the bet."));
 						msg.addTrailerMsg(changeMsg);
 						// now we want to clear the drop message,
 						// and modify the amount actually being dropped.
@@ -452,7 +452,7 @@ public class PokerDealer extends StdBehavior
 							final MOB mob =(MOB)pot.elementAt(p,1);
 							if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)<totalDown)
 							{
-								msg.source().tell("You may only bet up to "+CMLib.beanCounter().abbreviatedPrice(currency,CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))+" due to the table-stakes rule.");
+								msg.source().tell(_("You may only bet up to @x1 due to the table-stakes rule.",CMLib.beanCounter().abbreviatedPrice(currency,CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))));
 								return false;
 							}
 						}
@@ -1256,7 +1256,7 @@ public class PokerDealer extends StdBehavior
 				if(totalValue>0.0)
 				{
 					CMLib.beanCounter().giveSomeoneMoney(winner,CMLib.beanCounter().getCurrency(host),totalValue);
-					R.show(winner,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> collect(s) "+CMLib.beanCounter().abbreviatedPrice(CMLib.beanCounter().getCurrency(host),totalValue)+" in winnings.");
+					R.show(winner,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> collect(s) @x1 in winnings.",CMLib.beanCounter().abbreviatedPrice(CMLib.beanCounter().getCurrency(host),totalValue)));
 				}
 			}
 		}
@@ -1319,9 +1319,9 @@ public class PokerDealer extends StdBehavior
 					if(actuallyDealtDown>0)
 					{
 						if(host instanceof MOB)
-							R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,"<S-NAME> deal(s) "+actuallyDealtDown+" cards to <T-NAMESELF>.");
+							R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> deal(s) @x1 cards to <T-NAMESELF>.",""+actuallyDealtDown));
 						else
-							R.showHappens(CMMsg.MSG_OK_ACTION,"The dealer deal(s) "+actuallyDealtDown+" cards to "+player.name()+".");
+							R.showHappens(CMMsg.MSG_OK_ACTION,_("The dealer deal(s) @x1 cards to @x2.",""+actuallyDealtDown,player.name()));
 					}
 				}
 				else
@@ -1330,18 +1330,18 @@ public class PokerDealer extends StdBehavior
 					if(dealtUp.length()>2)
 					{
 						if(host instanceof MOB)
-							R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,"<S-NAME> deal(s) to <T-NAMESELF>: "+dealtUp.toString().substring(0,dealtUp.length()-2)+".");
+							R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> deal(s) to <T-NAMESELF>: @x1.",dealtUp.toString().substring(0,dealtUp.length()-2)));
 						else
-							R.showHappens(CMMsg.MSG_OK_ACTION,"The dealer deal(s) to "+player.name()+": "+dealtUp.toString().substring(0,dealtUp.length()-2)+".");
+							R.showHappens(CMMsg.MSG_OK_ACTION,_("The dealer deal(s) to @x1: @x2.",player.name(),dealtUp.toString().substring(0,dealtUp.length()-2)));
 					}
 				}
 				else
 				if(dealtUp.length()>2)
 				{
 					if(host instanceof MOB)
-						R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,"<S-NAME> deal(s) "+actuallyDealtDown+" cards to <T-NAMESELF> and turns up: "+dealtUp.toString().substring(0,dealtUp.length()-2)+".");
+						R.show((MOB)host,player,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> deal(s) @x1 cards to <T-NAMESELF> and turns up: @x2.",""+actuallyDealtDown,dealtUp.toString().substring(0,dealtUp.length()-2)));
 					else
-						R.showHappens(CMMsg.MSG_OK_ACTION,"The dealer deal(s) "+actuallyDealtDown+" cards to "+player.name()+" and turns up: "+dealtUp.toString().substring(0,dealtUp.length()-2)+".");
+						R.showHappens(CMMsg.MSG_OK_ACTION,_("The dealer deal(s) @x1 cards to @x2 and turns up: @x3.",""+actuallyDealtDown,player.name(),dealtUp.toString().substring(0,dealtUp.length()-2)));
 				}
 			}
 		}

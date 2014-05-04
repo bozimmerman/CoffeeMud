@@ -618,7 +618,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					}
 				}
 				else
-					mob.tell(name()+" appears to be blank.");
+					mob.tell(_("@x1 appears to be blank.",name()));
 			}
 			else
 				mob.tell(_("You can't see that!"));

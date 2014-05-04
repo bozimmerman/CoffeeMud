@@ -71,7 +71,7 @@ public class Chant_PredictWeather extends Chant
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;
-			   ((MOB)affected).tell("Your weather senses gaze into the future, you see: \n\r"+prediction);
+			   ((MOB)affected).tell(_("Your weather senses gaze into the future, you see: \n\r@x1",prediction));
 		   }
 		}
 		return true;

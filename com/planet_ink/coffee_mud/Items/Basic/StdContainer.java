@@ -92,7 +92,7 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_INSTALL:
 				if((!(this instanceof Technical))||(!(msg.tool() instanceof Technical)))
 				{
-					mob.tell(name()+" cannot be installed.");
+					mob.tell(_("@x1 cannot be installed.",name()));
 					return false;
 				}
 				//$FALL-THROUGH$
@@ -101,13 +101,13 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!CMLib.flags().isDroppable((Item)msg.tool()))
 					{
-						mob.tell("You can't seem to let go of "+msg.tool().name()+".");
+						mob.tell(_("You can't seem to let go of @x1.",msg.tool().name()));
 						return false;
 					}
 					final Item newitem=(Item)msg.tool();
 					if(hasALid()&&(!isOpen()))
 					{
-						mob.tell(name()+" is closed.");
+						mob.tell(_("@x1 is closed.",name()));
 						return false;
 					}
 					else
@@ -131,32 +131,32 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(capacity<=0)
 					{
-						mob.tell("You can't put anything in "+name()+"!");
+						mob.tell(_("You can't put anything in @x1!",name()));
 						return false;
 					}
 					else
 					{
 						if(!canContain(newitem))
 						{
-							mob.tell("You can't put "+newitem.name()+" in "+name()+".");
+							mob.tell(_("You can't put @x1 in @x2.",newitem.name(),name()));
 							return false;
 						}
 						else
 						if(newitem.phyStats().weight()>capacity)
 						{
-							mob.tell(newitem.name()+" won't fit in "+name()+".");
+							mob.tell(_("@x1 won't fit in @x2.",newitem.name(),name()));
 							return false;
 						}
 						else
 						if((recursiveWeight()+newitem.phyStats().weight())>capacity)
 						{
 							if(getContents().size()==0)
-								mob.tell(name()+" is too small.");
+								mob.tell(_("@x1 is too small.",name()));
 							else
 							if((newitem instanceof Software) && (this instanceof Electronics.Computer))
-								mob.tell(name()+" is out of memory.");
+								mob.tell(_("@x1 is out of memory.",name()));
 							else
-								mob.tell(name()+" is full.");
+								mob.tell(_("@x1 is full.",name()));
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
@@ -183,7 +183,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(name()+" is closed.");
+							mob.tell(_("@x1 is closed.",name()));
 							return false;
 						}
 						else
@@ -192,13 +192,13 @@ public class StdContainer extends StdItem implements Container
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!mob.charStats().getCurrentClass().leveless()))
 						{
-							mob.tell(newitem.name()+" is too powerful to endure possessing it.");
+							mob.tell(_("@x1 is too powerful to endure possessing it.",newitem.name()));
 							return false;
 						}
 						else
 						if((newitem.recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 						{
-							mob.tell(newitem.name()+" is too heavy.");
+							mob.tell(_("@x1 is too heavy.",newitem.name()));
 							return false;
 						}
 						else
@@ -210,7 +210,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(!CMLib.flags().isGettable(newitem))
 						{
-							mob.tell("You can't get "+newitem.name()+".");
+							mob.tell(_("You can't get @x1.",newitem.name()));
 							return false;
 						}
 						return true;
@@ -221,7 +221,7 @@ public class StdContainer extends StdItem implements Container
 				else
 				if((recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 				{
-					mob.tell(name()+" is too heavy.");
+					mob.tell(_("@x1 is too heavy.",name()));
 					return false;
 				}
 				else
@@ -246,7 +246,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(name()+" is closed.");
+							mob.tell(_("@x1 is closed.",name()));
 							return false;
 						}
 						else
@@ -261,27 +261,27 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!hasALid)
 					{
-						mob.tell("There is nothing to close on "+name()+".");
+						mob.tell(_("There is nothing to close on @x1.",name()));
 						return false;
 					}
 					return true;
 				}
-				mob.tell(name()+" is already closed.");
+				mob.tell(_("@x1 is already closed.",name()));
 				return false;
 			case CMMsg.TYP_OPEN:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to open on "+name()+".");
+					mob.tell(_("There is nothing to open on @x1.",name()));
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(name()+" is already open!");
+					mob.tell(_("@x1 is already open!",name()));
 					return false;
 				}
 				if(isLocked)
 				{
-					mob.tell(name()+" is locked.");
+					mob.tell(_("@x1 is locked.",name()));
 					return false;
 				}
 				return true;
@@ -289,12 +289,12 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_UNLOCK:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to lock or unlock on "+name()+".");
+					mob.tell(_("There is nothing to lock or unlock on @x1.",name()));
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(name()+" is open!");
+					mob.tell(_("@x1 is open!",name()));
 					return false;
 				}
 				else
@@ -307,13 +307,13 @@ public class StdContainer extends StdItem implements Container
 				{
 					if((!isLocked)&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 					{
-						mob.tell(name()+" is not locked.");
+						mob.tell(_("@x1 is not locked.",name()));
 						return false;
 					}
 					else
 					if((isLocked)&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 					{
-						mob.tell(name()+" is already locked.");
+						mob.tell(_("@x1 is already locked.",name()));
 						return false;
 					}
 					else

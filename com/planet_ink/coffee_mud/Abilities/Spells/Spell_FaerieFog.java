@@ -56,7 +56,7 @@ public class Spell_FaerieFog extends Spell
 		if(canBeUninvoked())
 		{
 			final Room room=(Room)affected;
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The faerie fog starts to clear out.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The faerie fog starts to clear out."));
 		}
 		super.unInvoke();
 	}
@@ -153,7 +153,7 @@ public class Spell_FaerieFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_("@x1sparkling fog envelopes the area.^?",(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

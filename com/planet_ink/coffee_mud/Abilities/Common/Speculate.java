@@ -124,7 +124,7 @@ public class Speculate extends CommonSkill
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		final int duration=getDuration(45,mob,1,10);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) speculating on this area.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) speculating on this area."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

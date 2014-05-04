@@ -77,7 +77,7 @@ public class Dance_Swing extends Dance
 				{
 					if(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(getXLEVELLevel(invoker())*2)-70,false))
 					{
-						final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+						final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 						if(mob.location().okMessage(mob,msg2))
 						{
 							doneThisRound=true;

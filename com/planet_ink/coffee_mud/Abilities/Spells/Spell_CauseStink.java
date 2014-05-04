@@ -100,7 +100,7 @@ public class Spell_CauseStink extends Spell
 					{
 						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
-							M.tell("There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
+							M.tell(_("There is a very bad smell coming from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(d))));
 					}
 			}
 		}

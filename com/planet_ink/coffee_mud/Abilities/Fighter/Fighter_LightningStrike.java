@@ -137,7 +137,7 @@ public class Fighter_LightningStrike extends MonkSkill
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+" dexterity to do that.");
+			mob.tell(_("You need at least an @x1 dexterity to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 			return false;
 		}
 

@@ -94,7 +94,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 			if(theTrap==null)
 			{
-				mob.tell("'"+name+"' is not a valid bomb name.  Try BOMB LIST.");
+				mob.tell(_("'@x1' is not a valid bomb name.  Try BOMB LIST.",name));
 				return false;
 			}
 

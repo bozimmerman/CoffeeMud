@@ -109,7 +109,7 @@ public class Chant_FindPlant extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("Your sense "+lookingFor+" "+Directions.getInDirectionName(nextDirection)+".");
+				mob.tell(_("Your sense @x1 @x2.",lookingFor,Directions.getInDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -158,7 +158,7 @@ public class Chant_FindPlant extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to "+name());
+			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -168,7 +168,7 @@ public class Chant_FindPlant extends Chant
 			commands.addElement(text());
 		if(commands.size()==0)
 		{
-			mob.tell("Find which "+lookingFor+"?  Use 'CHANT \""+name()+"\" LIST' for a list.");
+			mob.tell(_("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));
 			return false;
 		}
 		final String s=CMParms.combine(commands,0);
@@ -194,7 +194,7 @@ public class Chant_FindPlant extends Chant
 		}
 		if(whatImLookingFor<0)
 		{
-			mob.tell("'"+s+"' cannot be found with this chant.    Use 'CHANT \""+name()+"\" LIST' for a list.");
+			mob.tell(_("'@x1' cannot be found with this chant.    Use 'CHANT \"@x2\" LIST' for a list.",s,name()));
 			return false;
 		}
 

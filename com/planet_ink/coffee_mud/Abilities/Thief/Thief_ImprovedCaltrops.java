@@ -45,7 +45,7 @@ public class Thief_ImprovedCaltrops extends Thief_Caltrops
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||((CMLib.dice().rollPercentage()-getXLEVELLevel(invoker()))<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
 		{
 			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(8,6,5*adjustedLevel(invoker(),0)),

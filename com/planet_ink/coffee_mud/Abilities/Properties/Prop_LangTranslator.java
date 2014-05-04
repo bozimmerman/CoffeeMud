@@ -126,13 +126,13 @@ public class Prop_LangTranslator extends Property implements Language
 					if(msg.target() instanceof MOB)
 						target=msg.target();
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,_("@x1 say(s) '@x2 said \"@x3\" in @x4'",sourceName,msg.source().name(),str,msg.tool().name())));
 					else
 					if((target==null)&&(msg.targetMessage()!=null))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,_("@x1 say(s) '@x2 said \"@x3\" in @x4'",sourceName,msg.source().name(),str,msg.tool().name())));
 					else
 					if(msg.othersMessage()!=null)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),target,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),target,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,_("@x1 say(s) '@x2 said \"@x3\" in @x4'",sourceName,msg.source().name(),str,msg.tool().name())));
 				}
 			}
 		}

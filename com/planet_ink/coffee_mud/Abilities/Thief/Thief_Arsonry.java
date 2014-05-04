@@ -116,7 +116,7 @@ public class Thief_Arsonry extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> commit(s) arsonry against <T-NAME>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> commit(s) arsonry against <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))
 			&&((targetRoom==mob.location())||(targetRoom.okMessage(mob,msg))))
 			{

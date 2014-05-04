@@ -100,7 +100,7 @@ public class Chant_SpeedAging extends Chant
 				{
 					if(target instanceof Food)
 					{
-						mob.tell(target.name(mob)+" rots away!");
+						mob.tell(_("@x1 rots away!",target.name(mob)));
 						((Item)target).destroy();
 					}
 					else
@@ -115,19 +115,19 @@ public class Chant_SpeedAging extends Chant
 							case RawMaterial.MATERIAL_VEGETATION:
 							case RawMaterial.MATERIAL_WOODEN:
 							{
-								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" rots away!");
+								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 rots away!",target.name()));
 								if(target instanceof Container)
 									((Container)target).emptyPlease(false);
 								((Item)target).destroy();
 								break;
 							}
 						default:
-							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
+							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages, but nothing happens to it.",target.name()));
 							break;
 						}
 					}
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages, but nothing happens to it.");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages, but nothing happens to it.",target.name()));
 					success=false;
 				}
 				else
@@ -180,7 +180,7 @@ public class Chant_SpeedAging extends Chant
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> age(s) a bit."));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages a bit.");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages a bit.",target.name()));
 					target.recoverPhyStats();
 				}
 				else

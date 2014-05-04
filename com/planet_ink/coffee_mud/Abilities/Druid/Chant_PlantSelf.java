@@ -115,16 +115,16 @@ public class Chant_PlantSelf extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> whisper(s) to the wind."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> lean(s) towards the sun."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feel(s) the life of the insects."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feed(s) on the moisture of the earth."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> take(s) in the energy of the sun."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feel(s) <S-HIM-HERSELF> grow."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> become(s) one with the earth."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> find(s) clarity in the natural world."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> whisper(s) to the wind.")); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> lean(s) towards the sun.")); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feel(s) the life of the insects.")); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feed(s) on the moisture of the earth.")); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> take(s) in the energy of the sun.")); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feel(s) <S-HIM-HERSELF> grow.")); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> become(s) one with the earth.")); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> find(s) clarity in the natural world.")); break;
 				}
 			}
 		}
@@ -176,7 +176,7 @@ public class Chant_PlantSelf extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),"^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),_("^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

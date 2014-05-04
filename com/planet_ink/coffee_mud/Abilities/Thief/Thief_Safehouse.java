@@ -174,7 +174,7 @@ public class Thief_Safehouse extends ThiefSkill
 					dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				}
 				if(target==R)
-					mob.tell("You happen to know of one nearby though.  Go: "+trail.toString());
+					mob.tell(_("You happen to know of one nearby though.  Go: @x1",trail.toString()));
 			}
 			return false;
 		}

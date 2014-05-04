@@ -283,13 +283,13 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(mob,0,false)))
 				{
-					mob.tell(me.name()+" glows faintly for a moment, then fades.");
+					mob.tell(_("@x1 glows faintly for a moment, then fades.",me.name()));
 				}else
 				{
 					wandUse.setInvoker(mob);
 					if(useAsWand(mob,wandUse.abilityCode()))
 					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly.",me.name()));
 						final int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");

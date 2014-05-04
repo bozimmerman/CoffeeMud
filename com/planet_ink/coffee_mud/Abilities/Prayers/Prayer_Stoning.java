@@ -89,7 +89,7 @@ public class Prayer_Stoning extends Prayer
 						CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 					}
 					else
-						R.show(M,mob,null,CMMsg.MSG_NOISE,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
+						R.show(M,mob,null,CMMsg.MSG_NOISE,_("<S-NAME> shout(s) obscenities at <T-NAMESELF>."));
 				}
 			}
 			while(cits.size()<10)
@@ -123,13 +123,13 @@ public class Prayer_Stoning extends Prayer
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 		{
-			mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
+			mob.tell(_("You are not allowed to stone @x1 at this time.",target.Name()));
 			return false;
 		}
 
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))
 		{
-			mob.tell(target.name(mob)+" must be bound first.");
+			mob.tell(_("@x1 must be bound first.",target.name(mob)));
 			return false;
 		}
 

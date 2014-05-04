@@ -153,14 +153,14 @@ public class Spell_ChangeSex extends Spell
 		{
 			if(!(target instanceof CagedAnimal))
 			{
-				mob.tell("This spell won't have much effect on "+target.name(mob)+".");
+				mob.tell(_("This spell won't have much effect on @x1.",target.name(mob)));
 				return false;
 			}
 		}
 		else
 		if(!(target instanceof MOB))
 		{
-			mob.tell("This spell won't have much effect on "+target.name(mob)+".");
+			mob.tell(_("This spell won't have much effect on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -213,7 +213,7 @@ public class Spell_ChangeSex extends Spell
 						return false;
 					M.recoverCharStats();
 					target.recoverPhyStats();
-					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) "+M.charStats().genderName()+"!");
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) @x1!",M.charStats().genderName()));
 				}
 			}
 		}

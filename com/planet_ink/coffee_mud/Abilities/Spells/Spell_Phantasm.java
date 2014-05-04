@@ -81,7 +81,7 @@ public class Spell_Phantasm extends Spell
 			final MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				msg.source().tell(mob.name(msg.source())+" seems strangely unaffected by your magic.");
+				msg.source().tell(_("@x1 seems strangely unaffected by your magic.",mob.name(msg.source())));
 				return false;
 			}
 		}
@@ -103,7 +103,7 @@ public class Spell_Phantasm extends Spell
 			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH <T-NAMESELF>."));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,_("@x1's attack somehow went THROUGH <T-NAMESELF>.",msg.source().name())));
 		}
 	}
 
@@ -158,7 +158,7 @@ public class Spell_Phantasm extends Spell
 		if((R==null)
 		||(!CMProps.isTheme(R.availabilityCode())))
 		{
-			mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
+			mob.tell(_("You don't know how to create a phantasm of a '@x1'.",type));
 			return false;
 		}
 
@@ -179,7 +179,7 @@ public class Spell_Phantasm extends Spell
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 				if(myMonster.amFollowing()!=mob)
-					mob.tell(myMonster.name()+" seems unwilling to follow you.");
+					mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
 			}
 		}
 		else
@@ -221,7 +221,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

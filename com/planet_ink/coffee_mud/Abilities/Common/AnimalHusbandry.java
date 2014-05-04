@@ -125,7 +125,7 @@ public class AnimalHusbandry extends CommonSkill
 								}
 							}
 						}
-						mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),"<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>.");
+						mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),_("<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>."));
 						final Ability A=wifeM.fetchEffect("Pregnancy");
 						if(A!=null)
 						{
@@ -235,7 +235,7 @@ public class AnimalHusbandry extends CommonSkill
 		messedUp=!proficiencyCheck(mob,-highestLevel+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(55,mob,highestLevel,20);
 		verb="husbanding "+husbanding[0].name()+" to "+husbanding[1].name();
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) "+verb+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) @x1.",verb));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

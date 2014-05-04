@@ -62,7 +62,7 @@ public class Spell_FakeArmor extends Spell
 		&&(msg.target() instanceof MOB))
 		{
 			notAgainThisRound=true;
-			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,affected.name()+" absorbs some of the damage done to <S-NAME>."));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,_("@x1 absorbs some of the damage done to <S-NAME>.",affected.name())));
 			((Item)affected).unWear();
 			((Item)affected).destroy();
 		}
@@ -104,8 +104,7 @@ public class Spell_FakeArmor extends Spell
 		}
 		if((choice<0)||(choice2<0))
 		{
-			mob.tell("You must specify what kind of armor to create: plate, chain, studded, or leather."
-			+"You must also specify a armor type: helmet, shirt, leggings, sleeves, or boots");
+			mob.tell(_("You must specify what kind of armor to create: plate, chain, studded, or leather.You must also specify a armor type: helmet, shirt, leggings, sleeves, or boots"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -159,7 +158,7 @@ public class Spell_FakeArmor extends Spell
 				armor.recoverPhyStats();
 				armor.setBaseValue(0);
 				mob.addItem(armor);
-				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
+				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> own(s) <O-NAME>!"));
 				myItem=armor;
 				beneficialAffect(mob,armor,asLevel,0);
 			}

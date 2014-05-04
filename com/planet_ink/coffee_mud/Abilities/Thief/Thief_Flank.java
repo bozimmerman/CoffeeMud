@@ -100,7 +100,7 @@ public class Thief_Flank extends ThiefSkill
 			return;
 		final MOB mob=(MOB)affected;
 		if((canBeUninvoked())&&(mob!=null)&&(target!=null)&&(!mob.amDead()))
-			mob.tell("You are no longer flanking "+target.name(mob)+".");
+			mob.tell(_("You are no longer flanking @x1.",target.name(mob)));
 		super.unInvoke();
 	}
 
@@ -129,7 +129,7 @@ public class Thief_Flank extends ThiefSkill
 
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell("You are too far away to flank "+mob.getVictim().name()+"!");
+			mob.tell(_("You are too far away to flank @x1!",mob.getVictim().name()));
 			return false;
 		}
 

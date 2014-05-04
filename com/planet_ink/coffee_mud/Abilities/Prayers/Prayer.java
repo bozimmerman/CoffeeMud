@@ -129,16 +129,16 @@ public class Prayer extends StdAbility
 				return true;
 
 			if(hq==0)
-				mob.tell("The evil nature of "+name()+" disrupts your prayer.");
+				mob.tell(_("The evil nature of @x1 disrupts your prayer.",name()));
 			else
 			if(hq==1000)
-				mob.tell("The goodness of "+name()+" disrupts your prayer.");
+				mob.tell(_("The goodness of @x1 disrupts your prayer.",name()));
 			else
 			if(CMLib.flags().isGood(mob))
-				mob.tell("The anti-good nature of "+name()+" disrupts your thought.");
+				mob.tell(_("The anti-good nature of @x1 disrupts your thought.",name()));
 			else
 			if(CMLib.flags().isEvil(mob))
-				mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
+				mob.tell(_("The anti-evil nature of @x1 disrupts your thought.",name()));
 			return false;
 		}
 		return true;

@@ -88,7 +88,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		{
 			if(target==getMark(mob))
 			{
-				mob.tell("You'll need to observe your mark a little longer ("+ticksWaited+"/15 ticks) before you can get the disguise right.");
+				mob.tell(_("You'll need to observe your mark a little longer (@x1/15 ticks) before you can get the disguise right.",""+ticksWaited));
 				return false;
 			}
 		}
@@ -102,7 +102,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) away for a second."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

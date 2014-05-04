@@ -87,7 +87,7 @@ public class Chant_GrowFood extends Chant
 		}
 		if((material<0)&&(s.length()>0))
 		{
-			mob.tell("'"+s+"' is not a recognized form of food or herbs!    Try LIST as a parameter...");
+			mob.tell(_("'@x1' is not a recognized form of food or herbs!    Try LIST as a parameter...",s));
 			return false;
 		}
 
@@ -123,7 +123,7 @@ public class Chant_GrowFood extends Chant
 				newItem.recoverPhyStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 pops out of the ground.",newItem.name()));
 				mob.location().recoverPhyStats();
 			}
 		}

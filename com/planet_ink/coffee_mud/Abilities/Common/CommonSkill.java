@@ -113,13 +113,13 @@ public class CommonSkill extends StdAbility
 			}
 			final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
-				mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
+				mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound));
 			else
 			if((tickUp%4)==0)
 			{
 				final int total=tickUp+tickDown;
 				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				mob.location().show(mob,null,this,getActivityMessageType(),"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
+				mob.location().show(mob,null,this,getActivityMessageType(),_("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,_("<S-NAME> continue(s) @x1.@x2",verb,sound));
 			}
 			if((helping)
 			&&(helpingAbility!=null)
@@ -148,9 +148,9 @@ public class CommonSkill extends StdAbility
 			{
 				final MOB mob=(MOB)affected;
 				if(aborted)
-					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> stop(s) "+verb+".");
+					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> stop(s) @x1.",verb));
 				else
-					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> done "+verb+".");
+					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-IS-ARE> done @x1.",verb));
 				helping=false;
 				helpingAbility=null;
 			}
@@ -443,15 +443,15 @@ public class CommonSkill extends StdAbility
 		final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
 		if(remainders.commonSkills<=0)
 		{
-			teacherM.tell(studentM.name(teacherM)+" can not learn any more common skills.");
-			studentM.tell("You have learned the maximum "+C.maxCommonSkills()+" common skills, and may not learn any more.");
+			teacherM.tell(_("@x1 can not learn any more common skills.",studentM.name(teacherM)));
+			studentM.tell(_("You have learned the maximum @x1 common skills, and may not learn any more.",""+C.maxCommonSkills()));
 			return false;
 		}
 		if(remainders.specificSkillLimit<=0)
 		{
-			teacherM.tell(studentM.name(teacherM)+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
+			teacherM.tell(_("@x1 can not learn any more @x2crafting common skills.",studentM.name(teacherM),(crafting?"":"non-")));
 			final int max = crafting ? C.maxCraftingSkills() : C.maxNonCraftingSkills();
-			studentM.tell("You have learned the maximum "+max+""+(crafting?" ":" non-") + "crafting skills, and may not learn any more.");
+			studentM.tell(_("You have learned the maximum @x1@x2crafting skills, and may not learn any more.",""+max,(crafting?" ":" non-")));
 			return false;
 		}
 		return true;
@@ -469,15 +469,15 @@ public class CommonSkill extends StdAbility
 			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 			final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
 			if(remainders.commonSkills<=0)
-				student.tell(student.name()+" may not learn any more common skills.");
+				student.tell(_("@x1 may not learn any more common skills.",student.name()));
 			else
 			if(remainders.commonSkills<=Integer.MAX_VALUE/2)
-				student.tell(student.name()+" may learn "+remainders.commonSkills+" more common skills.");
+				student.tell(_("@x1 may learn @x2 more common skills.",student.name(),""+remainders.commonSkills));
 			if(remainders.specificSkillLimit<=0)
-				student.tell(student.name()+" may not learn any more "+(crafting?"":"non-") +"crafting common skills.");
+				student.tell(_("@x1 may not learn any more @x2crafting common skills.",student.name(),(crafting?"":"non-")));
 			else
 			if(remainders.specificSkillLimit<=Integer.MAX_VALUE/2)
-				student.tell(student.name()+" may learn "+remainders.specificSkillLimit+" more "+(crafting?"":"non-") +"crafting common skills.");
+				student.tell(_("@x1 may learn @x2 more @x3crafting common skills.",student.name(),""+remainders.specificSkillLimit,(crafting?"":"non-")));
 		}
 	}
 

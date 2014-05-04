@@ -102,7 +102,7 @@ public class Spell_ShrinkMouth extends Spell
 				{
 					beneficialAffect(mob,target,asLevel,0);
 					if((!auto)&&(target.location()!=null))
-						target.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-YOUPOSS> mouth shrinks!");
+						target.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-YOUPOSS> mouth shrinks!"));
 					CMLib.utensils().confirmWearability(target);
 				}
 			}

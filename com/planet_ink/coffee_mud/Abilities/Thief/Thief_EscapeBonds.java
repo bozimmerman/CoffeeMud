@@ -62,7 +62,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			final int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
 						   +getXLEVELLevel(mob)
 						   +(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*2);
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,"<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds.");
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HANDS,_("<S-NAME> slip(s) and wiggle(s) in <S-HIS-HER> bonds."));
 			for(int v=0;v<V.size();v++)
 			{
 				mob.charStats().setStat(CharStats.STAT_STRENGTH,newStrength);

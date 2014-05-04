@@ -195,7 +195,7 @@ public class Lacquerring extends CommonSkill
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(60,mob,1,12);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) lacquering <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),_("<S-NAME> start(s) lacquering <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

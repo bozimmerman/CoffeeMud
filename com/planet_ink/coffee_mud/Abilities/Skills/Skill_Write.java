@@ -69,7 +69,7 @@ public class Skill_Write extends StdSkill
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 
@@ -103,7 +103,7 @@ public class Skill_Write extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,_("<S-NAME> write(s) on <T-NAMESELF>."),CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,_("<S-NAME> write(s) on <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

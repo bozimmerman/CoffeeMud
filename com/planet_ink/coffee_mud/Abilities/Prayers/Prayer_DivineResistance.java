@@ -80,7 +80,7 @@ public class Prayer_DivineResistance extends Prayer
 				if(msg.tool()!=null)
 					permProts.add(msg.tool());
 				prots--;
-				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> divine protection glows!");
+				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> divine protection glows!"));
 				if(prots==0)
 					unInvoke();
 			}

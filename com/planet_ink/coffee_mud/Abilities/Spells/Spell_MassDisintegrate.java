@@ -125,7 +125,7 @@ public class Spell_MassDisintegrate extends Spell
 				||(!((DeadBody)I).playerCorpse())
 				||(((DeadBody)I).mobName().equals(mob.Name())))
 				{
-					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),I.name()+" disintegrates!");
+					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),_("@x1 disintegrates!",I.name()));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

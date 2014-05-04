@@ -60,7 +60,7 @@ public class Prayer_LinkedHealth extends Prayer
 		{
 			if(buddy!=null)
 			{
-				mob.tell("Your health is no longer linked with "+buddy.name()+".");
+				mob.tell(_("Your health is no longer linked with @x1.",buddy.name()));
 				final Ability A=buddy.fetchEffect(ID());
 				if(A!=null) A.unInvoke();
 			}
@@ -100,13 +100,13 @@ public class Prayer_LinkedHealth extends Prayer
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name(mob)+"'s health is already linked with someones!");
+			mob.tell(_("@x1's health is already linked with someones!",target.name(mob)));
 			return false;
 		}
 
 		if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		{
-			mob.tell(target.name(mob)+" is not in your group.");
+			mob.tell(_("@x1 is not in your group.",target.name(mob)));
 			return false;
 		}
 

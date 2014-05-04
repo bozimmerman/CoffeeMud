@@ -97,7 +97,7 @@ public class Spell_SummonCompanion extends Spell
 				final MOB follower=target;
 				final Room newRoom=mob.location();
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl created by "+mob.name()+".");
+				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
 				if(oldRoom.okMessage(follower,leaveMsg))
 				{
 					if(newRoom.okMessage(follower,enterMsg))

@@ -66,7 +66,7 @@ public class Chant_Mold extends Chant
 		   ||(target instanceof Room)
 		   ||(target instanceof Exit))
 		{
-			mob.tell("You can't cast this on "+target.name(mob)+".");
+			mob.tell(_("You can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 

@@ -115,7 +115,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 				direction=d;
 		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob))||(direction<0))
 		{
-			mob.tell("You don't see any directions called '"+typed+"' here.");
+			mob.tell(_("You don't see any directions called '@x1' here.",typed));
 			return false;
 		}
 		final Room R2=mob.location().getRoomInDir(direction);
@@ -140,7 +140,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

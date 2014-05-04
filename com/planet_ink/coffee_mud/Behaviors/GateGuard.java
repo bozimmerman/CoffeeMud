@@ -176,7 +176,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,_("<S-NAME> lock(s) <T-NAME>."));
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
@@ -188,7 +188,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_UNLOCK,_("<S-NAME> unlock(s) <T-NAME>."));
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}
@@ -205,7 +205,7 @@ public class GateGuard extends StdBehavior
 				{
 					if(getMyKeyTo(mob,e)!=null)
 					{
-						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						final CMMsg msg=CMClass.getMsg(mob,e,CMMsg.MSG_LOCK,_("<S-NAME> lock(s) <T-NAME>."));
 						if(mob.location().okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,mob.location(),dir);
 					}

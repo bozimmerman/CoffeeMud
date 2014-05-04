@@ -79,7 +79,7 @@ public class Prayer_ProtEvil extends Prayer
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
 				return false;
 			}
 
@@ -137,7 +137,7 @@ public class Prayer_ProtEvil extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 

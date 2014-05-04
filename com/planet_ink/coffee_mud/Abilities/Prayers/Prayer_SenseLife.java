@@ -103,9 +103,9 @@ public class Prayer_SenseLife extends Prayer
 			mob.tell(_("You do not sense any life beyond your own."));
 		else
 		if(dirs.length()==0)
-			mob.tell("You sense a life force coming from "+last+".");
+			mob.tell(_("You sense a life force coming from @x1.",last));
 		else
-			mob.tell("You sense a life force coming from "+dirs.substring(2)+", and "+last+".");
+			mob.tell(_("You sense a life force coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override

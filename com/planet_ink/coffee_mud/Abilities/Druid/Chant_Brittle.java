@@ -58,7 +58,7 @@ public class Chant_Brittle extends Chant
 				{
 					final Room R=CMLib.map().roomLocation(E);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
+						R.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 is destroyed!",E.name()));
 					((Item)E).destroy();
 				}
 				noRecurse=false;

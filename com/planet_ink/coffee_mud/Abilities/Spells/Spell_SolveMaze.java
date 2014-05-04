@@ -106,8 +106,7 @@ public class Spell_SolveMaze extends Spell
 				if(outRoom instanceof GridLocale)
 					outRoom=((GridLocale)outRoom).prepareGridLocale(targetR,outRoom, direction);
 				final int radius = (grid.xGridSize()*grid.yGridSize())+2;
-				mob.tell("The directions are taking shape in your mind: \n\r" +
-					CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), false, false, radius, null,1));
+				mob.tell(_("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), false, false, radius, null,1)));
 			}
 		}
 		else

@@ -80,7 +80,7 @@ public class Spell_AlternateReality extends Spell
 			final Set<MOB> H=invoker().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(msg.target()))
 			{
-				msg.source().tell("But you are on "+invoker().name()+"'s side!");
+				msg.source().tell(_("But you are on @x1's side!",invoker().name()));
 				if(invoker().getVictim()!=affected)
 					((MOB)affected).setVictim(invoker().getVictim());
 				return false;
@@ -98,7 +98,7 @@ public class Spell_AlternateReality extends Spell
 
 		if(target.getVictim()!=mob)
 		{
-			mob.tell("But "+target.charStats().heshe()+" isn't fighting you!");
+			mob.tell(_("But @x1 isn't fighting you!",target.charStats().heshe()));
 			return false;
 		}
 		// the invoke method for spells receives as

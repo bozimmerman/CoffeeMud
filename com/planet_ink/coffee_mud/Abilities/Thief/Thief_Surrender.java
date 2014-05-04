@@ -87,7 +87,7 @@ public class Thief_Surrender extends ThiefSkill
 				else
 					enemiesList.append(", "+vic.name());
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+costWords+".");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> surrender(s) to @x1, paying @x2.",enemiesList.toString(),costWords));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

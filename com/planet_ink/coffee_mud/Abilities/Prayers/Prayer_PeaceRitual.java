@@ -139,7 +139,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,"<T-NAME> <T-IS-ARE> already affected by "+name()+".");
+			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 		clan1=CMLib.clans().findRivalrousClan(mob);
@@ -158,7 +158,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if((clan2==null)
 		||((clan1.getClanRelations(clan2.clanID())!=Clan.REL_WAR)&&(clan2.getClanRelations(clan1.clanID())!=Clan.REL_WAR)))
 		{
-			mob.tell("Your "+clan1.getGovernmentName()+" is not at war with "+clan2+"!");
+			mob.tell(_("Your @x1 is not at war with @x2!",clan1.getGovernmentName(),clan2.name()));
 			return false;
 		}
 		boolean found=false;
@@ -170,7 +170,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		if(!found)
 		{
-			mob.tell("You must wait until a member of "+clan2+" is online before beginning the ritual.");
+			mob.tell(_("You must wait until a member of @x1 is online before beginning the ritual.",clan2.name()));
 			return false;
 		}
 

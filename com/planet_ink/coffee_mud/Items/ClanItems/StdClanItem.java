@@ -81,7 +81,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					removeFromOwnerContainer();
 					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
+						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is dropped!",name()));
 				}
 			}
 			lastClanCheck=System.currentTimeMillis();
@@ -246,9 +246,9 @@ public class StdClanItem extends StdItem implements ClanItem
 			if(alreadyHasOne!=null)
 			{
 				if(giver!=null)
-					giver.tell(targetMOB.name()+" already has "+alreadyHasOne.name()+", and cannot have another Clan Item.");
+					giver.tell(CMLib.lang()._("@x1 already has @x2, and cannot have another Clan Item.",targetMOB.name(),alreadyHasOne.name()));
 				else
-					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to find the room for <O-NAME>.");
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> can't seem to find the room for <O-NAME>."));
 				return false;
 			}
 			if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
@@ -257,7 +257,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				if(giver!=null)
 					giver.tell(CMLib.lang()._("This item should only be given to those who roam the area."));
 				else
-					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem mobile enough to take <O-NAME>.");
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> do(es)n't seem mobile enough to take <O-NAME>."));
 				return false;
 			}
 			final Room startRoom=targetMOB.getStartRoom();
@@ -274,7 +274,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					if(giver!=null)
 						giver.tell(CMLib.lang()._("You can only give a clan item to a conquered mob within the conquered area."));
 					else
-						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't seem to take <O-NAME> here.");
+						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> can't seem to take <O-NAME> here."));
 					return false;
 				}
 			}
@@ -295,7 +295,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			if((targetMOB.getClanRole(((ClanItem)myHost).clanID())==null)
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
-				msg.source().tell("You cannot give this item to "+targetMOB.name()+".");
+				msg.source().tell(CMLib.lang()._("You cannot give this item to @x1.",targetMOB.name()));
 				return false;
 			}
 			else
@@ -398,7 +398,7 @@ public class StdClanItem extends StdItem implements ClanItem
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);
-								M.tell(CMStrings.capitalizeFirstLetter(C.getName())+" gains "+exp+" experience points for this capture.");
+								M.tell(CMLib.lang()._("@x1 gains @x2 experience points for this capture.",CMStrings.capitalizeFirstLetter(C.getName()),""+exp));
 							}
 							break;
 						}

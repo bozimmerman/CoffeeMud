@@ -90,7 +90,7 @@ public class Prayer_CreateIdol extends Prayer
 		&&(msg.tool()==affected)
 		&&(!((MOB)msg.target()).willFollowOrdersOf(msg.source())))
 		{
-			msg.source().tell(((MOB)msg.target()).name(msg.source())+" won`t accept "+((Item)msg.tool()).name(msg.source())+".");
+			msg.source().tell(_("@x1 won`t accept @x2.",((MOB)msg.target()).name(msg.source()),((Item)msg.tool()).name(msg.source())));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -154,7 +154,7 @@ public class Prayer_CreateIdol extends Prayer
 				CMLib.flags().setDroppable(newItem,false);
 				newItem.addNonUninvokableEffect((Ability)copyOf());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" grows out of the ground.");
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 grows out of the ground.",newItem.name()));
 				mob.location().recoverPhyStats();
 			}
 		}

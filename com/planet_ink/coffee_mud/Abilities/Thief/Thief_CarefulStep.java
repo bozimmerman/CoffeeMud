@@ -71,7 +71,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				mob.tell(_("Step where?"));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) walking carefully "+Directions.getDirectionName(dirCode)+".");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) walking carefully @x1.",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
@@ -95,7 +95,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> walk(s) carefully "+Directions.getDirectionName(dirCode)+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> walk(s) carefully @x1.",Directions.getDirectionName(dirCode)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

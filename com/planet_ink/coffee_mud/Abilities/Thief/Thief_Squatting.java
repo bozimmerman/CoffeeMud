@@ -96,7 +96,7 @@ public class Thief_Squatting extends ThiefSkill
 			else
 			if(title.getOwnerName().length()>0)
 			{
-				mob.tell("Your squat has succeeded.  This property no longer belongs to "+title.getOwnerName()+".");
+				mob.tell(_("Your squat has succeeded.  This property no longer belongs to @x1.",title.getOwnerName()));
 				title.setOwnerName("");
 				title.updateTitle();
 				title.updateLot(null);
@@ -197,7 +197,7 @@ public class Thief_Squatting extends ThiefSkill
 			title=T;
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(warnMOB!=null)
-				warnMOB.tell("You've heard a rumor that someone is squatting on "+T.getOwnerName()+"'s property.");
+				warnMOB.tell(_("You've heard a rumor that someone is squatting on @x1's property.",T.getOwnerName()));
 		}
 		return success;
 	}

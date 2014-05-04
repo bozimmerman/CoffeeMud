@@ -66,10 +66,10 @@ public class Spell_RepairingAura extends Spell
 			if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
 			{
 				if(I.owner() instanceof Room)
-					((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I,"<S-NAME> is magically repairing itself.");
+					((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I,_("<S-NAME> is magically repairing itself."));
 				else
 				if(I.owner() instanceof MOB)
-					((MOB)I.owner()).tell(I.name()+" is magically repairing itself.");
+					((MOB)I.owner()).tell(_("@x1 is magically repairing itself.",I.name()));
 				I.setUsesRemaining(I.usesRemaining()+1);
 			}
 		}
@@ -84,12 +84,12 @@ public class Spell_RepairingAura extends Spell
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already repairing!");
+			mob.tell(_("@x1 is already repairing!",target.name(mob)));
 			return false;
 		}
 		if((!(target instanceof Item))&&(!(target instanceof MOB)))
 		{
-			mob.tell(target.name(mob)+" would not be affected by this spell.");
+			mob.tell(_("@x1 would not be affected by this spell.",target.name(mob)));
 			return false;
 		}
 

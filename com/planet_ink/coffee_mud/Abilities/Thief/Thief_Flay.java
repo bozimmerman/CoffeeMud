@@ -104,7 +104,7 @@ public class Thief_Flay extends ThiefSkill
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name(mob)+" must be prone or bound first.");
+			mob.tell(_("@x1 must be prone or bound first.",target.name(mob)));
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -112,7 +112,7 @@ public class Thief_Flay extends ThiefSkill
 			final Item I=target.getItem(i);
 			if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
 			{
-				mob.tell(target.name(mob)+" must be remove items worn on the torso or back first.");
+				mob.tell(_("@x1 must be remove items worn on the torso or back first.",target.name(mob)));
 				return false;
 			}
 		}
@@ -129,12 +129,12 @@ public class Thief_Flay extends ThiefSkill
 			ww=(Weapon)w;
 			if(ww.weaponClassification()!=Weapon.CLASS_FLAILED)
 			{
-				mob.tell("You cannot flay with a "+ww.name()+", you need a flailing weapon!");
+				mob.tell(_("You cannot flay with a @x1, you need a flailing weapon!",ww.name()));
 				return false;
 			}
 			if(w.material()!=RawMaterial.RESOURCE_LEATHER)
 			{
-				mob.tell("You cannot flay with a "+ww.name()+", you need a weapon made of leather!");
+				mob.tell(_("You cannot flay with a @x1, you need a weapon made of leather!",ww.name()));
 				return false;
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -148,7 +148,7 @@ public class Thief_Flay extends ThiefSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,_("<S-NAME> flay(s) the bare back of <T-NAMESELF>!"));
 		final boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
 
 		if(success)

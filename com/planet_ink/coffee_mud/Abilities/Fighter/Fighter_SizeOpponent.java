@@ -62,7 +62,7 @@ public class Fighter_SizeOpponent extends FighterSkill
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

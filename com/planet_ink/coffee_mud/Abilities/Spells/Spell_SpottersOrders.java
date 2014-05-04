@@ -140,7 +140,7 @@ public class Spell_SpottersOrders extends Spell
 							P.second.tick(P.first, Tickable.TICKID_MOB);
 							P.first.recoverPhyStats();
 							if((invoker()!=null)&&(invoker()!=P.first))
-								P.first.tell("You can sense the shared thoughts of "+invoker().Name()+".");
+								P.first.tell(_("You can sense the shared thoughts of @x1.",invoker().Name()));
 						}
 					}
 				}

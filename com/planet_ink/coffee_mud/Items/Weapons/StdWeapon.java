@@ -118,7 +118,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 				if(CMLib.flags().canBeSeenBy(this,msg.source()))
 				{
 					if(requiresAmmunition())
-						msg.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
+						msg.source().tell(_("@x1 remaining: @x2/@x3.",ammunitionType(),""+ammunitionRemaining(),""+ammunitionCapacity()));
 					if((subjectToWearAndTear())&&(usesRemaining()<100))
 						msg.source().tell(weaponHealth());
 				}
@@ -250,7 +250,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			{
 				if(lastReloadTime != msg.source().lastTickedDateTime())
 				{
-					msg.source().tell(name()+" is out of "+ammunitionType()+".");
+					msg.source().tell(_("@x1 is out of @x2.",name(),ammunitionType()));
 					if((msg.source().isMine(this))
 					   &&(msg.source().location()!=null)
 					   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))

@@ -81,7 +81,7 @@ public class Prayer_HuntEvil extends Prayer
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell("The hunt seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				mob.tell(_("The hunt seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -129,7 +129,7 @@ public class Prayer_HuntEvil extends Prayer
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already trying to hunt "+word()+".");
+			mob.tell(_("You are already trying to hunt @x1.",word()));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -172,7 +172,7 @@ public class Prayer_HuntEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> "+prayWord(mob)+" for the trail to "+word()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> @x1 for the trail to @x2.^?",prayWord(mob),word()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

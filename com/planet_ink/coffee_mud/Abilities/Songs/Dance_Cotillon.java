@@ -93,7 +93,7 @@ public class Dance_Cotillon extends Dance
 				if((whichLast!=null)
 				&&(M.isInCombat())
 				&&(M.getVictim().getVictim()!=whichLast)
-				&&(whichLast.location().show(whichLast,null,M.getVictim(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> dance(s) into <O-YOUPOSS> way.")))
+				&&(whichLast.location().show(whichLast,null,M.getVictim(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> dance(s) into <O-YOUPOSS> way."))))
 					M.getVictim().setVictim(whichLast);
 			}
 		}

@@ -75,10 +75,10 @@ public class GenKineticField extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is stopped by the shield around"));
 				else
-					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> stops the <O-NAMENOART> damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> stops the <O-NAMENOART> damage."));
 			}
 			else
-				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> stops the <O-NAMENOART> damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> stops the <O-NAMENOART> damage."));
 		}
 		return false;
 	}

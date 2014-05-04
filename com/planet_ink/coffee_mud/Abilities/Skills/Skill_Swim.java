@@ -100,10 +100,10 @@ public class Skill_Swim extends StdSkill
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
 			{
-				mob.tell("You need to get off "+mob.riding().name()+" first!");
+				mob.tell(_("You need to get off @x1 first!",mob.riding().name()));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) swimming "+Directions.getDirectionName(dirCode)+".");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) swimming @x1.",Directions.getDirectionName(dirCode)));
 			final Room R=mob.location();
 			if((R!=null)&&(R.okMessage(mob,msg)))
 				R.send(mob,msg);
@@ -131,7 +131,7 @@ public class Skill_Swim extends StdSkill
 			R.send(mob,msg);
 			success=proficiencyCheck(mob,0,auto);
 			if(!success)
-				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
+				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> struggle(s) against the water, making no progress."));
 			else
 			{
 				if(mob.fetchEffect(ID())==null)

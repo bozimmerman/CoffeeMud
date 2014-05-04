@@ -84,7 +84,7 @@ public class Fighter_Tumble extends FighterSkill
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 				if(!((MOB)msg.target()).amDead())
-					msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> tumble(s) around the attack from <T-NAME>."));
+					msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> tumble(s) around the attack from <T-NAME>.")));
 				if((++hits)>=2)
 					unInvoke();
 			}

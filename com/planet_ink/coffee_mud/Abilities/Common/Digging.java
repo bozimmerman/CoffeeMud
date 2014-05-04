@@ -104,7 +104,7 @@ public class Digging extends GatheringSkill
 					amount=amount*abilityCode();
 					String s="s";
 					if((amount==1)||(foundShortName.endsWith("s"))) s="";
-					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
+					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+amount,foundShortName,s));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -161,7 +161,7 @@ public class Digging extends GatheringSkill
 		}
 
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) digging for gems.");
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) digging for gems."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -93,7 +93,7 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 					if(lastI==I)
 					{
 						alreadyDone.add(I);
-						final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+						final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,_("<S-NAME> release(s) <T-NAME>."));
 						target.location().send(target,msg2);
 					}
 					else

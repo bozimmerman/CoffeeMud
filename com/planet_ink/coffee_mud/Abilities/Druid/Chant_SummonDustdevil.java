@@ -91,7 +91,7 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,"<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>.");
+							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,_("<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>."));
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else
@@ -223,7 +223,7 @@ public class Chant_SummonDustdevil extends Chant
 					beneficialAffect(mob,target,asLevel,0);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(target.name(mob)+" seems unwilling to follow you.");
+						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 			}
 		}
@@ -264,7 +264,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s)!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s)!"));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

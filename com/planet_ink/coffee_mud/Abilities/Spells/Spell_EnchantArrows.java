@@ -70,7 +70,7 @@ public class Spell_EnchantArrows extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,5);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell("The effort causes you to lose "+experienceToLose+" experience.");
+		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -82,7 +82,7 @@ public class Spell_EnchantArrows extends Spell
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect(ID());
 				if((A!=null)&&(CMath.s_int(A.text())>2))
-					mob.tell("You are not able to enchant "+target.name(mob)+" further.");
+					mob.tell(_("You are not able to enchant @x1 further.",target.name(mob)));
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows!"));

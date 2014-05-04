@@ -80,7 +80,7 @@ public class Spell_FindDirections extends Spell
 
 		if(A==null)
 		{
-			mob.tell("You know of nowhere called \""+CMParms.combine(commands)+"\".");
+			mob.tell(_("You know of nowhere called \"@x1\".",CMParms.combine(commands)));
 			return false;
 		}
 
@@ -94,8 +94,7 @@ public class Spell_FindDirections extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell("The directions are taking shape in your mind: \n\r" +
-					CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), false, false, 100, null,1));
+				mob.tell(_("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), false, false, 100, null,1)));
 			}
 		}
 		else

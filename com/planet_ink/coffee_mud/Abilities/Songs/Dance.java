@@ -323,7 +323,7 @@ public class Dance extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) the "+name()+" due to <S-HIS-HER> armor!");
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) the @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 

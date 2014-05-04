@@ -283,7 +283,7 @@ public class Song_Ode extends Song
 				V.addElement(e.nextElement());
 			final Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 			final String[] chk=stuff[I.intValue()];
-			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,"<S-NAME> sing(s) '"+chk[3]+"'.");
+			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,_("<S-NAME> sing(s) '@x1'.",chk[3]));
 		}
 
 
@@ -383,7 +383,7 @@ public class Song_Ode extends Song
 				str.append((String)e.nextElement()+" ");
 			mob.tell(_("Compose or sing an ode about whom?"));
 			if(str.length()>0)
-				mob.tell("You presently have odes written about: "+str.toString().trim()+".");
+				mob.tell(_("You presently have odes written about: @x1.",str.toString().trim()));
 			return false;
 		}
 		String name=CMParms.combine(commands,0);

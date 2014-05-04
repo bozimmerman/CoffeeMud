@@ -73,7 +73,7 @@ public class Chant_GrowForest extends Chant
 			}
 		if((material<0)&&(s.length()>0))
 		{
-			mob.tell("'"+s+"' is not a recognized form of tree!");
+			mob.tell(_("'@x1' is not a recognized form of tree!",s));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Chant_GrowForest extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"A grove of "+shortName.toLowerCase()+" trees sprout up.");
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("A grove of @x1 trees sprout up.",shortName.toLowerCase()));
 				mob.location().setResource(material);
 			}
 		}

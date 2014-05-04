@@ -45,14 +45,14 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
 
 		{
 			final Ability A=CMClass.getAbility("Slip");
 			if((A!=null)&&(A.castingQuality(invoker(),mob)==Ability.QUALITY_MALICIOUS))
 			{
-				mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground cause <T-NAME> to slip!");
+				mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,_("The @x1caltrops on the ground cause <T-NAME> to slip!",caltropTypeName()));
 				if(A.invoke(invoker(),mob,true,adjustedLevel(invoker(),0)))
 				{
 					if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))

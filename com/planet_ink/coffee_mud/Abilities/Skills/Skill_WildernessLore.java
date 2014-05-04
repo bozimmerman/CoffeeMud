@@ -57,7 +57,7 @@ public class Skill_WildernessLore extends StdSkill
 			return false;
 		}
 		final Room room=mob.location();
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look at the terrain.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,_("<S-NAME> take(s) a quick look at the terrain."));
 		if(room.okMessage(mob,msg))
 		{
 			room.send(mob,msg);
@@ -148,7 +148,7 @@ public class Skill_WildernessLore extends StdSkill
 			}
 		}
 		else
-			mob.location().show(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look around, but get(s) confused.");
+			mob.location().show(mob,null,this,CMMsg.MSG_HANDS,_("<S-NAME> take(s) a quick look around, but get(s) confused."));
 		return success;
 	}
 

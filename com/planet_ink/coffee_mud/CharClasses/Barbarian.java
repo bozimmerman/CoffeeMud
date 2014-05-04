@@ -188,7 +188,7 @@ public class Barbarian extends StdCharClass
 		{
 			if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{
-				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,"<S-NAME> resist(s) the "+msg.tool().name()+" attack from <O-NAMESELF>!");
+				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,_("<S-NAME> resist(s) the @x1 attack from <O-NAMESELF>!",msg.tool().name()));
 				return false;
 			}
 		}

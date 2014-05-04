@@ -564,7 +564,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						return;
 					}
 					me.renameSpaceShip(this.input.trim());
-					buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
+					buyer.tell(_("@x1 is now signed over to @x2.",name(),getOwnerName()));
 					final LocationRoom finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
@@ -574,7 +574,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					else
 					{
 						me.dockHere(finalR);
-						buyer.tell("You'll find your ship docked at '"+finalR.displayText(buyer)+"'.");
+						buyer.tell(_("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
 					}
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
 						buyer.playerStats().getExtItems().addItem(me);
@@ -584,7 +584,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		else
 		{
-			buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
+			buyer.tell(_("@x1 is now signed over to @x2.",name(),getOwnerName()));
 			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
 				buyer.playerStats().getExtItems().addItem(this);
 			final LocationRoom finalR=findNearestDocks(R);

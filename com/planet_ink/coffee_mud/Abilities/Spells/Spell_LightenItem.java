@@ -61,7 +61,7 @@ public class Spell_LightenItem extends Spell
 			&&(((MOB)item.owner()).isMine(item)))
 			{
 				final MOB mob=(MOB)item.owner();
-				mob.tell(item.name()+" grows heavy again.");
+				mob.tell(_("@x1 grows heavy again.",item.name()));
 				if((mob.phyStats().weight()+item.basePhyStats().weight())>mob.maxCarry())
 				{
 					if(!item.amWearingAt(Wearable.IN_INVENTORY))
@@ -88,7 +88,7 @@ public class Spell_LightenItem extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name(mob)+" is already light!");
+			mob.tell(_("@x1 is already light!",target.name(mob)));
 			return false;
 		}
 

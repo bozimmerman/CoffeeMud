@@ -60,10 +60,10 @@ public class Thief_Con extends ThiefSkill
 		if(secondsElapsed>0)
 		{
 			if((secondsElapsed%4)==0)
-				return mob.location().show(mob,target,CMMsg.MSG_SPEAK,"^T<S-NAME> continue(s) conning <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+				return mob.location().show(mob,target,CMMsg.MSG_SPEAK,_("^T<S-NAME> continue(s) conning <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
 			return true;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> attempt(s) to con <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		else
@@ -90,13 +90,13 @@ public class Thief_Con extends ThiefSkill
 		||(!target.isMonster())
 		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
-			mob.tell("You can't con "+target.name(mob)+".");
+			mob.tell(_("You can't con @x1.",target.name(mob)));
 			return false;
 		}
 
 		if(target.isInCombat())
 		{
-			mob.tell(target.name(mob)+" is too busy fighting right now.");
+			mob.tell(_("@x1 is too busy fighting right now.",target.name(mob)));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Thief_Con extends ThiefSkill
 
 		if(commands.size()<1)
 		{
-			mob.tell("Con "+target.charStats().himher()+" into doing what?");
+			mob.tell(_("Con @x1 into doing what?",target.charStats().himher()));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Thief_Con extends ThiefSkill
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't con "+target.name(mob)+" to do that.");
+					mob.tell(_("You can't con @x1 to do that.",target.name(mob)));
 					return false;
 				}
 			}
@@ -167,13 +167,13 @@ public class Thief_Con extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> tr(ys) to con <T-NAMESELF> to '"+CMParms.combine(commands,0)+"', but <S-IS-ARE> unsuccessful.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> tr(ys) to con <T-NAMESELF> to '@x1', but <S-IS-ARE> unsuccessful.^?",CMParms.combine(commands,0)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> con(s) <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
 			mob.recoverPhyStats();
 			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))

@@ -717,7 +717,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
-			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scripting Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+CMParms.toStringList(externalFiles())+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,_("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toStringList(externalFiles()),cmdName,errType,errMsg));
 		}
 		else
 			Log.errOut("Scripting","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
@@ -6249,16 +6249,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(V.size()>1)
 				{
-					//source.tell("Starting "+conditionStr);
+					//source.tell(_("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
-					//  source.tell("Statement "+((String)V.elementAt(v)));
+					//  source.tell(_("Statement @x1",((String)V.elementAt(v))));
 					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
 						return response;
 					}
-					//source.tell("Stopping "+conditionStr);
+					//source.tell(_("Stopping @x1",conditionStr));
 				}
 				break;
 			}
@@ -6475,9 +6475,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(V.size()>1)
 				{
-					//source.tell("Starting "+conditionStr);
+					//source.tell(_("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
-					//  source.tell("Statement "+((String)V.elementAt(v)));
+					//  source.tell(_("Statement @x1",((String)V.elementAt(v))));
 					final int fromInt=CMath.s_int(from);
 					int toInt=CMath.s_int(to);
 					final int increment=(toInt>=fromInt)?1:-1;
@@ -6507,7 +6507,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return response;
 					}
 					tmp[whichVar]=null;
-					//source.tell("Stopping "+conditionStr);
+					//source.tell(_("Stopping @x1",conditionStr));
 				}
 				break;
 			}
@@ -8109,19 +8109,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(2).trim());
-						themob.tell("You lose "+amt+" faction with "+F.name()+".");
+						themob.tell(_("You lose @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(themob.fetchFaction(faction)-amt);
 					}
 					else
 					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(1).trim());
-						themob.tell("You gain "+amt+" faction with "+F.name()+".");
+						themob.tell(_("You gain @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(themob.fetchFaction(faction)+amt);
 					}
 					else
 					if(CMath.isInteger(range))
-						themob.tell("Your faction with "+F.name()+" is now "+CMath.s_int(range.trim())+".");
+						themob.tell(_("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
 					if(CMath.isInteger(range))
 						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 					else
@@ -8139,7 +8139,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							logError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
 						else
 						{
-							themob.tell("Your faction with "+F.name()+" is now "+FR.name()+".");
+							themob.tell(_("Your faction with @x1 is now @x2.",F.name(),FR.name()));
 							themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
 						}
 					}
@@ -8785,7 +8785,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(destroy)
 							{
 								if(lastKnownLocation!=null)
-									lastKnownLocation.showHappens(CMMsg.MSG_OK_VISUAL,E.name()+" is destroyed!");
+									lastKnownLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is destroyed!",E.name()));
 								E.destroy();
 							}
 						}

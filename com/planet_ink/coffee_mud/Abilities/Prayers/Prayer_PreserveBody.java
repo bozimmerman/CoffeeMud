@@ -50,7 +50,7 @@ public class Prayer_PreserveBody extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.name(mob)+" doesn't look dead yet.");
+			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))

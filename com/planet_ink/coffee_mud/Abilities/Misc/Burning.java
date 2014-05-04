@@ -79,7 +79,7 @@ public class Burning extends StdAbility
 			{
 				final Room R=((Room)(((Item)affected).owner()));
 				if(R.numInhabitants()>0)
-					R.showHappens(CMMsg.MSG_OK_ACTION,"The "+what+" puts out "+affected.name()+".");
+					R.showHappens(CMMsg.MSG_OK_ACTION,_("The @x1 puts out @x2.",what,affected.name()));
 				unInvoke();
 				return false;
 			}
@@ -137,7 +137,7 @@ public class Burning extends StdAbility
 								invoker.basePhyStats().setLevel(affected.phyStats().level());
 								invoker.phyStats().setLevel(affected.phyStats().level());
 							}
-							room.showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" EXPLODES!!!");
+							room.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 EXPLODES!!!",affected.name()));
 							for(int i=0;i<room.numInhabitants();i++)
 							{
 								final MOB target=room.fetchInhabitant(i);
@@ -166,7 +166,7 @@ public class Burning extends StdAbility
 								room.recoverRoomStats();
 								return super.tick(ticking,tickID);
 							}
-							room.showHappens(CMMsg.MSG_OK_VISUAL, affected.name()+" is no longer burning.");
+							room.showHappens(CMMsg.MSG_OK_VISUAL, _("@x1 is no longer burning.",affected.name()));
 							((Item)affected).destroy();
 						}
 						break;
@@ -249,10 +249,10 @@ public class Burning extends StdAbility
 			case RawMaterial.MATERIAL_GAS:
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_UNKNOWN:
-				mob.tell("Ouch!! "+CMStrings.capitalizeAndLower(affected.name())+" is HOT!");
+				mob.tell(_("Ouch!! @x1 is HOT!",CMStrings.capitalizeAndLower(affected.name())));
 				break;
 			default:
-				mob.tell("Ouch!! "+CMStrings.capitalizeAndLower(affected.name())+" is on fire!");
+				mob.tell(_("Ouch!! @x1 is on fire!",CMStrings.capitalizeAndLower(affected.name())));
 				break;
 			}
 			CMLib.combat().postDamage(invoker,mob,this,CMLib.dice().roll(1,5,5),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,null);
@@ -313,7 +313,7 @@ public class Burning extends StdAbility
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
-				msg.addTrailerMsg(CMClass.getMsg(invoker,null,CMMsg.MSG_OK_VISUAL,I.name()+" is extinguished."));
+				msg.addTrailerMsg(CMClass.getMsg(invoker,null,CMMsg.MSG_OK_VISUAL,_("@x1 is extinguished.",I.name())));
 				I.delEffect(this);
 			}
 		}

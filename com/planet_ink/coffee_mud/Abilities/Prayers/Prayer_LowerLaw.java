@@ -101,7 +101,7 @@ public class Prayer_LowerLaw extends Prayer
 						final String name=L.otherBits().get(x)[Law.BIT_CRIMENAME];
 						if(!crimes.contains(name)) crimes.add(name);
 					}
-					mob.tell("The following lower crimes are divinely revealed to you: "+CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))+".");
+					mob.tell(_("The following lower crimes are divinely revealed to you: @x1.",CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))));
 				}
 			}
 		}

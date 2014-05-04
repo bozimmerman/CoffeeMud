@@ -79,7 +79,7 @@ public class Chant_GroveWalk extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell("You can't seem to fixate on a place called '"+CMParms.combine(commands,0)+"', perhaps it is not a grove?");
+			mob.tell(_("You can't seem to fixate on a place called '@x1', perhaps it is not a grove?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -101,8 +101,8 @@ public class Chant_GroveWalk extends Chant
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> emerge(s) from around the stones.");
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) around the stones.");
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> emerge(s) from around the stones."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) around the stones."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

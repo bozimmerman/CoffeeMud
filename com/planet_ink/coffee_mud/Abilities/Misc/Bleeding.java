@@ -60,7 +60,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		&&(canBeUninvoked())
 		&&(!((MOB)affected).amDead())
 		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
-			((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) bleeding.");
+			((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) bleeding."));
 		super.unInvoke();
 	}
 
@@ -146,7 +146,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL)) return false;
 		if(((MOB)target).fetchEffect(ID())!=null) return false;
 		if(((MOB)target).location()==null) return false;
-		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> start(s) BLEEDING!^?"))
+		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,_("^R<S-NAME> start(s) BLEEDING!^?")))
 			beneficialAffect(mob,target,asLevel,0);
 		return true;
 	}

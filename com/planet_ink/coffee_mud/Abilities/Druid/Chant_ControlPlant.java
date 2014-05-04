@@ -68,13 +68,13 @@ public class Chant_ControlPlant extends Chant
 
 		if(isPlant(myPlant)==null)
 		{
-			mob.tell("You can't control "+myPlant.name()+".");
+			mob.tell(_("You can't control @x1.",myPlant.name()));
 			return false;
 		}
 
 		if(myPlant.rawSecretIdentity().equals(mob.Name()))
 		{
-			mob.tell("You already control "+myPlant.name()+".");
+			mob.tell(_("You already control @x1.",myPlant.name()));
 			return false;
 		}
 
@@ -92,7 +92,7 @@ public class Chant_ControlPlant extends Chant
 				mob.location().send(mob,msg);
 				final Ability A=isPlant(myPlant);
 				if(A!=null)	A.setInvoker(mob);
-				mob.tell("You wrest control of "+myPlant.name()+" from "+myPlant.secretIdentity()+".");
+				mob.tell(_("You wrest control of @x1 from @x2.",myPlant.name(),myPlant.secretIdentity()));
 				myPlant.setSecretIdentity(mob.Name());
 			}
 

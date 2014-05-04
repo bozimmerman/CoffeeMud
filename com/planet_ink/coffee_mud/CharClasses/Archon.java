@@ -99,7 +99,7 @@ public class Archon extends StdCharClass
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))
 		{
-			//((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");
+			//((MOB)msg.target()).tell(_("You are immune to @x1.",msg.tool().name()));
 			if(msg.source()!=msg.target())
 				msg.source().tell(msg.source(),msg.target(),msg.tool(),_("<T-NAME> is immune to <O-NAME>."));
 			return false;

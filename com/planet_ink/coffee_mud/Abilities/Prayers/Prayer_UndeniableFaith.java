@@ -121,12 +121,12 @@ public class Prayer_UndeniableFaith extends Prayer
 		if((target.getWorshipCharID().length()>0)
 		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
-			if(!auto) mob.tell(target.name(mob)+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
+			if(!auto) mob.tell(_("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
 			return false;
 		}
 		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
 		{
-			if(!auto) mob.tell(target.name(mob)+" can not be converted with this prayer.");
+			if(!auto) mob.tell(_("@x1 can not be converted with this prayer.",target.name(mob)));
 			return false;
 		}
 		if(!auto)
@@ -139,7 +139,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 			if(convertStack.contains(target))
 			{
-				mob.tell(target.name(mob)+" must wait to be undeniably faithful again.");
+				mob.tell(_("@x1 must wait to be undeniably faithful again.",target.name(mob)));
 				return false;
 			}
 		}
@@ -160,7 +160,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
-			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,_("<S-NAME> BELIEVE(S) !!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))

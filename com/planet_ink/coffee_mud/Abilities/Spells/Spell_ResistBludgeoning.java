@@ -75,7 +75,7 @@ public class Spell_ResistBludgeoning extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs <O-NAME> attack from <T-NAME>!");
+			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> absorbs <O-NAME> attack from <T-NAME>!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

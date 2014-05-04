@@ -58,7 +58,7 @@ public class Spell_CombatPrecognition extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> avoid(s) the attack by <T-NAME>!");
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> avoid(s) the attack by <T-NAME>!"));
 				if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-60,false))
 				&&(!lastTime)
 				&&(msg.source().getVictim()==mob)
@@ -86,31 +86,31 @@ public class Spell_CombatPrecognition extends Spell
 				case CMMsg.TYP_JUSTICE:
 					if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 					&&(tool!=null))
-						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+tool+" from <T-NAME>.");
+						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",tool));
 					break;
 				case CMMsg.TYP_GAS:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"noxious fumes":tool)));
 					break;
 				case CMMsg.TYP_COLD:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"cold blast":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"cold blast":tool)));
 					break;
 				case CMMsg.TYP_ELECTRIC:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"electrical attack":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"electrical attack":tool)));
 					break;
 				case CMMsg.TYP_FIRE:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"blast of heat":tool)));
 					break;
 				case CMMsg.TYP_WATER:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"weat blast":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"weat blast":tool)));
 					break;
 				case CMMsg.TYP_ACID:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"acid attack":tool)));
 					break;
 				case CMMsg.TYP_SONIC:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"sonic attack":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"sonic attack":tool)));
 					break;
 				case CMMsg.TYP_LASER:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"laser attack":tool)+" from <T-NAME>.");
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"laser attack":tool)));
 					break;
 				}
 				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okMessage(mob,msg2)))

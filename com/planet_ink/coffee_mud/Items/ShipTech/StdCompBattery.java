@@ -79,7 +79,7 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
+					msg.source().tell(_("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_POWERCURRENT:
 				if(activated()

@@ -56,7 +56,7 @@ public class Chant_AnimalFriendship extends Chant
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("You feel too friendly towards "+target.name(msg.source()));
+				msg.source().tell(_("You feel too friendly towards @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

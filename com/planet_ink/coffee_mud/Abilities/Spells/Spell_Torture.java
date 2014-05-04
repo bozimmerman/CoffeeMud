@@ -84,7 +84,7 @@ public class Spell_Torture extends Spell
 		case 11:
 			if(mob.getLiegeID().length()>0)
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				"<S-NAME> admits that "+mob.getLiegeID()+" is <S-HIS-HER> liege.");
+				_("<S-NAME> admits that @x1 is <S-HIS-HER> liege.",mob.getLiegeID()));
 			else
 				roll=CMLib.dice().roll(1,10,0);
 			break;
@@ -121,7 +121,7 @@ public class Spell_Torture extends Spell
 							roll=CMLib.dice().roll(1,10,0);
 						else
 							mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-							"<S-NAME> mutters that "+name+" is a part of his clan, called "+C.getName()+".");
+							_("<S-NAME> mutters that @x1 is a part of his clan, called @x2.",name,C.getName()));
 					}
 				}
 			}
@@ -151,7 +151,7 @@ public class Spell_Torture extends Spell
 					roll=CMLib.dice().roll(1,10,0);
 				else
 					mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-					"<S-NAME> mutters that "+C.getName()+" has "+C.getExp()+" experience points.");
+					_("<S-NAME> mutters that @x1 has @x2 experience points.",C.getName(),""+C.getExp()));
 			}
 			break;
 		case 14:
@@ -159,7 +159,7 @@ public class Spell_Torture extends Spell
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless())
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				"<S-NAME> mutters that <S-HE-SHE> scored "+mob.getExperience()+" experience points.");
+				_("<S-NAME> mutters that <S-HE-SHE> scored @x1 experience points.",""+mob.getExperience()));
 			break;
 		case 15:
 		{
@@ -167,7 +167,7 @@ public class Spell_Torture extends Spell
 			final Command C=CMClass.getCommand("Affect");
 			try{str.append(C.executeInternal(mob,0,mob).toString());}catch(final Exception e){}
 			mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-			"<S-NAME> says OK! I am affected by:\n\r"+str.toString());
+			_("<S-NAME> says OK! I am affected by:\n\r@x1",str.toString()));
 			break;
 		}
 		case 16:
@@ -177,7 +177,7 @@ public class Spell_Torture extends Spell
 			{
 			   final Ability A=mob.fetchRandomAbility();
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				"<S-NAME> admit(s) that <S-HE-SHE> knows "+A.name()+" at "+A.proficiency()+"%.");
+				_("<S-NAME> admit(s) that <S-HE-SHE> knows @x1 at @x2%.",A.name(),""+A.proficiency()));
 			}
 			break;
 		}
@@ -185,25 +185,25 @@ public class Spell_Torture extends Spell
 		switch(roll)
 		{
 		case 1:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> struggle(s) against the pain."); break;
+			_("<S-NAME> struggle(s) against the pain.")); break;
 		case 2:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> scream(s) in horror!"); break;
+			_("<S-NAME> scream(s) in horror!")); break;
 		case 3:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> beg(s) for mercy."); break;
+			_("<S-NAME> beg(s) for mercy.")); break;
 		case 4:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> grab(s) <S-HIS-HER> head and cr(ys)."); break;
+			_("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
 		case 5:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> whimper(s)."); break;
+			_("<S-NAME> whimper(s).")); break;
 		case 6:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> look(s) terrified!"); break;
+			_("<S-NAME> look(s) terrified!")); break;
 		case 7:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> shake(s) in pain from <S-HIS-HER> head to <S-HIS-HER> feet."); break;
+			_("<S-NAME> shake(s) in pain from <S-HIS-HER> head to <S-HIS-HER> feet.")); break;
 		case 8:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> gasp(s) for air."); break;
+			_("<S-NAME> gasp(s) for air.")); break;
 		case 9:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> shiver(s) in pain."); break;
+			_("<S-NAME> shiver(s) in pain.")); break;
 		case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			"<S-NAME> cr(ys) in anticipation of pain!"); break;
+			_("<S-NAME> cr(ys) in anticipation of pain!")); break;
 		}
 	}
 

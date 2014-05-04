@@ -61,7 +61,7 @@ public class Chant_PlantChoke extends Chant
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				mob.tell(I.name(mob)+" loosens its grip on your neck and falls off.");
+				mob.tell(_("@x1 loosens its grip on your neck and falls off.",I.name(mob)));
 				I.setRawWornCode(0);
 				mob.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
@@ -150,7 +150,7 @@ public class Chant_PlantChoke extends Chant
 		if(target.getWearPositions(Wearable.WORN_NECK)==0)
 		{
 			if(!auto)
-				mob.tell("Ummm, "+target.name(mob)+" doesn't HAVE a neck...");
+				mob.tell(_("Ummm, @x1 doesn't HAVE a neck...",target.name(mob)));
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class Chant_PlantChoke extends Chant
 				mob.location().send(mob,msg);
 				target.moveItemTo(myPlant);
 				myPlant.setRawWornCode(Wearable.WORN_NECK);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> neck!");
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("@x1 jumps up and wraps itself around <S-YOUPOSS> neck!",myPlant.name()));
 				beneficialAffect(mob,myPlant,asLevel,5);
 			}
 		}

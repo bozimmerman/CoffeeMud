@@ -109,7 +109,7 @@ public class Thief_Peek extends ThiefSkill
 				mob.location().send(mob,msg);
 				final StringBuilder msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)
-					mob.tell(target.charStats().HeShe()+" is carrying:\n\rNothing!\n\r");
+					mob.tell(_("@x1 is carrying:\n\rNothing!\n\r",target.charStats().HeShe()));
 				else
 					mob.session().wraplessPrintln(target.charStats().HeShe()+" is carrying:\n\r"+msg2.toString());
 			}

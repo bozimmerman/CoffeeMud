@@ -94,7 +94,7 @@ public class Skill_Disarm extends StdSkill
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(victim.charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(_("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
 			return false;
 		}
 

@@ -72,7 +72,7 @@ public class Fighter_CircleParry extends MonkSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> circle-parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

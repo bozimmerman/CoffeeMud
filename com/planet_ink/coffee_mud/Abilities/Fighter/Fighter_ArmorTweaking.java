@@ -120,7 +120,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		&&(!armor.amWearingAt(Wearable.WORN_TORSO))
 		&&(!armor.amWearingAt(Wearable.WORN_WAIST)))
 		{
-			mob.tell(armor.name()+" can not be tweaked to provide any more benefit.");
+			mob.tell(_("@x1 can not be tweaked to provide any more benefit.",armor.name()));
 			return false;
 		}
 		if((!auto)&&(mob.isInCombat()))
@@ -131,7 +131,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)
 		{
-			mob.tell(armor.name()+" is too weak of an armor to provide any more benefit from tweaking.");
+			mob.tell(_("@x1 is too weak of an armor to provide any more benefit from tweaking.",armor.name()));
 			return false;
 		}
 

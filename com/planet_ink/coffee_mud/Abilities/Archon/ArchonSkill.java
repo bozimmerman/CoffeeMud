@@ -98,9 +98,9 @@ public class ArchonSkill extends StdAbility
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell("You don't know of anyone called '"+targetName+"'.");
+					mob.tell(_("You don't know of anyone called '@x1'.",targetName));
 				else
-					mob.tell("You don't know of anyone called '"+targetName+"' here.");
+					mob.tell(_("You don't know of anyone called '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -110,9 +110,9 @@ public class ArchonSkill extends StdAbility
 			if((givenTarget==null)&&(!quiet))
 			{
 				if(target==mob)
-					mob.tell("You are already affected by "+name()+".");
+					mob.tell(_("You are already affected by @x1.",name()));
 				else
-					mob.tell(target,null,null,"<S-NAME> is already affected by "+name()+".");
+					mob.tell(target,null,null,_("<S-NAME> is already affected by @x1.",name()));
 			}
 			return null;
 		}

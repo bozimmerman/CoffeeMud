@@ -235,7 +235,7 @@ public class StdThinInstance extends StdThinArea
 				}
 				if(returnToRoom==null)
 				{
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, "You must be at an entrance to reset the area."));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, _("You must be at an entrance to reset the area.")));
 					return;
 				}
 				final Area A=this.getParentArea();
@@ -264,15 +264,15 @@ public class StdThinInstance extends StdThinArea
 								}
 								setAreaState(Area.State.PASSIVE);
 								if(flushInstance(i))
-									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance has been reset."));
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance has been reset.")));
 								else
-									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance was unable to be reset."));
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance was unable to be reset.")));
 								return;
 							}
 						}
 					}
 				}
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance failed to reset."));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance failed to reset.")));
 			}
 		}
 	}

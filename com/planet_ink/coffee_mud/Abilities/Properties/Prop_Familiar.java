@@ -198,7 +198,7 @@ public class Prop_Familiar extends Property
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("You are too much in awe of "+target.name(msg.source()));
+				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
 				if(familiarWith.getVictim()==msg.source())
 					familiarWith.makePeace();
 				if(familiarTo.getVictim()==msg.source())

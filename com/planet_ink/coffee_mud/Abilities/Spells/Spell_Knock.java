@@ -93,7 +93,7 @@ public class Spell_Knock extends Spell
 		}
 		else
 		{
-			mob.tell("You can't cast knock on "+openThis.name()+"!");
+			mob.tell(_("You can't cast knock on @x1!",openThis.name()));
 			return false;
 		}
 
@@ -133,14 +133,14 @@ public class Spell_Knock extends Spell
 						if(level<(mob.phyStats().level()+3+(2*getXLEVELLevel(mob))))
 						{
 							A.unInvoke();
-							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
+							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,_("A spell around <O-NAME> seems to fade."));
 							break;
 						}
 					}
 				}
 				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
 				CMLib.utensils().roomAffectFully(msg,R,dirCode);
-				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,"<T-NAME> opens.");
+				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
 				CMLib.utensils().roomAffectFully(msg,R,dirCode);
 			}
 		}

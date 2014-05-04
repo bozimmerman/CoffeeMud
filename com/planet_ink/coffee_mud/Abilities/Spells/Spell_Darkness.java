@@ -57,7 +57,7 @@ public class Spell_Darkness extends Spell
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();
-			room.showHappens(CMMsg.MSG_OK_VISUAL, "The darkness starts to fade.");
+			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The darkness starts to fade."));
 		}
 	}
 
@@ -107,7 +107,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

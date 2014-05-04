@@ -89,7 +89,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						final CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
+						final CMMsg msg2=CMClass.getMsg(mob,msg.target(),null,CMMsg.MSG_HANDS,CMMsg.MSG_OK_ACTION,CMMsg.MSG_OK_ACTION,_("<S-NAME> point(s) @x1 at <T-NAMESELF>, who begins to glow softly.",this.name()));
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
@@ -97,7 +97,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 							||(target.charStats().getMyRace().leveless())
 							||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-								mob.tell("The wand will not work on such as "+target.name(mob)+".");
+								mob.tell(_("The wand will not work on such as @x1.",target.name(mob)));
 							else
 							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(target.charStats().getCurrentClass().expless())

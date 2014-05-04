@@ -71,11 +71,11 @@ public class AntiVagrant extends ActiveTicker
 			if(CMLib.flags().isSleeping(target)&&(target!=observer)&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
 				CMLib.commands().postSay(observer,target,"Damn lazy good for nothing!",false,false);
-				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
+				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> shake(s) <T-NAME> awake."));
 				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
-					target.tell(observer.name()+" shakes you awake.");
+					target.tell(_("@x1 shakes you awake.",observer.name()));
 					CMLib.commands().postStand(target,true);
 					if((kickout)&&(CMLib.flags().isStanding(target)))
 						CMLib.tracking().beMobile(target,true,false,false,false,null,null);
@@ -85,7 +85,7 @@ public class AntiVagrant extends ActiveTicker
 			if((CMLib.flags().isSitting(target)&&(target!=observer))&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
 				CMLib.commands().postSay(observer,target,"Get up and move along!",false,false);
-				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
+				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> stand(s) <T-NAME> up."));
 				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);

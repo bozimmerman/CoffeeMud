@@ -57,9 +57,9 @@ public class Spell_SlowProjectiles extends Spell
 		&&(!msg.source().amDead()))
 		{
 			if(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)
-				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<O-NAME> flies slowly by.");
+				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<O-NAME> flies slowly by."));
 			else
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,"The shot from "+msg.tool().name()+" flies slowly by.");
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The shot from @x1 flies slowly by.",msg.tool().name()));
 			final int damage=(msg.value())/2;
 			msg.setValue(damage);
 		}

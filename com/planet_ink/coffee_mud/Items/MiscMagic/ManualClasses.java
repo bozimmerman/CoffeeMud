@@ -89,8 +89,8 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 								mob.charStats().setCurrentClass(thisC);
 								if((!mob.isMonster())&&(mob.soulMate()==null))
 									CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
-								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
-								mob.tell("You are now a "+thisC.name(mob.charStats().getClassLevel(thisC))+".");
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 undergoes a traumatic change.",mob.name()));
+								mob.tell(_("You are now a @x1.",thisC.name(mob.charStats().getClassLevel(thisC))));
 							}
 						}
 					}

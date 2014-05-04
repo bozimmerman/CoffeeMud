@@ -188,17 +188,16 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 				{
 					super.executeMsg(myHost,msg);
-					msg.source().tell(name()+" is currently "+(activated()?"activated":"deactivated")
-							+" and is at "+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)+"% power.");
+					msg.source().tell(_("@x1 is currently @x2 and is at @x3% power.",name(),(activated()?"activated":"deactivated"),""+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)));
 					if(CMLib.flags().canBeSeenBy(this, msg.source())&&(activated()))
-						msg.source().tell(name()+" is currently set to "+getStateName()+".");
+						msg.source().tell(_("@x1 is currently set to @x2.",name(),getStateName()));
 				}
 				break;
 			case CMMsg.TYP_ACTIVATE:
 			{
 				super.executeMsg(myHost,msg);
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> activate(s) <T-NAME>."));
 				this.activate(true);
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
@@ -214,7 +213,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 						}
 					}
 					mode=newState;
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> set(s) <T-NAME> on "+this.getStateName()+".");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> set(s) <T-NAME> on @x1.",this.getStateName()));
 					recoverPhyStats();
 					msg.source().recoverPhyStats();
 				}
@@ -225,7 +224,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			{
 				super.executeMsg(myHost,msg);
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
 				break;
 			}
@@ -259,7 +258,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 							else
 							if((A==null)&&(msg.target() instanceof MOB))
 							{
-								msg.source().location().show((MOB)msg.target(), null, CMMsg.MSG_OK_VISUAL, "<S-NAME> go(es) unconscious!");
+								msg.source().location().show((MOB)msg.target(), null, CMMsg.MSG_OK_VISUAL, _("<S-NAME> go(es) unconscious!"));
 								((MOB)msg.target()).basePhyStats().setDisposition(((MOB)msg.target()).basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 								((MOB)msg.target()).phyStats().setDisposition(((MOB)msg.target()).phyStats().disposition()|PhyStats.IS_SLEEPING);
 							}
@@ -391,7 +390,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 							final ModeType newState=this.getState(s);
 							if(newState==null)
 							{
-								msg.source().tell("'"+s+"' is an unknown setting on "+name(msg.source()));
+								msg.source().tell(_("'@x1' is an unknown setting on @x2",s,name(msg.source())));
 								return false;
 							}
 						}

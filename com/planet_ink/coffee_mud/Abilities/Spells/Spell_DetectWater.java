@@ -192,9 +192,9 @@ public class Spell_DetectWater extends Spell
 		if((dirs.length()!=0)||(last.length()!=0))
 		{
 			if(dirs.length()==0)
-				mob.tell("Water smells are coming from "+last+".");
+				mob.tell(_("Water smells are coming from @x1.",last));
 			else
-				mob.tell("Water smells are coming from "+dirs.substring(2)+", and "+last+".");
+				mob.tell(_("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 	@Override

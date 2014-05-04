@@ -93,7 +93,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
 			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 			{
-				mob.tell("You cannot coup de grace with a "+ww.name()+"!");
+				mob.tell(_("You cannot coup de grace with a @x1!",ww.name()));
 				return false;
 			}
 			if(mob.curState().getMovement()<150)
@@ -104,9 +104,9 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			if(!CMLib.flags().isSleeping(mob.getVictim()))
 			{
 				if(CMLib.flags().isSitting(mob.getVictim()))
-					mob.tell(mob.getVictim().charStats().HeShe()+" is on the ground, but not prone!");
+					mob.tell(_("@x1 is on the ground, but not prone!",mob.getVictim().charStats().HeShe()));
 				else
-					mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
+					mob.tell(_("@x1 is not prone!",mob.getVictim().charStats().HeShe()));
 				return false;
 			}
 		}

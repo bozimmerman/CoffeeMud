@@ -80,10 +80,10 @@ public class Prop_NarrowLedge extends Property
 						&&(((Room)affected).getRoomInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
-							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+"!!");
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) off @x1!!",name));
 						else
 						{
-							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) off "+name+" to <S-HIS-HER> death!!");
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) off @x1 to <S-HIS-HER> death!!",name));
 							if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 								mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 						}

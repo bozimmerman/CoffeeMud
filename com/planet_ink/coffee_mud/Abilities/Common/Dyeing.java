@@ -204,7 +204,7 @@ public class Dyeing extends CommonSkill
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		duration=getDuration(duration,mob,1,6);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) dyeing "+target.name()+".");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) dyeing @x1.",target.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -103,7 +103,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 			}
 			if(mob.location().isContent(w))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!");
+				final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,_("<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!"));
 				if(mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg2);

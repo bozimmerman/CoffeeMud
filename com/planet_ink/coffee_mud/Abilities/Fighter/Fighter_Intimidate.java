@@ -64,7 +64,7 @@ public class Fighter_Intimidate extends FighterSkill
 			&&(attackerM.location()==targetM.location())
 			&&((targetM.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(targetM.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
-				attackerM.tell("You are too intimidated by "+targetM.name(attackerM));
+				attackerM.tell(_("You are too intimidated by @x1",targetM.name(attackerM)));
 				if(targetM.location()!=lastRoom)
 				{
 					lastRoom=targetM.location();

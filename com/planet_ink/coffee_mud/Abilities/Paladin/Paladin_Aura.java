@@ -94,7 +94,7 @@ public class Paladin_Aura extends PaladinSkill
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+msg.source().name()+".");
+				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,_("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
 				return false;
 			}
 			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))

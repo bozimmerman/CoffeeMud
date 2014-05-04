@@ -59,7 +59,7 @@ public class Fighter_Shrug extends FighterSkill
 		&&(msg.tool() instanceof Weapon))
 		{
 			final MOB mob=(MOB)affected;
-			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,"<S-NAME> shrug(s) off the attack from <T-NAME>."))
+			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,_("<S-NAME> shrug(s) off the attack from <T-NAME>.")))
 			{
 				unInvoke();
 				return false;

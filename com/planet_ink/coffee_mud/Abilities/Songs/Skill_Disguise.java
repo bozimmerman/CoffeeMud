@@ -166,7 +166,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(A==null)
 			{
-				mob.tell("Disguise what? "+validChoices+".");
+				mob.tell(_("Disguise what? @x1.",validChoices));
 				return false;
 			}
 			A.unInvoke();
@@ -180,20 +180,20 @@ public class Skill_Disguise extends BardSkill
 				which=i;
 		if(which<0)
 		{
-			mob.tell("Disguise what? '"+what+"' is not a valid choice.  Valid choices are: "+validChoices+".");
+			mob.tell(_("Disguise what? '@x1' is not a valid choice.  Valid choices are: @x2.",what,validChoices));
 			return false;
 
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,this)>0)
 		   &&((CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob))<levels[which]))
 		{
-			mob.tell("You must have "+levels[which]+" levels in this skill to use that disguise.");
+			mob.tell(_("You must have @x1 levels in this skill to use that disguise.",""+levels[which]));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("Disguise "+whats[which].toLowerCase()+" in what way?  Be more specific.");
+			mob.tell(_("Disguise @x1 in what way?  Be more specific.",whats[which].toLowerCase()));
 			return false;
 		}
 		String how=CMStrings.removeColors(CMParms.combine(commands,0));
@@ -205,7 +205,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(CMath.s_int(how)<=0)
 			{
-				mob.tell("You cannot disguise your weight as "+how+" pounds!");
+				mob.tell(_("You cannot disguise your weight as @x1 pounds!",how));
 				return false;
 			}
 			int x=mob.basePhyStats().weight()-CMath.s_int(how);
@@ -216,7 +216,7 @@ public class Skill_Disguise extends BardSkill
 		case 1: // level
 			if((CMath.s_int(how)<=0)||CMath.s_int(how)>100000)
 			{
-				mob.tell("You cannot disguise your level as "+how+"!");
+				mob.tell(_("You cannot disguise your level as @x1!",how));
 				return false;
 			}
 			how=Integer.toString(CMath.s_int(how));
@@ -233,7 +233,7 @@ public class Skill_Disguise extends BardSkill
 			if(how.toUpperCase().startsWith("G")) how="girl";
 			else
 			{
-				mob.tell("'"+how+"' is a sex which cannot be guessed at!");
+				mob.tell(_("'@x1' is a sex which cannot be guessed at!",how));
 				return false;
 			}
 			break;
@@ -241,7 +241,7 @@ public class Skill_Disguise extends BardSkill
 			{
 				if(CMClass.getRace(how)==null)
 				{
-					mob.tell("'"+how+"' is an unknown race!");
+					mob.tell(_("'@x1' is an unknown race!",how));
 					return false;
 				}
 				how=CMClass.getRace(how).name();
@@ -251,7 +251,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(CMath.s_int(how)<=0)
 			{
-				mob.tell("You cannot disguise your height as "+how+" inches!");
+				mob.tell(_("You cannot disguise your height as @x1 inches!",how));
 				return false;
 			}
 			int x=mob.phyStats().height()-CMath.s_int(how);
@@ -291,7 +291,7 @@ public class Skill_Disguise extends BardSkill
 				}
 				if(CMClass.findCharClass(how)==null)
 				{
-					mob.tell("'"+how+"' is an unknown character class!");
+					mob.tell(_("'@x1' is an unknown character class!",how));
 					return false;
 				}
 				how=CMStrings.capitalizeAndLower(how);
@@ -310,7 +310,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((CMath.s_int(how)<=0)||(CMath.s_int(how)>100000))
 			{
-				mob.tell("You cannot disguise your age as "+how+" years!");
+				mob.tell(_("You cannot disguise your age as @x1 years!",how));
 				return false;
 			}
 			int x=mob.baseCharStats().getStat(CharStats.STAT_AGE)-CMath.s_int(how);
@@ -327,7 +327,7 @@ public class Skill_Disguise extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> turn(s) away for a second.");
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) away for a second."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

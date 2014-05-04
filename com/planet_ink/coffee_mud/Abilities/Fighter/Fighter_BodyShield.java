@@ -75,7 +75,7 @@ public class Fighter_BodyShield extends FighterSkill
 				doneThisRound=true;
 				final int regain=(int)Math.round(CMath.mul((msg.value()),CMath.div(proficiency(),100.0)));
 				msg.setValue(msg.value()-regain);
-				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,"<S-NAME> use(s) <T-NAMESELF> as a body shield!");
+				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,_("<S-NAME> use(s) <T-NAMESELF> as a body shield!"));
 				msg2.setValue(regain);
 				msg.addTrailerMsg(msg2);
 				helpProficiency(mob, 0);

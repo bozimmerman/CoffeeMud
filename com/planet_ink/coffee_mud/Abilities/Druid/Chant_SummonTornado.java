@@ -152,10 +152,10 @@ public class Chant_SummonTornado extends Chant
 					{
 						final Item I=(Item)O;
 						if(R==mob.location())
-							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it around.");
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,_("The tornado picks up <O-NAME> and whisks it around."));
 						else
 						{
-							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it away.");
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,_("The tornado picks up <O-NAME> and whisks it away."));
 							R.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 						}
 						if(I.subjectToWearAndTear())
@@ -209,10 +209,10 @@ public class Chant_SummonTornado extends Chant
 							mob.location().send(mob,msg2);
 							mob.location().send(mob,msg3);
 							if(R==mob.location())
-								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> around.");
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,_("The tornado picks <S-NAME> up and whisks <S-HIM-HER> around."));
 							else
 							{
-								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,"The tornado picks <S-NAME> up and whisks <S-HIM-HER> away.");
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,_("The tornado picks <S-NAME> up and whisks <S-HIM-HER> away."));
 								R.bringMobHere(M,false);
 							}
 							final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));

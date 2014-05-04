@@ -286,7 +286,7 @@ public class Skill_Juggle extends BardSkill
 				final MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
-					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> juggle(s) "+juggles.size()+" items in the air."))
+					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> juggle(s) @x1 items in the air.",""+juggles.size())))
 					   unInvoke();
 					else
 					if(mob.isInCombat())
@@ -442,7 +442,7 @@ public class Skill_Juggle extends BardSkill
 			for(int i=0;i<V.size();i++)
 			{
 				final Item I=(Item)V.elementAt(i);
-				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
+				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) juggling <T-NAMESELF>."));
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))
 				{

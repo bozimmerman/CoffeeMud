@@ -126,7 +126,7 @@ public class Spell_Levitate extends Spell
 		}
 		else
 		{
-			mob.tell("You can't levitate "+target.name(mob)+"!");
+			mob.tell(_("You can't levitate @x1!",target.name(mob)));
 			return false;
 		}
 
@@ -151,7 +151,7 @@ public class Spell_Levitate extends Spell
 					if(target instanceof MOB)
 						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) straight up!"));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_ACTION,target.name()+" float(s) straight up!");
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("@x1 float(s) straight up!",target.name()));
 				}
 			}
 		}

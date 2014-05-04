@@ -90,9 +90,9 @@ public class Spell_DemonGate extends Spell
 			if(R!=null)
 			{
 				if(mob.amFollowing()!=null)
-					R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?");
+					R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?"));
 				else
-					R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into its home plane.");
+					R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> disappears back into its home plane."));
 			}
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
@@ -118,13 +118,13 @@ public class Spell_DemonGate extends Spell
 				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
 				if(otherMonster!=null)
 				{
-					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
 					myMonster.setVictim(otherMonster);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)
 				{
-					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
 					myMonster.setVictim(mob);
 				}
 				else
@@ -132,7 +132,7 @@ public class Spell_DemonGate extends Spell
 					myMonster.setVictim(mob.getVictim());
 					CMLib.commands().postFollow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
-						mob.tell(myMonster.name()+" seems unwilling to follow you.");
+						mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
@@ -177,7 +177,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> tears through the fabric of reality and steps into this world!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

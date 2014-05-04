@@ -58,7 +58,7 @@ public class Spell_Forget extends Spell
 				return true;
 			if(forgotten.contains(msg.tool()))
 			{
-				mob.tell("You still can't remember "+msg.tool().name()+"!");
+				mob.tell(_("You still can't remember @x1!",msg.tool().name()));
 				return false;
 			}
 			if(mob.fetchAbility(msg.tool().ID())==msg.tool())
@@ -66,7 +66,7 @@ public class Spell_Forget extends Spell
 				if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25))
 				{
 					forgotten.add((Ability)msg.tool());
-					mob.tell("You can't remember "+msg.tool().name()+"!");
+					mob.tell(_("You can't remember @x1!",msg.tool().name()));
 					return false;
 				}
 				else

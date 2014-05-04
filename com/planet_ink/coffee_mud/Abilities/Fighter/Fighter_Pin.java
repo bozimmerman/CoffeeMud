@@ -161,7 +161,7 @@ public class Fighter_Pin extends FighterSkill
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{
-			mob.tell(target.name(mob)+" is too big to pin!");
+			mob.tell(_("@x1 is too big to pin!",target.name(mob)));
 			return false;
 		}
 

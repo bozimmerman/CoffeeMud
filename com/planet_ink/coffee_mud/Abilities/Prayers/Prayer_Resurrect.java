@@ -133,13 +133,13 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					}
 					if(nonPlayerData==null)
 					{
-						mob.tell("You can't seem to focus on "+body.Name()+"'s spirit.  Perhaps if loved ones were here?");
+						mob.tell(_("You can't seem to focus on @x1's spirit.  Perhaps if loved ones were here?",body.Name()));
 						return false;
 					}
 				}
 				else
 				{
-					mob.tell("You can't resurrect "+((DeadBody)body).charStats().himher()+".");
+					mob.tell(_("You can't resurrect @x1.",((DeadBody)body).charStats().himher()));
 					return false;
 				}
 			}
@@ -173,7 +173,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					if(object instanceof Item)
 					{
 						body.destroy();
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,object.Name()+" comes back to life!");
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 comes back to life!",object.Name()));
 						mob.location().addItem((Item)object);
 					}
 					else

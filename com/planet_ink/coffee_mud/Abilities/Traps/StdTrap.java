@@ -372,19 +372,19 @@ public class StdTrap extends StdAbility implements Trap
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
-				mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
+				mob.tell(_("You are not high enough level (@x1) to set that trap.",""+trapLevel()));
 				return false;
 			}
 		if(P.fetchEffect(ID())!=null)
 		{
 			if(mob!=null)
-				mob.tell("This trap is already set on "+P.name()+".");
+				mob.tell(_("This trap is already set on @x1.",P.name()));
 			return false;
 		}
 		if(!canAffect(P))
 		{
 			if(mob!=null)
-				mob.tell("You can't set '"+name()+"' on "+P.name()+".");
+				mob.tell(_("You can't set '@x1' on @x2.",name(),P.name()));
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
@@ -392,19 +392,19 @@ public class StdTrap extends StdAbility implements Trap
 			if((P instanceof Item)&&(!(P instanceof Container)))
 			{
 				if(mob!=null)
-					mob.tell(P.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+					mob.tell(_("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 			if(((P instanceof Exit)&&(!(((Exit)P).hasADoor()))))
 			{
 				if(mob!=null)
-					mob.tell(P.name()+" has no door, so '"+name()+"' cannot be set on it.");
+					mob.tell(_("@x1 has no door, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 			if(((P instanceof Container)&&(!(((Container)P).hasALid()))))
 			{
 				if(mob!=null)
-					mob.tell(P.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+					mob.tell(_("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 		}

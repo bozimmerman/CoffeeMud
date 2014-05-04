@@ -80,7 +80,7 @@ public class Spell_MajorGlobe extends Spell
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
 			amountAbsorbed+=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
-			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>!");
+			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The globe around <S-NAME> absorbs the @x1 from <T-NAME>!",msg.tool().name()));
 			return false;
 		}
 		if((invoker!=null)&&(amountAbsorbed>((invoker.phyStats().level()+(2*getXLEVELLevel(invoker)))*4)))

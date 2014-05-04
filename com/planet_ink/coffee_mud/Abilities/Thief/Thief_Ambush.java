@@ -92,7 +92,7 @@ public class Thief_Ambush extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to set up an ambush, but fail(s).");
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),"<S-NAME> set(s) up an ambush, directing everyone to hiding places.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),_("<S-NAME> set(s) up an ambush, directing everyone to hiding places."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -103,7 +103,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 				if(!isAllWiringConnected(this))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+						msg.source().tell(_("The panel containing @x1 is not activated or connected.",name()));
 					return false;
 				}
 				break;
@@ -143,24 +143,24 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> activate(s) <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
+					msg.source().tell(_("@x1 is currently @x2",name(),(activated()?"connected.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_REPAIR:
 				if(CMLib.dice().rollPercentage()<msg.value())
 				{
 					setUsesRemaining(usesRemaining()<100?100:usesRemaining());
-					msg.source().tell(name()+" is now repaired.\n\r");
+					msg.source().tell(_("@x1 is now repaired.\n\r",name()));
 				}
 				else
 				{
@@ -171,7 +171,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 						if(repairApplied < 0)
 							repairApplied=1;
 						setUsesRemaining(usesRemaining()+repairApplied);
-						msg.source().tell(name()+" is now "+usesRemaining()+"% repaired.\n\r");
+						msg.source().tell(_("@x1 is now @x2% repaired.\n\r",name(),""+usesRemaining()));
 					}
 				}
 				break;

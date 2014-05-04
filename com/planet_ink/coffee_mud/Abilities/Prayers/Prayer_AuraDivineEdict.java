@@ -75,7 +75,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)
 		   ||CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		{
-			msg.source().tell(godName+" DEMANDS NO FIGHTING!");
+			msg.source().tell(_("@x1 DEMANDS NO FIGHTING!",godName));
 			msg.source().makePeace();
 			return false;
 		}
@@ -126,7 +126,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M.isInCombat()))
 			{
-				M.tell(invoker().getWorshipCharID().toUpperCase()+" DEMANDS NO FIGHTING!");
+				M.tell(_("@x1 DEMANDS NO FIGHTING!",invoker().getWorshipCharID().toUpperCase()));
 				M.makePeace();
 			}
 		}

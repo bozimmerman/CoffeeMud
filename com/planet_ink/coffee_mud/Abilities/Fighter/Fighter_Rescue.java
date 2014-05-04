@@ -69,13 +69,13 @@ public class Fighter_Rescue extends FighterSkill
 
 		if((target.amDead())||(monster==null)||(monster.amDead()))
 		{
-			mob.tell(target.charStats().HeShe()+" isn't fighting anyone!");
+			mob.tell(_("@x1 isn't fighting anyone!",target.charStats().HeShe()));
 			return false;
 		}
 
 		if(monster.getVictim()==mob)
 		{
-			mob.tell("You are already taking the blows from "+monster.name()+".");
+			mob.tell(_("You are already taking the blows from @x1.",monster.name()));
 			return false;
 		}
 

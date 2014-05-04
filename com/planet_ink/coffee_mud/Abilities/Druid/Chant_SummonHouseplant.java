@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -131,7 +130,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		newItem.basePhyStats().setWeight(1);
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" appears here.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 appears here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

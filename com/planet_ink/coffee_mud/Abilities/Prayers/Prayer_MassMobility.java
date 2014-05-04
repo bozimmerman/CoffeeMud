@@ -69,7 +69,7 @@ public class Prayer_MassMobility extends Prayer
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");
+					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The aura around <S-NAME> repels the @x1 from <T-NAME>.",A.name()));
 					newMOB.destroy();
 					return false;
 				}
@@ -131,7 +131,7 @@ public class Prayer_MassMobility extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					msg=CMClass.getMsg(mob,target,this,affectType,"Mobility is invoked upon <T-NAME>.");
+					msg=CMClass.getMsg(mob,target,this,affectType,_("Mobility is invoked upon <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

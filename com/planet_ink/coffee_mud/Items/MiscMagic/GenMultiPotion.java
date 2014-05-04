@@ -164,7 +164,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 					drinkIfAble(mob,mob);
 					if(isDrunk())
 					{
-						mob.tell(name()+" vanishes!");
+						mob.tell(_("@x1 vanishes!",name()));
 						destroy();
 					}
 					mob.recoverPhyStats();
@@ -188,7 +188,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 				drinkIfAble(msg.source(),(Physical)msg.target());
 				if(isDrunk())
 				{
-					msg.source().tell(name()+" vanishes!");
+					msg.source().tell(_("@x1 vanishes!",name()));
 					destroy();
 				}
 				msg.source().recoverPhyStats();

@@ -108,7 +108,7 @@ public class Thief_Snatch extends ThiefSkill
 		||(!(hisItem instanceof Weapon))
 		||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(target.charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(_("@x1 is not wielding a weapon!",target.charStats().HeShe()));
 			return false;
 		}
 		else
@@ -145,7 +145,7 @@ public class Thief_Snatch extends ThiefSkill
 					CMLib.commands().postGet(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
-						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
+						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,_("<S-NAME> snatch(es) the <T-NAME> out of mid-air!"));
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}

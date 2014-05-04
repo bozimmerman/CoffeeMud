@@ -61,7 +61,7 @@ public class Chant_PlantConstriction extends Chant
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				mob.tell(I.name(mob)+" loosens its grip on you and falls off.");
+				mob.tell(_("@x1 loosens its grip on you and falls off.",I.name(mob)));
 				I.setRawWornCode(0);
 				mob.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
@@ -168,7 +168,7 @@ public class Chant_PlantConstriction extends Chant
 		if(positionChoices.size()==0)
 		{
 			if(!auto)
-				mob.tell("Ummm, "+target.name(mob)+" doesn't have arms or legs to constrict...");
+				mob.tell(_("Ummm, @x1 doesn't have arms or legs to constrict...",target.name(mob)));
 			return false;
 		}
 
@@ -195,9 +195,9 @@ public class Chant_PlantConstriction extends Chant
 				final Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
 				if(II.longValue()==Wearable.WORN_ARMS)
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> arms!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("@x1 jumps up and wraps itself around <S-YOUPOSS> arms!",myPlant.name()));
 				else
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> legs!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("@x1 jumps up and wraps itself around <S-YOUPOSS> legs!",myPlant.name()));
 				beneficialAffect(mob,myPlant,asLevel,20);
 			}
 		}

@@ -201,13 +201,13 @@ public class StdTub extends StdRideable implements Drink
 				{
 					if(!containsDrink())
 					{
-						mob.tell(name()+" is empty.");
+						mob.tell(_("@x1 is empty.",name()));
 						return false;
 					}
 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell("You don't want to be drinking "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()+".");
+						mob.tell(_("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
 						return false;
 					}
 					return true;
@@ -218,7 +218,7 @@ public class StdTub extends StdRideable implements Drink
 				if((liquidRemaining()>=amountOfLiquidHeld)
 				&&(liquidHeld()<500000))
 				{
-					mob.tell(name()+" is full.");
+					mob.tell(_("@x1 is full.",name()));
 					return false;
 				}
 				if((msg.tool()!=null)
@@ -228,20 +228,18 @@ public class StdTub extends StdRideable implements Drink
 					final Drink thePuddle=(Drink)msg.tool();
 					if(!thePuddle.containsDrink())
 					{
-						mob.tell(thePuddle.name()+" is empty.");
+						mob.tell(_("@x1 is empty.",thePuddle.name()));
 						return false;
 					}
 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 					{
-						mob.tell("There is still some "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()
-								 +" left in "+name()+".  You must empty it before you can fill it with "
-								 +RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()+".");
+						mob.tell(_("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",RawMaterial.CODES.NAME(liquidType()).toLowerCase(),name(),RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()));
 						return false;
 
 					}
 					return true;
 				}
-				mob.tell("You can't fill "+name()+" from that.");
+				mob.tell(_("You can't fill @x1 from that.",name()));
 				return false;
 			default:
 				break;

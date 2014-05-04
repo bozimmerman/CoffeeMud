@@ -106,7 +106,7 @@ public class Spell_WardArea extends Spell implements Trap
 		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
 			return;
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a magical ward trap."));
 		else
 		{
 			final MOB newCaster=CMClass.getMOB("StdMOB");

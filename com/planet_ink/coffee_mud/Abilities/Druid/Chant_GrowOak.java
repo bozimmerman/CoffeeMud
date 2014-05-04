@@ -65,7 +65,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,_("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.hpRemaining=100*(mob.phyStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
@@ -92,7 +92,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				if(dmg>0)
 				{
 					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,dmg,null))
-						invoker.tell("Your oak absorbs "+dmg+" points of your damage!");
+						invoker.tell(_("Your oak absorbs @x1 points of your damage!",""+dmg));
 				}
 				hpRemaining-=dmg;
 				if(hpRemaining<0)

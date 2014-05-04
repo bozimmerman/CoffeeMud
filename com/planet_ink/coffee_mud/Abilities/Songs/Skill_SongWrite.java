@@ -56,7 +56,7 @@ public class Skill_SongWrite extends BardSkill
 		final Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Scroll))
@@ -86,14 +86,14 @@ public class Skill_SongWrite extends BardSkill
 		}
 		if(scrollThis==null)
 		{
-			mob.tell("You don't know how to write '"+spellName+"'.");
+			mob.tell(_("You don't know how to write '@x1'.",spellName));
 			return false;
 		}
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.getSpells().size()>numSpells)
 		{
-			mob.tell("You aren't powerful enough to write any more magic onto "+scroll.name()+".");
+			mob.tell(_("You aren't powerful enough to write any more magic onto @x1.",scroll.name()));
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class Skill_SongWrite extends BardSkill
 		for(final Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))
 			{
-				mob.tell("That spell is already written on "+scroll.name()+".");
+				mob.tell(_("That spell is already written on @x1.",scroll.name()));
 				return false;
 			}
 
@@ -114,14 +114,14 @@ public class Skill_SongWrite extends BardSkill
 		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
+		mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

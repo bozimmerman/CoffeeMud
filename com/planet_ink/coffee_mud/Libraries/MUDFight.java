@@ -200,7 +200,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					I.setUsesRemaining(100);
 					I.unWear();
-					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> is destroyed!",null,"<O-NAME> carried by <S-NAME> is destroyed!");
+					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,_("<O-NAME> is destroyed!"),null,_("<O-NAME> carried by <S-NAME> is destroyed!"));
 					if(R.okMessage(mob,msg))
 						R.send(mob,msg);
 					I.destroy();
@@ -212,7 +212,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				if(I.usesRemaining()<=10)
 				{
-					mob.tell(I.name(mob)+" is looking really bad.");
+					mob.tell(_("@x1 is looking really bad.",I.name(mob)));
 				}
 			}
 		}
@@ -390,14 +390,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		CMMsg msg=null;
 		if(isKnockedOutUponDeath(deadM,killerM))
 			msg=CMClass.getMsg(deadM,null,killerM,
-					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r"+msp);
+					CMMsg.MSG_DEATH,_("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 		else
 			msg=CMClass.getMsg(deadM,null,killerM,
-				CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
+				CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 				CMMsg.MSG_OK_VISUAL,null,
-				CMMsg.MSG_DEATH,"^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r"+msp);
+				CMMsg.MSG_DEATH,_("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
 		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
@@ -1090,10 +1090,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(mob.location()==bodyRoom)
 					{
 						if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-							mob.tell("You'll need to dismount to get "+C.name()+" off the body.");
+							mob.tell(_("You'll need to dismount to get @x1 off the body.",C.name()));
 						else
 						if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-							mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
+							mob.tell(_("You'll need to disembark to get @x1 off the body.",C.name()));
 						else
 						if(CMLib.flags().canBeSeenBy(body,mob))
 							CMLib.commands().postGet(mob,body,C,false);
@@ -1726,7 +1726,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					inminrange=true;
 					inmaxrange=false;
 					// we advance
-					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,"<S-NAME> advances(s) at <T-NAMESELF>.");
+					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,_("<S-NAME> advances(s) at <T-NAMESELF>."));
 					if(fighter.location().okMessage(fighter,msg))
 					{
 						fighter.location().send(fighter,msg);
@@ -1742,7 +1742,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 			if((!inminrange)&&(fighter.curState().getMovement()>=25))
 			{
-				final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
+				final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,_("<S-NAME> retreat(s) before <T-NAME>."));
 				if(fighter.location().okMessage(fighter,msg))
 					fighter.location().send(fighter,msg);
 			}
@@ -2040,7 +2040,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					final Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 					if(A!=null)
 					{
-						mob.tell("You've forgotten "+A.Name()+".");
+						mob.tell(_("You've forgotten @x1.",A.Name()));
 						mob.delAbility(A);
 						if(A.isAutoInvoked())
 						{

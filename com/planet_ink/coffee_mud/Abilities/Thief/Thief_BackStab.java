@@ -89,12 +89,12 @@ public class Thief_BackStab extends ThiefSkill
 
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name(mob)+" is watching you too closely to do that.");
+			mob.tell(_("@x1 is watching you too closely to do that.",target.name(mob)));
 			return false;
 		}
 		if(lastMOB.equals(target+""))
 		{
-			mob.tell(target,null,null,target.name(mob)+" is watching <S-HIS-HER> back too closely to do that again.");
+			mob.tell(target,null,null,_("@x1 is watching <S-HIS-HER> back too closely to do that again.",target.name(mob)));
 			return false;
 		}
 		if(mob.isInCombat())

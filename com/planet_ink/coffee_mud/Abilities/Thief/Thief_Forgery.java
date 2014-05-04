@@ -56,7 +56,7 @@ public class Thief_Forgery extends ThiefSkill
 		final Item target=mob.findItem(null,(String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
+			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -71,7 +71,7 @@ public class Thief_Forgery extends ThiefSkill
 		String forgeWhat=CMParms.combine(commands,0);
 		if(forgeWhat.length()==0)
 		{
-			mob.tell("Forge what onto '"+target.name(mob)+"'?  Try a spell name, a room ID, or a bank note name.");
+			mob.tell(_("Forge what onto '@x1'?  Try a spell name, a room ID, or a bank note name.",target.name(mob)));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Thief_Forgery extends ThiefSkill
 			final Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 			{
-				mob.tell("You can't forge '"+A.name()+"'.");
+				mob.tell(_("You can't forge '@x1'.",A.name()));
 				return false;
 			}
 			else
@@ -138,7 +138,7 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			mob.tell("You don't know how to forge a '"+forgeWhat+"'.  Try a spell name, a room ID, or a bank note name.");
+			mob.tell(_("You don't know how to forge a '@x1'.  Try a spell name, a room ID, or a bank note name.",forgeWhat));
 			return false;
 		}
 		forgeWhat=newName;
@@ -153,7 +153,7 @@ public class Thief_Forgery extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> forge(s) @x1 on <T-NAMESELF>.",forgeWhat));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -110,7 +110,7 @@ public class Spell_Gate extends Spell
 
 		if((newRoom==null) || (target == null))
 		{
-			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
+			mob.tell(_("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -137,7 +137,7 @@ public class Spell_Gate extends Spell
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a teleportation spell"+addOn+"^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a teleportation spell@x1^?",addOn));
 		if((mob.location().okMessage(mob,msg))&&(newRoom!=null)&&(newRoom.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
@@ -149,7 +149,7 @@ public class Spell_Gate extends Spell
 			{
 				final MOB follower=(MOB)element;
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a burst of light."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())

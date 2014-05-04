@@ -187,7 +187,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					if((checkProtection("teleport"))
 					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					{
-						msg.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
+						msg.source().tell(_("You can't seem to fixate on '@x1'.",mob.name()));
 						return false;
 					}
 				}
