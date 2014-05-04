@@ -52,7 +52,7 @@ public class Reset extends StdCommand
 			final AmmunitionWeapon W=(AmmunitionWeapon)I;
 			if((W.requiresAmmunition())&&(W.ammunitionCapacity()>0))
 			{
-				String str=mob.session().prompt(lead+I.Name()+" requires ("+W.ammunitionType()+"): ");
+				String str=mob.session().prompt(_("@x1@x2 requires (@x3): ",lead,I.Name(),W.ammunitionType()));
 				if(str.length()>0)
 				{
 					if((str.trim().length()==0)||(str.equalsIgnoreCase("no")))
@@ -60,7 +60,7 @@ public class Reset extends StdCommand
 						W.setAmmunitionType("");
 						W.setAmmoCapacity(0);
 						W.setUsesRemaining(100);
-						str=mob.session().prompt(lead+I.Name()+" new weapon type: ");
+						str=mob.session().prompt(_("@x1@x2 new weapon type: ",lead,I.Name()));
 						W.setWeaponType(CMath.s_int(str));
 					}
 					else
@@ -173,7 +173,7 @@ public class Reset extends StdCommand
 				String s=I.description().trim().toLowerCase();
 				if((mob!=null)&&(mob.session()!=null)&&(openOnly))
 				{
-					if(mob.session().confirm("Clear "+I.name()+"/"+I.displayText()+"/"+I.description()+" (Y/n)?","Y"))
+					if(mob.session().confirm(_("Clear @x1/@x2/@x3 (Y/n)?",I.name(),I.displayText(),I.description()),_("Y")))
 					{
 						I.setDescription("");
 						return I.material();
@@ -202,7 +202,7 @@ public class Reset extends StdCommand
 				{
 					if(mob!=null)
 					{
-						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.CODES.NAME(rightMat)+" (y/N)?","N"))
+						if(mob.session().confirm(_("Change @x1/@x2 material to @x3 (y/N)?",I.name(),I.displayText(),RawMaterial.CODES.NAME(rightMat)),_("N")))
 						{
 							I.setMaterial(rightMat);
 							I.setDescription("");
@@ -354,7 +354,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("room"))
 		{
 			final String warning=resetWarning(mob, mob.location());
-			if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().displayText(mob)+"', OK (Y/n)?","Y")))
+			if((mob.session()==null)||(warning==null)||(mob.session().confirm(_("@x1\n\rReset the contents of the room '@x2', OK (Y/n)?",warning,mob.location().displayText(mob)),_("Y"))))
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
@@ -380,7 +380,7 @@ public class Reset extends StdCommand
 			{
 				final String warning=resetWarning(mob, A);
 				if(warning!=null) mob.tell(warning);
-				if((mob.session()==null)||(mob.session().confirm("Reset the contents of the area '"+A.name()+"', OK (Y/n)?","Y")))
+				if((mob.session()==null)||(mob.session().confirm(_("Reset the contents of the area '@x1', OK (Y/n)?",A.name()),_("Y"))))
 				{
 					for(final Session S : CMLib.sessions().localOnlineIterable())
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))

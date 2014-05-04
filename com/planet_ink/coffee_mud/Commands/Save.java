@@ -108,7 +108,7 @@ public class Save extends StdCommand
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
+				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
@@ -135,7 +135,7 @@ public class Save extends StdCommand
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
+				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
@@ -162,7 +162,7 @@ public class Save extends StdCommand
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
+				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)

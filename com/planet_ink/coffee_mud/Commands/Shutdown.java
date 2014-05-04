@@ -99,7 +99,7 @@ public class Shutdown extends StdCommand implements Tickable
 				   mob.tell(_("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
 				   return false;
 				}
-				if((!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.Str.MUDNAME)+" in "+wait+" "+multiplier.toLowerCase()+" (y/N)?","N")))
+				if((!mob.session().confirm(_("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),""+wait,multiplier.toLowerCase()),_("N"))))
 				   return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
@@ -113,7 +113,7 @@ public class Shutdown extends StdCommand implements Tickable
 			externalCommand=CMParms.combine(commands,1);
 
 		if((!noPrompt)
-		&&(!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.Str.MUDNAME)+" (y/N)?","N")))
+		&&(!mob.session().confirm(_("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),_("N"))))
 			return false;
 		shuttingDownMob=null;
 		this.externalCommand=externalCommand;

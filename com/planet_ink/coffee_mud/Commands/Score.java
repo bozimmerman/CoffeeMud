@@ -53,10 +53,10 @@ public class Score extends Affect
 		{
 			String levelStr=null;
 			if(classLevel>=mob.phyStats().level())
-				levelStr="level "+mob.phyStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
+				levelStr=_("level ")+mob.phyStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
 			else
 				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.phyStats().level();
-			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
+			msg.append(_("You are ^H@x1^? the ^H@x2^?.\n\r",mob.Name(),levelStr));
 		}
 		else
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -65,22 +65,22 @@ public class Score extends Affect
 		{
 			String levelStr=null;
 			if(classLevel>=mob.phyStats().level())
-				levelStr=", level "+mob.phyStats().level();
+				levelStr=_(", level ")+mob.phyStats().level();
 			else
-				levelStr=", level "+classLevel+"/"+mob.phyStats().level();
-			msg.append("You are ^H"+mob.Name()+"^?^H"+levelStr+"^?.\n\r");
+				levelStr=_(", level ")+classLevel+"/"+mob.phyStats().level();
+			msg.append(_("You are ^H@x1^?^H@x2^?.\n\r",mob.Name(),levelStr));
 		}
 		else
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(!mob.charStats().getMyRace().classless()))
-			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^?.\n\r");
+			msg.append(_("You are ^H@x1^? the ^H@x2^?.\n\r",mob.Name(),mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())));
 		else
-			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
+			msg.append(_("You are ^H@x1^?.\n\r",mob.Name()));
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		&&(classLevel<mob.phyStats().level()))
 		{
-			msg.append("You also have levels in: ");
+			msg.append(_("You also have levels in: "));
 			final StringBuilder classList=new StringBuilder("");
 			for(int c=0;c<mob.charStats().numClasses()-1;c++)
 			{
@@ -89,7 +89,7 @@ public class Score extends Affect
 				{
 					if(classList.length()>0)
 						if(c==mob.charStats().numClasses()-2)
-							classList.append(", and ");
+							classList.append(_(", and "));
 						else
 							classList.append(", ");
 					classList.append(C.name(mob.charStats().getClassLevel(C))+" ("+mob.charStats().getClassLevel(C)+") ");
@@ -99,16 +99,18 @@ public class Score extends Affect
 		}
 
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
-			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
+			msg.append(_("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
-		String genderName="neuter";
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M') genderName="male";
+		String genderName=_("^!neuter");
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M') 
+			genderName=_("^!male");
 		else
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F') genderName="female";
-		msg.append("You are a ");
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F') 
+			genderName=_("^!female");
+		msg.append(_("You are a "));
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
-			msg.append("^!"+mob.baseCharStats().getStat(CharStats.STAT_AGE)+"^? year old ");
-		msg.append("^!"+genderName);
+			msg.append(_("^!@x1^? year old ",""+mob.baseCharStats().getStat(CharStats.STAT_AGE)));
+		msg.append(genderName);
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		&&(!mob.charStats().getCurrentClass().raceless()))
 			msg.append(" "+mob.charStats().getMyRace().name() + "^?");
@@ -117,23 +119,23 @@ public class Score extends Affect
 		if(mob.getLiegeID().length()>0)
 		{
 			if(mob.isMarriedToLiege())
-				msg.append(" who is married to ^H"+mob.getLiegeID()+"^?");
+				msg.append(_(" who is married to ^H@x1^?",mob.getLiegeID()));
 			else
-				msg.append(" who serves ^H"+mob.getLiegeID()+"^?");
+				msg.append(_(" who serves ^H@x1^?",mob.getLiegeID()));
 		}
 		if(mob.getWorshipCharID().length()>0)
-			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
+			msg.append(_(" worshipping ^H@x1^?",mob.getWorshipCharID()));
 		msg.append(".\n\r");
 		if(mob.clans().iterator().hasNext())
 		{
-			msg.append("You are ");
+			msg.append(_("You are "));
 			for(final Iterator<Pair<Clan,Integer>> c = mob.clans().iterator();c.hasNext();)
 			{
 				final Pair<Clan,Integer> p=c.next();
 				final Clan C=p.first;
 				String role=C.getRoleName(p.second.intValue(),true,false);
 				role=CMLib.english().startWithAorAn(role);
-				msg.append(role+" of ^H"+C.getName()+"^?^.");
+				msg.append(_("@x1 of ^H@x2^?^.",role,C.getName()));
 				if(c.hasNext())
 					msg.append(", ");
 			}
@@ -141,11 +143,12 @@ public class Score extends Affect
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ATTRIBS))
 		{
-			msg.append("\n\r^NYour stats are: ");
+			msg.append(_("\n\r^NYour stats are: "));
 			msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 			msg.append("\n\r");
 			CharStats CT=mob.charStats();
-			if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
+			if(parm.equalsIgnoreCase("BASE")) 
+				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			for(final int i : CharStats.CODES.BASE())
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
@@ -155,18 +158,18 @@ public class Score extends Affect
 						+(CT.getMaxStat(i))+"\n\r");
 			msg.append("^?\n\r");
 		}
-		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
-		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
-		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? ^<HELP^>movement^</HELP^>.\n\r");
+		msg.append(_("You have ^H@x1^? ^<HELP^>hit points^</HELP^>, ^H",mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()));
+		msg.append(_("@x1^? ^<HELP^>mana^</HELP^>, and ^H",mob.curState().getMana()+"/"+mob.maxState().getMana()));
+		msg.append(_("@x1^? ^<HELP^>movement^</HELP^>.\n\r",mob.curState().getMovement()+"/"+mob.maxState().getMovement()));
 		if(mob.phyStats().height()<0)
-			msg.append("You are incorporeal, but still weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
+			msg.append(_("You are incorporeal, but still weigh ^!@x1^? pounds.\n\r",""+mob.baseWeight()));
 		else
-			msg.append("You are ^!"+mob.phyStats().height()+"^? inches tall and weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
+			msg.append(_("You are ^!@x1^? inches tall and weigh ^!@x2^? pounds.\n\r",""+mob.phyStats().height(),""+mob.baseWeight()));
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CARRYALL))
-			msg.append("You are carrying ^!"+mob.numItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^? pounds.\n\r");
+			msg.append(_("You are carrying ^!@x1^? items weighing ^!@x2^? pounds.\n\r",""+mob.numItems(),""+mob.phyStats().weight()));
 		else
-			msg.append("You are carrying ^!"+mob.numItems()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
-		msg.append("You have ^!"+mob.getPractices()+"^? ^<HELP^>practices^</HELP^>, ^!"+mob.getTrains()+"^? ^<HELP^>training sessions^</HELP^>, and ^!"+mob.getQuestPoint()+"^? ^<HELP^>quest points^</HELP^>.\n\r");
+			msg.append(_("You are carrying ^!@x1^?/^!@x2^? items weighing ^!@x3^? pounds.\n\r",""+mob.numItems(),""+mob.maxItems(),mob.phyStats().weight()+"^?/^!"+mob.maxCarry()));
+		msg.append(_("You have ^!@x1^? ^<HELP^>practices^</HELP^>, ^!@x2^? ^<HELP^>training sessions^</HELP^>, and ^!@x3^? ^<HELP^>quest points^</HELP^>.\n\r",""+mob.getPractices(),""+mob.getTrains(),""+mob.getQuestPoint()));
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
@@ -179,14 +182,14 @@ public class Score extends Affect
 					&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass())))
-					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, ^!"+(mob.getExpNeededDelevel())+"^? over your last level.\n\r");
+					msg.append(_("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, ^!@x2^? over your last level.\n\r",""+mob.getExperience(),""+mob.getExpNeededDelevel()));
 				else
-					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, and need ^!"+(mob.getExpNeededLevel())+"^? to advance.\n\r");
+					msg.append(_("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, and need ^!@x2^? to advance.\n\r",""+mob.getExperience(),""+mob.getExpNeededLevel()));
 			}
 			else
-				msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>.\n\r");
+				msg.append(_("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>.\n\r",""+mob.getExperience()));
 		}
-		msg.append("You have been online for ^!"+Math.round(CMath.div(mob.getAgeMinutes(),60.0))+"^? hours.\n\r");
+		msg.append(_("You have been online for ^!@x1^? hours.\n\r",""+Math.round(CMath.div(mob.getAgeMinutes(),60.0))));
 		for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 			final String factionID=(String)e.nextElement();
@@ -196,14 +199,14 @@ public class Score extends Affect
 				final int factionAmt=mob.fetchFaction(factionID);
 				final Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
 				if((FR!=null)&&(F.showInScore()))
-					msg.append("Your "+CMStrings.padRight(_("^<HELP^>@x1^</HELP^> is",F.name()),18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
+					msg.append(_("Your ")+CMStrings.padRight(_("^<HELP^>@x1^</HELP^> is",F.name()),18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
 			}
 		}
-		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(mob)+"^..\n\r");
-		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(mob)+"^..\n\r");
+		msg.append(_("Your ^<HELP^>armored defence^</HELP^> is: ^H@x1^..\n\r",CMLib.combat().armorStr(mob)));
+		msg.append(_("Your ^<HELP^>combat prowess^</HELP^> is : ^H@x1^..\n\r",CMLib.combat().fightingProwessStr(mob)));
 		//if(CMLib.flags().canSeeHidden(mob))
-		//    msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
-		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
+		//    msg.append(_("Your ^<HELP^>observation score^</HELP^> : ^H@x1^?.\n\r",CMLib.flags().getDetectScore(mob)));
+		msg.append(_("Wimpy is set to ^!@x1^? hit points.\n\r",""+mob.getWimpHitPoint()));
 
 		msg.append(getMOBState(mob));
 		msg.append(getAffects(mob.session(),mob,false,false));

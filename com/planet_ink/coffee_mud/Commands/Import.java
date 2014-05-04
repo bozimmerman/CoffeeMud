@@ -894,7 +894,7 @@ public class Import extends StdCommand
 		return false;
 	}
 
-	protected static void importCustomFiles(MOB mob, Hashtable files, Set<String> customBother, boolean noPrompt, boolean noDelete)
+	protected void importCustomFiles(MOB mob, Hashtable files, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
 		if(files.size()==0) return;
@@ -919,14 +919,14 @@ public class Import extends StdCommand
 					continue;
 				else
 				if(!noPrompt)
-					if(!mob.session().confirm("\n\rExternal resource '"+filename+"' found, import (Y/n)?","Y"))
+					if(!mob.session().confirm(_("\n\rExternal resource '@x1' found, import (Y/n)?",filename),_("Y")))
 						continue;
 			}
 			Resources.saveFileResource(filename,mob,new StringBuffer(data));
 		}
 	}
 
-	protected static void importCustomObjects(MOB mob, List<CMObject> custom, Set<String> customBother, boolean noPrompt, boolean noDelete)
+	protected void importCustomObjects(MOB mob, List<CMObject> custom, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
 		if(custom.size()==0) return;
@@ -943,7 +943,7 @@ public class Import extends StdCommand
 				if(R2==null)
 				{
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found, import (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Race '@x1' found, import (Y/n)?",R.ID()),_("Y")))
 							continue;
 					CMClass.addRace(R);
 					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
@@ -955,7 +955,7 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Race '"+R.ID()+"' found which would override your standard race.  Import anyway (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Race '@x1' found which would override your standard race.  Import anyway (Y/n)?",R.ID()),_("Y")))
 							continue;
 					CMClass.addRace(R);
 					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
@@ -972,7 +972,7 @@ public class Import extends StdCommand
 				if(C2==null)
 				{
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found, import (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Char Class '@x1' found, import (Y/n)?",C.ID()),_("Y")))
 							continue;
 					CMClass.addCharClass(C);
 					CMLib.database().DBCreateClass(C.ID(),C.classParms());
@@ -984,7 +984,7 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Char Class '"+C.ID()+"' found which would override your standard class.  Import anyway (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Char Class '@x1' found which would override your standard class.  Import anyway (Y/n)?",C.ID()),_("Y")))
 							continue;
 					CMClass.addCharClass(C);
 					CMLib.database().DBCreateClass(C.ID(),C.classParms());
@@ -1001,7 +1001,7 @@ public class Import extends StdCommand
 				if(A2==null)
 				{
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Ability '"+A.ID()+"' found, import (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Ability '@x1' found, import (Y/n)?",A.ID()),_("Y")))
 							continue;
 					CMClass.addClass(CMObjectType.ABILITY, A);
 					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
@@ -1013,7 +1013,7 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Ability '"+A.ID()+"' found which would override your standard Ability.  Import anyway (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Ability '@x1' found which would override your standard Ability.  Import anyway (Y/n)?",A.ID()),_("Y")))
 							continue;
 					CMClass.delClass(CMObjectType.ABILITY, A2);
 					CMClass.addClass(CMObjectType.ABILITY, A);
@@ -1031,7 +1031,7 @@ public class Import extends StdCommand
 				if(eM==null)
 				{
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Manufacturer '"+M.name()+"' found, import (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Manufacturer '@x1' found, import (Y/n)?",M.name()),_("Y")))
 							continue;
 					CMLib.tech().addManufacturer(eM);
 				}
@@ -1041,7 +1041,7 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
-						if(!mob.session().confirm("Custom Manufacturer '"+M.name()+"' found which would override your existing one.  Import anyway (Y/n)?","Y"))
+						if(!mob.session().confirm(_("Custom Manufacturer '@x1' found which would override your existing one.  Import anyway (Y/n)?",M.name()),_("Y")))
 							continue;
 					eM.setXml(M.getXml());
 				}
@@ -4689,7 +4689,7 @@ public class Import extends StdCommand
 						if((nodelete)&&(!prompt))
 							return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 						else
-						if(((!prompt)||((session!=null)&&session.confirm("Area: \""+areaName+"\" exists, obliterate first?","N"))))
+						if(((!prompt)||((session!=null)&&session.confirm(_("Area: \"@x1\" exists, obliterate first?",areaName),_("N")))))
 						{
 							if(reLinkTable==null) reLinkTable=new Vector();
 							if((mob.location()!=null)
@@ -4756,7 +4756,7 @@ public class Import extends StdCommand
 						return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 					else
 					if((!prompt)
-					||((session!=null)&&session.confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
+					||((session!=null)&&session.confirm(_("Area: \"@x1\" exists, obliterate first?",areaName),_("N"))))
 					{
 						reLinkTable=new Vector();
 						if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
@@ -4930,7 +4930,7 @@ public class Import extends StdCommand
 							continue;
 						}
 						else
-						if((session!=null)&&(!session.confirm("Account: \""+A.getAccountName()+"\" exists, obliterate first?","Y")))
+						if((session!=null)&&(!session.confirm(_("Account: \"@x1\" exists, obliterate first?",A.getAccountName()),_("Y"))))
 							continue;
 						else
 							CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.getAccountName()));
@@ -4960,7 +4960,7 @@ public class Import extends StdCommand
 							continue;
 						}
 						else
-						if((session!=null)&&(!session.confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y")))
+						if((session!=null)&&(!session.confirm(_("Player: \"@x1\" exists, obliterate first?",M.Name()),_("Y"))))
 							continue;
 						else
 							CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false,false);
@@ -5071,7 +5071,7 @@ public class Import extends StdCommand
 					{
 						if((changing)&&prompt&&(session!=null))
 							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.You_see()+"', you see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S1.setYou_see(str);
 					}
 
@@ -5082,7 +5082,7 @@ public class Import extends StdCommand
 					{
 						if((changing)&&prompt&&(session!=null))
 							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.Third_party_sees()+"', others see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&(session.confirm("?","Y"))))
+						if((!changing)||((session!=null)&&prompt&&(session.confirm("?",_("Y")))))
 							S1.setThird_party_sees(str);
 					}
 
@@ -5101,7 +5101,7 @@ public class Import extends StdCommand
 					{
 						if((changing)&&prompt&&(session!=null))
 							session.rawPrint("Change Social '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setYou_see(str);
 					}
 
@@ -5112,7 +5112,7 @@ public class Import extends StdCommand
 					{
 						if((session!=null)&&prompt&&changing)
 							session.rawPrint("Change Social '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setThird_party_sees(str);
 					}
 
@@ -5123,7 +5123,7 @@ public class Import extends StdCommand
 					{
 						if((session!=null)&&prompt&&changing)
 							session.rawPrint("Change Social '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setTarget_sees(str);
 					}
 
@@ -5134,7 +5134,7 @@ public class Import extends StdCommand
 					{
 						if((session!=null)&&prompt&&changing)
 							session.rawPrint("Change Social '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setSee_when_no_target(str);
 					}
 
@@ -5153,7 +5153,7 @@ public class Import extends StdCommand
 					{
 						if((session!=null)&&prompt&&changing)
 							session.rawPrint("Change Social '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S3.setYou_see(str);
 					}
 
@@ -5164,7 +5164,7 @@ public class Import extends StdCommand
 					{
 						if((session!=null)&&prompt&&changing)
 							session.rawPrint("Change Social '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
+						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S3.setThird_party_sees(str);
 					}
 
@@ -5193,7 +5193,7 @@ public class Import extends StdCommand
 					{
 						try
 						{
-						if(!session.confirm("Would you like to continue (y/N)","N"))
+						if(!session.confirm(_("Would you like to continue (y/N)"),_("N")))
 							return false;
 						}catch(final Exception e){}
 					}
@@ -5241,7 +5241,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 				else
 				if((!prompt)
-				||((session!=null)&&(session.confirm("Area: \""+areaName+"\" exists, obliterate first?","N"))))
+				||((session!=null)&&(session.confirm(_("Area: \"@x1\" exists, obliterate first?",areaName),_("N")))))
 				{
 					reLinkTable=new Vector();
 					if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
@@ -5259,7 +5259,7 @@ public class Import extends StdCommand
 				}
 			}
 			else
-			if((prompt)&&((session!=null)&&(!session.confirm("Found area: \""+areaName+"\", is this ok?","Y"))))
+			if((prompt)&&((session!=null)&&(!session.confirm(_("Found area: \"@x1\", is this ok?",areaName),_("Y")))))
 			{
 				if(multiArea)
 					continue;
@@ -5712,7 +5712,7 @@ public class Import extends StdCommand
 											{
 												if((prompt)
 												&&(session!=null)
-												&&(!session.confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
+												&&(!session.confirm(_("@x1 links to #@x2. Found @x3. Link?",R.roomID(),""+linkRoomID,R2.roomID()),_("Y"))))
 													continue;
 											}
 											linkRoom=R2;

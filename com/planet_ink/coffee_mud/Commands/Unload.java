@@ -182,7 +182,7 @@ public class Unload extends StdCommand
 					}
 					users.addElement(M);
 				}
-				final boolean saveFirst=mob.session().confirm("Save first (Y/n)?","Y");
+				final boolean saveFirst=mob.session().confirm(_("Save first (Y/n)?"),_("Y"));
 				for(int u=0;u<users.size();u++)
 				{
 					final MOB M=(MOB)users.elementAt(u);

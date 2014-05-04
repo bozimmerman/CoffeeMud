@@ -111,7 +111,7 @@ public class Restring extends StdCommand
 					CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+					showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
 					if(showFlag<=0)
 					{
 						showFlag=-1;

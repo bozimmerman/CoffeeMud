@@ -1003,7 +1003,7 @@ public class CharGen extends StdCommand
 			mob.tell(_("Enter 'ALL' for all classes."));
 			try
 			{
-				ClassName=mob.session().prompt("Enter a class name:");
+				ClassName=mob.session().prompt(_("Enter a class name:"));
 			}
 			catch(final Exception e){return false;}
 
@@ -1016,7 +1016,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=CMath.s_int(mob.session().prompt("Enter a level (1-"+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+"): "));
+				level=CMath.s_int(mob.session().prompt(_("Enter a level (1-@x1): ",""+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))));
 			}
 			catch(final Exception e){return false;}
 			if(level<=0)

@@ -598,7 +598,7 @@ public class Merge extends StdCommand
 				if((showFlag>0)&&(showFlag!=showNumber)) continue;
 				mob.tell(_("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
 				if((showFlag!=showNumber)&&(showFlag>-999)) continue;
-				final String res=mob.session().choose("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: ","DENQ", "N");
+				final String res=mob.session().choose(_("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),_("DENQ"), _("N"));
 				if(res.trim().equalsIgnoreCase("N")) continue;
 				if(res.trim().equalsIgnoreCase("Q")) throw new CMException("Cancelled by user.");
 				didSomething=true;
@@ -612,7 +612,7 @@ public class Merge extends StdCommand
 			if(showNumber==0) return didSomething;
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+			showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -765,7 +765,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbM)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm("MOB: "+dbR.roomID()+"."+rName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+							if(mob.session().confirm(_("MOB: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), _("N")))
 							{
 								M=(MOB)dbM.copyOf();
 								M.bringToLife(R, true);
@@ -818,7 +818,7 @@ public class Merge extends StdCommand
 							{
 								if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 								{
-									if(mob.session().confirm("Item: "+dbR.roomID()+"."+dbM.Name()+"."+rIName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+									if(mob.session().confirm(_("Item: @x1.@x2.@x3 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),dbM.Name(),rIName), _("N")))
 									{
 										I=(Item)dbI.copyOf();
 										M.addItem(I);
@@ -853,7 +853,7 @@ public class Merge extends StdCommand
 							final Item I=i.nextElement();
 							if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 							{
-								if(mob.session().confirm("Item: "+R.roomID()+"."+M.Name()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+								if(mob.session().confirm(_("Item: @x1.@x2.@x3 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name(),I.Name()), _("N")))
 								{
 									M.delItem(I);
 									updateMobs=true;
@@ -869,7 +869,7 @@ public class Merge extends StdCommand
 					final MOB M=r.nextElement();
 					if(amMerging(doType,mask,M)&&(!doneM.contains(M))&&(M.isMonster())&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm("MOB: "+R.roomID()+"."+M.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+						if(mob.session().confirm(_("MOB: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name()), _("N")))
 						{
 							R.delInhabitant(M);
 							updateMobs=true;
@@ -905,7 +905,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm("Item: "+dbR.roomID()+"."+rName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+							if(mob.session().confirm(_("Item: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), _("N")))
 							{
 								I=(Item)dbI.copyOf();
 								R.addItem(I);
@@ -940,7 +940,7 @@ public class Merge extends StdCommand
 					final Item I=i.nextElement();
 					if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm("Item: "+R.roomID()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+						if(mob.session().confirm(_("Item: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),I.Name()), _("N")))
 						{
 							R.delItem(I);
 							updateItems=true;

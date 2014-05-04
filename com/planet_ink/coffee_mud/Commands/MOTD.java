@@ -227,7 +227,7 @@ public class MOTD extends StdCommand
 						if(qQVec.size()>0)
 							buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
 						mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
-						if(pause){ mob.session().prompt("\n\rPress ENTER: ",10000); mob.session().println("\n\r");}
+						if(pause){ mob.session().prompt(_("\n\rPress ENTER: "),10000); mob.session().println("\n\r");}
 					}
 					else
 					if(qQVec.size()>0)

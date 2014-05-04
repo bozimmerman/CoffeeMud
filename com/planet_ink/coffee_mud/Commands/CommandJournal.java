@@ -231,7 +231,7 @@ public class CommandJournal extends StdCommand
 			{
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)
 				{
-					if(!mob.session().confirm("\n\r^HSubmit this "+journal.NAME().toLowerCase()+": '^N"+msgString+"^H' (Y/n)?^.^N","Y"))
+					if(!mob.session().confirm(_("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),_("Y")))
 						return false;
 				}
 				String prePend="";

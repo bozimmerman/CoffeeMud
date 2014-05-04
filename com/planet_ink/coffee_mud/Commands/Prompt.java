@@ -55,7 +55,7 @@ public class Prompt extends StdCommand
 			if(("DEFAULT").startsWith(str.toUpperCase()))
 				pstats.setPrompt("");
 			else
-			if(sess.confirm("Change your prompt to: "+str+", are you sure (Y/n)?","Y"))
+			if(sess.confirm(_("Change your prompt to: @x1, are you sure (Y/n)?",str),_("Y")))
 			{
 				pstats.setPrompt(str);
 				sess.rawPrintln("Your prompt is currently now set at:\n\r"+pstats.getPrompt());

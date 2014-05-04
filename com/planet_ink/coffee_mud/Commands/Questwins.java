@@ -101,7 +101,7 @@ public class Questwins extends StdCommand
 				mob.tell(_("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
 				return false;
 			}
-			if((!mob.isMonster()&&(mob.session().confirm("Drop the quest '"+Q.name()+"', are you sure (y/N)?","N"))))
+			if((!mob.isMonster()&&(mob.session().confirm(_("Drop the quest '@x1', are you sure (y/N)?",Q.name()),_("N")))))
 			{
 				CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTDROPPED);
 				mob.delScript(foundS);

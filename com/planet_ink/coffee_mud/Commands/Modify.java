@@ -255,13 +255,13 @@ public class Modify extends StdCommand
 			{
 				if(!mob.isMonster())
 				{
-					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
+					if(mob.session().confirm(_("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),_("N")))
 					{
 						String areaType="";
 						int tries=0;
 						while((areaType.length()==0)&&((++tries)<10))
 						{
-							areaType=mob.session().prompt("Enter an area type to create (default=StdArea): ","StdArea");
+							areaType=mob.session().prompt(_("Enter an area type to create (default=StdArea): "),_("StdArea"));
 							if(CMClass.getAreaType(areaType)==null)
 							{
 								mob.session().println("Invalid area type! Valid ones are:");
@@ -631,7 +631,7 @@ public class Modify extends StdCommand
 
 		if((!myArea.Name().equals(oldName))&&(!mob.isMonster()))
 		{
-			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
+			if(mob.session().confirm(_("Is changing the name of this area really necessary (y/N)?"),_("N")))
 			{
 				for(final Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
@@ -718,7 +718,7 @@ public class Modify extends StdCommand
 					if(doCmd<0)
 					{
 						final String oldScript=Q.script();
-						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
+						newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,_("Script"),false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
 						if(!newScript.equals(oldScript))
 						{
 							Q.setScript(newScript,true);
@@ -810,7 +810,7 @@ public class Modify extends StdCommand
 
 					if((showFlag<-900)||(cmdDex>=0)){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+					showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
 					if(showFlag<=0)
 					{
 						showFlag=-1;
@@ -1733,7 +1733,7 @@ public class Modify extends StdCommand
 					somethingFound=true;
 					mob.tell(_("Unapproved script:\n\r@x1\n\r",((StringBuffer)O).toString()));
 					if((!mob.isMonster())
-					&&(mob.session().confirm("Approve this script (Y/n)?","Y")))
+					&&(mob.session().confirm(_("Approve this script (Y/n)?"),_("Y"))))
 						CMSecurity.approveJScript(mob.Name(),L.longValue());
 					else
 						j.remove(L);

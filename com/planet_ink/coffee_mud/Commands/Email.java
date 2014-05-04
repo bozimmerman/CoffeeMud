@@ -113,7 +113,7 @@ public class Email extends StdCommand
 						if(S!=null) S.snoopSuspension(-1);
 					}
 					if(mob.session()==null) continue;
-					String s=mob.session().prompt("Enter a message #","");
+					String s=mob.session().prompt(_("Enter a message #"),"");
 					if((!CMath.isInteger(s))||(mob.session().isStopped()))
 						return false;
 					final int num=CMath.s_int(s);
@@ -145,7 +145,7 @@ public class Email extends StdCommand
 							if(S!=null) S.snoopSuspension(-1);
 						}
 						if(mob.session()==null) continue;
-						s=mob.session().choose("Would you like to D)elete, H)old, or R)eply (D/H/R)? ","DHR","H");
+						s=mob.session().choose(_("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),_("DHR"),_("H"));
 						if(s.equalsIgnoreCase("H"))
 							break;
 						if(s.equalsIgnoreCase("R"))
@@ -179,12 +179,12 @@ public class Email extends StdCommand
 				}
 				if(!CMath.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
 				{
-					if(!mob.session().confirm("Send email to '"+M.Name()+"' (Y/n)?","Y"))
+					if(!mob.session().confirm(_("Send email to '@x1' (Y/n)?",M.Name()),_("Y")))
 						return false;
 				}
 				else
 				{
-					if(!mob.session().confirm("Send email to '"+M.Name()+"', even though their AUTOFORWARD is turned off (y/N)?","N"))
+					if(!mob.session().confirm(_("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),_("N")))
 						return false;
 				}
 				if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
@@ -197,14 +197,14 @@ public class Email extends StdCommand
 					}
 				}
 				if(mob.session()==null) return false;
-				final String subject=mob.session().prompt("Email Subject: ","").trim();
+				final String subject=mob.session().prompt(_("Email Subject: "),"").trim();
 				if(subject.length()==0)
 				{
 					mob.tell(_("Aborted"));
 					return false;
 				}
 				if(mob.session()==null) return false;
-				String message=mob.session().prompt("Enter your message\n\r: ","").trim();
+				String message=mob.session().prompt(_("Enter your message\n\r: "),"").trim();
 				if(message.trim().length()==0)
 				{
 					mob.tell(_("Aborted"));
@@ -230,21 +230,21 @@ public class Email extends StdCommand
 		else
 		{
 			if(commands==null) return true;
-			final String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
+			final String change=mob.session().prompt(_("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),_("N"));
 			if(change.toUpperCase().startsWith("N")) return false;
 		}
 		if((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(commands!=null)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 			mob.session().println("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r");
-		String newEmail=mob.session().prompt("New E-mail Address:");
+		String newEmail=mob.session().prompt(_("New E-mail Address:"));
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
 		if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"))
 		{
 			if(newEmail.length()<6) return false;
 			if(newEmail.indexOf('@')<0) return false;
-			String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+			String confirmEmail=mob.session().prompt(_("Confirm that '@x1' is correct by re-entering.\n\rRe-enter:",newEmail));
 			if(confirmEmail==null) return false;
 			confirmEmail=confirmEmail.trim();
 			if(confirmEmail.length()==0) return false;
