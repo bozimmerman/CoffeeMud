@@ -83,7 +83,7 @@ public class Export extends StdCommand
 					mob.Name(),
 					"Exported XML",
 					xml);
-			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
+			if(S!=null) mob.tell(_("XML emailed to @x1",mob.playerStats().getEmail()));
 		}
 		else
 		{
@@ -91,7 +91,7 @@ public class Export extends StdCommand
 			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
 			new CMFile(fileName,mob).saveText(xml);
-			if(S!=null) mob.tell("File '"+fileName+"' written.");
+			if(S!=null) mob.tell(_("File '@x1' written.",fileName));
 		}
 	}
 

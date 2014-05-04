@@ -56,7 +56,7 @@ public class Pour extends StdCommand
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
-			mob.tell("You don't seem to have '"+thingToFillFrom+"'.");
+			mob.tell(_("You don't seem to have '@x1'.",thingToFillFrom));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -97,14 +97,14 @@ public class Pour extends StdCommand
 		{
 			if(commands.size()<1)
 			{
-				mob.tell(CMStrings.capitalizeAndLower(verb.name())+" what should I pour the "+thingToFillFrom+"?");
+				mob.tell(_("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
 				return false;
 			}
 			final String thingToFill=CMParms.combine(commands,0);
 			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
 			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
 			{
-				mob.tell("I don't see '"+thingToFill+"' here.");
+				mob.tell(_("I don't see '@x1' here.",thingToFill));
 				return false;
 			}
 			if((verb==PourVerb.DEFAULT)&&(!(fillThis instanceof Drink)))

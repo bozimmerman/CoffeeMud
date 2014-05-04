@@ -104,7 +104,7 @@ public class Say extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			mob.tell(theWord+" what?");
+			mob.tell(_("@x1 what?",theWord));
 			return false;
 		}
 
@@ -239,12 +239,12 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineWithQuotes(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(theWord+"  what?");
+			mob.tell(_("@x1  what?",theWord));
 			return false;
 		}
 		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell("you don't see "+whom+" here to speak to.");
+			mob.tell(_("you don't see @x1 here to speak to.",whom));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);

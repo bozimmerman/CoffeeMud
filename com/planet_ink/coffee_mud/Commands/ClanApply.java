@@ -55,7 +55,7 @@ public class ClanApply extends StdCommand
 				if(C.isOnlyFamilyApplicants()
 				&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
 				{
-					mob.tell("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
+					mob.tell(_("The clan  @x1 is a family.  You can not join a family, you must be born or married into it.",C.clanID()));
 					return false;
 				}
 
@@ -65,7 +65,7 @@ public class ClanApply extends StdCommand
 					if(oldList.size()>0)
 					{
 						final Pair<Clan,Integer> p=oldList.get(0);
-						mob.tell("You are already a member of "+p.first.getName()+". You need to resign before you can apply to another.");
+						mob.tell(_("You are already a member of @x1. You need to resign before you can apply to another.",p.first.getName()));
 					}
 					else
 						mob.tell(_("You are not elligible to apply to this clan."));
@@ -74,7 +74,7 @@ public class ClanApply extends StdCommand
 
 				if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 				{
-					mob.tell("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
+					mob.tell(_("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
 					return false;
 				}
 
@@ -99,7 +99,7 @@ public class ClanApply extends StdCommand
 							&&(newRole.second.intValue()==C.getGovernment().getAutoRole()))
 							{
 								CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
-								mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
+								mob.tell(_("You have successfully applied for membership in clan @x1.  Your application will be reviewed by management.  Use SCORE to check for a change in status.",C.clanID()));
 							}
 							else
 							{
@@ -115,7 +115,7 @@ public class ClanApply extends StdCommand
 									S.tick(mob,Tickable.TICKID_MOB);
 								}
 								CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
-								mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
+								mob.tell(_("You have successfully joined @x1.  Use CLANDETAILS for information.",C.clanID()));
 							}
 						}
 						else

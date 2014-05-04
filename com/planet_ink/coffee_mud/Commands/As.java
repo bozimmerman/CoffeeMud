@@ -77,7 +77,7 @@ public class As extends StdCommand
 		}
 		if(M.soulMate()!=null)
 		{
-			mob.tell(M.Name()+" is being possessed at the moment.");
+			mob.tell(_("@x1 is being possessed at the moment.",M.Name()));
 			return false;
 		}
 		if((CMSecurity.isASysOp(M))&&(!CMSecurity.isASysOp(mob)))

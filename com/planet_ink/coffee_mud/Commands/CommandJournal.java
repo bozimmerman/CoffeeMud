@@ -78,7 +78,7 @@ public class CommandJournal extends StdCommand
 		}
 		if((second.length()>0)&&(!CMath.isNumber(second)))
 		{
-			mob.tell(second+" is not a number");
+			mob.tell(_("@x1 is not a number",second));
 			return true;
 		}
 		final int count=CMath.s_int(second);
@@ -87,12 +87,12 @@ public class CommandJournal extends StdCommand
 		if(journal!=null) size=journal.size();
 		if(size<=0)
 		{
-			mob.tell("There are no "+journalWord+" listed at this time.");
+			mob.tell(_("There are no @x1 listed at this time.",journalWord));
 			return true;
 		}
 		if(count>size)
 		{
-			mob.tell("Maximum count of "+journalWord+" is "+size+".");
+			mob.tell(_("Maximum count of @x1 is @x2.",journalWord,""+size));
 			return true;
 		}
 		String realName=null;
@@ -112,7 +112,7 @@ public class CommandJournal extends StdCommand
 			realName=CMLib.database().DBGetRealJournalName(rest.toUpperCase());
 		if(realName==null)
 		{
-			mob.tell(rest+" is not a journal");
+			mob.tell(_("@x1 is not a journal",rest));
 			return true;
 		}
 		final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
@@ -156,12 +156,12 @@ public class CommandJournal extends StdCommand
 			int size=0;
 			if(journal!=null) size=journal.size();
 			if(size<=0)
-				mob.tell("There are no "+journalWord+" listed at this time.");
+				mob.tell(_("There are no @x1 listed at this time.",journalWord));
 			else
 			{
 				journalItem.setName(journalID);
 				if(count>size)
-					mob.tell("Maximum count of "+journalWord+" is "+size+".");
+					mob.tell(_("Maximum count of @x1 is @x2.",journalWord,""+size));
 				else
 				while(count<=size)
 				{
@@ -240,13 +240,13 @@ public class CommandJournal extends StdCommand
 				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 						prePend+msgString);
-				mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
+				mob.tell(_("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
 					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
 			}
 			else
 			{
-				mob.tell("What's the "+journal.NAME().toLowerCase()+"? Be Specific!");
+				mob.tell(_("What's the @x1? Be Specific!",journal.NAME().toLowerCase()));
 				return false;
 			}
 

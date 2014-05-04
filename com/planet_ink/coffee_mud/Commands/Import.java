@@ -4438,7 +4438,7 @@ public class Import extends StdCommand
 						areaType=s;
 					else
 					{
-						mob.tell("Unknown area type : "+s);
+						mob.tell(_("Unknown area type : @x1",s));
 						return false;
 					}
 					commands.remove(i);

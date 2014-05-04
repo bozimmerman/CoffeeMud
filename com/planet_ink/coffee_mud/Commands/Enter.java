@@ -75,7 +75,7 @@ public class Enter extends Go
 			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 			if(dir<0)
 			{
-				mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+				mob.tell(_("You don't see '@x1' here.",enterWhat.toLowerCase()));
 				return false;
 			}
 		}

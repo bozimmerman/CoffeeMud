@@ -66,7 +66,7 @@ public class ClanAccept extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell("You aren't allowed to accept anyone into "+((clanName.length()==0)?"anything":clanName)+".");
+				mob.tell(_("You aren't allowed to accept anyone into @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
@@ -79,7 +79,7 @@ public class ClanAccept extends StdCommand
 				final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 				if(apps.size()<1)
 				{
-					mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
+					mob.tell(_("There are no applicants to your @x1.",C.getGovernmentName()));
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
@@ -95,7 +95,7 @@ public class ClanAccept extends StdCommand
 					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
-						mob.tell(memberStr+" was not found.  Could not add to "+C.getGovernmentName()+".");
+						mob.tell(_("@x1 was not found.  Could not add to @x2.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
@@ -113,9 +113,9 @@ public class ClanAccept extends StdCommand
 							S.tick(M,Tickable.TICKID_MOB);
 						}
 						CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
-						mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+						mob.tell(_("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+							M.tell(_("@x1 has accepted you as a member of @x2 '@x3'.",mob.Name(),C.getGovernmentName(),C.clanID()));
 						return false;
 					}
 				}

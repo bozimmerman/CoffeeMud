@@ -79,7 +79,7 @@ public class Package extends StdCommand
 
 		if(V.size()==0)
 		{
-			mob.tell("You don't see '"+whatName+"' here.");
+			mob.tell(_("You don't see '@x1' here.",whatName));
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public class Package extends StdCommand
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
 			{
-				mob.tell("Items such as "+I.name(mob)+" may not be packaged.");
+				mob.tell(_("Items such as @x1 may not be packaged.",I.name(mob)));
 				return false;
 			}
 		}

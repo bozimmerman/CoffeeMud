@@ -47,7 +47,7 @@ public class Withdraw extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
+			mob.tell(_("You can not withdraw anything from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)

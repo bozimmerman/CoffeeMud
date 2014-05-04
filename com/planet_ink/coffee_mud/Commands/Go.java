@@ -96,7 +96,7 @@ public class Go extends StdCommand
 				{
 					if(direction>=0)
 					{
-						mob.tell("Which way out?  Try "+validDirs+".");
+						mob.tell(_("Which way out?  Try @x1.",validDirs));
 						return false;
 					}
 					direction=d;
@@ -184,7 +184,7 @@ public class Go extends StdCommand
 					break;
 			}
 			if(!doneAnything)
-				mob.tell(CMStrings.capitalizeAndLower(doing)+" which direction?\n\rTry "+validDirs.toLowerCase()+".");
+				mob.tell(_("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
 		}
 		return false;
 	}

@@ -106,7 +106,7 @@ public class Open extends StdCommand
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell("You don't see '"+whatToOpen+"' here.");
+			mob.tell(_("You don't see '@x1' here.",whatToOpen));
 			return false;
 		}
 		open(mob,openThis,whatToOpen,dirCode,false);

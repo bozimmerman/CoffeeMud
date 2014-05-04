@@ -60,7 +60,7 @@ public class Snoop extends StdCommand
 			if(S.isBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
-					mob.tell("You stop snooping on "+S.mob().name()+".");
+					mob.tell(_("You stop snooping on @x1.",S.mob().name()));
 				else
 					mob.tell(_("You stop snooping on someone."));
 				doneSomething=true;
@@ -90,10 +90,10 @@ public class Snoop extends StdCommand
 			mob.tell(_("You can't find anyone to snoop on by that name."));
 		else
 		if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
-			mob.tell(SnoopOn.mob().Name()+" is not yet fully in the game.");
+			mob.tell(_("@x1 is not yet fully in the game.",SnoopOn.mob().Name()));
 		else
 		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))
-			mob.tell("Only another Archon can snoop on "+SnoopOn.mob().name()+".");
+			mob.tell(_("Only another Archon can snoop on @x1.",SnoopOn.mob().name()));
 		else
 		{
 			final Vector snoop=new Vector();
@@ -113,7 +113,7 @@ public class Snoop extends StdCommand
 						snoop.addElement(S2);
 				}
 			}
-			mob.tell("You start snooping on "+SnoopOn.mob().name()+".");
+			mob.tell(_("You start snooping on @x1.",SnoopOn.mob().name()));
 			SnoopOn.setBeingSnoopedBy(mob.session(), true);
 		}
 		return false;

@@ -47,7 +47,7 @@ public class Borrow extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(!(SHOP instanceof Banker))
 		{
-			mob.tell("You can not borrow from "+shopkeeper.name()+".");
+			mob.tell(_("You can not borrow from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)

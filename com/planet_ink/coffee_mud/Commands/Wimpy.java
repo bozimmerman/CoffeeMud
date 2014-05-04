@@ -56,11 +56,11 @@ public class Wimpy extends StdCommand
 			newWimp=CMath.s_int(amt);
 		else
 		{
-			mob.tell("You can't change your wimp level to '"+amt+"'");
+			mob.tell(_("You can't change your wimp level to '@x1'",amt));
 			return false;
 		}
 		mob.setWimpHitPoint(newWimp);
-		mob.tell("Your wimp level has been changed to "+mob.getWimpHitPoint()+" hit points.");
+		mob.tell(_("Your wimp level has been changed to @x1 hit points.",""+mob.getWimpHitPoint()));
 		return false;
 	}
 

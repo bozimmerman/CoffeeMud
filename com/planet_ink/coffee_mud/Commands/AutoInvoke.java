@@ -117,7 +117,7 @@ public class AutoInvoke extends StdCommand
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
-							mob.tell("'"+s+"' is invalid.");
+							mob.tell(_("'@x1' is invalid.",s));
 						else
 						if(effects.contains(foundA.ID()))
 						{
@@ -126,18 +126,18 @@ public class AutoInvoke extends StdCommand
 							{
 								mob.delEffect(foundA);
 								if(mob.fetchEffect(foundA.ID())!=null)
-									mob.tell(foundA.name()+" failed to successfully deactivate.");
+									mob.tell(_("@x1 failed to successfully deactivate.",foundA.name()));
 								else
-									mob.tell(foundA.name()+" successfully deactivated.");
+									mob.tell(_("@x1 successfully deactivated.",foundA.name()));
 							}
 						}
 						else
 						{
 							foundA.autoInvocation(mob);
 							if(mob.fetchEffect(foundA.ID())!=null)
-								mob.tell(foundA.name()+" successfully invoked.");
+								mob.tell(_("@x1 successfully invoked.",foundA.name()));
 							else
-								mob.tell(foundA.name()+" failed to successfully invoke.");
+								mob.tell(_("@x1 failed to successfully invoke.",foundA.name()));
 						}
 					}
 				}

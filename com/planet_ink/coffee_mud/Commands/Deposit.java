@@ -47,7 +47,7 @@ public class Deposit extends StdCommand
 		if(shopkeeper==null) return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
+			mob.tell(_("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)

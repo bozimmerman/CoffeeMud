@@ -129,7 +129,7 @@ public class Report extends Skills
 
 
 			if(say.length()==0)
-				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.");
+				mob.tell(_("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.",s));
 			else
 				CMLib.commands().postSay(mob,null,say.toString(),false,false);
 		}

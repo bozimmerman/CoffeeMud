@@ -87,15 +87,15 @@ public class Expire extends StdCommand
 			}
 			if(stats==null)
 			{
-				mob.tell("No player/account named '"+playerName+"' was found.");
+				mob.tell(_("No player/account named '@x1' was found.",playerName));
 				return false;
 			}
 			unprotect(stats);
 			final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 			if(timeLeft<=0)
-				mob.tell("Player/Account '"+playerName+"' is now expired.");
+				mob.tell(_("Player/Account '@x1' is now expired.",playerName));
 			else
-				mob.tell("Player/Account '"+playerName+"' currently has "+(CMLib.english().returnTime(timeLeft,0))+" left.");
+				mob.tell(_("Player/Account '@x1' currently has @x2 left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
 			return false;
 		}
 		else
@@ -110,7 +110,7 @@ public class Expire extends StdCommand
 			else
 			if(!CMath.isLong(howLong))
 			{
-				mob.tell("'"+howLong+"' is now a proper value.  Try a number of days, the word NOW or the word NEVER.");
+				mob.tell(_("'@x1' is now a proper value.  Try a number of days, the word NOW or the word NEVER.",howLong));
 				return false;
 			}
 			else
@@ -127,7 +127,7 @@ public class Expire extends StdCommand
 			}
 			if(stats==null)
 			{
-				mob.tell("No player/account named '"+playerName+"' was found.");
+				mob.tell(_("No player/account named '@x1' was found.",playerName));
 				return false;
 			}
 			stats.setLastUpdated(System.currentTimeMillis());
@@ -149,7 +149,7 @@ public class Expire extends StdCommand
 					final PlayerAccount A=(PlayerAccount)stats;
 					A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
 				}
-				mob.tell("Player/Account '"+playerName+"' is now protected from expiration.");
+				mob.tell(_("Player/Account '@x1' is now protected from expiration.",playerName));
 			}
 			else
 			{
@@ -157,9 +157,9 @@ public class Expire extends StdCommand
 				stats.setAccountExpiration(days+System.currentTimeMillis());
 				final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 				if(timeLeft<=0)
-					mob.tell("Player/Account '"+playerName+"' is now expired.");
+					mob.tell(_("Player/Account '@x1' is now expired.",playerName));
 				else
-					mob.tell("Player/Account '"+playerName+"' now has "+(CMLib.english().returnTime(timeLeft,0))+" days left.");
+					mob.tell(_("Player/Account '@x1' now has @x2 days left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
 			}
 			return false;
 		}

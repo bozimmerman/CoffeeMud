@@ -105,7 +105,7 @@ public class Areas extends StdCommand
 						statVal=x;
 				if(statVal<0)
 				{
-					mob.tell("There was an error in your SORT= qualifier: '"+s.substring(5)+"' is unknown.");
+					mob.tell(_("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));
 					return false;
 				}
 				final int sortStat=statVal;
@@ -168,7 +168,7 @@ public class Areas extends StdCommand
 						}catch(final Exception e)
 						{
 							if(mob!=null)
-								mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());
+								mob.tell(_("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: @x1",e.getMessage()));
 							return false;
 						}
 					}

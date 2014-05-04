@@ -69,12 +69,12 @@ public class ClanTax extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell("You aren't allowed to tax anyone from "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to tax anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,chkC,commands,Clan.Function.TAX,false)))
 		{
-			mob.tell("You aren't in the right position to set the experience tax rate for your "+C.getGovernmentName()+".");
+			mob.tell(_("You aren't in the right position to set the experience tax rate for your @x1.",C.getGovernmentName()));
 			return false;
 		}
 		final Session S=mob.session();

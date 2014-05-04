@@ -57,7 +57,7 @@ public class Lock extends StdCommand
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell("You don't see '"+whatTolock+"' here.");
+			mob.tell(_("You don't see '@x1' here.",whatTolock));
 			return false;
 		}
 		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);

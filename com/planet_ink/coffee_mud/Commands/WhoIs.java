@@ -69,7 +69,7 @@ public class WhoIs extends Who
 					mudName=Intermud.translateName(mudName);
 					if(!Intermud.isUp(mudName))
 					{
-						mob.tell(mudName+" is not available.");
+						mob.tell(_("@x1 is not available.",mudName));
 						return false;
 					}
 				}

@@ -197,7 +197,7 @@ public class Save extends StdCommand
 			final MOB M=CMLib.players().getPlayer(lastCommand);
 			if(M==null)
 			{
-				mob.tell("No user named "+lastCommand);
+				mob.tell(_("No user named @x1",lastCommand));
 				return false;
 			}
 			CMLib.database().DBUpdatePlayer(M);
@@ -226,9 +226,7 @@ public class Save extends StdCommand
 		else
 		{
 			mob.tell(
-				"\n\rYou cannot save '"+firstCommand+"'. "
-				+"However, you might try "
-				+"ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.");
+				_("\n\rYou cannot save '@x1'. However, you might try ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.",firstCommand));
 		}
 		return false;
 	}

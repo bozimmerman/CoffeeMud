@@ -108,7 +108,7 @@ public class Teach extends StdCommand
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);
 			}
-			mob.tell("You don't seem to know "+abilityName+".");
+			mob.tell(_("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);

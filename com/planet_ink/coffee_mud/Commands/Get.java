@@ -206,9 +206,9 @@ public class Get extends StdCommand
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
+					mob.tell(mob,container,null,_("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
 				else
-					mob.tell(container.name()+" is closed.");
+					mob.tell(_("@x1 is closed.",container.name()));
 			}
 			else
 			if(containerName.equalsIgnoreCase("all"))
@@ -217,12 +217,12 @@ public class Get extends StdCommand
 			{
 				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
-					mob.tell("You don't see '"+containerName+"' here.");
+					mob.tell(_("You don't see '@x1' here.",containerName));
 				else
 				if(V.size()==1)
-					mob.tell(mob,V.get(0),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
+					mob.tell(mob,V.get(0),null,_("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
 				else
-					mob.tell("You don't see '"+unmodifiedWhatToGet+"' in any '"+containerName+"'.");
+					mob.tell(_("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
 			}
 		}
 		return false;

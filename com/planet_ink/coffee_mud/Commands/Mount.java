@@ -44,7 +44,7 @@ public class Mount extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(((String)commands.elementAt(0))+" what?");
+			mob.tell(_("@x1 what?",((String)commands.elementAt(0))));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -79,7 +79,7 @@ public class Mount extends StdCommand
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						mob.tell("You don't see "+((String)commands.firstElement())+" here.");
+						mob.tell(_("You don't see @x1 here.",((String)commands.firstElement())));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
@@ -100,7 +100,7 @@ public class Mount extends StdCommand
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		String mountStr=null;

@@ -66,7 +66,7 @@ public class Train extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You have "+mob.getTrains()+" training sessions. Enter HELP TRAIN for more information.");
+			mob.tell(_("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -144,7 +144,7 @@ public class Train extends StdCommand
 			{
 				if(abilityCode<0)
 				{
-					mob.tell("You can't train for '"+abilityName+"'. Try "+thingsToTrainFor.toString()+"HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.");
+					mob.tell(_("You can't train for '@x1'. Try @x2HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.",abilityName,thingsToTrainFor.toString()));
 					return false;
 				}
 			}
@@ -169,13 +169,13 @@ public class Train extends StdCommand
 		{
 			if(trainsRequired>1)
 			{
-				mob.tell("Training that ability further will require "+trainsRequired+" training points.");
+				mob.tell(_("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 			else
 			if(trainsRequired==1)
 			{
-				mob.tell("Training that ability further will require "+trainsRequired+" training points.");
+				mob.tell(_("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 		}
@@ -210,7 +210,7 @@ public class Train extends StdCommand
 		}
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			mob.tell(teacher.name()+" is refusing to teach right now.");
+			mob.tell(_("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
@@ -228,7 +228,7 @@ public class Train extends StdCommand
 			if(teacher.isMonster()) CMLib.commands().postStand(teacher,true);
 			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
-				mob.tell(teacher.name()+" looks a bit too relaxed to train with you.");
+				mob.tell(_("@x1 looks a bit too relaxed to train with you.",teacher.name()));
 				return false;
 			}
 		}
@@ -257,14 +257,14 @@ public class Train extends StdCommand
 				{
 					final CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
 					final String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
-					mob.tell("You can only learn that from another "+baseClassName+".");
+					mob.tell(_("You can only learn that from another @x1.",baseClassName));
 				}
 				else
 				if(theClass!=null)
 				{
 					int classLevel=mob.charStats().getClassLevel(theClass);
 					if(classLevel<0) classLevel=0;
-					mob.tell("You can only learn that from another "+theClass.name(classLevel)+".");
+					mob.tell(_("You can only learn that from another @x1.",theClass.name(classLevel)));
 				}
 				return false;
 			}
@@ -359,7 +359,7 @@ public class Train extends StdCommand
 			{
 				int classLevel=mob.charStats().getClassLevel(theClass);
 				if(classLevel<0) classLevel=0;
-				mob.tell("You have undergone "+theClass.name(classLevel)+" training!");
+				mob.tell(_("You have undergone @x1 training!",theClass.name(classLevel)));
 				mob.setTrains(mob.getTrains()-1);
 				mob.baseCharStats().getCurrentClass().endCharacter(mob);
 				mob.baseCharStats().setCurrentClass(theClass);

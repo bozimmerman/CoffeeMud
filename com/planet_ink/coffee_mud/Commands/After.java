@@ -92,14 +92,14 @@ public class After extends StdCommand implements Tickable
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		long time=CMath.s_long((String)commands.elementAt(0));
-		if(time==0) { mob.tell("Time may not be 0."+afterErr); return false;}
+		if(time==0) { mob.tell(_("Time may not be 0.@x1",afterErr)); return false;}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		final String s=(String)commands.elementAt(0);
 		final long multiplier=CMLib.english().getMillisMultiplierByName(s);
 		if(multiplier<0)
 		{
-			mob.tell("'"+s+" Time may not be 0. "+afterErr);
+			mob.tell(_("'@x1 Time may not be 0. @x2",s,afterErr));
 			return false;
 		}
 		else

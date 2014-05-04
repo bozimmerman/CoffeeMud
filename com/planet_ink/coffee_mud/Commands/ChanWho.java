@@ -87,7 +87,7 @@ public class ChanWho extends StdCommand
 					buf.append("^x[^?^.^N"+CMStrings.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
 		}
 		if(buf.length()==0)
-			mob.tell(head+"Nobody!");
+			mob.tell(_("@x1Nobody!",head));
 		else
 			mob.tell(head+buf.toString());
 		return false;

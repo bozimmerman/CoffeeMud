@@ -92,11 +92,11 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				mob.tell("There is noone following you called "+name+".");
+				mob.tell(_("There is noone following you called @x1.",name));
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				mob.tell("'"+row+"' is not a valid row in which to put "+who.name()+".  Try number greater than 0.");
+				mob.tell(_("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
 			else
 			{
 				int leaderRow=-1;
@@ -110,11 +110,11 @@ public class Formation extends StdCommand
 					mob.tell(_("You do not exist."));
 				else
 				if(CMath.s_int(row)<leaderRow)
-					mob.tell("You can not place "+who.name()+" behind your own position, which is "+leaderRow+".");
+					mob.tell(_("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
 				else
 				{
 					mob.addFollower(who,CMath.s_int(row)-leaderRow);
-					mob.tell("You have positioned "+who.name()+" to row "+CMath.s_int(row));
+					mob.tell(_("You have positioned @x1 to row @x2",who.name(),""+CMath.s_int(row)));
 				}
 			}
 		}

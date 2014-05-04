@@ -70,7 +70,7 @@ public class Load extends StdCommand
 		if(commands.size()<3)
 		{
 			if(tryArchon)
-				mob.tell("LOAD what? Try "+CMParms.toStringList(ARCHON_LIST)+" [CLASSNAME]");
+				mob.tell(_("LOAD what? Try @x1 [CLASSNAME]",CMParms.toStringList(ARCHON_LIST)));
 			else
 				mob.tell(_("Load what where?"));
 			return false;
@@ -126,7 +126,7 @@ public class Load extends StdCommand
 					Ammunition ammunition = getNextAmmunition(W.ammunitionType(),ammos);
 					if(ammunition==null)
 					{
-						mob.tell("You are all out of "+W.ammunitionType()+".");
+						mob.tell(_("You are all out of @x1.",W.ammunitionType()));
 					}
 					else
 					while((ammunition != null)
@@ -152,9 +152,9 @@ public class Load extends StdCommand
 			{
 				final Faction F=CMLib.factions().getFaction(name);
 				if(F==null)
-					mob.tell("Faction file '"+name+"' was not found.");
+					mob.tell(_("Faction file '@x1' was not found.",name));
 				else
-					mob.tell("Faction '"+F.name()+"' from file '"+name+"' was loaded.");
+					mob.tell(_("Faction '@x1' from file '@x2' was loaded.",F.name(),name));
 				return false;
 			}
 			else
@@ -162,14 +162,14 @@ public class Load extends StdCommand
 			{
 				final CMFile F=new CMFile(name,mob,CMFile.FLAG_LOGERRORS);
 				if((!F.exists())||(!F.canRead()))
-					mob.tell("File '"+name+"' could not be accessed.");
+					mob.tell(_("File '@x1' could not be accessed.",name));
 				else
 				{
 					final StringBuffer buf=Resources.getFileResource(name,true); // enforces its own security
 					if((buf==null)||(buf.length()==0))
-						mob.tell("Resource '"+name+"' was not found.");
+						mob.tell(_("Resource '@x1' was not found.",name));
 					else
-						mob.tell("Resource '"+name+"' was loaded.");
+						mob.tell(_("Resource '@x1' was loaded.",name));
 				}
 			}
 			else
@@ -230,17 +230,17 @@ public class Load extends StdCommand
 					}
 					final CMObjectType whatType=CMClass.findObjectType(what);
 					if(whatType==null)
-						mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+CMParms.toStringList(ARCHON_LIST));
+						mob.tell(_("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
 					else
 					{
 						final Object O=CMClass.getObjectOrPrototype(unloadClassName);
 						if((O instanceof CMObject)
 						&&(name.toUpperCase().endsWith(".CLASS"))
 						&&(CMClass.delClass(whatType,(CMObject)O)))
-							mob.tell(unloadClassName+" was unloaded.");
+							mob.tell(_("@x1 was unloaded.",unloadClassName));
 						if(CMClass.loadClass(whatType,name,false))
 						{
-							mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was successfully loaded.");
+							mob.tell(_("@x1 @x2 was successfully loaded.",CMStrings.capitalizeAndLower(what),name));
 							return true;
 						}
 					}
@@ -253,7 +253,7 @@ public class Load extends StdCommand
 				{
 					Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
 				}
-				mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was not loaded.");
+				mob.tell(_("@x1 @x2 was not loaded.",CMStrings.capitalizeAndLower(what),name));
 			}
 		}
 		return false;

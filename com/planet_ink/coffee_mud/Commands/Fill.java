@@ -64,7 +64,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell("From what should I fill the "+(String)commands.elementAt(0)+"?");
+			mob.tell(_("From what should I fill the @x1?",(String)commands.elementAt(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -83,7 +83,7 @@ public class Fill extends StdCommand
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
-				mob.tell("I don't see "+thingToFillFrom+" here.");
+				mob.tell(_("I don't see @x1 here.",thingToFillFrom));
 				return false;
 			}
 			while(commands.size()>=(fromDex+1))
@@ -113,7 +113,7 @@ public class Fill extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to have '"+thingToFill+"'.");
+			mob.tell(_("You don't seem to have '@x1'.",thingToFill));
 		else
 		for(int i=0;i<V.size();i++)
 		{

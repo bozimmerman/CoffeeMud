@@ -56,7 +56,7 @@ public class PollCmd extends StdCommand
 			if(commands==null)
 			{
 				if(mypolls[1].size()>0)
-					mob.tell(mypolls[1].size()+" poll(s) <-IS-ARE> awaiting your participation.");
+					mob.tell(_("@x1 poll(s) <-IS-ARE> awaiting your participation.",""+mypolls[1].size()));
 				return false;
 			}
 		}
@@ -73,9 +73,9 @@ public class PollCmd extends StdCommand
 		if(commands==null)
 		{
 			if(mypolls[1].size()==1)
-				mob.tell("\n\r^H"+mypolls[1].size()+" other poll(s) <-IS-ARE> awaiting your participation.^N\n\r");
+				mob.tell(_("\n\r^H@x1 other poll(s) <-IS-ARE> awaiting your participation.^N\n\r",""+mypolls[1].size()));
 			if(mypolls[2].size()>0)
-				mob.tell("\n\r^HResults from "+mypolls[2].size()+" poll(s) <-IS-ARE> still available.^N\n\r");
+				mob.tell(_("\n\r^HResults from @x1 poll(s) <-IS-ARE> still available.^N\n\r",""+mypolls[2].size()));
 			return true;
 		}
 		for(final Poll P : mypolls[1])

@@ -81,7 +81,7 @@ public class TypeCmd extends Go
 				}
 				else
 				{
-					mob.tell("You don't see '"+typeWhere.toLowerCase()+"' here.");
+					mob.tell(_("You don't see '@x1' here.",typeWhere.toLowerCase()));
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class TypeCmd extends Go
 		}
 		else
 		{
-			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+			mob.tell(_("You don't see '@x1' here.",enterWhat.toLowerCase()));
 		}
 		return false;
 	}

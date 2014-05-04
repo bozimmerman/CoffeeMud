@@ -63,12 +63,12 @@ public class Boot extends StdCommand
 				}
 				if(S.mob()!=null)
 				{
-					mob.tell("You boot "+S.mob().name());
+					mob.tell(_("You boot @x1",S.mob().name()));
 					if(S.mob().location()!=null)
 						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,_("Something is happening to <S-NAME>."));
 				}
 				else
-					mob.tell("You boot "+S.getAddress());
+					mob.tell(_("You boot @x1",S.getAddress()));
 				S.stopSession(false,false,false);
 				if(((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0))
 				&&(!CMLib.flags().isInTheGame(S.mob(),true)))

@@ -196,7 +196,7 @@ public class Score extends Affect
 				final int factionAmt=mob.fetchFaction(factionID);
 				final Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
 				if((FR!=null)&&(F.showInScore()))
-					msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
+					msg.append("Your "+CMStrings.padRight(_("^<HELP^>@x1^</HELP^> is",F.name()),18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
 			}
 		}
 		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(mob)+"^..\n\r");

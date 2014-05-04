@@ -76,10 +76,10 @@ public class NoChannel extends StdCommand
 		if(!CMath.isSet(pstats.getChannelMask(),channelNum))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()|(1<<channelNum));
-			mob.tell("The "+channelName+" channel has been turned off.  Use `"+channelName.toUpperCase()+"` to turn it back on.");
+			mob.tell(_("The @x1 channel has been turned off.  Use `@x2` to turn it back on.",channelName,channelName.toUpperCase()));
 		}
 		else
-			mob.tell("The "+channelName+" channel is already off.");
+			mob.tell(_("The @x1 channel is already off.",channelName));
 		return false;
 	}
 

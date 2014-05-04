@@ -96,7 +96,7 @@ public class Shutdown extends StdCommand implements Tickable
 				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))
 				{
-				   mob.tell("I don't know how to shutdown within the next "+wait+" "+multiplier+"; try `5 minutes` or something similar.");
+				   mob.tell(_("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
 				   return false;
 				}
 				if((!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.Str.MUDNAME)+" in "+wait+" "+multiplier.toLowerCase()+" (y/N)?","N")))
@@ -142,7 +142,7 @@ public class Shutdown extends StdCommand implements Tickable
 					Log.errOut("CommandProcessor",mob.Name()+" starts system restarting '"+externalCommand+"'...");
 				else
 					Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
-				mob.tell("Starting "+(keepItDown?"shutdown":"restart")+"...");
+				mob.tell(_("Starting @x1...",(keepItDown?"shutdown":"restart")));
 				com.planet_ink.coffee_mud.application.MUD.globalShutdown(mob.session(),keepItDown,externalCommand);
 			}
 		}.start();

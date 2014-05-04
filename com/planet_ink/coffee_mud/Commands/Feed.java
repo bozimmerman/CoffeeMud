@@ -55,7 +55,7 @@ public class Feed extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("I don't see "+whom+" here.");
+			mob.tell(_("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(mob.isInCombat())
@@ -68,7 +68,7 @@ public class Feed extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell("I don't see "+what+" here.");
+				mob.tell(_("I don't see @x1 here.",what));
 				return false;
 			}
 			if(!item.amWearingAt(Wearable.IN_INVENTORY))
@@ -83,7 +83,7 @@ public class Feed extends StdCommand
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name(mob)+" is in combat!");
+				mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> feed(s) @x1 to <T-NAMESELF>.",item.name()));
@@ -117,7 +117,7 @@ public class Feed extends StdCommand
 			}
 		}
 		else
-			mob.tell(target.name(mob)+" won't let you.");
+			mob.tell(_("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

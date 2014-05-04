@@ -67,11 +67,11 @@ public class ListCmd extends StdCommand
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
 		str.append("<<EACH CLASS>>\n\r");
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get("EACH");
-		str.append(CMStrings.padRight("Skill ID", ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-		str.append(CMStrings.padRight("Lvl", ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-		str.append(CMStrings.padRight("Gain", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight("Prof", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight("Mask", ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append(CMStrings.padRight(_("Skill ID"), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight(_("Lvl"), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight(_("Gain"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(_("Prof"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(_("Mask"), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
@@ -85,11 +85,11 @@ public class ListCmd extends StdCommand
 		str.append("\n\r");
 		str.append("<<ALL CLASSES>>\n\r");
 		subMap=map.get("ALL");
-		str.append(CMStrings.padRight("Skill ID", ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-		str.append(CMStrings.padRight("Lvl", ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-		str.append(CMStrings.padRight("Gain", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight("Prof", ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight("Mask", ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append(CMStrings.padRight(_("Skill ID"), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight(_("Lvl"), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight(_("Gain"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(_("Prof"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(_("Mask"), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
@@ -1180,7 +1180,7 @@ public class ListCmd extends StdCommand
 			sortBy = CMLib.players().getCharThinSortCode(rest,true);
 			if(sortBy<0)
 			{
-				mob.tell("Unrecognized sort criteria: "+rest);
+				mob.tell(_("Unrecognized sort criteria: @x1",rest));
 				return;
 			}
 		}
@@ -1277,7 +1277,7 @@ public class ListCmd extends StdCommand
 			sortBy = CMLib.players().getCharThinSortCode(rest,true);
 			if(sortBy<0)
 			{
-				mob.tell("Unrecognized sort criteria: "+rest);
+				mob.tell(_("Unrecognized sort criteria: @x1",rest));
 				return;
 			}
 		}
@@ -2277,7 +2277,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell("Bad "+s+" parameter format after.");
+					mob.tell(_("Bad @x1 parameter format after.",s));
 					return;
 				}
 			}
@@ -2293,7 +2293,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell("Bad "+s+" parameter format after.");
+					mob.tell(_("Bad @x1 parameter format after.",s));
 					return;
 				}
 			}
@@ -2309,7 +2309,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell("Bad "+s+" parameter format after.");
+					mob.tell(_("Bad @x1 parameter format after.",s));
 					return;
 				}
 			}
@@ -2461,7 +2461,7 @@ public class ListCmd extends StdCommand
 
 	public void listSql(MOB mob, String rest)
 	{
-		mob.tell("SQL Query: "+rest);
+		mob.tell(_("SQL Query: @x1",rest));
 		try
 		{
 			final List<String[]> rows=CMLib.database().DBRawQuery(rest.replace('`','\''));
@@ -2473,7 +2473,7 @@ public class ListCmd extends StdCommand
 		}
 		catch(final Exception e)
 		{
-			mob.tell("SQL Query Error: "+e.getMessage());
+			mob.tell(_("SQL Query Error: @x1",e.getMessage()));
 		}
 	}
 
@@ -2619,7 +2619,7 @@ public class ListCmd extends StdCommand
 					final Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
 					if((ls==null)&&(as==null))
 					{
-						mob.tell("'"+stat+"' is not recognized.  Try one of these: "+CMParms.toStringList(ListAreaStats.values())+", "+CMParms.toStringList(Area.Stats.values()));
+						mob.tell(_("'@x1' is not recognized.  Try one of these: @x2, @x3",stat,CMParms.toStringList(ListAreaStats.values()),CMParms.toStringList(Area.Stats.values())));
 						return;
 					}
 					addTos.add(stat);
@@ -2627,7 +2627,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell("'"+commands.get(0).toString()+"' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: "+CMParms.toStringList(ListAreaStats.values())+", "+CMParms.toStringList(Area.Stats.values()));
+					mob.tell(_("'@x1' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: @x2, @x3",commands.get(0).toString(),CMParms.toStringList(ListAreaStats.values()),CMParms.toStringList(Area.Stats.values())));
 					return;
 				}
 			}
@@ -2855,7 +2855,7 @@ public class ListCmd extends StdCommand
 						if(v<(V.size()-1))
 							str.append(", ");
 					}
-				mob.tell("You cannot list '"+listWord+"'.  Try "+str.toString()+".");
+				mob.tell(_("You cannot list '@x1'.  Try @x2.",listWord,str.toString()));
 			}
 			return;
 		}

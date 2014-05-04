@@ -54,13 +54,13 @@ public class Eat extends StdCommand
 		if((thisThang==null)
 		||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
+			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
-			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
+			mob.tell(_("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final String eatSound=CMLib.protocol().msp("gulp.wav",10);

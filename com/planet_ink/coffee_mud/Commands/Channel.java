@@ -71,7 +71,7 @@ public class Channel extends StdCommand
 		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
+			mob.tell(_("@x1 has been turned on.  Use `NO@x2` to turn it off again.",channelName,channelName.toUpperCase()));
 			return false;
 		}
 
@@ -87,13 +87,13 @@ public class Channel extends StdCommand
 			if(size>0)
 			{
 				if(size>5) size=5;
-				mob.tell(channelName+" what?  Here's the last "+size+" message(s):\n\r");
+				mob.tell(_("@x1 what?  Here's the last @x2 message(s):\n\r",channelName,""+size));
 				commands.add("LAST");
 				commands.add(Integer.toString(size));
 			}
 			else
 			{
-				mob.tell(channelName+" what?");
+				mob.tell(_("@x1 what?",channelName));
 				return false;
 			}
 		}

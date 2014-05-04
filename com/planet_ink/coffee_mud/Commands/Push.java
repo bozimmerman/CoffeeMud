@@ -79,7 +79,7 @@ public class Push extends Go
 
 		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{
-			mob.tell("You don't see '"+itemName+"' here.");
+			mob.tell(_("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;

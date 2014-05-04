@@ -86,7 +86,7 @@ public class GConsider extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(targetName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("I don't see '"+targetName+"' here.");
+			mob.tell(_("I don't see '@x1' here.",targetName));
 			return false;
 		}
 
@@ -111,24 +111,24 @@ public class GConsider extends StdCommand
 		{
 			if(realDiff>-(2*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" might give you a fight.");
+				mob.tell(_("@x1 might give you a fight.",target.charStats().HeShe()));
 				return false;
 			}
 			else
 			if(realDiff>-(3*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is hardly worth your while.");
+				mob.tell(_("@x1 is hardly worth your while.",target.charStats().HeShe()));
 				return false;
 			}
 			else
 			if(realDiff>-(4*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is a pushover.");
+				mob.tell(_("@x1 is a pushover.",target.charStats().HeShe()));
 				return false;
 			}
 			else
 			{
-				mob.tell(target.charStats().HeShe()+" is not worth the effort.");
+				mob.tell(_("@x1 is not worth the effort.",target.charStats().HeShe()));
 				return false;
 			}
 
@@ -136,24 +136,24 @@ public class GConsider extends StdCommand
 		else
 		if(realDiff<(2*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" looks a little tough.");
+			mob.tell(_("@x1 looks a little tough.",target.charStats().HeShe()));
 			return false;
 		}
 		else
 		if(realDiff<(3*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" is a serious threat.");
+			mob.tell(_("@x1 is a serious threat.",target.charStats().HeShe()));
 			return false;
 		}
 		else
 		if(realDiff<(4*theDiff))
 		{
-			mob.tell(target.charStats().HeShe()+" will clean your clock.");
+			mob.tell(_("@x1 will clean your clock.",target.charStats().HeShe()));
 			return false;
 		}
 		else
 		{
-			mob.tell(target.charStats().HeShe()+" WILL KILL YOU DEAD!");
+			mob.tell(_("@x1 WILL KILL YOU DEAD!",target.charStats().HeShe()));
 			return false;
 		}
 	}

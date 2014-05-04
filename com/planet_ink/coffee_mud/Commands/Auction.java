@@ -117,14 +117,11 @@ public class Auction extends Channel implements Tickable
 							final double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);
 							CMLib.coffeeShops().returnMoney(auctioneerM,liveData.currency,finalAmount);
-							auctioneerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount)+" has been transferred to you as payment from "+winnerM.name(auctioneerM)
-									+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".  The goods have also been transferred " +
-									"in exchange.");
+							auctioneerM.tell(_("@x1 has been transferred to you as payment from @x2, after the house took a cut of @x3.  The goods have also been transferred in exchange.",CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount),winnerM.name(auctioneerM),CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)));
 							if(CMLib.commands().postGet(winnerM,null,liveData.auctioningI,false)
 							||(winnerM.isMine(liveData.auctioningI)))
 							{
-								winnerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" has been transferred to "+auctioneerM.name(winnerM)
-										+".  You should have received the auctioned goods.  This auction is complete.");
+								winnerM.tell(_("@x1 has been transferred to @x2.  You should have received the auctioned goods.  This auction is complete.",CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid),auctioneerM.name(winnerM)));
 								if(liveData.auctioningI instanceof LandTitle)
 								{
 									final CMMsg msg=CMClass.getMsg(auctioneerM,winnerM,liveData.auctioningI,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
@@ -134,11 +131,8 @@ public class Auction extends Channel implements Tickable
 							else
 							{
 								auctioneerM.moveItemTo(liveData.auctioningI);
-								auctioneerM.tell("Your transaction could not be completed because "+winnerM.name(auctioneerM)+" was unable to collect the item.  Please contact "
-										+winnerM.name(auctioneerM)+" about receipt of "+liveData.auctioningI.name(winnerM)+" for "
-										+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
-								winnerM.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+auctioneerM.name(winnerM)
-										+" about receipt of "+liveData.auctioningI.name(winnerM)+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+								auctioneerM.tell(_("Your transaction could not be completed because @x1 was unable to collect the item.  Please contact @x2 about receipt of @x3 for @x4.",winnerM.name(auctioneerM),winnerM.name(auctioneerM),liveData.auctioningI.name(winnerM),CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)));
+								winnerM.tell(_("Your transaction could not be completed because you were unable to collect the item.  Please contact @x1 about receipt of @x2 for @x3.",auctioneerM.name(winnerM),liveData.auctioningI.name(winnerM),CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)));
 							}
 						}
 					}
@@ -290,17 +284,17 @@ public class Auction extends Channel implements Tickable
 			final Environmental E=mob.findItem(null,s);
 			if((E==null)||(E instanceof MOB))
 			{
-				mob.tell(s+" is not an item you can auction.");
+				mob.tell(_("@x1 is not an item you can auction.",s));
 				return false;
 			}
 			if((E instanceof Container)&&(((Container)E).getContents().size()>0))
 			{
-				mob.tell(E.name()+" will have to be emptied first.");
+				mob.tell(_("@x1 will have to be emptied first.",E.name()));
 				return false;
 			}
 			if(!(((Item)E).amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				mob.tell(E.name()+" will have to be removed first.");
+				mob.tell(_("@x1 will have to be removed first.",E.name()));
 				return false;
 			}
 			final Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
@@ -319,7 +313,7 @@ public class Auction extends Channel implements Tickable
 				return false;
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 			{
-				mob.tell("You don't have enough "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(mob))+" to cover the listing fee!");
+				mob.tell(_("You don't have enough @x1 to cover the listing fee!",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(mob))));
 				return false;
 			}
 			CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(mob), deposit);
@@ -382,7 +376,7 @@ public class Auction extends Channel implements Tickable
 			}
 			Environmental E=null;
 			E=liveData.auctioningI;
-			mob.tell("Item: "+E.name());
+			mob.tell(_("Item: @x1",E.name()));
 			CMLib.commands().handleBeingLookedAt(CMClass.getMsg(mob,CMMsg.MASK_ALWAYS|CMMsg.MSG_EXAMINE,null));
 			mob.tell(CMLib.coffeeShops().getViewDescription(E));
 			return true;

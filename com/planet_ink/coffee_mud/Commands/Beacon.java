@@ -60,21 +60,21 @@ public class Beacon extends StdCommand
 			if(M==null) M=CMLib.sessions().findPlayerOnline(name,false);
 			if(M==null)
 			{
-				mob.tell("No one is online called '"+name+"'!");
+				mob.tell(_("No one is online called '@x1'!",name));
 				return false;
 			}
 			if(M.getStartRoom()==M.location())
 			{
-				mob.tell(M.name(mob)+" is already at their beacon.");
+				mob.tell(_("@x1 is already at their beacon.",M.name(mob)));
 				return false;
 			}
 			if(!CMSecurity.isAllowed(mob,M.location(),CMSecurity.SecFlag.BEACON))
 			{
-				mob.tell("You cannot beacon "+M.name(mob)+" there.");
+				mob.tell(_("You cannot beacon @x1 there.",M.name(mob)));
 				return false;
 			}
 			M.setStartRoom(M.location());
-			mob.tell("You have modified "+M.name(mob)+"'s beacon.");
+			mob.tell(_("You have modified @x1's beacon.",M.name(mob)));
 		}
 		return false;
 	}

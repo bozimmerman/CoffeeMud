@@ -849,13 +849,15 @@ public class CharGen extends StdCommand
 						if(mob.session()!=null) mob.session().println("!");
 						if(fileExp==null)
 						{
-							mob.tell("HITPOINTS: "+H1+" vs "+H2);
-							mob.tell("QUICKEST : "+bestIterScore[0]+": "+bestIterSkill[0]);
-							mob.tell("MOST DAM : "+bestHitScore[0]+": "+bestHitSkill[0]);
-							mob.tell("BEST HIT : "+bestSingleHitScore[0]+", Phys: "+bestSingleHitPhys[0]+", Skill: "+bestSingleHitSkill[0]);
-							mob.tell("MEDIANS  : HITS: "+allData[charClassDex][level-levelStart][5]+" ("+allData[charClassDex][level-levelStart][6]+"%), LOSS ITERS: "+allData[charClassDex][level-levelStart][7]+", WIN ITERS: "+allData[charClassDex][level-levelStart][8]);
-							mob.tell("MEDIANS  : PHYS DONE: "+allData[charClassDex][level-levelStart][9]+", PHYS TAKEN: "+allData[charClassDex][level-levelStart][10]+" ("+allData[charClassDex][level-levelStart][11]+"%)");
-							mob.tell("LOSSES   : "+losses[0]);
+							mob.tell(_("HITPOINTS: @x1 vs @x2",""+H1,""+H2));
+							mob.tell(_("QUICKEST : @x1: @x2",""+bestIterScore[0],bestIterSkill[0]));
+							mob.tell(_("MOST DAM : @x1: @x2",""+bestHitScore[0],bestHitSkill[0]));
+							mob.tell(_("BEST HIT : @x1, Phys: @x2, Skill: @x3",""+bestSingleHitScore[0],""+bestSingleHitPhys[0],bestSingleHitSkill[0]));
+							mob.tell(_("MEDIANS  : HITS: @x1 (@x2%), LOSS ITERS: @x3, WIN ITERS: @x4",
+									""+allData[charClassDex][level-levelStart][5],""+allData[charClassDex][level-levelStart][6],""+allData[charClassDex][level-levelStart][7],""+allData[charClassDex][level-levelStart][8]));
+							mob.tell(_("MEDIANS  : PHYS DONE: @x1, PHYS TAKEN: @x2 (@x3%)",
+									""+allData[charClassDex][level-levelStart][9],""+allData[charClassDex][level-levelStart][10],""+allData[charClassDex][level-levelStart][11]));
+							mob.tell(_("LOSSES   : @x1",""+losses[0]));
 							if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
 							{
 								final StringBuffer fails=new StringBuffer("SKILLFAILS: ");

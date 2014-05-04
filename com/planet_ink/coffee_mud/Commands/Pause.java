@@ -93,20 +93,20 @@ public class Pause extends StdCommand
 			else
 				E=mob.location().fetchFromRoomFavorMOBs(null,cmd);
 			if(E==null)
-				mob.tell("'"+cmd+"' is an unknown object here.");
+				mob.tell(_("'@x1' is an unknown object here.",cmd));
 			else
 			if(!CMLib.threads().isTicking(E,-1))
-				mob.tell("'"+cmd+"' has no thread support.");
+				mob.tell(_("'@x1' has no thread support.",cmd));
 			else
 			if(!CMLib.threads().isSuspended(E,-1))
 			{
 				CMLib.threads().suspendTicking(E,-1);
-				mob.tell("Object '"+E.name()+"' ticks have been suspended. Enter PAUSE "+cmd.toUpperCase()+" again to resume.");
+				mob.tell(_("Object '@x1' ticks have been suspended. Enter PAUSE @x2 again to resume.",E.name(),cmd.toUpperCase()));
 			}
 			else
 			{
 				CMLib.threads().resumeTicking(E,-1);
-				mob.tell("Object '"+E.name()+"' ticks have been resumed.");
+				mob.tell(_("Object '@x1' ticks have been resumed.",E.name()));
 			}
 		}
 		return false;

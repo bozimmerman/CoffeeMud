@@ -109,7 +109,7 @@ public class DumpFile extends StdCommand
 				}
 			}
 		}
-		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
+		mob.tell(_("dumped @x1 files to @x2 user(s)",""+numFiles,""+numSessions));
 		return false;
 	}
 

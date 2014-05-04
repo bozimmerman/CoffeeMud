@@ -90,7 +90,7 @@ public class Follow extends StdCommand
 			if(mob.getGroupMembers(new HashSet<MOB>()).contains(tofollow))
 			{
 				if(!quiet)
-					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
+					mob.tell(_("You are already a member of @x1's group!",tofollow.name()));
 				return false;
 			}
 			if(nofollow(mob,false,false))
@@ -149,18 +149,18 @@ public class Follow extends StdCommand
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell("You cannot follow '"+target.name(mob)+"'.");
+			mob.tell(_("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
 		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.tell(target.name(mob)+" is not accepting followers.");
+			mob.tell(_("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
 		if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
 		{
-			mob.tell(ultiTarget.name()+" is not accepting followers.");
+			mob.tell(_("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;
 		}
 		processFollow(mob,target,quiet);

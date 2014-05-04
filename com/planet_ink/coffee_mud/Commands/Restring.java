@@ -72,7 +72,7 @@ public class Restring extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
@@ -96,7 +96,7 @@ public class Restring extends StdCommand
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())
-				mob.tell(thang.name()+" can not be restrung.");
+				mob.tell(_("@x1 can not be restrung.",thang.name()));
 			else
 			{
 				int showFlag=-1;
@@ -123,7 +123,7 @@ public class Restring extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 shake(s) under the transforming power.",thang.name()));
 		}
 		else
-			mob.tell("'"+allWord+"' can not be restrung.");
+			mob.tell(_("'@x1' can not be restrung.",allWord));
 		return false;
 	}
 

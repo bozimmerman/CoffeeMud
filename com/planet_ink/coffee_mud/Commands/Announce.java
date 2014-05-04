@@ -95,7 +95,7 @@ public class Announce extends StdCommand
 		{
 			final String s=CMParms.combine(commands,1);
 			if(s.length()==0)
-				mob.tell("Your announce message is currently: "+mob.playerStats().getAnnounceMessage());
+				mob.tell(_("Your announce message is currently: @x1",mob.playerStats().getAnnounceMessage()));
 			else
 			{
 				if(mob.playerStats()!=null)

@@ -51,7 +51,7 @@ public class ClanWho extends Who
 		{
 			final Clan C=CMLib.clans().findClan(clanName);
 			if(C==null)
-				mob.tell("There's no such clan as '"+clanName+"'.");
+				mob.tell(_("There's no such clan as '@x1'.",clanName));
 			else
 				clanList.add(C.clanID());
 		}

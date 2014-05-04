@@ -60,7 +60,7 @@ public class Undress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("I don't see "+whom+" here.");
+			mob.tell(_("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -70,12 +70,12 @@ public class Undress extends StdCommand
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				mob.tell(target.name(mob)+" doesn't seem to be equipped with '"+what+"'.");
+				mob.tell(_("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name(mob)+" is in combat!");
+				mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -93,14 +93,14 @@ public class Undress extends StdCommand
 							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> take(s) <O-NAME> off <T-NAMESELF>."));
 					}
 					else
-						mob.tell("You cannot seem to get "+item.name()+" off "+target.name(mob)+".");
+						mob.tell(_("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
 				}
 				else
-					mob.tell("You cannot seem to get "+item.name()+" off of "+target.name(mob)+".");
+					mob.tell(_("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
 			}
 		}
 		else
-			mob.tell(target.name(mob)+" won't let you.");
+			mob.tell(_("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

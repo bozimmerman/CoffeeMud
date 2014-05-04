@@ -431,13 +431,13 @@ public class Stat  extends Skills
 			target=CMLib.players().getLoadPlayer(MOBname);
 		if(target==null)
 		{
-			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");
+			mob.tell(_("You can't stat '@x1'  -- he doesn't exist.",MOBname));
 			return false;
 		}
 		if(((target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		||((!target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS))))
 		{
-			mob.tell("You aren't allowed to stat '"+target.Name()+"'.");
+			mob.tell(_("You aren't allowed to stat '@x1'.",target.Name()));
 			return false;
 		}
 

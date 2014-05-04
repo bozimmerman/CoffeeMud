@@ -56,7 +56,7 @@ public class ClanResign extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell("You can't resign from "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You can't resign from @x1.",((clanName.length()==0)?"anything":clanName)));
 		}
 		else
 		if(S!=null)

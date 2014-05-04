@@ -168,7 +168,7 @@ public class Where extends StdCommand
 					mobOnly=true;
 					zapperMask=true;
 					who=who.substring(8).trim();
-					mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					compiledZapperMask=CMLib.masking().maskCompile(who);
 				}
 				else
@@ -177,7 +177,7 @@ public class Where extends StdCommand
 					itemOnly=true;
 					zapperMask=true;
 					who=who.substring(9).trim();
-					mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					compiledZapperMask=CMLib.masking().maskCompile(who);
 				}
 				else
@@ -185,7 +185,7 @@ public class Where extends StdCommand
 				{
 					mobOnly=true;
 					zapperMask2=true;
-					mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					who=who.substring(9).trim();
 				}
 				else
@@ -193,7 +193,7 @@ public class Where extends StdCommand
 				{
 					itemOnly=true;
 					zapperMask2=true;
-					mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					who=who.substring(10).trim();
 				}
 

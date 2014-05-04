@@ -132,7 +132,7 @@ public class Wear extends StdCommand
 				}
 				else
 				{
-					mob.tell("You can't wear anything on your '"+possibleWearLocation+"'");
+					mob.tell(_("You can't wear anything on your '@x1'",possibleWearLocation));
 					return false;
 				}
 				// will always break out here, one way or the other.

@@ -74,7 +74,7 @@ public class Sell extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell("You don't seem to have '"+whatName+"'.");
+			mob.tell(_("You don't seem to have '@x1'.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

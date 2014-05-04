@@ -74,11 +74,11 @@ public class Reset extends StdCommand
 		{
 			if(IT.intValue()==I.material())
 			{
-				mob.tell(lead+I.Name()+" still "+RawMaterial.CODES.NAME(I.material()));
+				mob.tell(_("@x1@x2 still @x3",lead,I.Name(),RawMaterial.CODES.NAME(I.material())));
 				return nochange;
 			}
 			I.setMaterial(IT.intValue());
-			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.CODES.NAME(I.material()));
+			mob.tell(_("@x1@x2 Changed to @x3",lead,I.Name(),RawMaterial.CODES.NAME(I.material())));
 			return 1;
 		}
 		while(true)
@@ -100,7 +100,7 @@ public class Reset extends StdCommand
 				if(material>=0)
 				{
 					I.setMaterial(RawMaterial.CODES.GET(material));
-					mob.tell(lead+"Changed to "+RawMaterial.CODES.NAME(material));
+					mob.tell(_("@x1Changed to @x2",lead,RawMaterial.CODES.NAME(material)));
 					rememberI.put(I.Name(),Integer.valueOf(I.material()));
 					return 1;
 				}
@@ -115,7 +115,7 @@ public class Reset extends StdCommand
 				}
 				else
 					poss=RawMaterial.CODES.NAME(possMat);
-				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
+				mob.tell(_("@x1'@x2' does not exist.  Try '@x3'.",lead,str,poss));
 			}
 		}
 	}
@@ -443,7 +443,7 @@ public class Reset extends StdCommand
 						if(R instanceof GridLocale)
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
-						mob.tell("Room "+oldID+" changed to "+R.roomID()+".");
+						mob.tell(_("Room @x1 changed to @x2.",oldID,R.roomID()));
 					}
 				}
 			}
@@ -455,7 +455,7 @@ public class Reset extends StdCommand
 		else
 		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESETUTILS))
 		{
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell(_("'@x1' is an unknown reset.  Try ROOM, AREA, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.",s));
 			return false;
 		}
 		else
@@ -503,7 +503,7 @@ public class Reset extends StdCommand
 					if(save)
 					{
 						R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
-						mob.tell("Modified "+R.ID());
+						mob.tell(_("Modified @x1",R.ID()));
 						CMLib.database().DBDeleteRace(R.ID());
 						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 					}
@@ -619,7 +619,7 @@ public class Reset extends StdCommand
 				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
 			}
 			CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
-			mob.tell(V.size()+" records done.");
+			mob.tell(_("@x1 records done.",""+V.size()));
 		}
 		else
 		if(s.equalsIgnoreCase("mobstats")&&(CMSecurity.isASysOp(mob)))
@@ -657,7 +657,7 @@ public class Reset extends StdCommand
 					{
 						if(fixMob(M,recordedChanges))
 						{
-							mob.tell("Catalog mob "+M.Name()+" done.");
+							mob.tell(_("Catalog mob @x1 done.",M.Name()));
 							CMLib.catalog().updateCatalog(M);
 						}
 					}
@@ -717,7 +717,7 @@ public class Reset extends StdCommand
 					}
 					if(somethingDone)
 					{
-						mob.tell("Room "+R.roomID()+" done.");
+						mob.tell(_("Room @x1 done.",R.roomID()));
 						CMLib.database().DBUpdateMOBs(R);
 					}
 					if(R.getArea().getAreaState()!=Area.State.ACTIVE)
@@ -860,7 +860,7 @@ public class Reset extends StdCommand
 			if(O==null) O=CMClass.getBehavior(ID);
 			if(O==null)
 			{
-				mob.tell("'"+ID+"' is not a known property or behavior.  Try LIST.");
+				mob.tell(_("'@x1' is not a known property or behavior.  Try LIST.",ID));
 				return false;
 			}
 
@@ -1015,7 +1015,7 @@ public class Reset extends StdCommand
 					{
 						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 						{
-							mob.tell("Catalog item "+I.Name()+" done.");
+							mob.tell(_("Catalog item @x1 done.",I.Name()));
 							CMLib.catalog().updateCatalog(I);
 						}
 					}
@@ -1205,14 +1205,14 @@ public class Reset extends StdCommand
 						if(R2!=null)
 						{
 							if(M.charStats().getMyRace()==R2)
-								mob.tell(" "+M.Name()+" still "+R2.name());
+								mob.tell(_(" @x1 still @x2",M.Name(),R2.name()));
 							else
 							{
 								M.baseCharStats().setMyRace(R2);
 								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 								M.recoverCharStats();
 								M.recoverPhyStats();
-								mob.tell(" "+M.Name()+" Changed to "+R2.ID());
+								mob.tell(_(" @x1 Changed to @x2",M.Name(),R2.ID()));
 								somethingDone=true;
 							}
 						}
@@ -1261,10 +1261,10 @@ public class Reset extends StdCommand
 										if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
 										   poss=R3.name();
 									}
-									mob.tell(" '"+str+"' is not a valid race.  Try '"+poss+"'.");
+									mob.tell(_(" '@x1' is not a valid race.  Try '@x2'.",str,poss));
 									continue;
 								}
-								mob.tell(" Changed to "+R2.ID());
+								mob.tell(_(" Changed to @x1",R2.ID()));
 								M.baseCharStats().setMyRace(R2);
 								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 								M.recoverCharStats();
@@ -1511,7 +1511,7 @@ public class Reset extends StdCommand
 			};
 		}
 		else
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell(_("'@x1' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
 		return false;
 	}
 

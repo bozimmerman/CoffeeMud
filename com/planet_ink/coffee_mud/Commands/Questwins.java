@@ -85,7 +85,7 @@ public class Questwins extends StdCommand
 			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
-				mob.tell("There is no such quest as '"+rest+"'.");
+				mob.tell(_("There is no such quest as '@x1'.",rest));
 				return false;
 			}
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
@@ -98,7 +98,7 @@ public class Questwins extends StdCommand
 			}
 			if(foundS==null)
 			{
-				mob.tell("You have not accepted a quest called '"+rest+"'.  Enter QUESTS for a list.");
+				mob.tell(_("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
 				return false;
 			}
 			if((!mob.isMonster()&&(mob.session().confirm("Drop the quest '"+Q.name()+"', are you sure (y/N)?","N"))))
@@ -125,7 +125,7 @@ public class Questwins extends StdCommand
 			for(int i=0;i<qVec.size();i++)
 				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
-				mob.tell(msg.toString()+"\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.");
+				mob.tell(_("@x1\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.",msg.toString()));
 
 		}
 		else
@@ -134,7 +134,7 @@ public class Questwins extends StdCommand
 			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
-				mob.tell("There is no such quest as '"+rest+"'.");
+				mob.tell(_("There is no such quest as '@x1'.",rest));
 				return false;
 			}
 			ScriptingEngine foundS=null;
@@ -148,13 +148,13 @@ public class Questwins extends StdCommand
 			}
 			if(foundS==null)
 			{
-				mob.tell("You have not accepted a quest called '"+rest+"'.  Enter QUESTS for a list.");
+				mob.tell(_("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
 				return false;
 			}
 			String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 			if(!Q.name().equals(name))
 				name+=" ("+Q.name()+")";
-			mob.tell("^HQuest Information: ^w"+name+"^N");
+			mob.tell(_("^HQuest Information: ^w@x1^N",name));
 			String instructions=foundS.getVar("*","INSTRUCTIONS");
 			if((instructions==null)||(instructions.length()==0))
 				instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):null;
@@ -181,9 +181,9 @@ public class Questwins extends StdCommand
 			final String progress=foundS.getVar("*","PROGRESS");
 			mob.tell("^w"+instructions+"^N");
 			if((timeRemaining!=null)&&(timeRemaining.length()>0))
-				mob.tell("\n\r^yTime Remaining: ^w"+timeRemaining+"^N");
+				mob.tell(_("\n\r^yTime Remaining: ^w@x1^N",timeRemaining));
 			if((progress!=null)&&(progress.length()>0))
-				mob.tell("\n\r^yProgress: ^w"+progress+"^N");
+				mob.tell(_("\n\r^yProgress: ^w@x1^N",progress));
 		}
 		return false;
 	}

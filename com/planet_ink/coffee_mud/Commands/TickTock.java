@@ -77,7 +77,7 @@ public class TickTock extends StdCommand
 		}
 		catch(final Exception e)
 		{
-			mob.tell("Ticktock failed: "+e.getMessage());
+			mob.tell(_("Ticktock failed: @x1",e.getMessage()));
 		}
 
 		return false;

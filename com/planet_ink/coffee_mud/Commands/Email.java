@@ -174,7 +174,7 @@ public class Email extends StdCommand
 				final MOB M=CMLib.players().getLoadPlayer(name);
 				if(M==null)
 				{
-					mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");
+					mob.tell(_("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
 					return false;
 				}
 				if(!CMath.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
@@ -192,7 +192,7 @@ public class Email extends StdCommand
 					final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
 					if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
 					{
-						mob.tell(M.Name()+"'s mailbox is full.");
+						mob.tell(_("@x1's mailbox is full.",M.Name()));
 						return false;
 					}
 				}

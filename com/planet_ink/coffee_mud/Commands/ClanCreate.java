@@ -59,7 +59,7 @@ public class ClanCreate extends StdCommand
 		if(numGovernmentsAvailable==0)
 		{
 			if(p!=null)
-				mob.tell("You are already a member of "+p.first.getName()+". You need to resign before you can create another.");
+				mob.tell(_("You are already a member of @x1. You need to resign before you can create another.",p.first.getName()));
 			else
 				mob.tell(_("You are not elligible to create a new clan at this time."));
 			return false;
@@ -73,7 +73,7 @@ public class ClanCreate extends StdCommand
 			{
 				if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<(cost))
 				{
-					mob.tell("It costs "+CMLib.beanCounter().nameCurrencyShort(mob,cost)+" to create a clan.  You don't have it.");
+					mob.tell(_("It costs @x1 to create a clan.  You don't have it.",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
 					return false;
 				}
 			}
@@ -106,7 +106,7 @@ public class ClanCreate extends StdCommand
 								mob.tell(_("That name can not be used."));
 							else
 							if(checkC!=null)
-								mob.tell("Clan "+checkC.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
+								mob.tell(_("Clan @x1  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.",checkC.clanID()));
 							else
 							{
 								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
@@ -154,7 +154,7 @@ public class ClanCreate extends StdCommand
 														/*
 														if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 														{
-															mob.tell("You are not qualified to create a clan of this style.\n\rRequirements: "+CMLib.masking().maskDesc(gvt.requiredMaskStr));
+															mob.tell(_("You are not qualified to create a clan of this style.\n\rRequirements: @x1",CMLib.masking().maskDesc(gvt.requiredMaskStr)));
 															session.prompt(IC[0].reset());
 															return;
 														}

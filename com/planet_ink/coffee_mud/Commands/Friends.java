@@ -82,7 +82,7 @@ public class Friends extends StdCommand
 				return false;
 			}
 			h.add(name);
-			mob.tell("The Player '"+name+"' has been added to your friends list.");
+			mob.tell(_("The Player '@x1' has been added to your friends list.",name));
 		}
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
@@ -95,15 +95,15 @@ public class Friends extends StdCommand
 			}
 			if(!h.contains(name))
 			{
-				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
+				mob.tell(_("That name '@x1' does not appear on your list.  Watch your casing!",name));
 				return false;
 			}
 			h.remove(name);
-			mob.tell("The Player '"+name+"' has been removed from your friends list.");
+			mob.tell(_("The Player '@x1' has been removed from your friends list.",name));
 		}
 		else
 		{
-			mob.tell("Parameter '"+((String)commands.elementAt(1))+"' is not recognized.  Try LIST, ADD, or REMOVE.");
+			mob.tell(_("Parameter '@x1' is not recognized.  Try LIST, ADD, or REMOVE.",((String)commands.elementAt(1))));
 			return false;
 		}
 		return false;

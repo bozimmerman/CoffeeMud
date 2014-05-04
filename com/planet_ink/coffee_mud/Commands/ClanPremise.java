@@ -61,13 +61,13 @@ public class ClanPremise extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell("You aren't allowed to set a premise for "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to set a premise for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 		{
-			mob.tell("You aren't in the right position to set the premise to your "+C.getGovernmentName()+".");
+			mob.tell(_("You aren't in the right position to set the premise to your @x1.",C.getGovernmentName()));
 			return false;
 		}
 		if((skipChecks)&&(commands.size()>1))

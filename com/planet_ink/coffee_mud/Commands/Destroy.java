@@ -68,7 +68,7 @@ public class Destroy extends StdCommand
 		{
 			if(!deadMOB.isMonster())
 			{
-				mob.tell(deadMOB.name()+" is a PLAYER!!\n\r");
+				mob.tell(_("@x1 is a PLAYER!!\n\r",deadMOB.name()));
 				if(!doneSomething)
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return false;
@@ -83,7 +83,7 @@ public class Destroy extends StdCommand
 		}
 		if(!doneSomething)
 		{
-			mob.tell("I don't see '"+mobID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",mobID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
@@ -104,7 +104,7 @@ public class Destroy extends StdCommand
 		final Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
-			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
+			mob.tell(_("There's no manufacturer called '@x1' Try LIST MANUFACTURERS.\n\r",manufacturerID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -131,7 +131,7 @@ public class Destroy extends StdCommand
 		final PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
 		if(theAccount==null)
 		{
-			mob.tell("There is no account called '"+accountName+"'!\n\r");
+			mob.tell(_("There is no account called '@x1'!\n\r",accountName));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -142,7 +142,7 @@ public class Destroy extends StdCommand
 			{
 				final MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
 				CMLib.players().obliteratePlayer(deadMOB,true,false);
-				mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
+				mob.tell(_("The user '@x1' is no more!\n\r",CMParms.combine(commands,2)));
 				Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 				deadMOB.destroy();
 			}
@@ -168,7 +168,7 @@ public class Destroy extends StdCommand
 
 		if(!found)
 		{
-			mob.tell("The user '"+CMParms.combine(commands,2)+"' does not exist!\n\r");
+			mob.tell(_("The user '@x1' does not exist!\n\r",CMParms.combine(commands,2)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
@@ -177,7 +177,7 @@ public class Destroy extends StdCommand
 		{
 			final MOB deadMOB=CMLib.players().getLoadPlayer(name);
 			CMLib.players().obliteratePlayer(deadMOB,true,false);
-			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
+			mob.tell(_("The user '@x1' is no more!\n\r",CMParms.combine(commands,2)));
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 			deadMOB.destroy();
 			return true;
@@ -278,9 +278,9 @@ public class Destroy extends StdCommand
 		if((deadRoom==null)&&(direction<0))
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
-				mob.tell("You have failed to specify a direction.  Try ("+Directions.LETTERS()+").\n\r");
+				mob.tell(_("You have failed to specify a direction.  Try (@x1).\n\r",Directions.LETTERS()));
 			else
-				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or ("+Directions.LETTERS()+").\n\r");
+				mob.tell(_("You have failed to specify a direction.  Try a VALID ROOM ID, or (@x1).\n\r",Directions.LETTERS()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -390,7 +390,7 @@ public class Destroy extends StdCommand
 		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
+			mob.tell(_("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -442,7 +442,7 @@ public class Destroy extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
@@ -482,7 +482,7 @@ public class Destroy extends StdCommand
 		}
 		if(!doneSomething)
 		{
-			mob.tell("I don't see '"+itemID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -524,7 +524,7 @@ public class Destroy extends StdCommand
 						final Area A=CMLib.map().getArea((String)commands.elementAt(i));
 						if(A==null)
 						{
-							mob.tell("There is no such area as '"+((String)commands.elementAt(i))+"'");
+							mob.tell(_("There is no such area as '@x1'",((String)commands.elementAt(i))));
 							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 							return;
 						}
@@ -538,7 +538,7 @@ public class Destroy extends StdCommand
 		{
 			if(CMLib.map().getArea(areaName)==null)
 			{
-				mob.tell("There is no such area as '"+areaName+"'");
+				mob.tell(_("There is no such area as '@x1'",areaName));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a thunderous spell."));
 				return;
 			}
@@ -583,13 +583,13 @@ public class Destroy extends StdCommand
 		final Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
-			mob.tell("'"+raceID+"' is an invalid race id.");
+			mob.tell(_("'@x1' is an invalid race id.",raceID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(R.isGeneric()))
 		{
-			mob.tell("'"+R.ID()+"' is not generic, and may not be deleted.");
+			mob.tell(_("'@x1' is not generic, and may not be deleted.",R.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -619,7 +619,7 @@ public class Destroy extends StdCommand
 		final String classID=CMParms.combine(commands,2);
 		if(CMLib.ableMapper().getAbilityComponentMap().get(classID.toUpperCase())==null)
 		{
-			mob.tell("'"+classID+"' does not exist, try LIST COMPONENTS.");
+			mob.tell(_("'@x1' does not exist, try LIST COMPONENTS.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -653,8 +653,7 @@ public class Destroy extends StdCommand
 	public boolean titles(MOB mob, Vector commands)
 	{
 		mob.tell(_("Destroying a title will not remove the title from all players who may have it."));
-		mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
-				 "mask for a few days to allow the system to remove the title from the players as they log in.\n\r");
+		mob.tell(_("If this is important, you should destroy and then re-add the exact same title with an unreachable mask for a few days to allow the system to remove the title from the players as they log in.\n\r"));
 		if(commands.size()<3)
 		{
 			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r"));
@@ -665,7 +664,7 @@ public class Destroy extends StdCommand
 		final String classID=CMParms.combine(commands,2);
 		if(!CMLib.titles().isExistingAutoTitle(classID))
 		{
-			mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
+			mob.tell(_("'@x1' is not an existing auto-title, try LIST TITLES.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -694,13 +693,13 @@ public class Destroy extends StdCommand
 		final CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
-			mob.tell("'"+classID+"' is an invalid class id.");
+			mob.tell(_("'@x1' is an invalid class id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(C.isGeneric()))
 		{
-			mob.tell("'"+C.ID()+"' is not generic, and may not be deleted.");
+			mob.tell(_("'@x1' is not generic, and may not be deleted.",C.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -731,20 +730,20 @@ public class Destroy extends StdCommand
 		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
-			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.tell(_("'@x1' is an invalid ability id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
-			mob.tell("'"+A.ID()+"' is not generic, and may not be deleted.");
+			mob.tell(_("'@x1' is not generic, and may not be deleted.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		final Object O=CMClass.getObjectOrPrototype(A.ID());
 		if(!(O instanceof Ability))
 		{
-			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.getSimpleClassName(O)+".");
+			mob.tell(_("'@x1' can not be deleted, because it is also an @x2.",classID,CMClass.getSimpleClassName(O)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -848,7 +847,7 @@ public class Destroy extends StdCommand
 		final Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		if(!subMap.containsKey(classD.toUpperCase().trim()))
 		{
-			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+classD+"' does not exist! Try LIST ALLQUALIFYS");
+			mob.tell(_("All-Qualify entry (@x1) ID '@x2' does not exist! Try LIST ALLQUALIFYS",eachOrAll,classD));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -914,7 +913,7 @@ public class Destroy extends StdCommand
 						&&(matType!=RawMaterial.MATERIAL_LIQUID)
 						&&(matType!=RawMaterial.MATERIAL_PAPER))
 						{
-							mob.tell(dropThis.Name()+" can not be easily destroyed.");
+							mob.tell(_("@x1 can not be easily destroyed.",dropThis.Name()));
 							return false;
 						}
 						else
@@ -982,12 +981,12 @@ public class Destroy extends StdCommand
 				final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 
 				if((which<=0)||(which>entries.size()))
-					mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
+					mob.tell(_("Please enter a valid @x1 number to delete.  Use LIST @x2S for more information.",CMJ.NAME().toLowerCase(),CMJ.NAME()));
 				else
 				{
 					final JournalsLibrary.JournalEntry entry = entries.get(which-1);
 					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
-					mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
+					mob.tell(_("@x1 deletion submitted.",CMJ.NAME().toLowerCase()));
 
 				}
 				return true;
@@ -1095,10 +1094,10 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			final String named=CMParms.combine(commands,2);
 			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
-				mob.tell("'"+named+"' is not disabled");
+				mob.tell(_("'@x1' is not disabled",named));
 			else
 			{
-				mob.tell("'"+named+"' is no longer disabled");
+				mob.tell(_("'@x1' is no longer disabled",named));
 				CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
 			}
 			return false;
@@ -1112,14 +1111,14 @@ public class Destroy extends StdCommand
 			final CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
 			if(flag==null)
 			{
-				mob.tell("'"+named+"' is not a valid flag.  Try: "+CMParms.toStringList(CMSecurity.DbgFlag.values()));
+				mob.tell(_("'@x1' is not a valid flag.  Try: @x2",named,CMParms.toStringList(CMSecurity.DbgFlag.values())));
 				return false;
 			}
 			if(!CMSecurity.isDebugging(flag))
-				mob.tell("'"+named+"' is not debugging");
+				mob.tell(_("'@x1' is not debugging",named));
 			else
 			{
-				mob.tell("'"+named+"' is no longer debugging");
+				mob.tell(_("'@x1' is no longer debugging",named));
 				CMSecurity.setDebugVar(flag, true);
 			}
 			return false;
@@ -1161,7 +1160,7 @@ public class Destroy extends StdCommand
 				num=CMLib.quests().getHolidayIndex(name);
 			if(num<0)
 			{
-				mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
+				mob.tell(_("HOLIDAY '@x1' not found. Try LIST HOLIDAYS.",name));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
@@ -1224,7 +1223,7 @@ public class Destroy extends StdCommand
 			{
 				CMLib.killThread(whichT,500,1);
 				Log.sysOut("CreateEdit",mob.Name()+" destroyed thread "+whichT.getName()+".");
-				mob.tell("Stop sent to: "+whichT.getName()+".");
+				mob.tell(_("Stop sent to: @x1.",whichT.getName()));
 			}
 		}
 		else
@@ -1243,7 +1242,7 @@ public class Destroy extends StdCommand
 				if(S.getStatus()==Session.SessionStatus.LOGOUTFINAL)
 					mob.tell(_("Ok."));
 				else
-					mob.tell("Failed to gracefully shutdown: "+S.getStatus().toString()+", but a forcable stop was issued.");
+					mob.tell(_("Failed to gracefully shutdown: @x1, but a forcable stop was issued.",S.getStatus().toString()));
 			}
 		}
 		else
@@ -1295,7 +1294,7 @@ public class Destroy extends StdCommand
 				Faction F=CMLib.factions().getFaction(name);
 				if(F==null) F=CMLib.factions().getFactionByName(name);
 				if(F==null)
-					mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
+					mob.tell(_("Faction '@x1' is unknown.  Try list factions.",name));
 				else
 				if((!mob.isMonster())&&(mob.session().confirm("Destroy faction '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
 				{
@@ -1308,12 +1307,12 @@ public class Destroy extends StdCommand
 							throw new IOException("Could not delete "+F2.getAbsolutePath());
 						F.destroy();
 						Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
-						mob.tell("Faction File '"+F.factionID()+"' deleted.");
+						mob.tell(_("Faction File '@x1' deleted.",F.factionID()));
 					}
 					catch(final Exception e)
 					{
 						Log.errOut("CreateEdit",e);
-						mob.tell("Faction '"+F.factionID()+"' could NOT be deleted.");
+						mob.tell(_("Faction '@x1' could NOT be deleted.",F.factionID()));
 					}
 				}
 			}
@@ -1345,7 +1344,7 @@ public class Destroy extends StdCommand
 				P=CMLib.polls().getPoll(name);
 			if(P==null)
 			{
-				mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+				mob.tell(_("POLL '@x1' not found. Try LIST POLLS.",name));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
@@ -1377,11 +1376,11 @@ public class Destroy extends StdCommand
 				}
 				if(Q==null) Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
-					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
+					mob.tell(_("Quest '@x1' is unknown.  Try list quests.",name));
 				else
 				{
 					if(Q.running()&&(!Q.stopping())) Q.stopQuest();
-					mob.tell("Quest '"+Q.name()+"' is destroyed!");
+					mob.tell(_("Quest '@x1' is destroyed!",Q.name()));
 					CMLib.quests().delQuest(Q);
 				}
 			}
@@ -1398,10 +1397,10 @@ public class Destroy extends StdCommand
 				final String name=CMParms.combine(commands,2);
 				final Clan C=CMLib.clans().findClan(name);
 				if(C==null)
-					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
+					mob.tell(_("Clan '@x1' is unknown.  Try clanlist.",name));
 				else
 				{
-					mob.tell("Clan '"+C.name()+"' is destroyed!");
+					mob.tell(_("Clan '@x1' is destroyed!",C.name()));
 					C.destroyClan();
 					Log.sysOut("CreateEdit","Clan '"+C.name()+" destroyed by "+mob.Name()+".");
 				}
@@ -1422,11 +1421,11 @@ public class Destroy extends StdCommand
 					if(g.getName().equalsIgnoreCase(name))
 						G=g;
 				if(G==null)
-					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
+					mob.tell(_("Government '@x1' is unknown.  Try list governments.",name));
 				else
 				if(CMLib.clans().removeGovernment(G))
 				{
-					mob.tell("Government '"+G.getName()+"' is destroyed!");
+					mob.tell(_("Government '@x1' is destroyed!",G.getName()));
 					CMLib.clans().reSaveGovernmentsXML();
 					Log.sysOut("CreateEdit","Government '"+G.getName()+" destroyed by "+mob.Name()+".");
 				}
@@ -1493,9 +1492,7 @@ public class Destroy extends StdCommand
 					}
 					else
 					mob.tell(
-						"\n\rYou cannot destroy a '"+commandType+"'. "
-						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, MANUFACTURER, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
+						_("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, MANUFACTURER, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
 				}
 			}
 		}

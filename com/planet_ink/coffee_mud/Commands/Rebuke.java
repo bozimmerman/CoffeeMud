@@ -60,7 +60,7 @@ public class Rebuke extends StdCommand
 
 		if(target==null)
 		{
-			mob.tell("You don't see anybody called '"+CMParms.combine(commands,1)+"' or you aren't serving '"+CMParms.combine(commands,1)+"'.");
+			mob.tell(_("You don't see anybody called '@x1' or you aren't serving '@x2'.",CMParms.combine(commands,1),CMParms.combine(commands,1)));
 			return false;
 		}
 

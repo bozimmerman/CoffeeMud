@@ -266,7 +266,7 @@ public class MOTD extends StdCommand
 		}
 		else
 		{
-			mob.tell("'"+parm+"' is not a valid parameter.  Try ON, OFF, or AGAIN.");
+			mob.tell(_("'@x1' is not a valid parameter.  Try ON, OFF, or AGAIN.",parm));
 		}
 		return false;
 	}

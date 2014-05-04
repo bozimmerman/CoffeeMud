@@ -57,7 +57,7 @@ public class Close extends StdCommand
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell("You don't see '"+whatToClose+"' here.");
+			mob.tell(_("You don't see '@x1' here.",whatToClose));
 			return false;
 		}
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);

@@ -61,7 +61,7 @@ public class DrinkCmd extends StdCommand
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
-				mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
+				mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
 				return false;
 			}
 		}

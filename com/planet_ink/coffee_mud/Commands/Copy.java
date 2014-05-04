@@ -79,7 +79,7 @@ public class Copy extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
@@ -122,7 +122,7 @@ public class Copy extends StdCommand
 							}
 							else
 							{
-								mob.tell(""+name+"' should be 'room' or 'exit'.");
+								mob.tell(_("@x1' should be 'room' or 'exit'.",name));
 								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 								return false;
 							}
@@ -130,7 +130,7 @@ public class Copy extends StdCommand
 					}
 					if(E==null)
 					{
-						mob.tell("Room ID '"+name+"' does not exist.  You can also try exit <dir> and room <dir>.");
+						mob.tell(_("Room ID '@x1' does not exist.  You can also try exit <dir> and room <dir>.",name));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
@@ -163,7 +163,7 @@ public class Copy extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell("There's no such thing in the living world as a '"+name+"'.\n\r");
+			mob.tell(_("There's no such thing in the living world as a '@x1'.\n\r",name));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -174,7 +174,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYMOBS))
 				{
-					mob.tell("You are not allowed to copy "+E.name());
+					mob.tell(_("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final MOB newMOB=(MOB)E.copyOf();
@@ -200,7 +200,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYITEMS))
 				{
-					mob.tell("You are not allowed to copy "+E.name());
+					mob.tell(_("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final Item newItem=(Item)E.copyOf();
@@ -234,13 +234,13 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
-					mob.tell("You are not allowed to copy "+E.name());
+					mob.tell(_("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
 					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
-					mob.tell("A room already exists "+(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))+"!");
+					mob.tell(_("A room already exists @x1!",(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))));
 					return false;
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -295,7 +295,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
-					mob.tell("You are not allowed to copy "+E.name());
+					mob.tell(_("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				Room editRoom=room;
@@ -328,7 +328,7 @@ public class Copy extends StdCommand
 				if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS))
 				||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS)))
 				{
-					mob.tell("You are not allowed to copy "+E.name());
+					mob.tell(_("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final Area newArea=(Area)E.copyOf();
@@ -376,7 +376,7 @@ public class Copy extends StdCommand
 			}
 			else
 			{
-				mob.tell("I can't just make a copy of a '"+E.name()+"'.\n\r");
+				mob.tell(_("I can't just make a copy of a '@x1'.\n\r",E.name()));
 				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				break;
 			}

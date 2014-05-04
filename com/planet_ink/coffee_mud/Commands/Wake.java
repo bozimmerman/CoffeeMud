@@ -61,12 +61,12 @@ public class Wake extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				mob.tell("You don't see '"+whom+"' here.");
+				mob.tell(_("You don't see '@x1' here.",whom));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(M))
 			{
-				mob.tell(M.name(mob)+" is awake!");
+				mob.tell(_("@x1 is awake!",M.name(mob)));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to wake <T-NAME> up."));

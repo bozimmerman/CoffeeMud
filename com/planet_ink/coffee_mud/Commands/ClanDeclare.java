@@ -81,19 +81,19 @@ public class ClanDeclare extends StdCommand
 
 		if(C2==null)
 		{
-			mob.tell(clan2Name+" is an unknown clan.");
+			mob.tell(_("@x1 is an unknown clan.",clan2Name));
 			return false;
 		}
 
 		if(C==null)
 		{
-			mob.tell("You aren't allowed to declare "+rel.toLowerCase()+" on behalf of "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to declare @x1 on behalf of @x2.",rel.toLowerCase(),((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if((!C2.isRivalrous())||(!C.isRivalrous()))
 		{
-			mob.tell("Relations between "+C.getName()+" and "+C2.getName()+" are impossible.");
+			mob.tell(_("Relations between @x1 and @x2 are impossible.",C.getName(),C2.getName()));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class ClanDeclare extends StdCommand
 						newRole=i;
 				if(newRole<0)
 				{
-					mob.tell("'"+rel+"' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.");
+					mob.tell(_("'@x1' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.",rel));
 					return false;
 				}
 				if(C2==C)
@@ -118,7 +118,7 @@ public class ClanDeclare extends StdCommand
 				}
 				if(C.getClanRelations(C2.clanID())==newRole)
 				{
-					mob.tell(C.getName()+" is already in that state with "+C2.getName()+".");
+					mob.tell(_("@x1 is already in that state with @x2.",C.getName(),C2.getName()));
 					return false;
 
 				}

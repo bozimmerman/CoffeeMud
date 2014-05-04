@@ -63,7 +63,7 @@ public class ClanVote extends StdCommand
 
 		if((C==null)||(clanRole==null))
 		{
-			mob.tell("You can't vote for anything in "+((clanName.length()==0)?"any clan":clanName)+".");
+			mob.tell(_("You can't vote for anything in @x1.",((clanName.length()==0)?"any clan":clanName)));
 			return false;
 		}
 		else

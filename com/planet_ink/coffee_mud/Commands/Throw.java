@@ -57,12 +57,12 @@ public class Throw extends StdCommand
 		if(item==null) item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
-			mob.tell("You don't seem to have a '"+what+"'!");
+			mob.tell(_("You don't seem to have a '@x1'!",what));
 			return false;
 		}
 		if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 		{
-			mob.tell("You aren't holding or wielding "+item.name()+"!");
+			mob.tell(_("You aren't holding or wielding @x1!",item.name()));
 			return false;
 		}
 
@@ -88,13 +88,13 @@ public class Throw extends StdCommand
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
-				mob.tell("That's too far to throw "+item.name()+".");
+				mob.tell(_("That's too far to throw @x1.",item.name()));
 				return false;
 			}
 		}
 		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
-			mob.tell("You can't target "+item.name()+" at '"+str+"'!");
+			mob.tell(_("You can't target @x1 at '@x2'!",item.name(),str));
 			return false;
 		}
 

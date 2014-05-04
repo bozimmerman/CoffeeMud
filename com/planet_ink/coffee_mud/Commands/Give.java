@@ -58,7 +58,7 @@ public class Give extends StdCommand
 		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
+			mob.tell(_("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);

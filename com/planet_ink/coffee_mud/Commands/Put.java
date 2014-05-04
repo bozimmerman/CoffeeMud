@@ -114,14 +114,14 @@ public class Put extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell("Where should I put the "+(String)commands.elementAt(0));
+			mob.tell(_("Where should I put the @x1",(String)commands.elementAt(0)));
 			return false;
 		}
 
 		final Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");
+			mob.tell(_("I don't see a @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 

@@ -55,19 +55,19 @@ public class Take extends StdCommand
 			commands.removeElementAt(0);
 			if(commands.size()<2)
 			{
-				mob.tell("From whom should I take the "+(String)commands.elementAt(0));
+				mob.tell(_("From whom should I take the @x1",(String)commands.elementAt(0)));
 				return false;
 			}
 
 			final MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
 			if((victim==null)||(!CMLib.flags().canBeSeenBy(victim,mob)))
 			{
-				mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
+				mob.tell(_("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 				return false;
 			}
 			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
 			{
-				mob.tell(victim.Name()+" is a player!");
+				mob.tell(_("@x1 is a player!",victim.Name()));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -95,12 +95,12 @@ public class Take extends StdCommand
 				if((victim.getQuestPoint()<=0)||(victim.getQuestPoint()<numToTake))
 				{
 					if(victim.getQuestPoint()<=0)
-						mob.tell(victim.name()+" has no quest points!");
+						mob.tell(_("@x1 has no quest points!",victim.name()));
 					else
-						mob.tell(victim.name()+" has only "+victim.getQuestPoint()+" quest points!");
+						mob.tell(_("@x1 has only @x2 quest points!",victim.name(),""+victim.getQuestPoint()));
 					return false;
 				}
-				mob.tell("You silently take "+numToTake+" quest points from "+victim.name()+".");
+				mob.tell(_("You silently take @x1 quest points from @x2.",""+numToTake,victim.name()));
 				victim.setQuestPoint(victim.getQuestPoint()-numToTake);
 				return false;
 			}
@@ -135,7 +135,7 @@ public class Take extends StdCommand
 			}
 
 			if(V.size()==0)
-				mob.tell(victim.name()+" does not seem to be carrying that.");
+				mob.tell(_("@x1 does not seem to be carrying that.",victim.name()));
 			else
 			for(int i=0;i<V.size();i++)
 			{

@@ -97,7 +97,7 @@ public class Generate extends StdCommand
 			file = new CMFile(Resources.buildResourcePath("randareas/example.xml"),mob);
 		if(!file.canRead())
 		{
-			mob.tell("Random data file '"+file.getCanonicalPath()+"' not found.  Aborting.");
+			mob.tell(_("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
 			return false;
 		}
 		final StringBuffer xml = file.textUnformatted();
@@ -120,7 +120,7 @@ public class Generate extends StdCommand
 			}
 			if(codeI==null)
 			{
-				mob.tell("'"+typeName+"' is an unknown object type.  Try: "+CMParms.toStringList(OBJECT_TYPES.keys()));
+				mob.tell(_("'@x1' is an unknown object type.  Try: @x2",typeName,CMParms.toStringList(OBJECT_TYPES.keys())));
 				return false;
 			}
 		}
@@ -138,7 +138,7 @@ public class Generate extends StdCommand
 			{
 				final String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
-				mob.tell("A room already exists in direction "+dirName+". Action aborted.");
+				mob.tell(_("A room already exists in direction @x1. Action aborted.",dirName));
 				return false;
 			}
 		}
@@ -146,7 +146,7 @@ public class Generate extends StdCommand
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{
-			mob.tell("The "+objectType+" id '"+idName+"' has not been defined in the data file.");
+			mob.tell(_("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
 			final StringBuffer foundIDs=new StringBuffer("");
 			for(final Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
 			{
@@ -162,7 +162,7 @@ public class Generate extends StdCommand
 				}
 				foundIDs.append(CMParms.toStringList(xmlTagsV)+"\n\r");
 			}
-			mob.tell("Found ids include: \n\r"+foundIDs.toString());
+			mob.tell(_("Found ids include: \n\r@x1",foundIDs.toString()));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Generate extends StdCommand
 		}
 		catch(final CMException cme)
 		{
-			mob.tell("Required ids for "+idName+" were missing: "+cme.getMessage());
+			mob.tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 			return false;
 		}
 		final Vector V = new Vector();
@@ -224,7 +224,7 @@ public class Generate extends StdCommand
 		}
 		catch(final CMException cex)
 		{
-			mob.tell("Unable to generate: "+cex.getMessage());
+			mob.tell(_("Unable to generate: @x1",cex.getMessage()));
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("Generate",cex);
 			return false;
@@ -269,7 +269,7 @@ public class Generate extends StdCommand
 				Room R=A.getRoom(A.Name()+"#0");
 				if(R==null) R=A.getFilledProperMap().nextElement();
 				createNewPlace(mob,mob.location(),R,direction);
-				mob.tell("Saving remaining rooms for area '"+A.name()+"'...");
+				mob.tell(_("Saving remaining rooms for area '@x1'...",A.name()));
 				for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
 				{
 					R=(Room)e.nextElement();
@@ -278,7 +278,7 @@ public class Generate extends StdCommand
 					CMLib.database().DBUpdateItems(R);
 					CMLib.database().DBUpdateMOBs(R);
 				}
-				mob.tell("Done saving remaining rooms for area '"+A.name()+"'");
+				mob.tell(_("Done saving remaining rooms for area '@x1'",A.name()));
 				Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
 			}
 		Log.sysOut("Generate",finalLog);

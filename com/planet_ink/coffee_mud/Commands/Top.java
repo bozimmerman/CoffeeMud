@@ -54,7 +54,7 @@ public class Top extends StdCommand
 				doPlayers=false;
 			else
 			{
-				mob.tell("'"+what+"' is unknown.  Try PLAYERS or ACCOUNTS");
+				mob.tell(_("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
 				return true;
 			}
 		}

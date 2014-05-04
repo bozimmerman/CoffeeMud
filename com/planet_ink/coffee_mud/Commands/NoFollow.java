@@ -55,9 +55,9 @@ public class NoFollow extends Follow
 			{
 				M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 				if(M!=null)
-					mob.tell(M.name(mob)+" is not following you!");
+					mob.tell(_("@x1 is not following you!",M.name(mob)));
 				else
-					mob.tell("There is noone here called '"+CMParms.combine(commands,1)+"' following you!");
+					mob.tell(_("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -65,7 +65,7 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			mob.tell("There is noone called '"+CMParms.combine(commands,1)+"' following you!");
+			mob.tell(_("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))

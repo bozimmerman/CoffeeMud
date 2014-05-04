@@ -74,7 +74,7 @@ public class Modify extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return;
 					}
@@ -108,7 +108,7 @@ public class Modify extends StdCommand
 		}
 		if(modItem==null)
 		{
-			mob.tell("I don't see '"+itemID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -155,7 +155,7 @@ public class Modify extends StdCommand
 			{
 				modItem.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				modItem.recoverPhyStats();
-				mob.tell(modItem.name()+" will now never rejuvinate.");
+				mob.tell(_("@x1 will now never rejuvinate.",modItem.name()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 shake(s) under the transforming power.",modItem.name()));
 			}
 		}
@@ -195,7 +195,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,HEIGHT,REJUV,USES,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modItem));
-			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 		}
 		if(!copyItem.sameAs(modItem))
@@ -332,7 +332,7 @@ public class Modify extends StdCommand
 			final Room newRoom=CMClass.getLocale(restStr);
 			if(newRoom==null)
 			{
-				mob.tell("'"+restStr+"' is not a valid room locale.");
+				mob.tell(_("'@x1' is not a valid room locale.",restStr));
 				return;
 			}
 			CMLib.genEd().changeRoomType(mob.location(),newRoom);
@@ -393,7 +393,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
-			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -426,7 +426,7 @@ public class Modify extends StdCommand
 			theAccount = CMLib.players().getLoadAccount(accountName);
 			if(theAccount==null)
 			{
-				mob.tell("There is no account called '"+accountName+"'!\n\r");
+				mob.tell(_("There is no account called '@x1'!\n\r",accountName));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}
@@ -577,7 +577,7 @@ public class Modify extends StdCommand
 						// do nothing
 						break;
 					default:
-						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, D)RY, W)INDY, N)ORMAL.\n\r");
+						mob.tell(_("Invalid CLIMATE code: '@x1'.  Valid codes include: R)AINY, H)OT, C)OLD, D)RY, W)INDY, N)ORMAL.\n\r",""+restStr.charAt(i)));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 						return;
 					}
@@ -598,7 +598,7 @@ public class Modify extends StdCommand
 			{
 				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
 				{
-					mob.tell("Unknown or invalid staff name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
+					mob.tell(_("Unknown or invalid staff name given.  Valid names are: @x1.\n\r",myArea.getSubOpList()));
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				}
 				myArea.delSubOp(restStr);
@@ -623,7 +623,7 @@ public class Modify extends StdCommand
 			}
 			else
 			{
-				mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(helpSet));
+				mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(helpSet)));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return;
 			}
@@ -695,7 +695,7 @@ public class Modify extends StdCommand
 			if(Q==null) Q=CMLib.quests().fetchQuest(name);
 			if(Q==null)
 			{
-				mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
+				mob.tell(_("Quest '@x1' is unknown.  Try list quests.",name));
 				return;
 			}
 			else
@@ -760,9 +760,9 @@ public class Modify extends StdCommand
 						{
 							Q.startQuest();
 							if((!Q.running())&&(Q.getSpawn()!=Quest.SPAWN_ANY))
-								mob.tell("Quest '"+Q.name()+"' NOT started -- check your mud.log for errors.");
+								mob.tell(_("Quest '@x1' NOT started -- check your mud.log for errors.",Q.name()));
 							else
-								mob.tell("Quest '"+Q.name()+"' started.");
+								mob.tell(_("Quest '@x1' started.",Q.name()));
 						}
 						break;
 					}
@@ -774,9 +774,9 @@ public class Modify extends StdCommand
 						{
 							Q.stopQuest();
 							if(!Q.running())
-								mob.tell("Quest '"+Q.name()+"' stopped.");
+								mob.tell(_("Quest '@x1' stopped.",Q.name()));
 							else
-								mob.tell("Quest '"+Q.name()+"' NOT stopped -- check your mud.log for errors.");
+								mob.tell(_("Quest '@x1' NOT stopped -- check your mud.log for errors.",Q.name()));
 						}
 						break;
 					}
@@ -788,7 +788,7 @@ public class Modify extends StdCommand
 						{
 							Q.setSuspended(false);
 							CMLib.database().DBUpdateQuest(Q);
-							mob.tell("Quest '"+Q.name()+"' enabled.");
+							mob.tell(_("Quest '@x1' enabled.",Q.name()));
 						}
 						break;
 					}
@@ -802,7 +802,7 @@ public class Modify extends StdCommand
 								Q.stopQuest();
 							Q.setSuspended(true);
 							CMLib.database().DBUpdateQuest(Q);
-							mob.tell("Quest '"+Q.name()+"' disabled.");
+							mob.tell(_("Quest '@x1' disabled.",Q.name()));
 						}
 						break;
 					}
@@ -876,7 +876,7 @@ public class Modify extends StdCommand
 		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
+			mob.tell(_("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -884,7 +884,7 @@ public class Modify extends StdCommand
 		final Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
-			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
+			mob.tell(_("You have failed to specify a valid exit '@x1'.\n\r",((String)commands.elementAt(2))));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -927,7 +927,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("TEXT",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(thisExit));
-			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -948,13 +948,13 @@ public class Modify extends StdCommand
 		final Race R=CMClass.getRace(raceID);
 		if(R==null)
 		{
-			mob.tell("'"+raceID+"' is an invalid race id.");
+			mob.tell(_("'@x1' is an invalid race id.",raceID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(R.isGeneric()))
 		{
-			mob.tell("'"+R.ID()+"' is not generic, and may not be modified as it is.  Use CREATE RACE "+R.ID()+" to convert it to a generic race.");
+			mob.tell(_("'@x1' is not generic, and may not be modified as it is.  Use CREATE RACE @x2 to convert it to a generic race.",R.ID(),R.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -986,7 +986,7 @@ public class Modify extends StdCommand
 		final Ability A=CMClass.getAbility(classD);
 		if(A==null)
 		{
-			mob.tell("Ability with the ID '"+classD+"' does not exist! Try LIST ABILITIES.");
+			mob.tell(_("Ability with the ID '@x1' does not exist! Try LIST ABILITIES.",classD));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -994,7 +994,7 @@ public class Modify extends StdCommand
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		if(!subMap.containsKey(classD.toUpperCase().trim()))
 		{
-			mob.tell("All-Qualify entry ("+eachOrAll+") ID '"+A.ID()+"' does not exist!  Try CREATE, or LIST ALLQUALIFYS.");
+			mob.tell(_("All-Qualify entry (@x1) ID '@x2' does not exist!  Try CREATE, or LIST ALLQUALIFYS.",eachOrAll,A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1020,13 +1020,13 @@ public class Modify extends StdCommand
 		final CharClass C=CMClass.getCharClass(classID);
 		if(C==null)
 		{
-			mob.tell("'"+classID+"' is an invalid class id.");
+			mob.tell(_("'@x1' is an invalid class id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(C.isGeneric()))
 		{
-			mob.tell("'"+C.ID()+"' is not generic, and may not be modified as it is.  Use CREATE CLASS "+C.ID()+" to convert it to a generic character class.");
+			mob.tell(_("'@x1' is not generic, and may not be modified as it is.  Use CREATE CLASS @x2 to convert it to a generic character class.",C.ID(),C.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1052,25 +1052,25 @@ public class Modify extends StdCommand
 		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
-			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.tell(_("'@x1' is an invalid ability id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
-			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.tell(_("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(A instanceof Language)
 		{
-			mob.tell("'"+A.ID()+"' is a language.  Try MODIFY LANGUAGE.");
+			mob.tell(_("'@x1' is a language.  Try MODIFY LANGUAGE.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(A instanceof ItemCraftor)
 		{
-			mob.tell("'"+A.ID()+"' is a crafting skill.  Try MODIFY CRAFTSKILL.");
+			mob.tell(_("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1096,25 +1096,25 @@ public class Modify extends StdCommand
 		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
-			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.tell(_("'@x1' is an invalid ability id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
-			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.tell(_("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(A instanceof ItemCraftor)
 		{
-			mob.tell("'"+A.ID()+"' is a crafting skill.  Try MODIFY CRAFTSKILL.");
+			mob.tell(_("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A instanceof Language))
 		{
-			mob.tell("'"+A.ID()+"' is not a language.  Try MODIFY ABILITY.");
+			mob.tell(_("'@x1' is not a language.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1140,25 +1140,25 @@ public class Modify extends StdCommand
 		final Ability A=CMClass.getAbility(classID);
 		if(A==null)
 		{
-			mob.tell("'"+classID+"' is an invalid ability id.");
+			mob.tell(_("'@x1' is an invalid ability id.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A.isGeneric()))
 		{
-			mob.tell("'"+A.ID()+"' is not generic, and may not be modified.");
+			mob.tell(_("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(A instanceof Language)
 		{
-			mob.tell("'"+A.ID()+"' is a crafting skill.  Try MODIFY LANGUAGE.");
+			mob.tell(_("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		if(!(A instanceof ItemCraftor))
 		{
-			mob.tell("'"+A.ID()+"' is not a crafting skill.  Try MODIFY ABILITY.");
+			mob.tell(_("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1183,14 +1183,14 @@ public class Modify extends StdCommand
 		final Ability A=CMClass.getAbility(skillID);
 		if(A==null)
 		{
-			mob.tell("'"+skillID+"' is not a proper skill/spell ID.  Try LIST ABILITIES.");
+			mob.tell(_("'@x1' is not a proper skill/spell ID.  Try LIST ABILITIES.",skillID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		skillID=A.ID();
 		if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())==null)
 		{
-			mob.tell("A component definition for '"+A.ID()+"' doesn't exists, you'll need to create it first.");
+			mob.tell(_("A component definition for '@x1' doesn't exists, you'll need to create it first.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1233,7 +1233,7 @@ public class Modify extends StdCommand
 		final Social S=CMLib.socials().fetchSocial((name+" "+stuff).trim(),false);
 		if(S==null)
 		{
-			mob.tell("The social '"+stuff+"' does not exist.");
+			mob.tell(_("The social '@x1' does not exist.",stuff));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -1290,7 +1290,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			mob.tell("There is no such player as '"+mobID+"'!");
+			mob.tell(_("There is no such player as '@x1'!",mobID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -1317,7 +1317,7 @@ public class Modify extends StdCommand
 					if((A!=null)&&(A.isNowAnAutoEffect()))
 						A.setProficiency(prof);
 				}
-				mob.tell("All of "+M.Name()+"'s skill proficiencies set to "+prof);
+				mob.tell(_("All of @x1's skill proficiencies set to @x2",M.Name(),""+prof));
 				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiencies.");
 			}
 			else
@@ -1328,7 +1328,7 @@ public class Modify extends StdCommand
 				final Ability A=M.findAbility(ableName);
 				if(A==null)
 				{
-					mob.tell("...but failed to specify an valid ability name.  Try one of: "+CMParms.toCMObjectStringList(M.abilities()));
+					mob.tell(_("...but failed to specify an valid ability name.  Try one of: @x1",CMParms.toCMObjectStringList(M.abilities())));
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 					return;
 				}
@@ -1336,7 +1336,7 @@ public class Modify extends StdCommand
 				final Ability eA=M.fetchEffect(A.ID());
 				if((eA!=null)&&(eA.isNowAnAutoEffect()))
 					eA.setProficiency(prof);
-				mob.tell(M.Name()+"'s skill proficiency in "+A.ID()+" set to "+prof);
+				mob.tell(_("@x1's skill proficiency in @x2 set to @x3",M.Name(),A.ID(),""+prof));
 				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiency in "+A.ID()+".");
 			}
 			else
@@ -1355,7 +1355,7 @@ public class Modify extends StdCommand
 				set.addAll(CMLib.coffeeMaker().getAllGenStats(M));
 				set.add("PROFICIENCIES");
 				set.add("PROFICIENCY(ABILITY_ID)");
-				mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+				mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			}
 			CMLib.database().DBUpdatePlayer(M);
@@ -1381,7 +1381,7 @@ public class Modify extends StdCommand
 		final Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
 		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
 		{
-			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
+			mob.tell(_("There's no manufacturer called '@x1' Try LIST MANUFACTURERS.\n\r",manufacturerID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1413,14 +1413,14 @@ public class Modify extends StdCommand
 		final MOB modMOB=mob.location().fetchInhabitant(mobID);
 		if(modMOB==null)
 		{
-			mob.tell("I don't see '"+mobID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",mobID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
 
 		if(!modMOB.isMonster())
 		{
-			mob.tell(modMOB.Name()+" is a player! Try MODIFY USER!");
+			mob.tell(_("@x1 is a player! Try MODIFY USER!",modMOB.Name()));
 			return;
 		}
 		final MOB copyMOB=(MOB)modMOB.copyOf();
@@ -1458,7 +1458,7 @@ public class Modify extends StdCommand
 			{
 				modMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				modMOB.recoverPhyStats();
-				mob.tell(modMOB.name()+" will now never rejuvinate.");
+				mob.tell(_("@x1 will now never rejuvinate.",modMOB.name()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 shakes under the transforming power.",modMOB.name()));
 			}
 		}
@@ -1482,7 +1482,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,REJUV,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modMOB));
-			mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
+			mob.tell(_("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 		}
 		if(!modMOB.sameAs(copyMOB))
@@ -1539,12 +1539,12 @@ public class Modify extends StdCommand
 			final Ability A=CMClass.findAbility(name,Ability.ACODE_COMMON_SKILL,-1,false);
 			if(A==null)
 			{
-				mob.tell("'"+name+"' is not a valid skill id.");
+				mob.tell(_("'@x1' is not a valid skill id.",name));
 				return false;
 			}
 			if(!(A instanceof ItemCraftor))
 			{
-				mob.tell("'"+A.ID()+"' is not a common crafting skill.");
+				mob.tell(_("'@x1' is not a common crafting skill.",A.ID()));
 				return false;
 			}
 			final ItemCraftor iA = (ItemCraftor)A;
@@ -1553,7 +1553,7 @@ public class Modify extends StdCommand
 			||(iA.parametersFile()==null)
 			||(iA.parametersFile().length()==0))
 			{
-				mob.tell("'"+A.ID()+"' does not have modifiable recipes.");
+				mob.tell(_("'@x1' does not have modifiable recipes.",A.ID()));
 				return false;
 			}
 			CMLib.ableParms().modifyRecipesList(mob,iA.parametersFile(),iA.parametersFormat());
@@ -1731,7 +1731,7 @@ public class Modify extends StdCommand
 				if(O instanceof StringBuffer)
 				{
 					somethingFound=true;
-					mob.tell("Unapproved script:\n\r"+((StringBuffer)O).toString()+"\n\r");
+					mob.tell(_("Unapproved script:\n\r@x1\n\r",((StringBuffer)O).toString()));
 					if((!mob.isMonster())
 					&&(mob.session().confirm("Approve this script (Y/n)?","Y")))
 						CMSecurity.approveJScript(mob.Name(),L.longValue());
@@ -1761,7 +1761,7 @@ public class Modify extends StdCommand
 				P=CMLib.polls().getPoll(name);
 			if(P==null)
 			{
-				mob.tell("POLL '"+name+"' not found. Try LIST POLLS.");
+				mob.tell(_("POLL '@x1' not found. Try LIST POLLS.",name));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
@@ -1783,7 +1783,7 @@ public class Modify extends StdCommand
 				num=CMLib.quests().getHolidayIndex(name);
 			if(num<0)
 			{
-				mob.tell("HOLIDAY '"+name+"' not found. Try LIST HOLIDAYS.");
+				mob.tell(_("HOLIDAY '@x1' not found. Try LIST HOLIDAYS.",name));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 				return false;
 			}
@@ -1826,12 +1826,12 @@ public class Modify extends StdCommand
 				if(sql.equals("ping"))
 				{
 					final int num=CMLib.database().pingAllConnections(1000);
-					mob.tell("Pings completed="+num+".");
+					mob.tell(_("Pings completed=@x1.",""+num));
 				}
 				else
 				if(sql.toUpperCase().trim().startsWith("SELECT"))
 				{
-					mob.tell("SQL Query: "+sql);
+					mob.tell(_("SQL Query: @x1",sql));
 					final List<String[]> results=CMLib.database().DBRawQuery(sql.replace('`','\''));
 					final StringBuilder buf=new StringBuilder("QueryResults\n\r");
 					if(results.size()>0)
@@ -1859,14 +1859,14 @@ public class Modify extends StdCommand
 				}
 				else
 				{
-					mob.tell("SQL Statement: "+sql);
+					mob.tell(_("SQL Statement: @x1",sql));
 					final int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));
-					mob.tell("Command completed. Response code: "+resp);
+					mob.tell(_("Command completed. Response code: @x1",""+resp));
 				}
 			}
 			catch(final Exception e)
 			{
-				mob.tell("SQL Error: "+e.getMessage());
+				mob.tell(_("SQL Error: @x1",e.getMessage()));
 			}
 		}
 		else
@@ -1887,7 +1887,7 @@ public class Modify extends StdCommand
 						if(g.getName().toLowerCase().startsWith(name.toLowerCase()))
 							G=g;
 				if(G==null)
-					mob.tell("Government '"+name+"' is unknown.  Try list governments.");
+					mob.tell(_("Government '@x1' is unknown.  Try list governments.",name));
 				else
 				if(!mob.isMonster())
 				{
@@ -1910,7 +1910,7 @@ public class Modify extends StdCommand
 				Faction F=CMLib.factions().getFaction(name);
 				if(F==null) F=CMLib.factions().getFactionByName(name);
 				if(F==null)
-					mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
+					mob.tell(_("Faction '@x1' is unknown.  Try list factions.",name));
 				else
 				if(!mob.isMonster())
 				{
@@ -1931,7 +1931,7 @@ public class Modify extends StdCommand
 				final String name=CMParms.combine(commands,2);
 				final Clan C=CMLib.clans().findClan(name);
 				if(C==null)
-					mob.tell("Clan '"+name+"' is unknown.  Try clanlist.");
+					mob.tell(_("Clan '@x1' is unknown.  Try clanlist.",name));
 				else
 				if(!mob.isMonster())
 				{
@@ -1965,7 +1965,7 @@ public class Modify extends StdCommand
 							srchContainer=I;
 						else
 						{
-							mob.tell("MOB or Container '"+rest+"' not found.");
+							mob.tell(_("MOB or Container '@x1' not found.",rest));
 							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 							return false;
 						}
@@ -2062,7 +2062,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, MANUFACTURER, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.");
+				mob.tell(_("\n\rYou cannot modify a '@x1'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, MANUFACTURER, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.",commandType));
 		}
 		return false;
 	}

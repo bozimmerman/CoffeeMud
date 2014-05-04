@@ -79,7 +79,7 @@ public class Split extends StdCommand
 			totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
 			if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
 			{
-				mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");
+				mob.tell(_("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denom)));
 				return false;
 			}
 			final List<Coins> V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);

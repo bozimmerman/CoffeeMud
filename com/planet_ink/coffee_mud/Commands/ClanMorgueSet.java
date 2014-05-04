@@ -70,34 +70,34 @@ public class ClanMorgueSet extends StdCommand
 
 		if((C==null)||(R==null))
 		{
-			mob.tell("You aren't allowed to set a morgue room for "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to set a morgue room for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a morgue.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
+			mob.tell(_("You cannot set a morgue.  Your @x1 does not have enough members to be considered active.",C.getGovernmentName()));
 			return false;
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_HOME,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
+				mob.tell(_("Your @x1 does not own this room.",C.getGovernmentName()));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_HOME,true))
 			{
 				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("Your "+C.getGovernmentName()+" morgue is now set to "+R.displayText(mob)+".");
+				mob.tell(_("Your @x1 morgue is now set to @x2.",C.getGovernmentName(),R.displayText(mob)));
 				CMLib.clans().clanAnnounce(mob, "The morgue of "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.displayText(mob)+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s morgue.");
+			mob.tell(_("You aren't in the right position to set your @x1's morgue.",C.getGovernmentName()));
 			return false;
 		}
 		return false;

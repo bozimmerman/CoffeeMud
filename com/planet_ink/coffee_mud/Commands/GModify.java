@@ -254,7 +254,7 @@ public class GModify extends StdCommand
 		if(checkedOut)
 		{
 			if(changes.size()==0)
-				mob.tell("Matched on "+E.name()+" from "+CMLib.map().getExtendedRoomID(room)+".");
+				mob.tell(CMLib.lang()._("Matched on @x1 from @x2.",E.name(),CMLib.map().getExtendedRoomID(room)));
 			else
 			for(int i=0;i<changes.size();i++)
 			{
@@ -349,7 +349,7 @@ public class GModify extends StdCommand
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
-			mob.tell("Valid field names are "+allFieldsMsg.toString());
+			mob.tell(_("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -469,7 +469,7 @@ public class GModify extends StdCommand
 					}
 				if(divLen==0)
 				{
-					mob.tell("String '"+str+"' does not contain an equation divider.  Even CHANGE needs at least an = sign!");
+					mob.tell(_("String '@x1' does not contain an equation divider.  Even CHANGE needs at least an = sign!",str));
 					return false;
 				}
 				final String equator=str.substring(eq,eq+divLen);
@@ -512,7 +512,7 @@ public class GModify extends StdCommand
 				Pattern P=null;
 				if(use==null)
 				{
-					mob.tell("'"+((String)commands.elementAt(i))+"' goes to an unknown parameter!");
+					mob.tell(_("'@x1' goes to an unknown parameter!",((String)commands.elementAt(i))));
 					return false;
 				}
 				while(val.trim().startsWith("["))
@@ -540,7 +540,7 @@ public class GModify extends StdCommand
 					use.addElement(key,equator,val,code,P);
 				else
 				{
-					mob.tell("'"+key+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+					mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",key,allFieldsMsg.toString()));
 					return false;
 				}
 			}

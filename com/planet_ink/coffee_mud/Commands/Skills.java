@@ -64,7 +64,7 @@ public class Skills extends StdCommand
 		{
 			final Ability A2=mob.fetchAbility(A.ID());
 			if(A2==null)
-				mob.tell("You don't know '"+A.name()+"'.");
+				mob.tell(_("You don't know '@x1'.",A.name()));
 			else
 			{
 				int level=CMLib.ableMapper().qualifyingLevel(mob,A2);

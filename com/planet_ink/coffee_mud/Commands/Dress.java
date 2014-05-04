@@ -59,7 +59,7 @@ public class Dress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell("I don't see "+whom+" here.");
+			mob.tell(_("I don't see @x1 here.",whom));
 			return false;
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
@@ -67,7 +67,7 @@ public class Dress extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell("I don't see "+what+" here.");
+				mob.tell(_("I don't see @x1 here.",what));
 				return false;
 			}
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
@@ -105,12 +105,12 @@ public class Dress extends StdCommand
 				}
 				if(item instanceof Coins)
 				{
-					mob.tell("I don't think you want to dress someone in "+item.name()+".");
+					mob.tell(_("I don't think you want to dress someone in @x1.",item.name()));
 					return false;
 				}
 				if(target.isInCombat())
 				{
-					mob.tell("Not while "+target.name(mob)+" is in combat!");
+					mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
 					return false;
 				}
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -129,16 +129,16 @@ public class Dress extends StdCommand
 								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 							}
 							else
-								mob.tell("You cannot seem to get "+item.name()+" on "+target.name(mob)+".");
+								mob.tell(_("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
 						}
 						else
-							mob.tell("You cannot seem to get "+item.name()+" to "+target.name(mob)+".");
+							mob.tell(_("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
 					}
 				}
 			}
 		}
 		else
-			mob.tell(target.name(mob)+" won't let you.");
+			mob.tell(_("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

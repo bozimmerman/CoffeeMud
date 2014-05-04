@@ -211,12 +211,12 @@ public class Draw extends Get
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					mob.tell("You don't see that in "+container.name()+".");
+					mob.tell(_("You don't see that in @x1.",container.name()));
 				else
-					mob.tell(container.name()+" is closed.");
+					mob.tell(_("@x1 is closed.",container.name()));
 			}
 			else
-				mob.tell("You don't see "+containerName+" here.");
+				mob.tell(_("You don't see @x1 here.",containerName));
 		}
 		return false;
 	}

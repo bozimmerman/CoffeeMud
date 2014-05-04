@@ -65,7 +65,7 @@ public class Purge extends StdCommand
 		{
 			if(!deadMOB.isMonster())
 			{
-				mob.tell(deadMOB.name()+" is a PLAYER!!\n\r");
+				mob.tell(_("@x1 is a PLAYER!!\n\r",deadMOB.name()));
 				if(!doneSomething)
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return false;
@@ -78,7 +78,7 @@ public class Purge extends StdCommand
 		}
 		if(!doneSomething)
 		{
-			mob.tell("I don't see '"+mobID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",mobID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
@@ -117,7 +117,7 @@ public class Purge extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
@@ -150,7 +150,7 @@ public class Purge extends StdCommand
 		}
 		if(!doneSomething)
 		{
-			mob.tell("I don't see '"+itemID+" here.\n\r");
+			mob.tell(_("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -195,7 +195,7 @@ public class Purge extends StdCommand
 					commands.insertElementAt("MOB",1);
 				else
 				{
-					mob.tell(thang.name()+" is a player!");
+					mob.tell(_("@x1 is a player!",thang.name()));
 					return false;
 				}
 				execute(mob,commands,metaFlags);
@@ -203,8 +203,7 @@ public class Purge extends StdCommand
 			else
 			{
 				mob.tell(
-					"\n\rYou cannot purge a '"+commandType+"'. "
-					+"However, you might try an ITEM or a MOB.");
+					_("\n\rYou cannot purge a '@x1'. However, you might try an ITEM or a MOB.",commandType));
 			}
 		}
 		return false;

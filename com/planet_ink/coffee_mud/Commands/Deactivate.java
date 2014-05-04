@@ -107,13 +107,13 @@ public class Deactivate extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell("You don't see anything called '"+what+"' or '"+whole+"' here that you can deactivate.");
+			mob.tell(_("You don't see anything called '@x1' or '@x2' here that you can deactivate.",what,whole));
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			mob.tell("You can't deactivate '"+E.name()+"'.");
+			mob.tell(_("You can't deactivate '@x1'.",E.name()));
 		}
 
 		final String rest=CMParms.combine(commands,0);

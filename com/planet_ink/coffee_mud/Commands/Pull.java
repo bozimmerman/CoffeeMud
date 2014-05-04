@@ -79,7 +79,7 @@ public class Pull extends Go
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell("You don't see '"+itemName+"' here.");
+			mob.tell(_("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,_("<S-NAME> pull(s) <T-NAME>@x1.",dir));

@@ -44,7 +44,7 @@ public class Description extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("^xYour current description:^?\n\r"+mob.description());
+			mob.tell(_("^xYour current description:^?\n\r@x1",mob.description()));
 			mob.tell(_("\n\rEnter DESCRIPTION [NEW TEXT] to change."));
 			return false;
 		}

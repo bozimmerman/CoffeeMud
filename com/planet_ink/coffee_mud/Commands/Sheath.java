@@ -192,7 +192,7 @@ public class Sheath extends StdCommand
 					mob.tell(_("You are not wearing an appropriate sheath."));
 				else
 				if(sheathable!=null)
-					mob.tell("You aren't wearing anything you can sheath "+sheathable.name()+" in.");
+					mob.tell(_("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
 				else
 				if(commands.size()==0)
 					mob.tell(_("You don't seem to be wielding anything you can sheath."));

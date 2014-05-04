@@ -171,7 +171,7 @@ public class WillQualify  extends Skills
 					&&!str.equalsIgnoreCase("EXPERTISE")
 					&&!str.equalsIgnoreCase("EXPERTISES"))
 					{
-						mob.tell("'"+str+"' is not a valid skill type, domain, expertise, or character class.");
+						mob.tell(_("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
 						mob.tell(willQualErr);
 						return false;
 					}

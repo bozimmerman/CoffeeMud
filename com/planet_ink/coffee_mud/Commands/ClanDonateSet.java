@@ -70,34 +70,34 @@ public class ClanDonateSet extends StdCommand
 
 		if(C==null)
 		{
-			mob.tell("You aren't allowed to set a donation room for "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to set a donation room for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a donation room.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
+			mob.tell(_("You cannot set a donation room.  Your @x1 does not have enough members to be considered active.",C.getGovernmentName()));
 			return false;
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
+				mob.tell(_("Your @x1 does not own this room.",C.getGovernmentName()));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_DONATE,true))
 			{
 				C.setDonation(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.displayText(mob)+".");
+				mob.tell(_("The donation room for @x1 @x2 is now set to @x3.",C.getGovernmentName(),C.clanID(),R.displayText(mob)));
 				CMLib.clans().clanAnnounce(mob,"The donation room for "+C.getGovernmentName()+" "+C.clanID()+" is now set to "+R.displayText(mob)+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s donation room.");
+			mob.tell(_("You aren't in the right position to set your @x1's donation room.",C.getGovernmentName()));
 			return false;
 		}
 		return false;

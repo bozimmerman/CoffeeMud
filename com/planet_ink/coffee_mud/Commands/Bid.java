@@ -51,14 +51,14 @@ public class Bid extends StdCommand
 		}
 		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))
 		{
-			mob.tell(shopkeeper.name()+" is not an auctioneer!");
+			mob.tell(_("@x1 is not an auctioneer!",shopkeeper.name()));
 			return false;
 		}
 
 		String bidStr=(String)commands.firstElement();
 		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
 		{
-			mob.tell("It does not look like '"+bidStr+"' is enough to offer.");
+			mob.tell(_("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
 		}
 		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
@@ -93,7 +93,7 @@ public class Bid extends StdCommand
 			++addendum;
 		}
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,"<T-NAME> do(es)n't appear to have any '"+whatName+"' available for auction.  Try LIST.");
+			mob.tell(mob,shopkeeper,null,_("<T-NAME> do(es)n't appear to have any '@x1' available for auction.  Try LIST.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

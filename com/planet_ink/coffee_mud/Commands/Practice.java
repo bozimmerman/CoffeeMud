@@ -44,7 +44,7 @@ public class Practice extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You have "+mob.getPractices()+" practice points.  Enter HELP PRACTICE for more information.");
+			mob.tell(_("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -78,19 +78,19 @@ public class Practice extends StdCommand
 		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell("You don't seem to know "+abilityName+".");
+			mob.tell(_("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		if(!myAbility.isSavable())
 		{
-			mob.tell(abilityName+" cannot be practiced, as it is a native skill.");
+			mob.tell(_("@x1 cannot be practiced, as it is a native skill.",abilityName));
 			return false;
 		}
 
 		final Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(teacher.name()+" doesn't seem to know "+abilityName+".");
+			mob.tell(_("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
 			return false;
 		}
 

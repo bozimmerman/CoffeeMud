@@ -57,7 +57,7 @@ public class Unlock extends StdCommand
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{
-			mob.tell("You don't see '"+whatTounlock+"' here.");
+			mob.tell(_("You don't see '@x1' here.",whatTounlock));
 			return false;
 		}
 		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);

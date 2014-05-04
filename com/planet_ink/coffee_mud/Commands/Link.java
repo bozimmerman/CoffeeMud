@@ -57,7 +57,7 @@ public class Link extends At
 		final int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
+			mob.tell(_("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
@@ -70,7 +70,7 @@ public class Link extends At
 			thisRoom=CMLib.map().findWorldRoomLiberally(mob,RoomID,"R",100,120000);
 			if(thisRoom==null)
 			{
-				mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");
+				mob.tell(_("Room \"@x1\" is unknown.  Try again.",RoomID));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return false;
 			}

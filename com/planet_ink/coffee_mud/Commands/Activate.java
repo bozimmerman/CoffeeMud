@@ -107,13 +107,13 @@ public class Activate extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell("You don't see anything called '"+what+"' or '"+whole+"' here that you can activate.");
+			mob.tell(_("You don't see anything called '@x1' or '@x2' here that you can activate.",what,whole));
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			mob.tell("You can't activate "+E.name()+".");
+			mob.tell(_("You can't activate @x1.",E.name()));
 			return false;
 		}
 

@@ -43,8 +43,7 @@ public class I3Cmd extends StdCommand
 	public void i3Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
-			mob.tell("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], " +
-					"I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, or I3 INFO [MUD].");
+			mob.tell(_("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, or I3 INFO [MUD]."));
 		else
 			mob.tell(_("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME]."));
 	}

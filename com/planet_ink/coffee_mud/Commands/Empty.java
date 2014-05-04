@@ -138,7 +138,7 @@ public class Empty extends Drop
 
 		if((V.size()==0)&&(drink!=null))
 		{
-			mob.tell(drink.name()+" must be POURed out.");
+			mob.tell(_("@x1 must be POURed out.",drink.name()));
 			return false;
 		}
 

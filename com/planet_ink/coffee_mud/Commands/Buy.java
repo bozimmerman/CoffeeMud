@@ -49,7 +49,7 @@ public class Buy extends StdCommand
 			final MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
-				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
+				mob.tell(_("There is noone called '@x1' here.",((String)commands.lastElement())));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -66,7 +66,7 @@ public class Buy extends StdCommand
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			mob.tell(_("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Buy extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,"<T-NAME> do(es)n't appear to have any '"+whatName+"' for sale.  Try LIST.");
+			mob.tell(mob,shopkeeper,null,_("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

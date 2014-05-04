@@ -75,7 +75,7 @@ public class ClanAssign extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell("You aren't allowed to assign anyone from "+((clanName.length()==0)?"anything":clanName)+".");
+				mob.tell(_("You aren't allowed to assign anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,false))
@@ -83,13 +83,13 @@ public class ClanAssign extends StdCommand
 				final List<MemberRecord> members=C.getMemberList();
 				if(members.size()<1)
 				{
-					mob.tell("There are no members in your "+C.getGovernmentName()+"");
+					mob.tell(_("There are no members in your @x1",C.getGovernmentName()));
 					return false;
 				}
 				final int newPos=C.getRoleFromName(pos);
 				if(newPos<0)
 				{
-					mob.tell("'"+pos+"' is not a valid role.");
+					mob.tell(_("'@x1' is not a valid role.",pos));
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
@@ -106,12 +106,12 @@ public class ClanAssign extends StdCommand
 					final Pair<Clan,Integer> oldRole=(M!=null)?M.getClanRole(C.clanID()):null;
 					if((M==null)||(oldRole==null))
 					{
-						mob.tell(memberStr+" was not found.  Could not change "+C.getGovernmentName()+" role.");
+						mob.tell(_("@x1 was not found.  Could not change @x2 role.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(!C.canBeAssigned(M, newPos))
 					{
-						mob.tell(M.name(mob)+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
+						mob.tell(_("@x1 may not be assigned to @x2.",M.name(mob),C.getRoleName(newPos,true,false)));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
@@ -133,7 +133,7 @@ public class ClanAssign extends StdCommand
 										numMembers++;
 							if(numMembers==0)
 							{
-								mob.tell(M.Name()+" is the last "+C.getRoleName(oldPos,true,false)+" and must be replaced before being reassigned.");
+								mob.tell(_("@x1 is the last @x2 and must be replaced before being reassigned.",M.Name(),C.getRoleName(oldPos,true,false)));
 								return false;
 							}
 						}
@@ -155,9 +155,9 @@ public class ClanAssign extends StdCommand
 						CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" changed from "+C.getRoleName(oldRole.second.intValue(),true,false)
 								+" to "+C.getRoleName(newPos,true,false)+".");
 						C.addMember(M,newPos);
-						mob.tell(M.Name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+". ");
+						mob.tell(_("@x1 of the @x2 @x3 has been assigned to be @x4. ",M.Name(),C.getGovernmentName(),C.clanID(),CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+" of "+C.getGovernmentName()+" "+C.clanID()+".");
+							M.tell(_("You have been assigned to be @x1 of @x2 @x3.",CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false)),C.getGovernmentName(),C.clanID()));
 						return false;
 					}
 				}

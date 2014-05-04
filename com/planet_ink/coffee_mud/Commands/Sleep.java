@@ -61,7 +61,7 @@ public class Sleep extends StdCommand
 		final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			mob.tell("You don't see '"+possibleRideable+"' here.");
+			mob.tell(_("You don't see '@x1' here.",possibleRideable));
 			return false;
 		}
 		String mountStr=null;

@@ -217,7 +217,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
-			mob.tell("Valid field names are "+allFieldsMsg.toString());
+			mob.tell(_("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
 		String scope="WORLD";
@@ -279,7 +279,7 @@ public class Merge extends StdCommand
 		final StringBuffer buf=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS).text();
 		if((buf==null)||(buf.length()==0))
 		{
-			mob.tell("File not found at: '"+filename+"'!");
+			mob.tell(_("File not found at: '@x1'!",filename));
 			return false;
 		}
 
@@ -298,7 +298,7 @@ public class Merge extends StdCommand
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell("An error occurred on merge: "+error);
+				mob.tell(_("An error occurred on merge: @x1",error));
 				mob.tell(_("Please correct the problem and try the import again."));
 				return false;
 			}
@@ -313,7 +313,7 @@ public class Merge extends StdCommand
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell("An error occurred on merge: "+error);
+				mob.tell(_("An error occurred on merge: @x1",error));
 				mob.tell(_("Please correct the problem and try the import again."));
 				return false;
 			}
@@ -370,14 +370,14 @@ public class Merge extends StdCommand
 				{
 					if(use==null)
 					{
-						mob.tell("'"+str+"' is an unknown parameter!");
+						mob.tell(_("'@x1' is an unknown parameter!",str));
 						return false;
 					}
 					if(allKnownFields.contains(s))
 						use.add(s);
 					else
 					{
-						mob.tell("'"+s+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+						mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",s,allFieldsMsg.toString()));
 						return false;
 					}
 				}
@@ -388,14 +388,14 @@ public class Merge extends StdCommand
 			{
 				if(use==null)
 				{
-					mob.tell("'"+str+"' is an unknown parameter!");
+					mob.tell(_("'@x1' is an unknown parameter!",str));
 					return false;
 				}
 				if(allKnownFields.contains(str))
 					use.add(str);
 				else
 				{
-					mob.tell("'"+str+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
+					mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",str,allFieldsMsg.toString()));
 					return false;
 				}
 			}
@@ -596,7 +596,7 @@ public class Merge extends StdCommand
 					continue;
 				++showNumber;
 				if((showFlag>0)&&(showFlag!=showNumber)) continue;
-				mob.tell("^H"+showNumber+". "+promptStr+"\n\rValue: ^W'"+loVal+"'\n\r^HDBVal: ^N'"+dbVal+"'");
+				mob.tell(_("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
 				if((showFlag!=showNumber)&&(showFlag>-999)) continue;
 				final String res=mob.session().choose("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: ","DENQ", "N");
 				if(res.trim().equalsIgnoreCase("N")) continue;

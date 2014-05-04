@@ -198,7 +198,7 @@ public class Qualify  extends Skills
 					}
 					thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
 					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
-					+CMStrings.padRight("1 train",(col==2)?COL_LEN3:COL_LEN4));
+					+CMStrings.padRight(_("1 train"),(col==2)?COL_LEN3:COL_LEN4));
 				}
 				if(thisLine.length()>0)
 				{
@@ -292,7 +292,7 @@ public class Qualify  extends Skills
 			if(msg.length()==0)
 			{
 				if(qual.length()>0)
-					mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
+					mob.tell(_("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.",qual));
 				else
 					mob.tell(_("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES."));
 			}

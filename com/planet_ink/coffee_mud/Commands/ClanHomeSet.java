@@ -70,34 +70,34 @@ public class ClanHomeSet extends StdCommand
 
 		if(C==null)
 		{
-			mob.tell("You aren't allowed to set a home room for "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell(_("You aren't allowed to set a home room for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
-			mob.tell("You cannot set a home.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");
+			mob.tell(_("You cannot set a home.  Your @x1 does not have enough members to be considered active.",C.getGovernmentName()));
 			return false;
 		}
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_HOME,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
-				mob.tell("Your "+C.getGovernmentName()+" does not own this room.");
+				mob.tell(_("Your @x1 does not own this room.",C.getGovernmentName()));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.SET_HOME,true))
 			{
 				C.setRecall(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.displayText(mob)+".");
+				mob.tell(_("The @x1 @x2 home is now set to @x3.",C.getGovernmentName(),C.clanID(),R.displayText(mob)));
 				CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.displayText(mob)+".");
 				return true;
 			}
 		}
 		else
 		{
-			mob.tell("You aren't in the right position to set your "+C.getGovernmentName()+"'s home.");
+			mob.tell(_("You aren't in the right position to set your @x1's home.",C.getGovernmentName()));
 			return false;
 		}
 		return false;

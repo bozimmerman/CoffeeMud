@@ -62,7 +62,7 @@ public class HelpList extends StdCommand
 					mob);
 		if((thisTag==null)||(thisTag.length()==0))
 		{
-			mob.tell("No help entries match '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			mob.tell(_("No help entries match '@x1'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.",helpStr));
 			Log.helpOut("Help",mob.Name()+" wanted help list match on "+helpStr);
 		}
 		else

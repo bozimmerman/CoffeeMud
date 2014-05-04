@@ -156,7 +156,7 @@ public class Transfer extends At
 
 		if(V.size()==0)
 		{
-			mob.tell("Transfer what?  '"+mobname+"' is unknown to you.");
+			mob.tell(_("Transfer what?  '@x1' is unknown to you.",mobname));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ public class Transfer extends At
 
 		if(room==null)
 		{
-			mob.tell("Transfer where? '"+cmd.toString()+"' is unknown.  Enter a Room ID, player name, area name, or room text!");
+			mob.tell(_("Transfer where? '@x1' is unknown.  Enter a Room ID, player name, area name, or room text!",cmd.toString()));
 			return false;
 		}
 		for(int i=0;i<V.size();i++)

@@ -68,7 +68,7 @@ public class Possess extends StdCommand
 				if(targetName.trim().length()==0)
 					mob.tell(_("You don't see them here."));
 				else
-					mob.tell("You don't see '"+targetName+"' here.");
+					mob.tell(_("You don't see '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -119,18 +119,18 @@ public class Possess extends StdCommand
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
 		{
-			mob.tell("You can't possess '"+MOBname+"' right now.");
+			mob.tell(_("You can't possess '@x1' right now.",MOBname));
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,target.location(),CMSecurity.SecFlag.POSSESS))
 		{
-			mob.tell("You can not possess "+target.Name()+".");
+			mob.tell(_("You can not possess @x1.",target.Name()));
 			return false;
 		}
 
 		if((!CMSecurity.isASysOp(mob))&&(CMSecurity.isASysOp(target)))
 		{
-			mob.tell("You may not possess '"+MOBname+"'.");
+			mob.tell(_("You may not possess '@x1'.",MOBname));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, _("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
@@ -144,9 +144,7 @@ public class Possess extends StdCommand
 			target.setSoulMate(mob);
 			mob.setSession(null);
 			CMLib.commands().postLook(target,true);
-			target.tell("^HYour spirit has changed bodies"
-							+(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")
-							+", use QUIT to return to yours.");
+			target.tell(_("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")));
 		}
 		return false;
 	}

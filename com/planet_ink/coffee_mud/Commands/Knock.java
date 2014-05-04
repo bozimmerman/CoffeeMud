@@ -55,7 +55,7 @@ public class Knock extends StdCommand
 			final Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis==null)
 			{
-				mob.tell("You don't see '"+knockWhat.toLowerCase()+"' here.");
+				mob.tell(_("You don't see '@x1' here.",knockWhat.toLowerCase()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
@@ -73,7 +73,7 @@ public class Knock extends StdCommand
 			}
 			if(!E.hasADoor())
 			{
-				mob.tell("You can't knock on "+E.name()+"!");
+				mob.tell(_("You can't knock on @x1!",E.name()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
