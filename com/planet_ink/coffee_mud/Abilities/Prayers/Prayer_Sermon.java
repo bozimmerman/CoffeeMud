@@ -154,7 +154,7 @@ public class Prayer_Sermon extends Prayer
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> begin(s) sermonizing on the wonders of "+hisHerDiety(mob)+".^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> begin(s) sermonizing on the wonders of @x1.^?",hisHerDiety(mob))))
 			for(final Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				final MOB target=(MOB)f.nextElement();

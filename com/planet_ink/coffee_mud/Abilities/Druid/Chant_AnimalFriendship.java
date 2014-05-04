@@ -112,7 +112,7 @@ public class Chant_AnimalFriendship extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) animal friendly!":"^S<S-NAME> chant(s) for animal friendship.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) animal friendly!"):_("^S<S-NAME> chant(s) for animal friendship.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

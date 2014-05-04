@@ -82,7 +82,7 @@ public class Prayer_ConsecrateLand extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to consecrate this place.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to consecrate this place.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -53,7 +53,7 @@ public class Spell_DetectSentience extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":"^S<S-NAME> incant(s) softly to <S-HIM-HERSELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":_("^S<S-NAME> incant(s) softly to <S-HIM-HERSELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

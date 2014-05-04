@@ -118,7 +118,7 @@ public class Chant_MuddyGrounds extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

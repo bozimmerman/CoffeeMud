@@ -99,7 +99,7 @@ public class Spell_DetectPoison extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s) over <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) over <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,7 +113,7 @@ public class Spell_DetectPoison extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> incant(s) over <T-NAME>, but receives no insight.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> incant(s) over <T-NAME>, but receives no insight."));
 
 
 		// return whether it worked

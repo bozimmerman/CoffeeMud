@@ -120,7 +120,7 @@ public class Spell_RogueLimb extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> lose(s) control of <T-HIS-HER> limb!":"^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> lose(s) control of <T-HIS-HER> limb!"):_("^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

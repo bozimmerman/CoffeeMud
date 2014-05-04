@@ -107,7 +107,7 @@ public class Prayer_CurseMind extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) <T-HIS-HER> mind become cursed!":"^S<S-NAME> "+prayForWord(mob)+" to curse the mind of <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) <T-HIS-HER> mind become cursed!"):_("^S<S-NAME> @x1 to curse the mind of <T-NAMESELF>!^?",prayForWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

@@ -117,7 +117,7 @@ public class Spell_LedFoot extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou invoke a heavy spell into <T-NAME>s feet.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a heavy spell into your feet.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou invoke a heavy spell into <T-NAME>s feet.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a heavy spell into your feet.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":_("^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

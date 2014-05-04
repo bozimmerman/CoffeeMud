@@ -480,7 +480,7 @@ public class StdLawBook extends StdItem
 												 +" "
 												 +(there?"(Y/n)":"(y/N)")
 												 +"?",
-												 there?"Y":"N"))
+												 there?_("Y"):_("N")))
 						{
 							lastAnswer=true;
 							s2.append(" "+lastOle);
@@ -518,7 +518,7 @@ public class StdLawBook extends StdItem
 												 +" "
 												 +(there?"(Y/n)":"(y/N)")
 												 +"?",
-												 there?"Y":"N"))
+												 there?_("Y"):_("N")))
 						{
 							lastAnswer=true;
 							s2.append(" "+lastOle);

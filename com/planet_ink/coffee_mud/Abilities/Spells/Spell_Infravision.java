@@ -94,7 +94,7 @@ public class Spell_Infravision extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) glowing eyes!"):_("^S<S-NAME> invoke(s) glowing red eyes!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			successfulObservation=success;

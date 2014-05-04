@@ -103,7 +103,7 @@ public class Chant_Darkvision extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) darkvision!":"^S<S-NAME> chant(s) for darkvision!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) darkvision!"):_("^S<S-NAME> chant(s) for darkvision!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -153,7 +153,7 @@ public class Skill_Meditation extends StdSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) to meditate...");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> begin(s) to meditate..."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

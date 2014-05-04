@@ -71,7 +71,7 @@ public class Chant_CalmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) surrounded by a natural light.":"^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) surrounded by a natural light."):_("^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

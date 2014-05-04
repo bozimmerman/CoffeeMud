@@ -186,7 +186,7 @@ public class Druid_PackCall extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":_("^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

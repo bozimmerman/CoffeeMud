@@ -109,7 +109,7 @@ public class Spell_Blindness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou invoke a flashing light into <T-NAME>s eyes.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou invoke a flashing light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a flashing light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":_("^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

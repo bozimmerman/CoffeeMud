@@ -117,7 +117,7 @@ public class Prayer_DailyBread extends Prayer
 			}
 		}
 		else
-			maliciousFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to provide <S-HIS-HER> daily bread, but nothing happens.");
+			maliciousFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

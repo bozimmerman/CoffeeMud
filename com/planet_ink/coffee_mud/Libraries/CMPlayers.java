@@ -447,7 +447,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final Room deadLoc=deadMOB.location();
 		if(deleteAssets)
 		{
-			final CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+			final CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:_("A horrible death cry is heard throughout the land."));
 			if(deadLoc!=null)
 				deadLoc.send(deadMOB,msg);
 			try

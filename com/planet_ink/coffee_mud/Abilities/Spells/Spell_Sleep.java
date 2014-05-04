@@ -149,7 +149,7 @@ public class Spell_Sleep extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
 			final MOB oldVictim=mob.getVictim();
 			if(mob.location().okMessage(mob,msg))
 			{

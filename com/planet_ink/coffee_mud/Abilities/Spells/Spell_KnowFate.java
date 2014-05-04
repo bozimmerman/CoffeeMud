@@ -53,7 +53,7 @@ public class Spell_KnowFate extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":"^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

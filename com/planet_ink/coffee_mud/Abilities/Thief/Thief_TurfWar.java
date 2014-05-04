@@ -233,10 +233,10 @@ public class Thief_TurfWar extends ThiefSkill
 		final Room R=target;
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> declare(s) a turf war!");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> declare(s) a turf war!"));
 		if(!success)
 		{
-			return beneficialVisualFizzle(mob,target,auto?"":"<S-NAME> attempt(s) to declare a turf war, but can't get started.");
+			return beneficialVisualFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to declare a turf war, but can't get started."));
 		}
 		else
 		if(mob.location().okMessage(mob,msg))

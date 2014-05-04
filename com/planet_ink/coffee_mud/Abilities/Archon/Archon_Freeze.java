@@ -109,7 +109,7 @@ public class Archon_Freeze extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A frozen chill falls upon <T-NAME>!":"^F<S-NAME> freeze(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("A frozen chill falls upon <T-NAME>!"):_("^F<S-NAME> freeze(s) <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

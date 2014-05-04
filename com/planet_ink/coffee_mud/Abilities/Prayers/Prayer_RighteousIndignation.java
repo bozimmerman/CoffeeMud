@@ -105,7 +105,7 @@ public class Prayer_RighteousIndignation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with righteous indignation!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> righteous indignation!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with righteous indignation!"):_("^S<S-NAME> @x1 for <T-YOUPOSS> righteous indignation!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

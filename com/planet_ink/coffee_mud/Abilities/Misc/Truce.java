@@ -143,7 +143,7 @@ public class Truce extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -159,7 +159,7 @@ public class Truce extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?");
+			return maliciousFizzle(mob,target,auto?"":_("^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?"));
 
 		// return whether it worked
 		return success;

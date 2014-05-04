@@ -137,7 +137,7 @@ public class Prayer_CreateIdol extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(material>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an idol.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for an idol.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

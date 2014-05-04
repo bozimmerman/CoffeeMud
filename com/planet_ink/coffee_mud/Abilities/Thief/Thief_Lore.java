@@ -60,7 +60,7 @@ public class Thief_Lore extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":_("<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

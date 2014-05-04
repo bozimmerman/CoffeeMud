@@ -224,7 +224,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?_("<T-NAME> hit(s) the floor!"):_("^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.riding()!=null)
 				msg.addTrailerMsg(CMClass.getMsg(target,target.riding(),CMMsg.TYP_DISMOUNT,null));

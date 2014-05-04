@@ -78,7 +78,7 @@ public class Skill_Haggle extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":_("<S-NAME> haggle(s) with <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

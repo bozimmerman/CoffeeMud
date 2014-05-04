@@ -143,12 +143,12 @@ public class Thief_Swipe extends ThiefSkill
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
 				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the swipe; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to pick your pocket and fails!"),CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> tries to pick <T-NAME>'s pocket and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":"You fumble the swipe.");
+				mob.tell(auto?"":_("You fumble the swipe."));
 		}
 		else
 		{

@@ -121,10 +121,10 @@ public class Chant_SummonInsects extends Chant
 		{
 			if(h==null)
 			{
-				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?");
+				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A swarm of stinging insects appear, then flutter away!"):_("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?"));
 				return false;
 			}
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A swarm of stinging insects appear, then flutter away!"):_("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

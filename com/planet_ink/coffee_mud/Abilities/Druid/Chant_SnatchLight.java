@@ -205,7 +205,7 @@ public class Chant_SnatchLight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) an aura of light snatching!":"^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) an aura of light snatching!"):_("^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

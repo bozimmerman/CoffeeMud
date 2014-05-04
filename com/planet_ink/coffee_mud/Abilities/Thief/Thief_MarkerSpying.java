@@ -133,7 +133,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to spy on you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your attempt to spy on <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("You spot <S-NAME> trying to spy on you."),CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

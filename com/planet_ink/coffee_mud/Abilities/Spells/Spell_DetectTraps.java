@@ -183,7 +183,7 @@ public class Spell_DetectTraps extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) trap sensitivities!"):_("^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

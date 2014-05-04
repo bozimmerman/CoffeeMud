@@ -66,7 +66,7 @@ public class Spell_Erase extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"The words on <T-NAME> fade.":"^S<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("The words on <T-NAME> fade."):_("^S<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

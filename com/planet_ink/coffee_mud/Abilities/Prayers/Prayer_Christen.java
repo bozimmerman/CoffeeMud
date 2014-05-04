@@ -111,7 +111,7 @@ public class Prayer_Christen extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> becomes "+name+".":"^S<S-NAME> christen(s) <T-NAMESELF> '"+name+"'.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> becomes @x1.",name):_("^S<S-NAME> christen(s) <T-NAMESELF> '@x1'.^?",name));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

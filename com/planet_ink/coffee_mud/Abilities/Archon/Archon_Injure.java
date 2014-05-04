@@ -101,7 +101,7 @@ public class Archon_Injure extends ArchonSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"A stink cloud surrounds <T-NAME>!":"^F<S-NAME> injure(s) <T-YOUPOSS> "+gone.toLowerCase()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("A stink cloud surrounds <T-NAME>!"):_("^F<S-NAME> injure(s) <T-YOUPOSS> @x1.^?",gone.toLowerCase()));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

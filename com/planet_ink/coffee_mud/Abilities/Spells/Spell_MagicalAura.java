@@ -97,7 +97,7 @@ public class Spell_MagicalAura extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A magical aura appears around <T-NAME>."):_("^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

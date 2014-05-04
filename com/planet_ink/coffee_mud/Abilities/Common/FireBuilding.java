@@ -245,7 +245,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(duration<4) duration=4;
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":"<S-NAME> start(s) building a fire.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":_("<S-NAME> start(s) building a fire."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

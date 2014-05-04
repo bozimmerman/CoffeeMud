@@ -59,7 +59,7 @@ public class Put extends StdCommand
 			final Item I=items.get(i);
 			if((items.size()==1)||(I instanceof Light))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:"<S-NAME> put(s) out <T-NAME>.");
+				final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:_("<S-NAME> put(s) out <T-NAME>."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}

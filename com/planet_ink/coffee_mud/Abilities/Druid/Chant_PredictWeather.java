@@ -104,7 +104,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sensitivity to the weather!"):_("^S<S-NAME> chant(s) for weather sensitivity!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";

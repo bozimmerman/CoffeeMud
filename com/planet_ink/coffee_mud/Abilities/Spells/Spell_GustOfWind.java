@@ -111,7 +111,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
+			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous wind gust blows through here."):_("^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

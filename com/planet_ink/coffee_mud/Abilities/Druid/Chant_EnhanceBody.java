@@ -98,7 +98,7 @@ public class Chant_EnhanceBody extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"<T-NAME> go(es) feral!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> body become(s) enhanced!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("<T-NAME> go(es) feral!"):_("^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> body become(s) enhanced!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

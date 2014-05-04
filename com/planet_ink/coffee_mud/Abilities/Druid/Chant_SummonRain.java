@@ -79,7 +79,7 @@ public class Chant_SummonRain extends Chant
 		{
 			final Climate C=mob.location().getArea().getClimateObj();
 			final Climate oldC=(Climate)C.copyOf();
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for water!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("^JThe sky changes color!^?"):_("^S<S-NAME> chant(s) into the sky for water!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -216,7 +216,7 @@ public class Skill_ControlUndead extends StdSkill
 		if((target.baseCharStats().getMyRace()==null)
 		||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 		{
-			mob.tell(auto?"Only the undead can be controlled.":"You can only control the undead.");
+			mob.tell(auto?_("Only the undead can be controlled."):_("You can only control the undead."));
 			return false;
 		}
 
@@ -241,7 +241,7 @@ public class Skill_ControlUndead extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> seem(s) controlled."):_("^S<S-NAME> control(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -144,7 +144,7 @@ public class Spell_Summon extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

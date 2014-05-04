@@ -94,7 +94,7 @@ public class Spell_LocateObject extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a divination, shouting '@x1'^?.",what));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

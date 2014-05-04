@@ -275,7 +275,7 @@ public class Spell_DetectWater extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) liquid sensitivities!"):_("^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

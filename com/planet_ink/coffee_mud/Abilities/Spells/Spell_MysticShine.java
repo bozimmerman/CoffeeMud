@@ -87,7 +87,7 @@ public class Spell_MysticShine extends Spell
 		final Room room=mob.location();
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> begin(s) to really shine!"):_("^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?"));
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);

@@ -134,7 +134,7 @@ public class Thief_Evesdrop extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to evesdrop on <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to evesdrop on you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your attempt to evesdrop on <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("You spot <S-NAME> trying to evesdrop on you."),CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

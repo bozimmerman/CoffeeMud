@@ -156,7 +156,7 @@ public class Spell_WallOfAir extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?_("An swirling wall of air appears!"):_("^S<S-NAME> conjur(s) up a swirling wall of air!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

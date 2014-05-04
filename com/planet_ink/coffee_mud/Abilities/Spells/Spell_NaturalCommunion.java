@@ -100,7 +100,7 @@ public class Spell_NaturalCommunion extends Spell
 		final boolean success=proficiencyCheck(mob,chance,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?");
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":_("^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

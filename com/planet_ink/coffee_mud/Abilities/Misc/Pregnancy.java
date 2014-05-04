@@ -416,7 +416,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				end=start;
 				start-=millisperbirthperiod;
 			}
-			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
+			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:_("<S-NAME> imgregnate(s) <T-NAMESELF>.")))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);

@@ -59,11 +59,11 @@ public class Play_Break extends Play
 		}
 		if(!foundOne)
 		{
-			mob.tell(auto?"There is noone playing.":"You aren't playing anything.");
+			mob.tell(auto?_("There is noone playing."):_("You aren't playing anything."));
 			return true;
 		}
 		unplayAll(mob,mob);
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?"Silence.":"<S-NAME> stop(s) playing.");
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Silence."):_("<S-NAME> stop(s) playing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

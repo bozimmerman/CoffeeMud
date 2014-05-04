@@ -155,7 +155,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?_("<T-NAME> is resurrected!"):_("^S<S-NAME> resurrect(s) <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				invoker=mob;
@@ -191,7 +191,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,body,auto?"":"<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,body,auto?"":_("<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

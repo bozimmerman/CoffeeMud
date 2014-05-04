@@ -1909,7 +1909,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				prompt+="(y/N): ";
 
-			return mob.session().confirm(prompt,val?"Y":"N");
+			return mob.session().confirm(prompt,val?_("Y"):_("N"));
 		}
 		catch(final IOException e)
 		{

@@ -113,7 +113,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a free mind and body.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) a free mind and body."):_("^S<S-NAME> @x1 for a free mind and body.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

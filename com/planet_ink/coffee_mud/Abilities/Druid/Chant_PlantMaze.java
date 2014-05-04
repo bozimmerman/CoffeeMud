@@ -138,7 +138,7 @@ public class Chant_PlantMaze extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":"^S<S-NAME> chant(s) amazingly!^?");
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":_("^S<S-NAME> chant(s) amazingly!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

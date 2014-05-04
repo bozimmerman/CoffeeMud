@@ -89,7 +89,7 @@ public class Spell_SummonCompanion extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom!=null)&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

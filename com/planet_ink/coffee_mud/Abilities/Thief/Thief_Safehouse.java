@@ -181,9 +181,9 @@ public class Thief_Safehouse extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> hide(s) out from the law here.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> hide(s) out from the law here."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) hide out from the law here, but things are just too hot.");
+			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) hide out from the law here, but things are just too hot."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

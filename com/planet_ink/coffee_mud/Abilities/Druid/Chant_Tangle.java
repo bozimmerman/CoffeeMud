@@ -139,7 +139,7 @@ public class Chant_Tangle extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> begin(s) to chant.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> begin(s) to chant.^?")))
 			{
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

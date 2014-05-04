@@ -141,7 +141,7 @@ public class Paladin_SummonMount extends StdAbility
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> call(s) for <S-HIS-HER> loyal steed.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> call(s) for <S-HIS-HER> loyal steed."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

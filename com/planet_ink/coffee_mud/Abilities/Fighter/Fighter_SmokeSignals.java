@@ -129,7 +129,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> begin(s) smoking uncontrollably!":"<S-NAME> puff(s) up a mighty series of smoke signals!");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?_("<T-NAME> begin(s) smoking uncontrollably!"):_("<S-NAME> puff(s) up a mighty series of smoke signals!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

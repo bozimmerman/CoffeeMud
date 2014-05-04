@@ -131,9 +131,9 @@ public class Thief_TagTurf extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> tag(s) this place as <S-HIS-HER> turf."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to tag this place, but can't get into it.");
+			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) to tag this place, but can't get into it."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

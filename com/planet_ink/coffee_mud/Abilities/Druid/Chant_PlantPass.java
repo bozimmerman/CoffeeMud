@@ -84,7 +84,7 @@ public class Chant_PlantPass extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?");
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?"));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

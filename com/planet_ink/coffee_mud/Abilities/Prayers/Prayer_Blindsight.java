@@ -108,7 +108,7 @@ public class Prayer_Blindsight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) blindsight.":"^S<S-NAME> "+prayWord(mob)+" for the blindsight.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) blindsight."):_("^S<S-NAME> @x1 for the blindsight.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

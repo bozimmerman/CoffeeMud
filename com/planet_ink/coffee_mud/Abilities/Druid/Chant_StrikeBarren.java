@@ -96,7 +96,7 @@ public class Chant_StrikeBarren extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(target.charStats().getStat(CharStats.STAT_GENDER)=='F'))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) barren!":"^S<S-NAME> chant(s) at <T-NAMESELF>, striking <T-HIM-HER> barren!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) barren!"):_("^S<S-NAME> chant(s) at <T-NAMESELF>, striking <T-HIM-HER> barren!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

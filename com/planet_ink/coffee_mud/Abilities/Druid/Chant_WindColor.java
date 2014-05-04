@@ -309,7 +309,7 @@ public class Chant_WindColor extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) visions of the winds!":"^S<S-NAME> chant(s) for visions on the wind!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) visions of the winds!"):_("^S<S-NAME> chant(s) for visions on the wind!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

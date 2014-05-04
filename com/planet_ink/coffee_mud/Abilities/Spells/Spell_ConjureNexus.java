@@ -104,7 +104,7 @@ public class Spell_ConjureNexus extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> summon(s) the Nexus of mana!^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> summon(s) the Nexus of mana!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

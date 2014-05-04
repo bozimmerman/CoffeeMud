@@ -234,7 +234,7 @@ public class Spell_DetectGold extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) golden senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

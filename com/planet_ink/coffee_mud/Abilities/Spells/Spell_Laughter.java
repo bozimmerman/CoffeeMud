@@ -117,7 +117,7 @@ public class Spell_Laughter extends Spell
 			// what happened.
 			invoker=mob;
 			final Room R=mob.location();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> tell(s) <T-NAMESELF> a magical joke.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> tell(s) <T-NAMESELF> a magical joke.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

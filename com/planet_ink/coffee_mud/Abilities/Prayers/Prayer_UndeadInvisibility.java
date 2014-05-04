@@ -140,7 +140,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) invisible to the undead.":"^S<S-NAME> "+prayWord(mob)+" for invisibility to the undead.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) invisible to the undead."):_("^S<S-NAME> @x1 for invisibility to the undead.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

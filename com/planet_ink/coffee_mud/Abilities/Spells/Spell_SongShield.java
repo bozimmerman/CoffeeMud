@@ -108,7 +108,7 @@ public class Spell_SongShield extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) protected from songs.":"^S<S-NAME> invoke(s) an anti-song spell around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> look(s) protected from songs."):_("^S<S-NAME> invoke(s) an anti-song spell around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

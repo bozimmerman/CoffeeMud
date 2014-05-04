@@ -178,7 +178,7 @@ public class Chant_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to sense plant life!"):_("^S<S-NAME> chant(s) for a route to plant life.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

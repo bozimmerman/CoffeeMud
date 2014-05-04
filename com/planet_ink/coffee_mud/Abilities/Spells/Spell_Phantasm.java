@@ -167,7 +167,7 @@ public class Spell_Phantasm extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> incant(s), calling on the name of "+type+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> incant(s), calling on the name of @x1.^?",type));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

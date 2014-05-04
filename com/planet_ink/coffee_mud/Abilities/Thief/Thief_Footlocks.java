@@ -160,7 +160,7 @@ public class Thief_Footlocks extends ThiefSkill
 			CMLib.flags().setRemovable(foots,false);
 			CMLib.flags().setDroppable(foots,false);
 			foots.setMaterial((wood!=null)?wood.material():RawMaterial.RESOURCE_WOOD);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> can't seem to move <T-HIS-HER> feet!":"<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?_("<T-NAME> can't seem to move <T-HIS-HER> feet!"):_("<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,foots,CMMsg.MSG_THROW,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

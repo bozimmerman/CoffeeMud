@@ -77,7 +77,7 @@ public class Chant_SummonHeat extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"^JThe sky changes color!^?":"^S<S-NAME> chant(s) into the sky for heat!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("^JThe sky changes color!^?"):_("^S<S-NAME> chant(s) into the sky for heat!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

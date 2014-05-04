@@ -64,7 +64,7 @@ public class Prayer_SenseAlignment extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -72,7 +72,7 @@ public class Prayer_SenseAlignment extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s).");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s)."));
 
 
 		// return whether it worked

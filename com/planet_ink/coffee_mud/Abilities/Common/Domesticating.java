@@ -181,7 +181,7 @@ public class Domesticating extends CommonSkill
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
-			(newName!=null)?"<S-NAME> name(s) "+M.name()+" '"+theName+"'.":"<S-NAME> start(s) domesticating "+M.name()+".");
+			(newName!=null)?_("<S-NAME> name(s) @x1 '@x2'.",M.name(),theName):_("<S-NAME> start(s) domesticating @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

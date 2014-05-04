@@ -145,7 +145,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		}
 
 		boolean success=true;
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?");
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?"));
 		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -182,7 +182,7 @@ public class Fighter_CircleTrip extends FighterSkill
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 				if(success)
 				{
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> trip(s)!":"^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?");
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> trip(s)!"):_("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{

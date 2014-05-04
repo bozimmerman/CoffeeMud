@@ -181,7 +181,7 @@ public class Prayer_AuraFear extends Prayer
 			int affectType=verbalCastCode(mob,target,auto);
 			if((mob==target)&&(CMath.bset(affectType,CMMsg.MASK_MALICIOUS)))
 				affectType=CMath.unsetb(affectType,CMMsg.MASK_MALICIOUS);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":_("^S<S-NAME> @x1 for an aura of fear to surround <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

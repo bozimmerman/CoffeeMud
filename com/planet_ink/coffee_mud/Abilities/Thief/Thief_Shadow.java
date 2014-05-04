@@ -242,7 +242,7 @@ public class Thief_Shadow extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("You spot <S-NAME> trying to shadow you."),CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

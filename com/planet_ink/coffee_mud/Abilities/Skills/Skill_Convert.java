@@ -182,7 +182,7 @@ public class Skill_Convert extends StdSkill
 					if(dRoom!=null) dRoom.send(target,msg2);
 				}
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?"<T-NAME> <T-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?_("<T-NAME> <T-IS-ARE> converted!"):_("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",D.name()));
 			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,null);
 			if((mob.location().okMessage(mob,msg))
 			   &&(mob.location().okMessage(mob,msg2))

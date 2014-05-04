@@ -115,7 +115,7 @@ public class Prayer_ProtectHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) a healthy mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a healthy mind and body.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) a healthy mind and body."):_("^S<S-NAME> @x1 for a healthy mind and body.^?",prayWord(mob)));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

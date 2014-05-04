@@ -60,11 +60,11 @@ public class Song_Nothing extends Song
 		unsingAllByThis(mob,mob);
 		if(!foundOne)
 		{
-			mob.tell(auto?"There is no song playing.":"You aren't singing.");
+			mob.tell(auto?_("There is no song playing."):_("You aren't singing."));
 			return true;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?"Silence.":"<S-NAME> stop(s) singing.");
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Silence."):_("<S-NAME> stop(s) singing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

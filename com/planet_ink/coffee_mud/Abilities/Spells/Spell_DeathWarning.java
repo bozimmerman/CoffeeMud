@@ -114,7 +114,7 @@ public class Spell_DeathWarning extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) listening for a death's warning!":"^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) listening for a death's warning!"):_("^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

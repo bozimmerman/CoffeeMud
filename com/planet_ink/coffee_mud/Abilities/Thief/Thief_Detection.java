@@ -131,9 +131,9 @@ public class Thief_Detection extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> become(s) very observant."):_("<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> look(s) around carefully, but become(s) distracted.");
+			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> look(s) around carefully, but become(s) distracted."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

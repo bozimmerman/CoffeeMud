@@ -149,7 +149,7 @@ public class Skill_Slip extends StdSkill
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> slip(s)!":"^F^<FIGHT^><S-NAME> slip(s) <T-NAMESELF>!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> slip(s)!"):_("^F^<FIGHT^><S-NAME> slip(s) <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -159,7 +159,7 @@ public class Skill_Slip extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"<T-NAMESELF> almost slipped, but maintain(s) <T-HIS-HER> balance.":"<S-NAME> attempt(s) to slip <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,auto?_("<T-NAMESELF> almost slipped, but maintain(s) <T-HIS-HER> balance."):_("<S-NAME> attempt(s) to slip <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

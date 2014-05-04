@@ -96,7 +96,7 @@ public class Prayer_Benediction extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with benediction!":"^S<S-NAME> "+prayWord(mob)+" for a benediction over <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with benediction!"):_("^S<S-NAME> @x1 for a benediction over <T-NAMESELF>!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -123,7 +123,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 				for(final Iterator e=H.iterator();e.hasNext();)
 					if(passesMuster((MOB)e.next()))
 						return super.okMessage(myHost,msg);
-				msg.source().tell((message.length()==0)?"You can not go that way.":message);
+				msg.source().tell((message.length()==0)?_("You can not go that way."):message);
 				return false;
 			}
 			else
@@ -155,7 +155,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 							&&(passesMuster((MOB)E)))
 								return super.okMessage(myHost,msg);
 						}
-						msg.source().tell((message.length()==0)?"You are not permitted in there.":message);
+						msg.source().tell((message.length()==0)?_("You are not permitted in there."):message);
 						return false;
 					}
 				default:

@@ -139,7 +139,7 @@ public class Spell_DispelMagic extends Spell
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?_("@x1 is dispelled from <T-NAME>.",revokeThis.name()):_("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

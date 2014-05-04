@@ -59,7 +59,7 @@ public class Thief_PowerGrab extends ThiefSkill
 			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to power grab something and fail(s)."));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":"^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":_("^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

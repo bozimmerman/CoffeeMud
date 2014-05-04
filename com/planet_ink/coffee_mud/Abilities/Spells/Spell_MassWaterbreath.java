@@ -62,7 +62,7 @@ public class Spell_MassWaterbreath extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

@@ -82,7 +82,7 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(avgLevel <= 0)
 				avgLevel = 1;
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("Something is happening!"):_("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

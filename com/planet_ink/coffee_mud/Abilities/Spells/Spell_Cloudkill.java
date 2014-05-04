@@ -99,7 +99,7 @@ public class Spell_Cloudkill extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous green cloud appears!":"^S<S-NAME> evoke(s) a horrendous green cloud.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous green cloud appears!"):_("^S<S-NAME> evoke(s) a horrendous green cloud.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

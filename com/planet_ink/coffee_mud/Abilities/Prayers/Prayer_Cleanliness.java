@@ -68,7 +68,7 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a strong touch of divine cleanliness to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A bright white glow surrounds <T-NAME>."):_("^S<S-NAME> @x1, delivering a strong touch of divine cleanliness to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -78,7 +78,7 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

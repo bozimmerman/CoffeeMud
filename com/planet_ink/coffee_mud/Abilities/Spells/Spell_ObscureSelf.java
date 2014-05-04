@@ -179,7 +179,7 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> become(s) obscure!"):_("^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

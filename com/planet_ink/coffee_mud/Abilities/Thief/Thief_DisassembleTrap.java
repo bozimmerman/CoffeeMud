@@ -87,8 +87,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			final CMMsg msg=CMClass.getMsg(mob,T,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_OK_ACTION,
-												auto?T.name()+" begins to glow.":
-													"<S-NAME> attempt(s) to safely dissassemble the "+T.name()+" trap.");
+												auto?_("@x1 begins to glow.",T.name()):
+													_("<S-NAME> attempt(s) to safely dissassemble the @x1 trap.",T.name()));
 			final Room R=mob.location();
 			if(R.okMessage(mob,msg))
 			{

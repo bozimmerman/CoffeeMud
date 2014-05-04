@@ -199,7 +199,7 @@ public class Prayer_SenseTraps extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> "+prayWord(mob)+", and gain(s) sensitivity to traps!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) trap sensitivities!"):_("^S<S-NAME> @x1, and gain(s) sensitivity to traps!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

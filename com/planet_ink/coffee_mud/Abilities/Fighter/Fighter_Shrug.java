@@ -107,7 +107,7 @@ public class Fighter_Shrug extends FighterSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?_("<T-NAME> is braced for an attack!"):_("<S-NAME> brace(s) for an attack!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -349,7 +349,7 @@ public class Thief_TapRoom extends ThiefSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> lay(s) down "+(cups!=null?cups[0].name():"")+" and <S-IS-ARE> ready to lay down a tap line.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> lay(s) down @x1 and <S-IS-ARE> ready to lay down a tap line.",(cups!=null?cups[0].name():"")));
 		if((success)&&(mob.location().okMessage(mob,msg))&&((cups==null)||CMLib.commands().postDrop(mob,cups[0],true,false,false)))
 		{
 			mob.location().send(mob,msg);
@@ -371,7 +371,7 @@ public class Thief_TapRoom extends ThiefSkill
 			target.recoverRoomStats();
 		}
 		else
-			return beneficialVisualFizzle(mob,target,auto?"":"<S-NAME> fail(s) to tap this room.");
+			return beneficialVisualFizzle(mob,target,auto?"":_("<S-NAME> fail(s) to tap this room."));
 		return success;
 	}
 }

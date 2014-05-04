@@ -63,7 +63,7 @@ public class Prayer_Heresy extends Prayer
 		final MOB oldVictim=mob.getVictim();
 		if((success)&&(B!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> accuse(s) <T-NAMESELF> of heresy"+againstTheGods(mob)+"!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1!^?",againstTheGods(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

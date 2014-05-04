@@ -105,7 +105,7 @@ public class Prayer_BrighteningAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> attain(s) a brightening aura.":"^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> attain(s) a brightening aura."):_("^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

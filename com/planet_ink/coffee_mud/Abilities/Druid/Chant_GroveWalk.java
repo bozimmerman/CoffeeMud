@@ -90,7 +90,7 @@ public class Chant_GroveWalk extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":"^S<S-NAME> chant(s) and walk(s) around.^?");
+			final CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":_("^S<S-NAME> chant(s) and walk(s) around.^?"));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

@@ -125,7 +125,7 @@ public class Spell_Delay extends Spell
 		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A delay has already been cast here!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("A delay has already been cast here!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -140,7 +140,7 @@ public class Spell_Delay extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> point(s) and shout(s) 'NOW!'.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

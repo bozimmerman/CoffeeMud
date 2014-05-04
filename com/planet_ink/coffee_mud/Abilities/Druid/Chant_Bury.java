@@ -115,7 +115,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> bur(ys) <T-HIM-HERSELF>.":"^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> bur(ys) <T-HIM-HERSELF>."):_("^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

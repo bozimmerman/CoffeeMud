@@ -126,7 +126,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> become(s) contagious!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> become(s) contagious!"):_("^S<S-NAME> @x1 for a contagion to inflict <T-NAMESELF>.^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

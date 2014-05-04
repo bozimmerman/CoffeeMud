@@ -104,7 +104,7 @@ public class Spell_DetectInvisible extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> open(s) <S-HIS-HER> softly glowing eyes.":"^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> open(s) <S-HIS-HER> softly glowing eyes."):_("^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

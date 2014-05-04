@@ -234,7 +234,7 @@ public class Prayer_Prophecy extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":"^S<T-NAME> "+prayWord(mob)+", entering a divine trance.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":_("^S<T-NAME> @x1, entering a divine trance.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

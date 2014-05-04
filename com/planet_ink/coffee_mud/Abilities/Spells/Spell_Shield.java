@@ -88,7 +88,7 @@ public class Spell_Shield extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> invoke(s) a shield upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a shield upon <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

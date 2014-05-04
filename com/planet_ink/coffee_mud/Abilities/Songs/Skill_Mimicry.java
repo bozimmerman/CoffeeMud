@@ -177,7 +177,7 @@ public class Skill_Mimicry extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> begin(s) mimicing <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> begin(s) mimicing <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -61,7 +61,7 @@ public class Spell_Siphon extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) a thirst for the energy of others.":"^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) a thirst for the energy of others."):_("^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

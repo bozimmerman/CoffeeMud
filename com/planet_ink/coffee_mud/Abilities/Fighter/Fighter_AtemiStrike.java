@@ -144,7 +144,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^</FIGHT^>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> hit(s) the floor!"):_("^F^<FIGHT^><S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

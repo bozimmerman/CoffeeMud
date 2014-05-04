@@ -57,7 +57,7 @@ public class Spell_SeeAura extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draw(s) out your aura.^?",verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> draw(s) out your aura.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> draws out <T-NAME>s aura.^?"));
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))

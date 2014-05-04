@@ -89,7 +89,7 @@ public class Chant_SpeedAging extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -68,7 +68,7 @@ public class Prayer_Annul extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> annul(s) the marriage between <T-NAMESELF> and "+target.getLiegeID()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> annul(s) the marriage between <T-NAMESELF> and @x1.^?",target.getLiegeID()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				if((!target.isMonster())&&(target.soulMate()==null))

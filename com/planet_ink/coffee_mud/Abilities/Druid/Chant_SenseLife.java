@@ -145,7 +145,7 @@ public class Chant_SenseLife extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) life-senses!":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) life-senses!"):_("^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

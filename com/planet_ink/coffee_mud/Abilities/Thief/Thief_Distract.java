@@ -145,7 +145,7 @@ public class Thief_Distract extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?_("<T-NAME> seem(s) distracted!"):_("<S-NAME> distract(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

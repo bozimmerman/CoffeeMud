@@ -107,7 +107,7 @@ public int castingQuality(MOB mob, Physical target)
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!":"^S<S-NAME> incant(s) distantly!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!"):_("^S<S-NAME> incant(s) distantly!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

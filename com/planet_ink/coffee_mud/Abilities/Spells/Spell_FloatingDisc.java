@@ -137,7 +137,7 @@ public class Spell_FloatingDisc extends Spell
 				target.delEffect(this);
 				target.recoverPhyStats();
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to float around."):_("^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

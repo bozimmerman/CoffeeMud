@@ -232,7 +232,7 @@ public class Chant_FindPlant extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to "+name().toLowerCase()+"s!":"^S<S-NAME> chant(s) for "+lookingFor+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to @x1s!",name().toLowerCase()):_("^S<S-NAME> chant(s) for @x1.^?",lookingFor));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

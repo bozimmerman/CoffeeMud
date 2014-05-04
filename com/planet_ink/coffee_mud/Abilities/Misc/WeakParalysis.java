@@ -89,7 +89,7 @@ public class WeakParalysis extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> paralyze(s) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> paralyze(s) <T-NAMESELF>.^?"));
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);

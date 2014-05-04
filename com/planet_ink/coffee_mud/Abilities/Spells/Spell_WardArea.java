@@ -207,7 +207,7 @@ public class Spell_WardArea extends Spell implements Trap
 		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("A ward trap has already been set here!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -228,7 +228,7 @@ public class Spell_WardArea extends Spell implements Trap
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":"^S<S-NAME> set(s) a magical trap.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> set(s) a magical trap.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

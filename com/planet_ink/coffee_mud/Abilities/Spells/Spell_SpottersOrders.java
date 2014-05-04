@@ -206,7 +206,7 @@ public class Spell_SpottersOrders extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

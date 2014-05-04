@@ -70,7 +70,7 @@ public class Prayer_DemonicConsumption extends Prayer
 		final Room R=mob.location();
 		if(success && (R!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":_("^S<S-NAME> point(s) at <T-NAMESELF> and @x1 treacherously!^?",prayWord(mob)));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

@@ -87,7 +87,7 @@ public class Chant_Fertilization extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> chant(s) to make the land fruitful.^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> chant(s) to make the land fruitful.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

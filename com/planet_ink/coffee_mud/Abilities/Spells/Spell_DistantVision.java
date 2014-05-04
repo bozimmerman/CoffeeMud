@@ -71,7 +71,7 @@ public class Spell_DistantVision extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":"^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":_("^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

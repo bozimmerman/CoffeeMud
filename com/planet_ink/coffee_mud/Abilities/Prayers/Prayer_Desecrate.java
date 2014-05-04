@@ -78,7 +78,7 @@ public class Prayer_Desecrate extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) desecrated!":"^S<S-NAME> desecrate(s) <T-NAMESELF> before "+hisHerDiety(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) desecrated!"):_("^S<S-NAME> desecrate(s) <T-NAMESELF> before @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

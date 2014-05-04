@@ -118,7 +118,7 @@ public class Prayer_MassMobility extends Prayer
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		if((success)&&(room!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":_("^S<S-NAME> @x1 for an aura of mobility!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

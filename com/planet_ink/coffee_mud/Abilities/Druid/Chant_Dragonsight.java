@@ -125,7 +125,7 @@ public class Chant_Dragonsight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) the dragonsight!":"^S<S-NAME> chant(s) for the dragonsight!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) the dragonsight!"):_("^S<S-NAME> chant(s) for the dragonsight!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

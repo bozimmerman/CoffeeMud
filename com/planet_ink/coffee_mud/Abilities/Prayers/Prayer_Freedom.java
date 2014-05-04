@@ -119,7 +119,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> "+prayForWord(mob)+" to deliver a light unbinding touch to <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) lightly touched."):_("^S<S-NAME> @x1 to deliver a light unbinding touch to <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

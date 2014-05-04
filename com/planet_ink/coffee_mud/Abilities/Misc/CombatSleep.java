@@ -146,7 +146,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?");
+			return maliciousFizzle(mob,target,auto?"":_("^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?"));
 
 		// return whether it worked
 		return success;

@@ -116,7 +116,7 @@ public class Chant_SongWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> <T-IS-ARE> protected from songs.":"^S<S-NAME> chant(s) for a ward against songs around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> <T-IS-ARE> protected from songs."):_("^S<S-NAME> chant(s) for a ward against songs around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

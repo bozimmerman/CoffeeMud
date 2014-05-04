@@ -56,7 +56,7 @@ public class Chant_Homeopathy extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"Something is happening to <T-NAME>!":"^S<S-NAME> chant(s) homeopathically to <T-NAME>^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("Something is happening to <T-NAME>!"):_("^S<S-NAME> chant(s) homeopathically to <T-NAME>^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

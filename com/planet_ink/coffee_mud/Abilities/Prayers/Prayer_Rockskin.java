@@ -119,7 +119,7 @@ public class Prayer_Rockskin extends Prayer
 			// what happened.
 			invoker=mob;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

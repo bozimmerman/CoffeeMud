@@ -180,7 +180,7 @@ public class Prayer_Revival extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> start(s) a revival!":"^S<S-NAME> "+prayWord(mob)+" for successful revival, and then start(s) MOVING!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> start(s) a revival!"):_("^S<S-NAME> @x1 for successful revival, and then start(s) MOVING!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

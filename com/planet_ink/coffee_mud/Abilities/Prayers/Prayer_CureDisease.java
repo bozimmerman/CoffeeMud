@@ -104,7 +104,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> health.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A healing glow surrounds <T-NAME>."):_("^S<S-NAME> @x1 for <T-YOUPOSS> health.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -134,7 +134,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		}
 		else
 		if(!auto)
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

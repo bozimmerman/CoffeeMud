@@ -83,7 +83,7 @@ public class Chant_VenomWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"An anti-venom field appears around <T-NAME>.":"^S<S-NAME> chant(s) for an anti-venom field of protection around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("An anti-venom field appears around <T-NAME>."):_("^S<S-NAME> chant(s) for an anti-venom field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -118,7 +118,7 @@ public class Skill_Disarm extends StdSkill
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(victim,msg);
-					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
+					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?_("<T-NAME> is disarmed!"):_("<S-NAME> disarm(s) <T-NAMESELF>!"));
 				}
 			}
 		}

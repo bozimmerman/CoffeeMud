@@ -107,7 +107,7 @@ public class Prayer_DeathsDoor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) guarded at deaths door!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAME> to be guarded at deaths door!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) guarded at deaths door!"):_("^S<S-NAME> @x1 for <T-NAME> to be guarded at deaths door!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

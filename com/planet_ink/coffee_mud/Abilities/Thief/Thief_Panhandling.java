@@ -194,9 +194,9 @@ public class Thief_Panhandling extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> start(s) panhandling."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get <S-HIS-HER> panhandling act started.");
+			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> can't seem to get <S-HIS-HER> panhandling act started."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

@@ -94,7 +94,7 @@ public class Chant_SoaringEagle extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) the wings of an eagle!":"^S<S-NAME> chant(s), causing <S-HIM-HER> to grow a pair of wings!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) the wings of an eagle!"):_("^S<S-NAME> chant(s), causing <S-HIM-HER> to grow a pair of wings!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

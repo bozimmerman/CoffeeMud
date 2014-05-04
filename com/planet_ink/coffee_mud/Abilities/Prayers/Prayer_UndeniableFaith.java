@@ -159,7 +159,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":_("^S<S-NAME> @x1 for <T-NAMESELF> to BELIEVE!^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,_("<S-NAME> BELIEVE(S) !!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
@@ -181,7 +181,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

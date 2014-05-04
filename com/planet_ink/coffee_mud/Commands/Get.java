@@ -64,7 +64,7 @@ public class Get extends StdCommand
 				return false;
 			R.send(mob,msg);
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
+		final CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:CMLib.lang()._("<S-NAME> @x1(s) @x2.",getWord,theWhat));
 		if(!R.okMessage(mob,msg))
 			return false;
 		// we do this next step because, when a container is involved,

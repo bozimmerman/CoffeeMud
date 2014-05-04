@@ -62,7 +62,7 @@ public class Spell_MassHold extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

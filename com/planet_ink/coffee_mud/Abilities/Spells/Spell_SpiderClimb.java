@@ -85,7 +85,7 @@ public class Spell_SpiderClimb extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attains a climbers stance!":"^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<S-NAME> attains a climbers stance!"):_("^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -206,7 +206,7 @@ public class Chant_Hippieness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

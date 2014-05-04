@@ -105,7 +105,7 @@ public class Spell_AcidFog extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"A horrendous cloud of acid appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?"))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous cloud of acid appears!"):_("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

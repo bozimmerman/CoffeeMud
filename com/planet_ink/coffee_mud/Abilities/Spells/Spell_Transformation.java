@@ -89,7 +89,7 @@ public class Spell_Transformation extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) a large, brutish warrior!":"^S<S-NAME> incant(s), transforming into a large brutish warrior!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) a large, brutish warrior!"):_("^S<S-NAME> incant(s), transforming into a large brutish warrior!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

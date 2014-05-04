@@ -132,7 +132,7 @@ public class Prayer_Tithe extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) filled with a need to tithe!":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> need to tithe!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with a need to tithe!"):_("^S<S-NAME> @x1 for <T-YOUPOSS> need to tithe!^?",prayWord(mob)));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg3)))
 			{

@@ -93,7 +93,7 @@ public class Spell_Shove extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> get(s) shoved back!"):_("<S-NAME> incant(s) and shove(s) at <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				if((msg.value()<=0)&&(target.location()==mob.location()))

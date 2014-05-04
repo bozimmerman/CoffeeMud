@@ -110,7 +110,7 @@ public class Spell_Shatter extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> starts vibrating!"):_("^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),null);
 			if((R.okMessage(mob,msg))&&((mobTarget==null)||(R.okMessage(mob,msg2))))
 			{

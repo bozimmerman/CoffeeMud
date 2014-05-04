@@ -98,7 +98,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) cleansed of any poisons.":"^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> look(s) cleansed of any poisons."):_("^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -120,7 +120,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> chant(s) for <T-NAME>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> chant(s) for <T-NAME>, but nothing happens."));
 
 
 		// return whether it worked

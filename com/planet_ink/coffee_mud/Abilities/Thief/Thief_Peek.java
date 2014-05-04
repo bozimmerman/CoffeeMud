@@ -86,13 +86,13 @@ public class Thief_Peek extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()<discoverChance)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",CMMsg.NO_EFFECT,null);
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your peek attempt fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> tries to peek at your inventory and fails!"),CMMsg.NO_EFFECT,null);
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
 			{
-				mob.tell(auto?"":"Your peek attempt fails.");
+				mob.tell(auto?"":_("Your peek attempt fails."));
 				return false;
 			}
 		}
@@ -102,10 +102,10 @@ public class Thief_Peek extends ThiefSkill
 			if(CMLib.dice().rollPercentage()<discoverChance)
 				str=auto?"":"<S-NAME> peek(s) at your inventory.";
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":_("<S-NAME> peek(s) at <T-NAME>s inventory."),CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
+				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> peek(s) at <T-NAME>s inventory."),CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
 				final StringBuilder msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)

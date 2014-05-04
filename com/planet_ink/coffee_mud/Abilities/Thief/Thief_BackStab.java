@@ -130,12 +130,12 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":_("<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(((!success)||(CMLib.flags().canBeSeenBy(mob,target))||(msg.value()>0))&&(!CMLib.flags().isSleeping(target)))
-				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
+				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> spot(s) <T-NAME>!"));
 			else
 			{
 				mob.addEffect(this);

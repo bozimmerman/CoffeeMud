@@ -100,7 +100,7 @@ public class Chant_ControlWeather extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?"The sky changes color as the weather comes under control!":"^S<S-NAME> chant(s) into the sky for control of the weather!^?");
+			final CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?_("The sky changes color as the weather comes under control!"):_("^S<S-NAME> chant(s) into the sky for control of the weather!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -97,7 +97,7 @@ public class Prayer_DarkSenses extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> gain(s) dark senses!":"^S<S-NAME> "+prayForWord(mob)+" for <T-NAME> to gain dark senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) dark senses!"):_("^S<S-NAME> @x1 for <T-NAME> to gain dark senses!^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

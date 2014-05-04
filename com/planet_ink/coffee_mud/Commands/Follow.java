@@ -46,7 +46,7 @@ public class Follow extends StdCommand
 		if(R==null) return false;
 		if(mob.amFollowing()!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
+			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:_("<S-NAME> stop(s) following <T-NAMESELF>."));
 			// no room OKaffects, since the damn leader may not be here.
 			if(mob.okMessage(mob,msg))
 				R.send(mob,msg);
@@ -95,7 +95,7 @@ public class Follow extends StdCommand
 			}
 			if(nofollow(mob,false,false))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
+				final CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:_("<S-NAME> follow(s) <T-NAMESELF>."));
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
 				else

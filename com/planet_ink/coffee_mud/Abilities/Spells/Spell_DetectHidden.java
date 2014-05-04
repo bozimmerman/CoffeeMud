@@ -112,7 +112,7 @@ public class Spell_DetectHidden extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) keen vision!":"^S<S-NAME> incant(s) softly and gain(s) keen vision!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) keen vision!"):_("^S<S-NAME> incant(s) softly and gain(s) keen vision!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

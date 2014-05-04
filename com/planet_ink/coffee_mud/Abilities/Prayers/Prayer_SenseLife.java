@@ -142,7 +142,7 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) life-like senses!":"^S<S-NAME> listen(s) for a message from "+hisHerDiety(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) life-like senses!"):_("^S<S-NAME> listen(s) for a message from @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

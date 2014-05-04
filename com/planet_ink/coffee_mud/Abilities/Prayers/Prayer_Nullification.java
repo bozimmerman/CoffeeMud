@@ -90,7 +90,7 @@ public class Prayer_Nullification extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) nullified."):_("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Prayer_Nullification extends Prayer
 				}
 			}
 			else
-				beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but "+hisHerDiety(mob)+" does not heed.");
+				beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
 
 		// return whether it worked

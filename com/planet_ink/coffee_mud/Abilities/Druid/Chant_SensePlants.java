@@ -141,7 +141,7 @@ public class Chant_SensePlants extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to "+word()+"!":"^S<S-NAME> chant(s) and gain(s) sensitivity to "+word()+"!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sensitivity to @x1!",word()):_("^S<S-NAME> chant(s) and gain(s) sensitivity to @x1!^?",word()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

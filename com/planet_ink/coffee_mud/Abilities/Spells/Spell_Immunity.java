@@ -90,7 +90,7 @@ public class Spell_Immunity extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) an immunity barrier.":"^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) an immunity barrier."):_("^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				switch(CMLib.dice().roll(1,5,0))

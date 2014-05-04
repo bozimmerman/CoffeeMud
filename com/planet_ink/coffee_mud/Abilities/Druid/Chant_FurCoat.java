@@ -154,7 +154,7 @@ public class Chant_FurCoat extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A thick coat of fur appears on <T-NAME>.":"^S<S-NAME> chant(s) for a thick coat of fur!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A thick coat of fur appears on <T-NAME>."):_("^S<S-NAME> chant(s) for a thick coat of fur!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

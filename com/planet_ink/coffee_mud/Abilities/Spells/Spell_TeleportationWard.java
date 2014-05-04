@@ -145,7 +145,7 @@ public class Spell_TeleportationWard extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a teleportation ward upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> seem(s) magically protected."):_("^S<S-NAME> invoke(s) a teleportation ward upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

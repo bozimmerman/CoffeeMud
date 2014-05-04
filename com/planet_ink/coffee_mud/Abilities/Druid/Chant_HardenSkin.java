@@ -103,7 +103,7 @@ public class Chant_HardenSkin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-YOUPOSS> skin hardens!":"^S<S-NAME> chant(s) to <T-NAMESELF> and <T-HIS-HER> skin hardens!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-YOUPOSS> skin hardens!"):_("^S<S-NAME> chant(s) to <T-NAMESELF> and <T-HIS-HER> skin hardens!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

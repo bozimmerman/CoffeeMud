@@ -108,7 +108,7 @@ public class Spell_PrayerShield extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> look(s) protected from prayers.":"^S<S-NAME> invoke(s) an anti-prayer shield around <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> look(s) protected from prayers."):_("^S<S-NAME> invoke(s) an anti-prayer shield around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

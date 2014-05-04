@@ -100,7 +100,7 @@ public class Prayer_SenseUndead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> "+prayWord(mob)+", and gain(s) dark cold senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) dark cold senses!"):_("^S<S-NAME> @x1, and gain(s) dark cold senses!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

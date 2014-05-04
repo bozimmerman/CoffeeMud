@@ -56,7 +56,7 @@ public class Remove extends StdCommand
 		{
 			final boolean quiet=((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")));
 			final Item item=(Item)commands.firstElement();
-			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
+			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:_("<S-NAME> remove(s) <T-NAME>."));
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);

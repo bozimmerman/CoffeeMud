@@ -91,7 +91,7 @@ public class Fighter_Battlecry extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty BATTLE CRY!!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":_("^S<S-NAME> scream(s) a mighty BATTLE CRY!!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +107,7 @@ public class Fighter_Battlecry extends FighterSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":"<S-NAME> mumble(s) a weak battle cry.");
+			beneficialWordsFizzle(mob,null,auto?"":_("<S-NAME> mumble(s) a weak battle cry."));
 
 		// return whether it worked
 		return success;

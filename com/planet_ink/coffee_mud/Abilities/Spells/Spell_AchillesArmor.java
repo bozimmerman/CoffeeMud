@@ -152,7 +152,7 @@ public class Spell_AchillesArmor extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> attain(s) Achilles Armor!":"^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) Achilles Armor!"):_("^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

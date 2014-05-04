@@ -99,7 +99,7 @@ public class Chant_Moonbeam extends Chant
 			return beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> chant(s) for a moonbeam, but fail(s)."));
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A moonbeam begin(s) to follow <T-NAME> around!"):_("^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -76,7 +76,7 @@ public class Skill_IdentifyPoison extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -90,7 +90,7 @@ public class Skill_IdentifyPoison extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> sniff(s) and taste(s) <T-NAME>, but receives no insight.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sniff(s) and taste(s) <T-NAME>, but receives no insight."));
 
 
 		// return whether it worked

@@ -140,7 +140,7 @@ public class Thief_Comprehension extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"<T-NAME> feel(s) more comprehending.":"^S<S-NAME> listen(s) with intense comprehension.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?_("<T-NAME> feel(s) more comprehending."):_("^S<S-NAME> listen(s) with intense comprehension.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -143,7 +143,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-										auto?"":"<S-NAME> begin(s) flailing about while making loud silly noises.");
+										auto?"":_("<S-NAME> begin(s) flailing about while making loud silly noises."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

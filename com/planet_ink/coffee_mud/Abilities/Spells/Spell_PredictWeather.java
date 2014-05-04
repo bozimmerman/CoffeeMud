@@ -99,7 +99,7 @@ public class Spell_PredictWeather extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sensitivity to the weather!"):_("^S<S-NAME> invoke(s) weather sensitivity!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";

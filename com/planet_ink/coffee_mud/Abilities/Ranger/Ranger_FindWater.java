@@ -291,7 +291,7 @@ public class Ranger_FindWater extends StdAbility
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?"<S-NAME> begin(s) sniffing around for water!":"<S-NAME> begin(s) sensing water.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?_("<S-NAME> begin(s) sniffing around for water!"):_("<S-NAME> begin(s) sensing water."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

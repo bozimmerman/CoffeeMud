@@ -317,7 +317,7 @@ public class Thief_Assassinate extends ThiefSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:_("<S-NAME> begin(s) to track <T-NAMESELF> for assassination."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(tracking.okMessage(tracking,msg)))
 			{

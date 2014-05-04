@@ -105,7 +105,7 @@ public class Spell_Knock extends Spell
 		if(levelDiff<0) levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		if(!success)
-			beneficialWordsFizzle(mob,openThis,auto?"Nothing happens to "+openThis.name()+".":"<S-NAME> point(s) at "+openThis.name()+" and shout(s) incoherently, but nothing happens.");
+			beneficialWordsFizzle(mob,openThis,auto?_("Nothing happens to @x1.",openThis.name()):_("<S-NAME> point(s) at @x1 and shout(s) incoherently, but nothing happens.",openThis.name()));
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CMLib.protocol().msp("knock.wav",10));

@@ -153,7 +153,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) a sense of the winds!":"^S<S-NAME> chant(s) for a sense of the winds!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) a sense of the winds!"):_("^S<S-NAME> chant(s) for a sense of the winds!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;

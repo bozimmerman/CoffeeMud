@@ -60,11 +60,11 @@ public class Dance_Stop extends Dance
 		undanceAll(mob,null);
 		if(!foundOne)
 		{
-			mob.tell(auto?"There is no dance going.":"You aren't dancing.");
+			mob.tell(auto?_("There is no dance going."):_("You aren't dancing."));
 			return true;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?"Rest.":"<S-NAME> stop(s) dancing.");
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Rest."):_("<S-NAME> stop(s) dancing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

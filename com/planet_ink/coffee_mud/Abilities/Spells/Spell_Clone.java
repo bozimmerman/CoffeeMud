@@ -90,7 +90,7 @@ public class Spell_Clone extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":_("^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

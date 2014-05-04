@@ -105,9 +105,9 @@ public class Thief_DampenAuras extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<T-NAME> dampen(s) <T-HIS-HER> auras.");
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<T-NAME> dampen(s) <T-HIS-HER> auras."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s).");
+			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s)."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

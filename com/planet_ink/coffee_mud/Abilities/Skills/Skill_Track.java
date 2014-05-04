@@ -352,7 +352,7 @@ public class Skill_Track extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:_("<S-NAME> begin(s) to track."));
 			if(thisRoom.okMessage(mob,msg))
 			{
 				tickStatus=Tickable.STATUS_MISC6+12;

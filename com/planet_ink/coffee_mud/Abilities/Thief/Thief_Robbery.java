@@ -180,7 +180,7 @@ public class Thief_Robbery extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to rob <T-NAME> and fails!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to rob you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to rob <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				final Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
@@ -194,7 +194,7 @@ public class Thief_Robbery extends ThiefSkill
 					A.mobs.add(mob);
 			}
 			else
-				mob.tell(mob,target,null,auto?"":"You fumble the attempt to rob <T-NAME>.");
+				mob.tell(mob,target,null,auto?"":_("You fumble the attempt to rob <T-NAME>."));
 		}
 		else
 		{

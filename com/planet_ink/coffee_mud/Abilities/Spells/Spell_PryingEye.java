@@ -144,7 +144,7 @@ public class Spell_PryingEye extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"A floating eye appears and begins moving around.":"^S<S-NAME> invoke(s) a floating eye and begin(s) chanting directions!^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?_("A floating eye appears and begins moving around."):_("^S<S-NAME> invoke(s) a floating eye and begin(s) chanting directions!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -190,7 +190,7 @@ public class Thief_Hideout extends ThiefSkill
 			shelter.setArea(mob.location().getArea());
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
 
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":"<S-NAME> slip(s) away.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":_("<S-NAME> slip(s) away."));
 			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> duck(s) into the hideout."));
 			if(thisRoom.okMessage(mob,msg) && newRoom.okMessage(mob,enterMsg))
 			{

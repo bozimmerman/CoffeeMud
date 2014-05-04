@@ -77,9 +77,9 @@ public class Prayer_Purify extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-									auto?"":"^S<S-NAME> purify <T-NAMESELF>"+inTheNameOf(mob)+".^?",
-									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?",
-									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?");
+									auto?"":_("^S<S-NAME> purify <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":_("^S<S-NAME> purifies <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":_("^S<S-NAME> purifies <T-NAMESELF>@x1.^?",inTheNameOf(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -67,7 +67,7 @@ public class Prayer_Divorce extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> divorce(s) <T-NAMESELF> from @x1.^?",target.getLiegeID()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				if((!target.isMonster())&&(target.soulMate()==null))

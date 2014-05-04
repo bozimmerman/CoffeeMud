@@ -140,7 +140,7 @@ public class Chant_Root extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<S-NAME> become(s) rooted to the ground!":"^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> become(s) rooted to the ground!"):_("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

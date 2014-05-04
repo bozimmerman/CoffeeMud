@@ -112,7 +112,7 @@ public class Spell_Shrink extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) somewhat smaller."):_("^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

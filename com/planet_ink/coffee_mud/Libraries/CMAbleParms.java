@@ -772,7 +772,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String prompt="Save to V)FS, F)ilesystem, or C)ancel (" + (recipe.wasVFS()?"V/f/c":"v/F/c")+"): ";
-			final String choice=mob.session().choose(prompt,_("VFC"),recipe.wasVFS()?"V":"F");
+			final String choice=mob.session().choose(prompt,_("VFC"),recipe.wasVFS()?_("V"):_("F"));
 			if(choice.equalsIgnoreCase("C"))
 				mob.tell(_("Cancelled."));
 			else

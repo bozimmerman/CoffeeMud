@@ -81,7 +81,7 @@ public class Spell_KnowOrigin extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

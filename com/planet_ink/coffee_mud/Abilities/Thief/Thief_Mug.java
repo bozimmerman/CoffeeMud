@@ -92,7 +92,7 @@ public class Thief_Mug extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to mug <T-NAME>!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug you and fails!",CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to mug <T-NAME> and fails!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to mug <T-NAME>!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to mug you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to mug <T-NAME> and fails!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

@@ -59,7 +59,7 @@ public class Prayer_Ember extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"A flaming ember assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+".  A flaming ember appears and attacks <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("A flaming ember assaults <T-NAME>."):_("^S<S-NAME> @x1.  A flaming ember appears and attacks <T-NAMESELF>!^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))

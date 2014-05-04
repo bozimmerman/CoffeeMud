@@ -230,7 +230,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":"<S-NAME> peer(s) at the horizon with a distant expression.");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":_("<S-NAME> peer(s) at the horizon with a distant expression."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

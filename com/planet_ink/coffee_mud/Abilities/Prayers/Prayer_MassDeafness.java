@@ -100,7 +100,7 @@ public class Prayer_MassDeafness extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy deafness upon <T-NAMESELF>.^?");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 an unholy deafness upon <T-NAMESELF>.^?",prayForWord(mob)));
 				if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);

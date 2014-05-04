@@ -225,9 +225,9 @@ public class Prayer_Rot extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-									auto?"":"^S<S-NAME> rot <T-NAMESELF>"+inTheNameOf(mob)+".^?",
-									auto?"":"^S<S-NAME> rots <T-NAMESELF>"+inTheNameOf(mob)+".^?",
-									auto?"":"^S<S-NAME> rots <T-NAMESELF>"+inTheNameOf(mob)+".^?");
+									auto?"":_("^S<S-NAME> rot <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":_("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":_("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

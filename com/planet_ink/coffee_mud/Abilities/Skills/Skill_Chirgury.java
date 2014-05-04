@@ -171,7 +171,7 @@ public class Skill_Chirgury extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -219,7 +219,7 @@ public class Skill_Chirgury extends StdSkill
 						meat.recoverPhyStats();
 						meat.text();
 						mob.location().addItem(meat,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?"<S-NAME> remove(s) <T-NAME> from "+target.name()+".":null);
+						mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?_("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()):null);
 					}
 				}
 				else
@@ -259,7 +259,7 @@ public class Skill_Chirgury extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> attempt(s) to cut open <T-NAME>, but lose(s) concentration.");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to cut open <T-NAME>, but lose(s) concentration."));
 
 
 		// return whether it worked

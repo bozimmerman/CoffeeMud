@@ -172,7 +172,7 @@ public class Prayer_FlameWeapon extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> appear(s) surrounded by flames!":"^S<S-NAME> hold(s) <T-NAMESELF> and "+prayWord(mob)+".^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> appear(s) surrounded by flames!"):_("^S<S-NAME> hold(s) <T-NAMESELF> and @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

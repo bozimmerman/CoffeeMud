@@ -119,7 +119,7 @@ public class Spell_FlamingSword extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> erupts into flame!":"^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> erupts into flame!"):_("^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -124,9 +124,9 @@ public class Skill_JailKey extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				if(!unlockThis.isLocked())
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) "+unlockThis.name()+".");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?_("@x1 vibrate(s) and click(s).",unlockThis.name()):_("<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) @x1.",unlockThis.name()));
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) "+unlockThis.name()+".");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?_("@x1 vibrate(s) and click(s).",unlockThis.name()):_("<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) @x1.",unlockThis.name()));
 				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

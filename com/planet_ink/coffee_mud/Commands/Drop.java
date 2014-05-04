@@ -48,7 +48,7 @@ public class Drop extends StdCommand
 		final Room R=mob.location();
 		if(R==null) return false;
 		final int msgCode=(optimize?CMMsg.MASK_OPTIMIZE:0)|(intermediate?CMMsg.MASK_INTERMSG:0)|CMMsg.MSG_DROP;
-		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
+		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:_("<S-NAME> drop(s) <T-NAME>."));
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);

@@ -178,7 +178,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> do(es) buffoonery to <T-NAMESELF>."));			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;

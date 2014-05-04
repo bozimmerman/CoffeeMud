@@ -89,9 +89,9 @@ public class Prayer_SenseAllergies extends Prayer
 		}
 		else
 		if(mob==target)
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils, but then blink(s).");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils, but then blink(s)."));
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> peer(s) into the nostrils of <T-NAMESELF>, but then blink(s).");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> peer(s) into the nostrils of <T-NAMESELF>, but then blink(s)."));
 
 
 		// return whether it worked

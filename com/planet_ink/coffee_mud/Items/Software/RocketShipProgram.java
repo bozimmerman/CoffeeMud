@@ -135,7 +135,7 @@ public class RocketShipProgram extends GenShipProgram
 			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight(_("ENGINE@x1",""+engineNumber),9));
-				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
+				str.append(CMStrings.padRight(engine.activated()?_("^gACTIVE"):_("^rINACTIVE"),9));
 				str.append("^H").append(CMStrings.padRight(_("Fuel"),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(engine.getFuelRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(engine.Name(),24));

@@ -131,7 +131,7 @@ public class Spell_DetectAmbush extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> gain(s) careful senses!":"^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) careful senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

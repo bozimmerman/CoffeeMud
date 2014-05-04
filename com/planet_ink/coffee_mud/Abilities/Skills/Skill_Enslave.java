@@ -374,7 +374,7 @@ public class Skill_Enslave extends StdSkill
 			invoker=mob;
 			final boolean peace1=!mob.isInCombat();
 			final boolean peace2=!target.isInCombat();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> enslave(s) <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

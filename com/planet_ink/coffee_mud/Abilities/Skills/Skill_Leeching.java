@@ -73,7 +73,7 @@ public class Skill_Leeching extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -84,7 +84,7 @@ public class Skill_Leeching extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> attempt(s) to apply leeches to <T-NAME>, but fail(s).");
+			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to apply leeches to <T-NAME>, but fail(s)."));
 
 
 		// return whether it worked

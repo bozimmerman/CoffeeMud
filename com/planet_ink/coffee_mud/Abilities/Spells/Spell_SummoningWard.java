@@ -140,7 +140,7 @@ public class Spell_SummoningWard extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> seem(s) magically protected.":"^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> seem(s) magically protected."):_("^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?"));
 			if(target instanceof Room) quality=Ability.QUALITY_MALICIOUS;
 			if(mob.location().okMessage(mob,msg))
 			{

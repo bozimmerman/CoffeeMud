@@ -155,7 +155,7 @@ public class Chant_PlantSnare extends Chant
 
 		if(success)
 		{
-			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?"))
+			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

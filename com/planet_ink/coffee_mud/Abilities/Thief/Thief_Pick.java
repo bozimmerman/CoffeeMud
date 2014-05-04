@@ -83,9 +83,9 @@ public class Thief_Pick extends ThiefSkill
 			{
 				if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isLocked()))
 				||((unlockThis instanceof Container)&&(!((Container)unlockThis).isLocked())))
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) and relock(s) <T-NAME>.");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> vibrate(s) and click(s)."):_("<S-NAME> pick(s) and relock(s) <T-NAME>."));
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on <T-NAME>.");
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> vibrate(s) and click(s)."):_("<S-NAME> pick(s) the lock on <T-NAME>."));
 				if(!lastDone.contains(""+unlockThis))
 				{
 					while(lastDone.size()>40) lastDone.removeElementAt(0);
