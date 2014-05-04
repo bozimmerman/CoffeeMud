@@ -3022,13 +3022,13 @@ public class ListCmd extends StdCommand
 		{
 			final Environmental shopkeeper=V.get(i);
 			final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			String str="<S-NAME> review(s) <T-YOUPOSS> inventory";
+			String str=_("<S-NAME> review(s) <T-YOUPOSS> inventory");
 			if(SHOP instanceof Banker)
-				str="<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>";
+				str=_("<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>");
 			else
 			if(SHOP instanceof PostOffice)
-				str="<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>";
-			if(forWhat!=null)str+=" for '"+forWhat+"'";
+				str=_("<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>");
+			if(forWhat!=null)str+=_(" for '@x1'",forWhat);
 			str+=".";
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,str);
 			if(!mob.location().okMessage(mob,newMsg))
