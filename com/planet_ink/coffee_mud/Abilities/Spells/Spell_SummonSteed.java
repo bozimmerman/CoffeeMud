@@ -141,7 +141,7 @@ public class Spell_SummonSteed extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for a loyal steed, but choke(s) on the words.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for a loyal steed, but choke(s) on the words."));
 
 		// return whether it worked
 		return success;

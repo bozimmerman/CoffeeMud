@@ -87,7 +87,7 @@ public class ClanTax extends StdCommand
 			{
 				S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() { S.promptPrint("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ");}
+					@Override public void showPrompt() { S.promptPrint(_("Enter your @x1's new tax rate (0-25)\n\r: ",C.getGovernmentName()));}
 					@Override public void timedOut() { }
 					@Override public void callBack()
 					{
@@ -109,7 +109,7 @@ public class ClanTax extends StdCommand
 		if((intt<0)||(intt>25))
 		{
 			if(mob.session()!=null)
-				mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
+				mob.session().println(_("'@x1' is not a valid value.  Try 0-25.",t));
 			return;
 		}
 		final Vector commands=new Vector();

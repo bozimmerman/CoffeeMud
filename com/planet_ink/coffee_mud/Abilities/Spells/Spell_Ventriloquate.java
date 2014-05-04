@@ -74,7 +74,7 @@ public class Spell_Ventriloquate extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to ventriloquate through <T-NAMESELF>, but no one is fooled.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to ventriloquate through <T-NAMESELF>, but no one is fooled."));
 
 
 		// return whether it worked

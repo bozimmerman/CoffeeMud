@@ -80,7 +80,7 @@ public class Spell_ShockingGrasp extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> grab(s) at <T-NAMESELF>, but fizzle(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> grab(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

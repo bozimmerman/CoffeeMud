@@ -149,7 +149,7 @@ public class Chant_AstralProjection extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) softly, but nothing happens");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) softly, but nothing happens"));
 		}
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) softly.^?");

@@ -132,7 +132,7 @@ public class Chant_SummonRain extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) into the sky for water, but the magic fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the sky for water, but the magic fizzles."));
 
 		return success;
 	}

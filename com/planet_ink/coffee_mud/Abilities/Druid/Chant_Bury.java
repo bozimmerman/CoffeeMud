@@ -138,7 +138,7 @@ public class Chant_Bury extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

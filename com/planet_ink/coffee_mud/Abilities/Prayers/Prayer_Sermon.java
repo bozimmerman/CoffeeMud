@@ -180,11 +180,11 @@ public class Prayer_Sermon extends Prayer
 					}
 				}
 				else
-					beneficialWordsFizzle(mob,target,"<T-NAME> seem(s) unmoved by the <S-YOUPOSS> sermon.");
+					beneficialWordsFizzle(mob,target,_("<T-NAME> seem(s) unmoved by the <S-YOUPOSS> sermon."));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> forget(s) how <S-YOUPOSS> sermon to "+hisHerDiety(mob)+" goes.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> forget(s) how <S-YOUPOSS> sermon to @x1 goes.",hisHerDiety(mob)));
 
 
 		// return whether it worked

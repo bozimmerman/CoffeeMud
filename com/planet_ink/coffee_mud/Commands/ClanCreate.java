@@ -79,7 +79,7 @@ public class ClanCreate extends StdCommand
 			}
 			session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 			{
-				@Override public void showPrompt() { session.promptPrint("Are you sure you want to found a new clan (y/N)?");}
+				@Override public void showPrompt() { session.promptPrint(_("Are you sure you want to found a new clan (y/N)?"));}
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -88,7 +88,7 @@ public class ClanCreate extends StdCommand
 						return;
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N");}
+						@Override public void showPrompt() { session.promptPrint(_("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N"));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -111,7 +111,7 @@ public class ClanCreate extends StdCommand
 							{
 								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 								{
-									@Override public void showPrompt() { session.promptPrint("\n\rIs '"+doubleCheck+"' correct (y/N)?");}
+									@Override public void showPrompt() { session.promptPrint(_("\n\rIs '@x1' correct (y/N)?",doubleCheck));}
 									@Override public void timedOut() { }
 									@Override public void callBack()
 									{

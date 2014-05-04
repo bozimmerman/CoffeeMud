@@ -586,9 +586,9 @@ public class GModify extends StdCommand
 		if(mob.session()!=null)
 		{
 			if(changes.size()==0)
-				mob.session().rawPrintln("Searching...");
+				mob.session().rawPrintln(_("Searching..."));
 			else
-				mob.session().rawPrint("Searching, modifying and saving...");
+				mob.session().rawPrint(_("Searching, modifying and saving..."));
 		}
 		if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy) gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
@@ -678,7 +678,7 @@ public class GModify extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null) mob.session().rawPrintln("!\n\rDone!");
+		if(mob.session()!=null) mob.session().rawPrintln(_("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{

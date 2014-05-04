@@ -85,7 +85,7 @@ public class Spell_MassHaste extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles."));
 
 
 		// return whether it worked

@@ -138,7 +138,7 @@ public class Chant_Tether extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) about a magical tether, but the magic fades.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a magical tether, but the magic fades."));
 
 
 		// return whether it worked

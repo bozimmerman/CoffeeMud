@@ -149,7 +149,7 @@ public class Spell_Toadstool extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> form(s) a spell around <T-NAMESELF>, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> form(s) a spell around <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

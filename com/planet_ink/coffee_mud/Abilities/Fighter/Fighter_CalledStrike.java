@@ -242,7 +242,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> call(s) '"+gone+"', but fail(s) <S-HIS-HER> attack.");
+			return maliciousFizzle(mob,null,_("<S-NAME> call(s) '@x1', but fail(s) <S-HIS-HER> attack.",gone));
 
 		// return whether it worked
 		return success;

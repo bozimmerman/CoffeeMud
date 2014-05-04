@@ -72,7 +72,7 @@ public class Prayer_Extinguish extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" to extinguish <T-NAMESELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to extinguish <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

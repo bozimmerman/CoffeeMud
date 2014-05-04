@@ -97,7 +97,7 @@ public class Spell_MassInvisibility extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles."));
 
 
 		// return whether it worked

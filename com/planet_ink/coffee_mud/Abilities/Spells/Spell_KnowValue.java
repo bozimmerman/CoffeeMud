@@ -75,7 +75,7 @@ public class Spell_KnowValue extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> weigh(s) the value of <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> weigh(s) the value of <T-NAMESELF>, looking more frustrated every second."));
 
 
 		// return whether it worked

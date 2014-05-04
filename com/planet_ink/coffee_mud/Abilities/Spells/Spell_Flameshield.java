@@ -134,7 +134,7 @@ public class Spell_Flameshield extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge."));
 
 
 		// return whether it worked

@@ -73,7 +73,7 @@ public class Spell_Irritation extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens.");
+			maliciousFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
 
 		// return whether it worked

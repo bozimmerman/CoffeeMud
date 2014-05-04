@@ -131,7 +131,7 @@ public class Spell_Confusion extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to enchant <T-NAMESELF>, but the spell fizzles");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to enchant <T-NAMESELF>, but the spell fizzles"));
 
 		// return whether it worked
 		return success;

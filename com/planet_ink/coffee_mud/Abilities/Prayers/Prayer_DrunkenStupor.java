@@ -166,7 +166,7 @@ public class Prayer_DrunkenStupor extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to inflict a drunken stupor upon <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>, but flub(s) it.",prayForWord(mob)));
 
 
 		// return whether it worked

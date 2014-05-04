@@ -121,7 +121,7 @@ public class Skill_Bash extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to shield bash <T-NAMESELF>, but end(s) up looking silly.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to shield bash <T-NAMESELF>, but end(s) up looking silly."));
 
 		return success;
 	}

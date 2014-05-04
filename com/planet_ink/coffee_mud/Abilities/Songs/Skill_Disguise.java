@@ -340,7 +340,7 @@ public class Skill_Disguise extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> turn(s) away and then back, but look(s) the same.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> turn(s) away and then back, but look(s) the same."));
 
 		return success;
 	}

@@ -293,7 +293,7 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint("Unpacking mobs from file: '"+filename+"'...");
+				mob.session().rawPrint(_("Unpacking mobs from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
@@ -308,7 +308,7 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint("Unpacking items from file: '"+filename+"'...");
+				mob.session().rawPrint(_("Unpacking items from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
@@ -439,7 +439,7 @@ public class Merge extends StdCommand
 		}
 		// now do the merge...
 		if(mob.session()!=null)
-			mob.session().rawPrint("Merging and saving...");
+			mob.session().rawPrint(_("Merging and saving..."));
 		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
 		if(noisy) mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
@@ -513,7 +513,7 @@ public class Merge extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null)    mob.session().rawPrintln("!\n\rDone!");
+		if(mob.session()!=null)    mob.session().rawPrintln(_("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{

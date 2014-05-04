@@ -142,7 +142,7 @@ public class Chant_WindSnatcher extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for the wind snatcher, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for the wind snatcher, but nothing happens."));
 
 
 		// return whether it worked

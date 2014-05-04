@@ -115,7 +115,7 @@ public class Prayer_MassDeafness extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to deafen everyone, but flub(s) it.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to deafen everyone, but flub(s) it."));
 
 
 		// return whether it worked

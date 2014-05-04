@@ -230,7 +230,7 @@ public class Prayer_FleshRock extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" and point(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 and point(s) at <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

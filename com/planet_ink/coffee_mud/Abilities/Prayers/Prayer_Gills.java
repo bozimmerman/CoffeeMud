@@ -105,7 +105,7 @@ public class Prayer_Gills extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

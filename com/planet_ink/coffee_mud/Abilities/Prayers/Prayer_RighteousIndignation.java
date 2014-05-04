@@ -113,7 +113,7 @@ public class Prayer_RighteousIndignation extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" <T-YOUPOSS> righteous indignation, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 <T-YOUPOSS> righteous indignation, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

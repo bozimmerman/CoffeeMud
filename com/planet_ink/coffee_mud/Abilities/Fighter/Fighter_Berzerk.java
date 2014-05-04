@@ -139,7 +139,7 @@ public class Fighter_Berzerk extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> huff(s) and grunt(s), but can't get angry.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> huff(s) and grunt(s), but can't get angry."));
 		return success;
 	}
 }

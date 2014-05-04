@@ -64,7 +64,7 @@ public class Prayer_SoulPeering extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to peer into <T-YOUPOSS> soul, but fails.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to peer into <T-YOUPOSS> soul, but fails."));
 
 		return success;
 	}

@@ -123,7 +123,7 @@ public class Spell_MindLight extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) lightly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) lightly, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

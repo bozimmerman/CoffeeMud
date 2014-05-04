@@ -190,7 +190,7 @@ public class Prayer_AuraFear extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for an aura of fear, but <S-HIS-HER> plea is not answered.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for an aura of fear, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

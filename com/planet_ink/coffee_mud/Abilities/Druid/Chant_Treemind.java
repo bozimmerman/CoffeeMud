@@ -113,7 +113,7 @@ public class Chant_Treemind extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s), but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing happens."));
 
 		return success;
 	}

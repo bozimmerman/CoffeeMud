@@ -101,7 +101,7 @@ public class Prayer_FountainLife extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for a fountain of life, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a fountain of life, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

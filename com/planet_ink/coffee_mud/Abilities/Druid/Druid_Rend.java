@@ -132,7 +132,7 @@ public class Druid_Rend extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to rend <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to rend <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

@@ -145,7 +145,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> extend(s) a rotting hand to <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> extend(s) a rotting hand to <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

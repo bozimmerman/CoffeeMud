@@ -224,7 +224,7 @@ public class Chant_Hippieness extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

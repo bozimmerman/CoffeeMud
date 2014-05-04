@@ -110,7 +110,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up."));
 		return success;
 	}
 }

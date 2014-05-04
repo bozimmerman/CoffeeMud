@@ -91,7 +91,7 @@ public class Spell_IceStorm extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to evoke an ice storm, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to evoke an ice storm, but the spell fizzles."));
 
 		return success;
 	}

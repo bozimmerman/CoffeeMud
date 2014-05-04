@@ -89,7 +89,7 @@ public class Spell_MeteorStorm extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles."));
 
 
 		// return whether it worked

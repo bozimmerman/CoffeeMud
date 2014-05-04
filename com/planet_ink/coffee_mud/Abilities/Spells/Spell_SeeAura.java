@@ -69,7 +69,7 @@ public class Spell_SeeAura extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> examine(s) <T-NAME>, incanting, but the spell fizzles.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> examine(s) <T-NAME>, incanting, but the spell fizzles."));
 
 
 		// return whether it worked

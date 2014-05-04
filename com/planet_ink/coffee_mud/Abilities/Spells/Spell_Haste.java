@@ -100,7 +100,7 @@ public class Spell_Haste extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) quickly to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) quickly to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

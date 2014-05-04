@@ -120,7 +120,7 @@ public class Prayer_CurseMinds extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to curse everyone, but flub(s) it.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to curse everyone, but flub(s) it."));
 
 
 		// return whether it worked

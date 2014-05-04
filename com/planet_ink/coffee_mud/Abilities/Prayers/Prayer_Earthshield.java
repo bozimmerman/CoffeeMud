@@ -111,7 +111,7 @@ public class Prayer_Earthshield extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but flub(s) it.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

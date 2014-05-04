@@ -207,7 +207,7 @@ public class Thief_Embezzle extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<T-NAME> catch(es) <S-NAME> trying to embezzle money!");
+			maliciousFizzle(mob,target,_("<T-NAME> catch(es) <S-NAME> trying to embezzle money!"));
 		return success;
 	}
 

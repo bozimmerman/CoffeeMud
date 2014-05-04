@@ -192,7 +192,7 @@ public class Fighter_CircleTrip extends FighterSkill
 					}
 				}
 				else
-					return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to circle trip <T-NAMESELF>, but fail(s).");
+					return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to circle trip <T-NAMESELF>, but fail(s)."));
 			}
 		}
 		else

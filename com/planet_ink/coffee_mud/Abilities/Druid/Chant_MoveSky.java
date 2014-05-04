@@ -77,7 +77,7 @@ public class Chant_MoveSky extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s), but the magic fades");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but the magic fades"));
 
 
 		// return whether it worked

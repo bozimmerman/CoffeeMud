@@ -150,7 +150,7 @@ public class Spell_KnowBliss extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) happily at <T-NAMESELF>, but nothing more happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) happily at <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

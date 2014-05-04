@@ -139,7 +139,7 @@ public class Prayer_Demonshield extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but only sparks emerge.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but only sparks emerge.",prayWord(mob)));
 
 
 		// return whether it worked

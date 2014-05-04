@@ -66,7 +66,7 @@ public class Prayer_CreateFood extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for food, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for food, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

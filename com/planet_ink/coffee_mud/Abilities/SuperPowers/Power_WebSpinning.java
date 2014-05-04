@@ -160,7 +160,7 @@ public class Power_WebSpinning extends SuperPower
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> spin(s) a web towards <T-NAMESELF>, but miss(es).");
+			return maliciousFizzle(mob,null,_("<S-NAME> spin(s) a web towards <T-NAMESELF>, but miss(es)."));
 
 
 		// return whether it worked

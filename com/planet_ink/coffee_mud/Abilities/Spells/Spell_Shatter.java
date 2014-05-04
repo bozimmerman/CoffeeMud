@@ -89,7 +89,7 @@ public class Spell_Shatter extends Spell
 		{
 			target=getItem(mob);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens.");
+				return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens."));
 		}
 
 		if((target==null)&&(mobTarget!=null))
@@ -164,7 +164,7 @@ public class Spell_Shatter extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) a shattering spell, but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) a shattering spell, but nothing happens."));
 
 
 		// return whether it worked

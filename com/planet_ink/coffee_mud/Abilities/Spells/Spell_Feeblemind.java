@@ -103,7 +103,7 @@ public class Spell_Feeblemind extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> cast(s) to <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> cast(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

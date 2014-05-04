@@ -70,7 +70,7 @@ public class Thief_Lore extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing."));
 		return success;
 	}
 }

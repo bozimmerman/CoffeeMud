@@ -141,7 +141,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to detect traps, but can't seem to concentrate.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to detect traps, but can't seem to concentrate."));
 		return success;
 	}
 }

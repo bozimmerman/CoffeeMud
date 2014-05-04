@@ -136,7 +136,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,auto?"<T-NAME> start(s) slipping from <T-HIS-HER> bonds.":"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds.");
 		if(!success)
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds, but can't seem to concentrate.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds, but can't seem to concentrate."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

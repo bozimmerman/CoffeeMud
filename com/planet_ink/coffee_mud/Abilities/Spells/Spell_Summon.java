@@ -177,7 +177,7 @@ public class Spell_Summon extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to summon '"+areaName+"', but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon '@x1', but fail(s).",areaName));
 
 
 		// return whether it worked

@@ -180,7 +180,7 @@ public class Inventory extends StdCommand
 			mob.tell(_("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());
+			mob.session().wraplessPrintln(_("^HYou are carrying:^?\n\r@x1",msg.toString()));
 		return false;
 	}
 

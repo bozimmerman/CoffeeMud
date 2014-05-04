@@ -81,7 +81,7 @@ public class Spell_Lightning extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fades."));
 
 
 		// return whether it worked

@@ -188,7 +188,7 @@ public class Prayer_Revival extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a successful revival, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a successful revival, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

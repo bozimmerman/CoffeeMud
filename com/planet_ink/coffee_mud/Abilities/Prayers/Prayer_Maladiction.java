@@ -98,7 +98,7 @@ public class Prayer_Maladiction extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a maladiction over <T-YOUPOSS>, but there is no answer.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for a maladiction over <T-YOUPOSS>, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

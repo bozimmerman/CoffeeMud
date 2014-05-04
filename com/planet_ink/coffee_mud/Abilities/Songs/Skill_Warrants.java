@@ -85,7 +85,7 @@ public class Skill_Warrants extends BardSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to gather warrant information, but fail(s).");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to gather warrant information, but fail(s)."));
 
 		return success;
 	}

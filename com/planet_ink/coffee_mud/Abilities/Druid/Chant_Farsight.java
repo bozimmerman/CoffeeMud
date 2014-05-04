@@ -58,7 +58,7 @@ public class Chant_Farsight extends Chant
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a far off vision, but the magic fades.");
+			this.beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) for a far off vision, but the magic fades."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) for a far off vision.^?"));

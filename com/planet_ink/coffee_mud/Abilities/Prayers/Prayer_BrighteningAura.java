@@ -113,7 +113,7 @@ public class Prayer_BrighteningAura extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a brightening aura, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a brightening aura, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

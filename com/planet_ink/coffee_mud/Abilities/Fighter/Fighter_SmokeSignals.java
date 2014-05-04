@@ -157,7 +157,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to send a smoke signal, but goof(s) it up.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to send a smoke signal, but goof(s) it up."));
 		return success;
 	}
 }

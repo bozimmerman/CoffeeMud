@@ -121,7 +121,7 @@ public class Spell_Blindness extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

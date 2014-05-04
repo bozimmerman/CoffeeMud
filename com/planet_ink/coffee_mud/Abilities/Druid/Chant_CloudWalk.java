@@ -144,7 +144,7 @@ public class Chant_CloudWalk extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

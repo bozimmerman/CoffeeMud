@@ -178,7 +178,7 @@ public class Chant_Earthquake extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles."));
 
 
 		// return whether it worked

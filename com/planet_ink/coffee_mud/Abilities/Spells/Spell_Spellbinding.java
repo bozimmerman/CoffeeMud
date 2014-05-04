@@ -282,7 +282,7 @@ public class Spell_Spellbinding extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> whisper(s) about spellbinding, and the magic fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> whisper(s) about spellbinding, and the magic fizzles."));
 
 		// return whether it worked
 		return success;

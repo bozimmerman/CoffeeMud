@@ -130,7 +130,7 @@ public class Spell_HearThoughts extends Spell
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> concentrate(s), but look(s) frustrated.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> concentrate(s), but look(s) frustrated."));
 
 		// return whether it worked
 		return success;

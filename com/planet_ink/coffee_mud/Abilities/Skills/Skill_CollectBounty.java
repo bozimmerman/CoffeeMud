@@ -197,7 +197,7 @@ public class Skill_CollectBounty extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to turn in <T-NAMESELF> to "+judge.name()+" for the bounty, but can't get "+judge.charStats().hisher()+" attention.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to turn in <T-NAMESELF> to @x1 for the bounty, but can't get @x2 attention.",judge.name(),judge.charStats().hisher()));
 
 		return success;
 	}

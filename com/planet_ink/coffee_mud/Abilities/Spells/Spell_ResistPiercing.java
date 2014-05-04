@@ -102,7 +102,7 @@ public class Spell_ResistPiercing extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-piercing barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-piercing barrier, but fail(s)."));
 
 		return success;
 	}

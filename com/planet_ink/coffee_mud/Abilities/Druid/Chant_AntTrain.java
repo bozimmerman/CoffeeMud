@@ -162,7 +162,7 @@ public class Chant_AntTrain extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for ants, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for ants, but fail(s)."));
 
 
 

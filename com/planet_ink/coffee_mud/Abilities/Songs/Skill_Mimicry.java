@@ -187,7 +187,7 @@ public class Skill_Mimicry extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to mimic <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to mimic <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

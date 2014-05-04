@@ -178,7 +178,7 @@ public class Spell_DetectWeaknesses extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) knowingly about <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

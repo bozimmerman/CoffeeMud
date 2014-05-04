@@ -75,7 +75,7 @@ public class Prayer_PreserveBody extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to preserve <T-NAMESELF>, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to preserve <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

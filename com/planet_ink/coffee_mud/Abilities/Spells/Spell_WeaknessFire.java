@@ -145,7 +145,7 @@ public class Spell_WeaknessFire extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke weakness to fire, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to fire, but fail(s)."));
 
 		return success;
 	}

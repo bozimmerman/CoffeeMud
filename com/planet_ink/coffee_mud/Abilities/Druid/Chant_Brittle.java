@@ -126,7 +126,7 @@ public class Chant_Brittle extends Chant
 		{
 			target=getItem(mobTarget);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
+				return maliciousFizzle(mob,mobTarget,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 		}
 
 		if(target==null)
@@ -161,7 +161,7 @@ public class Chant_Brittle extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

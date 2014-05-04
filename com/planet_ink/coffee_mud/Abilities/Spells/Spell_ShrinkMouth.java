@@ -108,7 +108,7 @@ public class Spell_ShrinkMouth extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to cast a puckering spell, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to cast a puckering spell, but fail(s)."));
 
 		return success;
 	}

@@ -183,7 +183,7 @@ public class Prayer_FlameWeapon extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

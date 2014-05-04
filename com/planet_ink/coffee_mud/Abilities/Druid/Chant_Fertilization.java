@@ -100,7 +100,7 @@ public class Chant_Fertilization extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to make the land fruitful, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to make the land fruitful, but nothing happens."));
 
 
 		// return whether it worked

@@ -96,7 +96,7 @@ public class Prayer_Desecrate extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to desecrate <T-NAMESELF>, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to desecrate <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

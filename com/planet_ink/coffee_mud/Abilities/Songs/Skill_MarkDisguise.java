@@ -128,7 +128,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> turn(s) away and then back, but look(s) the same.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> turn(s) away and then back, but look(s) the same."));
 		return success;
 	}
 

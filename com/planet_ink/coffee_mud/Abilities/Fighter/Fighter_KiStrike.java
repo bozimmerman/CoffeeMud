@@ -104,7 +104,7 @@ public class Fighter_KiStrike extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) concentration.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> lose(s) concentration."));
 
 		// return whether it worked
 		return success;

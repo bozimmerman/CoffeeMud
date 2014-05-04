@@ -272,7 +272,7 @@ public class Skill_ControlUndead extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to control <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to control <T-NAMESELF>, but fail(s)."));
 
 
 		// return whether it worked

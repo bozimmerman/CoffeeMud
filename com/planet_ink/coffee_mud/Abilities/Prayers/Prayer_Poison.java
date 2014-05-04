@@ -88,7 +88,7 @@ public class Prayer_Poison extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to inflict an unholy poison upon <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict an unholy poison upon <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

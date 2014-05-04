@@ -84,7 +84,7 @@ public class Spell_IceLance extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

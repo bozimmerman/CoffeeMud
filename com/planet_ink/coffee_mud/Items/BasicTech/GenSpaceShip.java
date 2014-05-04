@@ -551,7 +551,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			final InputCallback[] namer=new InputCallback[1];
 			namer[0]=new InputCallback(InputCallback.Type.PROMPT)
 			{
-				@Override public void showPrompt() { session.println("\n\rEnter a new name for your ship: "); }
+				@Override public void showPrompt() { session.println(_("\n\rEnter a new name for your ship: ")); }
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -559,7 +559,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					||(!CMLib.login().isOkName(this.input.trim(),true))
 					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
 					{
-						session.println("^ZThat is not a permitted name.^N");
+						session.println(_("^ZThat is not a permitted name.^N"));
 						session.prompt(namer[0].reset());
 						return;
 					}

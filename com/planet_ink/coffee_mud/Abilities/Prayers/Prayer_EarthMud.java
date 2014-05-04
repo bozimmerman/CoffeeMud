@@ -129,7 +129,7 @@ public class Prayer_EarthMud extends Prayer
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

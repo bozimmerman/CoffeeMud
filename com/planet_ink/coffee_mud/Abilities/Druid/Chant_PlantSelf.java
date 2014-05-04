@@ -185,7 +185,7 @@ public class Chant_PlantSelf extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) to the earth, but lose(s) concentration.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to the earth, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

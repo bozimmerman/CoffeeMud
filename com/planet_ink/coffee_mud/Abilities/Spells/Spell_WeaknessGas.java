@@ -103,7 +103,7 @@ public class Spell_WeaknessGas extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke weakness to gas, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to gas, but fail(s)."));
 
 		return success;
 	}

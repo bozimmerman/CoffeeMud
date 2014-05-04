@@ -96,7 +96,7 @@ public class Spell_MysticShine extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to cause shininess, but fail(s).");
+			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to cause shininess, but fail(s)."));
 
 		return success;
 	}

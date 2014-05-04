@@ -86,7 +86,7 @@ public class Chant_Homeopathy extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

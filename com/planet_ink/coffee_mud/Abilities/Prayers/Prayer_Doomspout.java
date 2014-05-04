@@ -197,7 +197,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to inflict a disease upon <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict a disease upon <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

@@ -65,7 +65,7 @@ public class Logoff extends StdCommand
 						@Override
 						public void showPrompt()
 						{
-							session.promptPrint("\n\rLogout -- are you sure (y/N)?");
+							session.promptPrint(_("\n\rLogout -- are you sure (y/N)?"));
 						}
 						@Override public void timedOut() {}
 

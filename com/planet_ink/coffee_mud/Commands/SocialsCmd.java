@@ -43,7 +43,7 @@ public class SocialsCmd extends StdCommand
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+CMLib.socials().getSocialsTable());
+			mob.session().colorOnlyPrintln(_("^HComplete socials list:^?\n\r@x1",CMLib.socials().getSocialsTable()));
 		return false;
 	}
 

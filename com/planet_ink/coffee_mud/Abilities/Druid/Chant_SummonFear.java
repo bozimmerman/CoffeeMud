@@ -101,7 +101,7 @@ public class Chant_SummonFear extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) in a frightening way, but the magic fades.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) in a frightening way, but the magic fades."));
 
 
 		// return whether it worked

@@ -84,7 +84,7 @@ public class Spell_ResistParalyzation extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke liberating protection, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke liberating protection, but fail(s)."));
 
 		return success;
 	}

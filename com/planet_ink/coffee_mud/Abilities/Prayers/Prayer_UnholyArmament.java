@@ -232,7 +232,7 @@ public class Prayer_UnholyArmament extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob, null,"<S-NAME> "+prayWord(mob)+" for armament, but flub(s) it.");
+			return beneficialWordsFizzle(mob, null,_("<S-NAME> @x1 for armament, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -242,7 +242,7 @@ public class Socials extends StdLibrary implements SocialsList
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.session().rawPrintln(showNumber+". Others Effect type: "+((me.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.othersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
+		mob.session().rawPrintln(_("@x1. Others Effect type: @x2",""+showNumber,((me.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.othersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().choose(_("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),_("WMSVH"),"");
 		if((newName!=null)&&(newName.length()>0))
@@ -273,7 +273,7 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		}
 		else
-			mob.session().println("(no change)");
+			mob.session().println(_("(no change)"));
 	}
 
 	@Override
@@ -281,7 +281,7 @@ public class Socials extends StdLibrary implements SocialsList
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.session().rawPrintln(showNumber+". Target Effect type: "+((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE")))));
+		mob.session().rawPrintln(_("@x1. Target Effect type: @x2",""+showNumber,((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().choose(_("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),_("WMSVH"),"");
 		if((newName!=null)&&(newName.length()>0))
@@ -307,7 +307,7 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		}
 		else
-			mob.session().println("(no change)");
+			mob.session().println(_("(no change)"));
 	}
 
 	@Override
@@ -315,7 +315,7 @@ public class Socials extends StdLibrary implements SocialsList
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.session().rawPrintln(showNumber+". Your action type: "+((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
+		mob.session().rawPrintln(_("@x1. Your action type: @x2",""+showNumber,((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE")))));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().choose(_("Change W)ords, M)ovement (small), S)ound, L)arge Movement: "),_("WMSL"),"");
 		if((newName!=null)&&(newName.length()>0))
@@ -338,7 +338,7 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		}
 		else
-			mob.session().println("(no change)");
+			mob.session().println(_("(no change)"));
 	}
 
 
@@ -435,7 +435,7 @@ public class Socials extends StdLibrary implements SocialsList
 					{
 						newOne=mob.session().prompt(_("\n\rNew target (?): "),"").toUpperCase().trim();
 						if(newOne.equals("?"))
-							mob.session().println("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF");
+							mob.session().println(_("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF"));
 					}
 					if(newOne.trim().length()==0)
 					{
@@ -523,7 +523,7 @@ public class Socials extends StdLibrary implements SocialsList
 					{
 						remove(soc.Name());
 						socials.remove(soc);
-						mob.session().rawOut("\n\rSocial variation '"+soc.Name()+"' deleted.\n\r");
+						mob.session().rawOut(_("\n\rSocial variation '@x1' deleted.\n\r",soc.Name()));
 						showFlag=-1;
 						ok=true;
 					}

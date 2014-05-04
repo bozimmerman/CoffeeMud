@@ -109,7 +109,7 @@ public class Thief_Graffiti extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to write graffiti here, but fails.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to write graffiti here, but fails."));
 		return success;
 	}
 }

@@ -370,7 +370,7 @@ public class Skill_Track extends StdSkill
 		else
 		{
 			tickStatus=Tickable.STATUS_NOT;
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track, but can't find the trail.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to track, but can't find the trail."));
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		// return whether it worked

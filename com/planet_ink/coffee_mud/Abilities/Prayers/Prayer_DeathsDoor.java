@@ -115,7 +115,7 @@ public class Prayer_DeathsDoor extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but there is no answer.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

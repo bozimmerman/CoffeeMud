@@ -108,7 +108,7 @@ public class Prayer_Fortress extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for protection, but <S-HIS-HER> plea is not answered.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for protection, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

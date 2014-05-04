@@ -97,7 +97,7 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

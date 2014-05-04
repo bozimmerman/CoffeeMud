@@ -106,7 +106,7 @@ public class Spell_MagicalAura extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a magical aura, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a magical aura, but fail(s)."));
 
 		return success;
 	}

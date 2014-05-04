@@ -183,7 +183,7 @@ public class Spell_Phantasm extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) to summon a "+type+", but fails.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) to summon a @x1, but fails.",type));
 
 		// return whether it worked
 		return success;

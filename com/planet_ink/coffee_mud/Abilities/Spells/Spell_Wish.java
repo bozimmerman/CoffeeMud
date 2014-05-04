@@ -142,7 +142,7 @@ public class Spell_Wish extends Spell
 		{
 			baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
-			beneficialWordsFizzle(mob,null,"<S-NAME> wish(es) for '"+myWish+"', but the spell fizzles.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> wish(es) for '@x1', but the spell fizzles.",myWish));
 			return false;
 		}
 		else
@@ -167,7 +167,7 @@ public class Spell_Wish extends Spell
 			{
 				baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 				CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
-				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
+				beneficialWordsFizzle(mob,null,_("<S-NAME> make(s) a wish comes true! Nothing happens!"));
 				return false;
 			}
 

@@ -111,7 +111,7 @@ public class Chant_ControlWeather extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) into the sky for control, but the magic fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the sky for control, but the magic fizzles."));
 
 		return success;
 	}

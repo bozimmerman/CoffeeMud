@@ -79,7 +79,7 @@ public class Skill_Recall extends StdSkill
 				if(recalledRoom.isInhabitant(mob))
 				{
 					if(recallRoom.isInhabitant(mob)&&(recallRoom==recalledRoom))
-						beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to recall, but go(es) nowhere.");
+						beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but go(es) nowhere."));
 					else
 						recallRoom.bringMobHere(mob,false);
 				}
@@ -115,7 +115,7 @@ public class Skill_Recall extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
 
 		// return whether it worked
 		return success;

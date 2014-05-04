@@ -306,7 +306,7 @@ public class Druid_GolemForm extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
 
 
 		// return whether it worked

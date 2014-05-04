@@ -162,7 +162,7 @@ public class Chant_WarningWinds extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) into the air, but the magic fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the air, but the magic fizzles."));
 
 		return success;
 	}

@@ -130,7 +130,7 @@ public class Spell_Forget extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

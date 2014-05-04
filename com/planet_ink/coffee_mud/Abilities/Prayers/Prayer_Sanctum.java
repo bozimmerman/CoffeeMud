@@ -161,7 +161,7 @@ public class Prayer_Sanctum extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to make this place a sanctum, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to make this place a sanctum, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

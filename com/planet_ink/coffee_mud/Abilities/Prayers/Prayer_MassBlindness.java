@@ -124,7 +124,7 @@ public class Prayer_MassBlindness extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to blind everyone, but flub(s) it.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to blind everyone, but flub(s) it."));
 
 
 		// return whether it worked

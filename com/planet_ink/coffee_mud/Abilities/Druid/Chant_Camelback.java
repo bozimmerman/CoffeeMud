@@ -121,7 +121,7 @@ public class Chant_Camelback extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) thirstily, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) thirstily, but nothing more happens."));
 
 		// return whether it worked
 		return success;

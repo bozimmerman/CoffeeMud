@@ -82,7 +82,7 @@ public class Spell_DistantVision extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> close(s) <S-HIS-HER> eyes, incanting, but then open(s) them in frustration.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> close(s) <S-HIS-HER> eyes, incanting, but then open(s) them in frustration."));
 
 
 		// return whether it worked

@@ -79,7 +79,7 @@ public class Quit extends StdCommand
 					@Override
 					public void showPrompt()
 					{
-						session.promptPrint("\n\rQuit -- are you sure (y/N)?");
+						session.promptPrint(_("\n\rQuit -- are you sure (y/N)?"));
 					}
 					@Override public void timedOut() {}
 					@Override

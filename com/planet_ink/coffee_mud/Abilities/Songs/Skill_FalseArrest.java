@@ -109,7 +109,7 @@ public class Skill_FalseArrest extends BardSkill
 
 		if(!success)
 		{
-			beneficialWordsFizzle(mob,target,"<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve."));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> frown(s) at <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

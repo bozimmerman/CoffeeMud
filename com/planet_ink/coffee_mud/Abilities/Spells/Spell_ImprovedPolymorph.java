@@ -229,7 +229,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> form(s) an improved spell around <T-NAMESELF>, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> form(s) an improved spell around <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

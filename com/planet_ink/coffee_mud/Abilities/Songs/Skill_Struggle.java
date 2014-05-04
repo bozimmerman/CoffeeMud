@@ -96,7 +96,7 @@ public class Skill_Struggle extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> fumble(s) <S-HIS-HER> attempt to struggle.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> fumble(s) <S-HIS-HER> attempt to struggle."));
 
 		return success;
 	}

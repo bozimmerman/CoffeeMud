@@ -97,11 +97,11 @@ public class Spell_MassHold extends Spell
 						if(oldVictim==null) mob.setVictim(null);
 					}
 					else
-						maliciousFizzle(mob,target,"<T-NAME> seem(s) unaffected by the spell from <S-NAME>.");
+						maliciousFizzle(mob,target,_("<T-NAME> seem(s) unaffected by the spell from <S-NAME>."));
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> incant(s) a spell, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> incant(s) a spell, but the spell fizzles."));
 
 
 		// return whether it worked

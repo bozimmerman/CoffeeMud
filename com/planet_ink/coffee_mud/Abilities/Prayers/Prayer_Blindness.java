@@ -119,7 +119,7 @@ public class Prayer_Blindness extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to blind <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to blind <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

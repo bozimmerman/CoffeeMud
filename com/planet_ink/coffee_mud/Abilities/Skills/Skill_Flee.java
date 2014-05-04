@@ -57,7 +57,7 @@ public class Skill_Flee extends StdSkill
 			CMLib.commands().forceStandardCommand(mob, "FLEE", V);
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to flee, but fail(s) to get away");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to flee, but fail(s) to get away"));
 
 		// return whether it worked
 		return success;

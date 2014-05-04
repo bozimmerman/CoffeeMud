@@ -115,7 +115,7 @@ public class Fighter_Shrug extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to brace <S-HIM-HERSELF>, but get(s) distracted.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to brace <S-HIM-HERSELF>, but get(s) distracted."));
 
 		// return whether it worked
 		return success;

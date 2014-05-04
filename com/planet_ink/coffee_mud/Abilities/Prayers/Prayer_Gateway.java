@@ -142,7 +142,7 @@ public class Prayer_Gateway extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for a gateway, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a gateway, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -81,7 +81,7 @@ public class Thief_Poison extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

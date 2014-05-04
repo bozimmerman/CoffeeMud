@@ -94,7 +94,7 @@ public class Prayer_ProtCold extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for cold protection, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for cold protection, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

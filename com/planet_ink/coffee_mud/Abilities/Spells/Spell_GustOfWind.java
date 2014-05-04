@@ -148,7 +148,7 @@ public class Spell_GustOfWind extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air.");
+			return maliciousFizzle(mob,null,_("<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air."));
 
 
 		// return whether it worked

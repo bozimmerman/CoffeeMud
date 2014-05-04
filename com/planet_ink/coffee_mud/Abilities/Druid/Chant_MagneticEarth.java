@@ -174,7 +174,7 @@ public class Chant_MagneticEarth extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) the ground, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) the ground, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

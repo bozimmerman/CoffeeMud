@@ -117,7 +117,7 @@ public class Spell_GraceOfTheCat extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) gracefully to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) gracefully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

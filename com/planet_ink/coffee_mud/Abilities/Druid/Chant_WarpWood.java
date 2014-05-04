@@ -144,7 +144,7 @@ public class Chant_WarpWood extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

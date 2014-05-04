@@ -90,7 +90,7 @@ public class Paladin_Breakup extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to break up <T-NAME>'s fight, but fail(s).");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to break up <T-NAME>'s fight, but fail(s)."));
 
 
 		// return whether it worked

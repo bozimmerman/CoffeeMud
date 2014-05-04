@@ -107,7 +107,7 @@ public class Prayer_GreatCurse extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to horribly curse <T-NAMESELF> , but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to horribly curse <T-NAMESELF> , but nothing happens."));
 
 
 		// return whether it worked

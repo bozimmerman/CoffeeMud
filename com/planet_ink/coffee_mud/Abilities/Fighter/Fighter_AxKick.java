@@ -104,7 +104,7 @@ public class Fighter_AxKick extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to ax kick <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to ax kick <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

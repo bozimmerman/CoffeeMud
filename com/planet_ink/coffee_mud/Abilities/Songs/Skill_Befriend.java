@@ -139,7 +139,7 @@ public class Skill_Befriend extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to befriend <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to befriend <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

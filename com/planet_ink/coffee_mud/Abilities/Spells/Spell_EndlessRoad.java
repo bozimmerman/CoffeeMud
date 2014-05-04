@@ -133,7 +133,7 @@ public class Spell_EndlessRoad extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles"));
 
 		// return whether it worked
 		return success;

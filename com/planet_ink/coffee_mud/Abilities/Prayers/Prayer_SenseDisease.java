@@ -191,7 +191,7 @@ public class Prayer_SenseDisease extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> listen(s) to "+hisHerDiety(mob)+" for a message, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
 
 
 		// return whether it worked

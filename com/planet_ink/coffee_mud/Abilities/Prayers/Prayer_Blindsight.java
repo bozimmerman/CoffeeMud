@@ -122,7 +122,7 @@ public class Prayer_Blindsight extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for blindsight, but go(es) unanswered.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for blindsight, but go(es) unanswered.",prayWord(mob)));
 
 
 		// return whether it worked

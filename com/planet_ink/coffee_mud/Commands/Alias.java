@@ -55,7 +55,7 @@ public class Alias extends StdCommand
 					menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+pStats.getAlias(aliasNames[i])+"\n\r");
 				menu.append((aliasNames.length+1)+". Add a new alias\n\r");
 				mob.tell(menu.toString());
-				session.promptPrint("Enter a selection: ");
+				session.promptPrint(_("Enter a selection: "));
 			}
 			@Override public void timedOut() { }
 			@Override public void callBack()
@@ -70,7 +70,7 @@ public class Alias extends StdCommand
 					final String selection=pStats.getAliasNames()[num-1];
 					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0)
 					{
-						@Override public void showPrompt() { session.promptPrint("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
+						@Override public void showPrompt() { session.promptPrint(_("\n\rAlias selected '@x1'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ",selection));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -95,7 +95,7 @@ public class Alias extends StdCommand
 				{
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
+						@Override public void showPrompt() { session.promptPrint(_("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: "));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -139,7 +139,7 @@ public class Alias extends StdCommand
 	{
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.promptPrint(": "); }
+			@Override public void showPrompt() { session.rawPrintln(_("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{

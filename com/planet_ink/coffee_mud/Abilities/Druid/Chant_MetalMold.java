@@ -124,12 +124,12 @@ public class Chant_MetalMold extends Chant
 		}
 		else
 		if(mobTarget!=null)
-			return maliciousFizzle(mob,mobTarget,"<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens.");
+			return maliciousFizzle(mob,mobTarget,_("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
 		else
 		if(target!=null)
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s) for mold, but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s) for mold, but nothing happens."));
 
 
 

@@ -110,7 +110,7 @@ public class Chant_SummonLightning extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

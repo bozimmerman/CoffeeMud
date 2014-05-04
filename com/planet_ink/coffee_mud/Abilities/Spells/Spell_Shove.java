@@ -116,7 +116,7 @@ public class Spell_Shove extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but nothing seems to happen.");
+			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but nothing seems to happen."));
 
 
 		// return whether it worked

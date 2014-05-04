@@ -151,7 +151,7 @@ public class Prayer_Marry extends Prayer
 			 }
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> start(s) 'Dearly beloved', and then clear(s) <S-HIS-HER> throat.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> start(s) 'Dearly beloved', and then clear(s) <S-HIS-HER> throat."));
 
 		return success;
 	}

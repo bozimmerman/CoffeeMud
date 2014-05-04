@@ -84,7 +84,7 @@ public class Spell_ResistIndignities extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a dignified field, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a dignified field, but fail(s)."));
 
 		return success;
 	}

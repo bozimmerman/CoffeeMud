@@ -137,9 +137,9 @@ public class Spell_LightSensitivity extends Spell
 		}
 		else
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
-			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

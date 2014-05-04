@@ -180,7 +180,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 				success=false;
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> fail(s) to set <S-HIS-HER> decoys properly.");
+			maliciousFizzle(mob,target,_("<S-NAME> fail(s) to set <S-HIS-HER> decoys properly."));
 		return success;
 	}
 }

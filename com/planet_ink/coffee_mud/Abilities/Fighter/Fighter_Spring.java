@@ -123,7 +123,7 @@ public class Fighter_Spring extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to spring attack <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to spring attack <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

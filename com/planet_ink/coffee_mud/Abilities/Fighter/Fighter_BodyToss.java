@@ -132,7 +132,7 @@ public class Fighter_BodyToss extends MonkSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to pick up <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to pick up <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

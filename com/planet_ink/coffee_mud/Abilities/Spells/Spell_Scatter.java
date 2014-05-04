@@ -106,7 +106,7 @@ public class Spell_Scatter extends Spell
 		{
 			target=getItem(mobTarget);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens.");
+				return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens."));
 		}
 
 		List<Item> targets=new Vector();
@@ -180,7 +180,7 @@ public class Spell_Scatter extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a scattering spell, but nothing happens.");
+			return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a scattering spell, but nothing happens."));
 
 
 		// return whether it worked

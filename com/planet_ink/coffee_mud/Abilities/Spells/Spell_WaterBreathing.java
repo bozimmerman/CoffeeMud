@@ -97,7 +97,7 @@ public class Spell_WaterBreathing extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> whistle(s) to <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> whistle(s) to <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

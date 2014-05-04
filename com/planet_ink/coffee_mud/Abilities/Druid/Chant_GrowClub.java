@@ -125,7 +125,7 @@ public class Chant_GrowClub extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the trees, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the trees, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -121,7 +121,7 @@ public class Spell_ManaShield extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke"+adjective()+" protective shield, but mess(es) up.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke@x1 protective shield, but mess(es) up.",adjective()));
 
 
 		// return whether it worked

@@ -235,7 +235,7 @@ public class Prayer_Vampirism extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to inflict vampirism upon <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict vampirism upon <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

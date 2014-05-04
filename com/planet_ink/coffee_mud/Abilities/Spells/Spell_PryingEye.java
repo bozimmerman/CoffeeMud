@@ -193,7 +193,7 @@ public class Spell_PryingEye extends Spell
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke something, but fail(s).");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke something, but fail(s)."));
 
 		// return whether it worked
 		return success;

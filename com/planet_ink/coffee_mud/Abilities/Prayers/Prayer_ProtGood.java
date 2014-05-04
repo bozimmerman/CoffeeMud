@@ -160,7 +160,7 @@ public class Prayer_ProtGood extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for protection, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

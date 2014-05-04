@@ -118,7 +118,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) distantly, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) distantly, but the spell fizzles."));
 
 		return success;
 	}

@@ -91,7 +91,7 @@ public class Chant_GasWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a filtering shield, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a filtering shield, but fail(s)."));
 
 		return success;
 	}

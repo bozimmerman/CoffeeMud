@@ -142,7 +142,7 @@ public class Skill_Arrest extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

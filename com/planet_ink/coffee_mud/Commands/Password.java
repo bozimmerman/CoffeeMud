@@ -50,21 +50,21 @@ public class Password extends StdCommand
 		if(sess!=null)
 		sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 		{
-			@Override public void showPrompt() { sess.promptPrint("Enter your old password : "); }
+			@Override public void showPrompt() { sess.promptPrint(_("Enter your old password : ")); }
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{
 				final String old=this.input;
 				sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 				{
-					@Override public void showPrompt() { sess.promptPrint("Enter a new password    : "); }
+					@Override public void showPrompt() { sess.promptPrint(_("Enter a new password    : ")); }
 					@Override public void timedOut() { }
 					@Override public void callBack()
 					{
 						final String nep=this.input;
 						sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 						{
-							@Override public void showPrompt() { sess.promptPrint("Enter new password again: "); }
+							@Override public void showPrompt() { sess.promptPrint(_("Enter new password again: ")); }
 							@Override public void timedOut() { }
 							@Override public void callBack()
 							{

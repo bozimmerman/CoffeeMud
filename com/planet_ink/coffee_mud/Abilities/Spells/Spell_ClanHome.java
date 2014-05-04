@@ -113,7 +113,7 @@ public class Spell_ClanHome extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
 
 
 		// return whether it worked

@@ -126,7 +126,7 @@ public class Spell_Invisibility extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) softly to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) softly to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

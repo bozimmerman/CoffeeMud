@@ -116,7 +116,7 @@ public class Skill_TurnUndead extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to turn <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to turn <T-NAMESELF>, but fail(s)."));
 
 
 		// return whether it worked

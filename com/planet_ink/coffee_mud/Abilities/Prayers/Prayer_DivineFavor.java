@@ -131,7 +131,7 @@ public class Prayer_DivineFavor extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but there's no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but there's no answer.",prayWord(mob)));
 
 
 		// return whether it worked

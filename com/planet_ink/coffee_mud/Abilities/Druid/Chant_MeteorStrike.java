@@ -114,7 +114,7 @@ public class Chant_MeteorStrike extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s) to the sky, but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s) to the sky, but nothing happens."));
 
 
 		// return whether it worked

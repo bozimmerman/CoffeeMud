@@ -89,7 +89,7 @@ public class Thief_Ambush extends ThiefSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to set up an ambush, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to set up an ambush, but fail(s)."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),_("<S-NAME> set(s) up an ambush, directing everyone to hiding places."));

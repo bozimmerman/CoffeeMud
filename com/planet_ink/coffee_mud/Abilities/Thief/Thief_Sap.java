@@ -197,7 +197,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> sneak(s) up and attempt(s) to knock <T-NAMESELF> out, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> sneak(s) up and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

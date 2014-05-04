@@ -140,7 +140,7 @@ public class Prayer_SanctifyRoom extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to sanctify this place, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to sanctify this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

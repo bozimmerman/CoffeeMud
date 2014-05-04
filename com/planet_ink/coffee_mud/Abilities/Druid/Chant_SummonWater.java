@@ -113,7 +113,7 @@ public class Chant_SummonWater extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for water, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for water, but nothing happens."));
 
 		// return whether it worked
 		return success;

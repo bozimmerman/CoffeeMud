@@ -245,7 +245,7 @@ public class Spell_WardArea extends Spell implements Trap
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to set a magic trap, but fail(s).");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to set a magic trap, but fail(s)."));
 
 		// return whether it worked
 		return success;

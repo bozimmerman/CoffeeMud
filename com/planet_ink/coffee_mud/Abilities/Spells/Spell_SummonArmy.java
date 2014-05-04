@@ -131,7 +131,7 @@ public class Spell_SummonArmy extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for magical help, but chokes on the words.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for magical help, but chokes on the words."));
 
 		// return whether it worked
 		return success;

@@ -191,7 +191,7 @@ public class Spell_DetectTraps extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles."));
 
 		return success;
 	}

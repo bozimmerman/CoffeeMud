@@ -130,7 +130,7 @@ public class Spell_SpellTurning extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a reflective spell, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a reflective spell, but fail(s)."));
 
 		return success;
 	}

@@ -149,7 +149,7 @@ public class Chant_SensePlants extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s), but nothing happens.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
 
 		return success;
 	}

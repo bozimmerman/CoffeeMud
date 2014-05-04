@@ -127,7 +127,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 				success=false;
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> fail(s) to throw down <S-HIS-HER> "+caltropTypeName()+"caltrops properly.");
+			maliciousFizzle(mob,target,_("<S-NAME> fail(s) to throw down <S-HIS-HER> @x1caltrops properly.",caltropTypeName()));
 		return success;
 	}
 }

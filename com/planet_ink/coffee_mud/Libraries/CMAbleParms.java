@@ -1350,7 +1350,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								error=CMLib.ableMapper().addAbilityComponent("ID="+str, new Hashtable<String,List<AbilityComponent>>());
 								if(error==null) return str;
 							}
-							mob.session().println("'"+str+"' is not an amount of material, a component key, or custom component list"+(error==null?"":"("+error+")")+".  Please use ? for help.");
+							mob.session().println(_("'@x1' is not an amount of material, a component key, or custom component list@x2.  Please use ? for help.",str,(error==null?"":"("+error+")")));
 						}
 						return str;
 					}

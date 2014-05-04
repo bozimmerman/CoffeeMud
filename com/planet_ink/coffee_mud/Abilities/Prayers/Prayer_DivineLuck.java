@@ -120,7 +120,7 @@ public class Prayer_DivineLuck extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but as luck would have it, there's no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but as luck would have it, there's no answer.",prayWord(mob)));
 
 
 		// return whether it worked

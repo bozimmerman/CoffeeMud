@@ -107,7 +107,7 @@ public class Chant_DistantGrowth extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) about a far away place, but the magic fades.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a far away place, but the magic fades."));
 
 
 		// return whether it worked

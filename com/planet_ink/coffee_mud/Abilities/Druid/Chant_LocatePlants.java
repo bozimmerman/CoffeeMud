@@ -190,7 +190,7 @@ public class Chant_LocatePlants extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) to find plant life, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to find plant life, but fail(s)."));
 
 		return success;
 	}

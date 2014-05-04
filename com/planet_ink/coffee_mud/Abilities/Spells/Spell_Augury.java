@@ -110,7 +110,7 @@ public class Spell_Augury extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting, but then loses concentration.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting, but then loses concentration.",Directions.getDirectionName(dirCode)));
 
 
 		// return whether it worked

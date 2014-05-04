@@ -149,7 +149,7 @@ public class Spell_GhostSound extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> scream(s) loudly, but then feel(s) disappointed.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> scream(s) loudly, but then feel(s) disappointed."));
 
 		// return whether it worked
 		return success;

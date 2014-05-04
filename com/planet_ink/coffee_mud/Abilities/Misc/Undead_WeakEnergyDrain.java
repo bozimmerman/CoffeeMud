@@ -159,7 +159,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to drain <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to drain <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

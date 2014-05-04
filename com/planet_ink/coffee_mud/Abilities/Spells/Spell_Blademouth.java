@@ -114,7 +114,7 @@ public class Spell_Blademouth extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) sharply at <T-NAMESELF>, but flub(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) sharply at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

@@ -134,7 +134,7 @@ public class Chant_MuddyGrounds extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the ground, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 
 		// return whether it worked

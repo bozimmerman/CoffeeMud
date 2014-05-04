@@ -153,7 +153,7 @@ public class Thief_Distract extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it.");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it."));
 		return success;
 	}
 }

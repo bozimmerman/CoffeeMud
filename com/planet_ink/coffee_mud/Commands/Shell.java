@@ -492,7 +492,7 @@ public class Shell extends StdCommand
 				}
 				if(mob.session()!=null)
 				{
-					mob.session().colorOnlyPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N\n\r");
+					mob.session().colorOnlyPrintln(_("\n\r^xFile /@x1^.^N\n\r",CF.getVFSPathAndName()));
 					mob.session().rawPrint(CF.text().toString());
 				}
 			}
@@ -565,7 +565,7 @@ public class Shell extends StdCommand
 				mob.tell(_("^xError: no files found!^N"));
 				return false;
 			}
-			mob.session().print("\n\rSearching...");
+			mob.session().print(_("\n\rSearching..."));
 			substring=substring.toUpperCase();
 			final Vector dirs2=new Vector();
 			for (final CMFile dir : dirs)

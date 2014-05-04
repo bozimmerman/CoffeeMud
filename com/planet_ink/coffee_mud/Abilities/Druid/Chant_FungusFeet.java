@@ -169,7 +169,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-YOUPOSS> feet, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-YOUPOSS> feet, but nothing happens."));
 
 
 		// return whether it worked

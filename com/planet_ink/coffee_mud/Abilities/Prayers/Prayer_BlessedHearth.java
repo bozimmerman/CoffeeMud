@@ -127,7 +127,7 @@ public class Prayer_BlessedHearth extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to fill this place with blessedness, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to fill this place with blessedness, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

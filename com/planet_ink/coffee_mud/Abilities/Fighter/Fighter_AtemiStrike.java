@@ -157,7 +157,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) the deadly Atemi strike on <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) the deadly Atemi strike on <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

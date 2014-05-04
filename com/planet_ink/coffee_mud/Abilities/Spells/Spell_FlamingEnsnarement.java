@@ -160,7 +160,7 @@ public class Spell_FlamingEnsnarement extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles."));
 
 
 		// return whether it worked

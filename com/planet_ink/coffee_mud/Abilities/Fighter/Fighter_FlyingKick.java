@@ -112,7 +112,7 @@ public class Fighter_FlyingKick extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to land a flying kick on <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to land a flying kick on <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

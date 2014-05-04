@@ -186,7 +186,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to knock <T-NAMESELF> out, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

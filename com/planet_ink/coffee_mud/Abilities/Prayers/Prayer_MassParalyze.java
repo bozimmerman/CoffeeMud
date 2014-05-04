@@ -105,7 +105,7 @@ public class Prayer_MassParalyze extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to paralyze everyone, but flub(s) it.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to paralyze everyone, but flub(s) it."));
 
 
 		// return whether it worked

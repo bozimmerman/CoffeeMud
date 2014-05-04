@@ -164,7 +164,7 @@ public class Thief_Forgery extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to forge "+forgeWhat+", but fail(s).");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to forge @x1, but fail(s).",forgeWhat));
 		return success;
 	}
 }

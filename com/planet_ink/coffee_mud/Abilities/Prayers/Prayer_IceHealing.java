@@ -116,7 +116,7 @@ public class Prayer_IceHealing extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for icey healing, but <S-HIS-HER> plea is not answered.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for icey healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

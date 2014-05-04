@@ -98,7 +98,7 @@ public class Chant_ControlPlant extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,myPlant,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
+			beneficialVisualFizzle(mob,myPlant,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

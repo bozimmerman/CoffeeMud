@@ -166,7 +166,7 @@ public class Prayer_InfuseBalance extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to infuse a holy balanced aura in <T-NAMESELF>, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to infuse a holy balanced aura in <T-NAMESELF>, but fail(s).",prayForWord(mob)));
 
 		return success;
 	}

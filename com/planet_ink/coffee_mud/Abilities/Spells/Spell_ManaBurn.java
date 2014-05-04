@@ -149,7 +149,7 @@ public class Spell_ManaBurn extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) hotly at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) hotly at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

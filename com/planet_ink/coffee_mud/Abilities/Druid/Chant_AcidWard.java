@@ -90,7 +90,7 @@ public class Chant_AcidWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for oily protection, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for oily protection, but fail(s)."));
 
 		return success;
 	}

@@ -123,7 +123,7 @@ public class Prayer_ProtectHealth extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a healthy body and mind, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a healthy body and mind, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

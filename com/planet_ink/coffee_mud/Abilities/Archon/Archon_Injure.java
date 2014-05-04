@@ -121,7 +121,7 @@ public class Archon_Injure extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to injure <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to injure <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

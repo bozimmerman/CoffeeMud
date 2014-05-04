@@ -242,7 +242,7 @@ public class Prayer_Prophecy extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<T-NAME> "+prayWord(mob)+", but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<T-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

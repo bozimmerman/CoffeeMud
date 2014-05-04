@@ -111,7 +111,7 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> call(s) on "+hisHerDiety(mob)+" to release <T-NAME> from a death mark, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> call(s) on @x1 to release <T-NAME> from a death mark, but nothing happens.",hisHerDiety(mob)));
 
 
 		// return whether it worked

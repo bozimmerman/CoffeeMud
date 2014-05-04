@@ -343,10 +343,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final double d=CMath.s_double(newName);
 				if(d<minValue)
-					mob.session().println("Min value is: "+minValue);
+					mob.session().println(_("Min value is: @x1",""+minValue));
 				else
 				if(d>maxValue)
-					mob.session().println("Max value is: "+maxValue);
+					mob.session().println(_("Max value is: @x1",""+maxValue));
 				else
 					return d;
 			}
@@ -1185,7 +1185,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(mob.session()!=null)
-			mob.session().rawPrintln(showNumber+". Display: '"+E.displayText()+"'.");
+			mob.session().rawPrintln(_("@x1. Display: '@x2'.",""+showNumber,E.displayText()));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=null;
 		if(E instanceof Item)
@@ -1623,7 +1623,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		if(E instanceof Drink)
 		{
-			mob.session().println(showNumber+". Current liquid type: "+RawMaterial.CODES.NAME(((Drink)E).liquidType()));
+			mob.session().println(_("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(((Drink)E).liquidType())));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			boolean q=false;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
@@ -1795,12 +1795,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String c="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
 		{
-			mob.session().println(showNumber+". A) Is Gettable   : "+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET)));
-			mob.session().println("    B) Is Droppable  : "+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP)));
-			mob.session().println("    C) Is Removable  : "+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE)));
-			mob.session().println("    D) Non-Locatable : "+(((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
+			mob.session().println(_("@x1. A) Is Gettable   : @x2",""+showNumber,""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))));
+			mob.session().println(_("    B) Is Droppable  : @x1",""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))));
+			mob.session().println(_("    C) Is Removable  : @x1",""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))));
+			mob.session().println(_("    D) Non-Locatable : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)?"true":"false")));
 			if(I instanceof Weapon)
-				mob.session().println("    E) Is Two-Handed : "+I.rawLogicalAnd());
+				mob.session().println(_("    E) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose(_("Enter one to change, or ENTER when done:"),_("ABCDE\n"),"\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
@@ -1960,22 +1960,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(conditions.size()==0)
 					conditions.add("normal");
 			}
-			mob.session().println(""+showNumber+". Climate: "+CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
+			mob.session().println(_("@x1. Climate: @x2",""+showNumber,CMLib.english().toEnglishStringList(conditions.toArray(new String[0]))));
 			return;
 		}
 		String c="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
 		{
-			mob.session().println(""+showNumber+". Climate:");
+			mob.session().println(_("@x1. Climate:",""+showNumber));
 			int type=A.getClimateTypeCode();
-			mob.session().println("    I) Inherited        : "+(type==Places.CLIMASK_INHERIT));
+			mob.session().println(_("    I) Inherited        : @x1",""+(type==Places.CLIMASK_INHERIT)));
 			if(type == Places.CLIMASK_INHERIT)
 				type=0;
-			mob.session().println("    R) Wet and Rainy    : "+((type&Places.CLIMASK_WET)>0));
-			mob.session().println("    H) Excessively hot  : "+((type&Places.CLIMASK_HOT)>0));
-			mob.session().println("    C) Excessively cold : "+((type&Places.CLIMASK_COLD)>0));
-			mob.session().println("    W) Very windy       : "+((type&Places.CLIMASK_WINDY)>0));
-			mob.session().println("    D) Very dry         : "+((type&Places.CLIMASK_DRY)>0));
+			mob.session().println(_("    R) Wet and Rainy    : @x1",""+((type&Places.CLIMASK_WET)>0)));
+			mob.session().println(_("    H) Excessively hot  : @x1",""+((type&Places.CLIMASK_HOT)>0)));
+			mob.session().println(_("    C) Excessively cold : @x1",""+((type&Places.CLIMASK_COLD)>0)));
+			mob.session().println(_("    W) Very windy       : @x1",""+((type&Places.CLIMASK_WINDY)>0)));
+			mob.session().println(_("    D) Very dry         : @x1",""+((type&Places.CLIMASK_DRY)>0)));
 			c=mob.session().choose(_("Enter one to change, or ENTER when done: "),_("RHCWDI\n"),"\n").toUpperCase();
 			switch(c.charAt(0))
 			{
@@ -8267,7 +8267,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		me.resetToMaxState();
 		if(!oldName.equals(me.Name()))
 		{
-			if(mob.session()!=null) mob.session().print("Changing player name...");
+			if(mob.session()!=null) mob.session().print(_("Changing player name..."));
 			CMLib.players().renamePlayer(me, oldName);
 			if(mob.session()!=null) mob.session().println(".");
 			Log.sysOut("CMGenEditor",mob.Name()+" changed user "+oldName+" to "+me.name());

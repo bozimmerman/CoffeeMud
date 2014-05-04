@@ -160,7 +160,7 @@ public class Chant_Blight extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to the ground, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the ground, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

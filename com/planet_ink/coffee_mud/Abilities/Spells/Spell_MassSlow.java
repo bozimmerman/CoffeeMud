@@ -92,11 +92,11 @@ public class Spell_MassSlow extends Spell
 						if(oldVictim==null) mob.setVictim(null);
 					}
 					else
-						maliciousFizzle(mob,target,"<T-NAME> seem(s) unaffected by the Slow spell from <S-NAME>.");
+						maliciousFizzle(mob,target,_("<T-NAME> seem(s) unaffected by the Slow spell from <S-NAME>."));
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> whisper(s) a spell slowly, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> whisper(s) a spell slowly, but the spell fizzles."));
 
 
 		// return whether it worked

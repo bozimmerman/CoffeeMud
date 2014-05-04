@@ -627,7 +627,7 @@ public class Reset extends StdCommand
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
 				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
@@ -728,13 +728,13 @@ public class Reset extends StdCommand
 			}
 			if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				mob.session().rawOut(recordedChanges.toString());
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("groundlydoors")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			try
 			{
 				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -760,13 +760,13 @@ public class Reset extends StdCommand
 					mob.session().print(".");
 				}
 			}catch(final NoSuchElementException nse){}
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("allmobarmorfix")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=(Area)a.nextElement();
@@ -804,13 +804,13 @@ public class Reset extends StdCommand
 				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("goldceilingfixer")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=(Area)a.nextElement();
@@ -844,7 +844,7 @@ public class Reset extends StdCommand
 				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("areainstall")&&(CMSecurity.isASysOp(mob)))
@@ -864,7 +864,7 @@ public class Reset extends StdCommand
 				return false;
 			}
 
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=(Area)a.nextElement();
@@ -910,13 +910,13 @@ public class Reset extends StdCommand
 					mob.session().print(".");
 				}
 			}
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("worldmatconfirm")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=(Area)a.nextElement();
@@ -975,7 +975,7 @@ public class Reset extends StdCommand
 				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 			}
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
@@ -984,7 +984,7 @@ public class Reset extends StdCommand
 			if(commands.size()>1) s=(String)commands.elementAt(1);
 
 			if(mob.session()==null) return false;
-			mob.session().print("working...");
+			mob.session().print(_("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
 				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
@@ -1124,16 +1124,16 @@ public class Reset extends StdCommand
 			}
 			if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				mob.session().rawOut(recordedChanges.toString());
-			mob.session().println("done!");
+			mob.session().println(_("done!"));
 		}
 		else
 		if(s.startsWith("clantick"))
 		{
-			mob.session().println("clantick: tick clans");
+			mob.session().println(_("clantick: tick clans"));
 			CMLib.clans().tickAllClans();
-			mob.session().println("clantick: clans tick");
+			mob.session().println(_("clantick: clans tick"));
 			CMLib.clans().forceTick();
-			mob.session().println("clantick: done!");
+			mob.session().println(_("clantick: done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("VISITATION"))

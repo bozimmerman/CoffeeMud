@@ -83,7 +83,7 @@ public class Prayer_Annul extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> clear(s) <S-HIS-HER> throat.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> clear(s) <S-HIS-HER> throat."));
 
 		return success;
 	}

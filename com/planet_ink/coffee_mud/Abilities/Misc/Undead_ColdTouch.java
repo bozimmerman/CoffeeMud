@@ -101,7 +101,7 @@ public class Undead_ColdTouch extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> extend(s) a chilling hand to <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> extend(s) a chilling hand to <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

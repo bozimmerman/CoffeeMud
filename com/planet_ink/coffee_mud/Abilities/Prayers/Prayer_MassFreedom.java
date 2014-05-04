@@ -136,7 +136,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for freedom, but nothing happens.");
+			this.beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for freedom, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

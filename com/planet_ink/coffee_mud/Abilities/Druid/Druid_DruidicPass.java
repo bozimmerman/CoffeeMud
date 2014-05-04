@@ -99,7 +99,7 @@ public class Druid_DruidicPass extends StdAbility
 			if(exit.isOpen())
 				CMLib.tracking().walk(mob,dirCode,false,false);
 			else
-				beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
+				beneficialVisualFizzle(mob,null,_("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
 		}
 		else
 		if(exit.isOpen())

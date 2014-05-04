@@ -174,7 +174,7 @@ public class Prayer_CurseMetal extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to curse <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to curse <T-NAMESELF>, but the spell fizzles.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

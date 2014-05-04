@@ -128,7 +128,7 @@ public class Spell_FlamingSword extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke a flame, but cause(s) a puff of smoke.");
+			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke a flame, but cause(s) a puff of smoke."));
 
 		return success;
 	}

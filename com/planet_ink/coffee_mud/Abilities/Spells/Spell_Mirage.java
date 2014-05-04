@@ -159,7 +159,7 @@ public class Spell_Mirage extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

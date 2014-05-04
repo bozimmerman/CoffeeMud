@@ -136,7 +136,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAME>, but the magic fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

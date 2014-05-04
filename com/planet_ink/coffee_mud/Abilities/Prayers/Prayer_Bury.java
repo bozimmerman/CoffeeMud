@@ -113,7 +113,7 @@ public class Prayer_Bury extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

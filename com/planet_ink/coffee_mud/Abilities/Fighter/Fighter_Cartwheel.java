@@ -94,7 +94,7 @@ public class Fighter_Cartwheel extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to cartwheel and fail(s).");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to cartwheel and fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -87,7 +87,7 @@ public class Spell_Exhaustion extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) and shout(s) at <T-NAMESELF>, but nothing more happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) and shout(s) at <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

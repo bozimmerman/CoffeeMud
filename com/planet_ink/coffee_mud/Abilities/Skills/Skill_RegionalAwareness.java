@@ -241,7 +241,7 @@ public class Skill_RegionalAwareness extends StdSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> peer(s) around distantly, looking frustrated.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> peer(s) around distantly, looking frustrated."));
 		return success;
 	}
 }

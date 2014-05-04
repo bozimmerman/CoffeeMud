@@ -190,7 +190,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) rudely to <T-NAMESELF>, but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) rudely to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

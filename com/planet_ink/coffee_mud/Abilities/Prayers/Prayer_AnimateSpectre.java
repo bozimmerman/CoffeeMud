@@ -159,7 +159,7 @@ public class Prayer_AnimateSpectre extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to animate <T-NAMESELF>, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to animate <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

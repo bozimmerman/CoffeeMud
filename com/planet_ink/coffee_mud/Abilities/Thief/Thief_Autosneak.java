@@ -116,7 +116,7 @@ public class Thief_Autosneak extends ThiefSkill
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s)."));
 		return success;
 	}
 

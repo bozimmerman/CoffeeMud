@@ -83,7 +83,7 @@ public class Prayer_Disenchant extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to neutralize <T-NAMESELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to neutralize <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 		// return whether it worked
 		return success;
 	}

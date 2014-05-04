@@ -91,7 +91,7 @@ public class Chant_VenomWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for an anti-venom field, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for an anti-venom field, but fail(s)."));
 
 		return success;
 	}

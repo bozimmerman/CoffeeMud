@@ -93,7 +93,7 @@ public class Spell_SpiderClimb extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke a spell, but fail(s).");
+			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke a spell, but fail(s)."));
 
 		return success;
 	}

@@ -124,7 +124,7 @@ public class Spell_DeathWarning extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) coldly and listen(s), but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) coldly and listen(s), but the spell fizzles."));
 
 		return success;
 	}

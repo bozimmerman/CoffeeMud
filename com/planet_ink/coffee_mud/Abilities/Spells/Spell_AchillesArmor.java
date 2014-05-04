@@ -161,7 +161,7 @@ public class Spell_AchillesArmor extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke Achilles Armor, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke Achilles Armor, but fail(s)."));
 
 		return success;
 	}

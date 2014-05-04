@@ -144,7 +144,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for blessings, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for blessings, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

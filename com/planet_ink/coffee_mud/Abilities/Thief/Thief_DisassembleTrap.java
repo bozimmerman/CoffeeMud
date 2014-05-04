@@ -120,7 +120,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,T,"<S-NAME> attempt(s) to disassemble the <T-NAME> trap, but fail(s).");
+			beneficialVisualFizzle(mob,T,_("<S-NAME> attempt(s) to disassemble the <T-NAME> trap, but fail(s)."));
 
 		return success;
 	}

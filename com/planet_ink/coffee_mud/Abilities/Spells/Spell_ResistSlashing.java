@@ -102,7 +102,7 @@ public class Spell_ResistSlashing extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-slashing barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-slashing barrier, but fail(s)."));
 
 		return success;
 	}

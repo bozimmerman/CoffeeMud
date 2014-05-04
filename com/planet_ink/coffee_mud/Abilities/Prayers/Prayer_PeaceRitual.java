@@ -193,7 +193,7 @@ public class Prayer_PeaceRitual extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for peace between "+clan1.name()+" and "+clan2.name()+", but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for peace between @x2 and @x3, but there is no answer.",prayWord(mob),clan1.name(),clan2.name()));
 
 
 		// return whether it worked

@@ -160,7 +160,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,X,"<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s).");
+			beneficialVisualFizzle(mob,X,_("<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s)."));
 		return success;
 	}
 }

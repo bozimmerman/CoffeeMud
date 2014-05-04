@@ -113,7 +113,7 @@ public class Prayer_Deafness extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> scream(s) at <T-NAMESELF>, but flub(s) the prayer.");
+			return maliciousFizzle(mob,target,_("<S-NAME> scream(s) at <T-NAMESELF>, but flub(s) the prayer."));
 
 
 		// return whether it worked

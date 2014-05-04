@@ -127,7 +127,7 @@ public class Spell_WeaknessElectricity extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke weakness to electricity, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to electricity, but fail(s)."));
 
 		return success;
 	}

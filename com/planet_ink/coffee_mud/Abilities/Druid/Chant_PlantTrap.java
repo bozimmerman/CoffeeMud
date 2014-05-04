@@ -181,7 +181,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s), but the magic fades.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but the magic fades."));
 
 		// return whether it worked
 		return success;

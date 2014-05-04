@@ -92,7 +92,7 @@ public class Spell_Alarm extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) and touch(es) <T-NAMESELF> very lightly, but the spell fizzles.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) and touch(es) <T-NAMESELF> very lightly, but the spell fizzles."));
 
 
 		// return whether it worked

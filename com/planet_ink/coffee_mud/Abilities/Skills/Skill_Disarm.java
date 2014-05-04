@@ -123,7 +123,7 @@ public class Skill_Disarm extends StdSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,victim,"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
+			maliciousFizzle(mob,victim,_("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
 		return success;
 	}
 

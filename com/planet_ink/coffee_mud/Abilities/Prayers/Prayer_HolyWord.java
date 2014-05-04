@@ -148,9 +148,9 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 						}
 						else
 						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-							maliciousFizzle(mob,target,"<T-NAME> did not hear the word!");
+							maliciousFizzle(mob,target,_("<T-NAME> did not hear the word!"));
 						else
-							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the word!");
+							beneficialWordsFizzle(mob,target,_("<T-NAME> did not hear the word!"));
 
 					}
 				}

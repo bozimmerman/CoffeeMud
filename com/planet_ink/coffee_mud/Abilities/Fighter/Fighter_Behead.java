@@ -184,7 +184,7 @@ public class Fighter_Behead extends FighterSkill
 			if(target.getVictim()==mob) target.makePeace();
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) a beheading and fail(s)!");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) a beheading and fail(s)!"));
 		return success;
 	}
 }

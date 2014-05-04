@@ -108,7 +108,7 @@ public class Prayer_SenseUndead extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

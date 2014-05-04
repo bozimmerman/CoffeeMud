@@ -102,7 +102,7 @@ public class Prayer_ProtectElements extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for elemental protection, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for elemental protection, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

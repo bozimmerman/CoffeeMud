@@ -119,7 +119,7 @@ public class Prayer_BloodHearth extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to fill this place with blood, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to fill this place with blood, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

@@ -108,7 +108,7 @@ public class Spell_PredictWeather extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) into the sky, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) into the sky, but the spell fizzles."));
 
 		return success;
 	}

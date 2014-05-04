@@ -148,7 +148,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to mark <T-NAME> as trapped, but fail(s).");
+			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to mark <T-NAME> as trapped, but fail(s)."));
 		return success;
 	}
 }

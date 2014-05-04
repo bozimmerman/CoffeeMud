@@ -110,7 +110,7 @@ public class Spell_MajorGlobe extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s)."));
 
 		return success;
 	}

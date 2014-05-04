@@ -194,7 +194,7 @@ public class Thief_Racketeer extends ThiefSkill
 				}
 			}
 		}else
-			maliciousFizzle(mob,target,"<T-NAME> seem(s) unintimidated by <S-NAME>.");
+			maliciousFizzle(mob,target,_("<T-NAME> seem(s) unintimidated by <S-NAME>."));
 		return success;
 	}
 }

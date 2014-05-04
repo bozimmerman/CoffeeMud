@@ -93,7 +93,7 @@ public class Spell_Nondetection extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a resistance globe, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a resistance globe, but fail(s)."));
 
 		return success;
 	}

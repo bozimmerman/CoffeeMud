@@ -156,7 +156,7 @@ public class Spell_BaseClanEq extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated."));
 		return success;
 	}
 }

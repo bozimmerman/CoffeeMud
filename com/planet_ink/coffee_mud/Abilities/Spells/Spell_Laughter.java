@@ -135,7 +135,7 @@ public class Spell_Laughter extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> tell(s) <T-NAMESELF> a magical joke, but <T-NAME> do(es)n't think it is funny.");
+			return maliciousFizzle(mob,target,_("<S-NAME> tell(s) <T-NAMESELF> a magical joke, but <T-NAME> do(es)n't think it is funny."));
 
 		// return whether it worked
 		return success;

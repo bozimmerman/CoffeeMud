@@ -177,7 +177,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to infuse an unholy aura in <T-NAMESELF>, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to infuse an unholy aura in <T-NAMESELF>, but fail(s).",prayForWord(mob)));
 
 		return success;
 	}

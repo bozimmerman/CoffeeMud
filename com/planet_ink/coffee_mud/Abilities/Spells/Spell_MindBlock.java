@@ -112,7 +112,7 @@ public class Spell_MindBlock extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-psionic field, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-psionic field, but fail(s)."));
 
 		return success;
 	}

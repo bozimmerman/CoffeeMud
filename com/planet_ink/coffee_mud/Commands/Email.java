@@ -222,10 +222,10 @@ public class Email extends StdCommand
 			if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLED"))
 			{
 				if(commands!=null)
-					mob.session().println("\n\rAn email address is not required by this system.");
+					mob.session().println(_("\n\rAn email address is not required by this system."));
 				return true;
 			}
-			mob.session().println("\n\rYou have no email address on file for this character.");
+			mob.session().println(_("\n\rYou have no email address on file for this character."));
 		}
 		else
 		{
@@ -236,7 +236,7 @@ public class Email extends StdCommand
 		if((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(commands!=null)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
-			mob.session().println("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r");
+			mob.session().println(_("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r"));
 		String newEmail=mob.session().prompt(_("New E-mail Address:"));
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();

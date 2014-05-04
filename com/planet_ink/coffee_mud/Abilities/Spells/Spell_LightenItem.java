@@ -112,7 +112,7 @@ public class Spell_LightenItem extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

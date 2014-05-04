@@ -161,7 +161,7 @@ public class Prayer_Stoning extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> call(s) for the stoning of <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> call(s) for the stoning of <T-NAMESELF>."));
 
 
 		// return whether it worked

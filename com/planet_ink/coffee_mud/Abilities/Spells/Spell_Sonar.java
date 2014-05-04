@@ -122,7 +122,7 @@ public class Spell_Sonar extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) softly and listen(s), but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) softly and listen(s), but the spell fizzles."));
 
 		return success;
 	}

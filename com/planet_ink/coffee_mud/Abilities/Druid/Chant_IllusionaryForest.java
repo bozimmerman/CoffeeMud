@@ -177,7 +177,7 @@ public class Chant_IllusionaryForest extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) dramatically, but the magic fades.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) dramatically, but the magic fades."));
 
 		// return whether it worked
 		return success;

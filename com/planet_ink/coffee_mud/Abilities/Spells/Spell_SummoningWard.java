@@ -163,7 +163,7 @@ public class Spell_SummoningWard extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a summoning ward, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a summoning ward, but fail(s)."));
 		quality=Ability.QUALITY_INDIFFERENT;
 
 		return success;

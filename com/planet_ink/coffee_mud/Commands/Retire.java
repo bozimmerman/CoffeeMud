@@ -54,7 +54,7 @@ public class Retire extends StdCommand
 		{
 			@Override public void showPrompt()
 			{
-				session.promptPrint("If that's what you want, re-enter your password: ");
+				session.promptPrint(_("If that's what you want, re-enter your password: "));
 			}
 			@Override public void timedOut() {}
 			@Override public void callBack()
@@ -76,9 +76,7 @@ public class Retire extends StdCommand
 					{
 						@Override public void showPrompt()
 						{
-							session.promptPrint("OK.  Please leave us a short message as to why you are deleting this"
-										+" character.  Your answers will be kept confidential, "
-										+"and are for administrative purposes only.\n\r: ");
+							session.promptPrint(_("OK.  Please leave us a short message as to why you are deleting this character.  Your answers will be kept confidential, and are for administrative purposes only.\n\r: "));
 						}
 						@Override public void timedOut() {}
 						@Override public void callBack()

@@ -129,7 +129,7 @@ public class Prayer_DivineResistance extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to have divine resistance, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to have divine resistance, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

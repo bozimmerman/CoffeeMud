@@ -90,7 +90,7 @@ public class Spell_FakeFood extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
 
 
 		// return whether it worked

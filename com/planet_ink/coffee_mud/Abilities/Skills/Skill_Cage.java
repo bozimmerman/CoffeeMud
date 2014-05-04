@@ -153,7 +153,7 @@ public class Skill_Cage extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to cage <T-NAME> and fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to cage <T-NAME> and fail(s)."));
 
 
 		// return whether it worked

@@ -390,7 +390,7 @@ public class Skill_Enslave extends StdSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fails.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fails."));
 
 		// return whether it worked
 		return success;

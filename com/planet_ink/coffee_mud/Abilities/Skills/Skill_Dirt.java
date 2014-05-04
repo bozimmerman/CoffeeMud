@@ -188,7 +188,7 @@ public class Skill_Dirt extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to kick dirt at <T-NAMESELF>, but miss(es).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to kick dirt at <T-NAMESELF>, but miss(es)."));
 		return success;
 	}
 }

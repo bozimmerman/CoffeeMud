@@ -136,7 +136,7 @@ public class Skill_SongWrite extends BardSkill
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to write music on <T-NAMESELF>, singing softly, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to write music on <T-NAMESELF>, singing softly, and looking very frustrated."));
 
 
 		// return whether it worked

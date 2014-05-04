@@ -114,7 +114,7 @@ public class Spell_NaturalCommunion extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,targetR,"<S-NAME> attempt(s) to commune with nature, and fail(s).");
+			beneficialVisualFizzle(mob,targetR,_("<S-NAME> attempt(s) to commune with nature, and fail(s)."));
 
 
 		// return whether it worked

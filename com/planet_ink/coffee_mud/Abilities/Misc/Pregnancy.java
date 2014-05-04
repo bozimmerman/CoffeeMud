@@ -427,7 +427,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		}
 		else
 		if(!auto)
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!"));
 		return success;
 	}
 }

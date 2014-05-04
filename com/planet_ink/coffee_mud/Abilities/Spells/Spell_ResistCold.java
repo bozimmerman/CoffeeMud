@@ -84,7 +84,7 @@ public class Spell_ResistCold extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke warmth, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke warmth, but fail(s)."));
 
 		return success;
 	}

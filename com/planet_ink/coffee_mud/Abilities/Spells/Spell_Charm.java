@@ -247,7 +247,7 @@ public class Spell_Charm extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> smile(s) and wink(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> smile(s) and wink(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

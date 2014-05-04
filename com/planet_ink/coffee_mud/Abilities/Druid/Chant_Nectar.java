@@ -174,7 +174,7 @@ public class Chant_Nectar extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for nectar, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for nectar, but nothing happens."));
 
 		// return whether it worked
 		return success;

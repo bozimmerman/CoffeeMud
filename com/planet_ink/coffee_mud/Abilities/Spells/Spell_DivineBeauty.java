@@ -116,7 +116,7 @@ public class Spell_DivineBeauty extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> speak(s) beautifully to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) beautifully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

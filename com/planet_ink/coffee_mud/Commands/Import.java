@@ -4623,7 +4623,7 @@ public class Import extends StdCommand
 		{
 			if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
 			{
-				if(session!=null) session.println("Unpacking areas lists from file : '"+areaFileName+"'...");
+				if(session!=null) session.println(_("Unpacking areas lists from file : '@x1'...",areaFileName));
 				String filePrefix="";
 				int c=areaFileName.lastIndexOf('/');
 				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
@@ -4665,20 +4665,20 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				final List<List<XMLLibrary.XMLpiece>> areas=new Vector();
 				if(session!=null)
-					session.rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
+					session.rawPrint(_("Unpacking area(s) from file: '@x1'...",areaFileName));
 				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()>0) return false;
 				if(session!=null)
 					session.rawPrintln("!");
-				if(session!=null) session.println("Found "+areas.size()+" areas.");
+				if(session!=null) session.println(_("Found @x1 areas.",""+areas.size()));
 				final int num=areas.size();
 				int a=0;
 				while(areas.size()>0)
 				{
 					if(session!=null)
-						session.rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
+						session.rawPrint(_("Unpacking area #@x1/@x2...",""+(a+1),""+num));
 					final List<XMLLibrary.XMLpiece> area=areas.get(0);
 					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
 					if(session!=null)
@@ -4724,7 +4724,7 @@ public class Import extends StdCommand
 					}
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("Area(s) successfully imported!");
+				if(session!=null) session.println(_("Area(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -4740,7 +4740,7 @@ public class Import extends StdCommand
 				if(buf == null)
 					buf = new StringBuffer("");
 				if(session!=null)
-					session.rawPrint("Unpacking area from file: '"+areaFileName+"'...");
+					session.rawPrint(_("Unpacking area from file: '@x1'...",areaFileName));
 				final Vector areaD=new Vector();
 				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -4765,7 +4765,7 @@ public class Import extends StdCommand
 					else
 						return false;
 					if(session!=null)
-						session.rawPrint("Unpacking area from file: '"+areaFileName+"'...");
+						session.rawPrint(_("Unpacking area from file: '@x1'...",areaFileName));
 					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
@@ -4773,7 +4773,7 @@ public class Import extends StdCommand
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("Area successfully imported!");
+				if(session!=null) session.println(_("Area successfully imported!"));
 				continue;
 			}
 			else
@@ -4788,7 +4788,7 @@ public class Import extends StdCommand
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
-				if(session!=null) session.println("Unpacking room from file: '"+areaFileName+"'...");
+				if(session!=null) session.println(_("Unpacking room from file: '@x1'...",areaFileName));
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
@@ -4823,7 +4823,7 @@ public class Import extends StdCommand
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("Room successfully imported!");
+				if(session!=null) session.println(_("Room successfully imported!"));
 				continue;
 			}
 			else
@@ -4839,7 +4839,7 @@ public class Import extends StdCommand
 				if(buf == null)
 					buf = new StringBuffer("");
 				if(session!=null)
-					session.rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
+					session.rawPrint(_("Unpacking mobs from file: '@x1'...",areaFileName));
 				final Vector mobs=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -4860,7 +4860,7 @@ public class Import extends StdCommand
 				}
 				mob.location().recoverRoomStats();
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("MOB(s) successfully imported!");
+				if(session!=null) session.println(_("MOB(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -4876,7 +4876,7 @@ public class Import extends StdCommand
 				if(buf == null)
 					buf = new StringBuffer("");
 				if(session!=null)
-					session.rawPrint("Unpacking players from file: '"+areaFileName+"'...");
+					session.rawPrint(_("Unpacking players from file: '@x1'...",areaFileName));
 				final List<MOB> mobs=new Vector();
 				final List<PlayerAccount> accounts=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
@@ -4987,7 +4987,7 @@ public class Import extends StdCommand
 					M.removeFromGame(false,true);
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("Player(s)/Account(s) successfully imported!");
+				if(session!=null) session.println(_("Player(s)/Account(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -5003,7 +5003,7 @@ public class Import extends StdCommand
 				if(buf == null)
 					buf = new StringBuffer("");
 				if(session!=null)
-					session.rawPrint("Unpacking items from file: '"+areaFileName+"'...");
+					session.rawPrint(_("Unpacking items from file: '@x1'...",areaFileName));
 				final Vector items=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -5022,7 +5022,7 @@ public class Import extends StdCommand
 				}
 				mob.location().recoverRoomStats();
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("Item(s) successfully imported!");
+				if(session!=null) session.println(_("Item(s) successfully imported!"));
 				continue;
 			}
 		}
@@ -5036,7 +5036,7 @@ public class Import extends StdCommand
 		final List<String> V=Resources.getFileLineVector(buf);
 
 		// sort the data into general blocks, and identify area
-		if(session!=null) session.println("\n\rSorting data from file '"+areaFileName+"'...");
+		if(session!=null) session.println(_("\n\rSorting data from file '@x1'...",areaFileName));
 		Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
 		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData,roomProgData);
 		boolean didSocials=false;
@@ -5070,7 +5070,7 @@ public class Import extends StdCommand
 					if((S1.You_see()==null)||(!S1.You_see().equals(str)))
 					{
 						if((changing)&&prompt&&(session!=null))
-							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.You_see()+"', you see, to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1' from '@x2', you see, to: '@x3'",S1.name(),S1.You_see(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S1.setYou_see(str);
 					}
@@ -5081,7 +5081,7 @@ public class Import extends StdCommand
 					if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
 					{
 						if((changing)&&prompt&&(session!=null))
-							session.rawPrint("Change Social '"+S1.name()+"' from '"+S1.Third_party_sees()+"', others see, to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1' from '@x2', others see, to: '@x3'",S1.name(),S1.Third_party_sees(),str));
 						if((!changing)||((session!=null)&&prompt&&(session.confirm("?",_("Y")))))
 							S1.setThird_party_sees(str);
 					}
@@ -5100,7 +5100,7 @@ public class Import extends StdCommand
 					if((S2.You_see()==null)||(!S2.You_see().equals(str)))
 					{
 						if((changing)&&prompt&&(session!=null))
-							session.rawPrint("Change Social '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1' from '@x2', you see, to: '@x3'",S2.name(),S2.You_see(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setYou_see(str);
 					}
@@ -5111,7 +5111,7 @@ public class Import extends StdCommand
 					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
 					{
 						if((session!=null)&&prompt&&changing)
-							session.rawPrint("Change Social '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1', others see from '@x2', to: '@x3'",S2.name(),S2.Third_party_sees(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setThird_party_sees(str);
 					}
@@ -5122,7 +5122,7 @@ public class Import extends StdCommand
 					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
 					{
 						if((session!=null)&&prompt&&changing)
-							session.rawPrint("Change Social '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1', target sees from '@x2', to: '@x3'",S2.name(),S2.Target_sees(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setTarget_sees(str);
 					}
@@ -5133,7 +5133,7 @@ public class Import extends StdCommand
 					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
 					{
 						if((session!=null)&&prompt&&changing)
-							session.rawPrint("Change Social '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1', no target sees from '@x2', to: '@x3'",S2.name(),S2.See_when_no_target(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S2.setSee_when_no_target(str);
 					}
@@ -5152,7 +5152,7 @@ public class Import extends StdCommand
 					if((S3.You_see()==null)||(!S3.You_see().equals(str)))
 					{
 						if((session!=null)&&prompt&&changing)
-							session.rawPrint("Change Social '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
+							session.rawPrint(_("Change Social '@x1', you see from '@x2', to: '@x3''",S3.name(),S3.You_see(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S3.setYou_see(str);
 					}
@@ -5163,7 +5163,7 @@ public class Import extends StdCommand
 					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
 					{
 						if((session!=null)&&prompt&&changing)
-							session.rawPrint("Change Social '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
+							session.rawPrint(_("Change Social '@x1', others see from '@x2', to: '@x3'",S3.name(),S3.Third_party_sees(),str));
 						if((!changing)||((session!=null)&&prompt&&session.confirm("?",_("Y"))))
 							S3.setThird_party_sees(str);
 					}
@@ -5266,7 +5266,7 @@ public class Import extends StdCommand
 				return false;
 			}
 
-			if(session!=null) session.println("Loading and Linking Rooms...");
+			if(session!=null) session.println(_("Loading and Linking Rooms..."));
 			Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
 			// begin initial room-read
 			// build first room structures, leaving rest for later.
@@ -5813,7 +5813,7 @@ public class Import extends StdCommand
 				}
 			}
 
-			if(session!=null) session.print("Loading objects..");
+			if(session!=null) session.print(_("Loading objects.."));
 			final Hashtable containerHash=new Hashtable();
 			MOB M=null;
 			Room R=null;
@@ -6285,22 +6285,22 @@ public class Import extends StdCommand
 					}
 				}
 			}
-			if(session!=null) session.print("\n\rResets...");
+			if(session!=null) session.print(_("\n\rResets..."));
 
 			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
 
 			if(newRooms.size()==0)
 			{
-				if(session!=null) session.println("\nDone? No Room!\n\r");
+				if(session!=null) session.println(_("\nDone? No Room!\n\r"));
 			}
 			else
 			if(!multiArea)
 			{
-				if(session!=null) session.println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
+				if(session!=null) session.println(_("\nDone!!!!!!  A good room to look at would be @x1\n\r",((Room)newRooms.elementAt(0)).roomID()));
 			}
 			else
 			{
-				if(session!=null) session.println("Done!!!\n\r");
+				if(session!=null) session.println(_("Done!!!\n\r"));
 			}
 		}
 		catch(final Exception e)
@@ -6319,7 +6319,7 @@ public class Import extends StdCommand
 			Log.errOut("Import",nrf.toString());
 		}
 
-		if((doneRooms.size()>0)&&(session!=null)) session.print("\n\nSaving all areas imported...");
+		if((doneRooms.size()>0)&&(session!=null)) session.print(_("\n\nSaving all areas imported..."));
 		for(final Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			final Room saveRoom=(Room)e.nextElement();
@@ -6409,7 +6409,7 @@ public class Import extends StdCommand
 		if(doneRooms.elements().hasMoreElements())
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
-		if(session!=null) session.println("done!");
+		if(session!=null) session.println(_("done!"));
 		return true;
 	}
 

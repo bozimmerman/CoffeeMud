@@ -396,7 +396,7 @@ public class Spell_Meld extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) "+itemOne.name()+" and "+itemTwo.name()+", but fail(s).");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) @x1 and @x2, but fail(s).",itemOne.name(),itemTwo.name()));
 
 		// return whether it worked
 		return success;

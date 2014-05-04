@@ -108,7 +108,7 @@ public class Chant_VineWeave extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the plants, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the plants, but nothing happens."));
 
 		// return whether it worked
 		return success;

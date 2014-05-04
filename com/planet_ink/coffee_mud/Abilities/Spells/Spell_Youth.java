@@ -107,7 +107,7 @@ public class Spell_Youth extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, but the spell fizzles.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, but the spell fizzles."));
 
 
 		// return whether it worked

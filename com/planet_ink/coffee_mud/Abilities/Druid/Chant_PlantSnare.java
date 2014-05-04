@@ -182,7 +182,7 @@ public class Chant_PlantSnare extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but the magic fades.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but the magic fades."));
 
 
 		// return whether it worked

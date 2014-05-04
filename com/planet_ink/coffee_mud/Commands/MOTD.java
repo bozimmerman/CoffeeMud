@@ -234,7 +234,7 @@ public class MOTD extends StdCommand
 						buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
 					else
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
-						mob.session().println("No "+what+" to re-read.");
+						mob.session().println(_("No @x1 to re-read.",what));
 			}
 			catch(final HTTPRedirectException e){}
 			return false;

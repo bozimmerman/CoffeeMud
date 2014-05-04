@@ -179,7 +179,7 @@ public class Fighter_Gouge extends MonkSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to gouge <T-YOUPOSS> eyes, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to gouge <T-YOUPOSS> eyes, but fail(s)."));
 		return success;
 	}
 }

@@ -102,7 +102,7 @@ public class Spell_LowerResists extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke lowered resistances on <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke lowered resistances on <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

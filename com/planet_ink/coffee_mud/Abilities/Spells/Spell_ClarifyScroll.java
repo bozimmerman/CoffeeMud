@@ -77,7 +77,7 @@ public class Spell_ClarifyScroll extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated."));
 
 
 		// return whether it worked

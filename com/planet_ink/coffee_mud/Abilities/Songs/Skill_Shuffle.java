@@ -98,7 +98,7 @@ public class Skill_Shuffle extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> shuffle(s) around, confusing <S-HIM-HERSELF>.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> shuffle(s) around, confusing <S-HIM-HERSELF>."));
 
 		return success;
 	}

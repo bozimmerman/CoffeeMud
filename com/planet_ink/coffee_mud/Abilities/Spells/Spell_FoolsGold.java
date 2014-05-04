@@ -109,7 +109,7 @@ public class Spell_FoolsGold extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms around dramatically, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms around dramatically, but fizzle(s) the spell."));
 
 
 		// return whether it worked

@@ -159,7 +159,7 @@ public class Prayer_CreateIdol extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for an idol, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for an idol, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

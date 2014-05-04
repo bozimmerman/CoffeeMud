@@ -173,7 +173,7 @@ public class Spell_MagicMouth extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
 
 
 		// return whether it worked

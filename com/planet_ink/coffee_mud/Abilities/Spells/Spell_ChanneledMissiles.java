@@ -186,7 +186,7 @@ public class Spell_ChanneledMissiles extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target[0],"<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell.");
+			return maliciousFizzle(mob,target[0],_("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

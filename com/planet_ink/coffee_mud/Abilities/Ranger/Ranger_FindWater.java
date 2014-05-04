@@ -303,7 +303,7 @@ public class Ranger_FindWater extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to find water, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to find water, but fail(s)."));
 
 		return success;
 	}

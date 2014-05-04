@@ -83,7 +83,7 @@ public class Spell_Spook extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to scare <T-NAMESELF>, but fizzle(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to scare <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

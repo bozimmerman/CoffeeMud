@@ -124,7 +124,7 @@ public class Fighter_AutoBash extends FighterSkill
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s)."));
 		return success;
 	}
 

@@ -164,7 +164,7 @@ public class Spell_FakeArmor extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
 
 
 		// return whether it worked

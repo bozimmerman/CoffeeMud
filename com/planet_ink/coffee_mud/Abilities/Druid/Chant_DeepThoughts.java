@@ -169,7 +169,7 @@ public class Chant_DeepThoughts extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> grow(s) very still, but lose(s) concentration.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> grow(s) very still, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

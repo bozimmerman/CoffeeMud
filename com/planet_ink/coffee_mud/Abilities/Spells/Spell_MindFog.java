@@ -101,7 +101,7 @@ public class Spell_MindFog extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -79,7 +79,7 @@ public class Prayer_Corruption extends Prayer
 		{
 			if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
 				mob.location().send(mob,msg2);
-			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 		}
 
 		// return whether it worked

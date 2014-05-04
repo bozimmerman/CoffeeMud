@@ -121,7 +121,7 @@ public class Spell_Immunity extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an immunity barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an immunity barrier, but fail(s)."));
 
 		return success;
 	}

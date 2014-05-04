@@ -134,7 +134,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" over <T-NAMESELF>, but "+hisHerDiety(mob)+" does not heed.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 over <T-NAMESELF>, but @x2 does not heed.",prayWord(mob),hisHerDiety(mob)));
 		// return whether it worked
 		return success;
 	}

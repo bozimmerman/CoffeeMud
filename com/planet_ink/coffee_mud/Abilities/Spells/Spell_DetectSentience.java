@@ -90,7 +90,7 @@ public class Spell_DetectSentience extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) to <S-HIM-HERSELF>, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) to <S-HIM-HERSELF>, but the spell fizzles."));
 
 		return success;
 	}

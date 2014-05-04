@@ -148,7 +148,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for invisibility to the undead, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for invisibility to the undead, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

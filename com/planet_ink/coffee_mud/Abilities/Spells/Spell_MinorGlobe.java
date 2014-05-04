@@ -110,7 +110,7 @@ public class Spell_MinorGlobe extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-magic globe, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-magic globe, but fail(s)."));
 
 		return success;
 	}

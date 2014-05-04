@@ -76,7 +76,7 @@ public class Chant_SensePregnancy extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) over <T-YOUPOSS> stomach, but the magic fades.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) over <T-YOUPOSS> stomach, but the magic fades."));
 
 		// return whether it worked
 		return success;

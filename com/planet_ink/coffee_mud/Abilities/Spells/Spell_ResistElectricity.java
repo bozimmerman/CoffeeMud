@@ -84,7 +84,7 @@ public class Spell_ResistElectricity extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke protection from electricity, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke protection from electricity, but fail(s)."));
 
 		return success;
 	}

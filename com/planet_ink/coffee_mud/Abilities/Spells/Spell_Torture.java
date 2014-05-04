@@ -261,7 +261,7 @@ public class Spell_Torture extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>, but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

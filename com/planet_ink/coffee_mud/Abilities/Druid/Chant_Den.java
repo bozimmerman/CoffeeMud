@@ -159,7 +159,7 @@ public class Chant_Den extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for a den, but the magic fades.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for a den, but the magic fades."));
 
 		// return whether it worked
 		return success;

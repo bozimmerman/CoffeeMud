@@ -176,7 +176,7 @@ public class Chant_Hibernation extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) to hibernate, but lose(s) concentration.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to hibernate, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

@@ -106,7 +106,7 @@ public class Prayer_Fidelity extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but the magic fades.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
 
 
 		// return whether it worked

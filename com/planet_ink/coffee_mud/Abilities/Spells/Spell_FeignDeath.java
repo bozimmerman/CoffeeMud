@@ -137,7 +137,7 @@ public class Spell_FeignDeath extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return maliciousFizzle(mob,mob.location(),"<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens.");
+			return maliciousFizzle(mob,mob.location(),_("<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens."));
 		}
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");

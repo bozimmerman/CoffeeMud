@@ -122,7 +122,7 @@ public class Spell_Duplicate extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> tightly and incant(s), the spell fizzles.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and incant(s), the spell fizzles."));
 
 
 		// return whether it worked

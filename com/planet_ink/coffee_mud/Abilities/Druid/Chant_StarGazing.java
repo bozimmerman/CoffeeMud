@@ -179,7 +179,7 @@ public class Chant_StarGazing extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) to begin star gazing, but lose(s) concentration.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to begin star gazing, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

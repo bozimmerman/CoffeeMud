@@ -137,7 +137,7 @@ public class Spell_MassDisintegrate extends Spell
 			mob.location().recoverRoomStats();
 		}
 		else
-			maliciousFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a treacherous but fizzled spell!");
+			maliciousFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a treacherous but fizzled spell!"));
 
 		return success;
 	}

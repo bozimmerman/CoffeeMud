@@ -94,7 +94,7 @@ public class Thief_FrameMark extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(!success)
 		{
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) frame <T-NAMESELF>, but <S-IS-ARE> way too obvious.");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) frame <T-NAMESELF>, but <S-IS-ARE> way too obvious."));
 			return false;
 		}
 

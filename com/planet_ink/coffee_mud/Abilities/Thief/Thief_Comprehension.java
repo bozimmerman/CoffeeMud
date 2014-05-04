@@ -148,7 +148,7 @@ public class Thief_Comprehension extends ThiefSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to listen with comprehension, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to listen with comprehension, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

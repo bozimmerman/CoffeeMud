@@ -53,7 +53,7 @@ public class Thief_Palm extends ThiefSkill
 	{
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to palm something and fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to palm something and fail(s)."));
 		else
 		{
 			if((commands.size()>0)&&(!((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))

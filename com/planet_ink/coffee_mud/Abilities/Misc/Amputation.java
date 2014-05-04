@@ -710,7 +710,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				success=false;
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to amputate <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to amputate <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

@@ -152,7 +152,7 @@ public class Spell_Blink extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> cast(s) a spell to <T-NAMESELF>, but the magic fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> cast(s) a spell to <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

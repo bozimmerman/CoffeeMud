@@ -108,7 +108,7 @@ public class Prayer_BloodMoon extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for the Blood Moon, but <S-HIS-HER> plea is not answered.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for the Blood Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -154,7 +154,7 @@ public class Skill_Subdue extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to subdue <T-NAMESELF>, but fails.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to subdue <T-NAMESELF>, but fails."));
 		return success;
 	}
 }

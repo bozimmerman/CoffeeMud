@@ -157,7 +157,7 @@ public class Spell_Delude extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell."));
 
 
 		// return whether it worked

@@ -111,7 +111,7 @@ public class Prayer_DivineGuidance extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for divine guidance, but <S-IS-ARE> not heard.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for divine guidance, but <S-IS-ARE> not heard.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

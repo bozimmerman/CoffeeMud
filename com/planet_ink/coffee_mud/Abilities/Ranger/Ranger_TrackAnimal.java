@@ -222,7 +222,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track an animal, but can't find the trail.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to track an animal, but can't find the trail."));
 
 
 		// return whether it worked

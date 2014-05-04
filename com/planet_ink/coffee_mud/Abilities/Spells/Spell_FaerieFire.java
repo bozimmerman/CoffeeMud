@@ -113,7 +113,7 @@ public class Spell_FaerieFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> mutter(s) about a faerie fire, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> mutter(s) about a faerie fire, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

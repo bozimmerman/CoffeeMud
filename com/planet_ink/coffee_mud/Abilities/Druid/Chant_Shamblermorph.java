@@ -137,9 +137,9 @@ public class Chant_Shamblermorph extends Chant
 		}
 		else
 		if(malicious)
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 		// return whether it worked
 		return success;

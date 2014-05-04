@@ -98,7 +98,7 @@ public class Archon_Wrath extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

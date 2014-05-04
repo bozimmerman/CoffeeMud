@@ -163,7 +163,7 @@ public class Paladin_Defend extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to assume an all-out defensive posture, but fail(s).");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to assume an all-out defensive posture, but fail(s)."));
 
 
 		// return whether it worked

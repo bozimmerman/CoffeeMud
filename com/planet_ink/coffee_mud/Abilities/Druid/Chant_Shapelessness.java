@@ -172,7 +172,7 @@ public class Chant_Shapelessness extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a new shape, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a new shape, but nothing happens."));
 
 
 		// return whether it worked

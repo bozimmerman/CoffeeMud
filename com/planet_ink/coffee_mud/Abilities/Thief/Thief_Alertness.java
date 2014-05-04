@@ -119,7 +119,7 @@ public class Thief_Alertness extends ThiefSkill
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?"<T-NAME> become(s) alert.":"<S-NAME> become(s) suddenly alert.");
 		if(!success)
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to look alert, but become(s) distracted.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to look alert, but become(s) distracted."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

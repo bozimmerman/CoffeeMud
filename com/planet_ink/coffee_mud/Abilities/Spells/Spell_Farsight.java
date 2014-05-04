@@ -49,7 +49,7 @@ public class Spell_Farsight extends Spell
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,"<S-NAME> get(s) a far off look, but the spell fizzles.");
+			this.beneficialVisualFizzle(mob,null,_("<S-NAME> get(s) a far off look, but the spell fizzles."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?"));

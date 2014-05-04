@@ -306,7 +306,7 @@ public class Qualify  extends Skills
 					msg.append("\n\r^HYou may learn ^w"+limits.craftingSkills+"^H more crafting skills.^N");
 				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
 					msg.append("\n\r^HYou may learn ^w"+limits.nonCraftingSkills+"^H more non-crafting common skills.^N");
-				mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
+				mob.session().wraplessPrintln(_("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				mob.tell(_("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
 					mob.tell(_("\n\rUse the TRAIN command to train for a new class."));

@@ -136,7 +136,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to mark traps, but can't seem to concentrate.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to mark traps, but can't seem to concentrate."));
 		return success;
 	}
 }

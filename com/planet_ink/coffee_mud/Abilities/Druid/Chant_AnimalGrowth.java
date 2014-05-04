@@ -135,7 +135,7 @@ public class Chant_AnimalGrowth extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

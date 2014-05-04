@@ -129,7 +129,7 @@ public class Prayer_Rockskin extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but fail(s) miserably.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

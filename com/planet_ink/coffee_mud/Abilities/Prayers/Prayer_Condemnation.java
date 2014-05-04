@@ -79,7 +79,7 @@ public class Prayer_Condemnation extends Prayer
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to condemn <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to condemn <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 
 		// return whether it worked

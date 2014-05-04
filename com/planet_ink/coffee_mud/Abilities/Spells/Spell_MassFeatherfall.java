@@ -82,7 +82,7 @@ public class Spell_MassFeatherfall extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
 
 
 		// return whether it worked

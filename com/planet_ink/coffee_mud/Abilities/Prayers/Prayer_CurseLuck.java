@@ -133,7 +133,7 @@ public class Prayer_CurseLuck extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to curse the luck of <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to curse the luck of <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

@@ -185,7 +185,7 @@ public class Prayer_HuntEvil extends Prayer
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for the trail to "+word()+", but nothing happens.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> @x1 for the trail to @x2, but nothing happens.",prayWord(mob),word()));
 
 
 		// return whether it worked

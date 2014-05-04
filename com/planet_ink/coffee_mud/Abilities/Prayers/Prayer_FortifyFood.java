@@ -79,7 +79,7 @@ public class Prayer_FortifyFood extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

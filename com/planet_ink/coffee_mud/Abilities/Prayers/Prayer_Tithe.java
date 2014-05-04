@@ -143,7 +143,7 @@ public class Prayer_Tithe extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> tithing need but there is no answer.");
+			return maliciousFizzle(mob,null,_("<S-NAME> @x1 for <T-YOUPOSS> tithing need but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

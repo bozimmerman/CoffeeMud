@@ -234,7 +234,7 @@ public class Chant_CharmAnimal extends Chant
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

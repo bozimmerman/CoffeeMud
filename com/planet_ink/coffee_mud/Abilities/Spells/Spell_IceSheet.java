@@ -161,7 +161,7 @@ public class Spell_IceSheet extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> speak(s) about the cold, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) about the cold, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

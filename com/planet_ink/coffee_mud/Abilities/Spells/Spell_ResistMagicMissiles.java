@@ -114,7 +114,7 @@ public class Spell_ResistMagicMissiles extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an absorbing barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an absorbing barrier, but fail(s)."));
 
 		return success;
 	}

@@ -77,7 +77,7 @@ public class Spell_Fireball extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF>, but nothing more happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

@@ -109,7 +109,7 @@ public class Thief_SilentGold extends ThiefSkill
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to start silently looting gold from corpses, but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to start silently looting gold from corpses, but fail(s)."));
 		return success;
 	}
 

@@ -157,7 +157,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

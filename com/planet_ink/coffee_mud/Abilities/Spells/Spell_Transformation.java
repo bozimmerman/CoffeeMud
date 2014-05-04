@@ -98,7 +98,7 @@ public class Spell_Transformation extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s), but fizzle(s) the spell.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but fizzle(s) the spell."));
 
 		// return whether it worked
 		return success;

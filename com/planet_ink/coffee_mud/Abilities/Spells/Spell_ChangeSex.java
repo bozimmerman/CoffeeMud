@@ -218,7 +218,7 @@ public class Spell_ChangeSex extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> sing(s) a spell to <T-NAMESELF>, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> sing(s) a spell to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -112,7 +112,7 @@ public class Spell_Mute extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

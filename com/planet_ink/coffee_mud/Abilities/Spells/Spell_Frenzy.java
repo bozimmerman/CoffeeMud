@@ -134,7 +134,7 @@ public class Spell_Frenzy extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> scream(s) wildly at <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> scream(s) wildly at <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

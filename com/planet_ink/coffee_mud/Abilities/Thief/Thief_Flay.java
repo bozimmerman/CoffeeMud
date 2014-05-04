@@ -170,7 +170,7 @@ public class Thief_Flay extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

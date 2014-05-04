@@ -190,7 +190,7 @@ public class Chant_LocateAnimals extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for the animals, but nothing happens.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) for the animals, but nothing happens."));
 
 
 		// return whether it worked

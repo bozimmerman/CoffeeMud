@@ -147,7 +147,7 @@ public class Spell_DispelMagic extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to dispel "+revokeThis.name()+" from <T-NAMESELF>, but flub(s) it.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
 
 
 		// return whether it worked

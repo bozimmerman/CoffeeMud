@@ -138,7 +138,7 @@ public class Spell_SummonFlyer extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for a steed, but choke(s) on the words.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for a steed, but choke(s) on the words."));
 
 		// return whether it worked
 		return success;

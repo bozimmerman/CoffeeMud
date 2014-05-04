@@ -156,7 +156,7 @@ public class Spell_Levitate extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but the spell fizzles."));
 		// return whether it worked
 		return success;
 	}

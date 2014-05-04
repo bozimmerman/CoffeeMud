@@ -151,7 +151,7 @@ public class Spell_Delay extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> point(s) and shout(s) 'NOW', but then look(s) frustrated.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> point(s) and shout(s) 'NOW', but then look(s) frustrated."));
 
 		// return whether it worked
 		return success;

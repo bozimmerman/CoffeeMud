@@ -170,9 +170,9 @@ public class Ranger_Hide extends StdAbility
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,highestMOB,"<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s).");
+				beneficialVisualFizzle(mob,highestMOB,_("<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s)."));
 			else
-				beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
+				beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to hide and fail(s)."));
 		}
 		else
 		{

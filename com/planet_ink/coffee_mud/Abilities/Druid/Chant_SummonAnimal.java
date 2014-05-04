@@ -166,10 +166,10 @@ public class Chant_SummonAnimal extends Chant
 				invoker=mob;
 			}
 			else
-				return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and summon(s), but nothing happens.");
+				return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) and summon(s), but nothing happens."));
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and summon(s), but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) and summon(s), but nothing happens."));
 
 		// return whether it worked
 		return success;

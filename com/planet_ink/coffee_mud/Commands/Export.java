@@ -253,7 +253,7 @@ public class Export extends StdCommand
 			{
 				final StringBuffer x=new StringBuffer("<PLAYERS>");
 				if(S!=null)
-					S.rawPrint("Reading players...");
+					S.rawPrint(_("Reading players..."));
 				final java.util.List<String> V=CMLib.database().getUserList();
 				for(final String name : V)
 				{
@@ -276,7 +276,7 @@ public class Export extends StdCommand
 			{
 				final StringBuffer x=new StringBuffer("<ACCOUNTS>");
 				if(S!=null)
-					S.rawPrint("Reading accounts and players...");
+					S.rawPrint(_("Reading accounts and players..."));
 				for(final Enumeration<PlayerAccount> a=CMLib.players().accounts("",null);a.hasMoreElements();)
 				{
 					final PlayerAccount A=a.nextElement();
@@ -300,7 +300,7 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
-					S.rawPrint("Reading area '"+area.Name()+"'...");
+					S.rawPrint(_("Reading area '@x1'...",area.Name()));
 				xml=CMLib.coffeeMaker().getAreaXML(area,S,custom,files,true).toString();
 				if(fileNameCode==2)
 				{
@@ -327,7 +327,7 @@ public class Export extends StdCommand
 					if(A!=null)
 					{
 						if(S!=null)
-							S.rawPrint("Reading area '"+A.name()+"'...");
+							S.rawPrint(_("Reading area '@x1'...",A.name()));
 						buf.append(CMLib.coffeeMaker().getAreaXML(A,S,custom,files,true).toString());
 						if(S!=null)
 							S.rawPrintln("!");
@@ -385,7 +385,7 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
-					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
+					S.rawPrint(_("Reading area mobs '@x1'...",area.Name()));
 				final StringBuffer buf=new StringBuffer("<MOBS>");
 				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
@@ -400,7 +400,7 @@ public class Export extends StdCommand
 			else
 			{
 				if(S!=null)
-					S.rawPrint("Reading world mobs ...");
+					S.rawPrint(_("Reading world mobs ..."));
 				final StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
@@ -448,7 +448,7 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(S!=null)
-					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
+					S.rawPrint(_("Reading area @x1 '@x2'...",subType.toLowerCase(),area.Name()));
 				final StringBuffer buf=new StringBuffer("<ITEMS>");
 				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
@@ -463,7 +463,7 @@ public class Export extends StdCommand
 			else
 			{
 				if(S!=null)
-					S.rawPrint("Reading world "+subType.toLowerCase()+" ...");
+					S.rawPrint(_("Reading world @x1 ...",subType.toLowerCase()));
 				final StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{

@@ -77,7 +77,7 @@ public class Spell_Disenchant extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but fail(s) to cast a spell.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

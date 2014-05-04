@@ -125,7 +125,7 @@ public class Spell_FeatherFall extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

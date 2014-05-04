@@ -113,7 +113,7 @@ public class Spell_Deafness extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> scream(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> scream(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

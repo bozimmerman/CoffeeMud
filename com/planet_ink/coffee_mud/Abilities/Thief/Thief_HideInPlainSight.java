@@ -187,9 +187,9 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,highestMOB,"<S-NAME> step(s) to the side of <T-NAMESELF>, but end(s) up looking like an idiot.");
+				beneficialVisualFizzle(mob,highestMOB,_("<S-NAME> step(s) to the side of <T-NAMESELF>, but end(s) up looking like an idiot."));
 			else
-				beneficialVisualFizzle(mob,null,"<S-NAME> step(s) to the side and look(s) like an idiot.");
+				beneficialVisualFizzle(mob,null,_("<S-NAME> step(s) to the side and look(s) like an idiot."));
 		}
 		else
 		{

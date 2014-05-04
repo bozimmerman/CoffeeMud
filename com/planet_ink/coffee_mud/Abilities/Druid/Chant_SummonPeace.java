@@ -81,7 +81,7 @@ public class Chant_SummonPeace extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for peace, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for peace, but nothing happens."));
 
 
 		// return whether it worked

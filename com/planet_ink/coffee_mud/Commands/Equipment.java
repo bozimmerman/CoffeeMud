@@ -298,15 +298,15 @@ public class Equipment extends StdCommand
 			if(paragraphView)
 			{
 				if(longView)
-					session.wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
+					session.wraplessPrintln(_("You are wearing @x1",getEquipment(mob,mob,true).toString()));
 				else
-					session.wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
+					session.wraplessPrintln(_("You are wearing @x1",getEquipment(mob,mob,false).toString()));
 			}
 			else
 			if(longView)
-				session.wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
+				session.wraplessPrintln(_("You are wearing:\n\r@x1",getEquipment(mob,mob,true).toString()));
 			else
-				session.wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
+				session.wraplessPrintln(_("You are wearing:\n\r@x1",getEquipment(mob,mob,false).toString()));
 		}
 	}
 

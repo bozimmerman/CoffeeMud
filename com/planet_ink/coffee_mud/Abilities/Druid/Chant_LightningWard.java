@@ -91,7 +91,7 @@ public class Chant_LightningWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for protection from lightning, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for protection from lightning, but fail(s)."));
 
 		return success;
 	}

@@ -81,7 +81,7 @@ public class Undead_LifeDrain extends StdAbility
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

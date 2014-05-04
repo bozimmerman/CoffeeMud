@@ -158,7 +158,7 @@ public class Chant_WindGust extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

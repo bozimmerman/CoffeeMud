@@ -115,7 +115,7 @@ public class Skill_Satire extends BardSkill
 
 		if(!success)
 		{
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to mock <T-NAME>, but <S-IS-ARE> not funny.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to mock <T-NAME>, but <S-IS-ARE> not funny."));
 			if(CMLib.dice().rollPercentage()>mob.charStats().getStat(CharStats.STAT_CHARISMA))
 				criminalFail(B,A2,mob,target);
 			return false;

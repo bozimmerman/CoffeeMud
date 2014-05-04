@@ -210,7 +210,7 @@ public class Skill_Buffoonery extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) buffoonery on <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) buffoonery on <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

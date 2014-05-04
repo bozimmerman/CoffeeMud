@@ -103,7 +103,7 @@ public class Spell_ResistArrows extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a non-porous barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a non-porous barrier, but fail(s)."));
 
 		return success;
 	}

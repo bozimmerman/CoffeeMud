@@ -166,7 +166,7 @@ public class Chant_WaterWalking extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

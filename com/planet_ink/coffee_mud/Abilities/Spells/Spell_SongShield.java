@@ -116,7 +116,7 @@ public class Spell_SongShield extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a shield, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a shield, but fail(s)."));
 
 		return success;
 	}

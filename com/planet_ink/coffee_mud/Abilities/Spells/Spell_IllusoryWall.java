@@ -81,7 +81,7 @@ public class Spell_IllusoryWall extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+", but nothing happens.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> whisper(s) @x1, but nothing happens.",Directions.getDirectionName(dirCode)));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");

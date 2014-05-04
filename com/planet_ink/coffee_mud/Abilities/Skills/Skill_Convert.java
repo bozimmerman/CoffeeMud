@@ -215,7 +215,7 @@ public class Skill_Convert extends StdSkill
 				if(A!=null) A.invoke(mob,target,true,asLevel);
 			}
 			else
-				beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing.");
+				beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
 		}
 
 		// return whether it worked

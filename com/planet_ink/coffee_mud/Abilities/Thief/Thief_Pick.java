@@ -74,7 +74,7 @@ public class Thief_Pick extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,unlockThis,"<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s).");
+			beneficialVisualFizzle(mob,unlockThis,_("<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s)."));
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);

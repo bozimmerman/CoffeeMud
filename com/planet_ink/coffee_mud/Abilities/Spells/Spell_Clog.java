@@ -111,7 +111,7 @@ public class Spell_Clog extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> gurgle(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> gurgle(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

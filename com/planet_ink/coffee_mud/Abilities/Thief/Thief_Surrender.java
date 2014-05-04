@@ -106,7 +106,7 @@ public class Thief_Surrender extends ThiefSkill
 				success=false;
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to surrender and fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to surrender and fail(s)."));
 		return success;
 	}
 }

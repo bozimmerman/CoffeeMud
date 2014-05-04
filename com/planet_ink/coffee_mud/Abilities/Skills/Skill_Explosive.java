@@ -73,7 +73,7 @@ public class Skill_Explosive extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to ** BLAST ** <T-NAMESELF>, but end(s) up looking silly.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to ** BLAST ** <T-NAMESELF>, but end(s) up looking silly."));
 
 		return success;
 	}

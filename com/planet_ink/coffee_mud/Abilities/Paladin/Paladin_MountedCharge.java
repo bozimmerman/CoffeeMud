@@ -149,7 +149,7 @@ public class Paladin_MountedCharge extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> ride(s) at <T-NAMESELF>, but miss(es).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> ride(s) at <T-NAMESELF>, but miss(es)."));
 
 		// return whether it worked
 		return success;

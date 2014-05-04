@@ -93,7 +93,7 @@ public class Spell_AcidSpray extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> reach(es) for <T-NAMESELF>, but nothing more happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> reach(es) for <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

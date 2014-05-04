@@ -88,7 +88,7 @@ public class Prayer_Plague extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to inflict a plague at <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict a plague at <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

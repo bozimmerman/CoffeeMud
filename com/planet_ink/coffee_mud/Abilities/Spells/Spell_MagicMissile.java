@@ -85,7 +85,7 @@ public class Spell_MagicMissile extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

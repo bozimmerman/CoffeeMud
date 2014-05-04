@@ -244,7 +244,7 @@ public class Chant_FindPlant extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s), but gain(s) nothing from it.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s), but gain(s) nothing from it."));
 
 		return success;
 	}

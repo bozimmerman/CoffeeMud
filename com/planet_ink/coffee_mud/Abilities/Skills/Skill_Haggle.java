@@ -93,7 +93,7 @@ public class Skill_Haggle extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,"<S-NAME> haggle(s) with <T-NAMESELF>, but <S-IS-ARE> unconvincing.");
+			beneficialWordsFizzle(mob,shopkeeper,_("<S-NAME> haggle(s) with <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
 
 		// return whether it worked
 		return success;

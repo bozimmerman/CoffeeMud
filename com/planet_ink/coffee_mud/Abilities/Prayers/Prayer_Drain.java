@@ -81,7 +81,7 @@ public class Prayer_Drain extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> reach(es) for <T-NAMESELF>, "+prayingWord(mob)+", but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> reach(es) for <T-NAMESELF>, @x1, but the spell fades.",prayingWord(mob)));
 
 
 		// return whether it worked

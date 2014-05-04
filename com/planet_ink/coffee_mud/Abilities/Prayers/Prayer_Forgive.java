@@ -77,7 +77,7 @@ public class Prayer_Forgive extends Prayer
 		if(success)
 		{
 			if(warrants.size()==0)
-				beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to forgive "+name+" for no reason at all.");
+				beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 to forgive @x2 for no reason at all.",prayForWord(mob),name));
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to forgive "+name+".^?");
@@ -94,7 +94,7 @@ public class Prayer_Forgive extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to forgive "+name+", but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 to forgive @x2, but nothing happens.",prayForWord(mob),name));
 
 
 		// return whether it worked

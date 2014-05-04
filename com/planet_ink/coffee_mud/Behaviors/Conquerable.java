@@ -391,7 +391,7 @@ public class Conquerable extends Arrest
 			if((S.mob()!=null)
 			&&(S.mob().location()!=null)
 			&&(area.inMyMetroArea(S.mob().location().getArea())))
-				S.println(clanID+" "+(amount<0?"loses "+(-amount):"gains "+amount)+" control points.");
+				S.println(_("@x1 @x2 control points.",clanID,(amount<0?"loses "+(-amount):"gains "+amount)));
 		}
 	}
 

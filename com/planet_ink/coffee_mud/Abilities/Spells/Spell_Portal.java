@@ -178,7 +178,7 @@ public class Spell_Portal extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell."));
 
 
 		// return whether it worked

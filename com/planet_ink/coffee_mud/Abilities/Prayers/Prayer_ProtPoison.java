@@ -120,7 +120,7 @@ public class Prayer_ProtPoison extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for protection from poisons, but go(es) unanswered.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for protection from poisons, but go(es) unanswered.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -122,7 +122,7 @@ public class Prayer_GuardianHearth extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to guard this place, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to guard this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

@@ -135,7 +135,7 @@ public class Spell_Flagportation extends Spell
 			while((isBadRoom(room,mob,newRoom))&&((++x)<1000))
 				room=CMLib.map().getRandomRoom();
 			if(isBadRoom(room,mob,newRoom))
-				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell.");
+				beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell."));
 			newRoom=room;
 		}
 

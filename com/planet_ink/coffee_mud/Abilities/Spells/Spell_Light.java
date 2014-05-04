@@ -103,7 +103,7 @@ public class Spell_Light extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke light, but fail(s).");
+			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke light, but fail(s)."));
 
 		return success;
 	}

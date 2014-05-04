@@ -758,7 +758,7 @@ public class Destroy extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
+			mob.session().rawPrintln(_("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -770,7 +770,7 @@ public class Destroy extends StdCommand
 					||therest.equalsIgnoreCase("SELF")
 					||therest.equalsIgnoreCase("ALL"))))
 			{
-				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
+				mob.session().rawPrintln(_("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r"));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}

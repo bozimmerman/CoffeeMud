@@ -167,7 +167,7 @@ public class Spell_Repulsion extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles."));
 
 
 		// return whether it worked

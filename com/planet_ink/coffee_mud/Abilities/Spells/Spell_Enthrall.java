@@ -244,7 +244,7 @@ public class Spell_Enthrall extends Spell
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,"<S-NAME> smile(s) powerfully at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> smile(s) powerfully at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -126,7 +126,7 @@ public class Skill_Imitation extends BardSkill
 				mob.location().send(mob,msg);
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to imitate "+found+", but fail(s).");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to imitate @x1, but fail(s).",found));
 
 		return success;
 	}

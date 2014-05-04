@@ -148,7 +148,7 @@ public class Prayer_AnimateDead extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for dark powers, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for dark powers, but fail(s) miserably.",prayWord(mob)));
 
 
 		// return whether it worked

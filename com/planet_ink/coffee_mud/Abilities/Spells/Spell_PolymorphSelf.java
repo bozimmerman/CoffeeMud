@@ -177,7 +177,7 @@ public class Spell_PolymorphSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

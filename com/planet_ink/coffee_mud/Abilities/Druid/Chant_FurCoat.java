@@ -188,7 +188,7 @@ public class Chant_FurCoat extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a thick coat of fur, but nothing happen(s).");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a thick coat of fur, but nothing happen(s)."));
 
 		// return whether it worked
 		return success;

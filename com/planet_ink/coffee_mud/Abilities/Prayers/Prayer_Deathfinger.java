@@ -78,7 +78,7 @@ public class Prayer_Deathfinger extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) in rage at <T-NAMESELF> and "+prayWord(mob)+", but "+hisHerDiety(mob)+" does nothing.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) in rage at <T-NAMESELF> and @x1, but @x2 does nothing.",prayWord(mob),hisHerDiety(mob)));
 
 
 		// return whether it worked

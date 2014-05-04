@@ -155,7 +155,7 @@ public class Skill_QuickChange extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to change clothes, but forget(s) how.");
+			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to change clothes, but forget(s) how."));
 
 		return success;
 	}

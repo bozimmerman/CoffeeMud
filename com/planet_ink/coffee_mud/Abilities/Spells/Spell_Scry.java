@@ -184,7 +184,7 @@ public class Spell_Scry extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke scrying, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke scrying, but fizzle(s) the spell."));
 
 
 		// return whether it worked

@@ -177,7 +177,7 @@ public class Thief_Footlocks extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> throw(s) a pair of footlock blocks at <T-YOUPOSS> feet and miss(es).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> throw(s) a pair of footlock blocks at <T-YOUPOSS> feet and miss(es)."));
 		return success;
 	}
 }

@@ -124,7 +124,7 @@ public class Prayer_Stasis extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to place <T-NAMESELF> into stasis, but flub(s) it.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to place <T-NAMESELF> into stasis, but flub(s) it.",prayForWord(mob)));
 
 
 		// return whether it worked

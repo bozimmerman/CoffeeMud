@@ -101,7 +101,7 @@ public class WeakParalysis extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
 
 
 		// return whether it worked

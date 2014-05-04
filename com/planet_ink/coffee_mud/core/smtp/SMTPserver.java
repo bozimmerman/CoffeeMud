@@ -368,11 +368,9 @@ public class SMTPserver extends Thread implements Tickable
 
 	// sends shutdown message to both log and optional session
 	// then just calls interrupt
-	public void shutdown(Session S)
+	private void shutdown(Session S)
 	{
 		Log.sysOut(getName(),"Shutting down.");
-		if (S != null)
-			S.println( getName() + " shutting down.");
 		try{servsock.close(); Thread.sleep(100);}catch(final Exception e){}
 		threadPool.shutdown();
 		if(getTickStatus()==Tickable.STATUS_NOT)

@@ -126,7 +126,7 @@ public class Spell_MageArmor extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke magical protection, but fail(s).");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke magical protection, but fail(s)."));
 
 		// return whether it worked
 		return success;

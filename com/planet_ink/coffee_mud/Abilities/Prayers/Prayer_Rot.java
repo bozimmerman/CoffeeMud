@@ -258,7 +258,7 @@ public class Prayer_Rot extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for rotting, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for rotting, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

@@ -74,7 +74,7 @@ public class Prayer_Thunderbolt extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

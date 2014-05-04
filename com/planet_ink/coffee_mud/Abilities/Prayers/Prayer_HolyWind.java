@@ -158,7 +158,7 @@ public class Prayer_HolyWind extends Prayer
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

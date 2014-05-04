@@ -82,7 +82,7 @@ public class Spell_Daydream extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke a daydream, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a daydream, but fizzle(s) the spell."));
 
 
 		// return whether it worked

@@ -113,7 +113,7 @@ public class Spell_ConjureNexus extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to summon a Nexus, but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon a Nexus, but fail(s)."));
 
 
 		// return whether it worked

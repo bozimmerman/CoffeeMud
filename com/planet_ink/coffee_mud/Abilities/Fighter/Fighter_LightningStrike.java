@@ -192,7 +192,7 @@ public class Fighter_LightningStrike extends MonkSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to flurry <T-NAMESELF> with lighting strikes, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to flurry <T-NAMESELF> with lighting strikes, but fail(s)."));
 
 		// return whether it worked
 		return success;

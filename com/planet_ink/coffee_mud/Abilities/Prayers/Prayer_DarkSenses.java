@@ -105,7 +105,7 @@ public class Prayer_DarkSenses extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but nothing more happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

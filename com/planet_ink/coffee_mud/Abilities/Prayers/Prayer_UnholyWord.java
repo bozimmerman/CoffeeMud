@@ -128,18 +128,18 @@ public class Prayer_UnholyWord extends Prayer
 						}
 						else
 						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-							maliciousFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
+							maliciousFizzle(mob,target,_("<T-NAME> did not hear the unholy word!"));
 						else
-							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
+							beneficialWordsFizzle(mob,target,_("<T-NAME> did not hear the unholy word!"));
 					}
 				}
 			}
 			else
 			{
 				if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-					maliciousFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
+					maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
 				else
-					beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
+					beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
 				return false;
 			}
 		}

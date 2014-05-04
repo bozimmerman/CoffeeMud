@@ -98,7 +98,7 @@ public class Prayer_ConsecrateLand extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayForWord(mob)+" to consecrate this place, but <S-IS-ARE> not answered.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to consecrate this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

@@ -162,7 +162,7 @@ public class StdBook extends StdItem
 						return;
 					}
 					final String messageTitle="The contents of this chapter";
-					mob.session().println("\n\rEnter the contents of this chapter:");
+					mob.session().println(_("\n\rEnter the contents of this chapter:"));
 					final List<String> vbuf=new Vector<String>();
 					if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
 					{

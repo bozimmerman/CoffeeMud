@@ -173,7 +173,7 @@ public class Skill_CenterOfAttention extends BardSkill
 			setTimeOfNextCast(mob);
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to become the center of attention, but fail(s).");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to become the center of attention, but fail(s)."));
 		return success;
 	}
 }

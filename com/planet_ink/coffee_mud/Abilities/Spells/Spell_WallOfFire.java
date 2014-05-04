@@ -160,7 +160,7 @@ public class Spell_WallOfFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s), but the magic fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

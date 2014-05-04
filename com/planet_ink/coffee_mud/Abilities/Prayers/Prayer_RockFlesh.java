@@ -93,7 +93,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" on <T-YOUPOSS> behalf, but flub(s) it.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 on <T-YOUPOSS> behalf, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

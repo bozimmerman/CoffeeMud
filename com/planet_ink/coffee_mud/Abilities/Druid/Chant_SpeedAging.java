@@ -184,14 +184,14 @@ public class Chant_SpeedAging extends Chant
 					target.recoverPhyStats();
 				}
 				else
-					return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
+					return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 			}
 		}
 		else
 		if(CMath.bset(type,CMMsg.MASK_MALICIOUS))
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

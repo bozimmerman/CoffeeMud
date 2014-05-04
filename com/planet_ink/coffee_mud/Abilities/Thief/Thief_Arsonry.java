@@ -128,7 +128,7 @@ public class Thief_Arsonry extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) arsonry against <T-NAME>, but fails.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) arsonry against <T-NAME>, but fails."));
 		return success;
 	}
 

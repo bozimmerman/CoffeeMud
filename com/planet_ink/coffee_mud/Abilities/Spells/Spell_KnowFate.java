@@ -172,7 +172,7 @@ public class Spell_KnowFate extends Spell
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated.");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated."));
 
 		// return whether it worked
 		return success;

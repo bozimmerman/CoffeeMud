@@ -650,8 +650,8 @@ public class CharGen extends StdCommand
 									mob.session().wraplessPrintln(msg.toString());
 								if(mob.session()!=null)
 								{
-									mob.session().println(M1.name()+" has "+B1.ID()+" behavior for "+M1.numAbilities()+" abilities.");
-									mob.session().print("Working..");
+									mob.session().println(_("@x1 has @x2 behavior for @x3 abilities.",M1.name(),B1.ID(),M1.numAbilities()));
+									mob.session().print(_("Working.."));
 								}
 								*/
 							}
@@ -1024,9 +1024,9 @@ public class CharGen extends StdCommand
 		}
 
 		if(C!=null)
-			mob.session().print("\n\rAverage "+C.name()+"...");
+			mob.session().print(_("\n\rAverage @x1...",C.name()));
 		else
-			mob.session().print("\n\rAverage MOB stats, across all classes...");
+			mob.session().print(_("\n\rAverage MOB stats, across all classes..."));
 
 		MOB avgMob=null;
 		if(C!=null)

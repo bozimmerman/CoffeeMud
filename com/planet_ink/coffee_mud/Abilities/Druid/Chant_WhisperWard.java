@@ -191,7 +191,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
 
 
 		// return whether it worked

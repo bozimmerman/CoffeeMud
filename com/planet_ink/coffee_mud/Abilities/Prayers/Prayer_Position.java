@@ -151,7 +151,7 @@ public class Prayer_Position extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for a position check, but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a position check, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

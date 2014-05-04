@@ -175,7 +175,7 @@ public class Spell_LocateObject extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> invoke(s) a divination, shouting '"+what+"', but there is no answer.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> invoke(s) a divination, shouting '@x1', but there is no answer.",what));
 
 
 		// return whether it worked

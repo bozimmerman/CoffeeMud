@@ -193,7 +193,7 @@ public class Power_OctoGrapple extends SuperPower
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to grab <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to grab <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

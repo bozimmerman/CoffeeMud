@@ -124,7 +124,7 @@ public class Chant_ExplosiveDecompression extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) loudly, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) loudly, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

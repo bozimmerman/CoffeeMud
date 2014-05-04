@@ -139,7 +139,7 @@ public class Spell_AnalyzeDweomer extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> analyze(s) the nature of <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> analyze(s) the nature of <T-NAMESELF>, looking more frustrated every second."));
 
 
 		// return whether it worked

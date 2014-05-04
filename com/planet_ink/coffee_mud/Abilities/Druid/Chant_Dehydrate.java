@@ -105,7 +105,7 @@ public class Chant_Dehydrate extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

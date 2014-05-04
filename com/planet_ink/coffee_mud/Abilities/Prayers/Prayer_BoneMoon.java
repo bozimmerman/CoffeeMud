@@ -160,7 +160,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for the Bone Moon, but <S-HIS-HER> plea is not answered.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for the Bone Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

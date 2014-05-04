@@ -182,7 +182,7 @@ public class Spell_MagicItem extends Spell
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
-			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 		}
 
 

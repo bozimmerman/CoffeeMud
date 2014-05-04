@@ -126,7 +126,7 @@ public class Prayer_SeekersPrayer extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<T-NAME> "+prayWord(mob)+", but nothing is revealed.");
+			beneficialWordsFizzle(mob,target,_("<T-NAME> @x1, but nothing is revealed.",prayWord(mob)));
 
 		return success;
 	}

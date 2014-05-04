@@ -106,7 +106,7 @@ public class Prayer_LowerLaw extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing is revealed.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing is revealed.",prayWord(mob)));
 
 		return success;
 	}

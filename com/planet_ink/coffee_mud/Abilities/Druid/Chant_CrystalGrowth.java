@@ -104,7 +104,7 @@ public class Chant_CrystalGrowth extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the walls, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the walls, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -178,7 +178,7 @@ public class Chant_Treehouse extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) for a treehouse, but the magic fades.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for a treehouse, but the magic fades."));
 
 		// return whether it worked
 		return success;

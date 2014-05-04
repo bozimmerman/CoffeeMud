@@ -121,7 +121,7 @@ public class Prayer_SenseInvisible extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for divine revelation, but <S-HIS-HER> prayer is not heard.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for divine revelation, but <S-HIS-HER> prayer is not heard.",prayWord(mob)));
 
 
 		// return whether it worked

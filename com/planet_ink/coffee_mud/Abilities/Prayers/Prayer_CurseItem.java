@@ -179,7 +179,7 @@ public class Prayer_CurseItem extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

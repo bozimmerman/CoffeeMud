@@ -95,7 +95,7 @@ public class Spell_DetectScrying extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		return success;
 	}

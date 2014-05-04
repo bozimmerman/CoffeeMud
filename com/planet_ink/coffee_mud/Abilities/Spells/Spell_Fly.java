@@ -103,7 +103,7 @@ public class Spell_Fly extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> cast(s) a spell on <T-NAMESELF>, but the magic fizzles.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> cast(s) a spell on <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

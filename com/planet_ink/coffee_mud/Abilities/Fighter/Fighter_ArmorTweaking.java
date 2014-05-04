@@ -154,7 +154,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,armor,"<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right.");
+			return beneficialVisualFizzle(mob,armor,_("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
 		return success;
 	}
 

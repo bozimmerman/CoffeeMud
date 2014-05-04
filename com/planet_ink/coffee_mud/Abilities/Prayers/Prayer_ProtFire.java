@@ -92,7 +92,7 @@ public class Prayer_ProtFire extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for fire protection, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for fire protection, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

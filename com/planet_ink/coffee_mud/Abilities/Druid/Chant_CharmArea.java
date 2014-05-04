@@ -154,7 +154,7 @@ public class Chant_CharmArea extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s), but the magic fades.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but the magic fades."));
 
 		// return whether it worked
 		return success;

@@ -264,7 +264,7 @@ public class Modify extends StdCommand
 							areaType=mob.session().prompt(_("Enter an area type to create (default=StdArea): "),_("StdArea"));
 							if(CMClass.getAreaType(areaType)==null)
 							{
-								mob.session().println("Invalid area type! Valid ones are:");
+								mob.session().println(_("Invalid area type! Valid ones are:"));
 								mob.session().println(CMLib.lister().reallyList(mob,CMClass.areaTypes()).toString());
 								areaType="";
 							}
@@ -1215,7 +1215,7 @@ public class Modify extends StdCommand
 
 		if(commands.size()<3)
 		{
-			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r");
+			mob.session().rawPrintln(_("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}

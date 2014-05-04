@@ -195,7 +195,7 @@ public class Chant_ManicMoon extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to the sky, but the magic fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

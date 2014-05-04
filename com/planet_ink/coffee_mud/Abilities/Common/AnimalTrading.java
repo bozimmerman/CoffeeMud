@@ -154,7 +154,7 @@ public class AnimalTrading extends CommonSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,"<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>.");
+			beneficialWordsFizzle(mob,shopkeeper,_("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
 		return true;
 	}
 }

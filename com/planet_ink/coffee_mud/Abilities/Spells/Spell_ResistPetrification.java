@@ -99,7 +99,7 @@ public class Spell_ResistPetrification extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a flowing barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a flowing barrier, but fail(s)."));
 
 		return success;
 	}

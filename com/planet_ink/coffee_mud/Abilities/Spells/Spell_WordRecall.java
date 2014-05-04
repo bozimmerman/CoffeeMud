@@ -95,7 +95,7 @@ public class Spell_WordRecall extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
 
 		// return whether it worked
 		return success;

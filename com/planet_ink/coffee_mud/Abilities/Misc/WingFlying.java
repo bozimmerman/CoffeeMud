@@ -118,7 +118,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<T-NAME> fumble(s) trying to use <T-HIS-HER> wings.");
+			return beneficialVisualFizzle(mob,target,_("<T-NAME> fumble(s) trying to use <T-HIS-HER> wings."));
 
 
 		// return whether it worked

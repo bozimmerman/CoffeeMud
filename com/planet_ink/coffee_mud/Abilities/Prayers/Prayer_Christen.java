@@ -129,7 +129,7 @@ public class Prayer_Christen extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" over <T-NAME>, but lose(s) <S-HIS-HER> concentration.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 over <T-NAME>, but lose(s) <S-HIS-HER> concentration.",prayWord(mob)));
 
 
 		// return whether it worked

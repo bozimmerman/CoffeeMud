@@ -128,7 +128,7 @@ public class Chant_DeepDarkness extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) deeply, but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) deeply, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -145,7 +145,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

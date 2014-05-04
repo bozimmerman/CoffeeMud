@@ -244,7 +244,7 @@ public class Spell_FleshStone extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) at <T-NAMESELF>, but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

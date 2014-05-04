@@ -103,7 +103,7 @@ public class Prayer_Fertilize extends Prayer
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayForWord(mob)+" to make the land fruitful, but nothing happens.");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 to make the land fruitful, but nothing happens.",prayForWord(mob)));
 
 
 		// return whether it worked

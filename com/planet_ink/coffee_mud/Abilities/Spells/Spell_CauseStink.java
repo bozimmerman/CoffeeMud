@@ -148,7 +148,7 @@ public class Spell_CauseStink extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) and utter(s) a spell at <T-NAMESELF>, but it fizzles.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) and utter(s) a spell at <T-NAMESELF>, but it fizzles."));
 
 		// return whether it worked
 		return success;

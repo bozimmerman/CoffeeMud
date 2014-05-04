@@ -105,7 +105,7 @@ public class Spell_WeaknessAcid extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke weakness to acid, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to acid, but fail(s)."));
 
 		return success;
 	}

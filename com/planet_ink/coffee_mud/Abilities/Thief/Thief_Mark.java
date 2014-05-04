@@ -159,7 +159,7 @@ public class Thief_Mark extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
-			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>."));
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> mark(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{

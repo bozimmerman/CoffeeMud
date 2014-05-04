@@ -290,7 +290,7 @@ public class Catalog extends StdCommand
 							if(session!=null)
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
 								{
-									@Override public void showPrompt() { session.promptPrint("Create new category '"+newCat+"' (y/N)?");}
+									@Override public void showPrompt() { session.promptPrint(_("Create new category '@x1' (y/N)?",newCat));}
 									@Override public void timedOut() {}
 									@Override public void callBack()
 									{

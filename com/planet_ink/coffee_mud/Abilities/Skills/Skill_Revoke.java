@@ -118,7 +118,7 @@ public class Skill_Revoke extends StdSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to revoke "+revokeThis.name()+" from "+target.name()+", but flub(s) it.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to revoke @x1 from @x2, but flub(s) it.",revokeThis.name(),target.name()));
 		return success;
 	}
 

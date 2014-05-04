@@ -137,7 +137,7 @@ public class Skill_Joke extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to think up a joke for <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to think up a joke for <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

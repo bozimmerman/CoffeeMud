@@ -138,7 +138,7 @@ public class Skill_Feint extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> feint(s) at <T-NAMESELF>, but <T-HE-SHE> do(es)n't buy it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> feint(s) at <T-NAMESELF>, but <T-HE-SHE> do(es)n't buy it."));
 		return success;
 	}
 }

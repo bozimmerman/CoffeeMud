@@ -131,7 +131,7 @@ public class Prayer_Conviction extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> conviction, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for <T-YOUPOSS> conviction, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

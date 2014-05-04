@@ -160,7 +160,7 @@ public class Spell_TeleportationWard extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a teleportation ward, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a teleportation ward, but fail(s)."));
 
 		return success;
 	}

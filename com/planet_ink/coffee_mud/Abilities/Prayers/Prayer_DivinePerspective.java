@@ -120,7 +120,7 @@ public class Prayer_DivinePerspective extends Prayer
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke the holy perspective of "+target.Name()+", but fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke the holy perspective of @x1, but fail(s).",target.Name()));
 
 
 		// return whether it worked

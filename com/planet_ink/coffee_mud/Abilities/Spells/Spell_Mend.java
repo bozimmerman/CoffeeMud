@@ -78,7 +78,7 @@ public class Spell_Mend extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

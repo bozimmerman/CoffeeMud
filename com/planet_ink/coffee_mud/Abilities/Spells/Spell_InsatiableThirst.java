@@ -74,7 +74,7 @@ public class Spell_InsatiableThirst extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

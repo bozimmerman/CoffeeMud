@@ -54,7 +54,7 @@ public class Shutdown extends StdCommand implements Tickable
 		else
 			tm=" in "+tm;
 		for(final Session S : CMLib.sessions().allIterable())
-		  S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" will be "+(keepItDown?"shutting down":"restarting")+tm+"^.^?\n\r");
+		  S.colorOnlyPrintln(_("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm));
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class Shutdown extends StdCommand implements Tickable
 			public void run()
 			{
 				for(final Session S : CMLib.sessions().allIterable())
-					S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" is now "+(keepItDown?"shutting down":"restarting")+"!^.^?\n\r");
+					S.colorOnlyPrintln(_("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting")));
 				if(keepItDown)
 					Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 				else

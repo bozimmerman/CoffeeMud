@@ -145,7 +145,7 @@ public class Spell_Silence extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> whisper(s) about silence, but the spell fizzles.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> whisper(s) about silence, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

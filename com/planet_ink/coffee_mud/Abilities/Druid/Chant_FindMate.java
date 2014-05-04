@@ -238,7 +238,7 @@ public class Chant_FindMate extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happen(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happen(s)."));
 
 
 		// return whether it worked

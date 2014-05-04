@@ -109,7 +109,7 @@ public class Spell_ArcanePossession extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

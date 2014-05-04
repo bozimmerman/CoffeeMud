@@ -97,7 +97,7 @@ public class Spell_Shield extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

@@ -123,7 +123,7 @@ public class Prayer_SummonElemental extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for elemental assistance, but is not answered.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for elemental assistance, but is not answered.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

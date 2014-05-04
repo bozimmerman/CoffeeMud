@@ -101,7 +101,7 @@ public class Spell_FindFamiliar extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s), but choke(s) on the words.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s), but choke(s) on the words."));
 
 		// return whether it worked
 		return success;

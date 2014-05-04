@@ -90,7 +90,7 @@ public class Spell_SummonMarker extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
 
 
 		// return whether it worked

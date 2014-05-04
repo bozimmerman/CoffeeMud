@@ -341,7 +341,7 @@ public class Prayer_Monolith extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

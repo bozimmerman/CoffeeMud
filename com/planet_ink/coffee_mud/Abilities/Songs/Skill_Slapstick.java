@@ -114,7 +114,7 @@ public class Skill_Slapstick extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to do something silly to <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to do something silly to <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

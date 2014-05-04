@@ -82,7 +82,7 @@ public class Thief_SilentOpen extends ThiefSkill
 		}
 		else
 		{
-			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to open <T-NAME> quietly, but fail(s).");
+			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to open <T-NAME> quietly, but fail(s)."));
 			CMLib.commands().postOpen(mob,item,false);
 		}
 		return success;

@@ -151,7 +151,7 @@ public class Spell_Cloudkill extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to evoke a green cloud, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to evoke a green cloud, but the spell fizzles."));
 
 
 		// return whether it worked

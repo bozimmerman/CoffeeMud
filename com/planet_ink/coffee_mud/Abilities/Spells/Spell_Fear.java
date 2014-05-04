@@ -134,7 +134,7 @@ public class Spell_Fear extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) a frightening spell, but completely flub(s) it.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) a frightening spell, but completely flub(s) it."));
 
 
 		// return whether it worked

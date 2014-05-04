@@ -119,7 +119,7 @@ public class Prayer_DarkeningAura extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a darkening aura, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for a darkening aura, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -150,7 +150,7 @@ public class Spell_DetectMagic extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles."));
 
 		return success;
 	}

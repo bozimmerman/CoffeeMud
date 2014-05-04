@@ -115,7 +115,7 @@ public class Prayer_Purify extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for purification, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for purification, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

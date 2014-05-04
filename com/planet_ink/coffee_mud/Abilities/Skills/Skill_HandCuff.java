@@ -274,7 +274,7 @@ public class Skill_HandCuff extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to bind <T-NAME> and fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
 
 
 		// return whether it worked

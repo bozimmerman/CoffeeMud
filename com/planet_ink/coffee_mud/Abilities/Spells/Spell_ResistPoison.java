@@ -84,7 +84,7 @@ public class Spell_ResistPoison extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-venom field, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-venom field, but fail(s)."));
 
 		return success;
 	}

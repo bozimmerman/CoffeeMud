@@ -81,7 +81,7 @@ public class Spell_Dream extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke a dream, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a dream, but fizzle(s) the spell."));
 
 
 		// return whether it worked

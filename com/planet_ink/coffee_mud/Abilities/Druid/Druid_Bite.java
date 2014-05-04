@@ -111,7 +111,7 @@ public class Druid_Bite extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to bite <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to bite <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

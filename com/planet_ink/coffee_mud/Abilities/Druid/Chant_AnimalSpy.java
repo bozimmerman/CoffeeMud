@@ -185,7 +185,7 @@ public class Chant_AnimalSpy extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

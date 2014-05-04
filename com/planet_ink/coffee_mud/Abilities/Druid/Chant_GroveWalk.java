@@ -121,7 +121,7 @@ public class Chant_GroveWalk extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,newRoom,"<S-NAME> chant(s) and walk(s) around, but nothing happens.");
+			beneficialVisualFizzle(mob,newRoom,_("<S-NAME> chant(s) and walk(s) around, but nothing happens."));
 
 
 		// return whether it worked

@@ -110,7 +110,7 @@ public class Spell_SolveMaze extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,targetR,"<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,targetR,_("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
 
 
 		// return whether it worked

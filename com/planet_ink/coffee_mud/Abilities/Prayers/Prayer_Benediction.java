@@ -104,7 +104,7 @@ public class Prayer_Benediction extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a benediction over <T-YOUPOSS>  but there is no answer.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a benediction over <T-YOUPOSS>  but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

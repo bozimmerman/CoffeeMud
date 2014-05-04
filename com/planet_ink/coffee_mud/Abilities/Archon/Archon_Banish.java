@@ -280,7 +280,7 @@ public class Archon_Banish extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s).");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

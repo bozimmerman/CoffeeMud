@@ -148,7 +148,7 @@ public class Thief_Flank extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to flank <T-NAMESELF>, but flub(s) it.");
+			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to flank <T-NAMESELF>, but flub(s) it."));
 		return success;
 	}
 }

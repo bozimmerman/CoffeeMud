@@ -187,7 +187,7 @@ public class Spell_ObscureSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <S-HIM-HERSELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s) to <S-HIM-HERSELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

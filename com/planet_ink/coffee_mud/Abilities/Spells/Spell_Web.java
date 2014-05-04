@@ -146,7 +146,7 @@ public class Spell_Web extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms, but the spell fizzles."));
 
 
 		// return whether it worked

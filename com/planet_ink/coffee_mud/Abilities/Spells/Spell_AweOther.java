@@ -144,7 +144,7 @@ public class Spell_AweOther extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell on <T-NAMESELF>, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell on <T-NAMESELF>, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

@@ -169,7 +169,7 @@ public class Chant_Stonewalking extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) quietly to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) quietly to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

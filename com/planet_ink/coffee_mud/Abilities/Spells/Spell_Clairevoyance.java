@@ -172,7 +172,7 @@ public class Spell_Clairevoyance extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke clairevoyance, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke clairevoyance, but fizzle(s) the spell."));
 
 
 		// return whether it worked

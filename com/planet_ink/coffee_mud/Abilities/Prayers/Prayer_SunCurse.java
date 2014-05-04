@@ -138,7 +138,7 @@ public class Prayer_SunCurse extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to sun curse <T-NAMESELF>, but flub(s) it.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to sun curse <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

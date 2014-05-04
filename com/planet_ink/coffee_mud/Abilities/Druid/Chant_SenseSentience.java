@@ -88,7 +88,7 @@ public class Chant_SenseSentience extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) softly to <S-HIM-HERSELF>, but the magic fades.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) softly to <S-HIM-HERSELF>, but the magic fades."));
 
 		return success;
 	}

@@ -105,7 +105,7 @@ public class Prayer_CallUndead extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to call <S-HIS-HER> undead, but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to call <S-HIS-HER> undead, but fail(s)."));
 
 		// return whether it worked
 		return success;

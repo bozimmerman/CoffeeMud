@@ -100,7 +100,7 @@ public class Skill_InstrumentBash extends BardSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to bash <T-NAMESELF> with "+instrument.name()+", but end(s) up looking silly.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to bash <T-NAMESELF> with @x1, but end(s) up looking silly.",instrument.name()));
 
 		return success;
 	}

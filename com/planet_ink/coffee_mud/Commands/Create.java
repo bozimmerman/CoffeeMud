@@ -521,7 +521,7 @@ public class Create extends StdCommand
 			areaType=mob.session().prompt(_("Enter an area type to create (default=StdArea): "),_("StdArea"));
 			if(CMClass.getAreaType(areaType)==null)
 			{
-				mob.session().println("Invalid area type! Valid ones are:");
+				mob.session().println(_("Invalid area type! Valid ones are:"));
 				mob.session().println(CMLib.lister().reallyList(mob,CMClass.areaTypes()).toString());
 				areaType="";
 			}

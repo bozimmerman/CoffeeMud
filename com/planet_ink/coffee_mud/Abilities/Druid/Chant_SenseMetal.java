@@ -100,7 +100,7 @@ public class Chant_SenseMetal extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) softly, but nothing happens.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) softly, but nothing happens."));
 
 		return success;
 	}

@@ -155,7 +155,7 @@ public class Spell_WeaknessCold extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to invoke weakness to cold, but fail(s).");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to cold, but fail(s)."));
 
 		return success;
 	}

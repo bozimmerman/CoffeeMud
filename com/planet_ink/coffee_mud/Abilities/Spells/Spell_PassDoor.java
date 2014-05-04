@@ -123,7 +123,7 @@ public class Spell_PassDoor extends Spell
 
 		if((!success)
 		||(mob.fetchEffect(ID())!=null))
-			beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
 		else
 		if(auto)
 		{

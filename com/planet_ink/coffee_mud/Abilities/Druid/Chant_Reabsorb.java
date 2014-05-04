@@ -133,7 +133,7 @@ public class Chant_Reabsorb extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAME>, but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but nothing happens."));
 
 
 		// return whether it worked

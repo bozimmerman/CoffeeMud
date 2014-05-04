@@ -163,7 +163,7 @@ public class Chant_Drifting extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s), but fail(s) to leave the ground.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but fail(s) to leave the ground."));
 		// return whether it worked
 		return success;
 	}

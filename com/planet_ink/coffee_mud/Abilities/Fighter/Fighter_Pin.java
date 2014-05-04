@@ -211,7 +211,7 @@ public class Fighter_Pin extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to pin <T-NAMESELF>, but fail(s).");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to pin <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

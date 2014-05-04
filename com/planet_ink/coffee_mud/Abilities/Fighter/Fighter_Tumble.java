@@ -146,7 +146,7 @@ public class Fighter_Tumble extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to tumble, but goof(s) it up.");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to tumble, but goof(s) it up."));
 		return success;
 	}
 }

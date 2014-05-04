@@ -148,7 +148,7 @@ public class Chant_SummonInsects extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> chant(s), but the magic fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but the magic fizzles."));
 
 
 		// return whether it worked

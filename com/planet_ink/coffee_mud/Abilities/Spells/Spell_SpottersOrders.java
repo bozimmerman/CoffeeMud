@@ -224,7 +224,7 @@ public class Spell_SpottersOrders extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly about <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

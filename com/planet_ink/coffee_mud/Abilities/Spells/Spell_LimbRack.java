@@ -152,7 +152,7 @@ public class Spell_LimbRack extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) stretchingly at <T-NAMESELF>, but flub(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) stretchingly at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

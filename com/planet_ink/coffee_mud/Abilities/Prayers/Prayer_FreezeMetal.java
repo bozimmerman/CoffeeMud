@@ -169,7 +169,7 @@ public class Prayer_FreezeMetal extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
+			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

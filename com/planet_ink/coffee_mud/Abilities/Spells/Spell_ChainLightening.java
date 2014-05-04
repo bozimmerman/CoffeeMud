@@ -130,7 +130,7 @@ public class Spell_ChainLightening extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles.");
+			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles."));
 
 
 		// return whether it worked

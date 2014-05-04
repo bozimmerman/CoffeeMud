@@ -124,7 +124,7 @@ public class Chant_SongWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a ward, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a ward, but nothing happens."));
 
 		return success;
 	}

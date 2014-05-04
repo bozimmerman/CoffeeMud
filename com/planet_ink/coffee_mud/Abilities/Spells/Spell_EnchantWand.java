@@ -144,7 +144,7 @@ public class Spell_EnchantWand extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 
 
 		// return whether it worked

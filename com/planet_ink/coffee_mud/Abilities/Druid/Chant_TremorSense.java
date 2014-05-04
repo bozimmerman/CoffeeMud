@@ -183,7 +183,7 @@ public class Chant_TremorSense extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s), but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

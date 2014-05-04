@@ -77,7 +77,7 @@ public class Spell_Erase extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

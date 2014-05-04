@@ -130,7 +130,7 @@ public class Spell_Gate extends Spell
 				room=CMLib.map().getRandomRoom();
 			if(isBadRoom(room,mob,newRoom))
 			{
-				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
+				beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
 				room=null;
 			}
 			addOn=", but the spell goes AWRY!!";

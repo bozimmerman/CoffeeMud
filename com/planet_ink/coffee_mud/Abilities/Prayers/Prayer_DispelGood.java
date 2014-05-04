@@ -93,7 +93,7 @@ public class Prayer_DispelGood extends Prayer
 				return false;
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> exorcise(s) <T-NAMESELF>, but nothing emerges.");
+			return maliciousFizzle(mob,target,_("<S-NAME> exorcise(s) <T-NAMESELF>, but nothing emerges."));
 
 
 		// return whether it worked

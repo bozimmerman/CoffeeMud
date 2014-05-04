@@ -136,7 +136,7 @@ public class Spell_Command extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to command <T-NAMESELF>, but it definitely didn't work.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to command <T-NAMESELF>, but it definitely didn't work."));
 
 
 		// return whether it worked

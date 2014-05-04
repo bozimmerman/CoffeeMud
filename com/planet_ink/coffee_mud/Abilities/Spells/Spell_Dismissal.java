@@ -93,7 +93,7 @@ public class Spell_Dismissal extends Spell
 
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive but fizzled spell!");
+			maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive but fizzled spell!"));
 
 
 		// return whether it worked

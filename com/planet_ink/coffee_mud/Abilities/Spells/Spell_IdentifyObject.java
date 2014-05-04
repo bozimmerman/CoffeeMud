@@ -67,7 +67,7 @@ public class Spell_IdentifyObject extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> stud(ys) <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,_("<S-NAME> stud(ys) <T-NAMESELF>, looking more frustrated every second."));
 
 
 		// return whether it worked

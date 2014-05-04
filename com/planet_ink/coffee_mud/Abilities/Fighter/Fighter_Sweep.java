@@ -143,7 +143,7 @@ public class Fighter_Sweep extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> fail(s) to sweep.");
+			return maliciousFizzle(mob,null,_("<S-NAME> fail(s) to sweep."));
 
 		// return whether it worked
 		return success;

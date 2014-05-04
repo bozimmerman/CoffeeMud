@@ -91,7 +91,7 @@ public class Chant_FireWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for fire protection, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for fire protection, but fail(s)."));
 
 		return success;
 	}

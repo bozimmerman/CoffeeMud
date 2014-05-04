@@ -119,7 +119,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to coneal <T-NAME>, but fail(s).");
+			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to coneal <T-NAME>, but fail(s)."));
 		return success;
 	}
 }

@@ -96,7 +96,7 @@ public class Spell_Dragonfire extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.");
+			return maliciousFizzle(mob,null,_("<S-NAME> puff(s) smoke from <S-HIS-HER> mouth."));
 
 
 		// return whether it worked

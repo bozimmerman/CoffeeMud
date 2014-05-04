@@ -114,7 +114,7 @@ public class Skill_FireBreathing extends BardSkill
 				fireSource.destroy();
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke.");
+			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke."));
 
 
 		// return whether it worked

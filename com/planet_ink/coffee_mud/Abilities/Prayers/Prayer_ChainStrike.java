@@ -118,7 +118,7 @@ public class Prayer_ChainStrike extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for a ferocious spell, but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> @x1 for a ferocious spell, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

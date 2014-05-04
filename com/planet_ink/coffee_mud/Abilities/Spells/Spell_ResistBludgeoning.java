@@ -102,7 +102,7 @@ public class Spell_ResistBludgeoning extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an anti-bludgeoning barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-bludgeoning barrier, but fail(s)."));
 
 		return success;
 	}

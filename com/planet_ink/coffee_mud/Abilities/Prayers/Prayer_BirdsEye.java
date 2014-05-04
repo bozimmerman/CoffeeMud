@@ -80,7 +80,7 @@ public class Prayer_BirdsEye extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for a birds eye view, but fail(s).");
+			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a birds eye view, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

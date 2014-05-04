@@ -105,7 +105,7 @@ public class Spell_SummonEnemy extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> conjur(s), but nothing happens.");
+			return beneficialWordsFizzle(mob,null,_("<S-NAME> conjur(s), but nothing happens."));
 
 		// return whether it worked
 		return success;

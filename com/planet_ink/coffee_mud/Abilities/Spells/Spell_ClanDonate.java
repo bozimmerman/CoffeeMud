@@ -125,7 +125,7 @@ public class Spell_ClanDonate extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke donation upon <T-NAMESELF>, but fizzle(s) the spell.");
+			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke donation upon <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

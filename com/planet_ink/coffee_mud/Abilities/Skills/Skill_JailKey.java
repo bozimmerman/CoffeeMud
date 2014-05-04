@@ -117,7 +117,7 @@ public class Skill_JailKey extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) <S-HIS-HER> jailkey on "+unlockThis.name()+" and fail(s).");
+			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) <S-HIS-HER> jailkey on @x1 and fail(s).",unlockThis.name()));
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);

@@ -87,7 +87,7 @@ public class Prayer_CreateWater extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" over <T-NAME> for water, but there is no answer.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 over <T-NAME> for water, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

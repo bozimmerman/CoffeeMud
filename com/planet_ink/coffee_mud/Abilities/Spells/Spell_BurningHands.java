@@ -81,7 +81,7 @@ public class Spell_BurningHands extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) and reach(es) for <T-NAMESELF>, but flub(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and reach(es) for <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

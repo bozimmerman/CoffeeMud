@@ -92,7 +92,7 @@ public class Prayer_Hellfire extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but nothing emerges.");
+			return maliciousFizzle(mob,target,_("<S-NAME> @x1, but nothing emerges.",prayWord(mob)));
 
 
 		// return whether it worked

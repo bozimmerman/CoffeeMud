@@ -100,7 +100,7 @@ public class Spell_Friends extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

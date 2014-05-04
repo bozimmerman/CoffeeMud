@@ -153,7 +153,7 @@ public class Thief_Snatch extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
+			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
 		return success;
 	}
 }

@@ -49,7 +49,7 @@ public class Prayer_Omnipresence extends Prayer
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but the is unanswered.");
+			this.beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but the is unanswered.",prayWord(mob)));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));

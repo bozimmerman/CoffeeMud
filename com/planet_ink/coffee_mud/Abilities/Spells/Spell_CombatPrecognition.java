@@ -171,7 +171,7 @@ public class Spell_CombatPrecognition extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> shout(s) combatively, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> shout(s) combatively, but nothing more happens."));
 		// return whether it worked
 		return success;
 	}

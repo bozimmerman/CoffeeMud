@@ -142,7 +142,7 @@ public class Prayer_DivineConstitution extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to have divine constitution, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to have divine constitution, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

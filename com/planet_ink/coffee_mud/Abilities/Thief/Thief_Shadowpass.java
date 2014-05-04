@@ -110,7 +110,7 @@ public class Thief_Shadowpass extends ThiefSkill
 						if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 						{
 							CMLib.commands().postLook(mob,true);
-							return beneficialVisualFizzle(mob,null,"<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass.");
+							return beneficialVisualFizzle(mob,null,_("<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass."));
 						}
 						CMLib.combat().expendEnergy(mob,true);
 					}
@@ -131,7 +131,7 @@ public class Thief_Shadowpass extends ThiefSkill
 			if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 			{
 				CMLib.commands().postLook(mob,true);
-				return beneficialVisualFizzle(mob,null,"<S-NAME> lose(s) <S-HIS-HER> way through shadowpass.");
+				return beneficialVisualFizzle(mob,null,_("<S-NAME> lose(s) <S-HIS-HER> way through shadowpass."));
 			}
 			CMLib.combat().expendEnergy(mob,true);
 			CMLib.combat().expendEnergy(mob,true);

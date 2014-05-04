@@ -163,7 +163,7 @@ public class Prayer_Tremor extends Prayer
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" thunderously, but nothing happens.");
+			return maliciousFizzle(mob,null,_("<S-NAME> @x1 thunderously, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

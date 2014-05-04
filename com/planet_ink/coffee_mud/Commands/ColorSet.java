@@ -158,7 +158,7 @@ public class ColorSet extends StdCommand
 					buf.append("^N");
 				}
 				session.println(buf.toString());
-				session.promptPrint("Enter Number or RETURN: ");
+				session.promptPrint(_("Enter Number or RETURN: "));
 			}
 			@Override public void timedOut() {}
 			@Override public void callBack()
@@ -186,7 +186,7 @@ public class ColorSet extends StdCommand
 						session.println(buf.toString()+"^N");
 						pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 						{
-							@Override public void showPrompt() { session.promptPrint("Enter Name of New Color: "); }
+							@Override public void showPrompt() { session.promptPrint(_("Enter Name of New Color: ")); }
 							@Override public void timedOut() { }
 							@Override public void callBack()
 							{
@@ -226,7 +226,7 @@ public class ColorSet extends StdCommand
 						session.println(buf.toString()+"^N");
 						pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 						{
-							@Override public void showPrompt() { session.promptPrint("Enter Name of Background Color: "); }
+							@Override public void showPrompt() { session.promptPrint(_("Enter Name of Background Color: ")); }
 							@Override public void timedOut() { }
 							@Override public void callBack()
 							{
@@ -240,7 +240,7 @@ public class ColorSet extends StdCommand
 								{
 									pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 									{
-										@Override public void showPrompt() { session.promptPrint("Enter Name of Foreground Color: "); }
+										@Override public void showPrompt() { session.promptPrint(_("Enter Name of Foreground Color: ")); }
 										@Override public void timedOut() { }
 										@Override public void callBack()
 										{

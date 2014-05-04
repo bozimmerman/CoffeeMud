@@ -165,7 +165,7 @@ public class Spell_AlternateReality extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> incant(s) to <T-NAME>, but fizzle(s) the spell.");
+			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAME>, but fizzle(s) the spell."));
 
 
 		// return whether it worked
