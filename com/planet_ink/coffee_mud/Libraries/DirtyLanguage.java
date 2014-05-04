@@ -41,15 +41,18 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected String language="en";
 	protected String country="TX";
 	protected Locale currentLocale=null;
-	protected static final int CMD_REPLACE=0;
-	protected static final int CMD_REPLACEWHOLE=1;
-	protected static final int CMD_IGNORE=2;
-	protected static final int CMD_IGNOREWHOLE=3;
-	protected static final int CMD_AUTOIGNORE=4;
-	protected static final int CMD_DEFINE=5;
-	protected static final int CMD_REPLACEALL=6;
-	protected Hashtable<Object,Integer> HASHED_CMDS=CMStrings.makeNumericHash(
-			new String[]{"REPLACE","REPLACEWHOLE","IGNORE","IGNOREWHOLE","AUTOIGNORE","DEFINE","REPLACEALL"});
+	
+	private enum Command
+	{
+		REPLACE,
+		REPLACEWHOLE,
+		IGNORE,
+		IGNOREWHOLE,
+		AUTOIGNORE,
+		DEFINE,
+		REPLACEALL,
+		REPLACEEXACT
+	}
 
 	@Override
 	public void setLocale(String lang, String state)
@@ -146,6 +149,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final DVector globalDefinitions=new DVector(2);
 		final DVector localDefinitions=new DVector(2);
 		Hashtable<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
+		Hashtable<String,String> currentSectionReplaceExactStrs=new Hashtable<String,String>();
 		HashSet<String> currentSectionIgnoreStrs=new HashSet<String>();
 		final DVector sectionIndexes=new DVector(2);
 		final DVector wholeFile=new DVector(2);
@@ -160,6 +164,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if((currentSectionReplaceStrs.size()>0)
 				&&(currentSection!=null))
 					currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);
+				if((currentSectionReplaceExactStrs.size()>0)
+				&&(currentSection!=null))
+					currentSection.addElement("REPLACEEXACT",currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
 				if((currentSectionIgnoreStrs.size()>0)
 				&&(currentSection!=null))
 					currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs,currentSectionIgnoreStrs);
@@ -223,7 +230,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				currentSectionIgnoreStrs.add(expression.toLowerCase());
 			}
 			else
-			if(s.toUpperCase().startsWith("REPLACEWHOLE"))
+			if(s.toUpperCase().startsWith("REPLACEWHOLE")||s.toUpperCase().startsWith("REPLACEEXACT"))
 			{
 				int regstart=s.indexOf('"');
 				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
@@ -231,7 +238,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-				final String expression=unFilterString(s.substring(regstart+1,regend));
+				String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				regstart=s.indexOf('"');
@@ -241,7 +248,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					regend=s.indexOf('"',regend+1);
 				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
-				currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
+				if(s.toUpperCase().startsWith("REPLACEWHOLE"))
+					currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
+				else
+					currentSectionReplaceExactStrs.put(expression,replacement);
 			}
 			else
 			if(s.toUpperCase().startsWith("REPLACEALL"))
@@ -310,6 +320,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if((currentSectionReplaceStrs.size()>0)
 		&&(currentSection!=null))
 			currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);
+		if((currentSectionReplaceExactStrs.size()>0)
+		&&(currentSection!=null))
+			currentSection.addElement("REPLACEEXACT",currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
 		if((currentSectionIgnoreStrs.size()>0)
 		&&(currentSection!=null))
 			currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs,currentSectionIgnoreStrs);
@@ -400,7 +413,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if((parser==null)||(CMDS==null)){ return new XVector<List<String>>(CMDS);}
 		Pattern pattern=null;
 		Matcher matcher=null;
-		Integer I=null;
+		Command I=null;
 		String str=null;
 		String rep=null;
 		String wit=null;
@@ -409,11 +422,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		HashSet<String> ignoreSet=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=HASHED_CMDS.get(parser.elementAt(p,1));
+			I=(Command)CMath.s_valueOf(Command.class,(String)parser.elementAt(p,1));
 			if(I!=null)
-			switch(I.intValue())
+			switch(I)
 			{
-			case CMD_REPLACE:
+			case DEFINE:
+				break;
+			case REPLACE:
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				boolean nothingDone=false;
@@ -437,7 +452,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				break;
 			}
-			case CMD_REPLACEWHOLE:
+			case REPLACEWHOLE:
 			{
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
 				if(rep!=null)
@@ -447,7 +462,17 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				break;
 			}
-			case CMD_REPLACEALL:
+			case REPLACEEXACT:
+			{
+				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs);
+				if(rep!=null)
+				{
+					insertExpansion(MORE_CMDS,rep,0,combinedWithTabs.length(),true);
+					p=parser.size();
+				}
+				break;
+			}
+			case REPLACEALL:
 			{
 				rep=(String)parser.elementAt(p,2);
 				if(rep.length()==0) break;
@@ -469,21 +494,21 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				break;
 			}
-			case CMD_IGNORE:
+			case IGNORE:
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(combinedWithTabs);
 				if(matcher.find()) return new XVector<List<String>>();
 				break;
 			}
-			case CMD_IGNOREWHOLE:
+			case IGNOREWHOLE:
 			{
 				ignoreSet=(HashSet<String>)parser.elementAt(p,2);
 				if(ignoreSet.contains(combinedWithTabs.toLowerCase()))
 					return new XVector<List<String>>();
 				break;
 			}
-			case CMD_AUTOIGNORE:
+			case AUTOIGNORE:
 				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
 				if(autoIgnoreLen==0) autoIgnoreLen=100;
 				break;
@@ -521,17 +546,19 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		Matcher matcher=null;
 		final String oldStr=str;
 		int autoIgnoreLen=0;
-		Integer I=null;
+		Command I=null;
 		HashSet<String> ignoreSet=null;
 		String rep=null;
 		String wit=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=HASHED_CMDS.get(parser.elementAt(p,1));
+			I=(Command)CMath.s_valueOf(Command.class,(String)parser.elementAt(p,1));
 			if(I!=null)
-			switch(I.intValue())
+			switch(I)
 			{
-			case CMD_REPLACE:
+			case DEFINE:
+				break;
+			case REPLACE:
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(str);
@@ -540,13 +567,19 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 						str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 				break;
 			}
-			case CMD_REPLACEWHOLE:
+			case REPLACEWHOLE:
 			{
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
 				if(rep!=null) return rep;
 				break;
 			}
-			case CMD_REPLACEALL:
+			case REPLACEEXACT:
+			{
+				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(str);
+				if(rep!=null) return rep;
+				break;
+			}
+			case REPLACEALL:
 			{
 				rep=(String)parser.elementAt(p,2);
 				if(rep.length()==0) break;
@@ -559,21 +592,21 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				break;
 			}
-			case CMD_IGNORE:
+			case IGNORE:
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(str);
 				if(matcher.find()) return null;
 				break;
 			}
-			case CMD_IGNOREWHOLE:
+			case IGNOREWHOLE:
 			{
 				ignoreSet=(HashSet<String>)parser.elementAt(p,2);
 				if(ignoreSet.contains(str.toLowerCase()))
 					return null;
 				break;
 			}
-			case CMD_AUTOIGNORE:
+			case AUTOIGNORE:
 				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
 				if(autoIgnoreLen==0) autoIgnoreLen=100;
 				break;
