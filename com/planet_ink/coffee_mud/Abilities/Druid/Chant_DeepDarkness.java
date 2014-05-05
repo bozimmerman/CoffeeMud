@@ -37,7 +37,8 @@ import java.util.Vector;
 public class Chant_DeepDarkness extends Chant
 {
 	@Override public String ID() { return "Chant_DeepDarkness"; }
-	@Override public String name(){return "Deep Darkness";}
+	public final static String localizedName = CMLib.lang()._("Deep Darkness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Deep Darkness spell)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

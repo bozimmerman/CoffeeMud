@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Disintegrate extends Spell
 {
 	@Override public String ID() { return "Spell_Disintegrate"; }
-	@Override public String name(){return "Disintegrate";}
+	public final static String localizedName = CMLib.lang()._("Disintegrate");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}

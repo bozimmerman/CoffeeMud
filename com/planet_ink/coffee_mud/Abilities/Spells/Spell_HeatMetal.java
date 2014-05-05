@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_HeatMetal extends Spell
 {
 	@Override public String ID() { return "Spell_HeatMetal"; }
-	@Override public String name(){return "Heat Metal";}
+	public final static String localizedName = CMLib.lang()._("Heat Metal");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Heated)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

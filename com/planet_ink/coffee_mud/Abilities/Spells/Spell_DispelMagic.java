@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DispelMagic extends Spell
 {
 	@Override public String ID() { return "Spell_DispelMagic"; }
-	@Override public String name(){return "Dispel Magic";}
+	public final static String localizedName = CMLib.lang()._("Dispel Magic");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

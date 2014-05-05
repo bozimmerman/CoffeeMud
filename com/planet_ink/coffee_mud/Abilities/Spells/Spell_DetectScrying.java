@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_DetectScrying extends Spell
 {
 	@Override public String ID() { return "Spell_DetectScrying"; }
-	@Override public String name(){return "Detect Scrying";}
+	public final static String localizedName = CMLib.lang()._("Detect Scrying");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -38,7 +38,8 @@ import java.util.*;
 public class Spell_WeaknessCold extends Spell
 {
 	@Override public String ID() { return "Spell_WeaknessCold"; }
-	@Override public String name(){return "Weakness to Cold";}
+	public final static String localizedName = CMLib.lang()._("Weakness to Cold");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Weakness to Cold)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_GroupStatus extends Spell
 {
 	@Override public String ID() { return "Spell_GroupStatus"; }
-	@Override public String name(){return "Group Status";}
+	public final static String localizedName = CMLib.lang()._("Group Status");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Group Status)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_CatsGrace extends Chant
 {
 	@Override public String ID() { return "Chant_CatsGrace"; }
-	@Override public String name(){return "Cats Grace";}
+	public final static String localizedName = CMLib.lang()._("Cats Grace");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Cats Grace)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

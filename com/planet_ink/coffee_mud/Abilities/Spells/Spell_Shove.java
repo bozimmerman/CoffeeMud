@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Shove extends Spell
 {
 	@Override public String ID() { return "Spell_Shove"; }
-	@Override public String name(){return "Shove";}
+	public final static String localizedName = CMLib.lang()._("Shove");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Shoved Down)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_MetalMold extends Chant
 {
 	@Override public String ID() { return "Chant_MetalMold"; }
-	@Override public String name(){return "Metal Mold";}
+	public final static String localizedName = CMLib.lang()._("Metal Mold");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

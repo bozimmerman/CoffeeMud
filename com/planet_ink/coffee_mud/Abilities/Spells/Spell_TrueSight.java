@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_TrueSight extends Spell
 {
 	@Override public String ID() { return "Spell_TrueSight"; }
-	@Override public String name(){return "True Sight";}
+	public final static String localizedName = CMLib.lang()._("True Sight");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(True Sight)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

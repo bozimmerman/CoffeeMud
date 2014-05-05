@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_FurCoat extends Chant
 {
 	@Override public String ID() { return "Chant_FurCoat"; }
-	@Override public String name(){return "Fur Coat";}
+	public final static String localizedName = CMLib.lang()._("Fur Coat");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Fur Coat)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

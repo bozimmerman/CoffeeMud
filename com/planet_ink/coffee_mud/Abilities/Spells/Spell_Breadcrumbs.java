@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Breadcrumbs extends Spell
 {
 	@Override public String ID() { return "Spell_Breadcrumbs"; }
-	@Override public String name(){return "Breadcrumbs";}
+	public final static String localizedName = CMLib.lang()._("Breadcrumbs");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SpyingStone extends Spell
 {
 	@Override public String ID() { return "Spell_SpyingStone"; }
-	@Override public String name(){return "Spying Stone";}
+	public final static String localizedName = CMLib.lang()._("Spying Stone");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spying Stone)";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

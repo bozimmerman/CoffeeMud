@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Mirage extends Spell
 {
 	@Override public String ID() { return "Spell_Mirage"; }
-	@Override public String name(){return "Mirage";}
+	public final static String localizedName = CMLib.lang()._("Mirage");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mirage spell)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}

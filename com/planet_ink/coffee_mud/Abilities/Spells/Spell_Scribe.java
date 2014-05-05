@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_Scribe extends Spell
 {
 	@Override public String ID() { return "Spell_Scribe"; }
-	@Override public String name(){return "Scribe";}
+	public final static String localizedName = CMLib.lang()._("Scribe");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overridemana(){return Ability.COST_ALL;}

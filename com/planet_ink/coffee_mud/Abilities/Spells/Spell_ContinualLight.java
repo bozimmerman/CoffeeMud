@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ContinualLight extends Spell
 {
 	@Override public String ID() { return "Spell_ContinualLight"; }
-	@Override public String name(){return "Continual Light";}
+	public final static String localizedName = CMLib.lang()._("Continual Light");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Continual Light)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}

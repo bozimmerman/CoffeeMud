@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Hunger extends Spell
 {
 	@Override public String ID() { return "Spell_Hunger"; }
-	@Override public String name(){return "Endless Hunger";}
+	public final static String localizedName = CMLib.lang()._("Endless Hunger");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Hunger)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

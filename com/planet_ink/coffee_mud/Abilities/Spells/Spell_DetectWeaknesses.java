@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DetectWeaknesses extends Spell
 {
 	@Override public String ID() { return "Spell_DetectWeaknesses"; }
-	@Override public String name(){return "Detect Weaknesses";}
+	public final static String localizedName = CMLib.lang()._("Detect Weaknesses");
+	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
 	{

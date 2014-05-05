@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ArmsLength extends Spell
 {
 	@Override public String ID() { return "Spell_ArmsLength"; }
-	@Override public String name(){return "Arms Length";}
+	public final static String localizedName = CMLib.lang()._("Arms Length");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Arms Length)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

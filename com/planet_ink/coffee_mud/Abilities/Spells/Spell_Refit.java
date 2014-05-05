@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Refit extends Spell
 {
 	@Override public String ID() { return "Spell_Refit"; }
-	@Override public String name(){return "Refit";}
+	public final static String localizedName = CMLib.lang()._("Refit");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

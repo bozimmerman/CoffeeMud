@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_RustCurse extends Chant
 {
 	@Override public String ID() { return "Chant_RustCurse"; }
-	@Override public String name(){return "Rust Curse";}
+	public final static String localizedName = CMLib.lang()._("Rust Curse");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Rust Curse)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

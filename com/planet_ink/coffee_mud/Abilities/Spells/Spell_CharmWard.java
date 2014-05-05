@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_CharmWard extends Spell
 {
 	@Override public String ID() { return "Spell_CharmWard"; }
-	@Override public String name(){return "Charm Ward";}
+	public final static String localizedName = CMLib.lang()._("Charm Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Charm Ward)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}

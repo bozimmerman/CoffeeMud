@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_ClanHome extends Spell
 {
 	@Override public String ID() { return "Spell_ClanHome"; }
-	@Override public String name(){return "Clan Home";}
+	public final static String localizedName = CMLib.lang()._("Clan Home");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

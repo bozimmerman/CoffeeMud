@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ShrinkMouth extends Spell
 {
 	@Override public String ID() { return "Spell_ShrinkMouth"; }
-	@Override public String name(){return "Shrink Mouth";}
+	public final static String localizedName = CMLib.lang()._("Shrink Mouth");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Shrunken Mouth)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

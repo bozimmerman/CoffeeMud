@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Enlarge extends Spell
 {
 	@Override public String ID() { return "Spell_Enlarge"; }
-	@Override public String name(){return "Enlarge Object";}
+	public final static String localizedName = CMLib.lang()._("Enlarge Object");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

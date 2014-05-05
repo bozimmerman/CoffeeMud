@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_MarkerPortal extends Spell
 {
 	@Override public String ID() { return "Spell_MarkerPortal"; }
-	@Override public String name(){return "Marker Portal";}
+	public final static String localizedName = CMLib.lang()._("Marker Portal");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Command extends Spell
 {
 	@Override public String ID() { return "Spell_Command"; }
-	@Override public String name(){return "Command";}
+	public final static String localizedName = CMLib.lang()._("Command");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_MuddyGrounds extends Chant
 {
 	@Override public String ID() { return "Chant_MuddyGrounds"; }
-	@Override public String name(){return "Muddy Grounds";}
+	public final static String localizedName = CMLib.lang()._("Muddy Grounds");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

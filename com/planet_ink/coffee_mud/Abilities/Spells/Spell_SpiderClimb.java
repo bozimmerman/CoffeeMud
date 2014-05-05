@@ -38,7 +38,8 @@ import java.util.*;
 public class Spell_SpiderClimb extends Spell
 {
 	@Override public String ID() { return "Spell_SpiderClimb"; }
-	@Override public String name(){return "Spider Climb";}
+	public final static String localizedName = CMLib.lang()._("Spider Climb");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spider Climb)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

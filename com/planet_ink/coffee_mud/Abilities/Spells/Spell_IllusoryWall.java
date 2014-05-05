@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_IllusoryWall extends Spell
 {
 	@Override public String ID() { return "Spell_IllusoryWall"; }
-	@Override public String name(){return "Illusory Wall";}
+	public final static String localizedName = CMLib.lang()._("Illusory Wall");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_EXITS;}
 	@Override protected int canTargetCode(){return CAN_EXITS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

@@ -38,7 +38,8 @@ import java.util.*;
 public class Prayer_ConsecrateLand extends Prayer
 {
 	@Override public String ID() { return "Prayer_ConsecrateLand"; }
-	@Override public String name(){return "Consecrate Land";}
+	public final static String localizedName = CMLib.lang()._("Consecrate Land");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Consecrate Land)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

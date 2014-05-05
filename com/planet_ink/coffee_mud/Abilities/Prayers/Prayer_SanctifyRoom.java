@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SanctifyRoom extends Prayer
 {
 	@Override public String ID() { return "Prayer_SanctifyRoom"; }
-	@Override public String name(){return "Sanctify Room";}
+	public final static String localizedName = CMLib.lang()._("Sanctify Room");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sanctify Room)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

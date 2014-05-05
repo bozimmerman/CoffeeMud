@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SummonArmy extends Spell
 {
 	@Override public String ID() { return "Spell_SummonArmy"; }
-	@Override public String name(){return "Summon Army";}
+	public final static String localizedName = CMLib.lang()._("Summon Army");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Monster Summoning)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

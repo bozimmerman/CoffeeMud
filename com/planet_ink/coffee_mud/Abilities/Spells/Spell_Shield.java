@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Shield extends Spell
 {
 	@Override public String ID() { return "Spell_Shield"; }
-	@Override public String name(){return "Shield";}
+	public final static String localizedName = CMLib.lang()._("Shield");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Shield spell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_DeathWarning extends Spell
 {
 	@Override public String ID() { return "Spell_DeathWarning"; }
-	@Override public String name(){return "Death Warning";}
+	public final static String localizedName = CMLib.lang()._("Death Warning");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Death Warning)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

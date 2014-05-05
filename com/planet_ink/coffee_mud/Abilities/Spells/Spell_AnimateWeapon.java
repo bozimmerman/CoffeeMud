@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_AnimateWeapon extends Spell
 {
 	@Override public String ID() { return "Spell_AnimateWeapon"; }
-	@Override public String name(){return "Animate Weapon";}
+	public final static String localizedName = CMLib.lang()._("Animate Weapon");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

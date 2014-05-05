@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DemonGate extends Spell
 {
 	@Override public String ID() { return "Spell_DemonGate"; }
-	@Override public String name(){return "Demon Gate";}
+	public final static String localizedName = CMLib.lang()._("Demon Gate");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Demon Gate)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

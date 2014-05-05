@@ -38,7 +38,8 @@ import java.util.*;
 public class Spell_FeignDeath extends Spell
 {
 	@Override public String ID() { return "Spell_FeignDeath"; }
-	@Override public String name(){return "Feign Death";}
+	public final static String localizedName = CMLib.lang()._("Feign Death");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Feign Death)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

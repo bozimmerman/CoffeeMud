@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_CurseMind extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMind"; }
-	@Override public String name(){return "Curse Mind";}
+	public final static String localizedName = CMLib.lang()._("Curse Mind");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Cursed Mind)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}

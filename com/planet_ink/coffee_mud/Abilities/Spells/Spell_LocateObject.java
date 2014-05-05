@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_LocateObject extends Spell
 {
 	@Override public String ID() { return "Spell_LocateObject"; }
-	@Override public String name(){return "Locate Object";}
+	public final static String localizedName = CMLib.lang()._("Locate Object");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

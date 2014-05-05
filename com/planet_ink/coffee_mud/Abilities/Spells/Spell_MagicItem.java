@@ -38,7 +38,8 @@ import java.util.*;
 public class Spell_MagicItem extends Spell
 {
 	@Override public String ID() { return "Spell_MagicItem"; }
-	@Override public String name(){return "Magic Item";}
+	public final static String localizedName = CMLib.lang()._("Magic Item");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	@Override public long flags(){return Ability.FLAG_NOORDERING;}

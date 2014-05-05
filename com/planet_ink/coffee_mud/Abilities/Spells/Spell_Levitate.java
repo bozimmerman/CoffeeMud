@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Levitate extends Spell
 {
 	@Override public String ID() { return "Spell_Levitate"; }
-	@Override public String name(){return "Levitate";}
+	public final static String localizedName = CMLib.lang()._("Levitate");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Levitated)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

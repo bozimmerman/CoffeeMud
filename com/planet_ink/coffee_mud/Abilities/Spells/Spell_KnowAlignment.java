@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_KnowAlignment extends Spell
 {
 	@Override public String ID() { return "Spell_KnowAlignment"; }
-	@Override public String name(){return "Know Alignment";}
+	public final static String localizedName = CMLib.lang()._("Know Alignment");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

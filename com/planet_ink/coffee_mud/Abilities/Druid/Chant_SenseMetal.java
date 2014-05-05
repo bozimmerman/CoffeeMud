@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_SenseMetal extends Chant
 {
 	@Override public String ID() { return "Chant_SenseMetal"; }
-	@Override public String name(){return "Sense Metal";}
+	public final static String localizedName = CMLib.lang()._("Sense Metal");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sensing Metal)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_Geas extends Spell
 {
 	@Override public String ID() { return "Spell_Geas"; }
-	@Override public String name(){return "Geas";}
+	public final static String localizedName = CMLib.lang()._("Geas");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Geas to "+text()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}

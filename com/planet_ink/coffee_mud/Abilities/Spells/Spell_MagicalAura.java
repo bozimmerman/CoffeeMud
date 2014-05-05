@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_MagicalAura extends Spell
 {
 	@Override public String ID() { return "Spell_MagicalAura"; }
-	@Override public String name(){return "Magical Aura";}
+	public final static String localizedName = CMLib.lang()._("Magical Aura");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Magical Aura)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}

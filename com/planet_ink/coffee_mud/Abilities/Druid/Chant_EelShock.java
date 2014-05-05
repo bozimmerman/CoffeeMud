@@ -36,7 +36,8 @@ import java.util.*;
 public class Chant_EelShock extends Chant
 {
 	@Override public String ID() { return "Chant_EelShock"; }
-	@Override public String name(){return "Eel Shock";}
+	public final static String localizedName = CMLib.lang()._("Eel Shock");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Stunned)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange() {return 3;}

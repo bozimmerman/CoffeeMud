@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Transformation extends Spell
 {
 	@Override public String ID() { return "Spell_Transformation"; }
-	@Override public String name(){return "Transformation";}
+	public final static String localizedName = CMLib.lang()._("Transformation");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Transformation)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

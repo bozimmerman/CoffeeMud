@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Fear extends Spell
 {
 	@Override public String ID() { return "Spell_Fear"; }
-	@Override public String name(){return "Fear";}
+	public final static String localizedName = CMLib.lang()._("Fear");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Afraid)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

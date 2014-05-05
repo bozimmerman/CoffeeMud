@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_SenseSentience extends Chant
 {
 	@Override public String ID() { return "Chant_SenseSentience"; }
-	@Override public String name(){return "Sense Sentience";}
+	public final static String localizedName = CMLib.lang()._("Sense Sentience");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canTargetCode(){return 0;}

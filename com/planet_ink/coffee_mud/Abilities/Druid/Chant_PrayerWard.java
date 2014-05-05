@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_PrayerWard extends Chant
 {
 	@Override public String ID() { return "Chant_PrayerWard"; }
-	@Override public String name(){return "Prayer Ward";}
+	public final static String localizedName = CMLib.lang()._("Prayer Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Prayer Ward)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

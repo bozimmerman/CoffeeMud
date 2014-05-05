@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_FaerieFog extends Spell
 {
 	@Override public String ID() { return "Spell_FaerieFog"; }
-	@Override public String name(){return "Faerie Fog";}
+	public final static String localizedName = CMLib.lang()._("Faerie Fog");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Faerie Fog)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

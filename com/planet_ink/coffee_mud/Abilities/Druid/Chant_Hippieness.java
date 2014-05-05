@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Hippieness extends Chant
 {
 	@Override public String ID() { return "Chant_Hippieness"; }
-	@Override public String name(){return "Hippieness";}
+	public final static String localizedName = CMLib.lang()._("Hippieness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Feeling Groovy)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ResistPiercing extends Spell
 {
 	@Override public String ID() { return "Spell_ResistPiercing"; }
-	@Override public String name(){return "Resist Piercing";}
+	public final static String localizedName = CMLib.lang()._("Resist Piercing");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Piercing)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

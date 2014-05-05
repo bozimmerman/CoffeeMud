@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DistantVision extends Spell
 {
 	@Override public String ID() { return "Spell_DistantVision"; }
-	@Override public String name(){return "Distant Vision";}
+	public final static String localizedName = CMLib.lang()._("Distant Vision");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

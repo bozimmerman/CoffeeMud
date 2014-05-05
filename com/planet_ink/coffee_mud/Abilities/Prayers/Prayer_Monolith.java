@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Monolith extends Prayer
 {
 	@Override public String ID() { return "Prayer_Monolith"; }
-	@Override public String name(){return "Monolith";}
+	public final static String localizedName = CMLib.lang()._("Monolith");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Monolith)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ChantShield extends Spell
 {
 	@Override public String ID() { return "Spell_ChantShield"; }
-	@Override public String name(){return "Chant Shield";}
+	public final static String localizedName = CMLib.lang()._("Chant Shield");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Chant Shield)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

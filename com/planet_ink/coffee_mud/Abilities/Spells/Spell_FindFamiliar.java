@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_FindFamiliar extends Spell
 {
 	@Override public String ID() { return "Spell_FindFamiliar"; }
-	@Override public String name(){return "Find Familiar";}
+	public final static String localizedName = CMLib.lang()._("Find Familiar");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Find Familiar)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

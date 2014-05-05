@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Summon extends Spell
 {
 	@Override public String ID() { return "Spell_Summon"; }
-	@Override public String name(){return "Summon";}
+	public final static String localizedName = CMLib.lang()._("Summon");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Summoned)";}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return 0;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SummonElemental extends Prayer
 {
 	@Override public String ID() { return "Prayer_SummonElemental"; }
-	@Override public String name(){return "Elemental Aid";}
+	public final static String localizedName = CMLib.lang()._("Elemental Aid");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Elemental Aid)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

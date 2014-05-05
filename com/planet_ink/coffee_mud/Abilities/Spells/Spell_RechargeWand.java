@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_RechargeWand extends Spell
 {
 	@Override public String ID() { return "Spell_RechargeWand"; }
-	@Override public String name(){return "Recharge Wand";}
+	public final static String localizedName = CMLib.lang()._("Recharge Wand");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int overrideMana(){return 100;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

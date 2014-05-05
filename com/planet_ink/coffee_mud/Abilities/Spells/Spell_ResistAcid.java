@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ResistAcid extends Spell
 {
 	@Override public String ID() { return "Spell_ResistAcid"; }
-	@Override public String name(){return "Resist Acid";}
+	public final static String localizedName = CMLib.lang()._("Resist Acid");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Acid)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

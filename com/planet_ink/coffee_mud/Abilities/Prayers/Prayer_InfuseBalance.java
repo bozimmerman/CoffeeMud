@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_InfuseBalance extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseBalance"; }
-	@Override public String name(){return "Infuse Balance";}
+	public final static String localizedName = CMLib.lang()._("Infuse Balance");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Infused Balance)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

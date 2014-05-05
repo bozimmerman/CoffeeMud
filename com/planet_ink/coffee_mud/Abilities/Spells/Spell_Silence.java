@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Silence extends Spell
 {
 	@Override public String ID() { return "Spell_Silence"; }
-	@Override public String name(){return "Silence";}
+	public final static String localizedName = CMLib.lang()._("Silence");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Silence spell)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

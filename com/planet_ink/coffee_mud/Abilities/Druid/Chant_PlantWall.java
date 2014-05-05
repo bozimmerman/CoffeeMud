@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_PlantWall extends Chant
 {
 	@Override public String ID() { return "Chant_PlantWall"; }
-	@Override public String name(){return "Plant Wall";}
+	public final static String localizedName = CMLib.lang()._("Plant Wall");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public String displayText(){return "(Plant Wall)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_WizardLock extends Spell
 {
 	@Override public String ID() { return "Spell_WizardLock"; }
-	@Override public String name(){return "Wizard Lock";}
+	public final static String localizedName = CMLib.lang()._("Wizard Lock");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Wizard Locked)";}
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}

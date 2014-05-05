@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Irritation extends Spell
 {
 	@Override public String ID() { return "Spell_Irritation"; }
-	@Override public String name(){return "Irritation";}
+	public final static String localizedName = CMLib.lang()._("Irritation");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SpellWard extends Chant
 {
 	@Override public String ID() { return "Chant_SpellWard"; }
-	@Override public String name(){return "Spell Ward";}
+	public final static String localizedName = CMLib.lang()._("Spell Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spell Ward)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

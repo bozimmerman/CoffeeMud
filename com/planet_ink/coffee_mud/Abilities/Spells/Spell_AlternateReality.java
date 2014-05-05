@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_AlternateReality extends Spell
 {
 	@Override public String ID() { return "Spell_AlternateReality"; }
-	@Override public String name(){return "Alternate Reality";}
+	public final static String localizedName = CMLib.lang()._("Alternate Reality");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Alternate Reality)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

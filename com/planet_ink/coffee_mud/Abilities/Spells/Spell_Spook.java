@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Spook extends Spell
 {
 	@Override public String ID() { return "Spell_Spook"; }
-	@Override public String name(){return "Spook";}
+	public final static String localizedName = CMLib.lang()._("Spook");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spooked)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

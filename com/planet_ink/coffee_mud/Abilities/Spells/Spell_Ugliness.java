@@ -37,7 +37,8 @@ public class Spell_Ugliness extends Spell
 {
 
 	@Override public String ID() { return "Spell_Ugliness";}
-	@Override public String name(){return "Ugliness";}
+	public final static String localizedName = CMLib.lang()._("Ugliness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Ugliness spell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

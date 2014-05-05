@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_MysticShine extends Spell
 {
 	@Override public String ID() { return "Spell_MysticShine"; }
-	@Override public String name(){return "Mystic Shine";}
+	public final static String localizedName = CMLib.lang()._("Mystic Shine");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mystic Shine)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ResistArrows extends Spell
 {
 	@Override public String ID() { return "Spell_ResistArrows"; }
-	@Override public String name(){return "Resist Arrows";}
+	public final static String localizedName = CMLib.lang()._("Resist Arrows");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Arrows)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

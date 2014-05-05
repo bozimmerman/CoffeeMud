@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_MajorGlobe extends Spell
 {
 	@Override public String ID() { return "Spell_MajorGlobe"; }
-	@Override public String name(){return "Greater Globe";}
+	public final static String localizedName = CMLib.lang()._("Greater Globe");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Greater Globe/Invul.)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

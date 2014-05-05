@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_Torture extends Spell
 {
 	@Override public String ID() { return "Spell_Torture"; }
-	@Override public String name(){return "Torture";}
+	public final static String localizedName = CMLib.lang()._("Torture");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(being tortured)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

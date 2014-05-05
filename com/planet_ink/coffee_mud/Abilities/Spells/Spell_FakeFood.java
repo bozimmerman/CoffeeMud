@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_FakeFood extends Spell
 {
 	@Override public String ID() { return "Spell_FakeFood"; }
-	@Override public String name(){return "Fake Food";}
+	public final static String localizedName = CMLib.lang()._("Fake Food");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

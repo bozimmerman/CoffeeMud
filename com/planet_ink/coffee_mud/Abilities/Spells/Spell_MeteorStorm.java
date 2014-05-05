@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_MeteorStorm extends Spell
 {
 	@Override public String ID() { return "Spell_MeteorStorm"; }
-	@Override public String name(){return "Meteor Storm";}
+	public final static String localizedName = CMLib.lang()._("Meteor Storm");
+	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

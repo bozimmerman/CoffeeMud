@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Friends extends Spell
 {
 	@Override public String ID() { return "Spell_Friends"; }
-	@Override public String name(){return "Friends";}
+	public final static String localizedName = CMLib.lang()._("Friends");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Friends spell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

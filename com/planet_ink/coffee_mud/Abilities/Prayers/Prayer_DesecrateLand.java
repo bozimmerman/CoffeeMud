@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_DesecrateLand extends Prayer
 {
 	@Override public String ID() { return "Prayer_DesecrateLand"; }
-	@Override public String name(){return "Desecrate Land";}
+	public final static String localizedName = CMLib.lang()._("Desecrate Land");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Desecrate Land)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

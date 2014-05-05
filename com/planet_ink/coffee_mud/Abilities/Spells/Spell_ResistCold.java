@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ResistCold extends Spell
 {
 	@Override public String ID() { return "Spell_ResistCold"; }
-	@Override public String name(){return "Resist Cold";}
+	public final static String localizedName = CMLib.lang()._("Resist Cold");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Cold)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

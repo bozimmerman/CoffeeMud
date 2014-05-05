@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Demonshield extends Prayer
 {
 	@Override public String ID() { return "Prayer_Demonshield"; }
-	@Override public String name(){return "Demonshield";}
+	public final static String localizedName = CMLib.lang()._("Demonshield");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Demonshield)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

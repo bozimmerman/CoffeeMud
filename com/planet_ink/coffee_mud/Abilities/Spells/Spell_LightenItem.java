@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_LightenItem extends Spell
 {
 	@Override public String ID() { return "Spell_LightenItem"; }
-	@Override public String name(){return "Lighten Item";}
+	public final static String localizedName = CMLib.lang()._("Lighten Item");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

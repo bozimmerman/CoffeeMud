@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Choke extends Spell
 {
 	@Override public String ID() { return "Spell_Choke"; }
-	@Override public String name(){return "Choke";}
+	public final static String localizedName = CMLib.lang()._("Choke");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Choke spell)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

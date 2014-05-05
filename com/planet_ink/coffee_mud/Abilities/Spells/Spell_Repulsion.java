@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Repulsion extends Spell
 {
 	@Override public String ID() { return "Spell_Repulsion"; }
-	@Override public String name(){return "Repulsion";}
+	public final static String localizedName = CMLib.lang()._("Repulsion");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Repulsion)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

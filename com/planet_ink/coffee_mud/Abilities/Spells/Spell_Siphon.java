@@ -43,7 +43,8 @@ public class Spell_Siphon extends Spell
 		   randomizer = new Random(System.currentTimeMillis());
 	}
 	@Override public String ID() { return "Spell_Siphon"; }
-	@Override public String name(){return "Siphon";}
+	public final static String localizedName = CMLib.lang()._("Siphon");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Siphon spell)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}

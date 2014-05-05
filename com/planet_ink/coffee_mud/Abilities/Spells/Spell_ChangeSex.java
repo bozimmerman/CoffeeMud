@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ChangeSex extends Spell
 {
 	@Override public String ID() { return "Spell_ChangeSex"; }
-	@Override public String name(){return "Change Sex";}
+	public final static String localizedName = CMLib.lang()._("Change Sex");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Change Sex)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

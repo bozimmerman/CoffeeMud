@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Drifting extends Chant
 {
 	@Override public String ID() { return "Chant_Drifting"; }
-	@Override public String name(){return "Drifting";}
+	public final static String localizedName = CMLib.lang()._("Drifting");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Drifting)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

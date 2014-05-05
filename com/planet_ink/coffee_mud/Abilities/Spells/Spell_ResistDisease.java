@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_ResistDisease extends Spell
 {
 	@Override public String ID() { return "Spell_ResistDisease"; }
-	@Override public String name(){return "Resist Disease";}
+	public final static String localizedName = CMLib.lang()._("Resist Disease");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Disease)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

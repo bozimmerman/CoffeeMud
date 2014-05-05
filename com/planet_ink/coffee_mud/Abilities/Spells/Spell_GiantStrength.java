@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_GiantStrength extends Spell
 {
 	@Override public String ID() { return "Spell_GiantStrength"; }
-	@Override public String name(){return "Giant Strength";}
+	public final static String localizedName = CMLib.lang()._("Giant Strength");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Giant-Strength spell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_ObscureSelf extends Spell
 {
 	@Override public String ID() { return "Spell_ObscureSelf"; }
-	@Override public String name(){return "Obscure Self";}
+	public final static String localizedName = CMLib.lang()._("Obscure Self");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Obscure Self)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ManaShield extends Spell
 {
 	@Override public String ID() { return "Spell_ManaShield"; }
-	@Override public String name(){return "Mana Shield";}
+	public final static String localizedName = CMLib.lang()._("Mana Shield");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mana Shield)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

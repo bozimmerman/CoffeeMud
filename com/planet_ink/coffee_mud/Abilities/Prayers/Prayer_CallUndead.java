@@ -35,7 +35,8 @@ import java.util.*;
 public class Prayer_CallUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_CallUndead"; }
-	@Override public String name(){return "Call Undead";}
+	public final static String localizedName = CMLib.lang()._("Call Undead");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

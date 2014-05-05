@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_DetectWater extends Spell
 {
 	@Override public String ID() { return "Spell_DetectWater"; }
-	@Override public String name(){return "Detect Water";}
+	public final static String localizedName = CMLib.lang()._("Detect Water");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Detecting Water)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

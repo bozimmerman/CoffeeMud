@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ManaBurn extends Spell
 {
 	@Override public String ID() { return "Spell_ManaBurn"; }
-	@Override public String name(){return "Mana Burn";}
+	public final static String localizedName = CMLib.lang()._("Mana Burn");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mana Burn)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

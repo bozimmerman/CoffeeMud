@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_WaterCannon extends Spell
 {
 	@Override public String ID() { return "Spell_WaterCannon"; }
-	@Override public String name(){return "Water Cannon";}
+	public final static String localizedName = CMLib.lang()._("Water Cannon");
+	@Override public String name() { return localizedName; }
 	@Override public int minRange(){return 2;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

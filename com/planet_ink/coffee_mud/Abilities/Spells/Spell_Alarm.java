@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Alarm extends Spell
 {
 	@Override public String ID() { return "Spell_Alarm"; }
-	@Override public String name(){return "Alarm";}
+	public final static String localizedName = CMLib.lang()._("Alarm");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

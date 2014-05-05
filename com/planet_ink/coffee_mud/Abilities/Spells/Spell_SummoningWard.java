@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SummoningWard extends Spell
 {
 	@Override public String ID() { return "Spell_SummoningWard"; }
-	@Override public String name(){return "Summoning Ward";}
+	public final static String localizedName = CMLib.lang()._("Summoning Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Summoning Ward)";}
 	protected int quality=Ability.QUALITY_INDIFFERENT;
 	@Override public int abstractQuality(){ return quality;}

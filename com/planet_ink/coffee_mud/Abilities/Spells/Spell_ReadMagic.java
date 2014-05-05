@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ReadMagic extends Spell
 {
 	@Override public String ID() { return "Spell_ReadMagic"; }
-	@Override public String name(){return "Read Magic";}
+	public final static String localizedName = CMLib.lang()._("Read Magic");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Ability to read magic)";}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

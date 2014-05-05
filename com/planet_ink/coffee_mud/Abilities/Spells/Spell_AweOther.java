@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_AweOther extends Spell
 {
 	@Override public String ID() { return "Spell_AweOther"; }
-	@Override public String name(){return "Awe Other";}
+	public final static String localizedName = CMLib.lang()._("Awe Other");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Awe of "+text()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

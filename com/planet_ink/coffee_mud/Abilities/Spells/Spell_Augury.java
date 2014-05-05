@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Augury extends Spell
 {
 	@Override public String ID() { return "Spell_Augury"; }
-	@Override public String name(){return "Augury";}
+	public final static String localizedName = CMLib.lang()._("Augury");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

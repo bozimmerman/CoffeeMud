@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_SenseUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseUndead"; }
-	@Override public String name(){return "Sense Undead";}
+	public final static String localizedName = CMLib.lang()._("Sense Undead");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sensing Undead)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

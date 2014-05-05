@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_DetectSentience extends Spell
 {
 	@Override public String ID() { return "Spell_DetectSentience"; }
-	@Override public String name(){return "Detect Sentience";}
+	public final static String localizedName = CMLib.lang()._("Detect Sentience");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return 0;}

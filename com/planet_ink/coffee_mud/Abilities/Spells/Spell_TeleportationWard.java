@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_TeleportationWard extends Spell
 {
 	@Override public String ID() { return "Spell_TeleportationWard"; }
-	@Override public String name(){return "Teleportation Ward";}
+	public final static String localizedName = CMLib.lang()._("Teleportation Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Teleportation Ward)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}

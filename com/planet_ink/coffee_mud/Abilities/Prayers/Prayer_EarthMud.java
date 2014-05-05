@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_EarthMud extends Prayer
 {
 	@Override public String ID() { return "Prayer_EarthMud"; }
-	@Override public String name(){return "Earth to Mud";}
+	public final static String localizedName = CMLib.lang()._("Earth to Mud");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

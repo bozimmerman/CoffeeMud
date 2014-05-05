@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Counterspell extends Spell
 {
 	@Override public String ID() { return "Spell_Counterspell"; }
-	@Override public String name(){return "Counterspell";}
+	public final static String localizedName = CMLib.lang()._("Counterspell");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Counterspell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

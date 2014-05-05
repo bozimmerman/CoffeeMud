@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DeadenSmell extends Spell
 {
 	@Override public String ID() { return "Spell_DeadenSmell"; }
-	@Override public String name(){return "Deaden Smell";}
+	public final static String localizedName = CMLib.lang()._("Deaden Smell");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Deadened Smell)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

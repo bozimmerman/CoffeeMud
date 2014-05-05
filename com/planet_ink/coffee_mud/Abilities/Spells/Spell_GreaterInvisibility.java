@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_GreaterInvisibility extends Spell
 {
 	@Override public String ID() { return "Spell_GreaterInvisibility"; }
-	@Override public String name(){return "Greater Invisibility";}
+	public final static String localizedName = CMLib.lang()._("Greater Invisibility");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Greater Invisibility)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}

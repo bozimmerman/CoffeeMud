@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_WeaknessAcid extends Spell
 {
 	@Override public String ID() { return "Spell_WeaknessAcid"; }
-	@Override public String name(){return "Weakness to Acid";}
+	public final static String localizedName = CMLib.lang()._("Weakness to Acid");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Weakness to Acid)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

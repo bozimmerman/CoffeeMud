@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_StrikeBarren extends Chant
 {
 	@Override public String ID() { return "Chant_StrikeBarren"; }
-	@Override public String name(){return "Strike Barren";}
+	public final static String localizedName = CMLib.lang()._("Strike Barren");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Striken Barren)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

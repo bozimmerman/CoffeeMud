@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_FeelTheVoid extends Spell
 {
 	@Override public String ID() { return "Spell_FeelTheVoid"; }
-	@Override public String name(){return "Feel The Void";}
+	public final static String localizedName = CMLib.lang()._("Feel The Void");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(In a Void)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

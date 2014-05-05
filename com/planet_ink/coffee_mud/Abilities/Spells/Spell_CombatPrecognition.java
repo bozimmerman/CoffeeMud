@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_CombatPrecognition extends Spell
 {
 	@Override public String ID() { return "Spell_CombatPrecognition"; }
-	@Override public String name(){return "Combat Precognition";}
+	public final static String localizedName = CMLib.lang()._("Combat Precognition");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Combat Precognition)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

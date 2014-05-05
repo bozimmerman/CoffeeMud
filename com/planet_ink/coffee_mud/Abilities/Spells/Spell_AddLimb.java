@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_AddLimb extends Spell
 {
 	@Override public String ID() { return "Spell_AddLimb"; }
-	@Override public String name(){return "Add Limb";}
+	public final static String localizedName = CMLib.lang()._("Add Limb");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Add Limb)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

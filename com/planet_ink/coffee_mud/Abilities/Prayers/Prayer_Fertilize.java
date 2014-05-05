@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Fertilize extends Prayer
 {
 	@Override public String ID() { return "Prayer_Fertilize"; }
-	@Override public String name(){return "Fertilize";}
+	public final static String localizedName = CMLib.lang()._("Fertilize");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

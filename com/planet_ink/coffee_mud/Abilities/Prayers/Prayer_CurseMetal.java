@@ -38,7 +38,8 @@ import java.util.*;
 public class Prayer_CurseMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMetal"; }
-	@Override public String name(){return "Curse Metal";}
+	public final static String localizedName = CMLib.lang()._("Curse Metal");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Cursed)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Delude extends Spell
 {
 	@Override public String ID() { return "Spell_Delude"; }
-	@Override public String name(){return "Delude";}
+	public final static String localizedName = CMLib.lang()._("Delude");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Delude spell)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

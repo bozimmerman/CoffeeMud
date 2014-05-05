@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_FakeArmor extends Spell
 {
 	@Override public String ID() { return "Spell_FakeArmor"; }
-	@Override public String name(){return "Fake Armor";}
+	public final static String localizedName = CMLib.lang()._("Fake Armor");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	protected Item myItem=null;

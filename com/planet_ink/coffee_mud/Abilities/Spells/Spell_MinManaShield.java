@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_MinManaShield extends Spell_ManaShield
 {
 	@Override public String ID() { return "Spell_MinManaShield"; }
-	@Override public String name(){return "Minor Mana Shield";}
+	public final static String localizedName = CMLib.lang()._("Minor Mana Shield");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Minor Mana Shield)";}
 	@Override protected double protection(){return 0.25;}
 	@Override protected String adjective(){return " a faint";}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Fireball extends Spell
 {
 	@Override public String ID() { return "Spell_Fireball"; }
-	@Override public String name(){return "Fireball";}
+	public final static String localizedName = CMLib.lang()._("Fireball");
+	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

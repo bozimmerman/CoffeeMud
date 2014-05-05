@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_WallOfFire extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfFire"; }
-	@Override public String name(){return "Wall of Fire";}
+	public final static String localizedName = CMLib.lang()._("Wall of Fire");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Wall of Fire)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}

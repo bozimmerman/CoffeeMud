@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Claireaudience extends Spell
 {
 	@Override public String ID() { return "Spell_Claireaudience"; }
-	@Override public String name(){return "Claireaudience";}
+	public final static String localizedName = CMLib.lang()._("Claireaudience");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}

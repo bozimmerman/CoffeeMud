@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Stability extends BardSkill
 {
 	@Override public String ID() { return "Skill_Stability"; }
-	@Override public String name(){return "Stability";}
+	public final static String localizedName = CMLib.lang()._("Stability");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

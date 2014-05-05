@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Misstep extends Spell
 {
 	@Override public String ID() { return "Spell_Misstep"; }
-	@Override public String name(){return "Misstep";}
+	public final static String localizedName = CMLib.lang()._("Misstep");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Misstep spell)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

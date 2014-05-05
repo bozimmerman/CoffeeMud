@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_FeignInvisibility extends Spell
 {
 	@Override public String ID() { return "Spell_FeignInvisibility"; }
-	@Override public String name(){return "Feign Invisibility";}
+	public final static String localizedName = CMLib.lang()._("Feign Invisibility");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Improved Invisibility)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_MageArmor extends Spell
 {
 	@Override public String ID() { return "Spell_MageArmor"; }
-	@Override public String name(){return "Mage Armor";}
+	public final static String localizedName = CMLib.lang()._("Mage Armor");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mage Armor)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ComprehendLangs extends Spell
 {
 	@Override public String ID() { return "Spell_ComprehendLangs"; }
-	@Override public String name(){return "Comprehend Languages";}
+	public final static String localizedName = CMLib.lang()._("Comprehend Languages");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Comprehend Languages)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

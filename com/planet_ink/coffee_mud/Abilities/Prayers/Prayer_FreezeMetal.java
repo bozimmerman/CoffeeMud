@@ -38,7 +38,8 @@ import java.util.*;
 public class Prayer_FreezeMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_FreezeMetal"; }
-	@Override public String name(){return "Freeze Metal";}
+	public final static String localizedName = CMLib.lang()._("Freeze Metal");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Frozen)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Earthquake extends Spell
 {
 	@Override public String ID() { return "Spell_Earthquake"; }
-	@Override public String name(){return "Earthquake";}
+	public final static String localizedName = CMLib.lang()._("Earthquake");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Earthquake)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}

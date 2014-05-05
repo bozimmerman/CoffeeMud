@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_MagneticField extends Chant
 {
 	@Override public String ID() { return "Chant_MagneticField"; }
-	@Override public String name(){return "Magnetic Field";}
+	public final static String localizedName = CMLib.lang()._("Magnetic Field");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Magnetic Field chant)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

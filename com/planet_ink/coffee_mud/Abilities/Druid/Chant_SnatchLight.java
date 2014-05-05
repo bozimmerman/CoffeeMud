@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SnatchLight extends Chant
 {
 	@Override public String ID() { return "Chant_SnatchLight"; }
-	@Override public String name(){return "Snatch Light";}
+	public final static String localizedName = CMLib.lang()._("Snatch Light");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Snatch Light)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

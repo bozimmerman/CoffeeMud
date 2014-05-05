@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SeeAura extends Spell
 {
 	@Override public String ID() { return "Spell_SeeAura"; }
-	@Override public String name(){return "See Aura";}
+	public final static String localizedName = CMLib.lang()._("See Aura");
+	@Override public String name() { return localizedName; }
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

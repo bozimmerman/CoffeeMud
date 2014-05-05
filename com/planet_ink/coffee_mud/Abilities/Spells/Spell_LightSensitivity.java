@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_LightSensitivity extends Spell
 {
 	@Override public String ID() { return "Spell_LightSensitivity"; }
-	@Override public String name(){return "Light Sensitivity";}
+	public final static String localizedName = CMLib.lang()._("Light Sensitivity");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Light Sensitivity)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

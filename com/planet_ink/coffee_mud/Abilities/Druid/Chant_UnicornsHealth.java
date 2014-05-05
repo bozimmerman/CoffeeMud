@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_UnicornsHealth extends Chant
 {
 	@Override public String ID() { return "Chant_UnicornsHealth"; }
-	@Override public String name(){return "Unicorns Health";}
+	public final static String localizedName = CMLib.lang()._("Unicorns Health");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Unicorns Health)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

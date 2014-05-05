@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_Awe extends Spell
 {
 	@Override public String ID() { return "Spell_Awe"; }
-	@Override public String name(){return "Awe";}
+	public final static String localizedName = CMLib.lang()._("Awe");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Awe spell)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

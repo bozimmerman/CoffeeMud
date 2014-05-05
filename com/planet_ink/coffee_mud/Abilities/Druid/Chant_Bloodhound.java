@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Bloodhound extends Chant
 {
 	@Override public String ID() { return "Chant_Bloodhound"; }
-	@Override public String name(){return "Bloodhound";}
+	public final static String localizedName = CMLib.lang()._("Bloodhound");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Bloodhound)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

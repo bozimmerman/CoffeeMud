@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Philosophy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Philosophy"; }
-	@Override public String name(){return "Philosophy";}
+	public final static String localizedName = CMLib.lang()._("Philosophy");
+	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public String displayText(){return "(Philosophy spell)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

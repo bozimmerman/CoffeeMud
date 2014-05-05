@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SummonMarker extends Spell
 {
 	@Override public String ID() { return "Spell_SummonMarker"; }
-	@Override public String name(){return "Summon Marker";}
+	public final static String localizedName = CMLib.lang()._("Summon Marker");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

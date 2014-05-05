@@ -37,7 +37,8 @@ import java.util.*;
 public class CombatSleep extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "CombatSleep"; }
-	@Override public String name(){return "Combat Sleep";}
+	public final static String localizedName = CMLib.lang()._("Combat Sleep");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Asleep)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Grow extends Spell
 {
 	@Override public String ID() { return "Spell_Grow"; }
-	@Override public String name(){return "Grow";}
+	public final static String localizedName = CMLib.lang()._("Grow");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Grow)";}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

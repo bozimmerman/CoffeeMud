@@ -37,7 +37,8 @@ import java.util.Vector;
 public class Prayer_DarkSenses extends Prayer
 {
 	@Override public String ID() { return "Prayer_DarkSenses"; }
-	@Override public String name(){return "Dark Senses";}
+	public final static String localizedName = CMLib.lang()._("Dark Senses");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Dark Senses)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

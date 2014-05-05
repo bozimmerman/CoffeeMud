@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_FlamingEnsnarement extends Spell
 {
 	@Override public String ID() { return "Spell_FlamingEnsnarement"; }
-	@Override public String name(){return "Flaming Ensnarement";}
+	public final static String localizedName = CMLib.lang()._("Flaming Ensnarement");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Ensnared in Fire)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}

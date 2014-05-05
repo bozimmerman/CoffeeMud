@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Dragonfire extends Spell
 {
 	@Override public String ID() { return "Spell_Dragonfire"; }
-	@Override public String name(){return "Dragonfire";}
+	public final static String localizedName = CMLib.lang()._("Dragonfire");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Dragonfire)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

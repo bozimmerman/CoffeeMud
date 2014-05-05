@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_AnalyzeDweomer extends Spell
 {
 	@Override public String ID() { return "Spell_AnalyzeDweomer"; }
-	@Override public String name(){return "Analyze Item";}
+	public final static String localizedName = CMLib.lang()._("Analyze Item");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

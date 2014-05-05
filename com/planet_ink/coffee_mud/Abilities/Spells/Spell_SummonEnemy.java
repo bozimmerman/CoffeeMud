@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_SummonEnemy extends Spell
 {
 	@Override public String ID() { return "Spell_SummonEnemy"; }
-	@Override public String name(){return "Summon Enemy";}
+	public final static String localizedName = CMLib.lang()._("Summon Enemy");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Enemy Summoning)";}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

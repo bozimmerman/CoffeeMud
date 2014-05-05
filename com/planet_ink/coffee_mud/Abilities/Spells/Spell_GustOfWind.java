@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_GustOfWind extends Spell
 {
 	@Override public String ID() { return "Spell_GustOfWind"; }
-	@Override public String name(){return "Gust of Wind";}
+	public final static String localizedName = CMLib.lang()._("Gust of Wind");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Blown Down)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

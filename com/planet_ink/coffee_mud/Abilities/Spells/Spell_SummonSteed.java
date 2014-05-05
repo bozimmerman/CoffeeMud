@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SummonSteed extends Spell
 {
 	@Override public String ID() { return "Spell_SummonSteed"; }
-	@Override public String name(){return "Summon Steed";}
+	public final static String localizedName = CMLib.lang()._("Summon Steed");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Summon Steed)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

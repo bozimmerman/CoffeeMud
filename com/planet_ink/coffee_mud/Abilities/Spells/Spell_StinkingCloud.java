@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_StinkingCloud extends Spell
 {
 	@Override public String ID() { return "Spell_StinkingCloud"; }
-	@Override public String name(){return "Stinking Cloud";}
+	public final static String localizedName = CMLib.lang()._("Stinking Cloud");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(In the Stinking Cloud)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

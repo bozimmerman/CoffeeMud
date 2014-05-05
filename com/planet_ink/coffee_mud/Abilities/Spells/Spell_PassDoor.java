@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_PassDoor extends Spell
 {
 	@Override public String ID() { return "Spell_PassDoor"; }
-	@Override public String name(){return "Pass Door";}
+	public final static String localizedName = CMLib.lang()._("Pass Door");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Pass Door)";}
 	@Override protected int canTargetCode(){return 0;}
 	protected int overridemana(){return Ability.COST_ALL;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_DetectAmbush extends Spell
 {
 	@Override public String ID() { return "Spell_DetectAmbush"; }
-	@Override public String name(){return "Detect Ambush";}
+	public final static String localizedName = CMLib.lang()._("Detect Ambush");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Detecting Ambushes)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

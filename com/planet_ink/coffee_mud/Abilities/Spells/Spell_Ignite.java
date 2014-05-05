@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Ignite extends Spell
 {
 	@Override public String ID() { return "Spell_Ignite"; }
-	@Override public String name(){return "Ignite";}
+	public final static String localizedName = CMLib.lang()._("Ignite");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "Ignite";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}

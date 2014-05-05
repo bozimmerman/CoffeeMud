@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Stonewalking extends Chant
 {
 	@Override public String ID() { return "Chant_Stonewalking"; }
-	@Override public String name(){return "Stonewalking";}
+	public final static String localizedName = CMLib.lang()._("Stonewalking");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Stonewalking spell)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Delay extends Spell
 {
 	@Override public String ID() { return "Spell_Delay"; }
-	@Override public String name(){return "Delay";}
+	public final static String localizedName = CMLib.lang()._("Delay");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Delay spell)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}

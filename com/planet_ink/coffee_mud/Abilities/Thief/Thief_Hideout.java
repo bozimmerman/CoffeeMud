@@ -40,7 +40,8 @@ import java.util.*;
 public class Thief_Hideout extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Hideout"; }
-	@Override public String name(){return "Hideout";}
+	public final static String localizedName = CMLib.lang()._("Hideout");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(In your hideout)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"HIDEOUT"});

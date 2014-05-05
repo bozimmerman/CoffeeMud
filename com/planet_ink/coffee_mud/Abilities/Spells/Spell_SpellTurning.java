@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_SpellTurning extends Spell
 {
 	@Override public String ID() { return "Spell_SpellTurning"; }
-	@Override public String name(){return "Spell Turning";}
+	public final static String localizedName = CMLib.lang()._("Spell Turning");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spell Turning)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

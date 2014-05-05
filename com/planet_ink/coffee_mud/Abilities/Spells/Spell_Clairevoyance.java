@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Clairevoyance extends Spell
 {
 	@Override public String ID() { return "Spell_Clairevoyance"; }
-	@Override public String name(){return "Clairevoyance";}
+	public final static String localizedName = CMLib.lang()._("Clairevoyance");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}

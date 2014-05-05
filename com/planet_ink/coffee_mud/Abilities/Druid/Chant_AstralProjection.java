@@ -39,7 +39,8 @@ import java.util.*;
 public class Chant_AstralProjection extends Chant
 {
 	@Override public String ID() { return "Chant_AstralProjection"; }
-	@Override public String name(){return "Astral Projection";}
+	public final static String localizedName = CMLib.lang()._("Astral Projection");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Astral Projection)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}

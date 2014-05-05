@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_Blademouth extends Spell
 {
 	@Override public String ID() { return "Spell_Blademouth"; }
-	@Override public String name(){return "Blademouth";}
+	public final static String localizedName = CMLib.lang()._("Blademouth");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(blades in your mouth)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

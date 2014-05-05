@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Root extends Chant
 {
 	@Override public String ID() { return "Chant_Root"; }
-	@Override public String name(){return "Root";}
+	public final static String localizedName = CMLib.lang()._("Root");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Rooted)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

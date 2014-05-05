@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Hawkeye extends Chant
 {
 	@Override public String ID() { return "Chant_Hawkeye"; }
-	@Override public String name(){return "Hawkeye";}
+	public final static String localizedName = CMLib.lang()._("Hawkeye");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Hawkeye)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

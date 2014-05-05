@@ -38,7 +38,8 @@ import java.util.*;
 public class Spell_Shelter extends Spell
 {
 	@Override public String ID() { return "Spell_Shelter"; }
-	@Override public String name(){return "Shelter";}
+	public final static String localizedName = CMLib.lang()._("Shelter");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(In a shelter)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

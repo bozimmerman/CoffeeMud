@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ResistMagicMissiles extends Spell
 {
 	@Override public String ID() { return "Spell_ResistMagicMissiles"; }
-	@Override public String name(){return "Resist Magic Missiles";}
+	public final static String localizedName = CMLib.lang()._("Resist Magic Missiles");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Resist Magic Missiles)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

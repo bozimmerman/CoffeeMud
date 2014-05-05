@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_ChanneledMissiles extends Spell
 {
 	@Override public String ID() { return "Spell_ChanneledMissiles"; }
-	@Override public String name(){return "Channeled Missiles";}
+	public final static String localizedName = CMLib.lang()._("Channeled Missiles");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Channeling Missile spell)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

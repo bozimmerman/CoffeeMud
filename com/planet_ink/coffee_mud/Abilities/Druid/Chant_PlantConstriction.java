@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_PlantConstriction extends Chant
 {
 	@Override public String ID() { return "Chant_PlantConstriction"; }
-	@Override public String name(){return "Plant Constriction";}
+	public final static String localizedName = CMLib.lang()._("Plant Constriction");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public String displayText(){return "(Plant Constriction)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}

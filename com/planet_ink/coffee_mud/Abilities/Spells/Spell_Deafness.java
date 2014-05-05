@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Deafness extends Spell
 {
 	@Override public String ID() { return "Spell_Deafness"; }
-	@Override public String name(){return "Deafen";}
+	public final static String localizedName = CMLib.lang()._("Deafen");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Deafen)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

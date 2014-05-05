@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Sermon extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sermon"; }
-	@Override public String name(){return "Sermon";}
+	public final static String localizedName = CMLib.lang()._("Sermon");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sermon)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

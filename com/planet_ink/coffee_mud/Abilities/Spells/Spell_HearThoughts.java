@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_HearThoughts extends Spell
 {
 	@Override public String ID() { return "Spell_HearThoughts"; }
-	@Override public String name(){return "Hear Thoughts";}
+	public final static String localizedName = CMLib.lang()._("Hear Thoughts");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

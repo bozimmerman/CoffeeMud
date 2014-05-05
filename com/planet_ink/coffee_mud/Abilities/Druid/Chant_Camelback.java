@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Camelback extends Chant
 {
 	@Override public String ID() { return "Chant_Camelback"; }
-	@Override public String name(){return "Camelback";}
+	public final static String localizedName = CMLib.lang()._("Camelback");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Camelback)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

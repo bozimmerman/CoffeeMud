@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_DemonicConsumption extends Prayer
 {
 	@Override public String ID() { return "Prayer_DemonicConsumption"; }
-	@Override public String name(){return "Demonic Consumption";}
+	public final static String localizedName = CMLib.lang()._("Demonic Consumption");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}

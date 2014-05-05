@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_FloatingDisc extends Spell
 {
 	@Override public String ID() { return "Spell_FloatingDisc"; }
-	@Override public String name(){return "Floating Disc";}
+	public final static String localizedName = CMLib.lang()._("Floating Disc");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

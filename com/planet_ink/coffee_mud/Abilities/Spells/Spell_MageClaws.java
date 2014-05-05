@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_MageClaws extends Spell
 {
 	@Override public String ID() { return "Spell_MageClaws"; }
-	@Override public String name(){return "Mage Claws";}
+	public final static String localizedName = CMLib.lang()._("Mage Claws");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mage Claws spell)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

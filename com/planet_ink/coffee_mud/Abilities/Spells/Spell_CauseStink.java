@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_CauseStink extends Spell
 {
 	@Override public String ID() { return "Spell_CauseStink"; }
-	@Override public String name(){return "Cause Stink";}
+	public final static String localizedName = CMLib.lang()._("Cause Stink");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Cause Stink)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

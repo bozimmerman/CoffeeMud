@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Nightmare extends Spell
 {
 	@Override public String ID() { return "Spell_Nightmare"; }
-	@Override public String name(){return "Nightmare";}
+	public final static String localizedName = CMLib.lang()._("Nightmare");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Having a nightmare)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

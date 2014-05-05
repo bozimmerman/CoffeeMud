@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Cogniportive extends Spell
 {
 	@Override public String ID() { return "Spell_Cogniportive"; }
-	@Override public String name(){return "Cogniportive";}
+	public final static String localizedName = CMLib.lang()._("Cogniportive");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

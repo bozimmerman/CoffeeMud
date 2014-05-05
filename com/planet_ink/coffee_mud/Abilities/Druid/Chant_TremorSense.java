@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_TremorSense extends Chant
 {
 	@Override public String ID() { return "Chant_TremorSense"; }
-	@Override public String name(){return "Tremor Sense";}
+	public final static String localizedName = CMLib.lang()._("Tremor Sense");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Tremor Sense)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_InfuseHoliness extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseHoliness"; }
-	@Override public String name(){return "Infuse Holiness";}
+	public final static String localizedName = CMLib.lang()._("Infuse Holiness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Infused Holiness)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

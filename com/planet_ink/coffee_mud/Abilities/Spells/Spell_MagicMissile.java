@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_MagicMissile extends Spell
 {
 	@Override public String ID() { return "Spell_MagicMissile"; }
-	@Override public String name(){return "Magic Missile";}
+	public final static String localizedName = CMLib.lang()._("Magic Missile");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Magic Missile spell)";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

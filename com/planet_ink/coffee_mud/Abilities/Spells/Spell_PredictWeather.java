@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_PredictWeather extends Spell
 {
 	@Override public String ID() { return "Spell_PredictWeather"; }
-	@Override public String name(){return "Forecast Weather";}
+	public final static String localizedName = CMLib.lang()._("Forecast Weather");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Forecast Weather)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

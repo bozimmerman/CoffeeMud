@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_KnowPain extends Spell
 {
 	@Override public String ID() { return "Spell_KnowPain"; }
-	@Override public String name(){return "Know Pain";}
+	public final static String localizedName = CMLib.lang()._("Know Pain");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Spell_KnowPain)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

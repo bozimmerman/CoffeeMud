@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Weaken extends Spell
 {
 	@Override public String ID() { return "Spell_Weaken"; }
-	@Override public String name(){return "Weaken";}
+	public final static String localizedName = CMLib.lang()._("Weaken");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Weaken spell)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

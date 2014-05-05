@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_IceSheet extends Spell
 {
 	@Override public String ID() { return "Spell_IceSheet"; }
-	@Override public String name(){return "Ice Sheet";}
+	public final static String localizedName = CMLib.lang()._("Ice Sheet");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Ice Sheet spell)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

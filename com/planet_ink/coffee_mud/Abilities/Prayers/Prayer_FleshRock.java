@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_FleshRock extends Prayer
 {
 	@Override public String ID() { return "Prayer_FleshRock"; }
-	@Override public String name(){return "Flesh Rock";}
+	public final static String localizedName = CMLib.lang()._("Flesh Rock");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Flesh to Rock)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_Hungerless extends Spell
 {
 	@Override public String ID() { return "Spell_Hungerless"; }
-	@Override public String name(){return "Hungerless";}
+	public final static String localizedName = CMLib.lang()._("Hungerless");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Hungerless)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

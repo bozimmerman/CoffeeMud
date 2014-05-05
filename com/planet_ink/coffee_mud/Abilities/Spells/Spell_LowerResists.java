@@ -37,7 +37,8 @@ import java.util.*;
 public class Spell_LowerResists extends Spell
 {
 	@Override public String ID() { return "Spell_LowerResists"; }
-	@Override public String name(){return "Lower Resistance";}
+	public final static String localizedName = CMLib.lang()._("Lower Resistance");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Lowered Resistances)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

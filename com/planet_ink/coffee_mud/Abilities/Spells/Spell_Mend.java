@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Mend extends Spell
 {
 	@Override public String ID() { return "Spell_Mend"; }
-	@Override public String name(){return "Mend";}
+	public final static String localizedName = CMLib.lang()._("Mend");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

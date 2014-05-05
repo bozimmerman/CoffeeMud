@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Boomerang extends Spell
 {
 	@Override public String ID() { return "Spell_Boomerang"; }
-	@Override public String name(){return "Returning";}
+	public final static String localizedName = CMLib.lang()._("Returning");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

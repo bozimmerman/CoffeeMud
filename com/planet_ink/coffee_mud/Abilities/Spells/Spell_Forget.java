@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Forget extends Spell
 {
 	@Override public String ID() { return "Spell_Forget"; }
-	@Override public String name(){return "Forget";}
+	public final static String localizedName = CMLib.lang()._("Forget");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Forgetful)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
