@@ -429,7 +429,7 @@ public class Age extends StdAbility
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
 					final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
-					for(int i=0;i<CharStats.CODES.BASE().length;i++)
+					for(int  i : CharStats.CODES.BASE())
 						newMan.baseCharStats().setStat(i,baseStat);
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
 						for(int i=0;i<highestLegacyLevel+1;i++)

@@ -77,20 +77,20 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		final int[] stats=new int[CharStats.CODES.BASE().length];
 		for(int i=0;i<stats.length;i++)
-			stats[i]=C.getStat(i);
+			stats[i]=C.getStat(CharStats.CODES.BASE()[i]);
 
 		while (pointsLeft > 0)
 		{
-			final int whichStat = CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)];
-			if(stats[whichStat]<basemax)
+			final int whichNum = CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1);
+			if(stats[whichNum]<basemax)
 			{
-				stats[whichStat]++;
+				stats[whichNum]++;
 				--pointsLeft;
 			}
 		}
 
-		for(final int i : CharStats.CODES.BASE())
-			C.setStat(i,stats[i]);
+		for(int i=0;i<stats.length;i++)
+			C.setStat(CharStats.CODES.BASE()[i],stats[i]);
 	}
 
 	@Override
@@ -2281,7 +2281,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i=0;i<bonusPoints;i++)
 			{
 				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASE().length, -1);
-				mob.baseCharStats().setStat(randStat, mob.baseCharStats().getStat(randStat)+1);
+				mob.baseCharStats().setStat(CharStats.CODES.BASE()[randStat], mob.baseCharStats().getStat(CharStats.CODES.BASE()[randStat])+1);
 			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
@@ -2294,7 +2294,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 			loginObj.statPoints = getTotalStatPoints()+bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASE().length;i++)
-				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
+				mob.baseCharStats().setStat(CharStats.CODES.BASE()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
 		}
