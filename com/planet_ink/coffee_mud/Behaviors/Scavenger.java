@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Scavenger extends ActiveTicker
 {
 	@Override public String ID(){return "Scavenger";}
@@ -88,9 +87,9 @@ public class Scavenger extends ActiveTicker
 						}
 					}
 					if(C!=null)
-						mob.doCommand(new XVector("PUT","ALL",C.Name()),Command.METAFLAG_FORCED);
+						mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),Command.METAFLAG_FORCED);
 					else
-						mob.doCommand(new XVector("DROP","ALL"),Command.METAFLAG_FORCED);
+						mob.doCommand(new XVector<String>("DROP","ALL"),Command.METAFLAG_FORCED);
 					CMLib.tracking().wanderAway(mob,false,true);
 				}
 				else
@@ -124,20 +123,21 @@ public class Scavenger extends ActiveTicker
 				return true;
 			if(thisRoom.numPCInhabitants()>0)
 				return true;
-			Vector choices=new Vector(thisRoom.numItems()<1000?thisRoom.numItems():1000);
+			List<Item> choices=new ArrayList<Item>(thisRoom.numItems()<1000?thisRoom.numItems():1000);
 			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
 			{
 				final Item thisItem=thisRoom.getItem(i);
 				if((thisItem!=null)
 				&&(thisItem.container()==null)
 				&&(CMLib.flags().isGettable(thisItem))
+				&&(CMLib.flags().canBeSeenBy(thisItem, mob))
 				&&(!(thisItem instanceof DeadBody)))
-					choices.addElement(thisItem);
+					choices.add(thisItem);
 			}
 			if(choices.size()==0) return true;
-			final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-			if((I!=null)&&(CMLib.flags().isGettable(I)&&(CMLib.flags().canBeSeenBy(I, mob))))
-				mob.doCommand(new XVector("GET",I.Name()),Command.METAFLAG_FORCED);
+			final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+			if(I!=null)
+				mob.doCommand(new XVector<String>("GET",I.Name()),Command.METAFLAG_FORCED);
 			choices.clear();
 			choices=null;
 		}
