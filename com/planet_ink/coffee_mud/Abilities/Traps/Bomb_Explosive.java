@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Explosive extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Explosive"; }
-	@Override public String name(){ return "explosive bomb";}
+	@Override public String unlocalizedName(){ return "explosive bomb";}
 	@Override protected int trapLevel(){return 10;}
 	@Override public String requiresToSet(){return "a pound of coal";}
 

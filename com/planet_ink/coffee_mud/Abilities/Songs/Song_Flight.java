@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Flight extends Song
 {
 	@Override public String ID() { return "Song_Flight"; }
-	@Override public String name(){ return "Flight";}
+	@Override public String unlocalizedName(){ return "Flight";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

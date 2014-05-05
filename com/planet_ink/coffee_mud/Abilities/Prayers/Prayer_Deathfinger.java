@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Deathfinger extends Prayer
 {
 	@Override public String ID() { return "Prayer_Deathfinger"; }
-	@Override public String name(){ return "Deathfinger";}
+	@Override public String unlocalizedName(){ return "Deathfinger";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

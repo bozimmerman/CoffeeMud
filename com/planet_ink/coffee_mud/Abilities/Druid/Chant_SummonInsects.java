@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonInsects extends Chant
 {
 	@Override public String ID() { return "Chant_SummonInsects"; }
-	@Override public String name(){ return "Summon Insects";}
+	@Override public String unlocalizedName(){ return "Summon Insects";}
 	@Override public String displayText(){return "(In a swarm of insects)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

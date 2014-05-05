@@ -36,7 +36,7 @@ import java.util.*;
 public class Scalp extends CommonSkill
 {
 	@Override public String ID() { return "Scalp"; }
-	@Override public String name(){ return "Scalping";}
+	@Override public String unlocalizedName(){ return "Scalping";}
 	private static final String[] triggerStrings = {"SCALP","SCALPING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();

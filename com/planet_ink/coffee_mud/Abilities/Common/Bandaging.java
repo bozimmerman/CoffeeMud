@@ -36,7 +36,7 @@ import java.util.*;
 public class Bandaging extends CommonSkill implements MendingSkill
 {
 	@Override public String ID() { return "Bandaging"; }
-	@Override public String name(){ return "Bandaging";}
+	@Override public String unlocalizedName(){ return "Bandaging";}
 	private static final String[] triggerStrings = {"BANDAGE","BANDAGING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

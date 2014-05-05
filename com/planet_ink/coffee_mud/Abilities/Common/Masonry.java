@@ -40,7 +40,7 @@ import java.util.*;
 public class Masonry extends CraftingSkill
 {
 	@Override public String ID() { return "Masonry"; }
-	@Override public String name(){ return "Masonry";}
+	@Override public String unlocalizedName(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "ROCK|STONE";}

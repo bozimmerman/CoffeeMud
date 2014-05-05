@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Multiwatch extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Multiwatch"; }
-	@Override public String name(){ return "Multiwatch";}
+	@Override public String unlocalizedName(){ return "Multiwatch";}
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

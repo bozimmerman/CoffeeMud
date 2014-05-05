@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Background extends Play
 {
 	@Override public String ID() { return "Play_Background"; }
-	@Override public String name(){ return "Background";}
+	@Override public String unlocalizedName(){ return "Background";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override
 	public void affectCharStats(MOB mob, CharStats stats)

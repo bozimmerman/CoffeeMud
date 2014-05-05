@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Position extends Prayer
 {
 	@Override public String ID() { return "Prayer_Position"; }
-	@Override public String name(){ return "Position";}
+	@Override public String unlocalizedName(){ return "Position";}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

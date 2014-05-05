@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_Barkskin extends Chant
 {
 	@Override public String ID() { return "Chant_Barkskin"; }
-	@Override public String name(){ return "Barkskin";}
+	@Override public String unlocalizedName(){ return "Barkskin";}
 	@Override public String displayText(){return "(Barkskin)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}

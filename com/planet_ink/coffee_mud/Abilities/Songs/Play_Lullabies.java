@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Lullabies extends Play
 {
 	@Override public String ID() { return "Play_Lullabies"; }
-	@Override public String name(){ return "Lullabies";}
+	@Override public String unlocalizedName(){ return "Lullabies";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
 

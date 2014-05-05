@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Nothing extends Song
 {
 	@Override public String ID() { return "Song_Nothing"; }
-	@Override public String name(){ return "Nothing";}
+	@Override public String unlocalizedName(){ return "Nothing";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
 	public Song_Nothing()

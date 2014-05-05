@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_VineWeave extends Chant
 {
 	@Override public String ID() { return "Chant_VineWeave"; }
-	@Override public String name(){ return "Vine Weave";}
+	@Override public String unlocalizedName(){ return "Vine Weave";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

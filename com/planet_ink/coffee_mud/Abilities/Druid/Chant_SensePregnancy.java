@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SensePregnancy extends Chant
 {
 	@Override public String ID() { return "Chant_SensePregnancy"; }
-	@Override public String name(){ return "Sense Pregnancy";}
+	@Override public String unlocalizedName(){ return "Sense Pregnancy";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

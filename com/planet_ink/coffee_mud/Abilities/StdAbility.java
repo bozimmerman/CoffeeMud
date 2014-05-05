@@ -50,12 +50,14 @@ public class StdAbility implements Ability
 	protected volatile int 		tickDown		= -1;
 	protected long 				lastCastHelp	= 0;
 	protected boolean 			amDestroyed		= false;
+	protected final String		localizedName;
 
 	private static final int[] STATIC_USAGE_NADA= new int[3];
 
 	public StdAbility()
 	{
 		super();
+		localizedName=_(unlocalizedName());
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 	}
 	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
@@ -74,8 +76,9 @@ public class StdAbility implements Ability
 		return new StdAbility();
 	}
 
+	public String unlocalizedName() { return "an ability"; }
 	@Override public String Name(){return name();}
-	@Override public String name(){ return "an ability";}
+	@Override public String name(){ return localizedName;}
 	@Override public String description(){return "&";}
 	@Override public String displayText(){return "Affected list display for "+ID();}
 	@Override public String image(){return "";}

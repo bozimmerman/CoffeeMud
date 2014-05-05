@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterTailoring extends Tailoring
 {
 	@Override public String ID() { return "MasterTailoring"; }
-	@Override public String name(){ return "Master Tailoring";}
+	@Override public String unlocalizedName(){ return "Master Tailoring";}
 	private static final String[] triggerStrings = {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

@@ -34,7 +34,7 @@ import java.util.*;
 public class Thief_AnalyzeMark extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AnalyzeMark"; }
-	@Override public String name(){ return "Analyze Mark";}
+	@Override public String unlocalizedName(){ return "Analyze Mark";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

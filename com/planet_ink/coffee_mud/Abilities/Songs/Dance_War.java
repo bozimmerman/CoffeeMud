@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_War extends Dance
 {
 	@Override public String ID() { return "Dance_War"; }
-	@Override public String name(){ return "War";}
+	@Override public String unlocalizedName(){ return "War";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String danceOf(){return name()+" Dance";}
 

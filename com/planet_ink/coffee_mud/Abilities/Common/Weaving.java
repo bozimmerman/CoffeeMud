@@ -40,7 +40,7 @@ import java.util.*;
 public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Weaving"; }
-	@Override public String name(){ return "Weaving";}
+	@Override public String unlocalizedName(){ return "Weaving";}
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}

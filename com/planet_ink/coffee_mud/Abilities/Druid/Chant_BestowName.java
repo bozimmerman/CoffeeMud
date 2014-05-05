@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_BestowName extends Chant
 {
 	@Override public String ID() { return "Chant_BestowName"; }
-	@Override public String name(){ return "Bestow Name";}
+	@Override public String unlocalizedName(){ return "Bestow Name";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public String displayText(){return "";}

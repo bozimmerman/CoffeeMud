@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SlickCaltrops extends Thief_Caltrops
 {
 	@Override public String ID() { return "Thief_SlickCaltrops"; }
-	@Override public String name(){ return "Slick Caltrops";}
+	@Override public String unlocalizedName(){ return "Slick Caltrops";}
 	private static final String[] triggerStrings = {"SLICKCALTROPS"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String caltropTypeName(){return "slick ";}

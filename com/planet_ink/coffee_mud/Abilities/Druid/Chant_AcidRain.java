@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_AcidRain extends Chant
 {
 	@Override public String ID() { return "Chant_AcidRain"; }
-	@Override public String name(){ return "Acid Rain";}
+	@Override public String unlocalizedName(){ return "Acid Rain";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}

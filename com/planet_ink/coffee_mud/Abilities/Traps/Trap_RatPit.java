@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_RatPit extends Trap_SnakePit
 {
 	@Override public String ID() { return "Trap_RatPit"; }
-	@Override public String name(){ return "rat pit";}
+	@Override public String unlocalizedName(){ return "rat pit";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 12;}

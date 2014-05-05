@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_PressurePoints extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_PressurePoints"; }
-	@Override public String name(){ return "Pressure Points";}
+	@Override public String unlocalizedName(){ return "Pressure Points";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

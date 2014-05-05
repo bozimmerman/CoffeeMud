@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_AcidPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_AcidPit"; }
-	@Override public String name(){ return "acid pit";}
+	@Override public String unlocalizedName(){ return "acid pit";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 18;}

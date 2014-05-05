@@ -39,7 +39,7 @@ import java.util.*;
 public class Construction extends CraftingSkill
 {
 	@Override public String ID() { return "Construction"; }
-	@Override public String name(){ return "Construction";}
+	@Override public String unlocalizedName(){ return "Construction";}
 	private static final String[] triggerStrings = {"CONSTRUCT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

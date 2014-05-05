@@ -41,7 +41,7 @@ import java.util.*;
 public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "ScrimShaw"; }
-	@Override public String name(){ return "Scrimshawing";}
+	@Override public String unlocalizedName(){ return "Scrimshawing";}
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "BONE";}

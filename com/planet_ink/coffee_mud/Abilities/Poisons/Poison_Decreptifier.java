@@ -35,7 +35,7 @@ import java.util.*;
 public class Poison_Decreptifier extends Poison
 {
 	@Override public String ID() { return "Poison_Decreptifier"; }
-	@Override public String name(){ return "Decreptifier";}
+	@Override public String unlocalizedName(){ return "Decreptifier";}
 	private static final String[] triggerStrings = {"POISONDECREPT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

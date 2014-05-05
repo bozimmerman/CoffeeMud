@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DeathsDoor extends Prayer
 {
 	@Override public String ID() { return "Prayer_DeathsDoor"; }
-	@Override public String name(){ return "Deaths Door";}
+	@Override public String unlocalizedName(){ return "Deaths Door";}
 	@Override public String displayText(){ return "(Deaths Door)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

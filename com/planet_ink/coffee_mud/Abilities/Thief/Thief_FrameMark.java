@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_FrameMark extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_FrameMark"; }
-	@Override public String name(){ return "Frame Mark";}
+	@Override public String unlocalizedName(){ return "Frame Mark";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

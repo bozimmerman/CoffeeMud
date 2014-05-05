@@ -39,7 +39,7 @@ import java.util.*;
 public class Ranger_WoodlandCreep extends StdAbility
 {
 	@Override public String ID() { return "Ranger_WoodlandCreep"; }
-	@Override public String name(){ return "Woodland Creep";}
+	@Override public String unlocalizedName(){ return "Woodland Creep";}
 	@Override public String displayText(){ return "(Creeping through foliage)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

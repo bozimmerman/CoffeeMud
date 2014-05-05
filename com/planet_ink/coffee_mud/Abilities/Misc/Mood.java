@@ -38,7 +38,7 @@ import java.util.*;
 public class Mood extends StdAbility
 {
 	@Override public String ID() { return "Mood"; }
-	@Override public String name(){ return "Mood";}
+	@Override public String unlocalizedName(){ return "Mood";}
 	@Override public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -39,7 +39,7 @@ import java.util.*;
 public class Druid_PackCall extends StdAbility
 {
 	@Override public String ID() { return "Druid_PackCall"; }
-	@Override public String name(){ return "Pack Call";}
+	@Override public String unlocalizedName(){ return "Pack Call";}
 	@Override public String displayText(){return "(Pack Call)";}
 	private static final String[] triggerStrings = {"PACKCALL"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

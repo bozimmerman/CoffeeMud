@@ -38,7 +38,7 @@ public class Undead_ColdTouch extends StdAbility
 {
 	int coldDown=3;
 	@Override public String ID() { return "Undead_ColdTouch"; }
-	@Override public String name(){ return "Cold Touch";}
+	@Override public String unlocalizedName(){ return "Cold Touch";}
 	@Override public String displayText(){ return "(Cold and Weakened)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

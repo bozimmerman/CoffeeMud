@@ -37,7 +37,7 @@ public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_Tumble"; }
-	@Override public String name(){ return "Tumble";}
+	@Override public String unlocalizedName(){ return "Tumble";}
 	@Override public String displayText(){ return "(Tumbling)";}
 	private static final String[] triggerStrings = {"TUMBLE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

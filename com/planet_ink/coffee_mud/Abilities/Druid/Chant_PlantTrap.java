@@ -35,7 +35,7 @@ import java.util.*;
 public class Chant_PlantTrap extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_PlantTrap"; }
-	@Override public String name(){ return "Plant Trap";}
+	@Override public String unlocalizedName(){ return "Plant Trap";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

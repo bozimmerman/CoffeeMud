@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ImprovedDistraction extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ImprovedDistraction"; }
-	@Override public String name(){ return "Improved Distraction";}
+	@Override public String unlocalizedName(){ return "Improved Distraction";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -40,7 +40,7 @@ import java.util.*;
 public class Wainwrighting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Wainwrighting"; }
-	@Override public String name(){ return "Wainwrighting";}
+	@Override public String unlocalizedName(){ return "Wainwrighting";}
 	private static final String[] triggerStrings = {"WAINWRIGHTING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

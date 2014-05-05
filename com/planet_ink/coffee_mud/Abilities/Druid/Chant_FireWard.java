@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_FireWard extends Chant
 {
 	@Override public String ID() { return "Chant_FireWard"; }
-	@Override public String name(){ return "Fire Ward";}
+	@Override public String unlocalizedName(){ return "Fire Ward";}
 	@Override public String displayText(){return "(Fire Ward)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}

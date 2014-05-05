@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DistantIngrowth extends Chant
 {
 	@Override public String ID() { return "Chant_DistantIngrowth"; }
-	@Override public String name(){ return "Distant Ingrowth";}
+	@Override public String unlocalizedName(){ return "Distant Ingrowth";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

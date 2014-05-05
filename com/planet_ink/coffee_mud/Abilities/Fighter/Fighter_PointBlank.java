@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_PointBlank extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_PointBlank"; }
-	@Override public String name(){ return "Point Blank Shot";}
+	@Override public String unlocalizedName(){ return "Point Blank Shot";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

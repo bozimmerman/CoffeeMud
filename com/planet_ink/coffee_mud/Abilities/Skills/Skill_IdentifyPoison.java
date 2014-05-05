@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_IdentifyPoison extends StdSkill
 {
 	@Override public String ID() { return "Skill_IdentifyPoison"; }
-	@Override public String name(){ return "Identify Poison";}
+	@Override public String unlocalizedName(){ return "Identify Poison";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

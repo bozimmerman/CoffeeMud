@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_FarShot extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FarShot"; }
-	@Override public String name(){ return "Far Shot";}
+	@Override public String unlocalizedName(){ return "Far Shot";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

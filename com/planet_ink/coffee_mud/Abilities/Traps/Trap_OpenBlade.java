@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_OpenBlade extends Trap_Open
 {
 	@Override public String ID() { return "Trap_OpenBlade"; }
-	@Override public String name(){ return "Open Blade Trap";}
+	@Override public String unlocalizedName(){ return "Open Blade Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_PIT_BLADE;}

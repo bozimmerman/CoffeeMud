@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Lepresy extends Disease
 {
 	@Override public String ID() { return "Disease_Lepresy"; }
-	@Override public String name(){ return "Leprosy";}
+	@Override public String unlocalizedName(){ return "Leprosy";}
 	@Override public String displayText(){ return "(Leprosy)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

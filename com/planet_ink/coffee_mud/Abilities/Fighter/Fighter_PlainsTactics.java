@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_PlainsTactics extends Fighter_FieldTactics
 {
 	@Override public String ID() { return "Fighter_PlainsTactics"; }
-	@Override public String name(){ return "Plains Tactics";}
+	@Override public String unlocalizedName(){ return "Plains Tactics";}
 	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_OUTDOORS_PLAINS)};
 	@Override public Integer[] landClasses(){return landClasses;}
 }

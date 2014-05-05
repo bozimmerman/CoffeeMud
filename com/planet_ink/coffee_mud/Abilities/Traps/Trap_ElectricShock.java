@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_ElectricShock extends StdTrap
 {
 	@Override public String ID() { return "Trap_ElectricShock"; }
-	@Override public String name(){ return "electric shock";}
+	@Override public String unlocalizedName(){ return "electric shock";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 19;}

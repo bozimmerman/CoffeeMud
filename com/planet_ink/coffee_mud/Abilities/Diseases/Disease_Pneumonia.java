@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Pneumonia extends Disease
 {
 	@Override public String ID() { return "Disease_Pneumonia"; }
-	@Override public String name(){ return "Pneumonia";}
+	@Override public String unlocalizedName(){ return "Pneumonia";}
 	@Override public String displayText(){ return "(Pneumonia)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

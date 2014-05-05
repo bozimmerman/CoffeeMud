@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_MountedCharge extends StdAbility
 {
 	@Override public String ID() { return "Paladin_MountedCharge"; }
-	@Override public String name(){ return "Mounted Charge";}
+	@Override public String unlocalizedName(){ return "Mounted Charge";}
 	private static final String[] triggerStrings = {"MOUNTEDCHARGE","MCHARGE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

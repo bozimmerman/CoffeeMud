@@ -40,7 +40,7 @@ import java.util.*;
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Shipwright"; }
-	@Override public String name(){ return "Ship Building";}
+	@Override public String unlocalizedName(){ return "Ship Building";}
 	private static final String[] triggerStrings = {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

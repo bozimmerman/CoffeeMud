@@ -40,7 +40,7 @@ import java.util.*;
 public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Tailoring"; }
-	@Override public String name(){ return "Tailoring";}
+	@Override public String unlocalizedName(){ return "Tailoring";}
 	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "CLOTH";}

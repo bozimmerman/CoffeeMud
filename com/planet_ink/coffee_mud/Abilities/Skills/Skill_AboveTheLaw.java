@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_AboveTheLaw extends StdSkill
 {
 	@Override public String ID() { return "Skill_AboveTheLaw"; }
-	@Override public String name(){ return "Above The Law";}
+	@Override public String unlocalizedName(){ return "Above The Law";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

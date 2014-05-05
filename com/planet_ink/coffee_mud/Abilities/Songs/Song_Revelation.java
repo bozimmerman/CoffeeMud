@@ -36,7 +36,7 @@ public class Song_Revelation extends Song
 {
 
 	@Override public String ID() { return "Song_Revelation"; }
-	@Override public String name(){ return "Revelation";}
+	@Override public String unlocalizedName(){ return "Revelation";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	@Override

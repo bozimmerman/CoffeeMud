@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_HealUndead extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HealUndead"; }
-	@Override public String name(){ return "Heal Undead";}
+	@Override public String unlocalizedName(){ return "Heal Undead";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}

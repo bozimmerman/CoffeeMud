@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Conduct extends BardSkill
 {
 	@Override public String ID() { return "Skill_Conduct"; }
-	@Override public String name(){ return "Conduct Symphony";}
+	@Override public String unlocalizedName(){ return "Conduct Symphony";}
 	@Override public String displayText(){ return "("+name()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

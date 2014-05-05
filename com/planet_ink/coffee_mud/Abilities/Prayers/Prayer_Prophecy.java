@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Prophecy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Prophecy"; }
-	@Override public String name(){ return "Prophecy";}
+	@Override public String unlocalizedName(){ return "Prophecy";}
 	@Override public String displayText(){ return "(In a Prophetic Trance)";}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

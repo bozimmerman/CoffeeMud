@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Fortress extends Prayer
 {
 	@Override public String ID() { return "Prayer_Fortress"; }
-	@Override public String name(){ return "Fortress";}
+	@Override public String unlocalizedName(){ return "Fortress";}
 	@Override public String displayText(){ return "(Fortress)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

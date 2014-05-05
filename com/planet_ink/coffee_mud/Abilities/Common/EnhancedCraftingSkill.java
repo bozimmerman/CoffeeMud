@@ -38,7 +38,7 @@ import java.util.Map.Entry;
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "EnhancedCraftingSkill"; }
-	@Override public String name(){ return "Enhanced Crafting Skill";}
+	@Override public String unlocalizedName(){ return "Enhanced Crafting Skill";}
 
 	public Hashtable parametersFields(){ return new Hashtable();}
 	@Override public String parametersFormat(){ return ""; }

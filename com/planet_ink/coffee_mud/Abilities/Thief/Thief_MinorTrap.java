@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_MinorTrap extends Thief_Trap
 {
 	@Override public String ID() { return "Thief_MinorTrap"; }
-	@Override public String name(){ return "Lay Minor Traps";}
+	@Override public String unlocalizedName(){ return "Lay Minor Traps";}
 	private static final String[] triggerStrings = {"MTRAP","MINORTRAP"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

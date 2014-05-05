@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Swim extends StdSkill
 {
 	@Override public String ID() { return "Skill_Swim"; }
-	@Override public String name(){ return "Swim";}
+	@Override public String unlocalizedName(){ return "Swim";}
 	@Override public String displayText(){ return "(Swimming)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

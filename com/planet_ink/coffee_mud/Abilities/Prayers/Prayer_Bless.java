@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Bless extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Bless"; }
-	@Override public String name(){ return "Bless";}
+	@Override public String unlocalizedName(){ return "Bless";}
 	@Override public String displayText(){ return "(Blessed)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_HandCuff extends StdSkill
 {
 	@Override public String ID() { return "Skill_HandCuff"; }
-	@Override public String name(){ return "Handcuff";}
+	@Override public String unlocalizedName(){ return "Handcuff";}
 	@Override public String displayText(){ return "(Handcuffed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ public class Fighter_CircleTrip extends FighterSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_CircleTrip"; }
-	@Override public String name(){ return "Circle Trip";}
+	@Override public String unlocalizedName(){ return "Circle Trip";}
 	@Override public String displayText(){ return "(Tripped)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

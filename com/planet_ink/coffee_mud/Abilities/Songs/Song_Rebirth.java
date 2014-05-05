@@ -37,7 +37,7 @@ import java.util.*;
 public class Song_Rebirth extends Song
 {
 	@Override public String ID() { return "Song_Rebirth"; }
-	@Override public String name(){ return "Rebirth";}
+	@Override public String unlocalizedName(){ return "Rebirth";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

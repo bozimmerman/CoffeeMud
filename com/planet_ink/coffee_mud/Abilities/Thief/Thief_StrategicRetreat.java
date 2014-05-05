@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_StrategicRetreat extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_StrategicRetreat"; }
-	@Override public String name(){ return "Strategic Retreat";}
+	@Override public String unlocalizedName(){ return "Strategic Retreat";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

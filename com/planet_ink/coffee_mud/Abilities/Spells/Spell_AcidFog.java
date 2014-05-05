@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_AcidFog extends Spell
 {
 	@Override public String ID() { return "Spell_AcidFog"; }
-	@Override public String name(){ return "Acid Fog";}
+	@Override public String unlocalizedName(){ return "Acid Fog";}
 	@Override public String displayText(){ return "(Acid Fog)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

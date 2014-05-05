@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Avalanche extends StdTrap
 {
 	@Override public String ID() { return "Trap_Avalanche"; }
-	@Override public String name(){ return "avalanche";}
+	@Override public String unlocalizedName(){ return "avalanche";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 25;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Satire extends BardSkill
 {
 	@Override public String ID() { return "Skill_Satire"; }
-	@Override public String name(){ return "Satire";}
+	@Override public String unlocalizedName(){ return "Satire";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

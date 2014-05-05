@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_BladeBarrier extends Prayer
 {
 	@Override public String ID() { return "Prayer_BladeBarrier"; }
-	@Override public String name(){ return "Blade Barrier";}
+	@Override public String unlocalizedName(){ return "Blade Barrier";}
 	@Override public String displayText(){ return "(Blade Barrier)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

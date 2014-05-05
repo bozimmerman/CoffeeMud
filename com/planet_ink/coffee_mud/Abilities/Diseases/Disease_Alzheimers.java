@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Alzheimers extends Disease
 {
 	@Override public String ID() { return "Disease_Alzheimers"; }
-	@Override public String name(){ return "Alzheimers";}
+	@Override public String unlocalizedName(){ return "Alzheimers";}
 	@Override public String displayText(){ return "(Alzheimers)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

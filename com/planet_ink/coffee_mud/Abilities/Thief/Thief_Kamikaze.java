@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Kamikaze extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Kamikaze"; }
-	@Override public String name(){ return "Kamikaze";}
+	@Override public String unlocalizedName(){ return "Kamikaze";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

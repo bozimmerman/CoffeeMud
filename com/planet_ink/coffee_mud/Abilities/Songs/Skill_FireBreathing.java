@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_FireBreathing extends BardSkill
 {
 	@Override public String ID() { return "Skill_FireBreathing"; }
-	@Override public String name(){ return "Fire Breathing";}
+	@Override public String unlocalizedName(){ return "Fire Breathing";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

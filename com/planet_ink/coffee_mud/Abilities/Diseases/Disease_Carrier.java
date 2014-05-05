@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Carrier extends Disease
 {
 	@Override public String ID() { return "Disease_Carrier"; }
-	@Override public String name(){ return "Carrier of Disease";}
+	@Override public String unlocalizedName(){ return "Carrier of Disease";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

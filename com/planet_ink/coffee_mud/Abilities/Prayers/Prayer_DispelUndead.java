@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DispelUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_DispelUndead"; }
-	@Override public String name(){ return "Dispel Undead";}
+	@Override public String unlocalizedName(){ return "Dispel Undead";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

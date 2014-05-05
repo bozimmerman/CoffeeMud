@@ -35,7 +35,7 @@ import java.util.*;
 public class Power_SuperClimb extends SuperPower
 {
 	@Override public String ID() { return "Power_SuperClimb"; }
-	@Override public String name(){ return "Super Climb";}
+	@Override public String unlocalizedName(){ return "Super Climb";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

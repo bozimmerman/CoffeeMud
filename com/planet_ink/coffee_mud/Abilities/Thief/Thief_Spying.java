@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Spying extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Spying"; }
-	@Override public String name(){ return "Spying";}
+	@Override public String unlocalizedName(){ return "Spying";}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
 	@Override public String displayText(){return "";}

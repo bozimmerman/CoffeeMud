@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_SeekersPrayer extends Prayer
 {
 	@Override public String ID() { return "Prayer_SeekersPrayer"; }
-	@Override public String name(){ return "Seekers Prayer";}
+	@Override public String unlocalizedName(){ return "Seekers Prayer";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

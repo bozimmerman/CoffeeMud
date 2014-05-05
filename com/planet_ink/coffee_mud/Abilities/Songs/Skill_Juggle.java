@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Juggle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Juggle"; }
-	@Override public String name(){ return "Juggle";}
+	@Override public String unlocalizedName(){ return "Juggle";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

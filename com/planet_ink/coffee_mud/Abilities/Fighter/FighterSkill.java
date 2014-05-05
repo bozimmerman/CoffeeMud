@@ -37,7 +37,7 @@ import java.util.*;
 public class FighterSkill extends StdAbility
 {
 	@Override public String ID() { return "FighterSkill"; }
-	@Override public String name(){ return "FighterSkill";}
+	@Override public String unlocalizedName(){ return "FighterSkill";}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	@Override protected int canAffectCode(){return 0;}

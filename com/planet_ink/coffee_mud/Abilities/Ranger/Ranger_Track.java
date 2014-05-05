@@ -37,7 +37,7 @@ import java.util.*;
 public class Ranger_Track extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Track"; }
-	@Override public String name(){ return "Track";}
+	@Override public String unlocalizedName(){ return "Track";}
 
 	protected String displayText="(Tracking)";
 	@Override public String displayText(){ return displayText;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Freedom extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Freedom"; }
-	@Override public String name(){ return "Freedom";}
+	@Override public String unlocalizedName(){ return "Freedom";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

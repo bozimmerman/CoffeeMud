@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Swords extends Dance
 {
 	@Override public String ID() { return "Dance_Swords"; }
-	@Override public String name(){ return "Swords";}
+	@Override public String unlocalizedName(){ return "Swords";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected String danceOf(){return name()+" Dance";}

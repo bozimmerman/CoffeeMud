@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_KnifeHand extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_KnifeHand"; }
-	@Override public String name(){ return "Knife Hand";}
+	@Override public String unlocalizedName(){ return "Knife Hand";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

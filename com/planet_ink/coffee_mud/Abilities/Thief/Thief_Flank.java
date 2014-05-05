@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Flank extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Flank"; }
-	@Override public String name(){ return "Flank";}
+	@Override public String unlocalizedName(){ return "Flank";}
 	@Override public String displayText(){ return "(Flanking)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

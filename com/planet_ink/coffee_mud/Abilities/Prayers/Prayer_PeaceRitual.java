@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_PeaceRitual extends Prayer
 {
 	@Override public String ID() { return "Prayer_PeaceRitual"; }
-	@Override public String name(){ return "Peace Ritual";}
+	@Override public String unlocalizedName(){ return "Peace Ritual";}
 	@Override public String displayText(){ return "(Peace Ritual)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

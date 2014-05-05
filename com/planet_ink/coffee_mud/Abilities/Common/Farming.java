@@ -36,7 +36,7 @@ import java.util.*;
 public class Farming extends GatheringSkill
 {
 	@Override public String ID() { return "Farming"; }
-	@Override public String name(){ return "Farming";}
+	@Override public String unlocalizedName(){ return "Farming";}
 	private static final String[] triggerStrings = {"PLANT","FARM","FARMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}

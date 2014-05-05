@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
 	@Override public String ID() { return "Chant_NeutralizePoison"; }
-	@Override public String name(){ return "Neutralize Poison";}
+	@Override public String unlocalizedName(){ return "Neutralize Poison";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

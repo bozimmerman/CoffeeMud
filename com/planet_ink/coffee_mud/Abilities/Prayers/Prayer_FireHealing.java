@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_FireHealing extends Prayer
 {
 	@Override public String ID() { return "Prayer_FireHealing"; }
-	@Override public String name(){ return "Fire Healing";}
+	@Override public String unlocalizedName(){ return "Fire Healing";}
 	@Override public String displayText(){ return "(Fire Healing)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

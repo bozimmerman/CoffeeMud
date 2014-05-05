@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_DeathTrap"; }
-	@Override public String name(){ return "Death Trap";}
+	@Override public String unlocalizedName(){ return "Death Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

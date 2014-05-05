@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_QuickChange extends BardSkill
 {
 	@Override public String ID() { return "Skill_QuickChange"; }
-	@Override public String name(){ return "QuickChange";}
+	@Override public String unlocalizedName(){ return "QuickChange";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

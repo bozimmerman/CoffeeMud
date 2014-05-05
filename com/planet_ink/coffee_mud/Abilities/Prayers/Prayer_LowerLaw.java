@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_LowerLaw extends Prayer
 {
 	@Override public String ID() { return "Prayer_LowerLaw"; }
-	@Override public String name(){ return "Lower Law";}
+	@Override public String unlocalizedName(){ return "Lower Law";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

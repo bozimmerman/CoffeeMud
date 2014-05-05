@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Berzerk extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Berzerk"; }
-	@Override public String name(){ return "Berzerk";}
+	@Override public String unlocalizedName(){ return "Berzerk";}
 	@Override public String displayText(){ return "(Berzerk)";}
 	private static final String[] triggerStrings = {"BERZERK"};
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

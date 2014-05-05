@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_StoneFriend extends Chant
 {
 	@Override public String ID() { return "Chant_StoneFriend"; }
-	@Override public String name(){ return "Stone Friend";}
+	@Override public String unlocalizedName(){ return "Stone Friend";}
 	@Override public String displayText(){return "(Charmed)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

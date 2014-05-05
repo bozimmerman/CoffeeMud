@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Popper extends StdTrap
 {
 	@Override public String ID() { return "Trap_Popper"; }
-	@Override public String name(){ return "popping noise";}
+	@Override public String unlocalizedName(){ return "popping noise";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 1;}

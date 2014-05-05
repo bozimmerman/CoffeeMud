@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_EndureRust extends Chant
 {
 	@Override public String ID() { return "Chant_EndureRust"; }
-	@Override public String name(){ return "Endure Rust";}
+	@Override public String unlocalizedName(){ return "Endure Rust";}
 	@Override public String displayText(){return "(Endure Rust)";}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}

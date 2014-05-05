@@ -36,7 +36,7 @@ import java.util.*;
 public class TemporaryImmunity extends StdAbility
 {
 	@Override public String ID() { return "TemporaryImmunity"; }
-	@Override public String name(){ return "Temporary Immunity";}
+	@Override public String unlocalizedName(){ return "Temporary Immunity";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

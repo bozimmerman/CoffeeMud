@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CauseCritical extends Prayer
 {
 	@Override public String ID() { return "Prayer_CauseCritical"; }
-	@Override public String name(){ return "Cause Critical Wounds";}
+	@Override public String unlocalizedName(){ return "Cause Critical Wounds";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Subdue extends StdSkill
 {
 	@Override public String ID() { return "Skill_Subdue"; }
-	@Override public String name(){ return "Subdue";}
+	@Override public String unlocalizedName(){ return "Subdue";}
 	@Override public String displayText(){ return "(Subdueing "+whom+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

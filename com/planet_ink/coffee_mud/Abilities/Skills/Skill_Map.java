@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Map extends StdSkill
 {
 	@Override public String ID() { return "Skill_Map"; }
-	@Override public String name(){ return "Make Maps";}
+	@Override public String unlocalizedName(){ return "Make Maps";}
 	@Override public String displayText(){return "(Mapping)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

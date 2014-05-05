@@ -39,7 +39,7 @@ import java.util.*;
 public class CraftingSkill extends GatheringSkill
 {
 	@Override public String ID() { return "CraftingSkill"; }
-	@Override public String name(){ return "Crafting Skill";}
+	@Override public String unlocalizedName(){ return "Crafting Skill";}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
 	@Override public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
 	protected Item buildingI=null;

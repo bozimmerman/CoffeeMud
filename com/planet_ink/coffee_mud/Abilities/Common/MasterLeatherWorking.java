@@ -40,7 +40,7 @@ import java.util.*;
 public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "MasterLeatherWorking"; }
-	@Override public String name(){ return "Master Leather Working";}
+	@Override public String unlocalizedName(){ return "Master Leather Working";}
 	private static final String[] triggerStrings = {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "LEATHER";}

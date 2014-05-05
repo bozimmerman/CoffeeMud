@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Farsight extends Chant
 {
 	@Override public String ID() { return "Chant_Farsight"; }
-	@Override public String name(){ return "Eaglesight";}
+	@Override public String unlocalizedName(){ return "Eaglesight";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

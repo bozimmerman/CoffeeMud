@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_MassMobility extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassMobility"; }
-	@Override public String name(){ return "Mass Mobility";}
+	@Override public String unlocalizedName(){ return "Mass Mobility";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

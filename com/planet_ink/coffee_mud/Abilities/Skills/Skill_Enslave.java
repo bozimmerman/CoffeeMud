@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_Enslave extends StdSkill
 {
 	@Override public String ID() { return "Skill_Enslave"; }
-	@Override public String name(){ return "Enslave";}
+	@Override public String unlocalizedName(){ return "Enslave";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

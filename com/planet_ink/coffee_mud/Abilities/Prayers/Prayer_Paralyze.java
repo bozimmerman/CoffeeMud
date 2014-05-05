@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Paralyze extends Prayer
 {
 	@Override public String ID() { return "Prayer_Paralyze"; }
-	@Override public String name(){ return "Paralyze";}
+	@Override public String unlocalizedName(){ return "Paralyze";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}

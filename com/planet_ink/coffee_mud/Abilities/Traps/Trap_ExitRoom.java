@@ -36,7 +36,7 @@ import java.util.*;
 public class Trap_ExitRoom extends Trap_Trap
 {
 	@Override public String ID() { return "Trap_ExitRoom"; }
-	@Override public String name(){ return "Exit Trap";}
+	@Override public String unlocalizedName(){ return "Exit Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	public PairVector<MOB,Integer> safeDirs=new PairVector<MOB,Integer>();

@@ -39,7 +39,7 @@ import java.util.*;
 public class CommonSkill extends StdAbility
 {
 	@Override public String ID() { return "CommonSkill"; }
-	@Override public String name(){ return "Common Skill";}
+	@Override public String unlocalizedName(){ return "Common Skill";}
 	private static final String[] triggerStrings = empty;
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "";}

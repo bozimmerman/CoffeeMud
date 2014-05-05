@@ -35,7 +35,7 @@ import java.util.*;
 public class MasterButchering extends Butchering
 {
 	@Override public String ID() { return "MasterButchering"; }
-	@Override public String name(){ return "Master Butchering";}
+	@Override public String unlocalizedName(){ return "Master Butchering";}
 	private static final String[] triggerStrings = {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

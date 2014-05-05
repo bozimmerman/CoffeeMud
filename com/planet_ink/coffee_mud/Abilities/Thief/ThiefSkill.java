@@ -36,7 +36,7 @@ import java.util.*;
 public class ThiefSkill extends StdAbility
 {
 	@Override public String ID() { return "ThiefSkill"; }
-	@Override public String name(){ return "a Thief Skill";}
+	@Override public String unlocalizedName(){ return "a Thief Skill";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}

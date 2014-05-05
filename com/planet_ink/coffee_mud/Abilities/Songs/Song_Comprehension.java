@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Comprehension extends Song
 {
 	@Override public String ID() { return "Song_Comprehension"; }
-	@Override public String name(){ return "Comprehension";}
+	@Override public String unlocalizedName(){ return "Comprehension";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

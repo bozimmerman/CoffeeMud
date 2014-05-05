@@ -35,7 +35,7 @@ import java.util.*;
 public class Gnomish extends StdLanguage
 {
 	@Override public String ID() { return "Gnomish"; }
-	@Override public String name(){ return "Gnomish";}
+	@Override public String unlocalizedName(){ return "Gnomish";}
 	public static List<String[]> wordLists=null;
 	public Gnomish()
 	{

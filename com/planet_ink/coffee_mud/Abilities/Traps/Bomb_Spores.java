@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Spores extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Spores"; }
-	@Override public String name(){ return "spore bomb";}
+	@Override public String unlocalizedName(){ return "spore bomb";}
 	@Override protected int trapLevel(){return 15;}
 	@Override public String requiresToSet(){return "some diseased meat";}
 

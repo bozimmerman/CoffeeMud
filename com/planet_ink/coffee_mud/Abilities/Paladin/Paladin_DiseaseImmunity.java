@@ -35,7 +35,7 @@ import java.util.*;
 public class Paladin_DiseaseImmunity extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_DiseaseImmunity"; }
-	@Override public String name(){ return "Disease Immunity";}
+	@Override public String unlocalizedName(){ return "Disease Immunity";}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 
 

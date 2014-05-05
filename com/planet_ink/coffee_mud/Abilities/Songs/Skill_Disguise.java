@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Disguise extends BardSkill
 {
 	@Override public String ID() { return "Skill_Disguise"; }
-	@Override public String name(){ return "Disguise";}
+	@Override public String unlocalizedName(){ return "Disguise";}
 	@Override
 	public String description()
 	{

@@ -32,5 +32,5 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Ranger_Enemy3 extends Ranger_Enemy1
 {
 	@Override public String ID() { return "Ranger_Enemy3"; }
-	@Override public String name(){ return "Favored Enemy 3";}
+	@Override public String unlocalizedName(){ return "Favored Enemy 3";}
 }

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_BearTrap extends StdTrap
 {
 	@Override public String ID() { return "Trap_BearTrap"; }
-	@Override public String name(){ return "bear trap";}
+	@Override public String unlocalizedName(){ return "bear trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 16;}

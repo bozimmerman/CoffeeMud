@@ -36,7 +36,7 @@ import java.util.*;
 public class Poison_Glowgell extends Poison
 {
 	@Override public String ID() { return "Poison_Glowgell"; }
-	@Override public String name(){ return "Glowgell";}
+	@Override public String unlocalizedName(){ return "Glowgell";}
 	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS
 										 |Ability.CAN_ITEMS

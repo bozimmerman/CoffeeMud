@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Shapelessness extends Chant
 {
 	@Override public String ID() { return "Chant_Shapelessness"; }
-	@Override public String name(){ return "Shapelessness";}
+	@Override public String unlocalizedName(){ return "Shapelessness";}
 	@Override public String displayText(){ return "(Shapelessness)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

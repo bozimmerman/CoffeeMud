@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Inebriation extends Song
 {
 	@Override public String ID() { return "Song_Inebriation"; }
-	@Override public String name(){ return "Drunkenness";}
+	@Override public String unlocalizedName(){ return "Drunkenness";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

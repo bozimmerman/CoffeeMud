@@ -38,7 +38,7 @@ public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_Gouge"; }
-	@Override public String name(){ return "Gouge";}
+	@Override public String unlocalizedName(){ return "Gouge";}
 	@Override public String displayText(){ return "(Gouged Eyes)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

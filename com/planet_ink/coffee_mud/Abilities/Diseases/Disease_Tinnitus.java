@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Tinnitus extends Disease
 {
 	@Override public String ID() { return "Disease_Tinnitus"; }
-	@Override public String name(){ return "Tinnitus";}
+	@Override public String unlocalizedName(){ return "Tinnitus";}
 	@Override public String displayText(){ return "(Tinnitus)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_ElectricStrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_ElectricStrike"; }
-	@Override public String name(){ return "Electric Strike";}
+	@Override public String unlocalizedName(){ return "Electric Strike";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

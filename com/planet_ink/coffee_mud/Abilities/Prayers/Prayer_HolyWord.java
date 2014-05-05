@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HolyWord"; }
-	@Override public String name(){ return "Holy Word";}
+	@Override public String unlocalizedName(){ return "Holy Word";}
 	@Override public String displayText(){ return "(Holy Word)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

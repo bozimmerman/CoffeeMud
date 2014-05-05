@@ -35,7 +35,7 @@ import java.util.*;
 public class Druid_ShapeShift3 extends Druid_ShapeShift
 {
 	@Override public String ID() { return "Druid_ShapeShift3"; }
-	@Override public String name(){ return "Third Totem";}
+	@Override public String unlocalizedName(){ return "Third Totem";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return empty;}
 

@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Rhythm extends Play
 {
 	@Override public String ID() { return "Play_Rhythm"; }
-	@Override public String name(){ return "Rhythm";}
+	@Override public String unlocalizedName(){ return "Rhythm";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	@Override

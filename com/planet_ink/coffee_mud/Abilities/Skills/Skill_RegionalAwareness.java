@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_RegionalAwareness extends StdSkill
 {
 	@Override public String ID() { return "Skill_RegionalAwareness"; }
-	@Override public String name(){ return "Regional Awareness";}
+	@Override public String unlocalizedName(){ return "Regional Awareness";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_LightningStrike extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_LightningStrike"; }
-	@Override public String name(){ return "Lightning Strike";}
+	@Override public String unlocalizedName(){ return "Lightning Strike";}
 	@Override public String displayText(){return "(Exhausted)";}
 	private static final String[] triggerStrings = {"LIGHTNINGSTRIKE","LSTRIKE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

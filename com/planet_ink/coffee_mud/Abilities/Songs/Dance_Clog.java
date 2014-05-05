@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Clog extends Dance
 {
 	@Override public String ID() { return "Dance_Clog"; }
-	@Override public String name(){ return "Clog Dance";}
+	@Override public String unlocalizedName(){ return "Clog Dance";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected String danceOf(){return name();}
 

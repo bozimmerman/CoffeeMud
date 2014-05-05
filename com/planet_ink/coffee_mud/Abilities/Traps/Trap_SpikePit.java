@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SpikePit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_SpikePit"; }
-	@Override public String name(){ return "spike pit";}
+	@Override public String unlocalizedName(){ return "spike pit";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 8;}

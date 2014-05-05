@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Malaria extends Disease
 {
 	@Override public String ID() { return "Disease_Malaria"; }
-	@Override public String name(){ return "Malaria";}
+	@Override public String unlocalizedName(){ return "Malaria";}
 	@Override public String displayText(){ return "(Malaria)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

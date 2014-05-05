@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BodyToss extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_BodyToss"; }
-	@Override public String name(){ return "Body Toss";}
+	@Override public String unlocalizedName(){ return "Body Toss";}
 	private static final String[] triggerStrings = {"BODYTOSS"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

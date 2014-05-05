@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DailyBread extends Prayer
 {
 	@Override public String ID() { return "Prayer_DailyBread"; }
-	@Override public String name(){ return "Daily Bread";}
+	@Override public String unlocalizedName(){ return "Daily Bread";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

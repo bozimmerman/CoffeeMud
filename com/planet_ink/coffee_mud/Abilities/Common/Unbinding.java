@@ -37,7 +37,7 @@ import java.util.*;
 public class Unbinding extends CommonSkill
 {
 	@Override public String ID() { return "Unbinding"; }
-	@Override public String name(){ return "Unbinding";}
+	@Override public String unlocalizedName(){ return "Unbinding";}
 	private static final String[] triggerStrings = {"UNBIND","UNTIE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }

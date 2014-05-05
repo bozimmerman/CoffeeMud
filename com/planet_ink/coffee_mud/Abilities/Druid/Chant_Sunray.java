@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Sunray extends Chant
 {
 	@Override public String ID() { return "Chant_Sunray"; }
-	@Override public String name(){ return "Sunray";}
+	@Override public String unlocalizedName(){ return "Sunray";}
 	@Override public String displayText(){return "(Sunray)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}

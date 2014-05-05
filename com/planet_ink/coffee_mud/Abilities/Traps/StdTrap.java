@@ -35,7 +35,7 @@ import java.util.*;
 public class StdTrap extends StdAbility implements Trap
 {
 	@Override public String ID() { return "StdTrap"; }
-	@Override public String name(){ return "standard trap";}
+	@Override public String unlocalizedName(){ return "standard trap";}
 
 	protected boolean sprung=false;
 	protected int reset=60; // 5 minute reset is standard

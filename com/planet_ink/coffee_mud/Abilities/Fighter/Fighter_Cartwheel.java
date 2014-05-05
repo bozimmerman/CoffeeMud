@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_Cartwheel extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Cartwheel"; }
-	@Override public String name(){ return "Cartwheel";}
+	@Override public String unlocalizedName(){ return "Cartwheel";}
 	private static final String[] triggerStrings = {"CARTWHEEL"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

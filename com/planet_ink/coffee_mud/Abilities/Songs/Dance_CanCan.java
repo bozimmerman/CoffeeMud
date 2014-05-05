@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_CanCan extends Dance
 {
 	@Override public String ID() { return "Dance_CanCan"; }
-	@Override public String name(){ return "Can-Can";}
+	@Override public String unlocalizedName(){ return "Can-Can";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public static Ability kick=null;
 

@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_HealingHands extends StdAbility
 {
 	@Override public String ID() { return "Paladin_HealingHands"; }
-	@Override public String name(){ return "Healing Hands";}
+	@Override public String unlocalizedName(){ return "Healing Hands";}
 	private static final String[] triggerStrings = {"HANDS"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

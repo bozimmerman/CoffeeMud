@@ -38,7 +38,7 @@ import java.util.*;
 public class Thief_Snatch extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Snatch"; }
-	@Override public String name(){ return "Weapon Snatch";}
+	@Override public String unlocalizedName(){ return "Weapon Snatch";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

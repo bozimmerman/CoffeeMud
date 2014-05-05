@@ -36,7 +36,7 @@ import java.util.*;
 public class Ranger_AnimalFrenzy extends StdAbility
 {
 	@Override public String ID() { return "Ranger_AnimalFrenzy"; }
-	@Override public String name(){ return "Animal Frenzy";}
+	@Override public String unlocalizedName(){ return "Animal Frenzy";}
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public boolean isAutoInvoked(){return true;}

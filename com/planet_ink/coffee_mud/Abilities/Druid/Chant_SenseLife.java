@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SenseLife extends Chant
 {
 	@Override public String ID() { return "Chant_SenseLife"; }
-	@Override public String name(){ return "Life Echoes";}
+	@Override public String unlocalizedName(){ return "Life Echoes";}
 	@Override public String displayText(){return "(Life Echoes)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

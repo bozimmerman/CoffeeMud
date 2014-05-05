@@ -38,7 +38,7 @@ import java.util.*;
 public class Ranger_FindWater extends StdAbility
 {
 	@Override public String ID() { return "Ranger_FindWater"; }
-	@Override public String name(){ return "Find Water";}
+	@Override public String unlocalizedName(){ return "Find Water";}
 	@Override public String displayText(){ return "(finding water)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

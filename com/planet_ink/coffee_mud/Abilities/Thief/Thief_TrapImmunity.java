@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_TrapImmunity extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TrapImmunity"; }
-	@Override public String name(){ return "Trap Immunity";}
+	@Override public String unlocalizedName(){ return "Trap Immunity";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

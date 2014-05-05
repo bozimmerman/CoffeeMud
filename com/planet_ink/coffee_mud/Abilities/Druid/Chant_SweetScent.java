@@ -39,7 +39,7 @@ import java.util.*;
 public class Chant_SweetScent extends Chant
 {
 	@Override public String ID() { return "Chant_SweetScent"; }
-	@Override public String name(){ return "Sweet Scent";}
+	@Override public String unlocalizedName(){ return "Sweet Scent";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Avatar extends Prayer
 {
 	@Override public String ID() { return "Prayer_Avatar"; }
-	@Override public String name(){ return "Avatar";}
+	@Override public String unlocalizedName(){ return "Avatar";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

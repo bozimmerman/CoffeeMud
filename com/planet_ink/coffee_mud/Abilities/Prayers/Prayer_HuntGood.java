@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_HuntGood extends Prayer_HuntEvil
 {
 	@Override public String ID() { return "Prayer_HuntGood"; }
-	@Override public String name(){ return "Hunt Good";}
+	@Override public String unlocalizedName(){ return "Hunt Good";}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public String displayText(){return "(Hunting Good)";}

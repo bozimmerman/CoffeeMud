@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemoveCurse"; }
-	@Override public String name(){ return "Remove Curse";}
+	@Override public String unlocalizedName(){ return "Remove Curse";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}

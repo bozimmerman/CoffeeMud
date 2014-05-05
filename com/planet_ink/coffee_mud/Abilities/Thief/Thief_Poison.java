@@ -41,7 +41,7 @@ public class Thief_Poison extends ThiefSkill
 	// replaced with Thief_UsePoison
 	// **
 	@Override public String ID() { return "Thief_Poison"; }
-	@Override public String name(){ return "Deprecated Poison";}
+	@Override public String unlocalizedName(){ return "Deprecated Poison";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

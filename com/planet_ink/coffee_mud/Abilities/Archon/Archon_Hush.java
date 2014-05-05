@@ -38,7 +38,7 @@ public class Archon_Hush extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Hush"; }
-	@Override public String name(){ return "Hush";}
+	@Override public String unlocalizedName(){ return "Hush";}
 	@Override public String displayText(){ return "(Hushed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

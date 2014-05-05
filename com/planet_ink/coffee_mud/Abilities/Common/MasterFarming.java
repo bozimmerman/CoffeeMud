@@ -35,7 +35,7 @@ import java.util.*;
 public class MasterFarming extends Farming
 {
 	@Override public String ID() { return "MasterFarming"; }
-	@Override public String name(){ return "Master Farming";}
+	@Override public String unlocalizedName(){ return "Master Farming";}
 	private static final String[] triggerStrings = {"MPLANT","MFARM","MFARMING","MASTERPLANT","MASTERFARM","MASTERFARMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

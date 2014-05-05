@@ -37,7 +37,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autocaltrops"; }
 	@Override public String displayText() {return "(Autocaltropping)";}
-	@Override public String name(){ return "AutoCaltrops";}
+	@Override public String unlocalizedName(){ return "AutoCaltrops";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}

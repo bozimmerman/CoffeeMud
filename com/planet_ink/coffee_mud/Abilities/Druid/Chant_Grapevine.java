@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Grapevine extends Chant
 {
 	@Override public String ID() { return "Chant_Grapevine"; }
-	@Override public String name(){ return "Grapevine";}
+	@Override public String unlocalizedName(){ return "Grapevine";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}

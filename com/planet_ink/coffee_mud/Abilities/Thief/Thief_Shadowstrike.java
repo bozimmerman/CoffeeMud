@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Shadowstrike extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadowstrike"; }
-	@Override public String name(){ return "Shadowstrike";}
+	@Override public String unlocalizedName(){ return "Shadowstrike";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

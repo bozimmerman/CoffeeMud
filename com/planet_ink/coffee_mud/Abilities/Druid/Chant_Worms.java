@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Worms extends Chant implements DiseaseAffect
 {
 	@Override public String ID() { return "Chant_Worms"; }
-	@Override public String name(){ return "Worms";}
+	@Override public String unlocalizedName(){ return "Worms";}
 	@Override public String displayText(){return "(Worms)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

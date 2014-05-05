@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SummonDustdevil extends Chant
 {
 	@Override public String ID() { return "Chant_SummonDustdevil"; }
-	@Override public String name(){ return "Summon Dustdevil";}
+	@Override public String unlocalizedName(){ return "Summon Dustdevil";}
 	@Override public String displayText(){return "(Summon Dustdevil)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

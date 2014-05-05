@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_GodLight extends Prayer
 {
 	@Override public String ID() { return "Prayer_GodLight"; }
-	@Override public String name(){ return "Godlight";}
+	@Override public String unlocalizedName(){ return "Godlight";}
 	@Override public String displayText(){return "(Godlight)";}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

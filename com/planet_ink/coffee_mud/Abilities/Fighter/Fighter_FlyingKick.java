@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_FlyingKick extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FlyingKick"; }
-	@Override public String name(){ return "Flying Kick";}
+	@Override public String unlocalizedName(){ return "Flying Kick";}
 	private static final String[] triggerStrings = {"FLYINGKICK","FLYKICK"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Safecracking extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Safecracking"; }
-	@Override public String name(){ return "Safecracking";}
+	@Override public String unlocalizedName(){ return "Safecracking";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Pregnancy extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Pregnancy"; }
-	@Override public String name(){ return "Pregnancy";}
+	@Override public String unlocalizedName(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
 	protected long daysRemaining=-1;
 

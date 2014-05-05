@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DivineLuck extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineLuck"; }
-	@Override public String name(){ return "Divine Luck";}
+	@Override public String unlocalizedName(){ return "Divine Luck";}
 	@Override public String displayText(){ return "(Divine Luck)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

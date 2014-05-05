@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_FeelHeat extends Chant
 {
 	@Override public String ID() { return "Chant_FeelHeat"; }
-	@Override public String name(){ return "Feel Heat";}
+	@Override public String unlocalizedName(){ return "Feel Heat";}
 	@Override public String displayText(){return "(Feel Heat)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

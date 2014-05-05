@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Haggle extends StdSkill
 {
 	@Override public String ID() { return "Skill_Haggle"; }
-	@Override public String name(){ return "Haggle";}
+	@Override public String unlocalizedName(){ return "Haggle";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

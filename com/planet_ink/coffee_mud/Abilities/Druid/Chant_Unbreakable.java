@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Unbreakable extends Chant
 {
 	@Override public String ID() { return "Chant_Unbreakable"; }
-	@Override public String name(){ return "Unbreakable";}
+	@Override public String unlocalizedName(){ return "Unbreakable";}
 	@Override public String displayText(){return "(Unbreakable)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

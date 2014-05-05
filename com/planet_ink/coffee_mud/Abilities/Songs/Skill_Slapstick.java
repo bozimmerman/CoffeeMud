@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Slapstick extends BardSkill
 {
 	@Override public String ID() { return "Skill_Slapstick"; }
-	@Override public String name(){ return "Slapstick";}
+	@Override public String unlocalizedName(){ return "Slapstick";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

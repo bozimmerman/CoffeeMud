@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SleepGas extends StdTrap
 {
 	@Override public String ID() { return "Trap_SleepGas"; }
-	@Override public String name(){ return "sleep gas";}
+	@Override public String unlocalizedName(){ return "sleep gas";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 7;}

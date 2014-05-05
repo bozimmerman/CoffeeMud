@@ -40,7 +40,7 @@ import java.util.*;
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Blacksmithing"; }
-	@Override public String name(){ return "Blacksmithing";}
+	@Override public String unlocalizedName(){ return "Blacksmithing";}
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}

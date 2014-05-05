@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CalmWeather extends Chant
 {
 	@Override public String ID() { return "Chant_CalmWeather"; }
-	@Override public String name(){ return "Calm Weather";}
+	@Override public String unlocalizedName(){ return "Calm Weather";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

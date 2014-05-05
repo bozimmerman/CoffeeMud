@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_PlantItem extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_PlantItem"; }
-	@Override public String name(){ return "Plant Item";}
+	@Override public String unlocalizedName(){ return "Plant Item";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

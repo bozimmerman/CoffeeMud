@@ -38,7 +38,7 @@ public class Archon_Freeze extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Freeze"; }
-	@Override public String name(){ return "Freeze";}
+	@Override public String unlocalizedName(){ return "Freeze";}
 	@Override public String displayText(){ return "(Freezed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

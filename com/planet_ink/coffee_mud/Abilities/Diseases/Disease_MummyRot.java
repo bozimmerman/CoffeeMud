@@ -37,7 +37,7 @@ import java.util.*;
 public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
 	@Override public String ID() { return "Disease_MummyRot"; }
-	@Override public String name(){ return "Mummy Rot";}
+	@Override public String unlocalizedName(){ return "Mummy Rot";}
 	@Override public String displayText(){ return "(Mummy Rot)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_PredictWeather extends Chant
 {
 	@Override public String ID() { return "Chant_PredictWeather"; }
-	@Override public String name(){ return "Predict Weather";}
+	@Override public String unlocalizedName(){ return "Predict Weather";}
 	@Override public String displayText(){return "(Predict Weather)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

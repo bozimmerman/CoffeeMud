@@ -37,7 +37,7 @@ import java.util.*;
 public class Hunting extends CommonSkill
 {
 	@Override public String ID() { return "Hunting"; }
-	@Override public String name(){ return "Hunting";}
+	@Override public String unlocalizedName(){ return "Hunting";}
 	private static final String[] triggerStrings = {"HUNT","HUNTING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalTaming extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTaming"; }
-	@Override public String name(){ return "Animal Taming";}
+	@Override public String unlocalizedName(){ return "Animal Taming";}
 	private static final String[] triggerStrings = {"TAME","TAMING","ANIMALTAMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }

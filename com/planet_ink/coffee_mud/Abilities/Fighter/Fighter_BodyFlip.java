@@ -38,7 +38,7 @@ public class Fighter_BodyFlip extends FighterSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_BodyFlip"; }
-	@Override public String name(){ return "Body Flip";}
+	@Override public String unlocalizedName(){ return "Body Flip";}
 	@Override public String displayText(){ return "(Flipped and stunned)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

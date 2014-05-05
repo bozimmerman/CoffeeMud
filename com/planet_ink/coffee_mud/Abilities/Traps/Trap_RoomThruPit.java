@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_RoomThruPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_RoomThruPit"; }
-	@Override public String name(){ return "small pit trap";}
+	@Override public String unlocalizedName(){ return "small pit trap";}
 	@Override protected int trapLevel(){return 1;}
 	@Override public boolean getTravelThroughFlag() { return true; }
 }

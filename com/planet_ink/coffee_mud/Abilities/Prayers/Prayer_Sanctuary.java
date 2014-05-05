@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Sanctuary extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sanctuary"; }
-	@Override public String name(){ return "Sanctuary";}
+	@Override public String unlocalizedName(){ return "Sanctuary";}
 	@Override public String displayText(){ return "(Sanctuary)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

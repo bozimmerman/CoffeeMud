@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonSeaweed"; }
-	@Override public String name(){ return "Summon Seaweed";}
+	@Override public String unlocalizedName(){ return "Summon Seaweed";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

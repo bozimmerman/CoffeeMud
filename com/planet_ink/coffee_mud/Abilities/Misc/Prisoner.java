@@ -37,7 +37,7 @@ import java.util.*;
 public class Prisoner extends StdAbility
 {
 	@Override public String ID() { return "Prisoner"; }
-	@Override public String name(){ return "Prisoner";}
+	@Override public String unlocalizedName(){ return "Prisoner";}
 	@Override public String displayText(){ return "(Prisoner's Geas)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

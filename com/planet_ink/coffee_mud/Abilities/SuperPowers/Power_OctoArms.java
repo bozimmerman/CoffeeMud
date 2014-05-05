@@ -35,7 +35,7 @@ import java.util.*;
 public class Power_OctoArms extends SuperPower
 {
 	@Override public String ID() { return "Power_OctoArms"; }
-	@Override public String name(){ return "Octo-Arms";}
+	@Override public String unlocalizedName(){ return "Octo-Arms";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected  int canTargetCode(){return 0;}

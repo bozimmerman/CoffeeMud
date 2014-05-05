@@ -36,7 +36,7 @@ import java.util.*;
 public class BardSkill extends StdAbility
 {
 	@Override public String ID() { return "BardSkill"; }
-	@Override public String name(){ return "a Bard Skill";}
+	@Override public String unlocalizedName(){ return "a Bard Skill";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){	return Ability.ACODE_SKILL;}
 	@Override protected int canAffectCode(){return 0;}

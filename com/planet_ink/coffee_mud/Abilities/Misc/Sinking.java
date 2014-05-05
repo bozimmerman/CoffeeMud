@@ -37,7 +37,7 @@ import java.util.*;
 public class Sinking extends StdAbility
 {
 	@Override public String ID() { return "Sinking"; }
-	@Override public String name(){ return "Sinking";}
+	@Override public String unlocalizedName(){ return "Sinking";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Square extends Dance
 {
 	@Override public String ID() { return "Dance_Square"; }
-	@Override public String name(){ return "Square";}
+	@Override public String unlocalizedName(){ return "Square";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardDanceInvoke(){return true;}
 	@Override protected String danceOf(){return name()+" Dance";}

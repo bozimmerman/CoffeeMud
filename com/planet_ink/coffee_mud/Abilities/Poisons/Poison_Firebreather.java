@@ -37,7 +37,7 @@ import java.util.*;
 public class Poison_Firebreather extends Poison_Liquor
 {
 	@Override public String ID() { return "Poison_Firebreather"; }
-	@Override public String name(){ return "Firebreather";}
+	@Override public String unlocalizedName(){ return "Firebreather";}
 	private static final String[] triggerStrings = {"LIQUORFIRE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int POISON_TICKS(){return 35;}

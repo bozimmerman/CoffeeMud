@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseDisease extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseDisease"; }
-	@Override public String name(){ return "Sense Disease";}
+	@Override public String unlocalizedName(){ return "Sense Disease";}
 	@Override public String displayText(){ return "(Sense Disease)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

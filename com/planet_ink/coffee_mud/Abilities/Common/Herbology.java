@@ -39,7 +39,7 @@ import java.util.*;
 public class Herbology extends CommonSkill
 {
 	@Override public String ID() { return "Herbology"; }
-	@Override public String name(){ return "Herbology";}
+	@Override public String unlocalizedName(){ return "Herbology";}
 	private static final String[] triggerStrings = {"HERBOLOGY"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }

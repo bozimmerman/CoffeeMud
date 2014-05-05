@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Sacrifice extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sacrifice"; }
-	@Override public String name(){ return "Sacrifice";}
+	@Override public String unlocalizedName(){ return "Sacrifice";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

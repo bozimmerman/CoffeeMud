@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_GetSpell extends Trap_Get
 {
 	@Override public String ID() { return "Trap_GetSpell"; }
-	@Override public String name(){ return "Get Spell Trap";}
+	@Override public String unlocalizedName(){ return "Get Spell Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_SPELL;}

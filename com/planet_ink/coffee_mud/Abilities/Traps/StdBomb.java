@@ -34,7 +34,7 @@ import java.util.*;
 public class StdBomb extends StdTrap
 {
 	@Override public String ID() { return "StdBomb"; }
-	@Override public String name(){ return "a bomb";}
+	@Override public String unlocalizedName(){ return "a bomb";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public String requiresToSet(){return "";}

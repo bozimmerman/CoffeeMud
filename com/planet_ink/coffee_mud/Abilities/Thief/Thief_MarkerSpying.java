@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_MarkerSpying extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_MarkerSpying"; }
-	@Override public String name(){ return "Marker Spying";}
+	@Override public String unlocalizedName(){ return "Marker Spying";}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
 	@Override public String displayText(){return "";}

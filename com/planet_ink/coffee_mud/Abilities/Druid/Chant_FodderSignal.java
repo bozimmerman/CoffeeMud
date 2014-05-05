@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FodderSignal extends Chant
 {
 	@Override public String ID() { return "Chant_FodderSignal"; }
-	@Override public String name(){ return "Fodder Signal";}
+	@Override public String unlocalizedName(){ return "Fodder Signal";}
 	@Override public String displayText(){return "(Fodder Signal)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DampenAuras extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DampenAuras"; }
-	@Override public String name(){ return "Dampen Auras";}
+	@Override public String unlocalizedName(){ return "Dampen Auras";}
 	@Override public String displayText(){return "(Dampened Auras)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

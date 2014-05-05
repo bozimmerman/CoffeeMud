@@ -39,7 +39,7 @@ import java.util.*;
 public class GatheringSkill extends CommonSkill
 {
 	@Override public String ID() { return "GatheringSkill"; }
-	@Override public String name(){ return "GatheringSkill";}
+	@Override public String unlocalizedName(){ return "GatheringSkill";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "";}

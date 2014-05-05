@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Gills extends Prayer
 {
 	@Override public String ID() { return "Prayer_Gills"; }
-	@Override public String name(){ return "Gills";}
+	@Override public String unlocalizedName(){ return "Gills";}
 	@Override public String displayText(){return "(Gills)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}

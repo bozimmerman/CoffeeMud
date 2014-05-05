@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Noise extends StdTrap
 {
 	@Override public String ID() { return "Trap_Noise"; }
-	@Override public String name(){ return "noisy trap";}
+	@Override public String unlocalizedName(){ return "noisy trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 1;}

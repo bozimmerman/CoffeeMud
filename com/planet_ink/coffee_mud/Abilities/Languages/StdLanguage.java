@@ -40,7 +40,7 @@ import java.util.*;
 public class StdLanguage extends StdAbility implements Language
 {
 	@Override public String ID() { return "StdLanguage"; }
-	@Override public String name(){ return "Languages";}
+	@Override public String unlocalizedName(){ return "Languages";}
 	@Override public String writtenName() { return name();}
 	private static final String[] triggerStrings = {"SPEAK"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

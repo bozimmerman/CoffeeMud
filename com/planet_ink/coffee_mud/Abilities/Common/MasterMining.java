@@ -35,7 +35,7 @@ import java.util.*;
 public class MasterMining extends Mining
 {
 	@Override public String ID() { return "MasterMining"; }
-	@Override public String name(){ return "Master Mining";}
+	@Override public String unlocalizedName(){ return "Master Mining";}
 	private static final String[] triggerStrings = {"MMINE","MMINING","MASTERMINE","MASTERMINING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

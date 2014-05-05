@@ -37,7 +37,7 @@ import java.util.*;
 public class Play_Solo extends Play
 {
 	@Override public String ID() { return "Play_Solo"; }
-	@Override public String name(){ return "Solo";}
+	@Override public String unlocalizedName(){ return "Solo";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean persistantSong(){return false;}
 	@Override protected boolean skipStandardSongTick(){return true;}

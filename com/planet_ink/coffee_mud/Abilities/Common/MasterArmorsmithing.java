@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
 	@Override public String ID() { return "MasterArmorsmithing"; }
-	@Override public String name(){ return "Master Armorsmithing";}
+	@Override public String unlocalizedName(){ return "Master Armorsmithing";}
 	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

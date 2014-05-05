@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_Tremor extends Prayer
 {
 	@Override public String ID() { return "Prayer_Tremor"; }
-	@Override public String name(){ return "Tremor";}
+	@Override public String unlocalizedName(){ return "Tremor";}
 	@Override public String displayText(){return "(Tremor)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

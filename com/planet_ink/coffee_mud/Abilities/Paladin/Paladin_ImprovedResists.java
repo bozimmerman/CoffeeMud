@@ -35,7 +35,7 @@ import java.util.*;
 public class Paladin_ImprovedResists extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_ImprovedResists"; }
-	@Override public String name(){ return "Paladin`s Resistance";}
+	@Override public String unlocalizedName(){ return "Paladin`s Resistance";}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 
 	@Override

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_AuraIntolerance extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraIntolerance"; }
-	@Override public String name(){ return "Aura of Intolerance";}
+	@Override public String unlocalizedName(){ return "Aura of Intolerance";}
 	@Override public String displayText(){ return "(Intolerance Aura)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

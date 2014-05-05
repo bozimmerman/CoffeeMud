@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_Bury extends Chant
 {
 	@Override public String ID() { return "Chant_Bury"; }
-	@Override public String name(){ return "Earthfeed";}
+	@Override public String unlocalizedName(){ return "Earthfeed";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

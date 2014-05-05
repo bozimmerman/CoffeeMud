@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_HolyShield extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyShield"; }
-	@Override public String name(){ return "Holy Shield";}
+	@Override public String unlocalizedName(){ return "Holy Shield";}
 	@Override public String displayText(){ return "(Holy Shield)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

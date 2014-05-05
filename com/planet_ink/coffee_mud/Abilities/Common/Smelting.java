@@ -41,7 +41,7 @@ import java.util.*;
 public class Smelting extends CraftingSkill
 {
 	@Override public String ID() { return "Smelting"; }
-	@Override public String name(){ return "Smelting";}
+	@Override public String unlocalizedName(){ return "Smelting";}
 	private static final String[] triggerStrings = {"SMELT","SMELTING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}

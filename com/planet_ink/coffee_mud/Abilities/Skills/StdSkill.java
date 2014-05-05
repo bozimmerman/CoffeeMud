@@ -37,7 +37,7 @@ public class StdSkill extends StdAbility
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "StdSkill"; }
-	@Override public String name(){ return "StdSkill";}
+	@Override public String unlocalizedName(){ return "StdSkill";}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

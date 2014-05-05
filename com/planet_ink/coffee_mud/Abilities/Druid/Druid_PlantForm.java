@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_PlantForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_PlantForm"; }
-	@Override public String name(){ return "Plant Form";}
+	@Override public String unlocalizedName(){ return "Plant Form";}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings = {"PLANTFORM"};

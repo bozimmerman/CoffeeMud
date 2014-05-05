@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Ember extends Prayer
 {
 	@Override public String ID() { return "Prayer_Ember"; }
-	@Override public String name(){ return "Ember";}
+	@Override public String unlocalizedName(){ return "Ember";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}

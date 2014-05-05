@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class Thief_TrophyCount extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TrophyCount"; }
-	@Override public String name(){ return "Trophy Count";}
+	@Override public String unlocalizedName(){ return "Trophy Count";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

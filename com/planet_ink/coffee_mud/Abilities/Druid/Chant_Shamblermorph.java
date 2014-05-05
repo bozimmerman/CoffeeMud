@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Shamblermorph extends Chant
 {
 	@Override public String ID() { return "Chant_Shamblermorph"; }
-	@Override public String name(){ return "Shamblermorph";}
+	@Override public String unlocalizedName(){ return "Shamblermorph";}
 	@Override public String displayText(){return "(Shamblermorph)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

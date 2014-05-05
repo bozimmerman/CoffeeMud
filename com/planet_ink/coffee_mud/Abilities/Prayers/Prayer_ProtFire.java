@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_ProtFire extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtFire"; }
-	@Override public String name(){ return "Protection Fire";}
+	@Override public String unlocalizedName(){ return "Protection Fire";}
 	@Override public String displayText(){return "(Protection from Fire)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

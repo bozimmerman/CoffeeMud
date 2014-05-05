@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_GroveWalk extends Chant
 {
 	@Override public String ID() { return "Chant_GroveWalk"; }
-	@Override public String name(){ return "Grove Walk";}
+	@Override public String unlocalizedName(){ return "Grove Walk";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

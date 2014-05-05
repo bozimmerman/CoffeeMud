@@ -38,7 +38,7 @@ import java.util.*;
 public class Poison extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Poison"; }
-	@Override public String name(){ return "Poison";}
+	@Override public String unlocalizedName(){ return "Poison";}
 	@Override public String displayText(){ return "(Poisoned)";}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

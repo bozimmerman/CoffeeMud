@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Listen extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Listen"; }
-	@Override public String name(){ return "Listen";}
+	@Override public String unlocalizedName(){ return "Listen";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

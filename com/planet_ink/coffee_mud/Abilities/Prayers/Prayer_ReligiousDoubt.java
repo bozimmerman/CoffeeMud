@@ -40,7 +40,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
 
 	@Override public String ID() { return "Prayer_ReligiousDoubt"; }
-	@Override public String name(){ return "Religious Doubt";}
+	@Override public String unlocalizedName(){ return "Religious Doubt";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override
 	public String displayText()

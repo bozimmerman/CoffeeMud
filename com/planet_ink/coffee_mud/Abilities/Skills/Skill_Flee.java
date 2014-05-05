@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Flee extends StdSkill
 {
 	@Override public String ID() { return "Skill_Flee"; }
-	@Override public String name(){ return "Flee";}
+	@Override public String unlocalizedName(){ return "Flee";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Pin extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Pin"; }
-	@Override public String name(){ return "Pin";}
+	@Override public String unlocalizedName(){ return "Pin";}
 	@Override
 	public String displayText()
 	{

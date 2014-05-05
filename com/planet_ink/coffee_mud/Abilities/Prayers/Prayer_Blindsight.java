@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Blindsight extends Prayer
 {
 	@Override public String ID() { return "Prayer_Blindsight"; }
-	@Override public String name(){ return "Blindsight";}
+	@Override public String unlocalizedName(){ return "Blindsight";}
 	@Override public String displayText(){ return "(Blindsight)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

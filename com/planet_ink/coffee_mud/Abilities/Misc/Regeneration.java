@@ -42,7 +42,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	protected int regenTick=maxTickDown;
 
 	@Override public String ID() { return "Regeneration"; }
-	@Override public String name(){ return "Stat Regeneration";}
+	@Override public String unlocalizedName(){ return "Stat Regeneration";}
 	@Override public String displayText(){ return "(Stat Regeneration)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_HolyWind extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyWind"; }
-	@Override public String name(){ return "Holy Wind";}
+	@Override public String unlocalizedName(){ return "Holy Wind";}
 	@Override public String displayText(){return "(Blown Down)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

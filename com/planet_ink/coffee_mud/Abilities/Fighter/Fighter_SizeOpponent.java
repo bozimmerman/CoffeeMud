@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_SizeOpponent extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_SizeOpponent"; }
-	@Override public String name(){ return "Opponent Knowledge";}
+	@Override public String unlocalizedName(){ return "Opponent Knowledge";}
 	private static final String[] triggerStrings = {"SIZEUP","OPPONENT"};
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

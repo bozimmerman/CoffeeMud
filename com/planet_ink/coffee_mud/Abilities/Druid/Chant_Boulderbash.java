@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Boulderbash extends Chant
 {
 	@Override public String ID() { return "Chant_Boulderbash"; }
-	@Override public String name(){ return "Boulderbash";}
+	@Override public String unlocalizedName(){ return "Boulderbash";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}

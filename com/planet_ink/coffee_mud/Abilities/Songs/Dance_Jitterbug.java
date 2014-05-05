@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Jitterbug extends Dance
 {
 	@Override public String ID() { return "Dance_Jitterbug"; }
-	@Override public String name(){ return "Jitterbug";}
+	@Override public String unlocalizedName(){ return "Jitterbug";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	@Override

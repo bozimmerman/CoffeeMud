@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_Rend extends StdAbility
 {
 	@Override public String ID() { return "Druid_Rend"; }
-	@Override public String name(){ return "Rend";}
+	@Override public String unlocalizedName(){ return "Rend";}
 	private static final String[] triggerStrings = {"REND"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

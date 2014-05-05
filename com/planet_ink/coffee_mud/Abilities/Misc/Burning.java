@@ -38,7 +38,7 @@ import java.util.*;
 public class Burning extends StdAbility
 {
 	@Override public String ID() { return "Burning"; }
-	@Override public String name(){ return "Burning";}
+	@Override public String unlocalizedName(){ return "Burning";}
 	@Override public String displayText(){ return "(Burning)";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

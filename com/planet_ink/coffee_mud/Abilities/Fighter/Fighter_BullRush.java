@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BullRush extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BullRush"; }
-	@Override public String name(){ return "Bullrush";}
+	@Override public String unlocalizedName(){ return "Bullrush";}
 	@Override public int minRange(){return 0;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override protected int canAffectCode(){return 0;}

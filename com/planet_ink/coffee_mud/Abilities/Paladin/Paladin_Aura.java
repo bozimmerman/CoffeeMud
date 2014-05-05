@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Aura extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Aura"; }
-	@Override public String name(){ return "Paladin`s Aura";}
+	@Override public String unlocalizedName(){ return "Paladin`s Aura";}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Aura()
 	{

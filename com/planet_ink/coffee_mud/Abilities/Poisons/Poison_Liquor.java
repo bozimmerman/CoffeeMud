@@ -37,7 +37,7 @@ import java.util.*;
 public class Poison_Liquor extends Poison_Alcohol
 {
 	@Override public String ID() { return "Poison_Liquor"; }
-	@Override public String name(){ return "Liquor";}
+	@Override public String unlocalizedName(){ return "Liquor";}
 	private static final String[] triggerStrings = {"LIQUORUP"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_POISON;}

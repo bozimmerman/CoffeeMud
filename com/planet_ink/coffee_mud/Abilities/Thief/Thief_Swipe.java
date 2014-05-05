@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Swipe extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Swipe"; }
-	@Override public String name(){ return "Swipe gold";}
+	@Override public String unlocalizedName(){ return "Swipe gold";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

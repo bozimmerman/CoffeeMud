@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_WandUse extends StdSkill
 {
 	@Override public String ID() { return "Skill_WandUse"; }
-	@Override public String name(){ return "Wands";}
+	@Override public String unlocalizedName(){ return "Wands";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Extinguish extends Prayer
 {
 	@Override public String ID() { return "Prayer_Extinguish"; }
-	@Override public String name(){ return "Extinguish";}
+	@Override public String unlocalizedName(){ return "Extinguish";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}

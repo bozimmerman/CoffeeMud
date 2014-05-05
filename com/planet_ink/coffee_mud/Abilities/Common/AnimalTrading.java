@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalTrading extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTrading"; }
-	@Override public String name(){ return "Animal Trading";}
+	@Override public String unlocalizedName(){ return "Animal Trading";}
 	private static final String[] triggerStrings = {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

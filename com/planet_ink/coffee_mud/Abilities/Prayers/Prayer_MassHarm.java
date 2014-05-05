@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_MassHarm extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassHarm"; }
-	@Override public String name(){ return "Mass Harm";}
+	@Override public String unlocalizedName(){ return "Mass Harm";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

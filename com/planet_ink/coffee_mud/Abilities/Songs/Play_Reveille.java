@@ -37,7 +37,7 @@ import java.util.*;
 public class Play_Reveille extends Play
 {
 	@Override public String ID() { return "Play_Reveille"; }
-	@Override public String name(){ return "Reveille";}
+	@Override public String unlocalizedName(){ return "Reveille";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected boolean skipStandardSongTick(){return true;}

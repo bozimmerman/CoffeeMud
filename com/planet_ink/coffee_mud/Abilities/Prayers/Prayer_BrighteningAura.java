@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_BrighteningAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_BrighteningAura"; }
-	@Override public String name(){ return "Brightening Aura";}
+	@Override public String unlocalizedName(){ return "Brightening Aura";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

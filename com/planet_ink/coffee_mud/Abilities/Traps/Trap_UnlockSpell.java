@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_UnlockSpell extends Trap_Unlock
 {
 	@Override public String ID() { return "Trap_UnlockSpell"; }
-	@Override public String name(){ return "Unlock Spell Trap";}
+	@Override public String unlocalizedName(){ return "Unlock Spell Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_SPELL;}

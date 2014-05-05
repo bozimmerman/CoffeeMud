@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_SmokeSignals"; }
-	@Override public String name(){ return "Smoke Signals";}
+	@Override public String unlocalizedName(){ return "Smoke Signals";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

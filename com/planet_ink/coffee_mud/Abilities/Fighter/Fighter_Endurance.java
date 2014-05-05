@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_Endurance extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Endurance"; }
-	@Override public String name(){ return "Endurance";}
+	@Override public String unlocalizedName(){ return "Endurance";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

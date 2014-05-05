@@ -38,7 +38,7 @@ import java.util.*;
 public class Merchant extends CommonSkill implements ShopKeeper
 {
 	@Override public String ID() { return "Merchant"; }
-	@Override public String name(){ return "Marketeering";}
+	@Override public String unlocalizedName(){ return "Marketeering";}
 	private static final String[] triggerStrings = {"MARKET"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int overrideMana(){return 5;}

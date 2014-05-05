@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Shillelagh extends Chant
 {
 	@Override public String ID() { return "Chant_Shillelagh"; }
-	@Override public String name(){ return "Shillelagh";}
+	@Override public String unlocalizedName(){ return "Shillelagh";}
 	@Override public String displayText(){return "(Shillelagh)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

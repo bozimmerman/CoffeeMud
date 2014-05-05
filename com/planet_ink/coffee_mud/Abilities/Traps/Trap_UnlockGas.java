@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_UnlockGas extends Trap_Unlock
 {
 	@Override public String ID() { return "Trap_UnlockGas"; }
-	@Override public String name(){ return "Unlock Gas Trap";}
+	@Override public String unlocalizedName(){ return "Unlock Gas Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_GAS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Bleeding extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Bleeding"; }
-	@Override public String name(){ return "Bleeding";}
+	@Override public String unlocalizedName(){ return "Bleeding";}
 	@Override public String displayText(){ return "(Bleeding)";}
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

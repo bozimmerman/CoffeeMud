@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonPeace extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPeace"; }
-	@Override public String name(){ return "Summon Peace";}
+	@Override public String unlocalizedName(){ return "Summon Peace";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

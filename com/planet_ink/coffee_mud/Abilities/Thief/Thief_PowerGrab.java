@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_PowerGrab extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_PowerGrab"; }
-	@Override public String name(){ return "Power Grab";}
+	@Override public String unlocalizedName(){ return "Power Grab";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

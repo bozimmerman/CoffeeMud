@@ -37,7 +37,7 @@ import java.util.*;
 public class Power_OctoGrapple extends SuperPower
 {
 	@Override public String ID() { return "Power_OctoGrapple"; }
-	@Override public String name(){ return "Octo-Grapple";}
+	@Override public String unlocalizedName(){ return "Octo-Grapple";}
 	@Override
 	public String displayText()
 	{

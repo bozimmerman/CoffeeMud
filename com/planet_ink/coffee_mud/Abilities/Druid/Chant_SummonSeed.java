@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonSeed extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSeed"; }
-	@Override public String name(){ return "Summon Seeds";}
+	@Override public String unlocalizedName(){ return "Summon Seeds";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Snare extends StdTrap
 {
 	@Override public String ID() { return "Trap_Snare"; }
-	@Override public String name(){ return "snare trap";}
+	@Override public String unlocalizedName(){ return "snare trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 5;}

@@ -37,7 +37,7 @@ public class Skill_Slip extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Slip"; }
-	@Override public String name(){ return "Slip";}
+	@Override public String unlocalizedName(){ return "Slip";}
 	@Override public String displayText(){ return "(Slipped)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

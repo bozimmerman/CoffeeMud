@@ -42,7 +42,7 @@ import java.util.*;
 public class ThievesCant extends StdLanguage
 {
 	@Override public String ID() { return "ThievesCant"; }
-	@Override public String name(){ return "Thieves Cant";}
+	@Override public String unlocalizedName(){ return "Thieves Cant";}
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public ThievesCant()

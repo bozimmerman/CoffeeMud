@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Haunted extends Prayer
 {
 	@Override public String ID() { return "Prayer_Haunted"; }
-	@Override public String name(){ return "Haunted";}
+	@Override public String unlocalizedName(){ return "Haunted";}
 	@Override public String displayText(){ return "(Haunted)";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}

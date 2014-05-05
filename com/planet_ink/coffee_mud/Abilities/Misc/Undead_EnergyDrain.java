@@ -36,7 +36,7 @@ import java.util.*;
 public class Undead_EnergyDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_EnergyDrain"; }
-	@Override public String name(){ return "Energy Drain";}
+	@Override public String unlocalizedName(){ return "Energy Drain";}
 	@Override public String displayText(){ return "(Drained of Energy)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

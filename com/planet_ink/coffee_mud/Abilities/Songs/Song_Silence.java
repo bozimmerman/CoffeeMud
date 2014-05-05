@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Silence extends Song
 {
 	@Override public String ID() { return "Song_Silence"; }
-	@Override public String name(){ return "Silencing";}
+	@Override public String unlocalizedName(){ return "Silencing";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardSongTick(){return true;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

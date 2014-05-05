@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ImprovedPeek extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ImprovedPeek"; }
-	@Override public String name(){ return "Improved Peek";}
+	@Override public String unlocalizedName(){ return "Improved Peek";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

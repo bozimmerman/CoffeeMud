@@ -37,7 +37,7 @@ import java.util.*;
 public class FireBuilding extends CommonSkill
 {
 	@Override public String ID() { return "FireBuilding"; }
-	@Override public String name(){ return "Fire Building";}
+	@Override public String unlocalizedName(){ return "Fire Building";}
 	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }

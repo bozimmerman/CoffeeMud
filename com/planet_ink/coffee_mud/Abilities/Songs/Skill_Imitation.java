@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Imitation extends BardSkill
 {
 	@Override public String ID() { return "Skill_Imitation"; }
-	@Override public String name(){ return "Imitate";}
+	@Override public String unlocalizedName(){ return "Imitate";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

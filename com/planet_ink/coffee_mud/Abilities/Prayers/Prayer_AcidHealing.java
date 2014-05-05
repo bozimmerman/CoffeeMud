@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_AcidHealing extends Prayer
 {
 	@Override public String ID() { return "Prayer_AcidHealing"; }
-	@Override public String name(){ return "Acid Healing";}
+	@Override public String unlocalizedName(){ return "Acid Healing";}
 	@Override public String displayText(){ return "(Acid Healing)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

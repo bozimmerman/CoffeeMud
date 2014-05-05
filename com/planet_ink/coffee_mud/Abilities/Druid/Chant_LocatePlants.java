@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_LocatePlants extends Chant
 {
 	@Override public String ID() { return "Chant_LocatePlants"; }
-	@Override public String name(){ return "Locate Plants";}
+	@Override public String unlocalizedName(){ return "Locate Plants";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public String displayText(){return "(Locating Plants)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_EnterNeedle extends Trap_Enter
 {
 	@Override public String ID() { return "Trap_EnterNeedle"; }
-	@Override public String name(){ return "Entry Needle Trap";}
+	@Override public String unlocalizedName(){ return "Entry Needle Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_NEEDLE;}

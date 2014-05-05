@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Drums extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Drums"; }
-	@Override public String name(){ return "Drums";}
+	@Override public String unlocalizedName(){ return "Drums";}
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_DRUMS;}
 	@Override public String mimicSpell(){return "Spell_Deafness";}
 	private static Ability theSpell=null;

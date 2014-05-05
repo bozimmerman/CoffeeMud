@@ -36,7 +36,7 @@ import java.util.*;
 public class Speculate extends CommonSkill
 {
 	@Override public String ID() { return "Speculate"; }
-	@Override public String name(){ return "Speculating";}
+	@Override public String unlocalizedName(){ return "Speculating";}
 	private static final String[] triggerStrings = {"SPECULATE","SPECULATING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Tripline extends StdTrap
 {
 	@Override public String ID() { return "Trap_Tripline"; }
-	@Override public String name(){ return "tripline";}
+	@Override public String unlocalizedName(){ return "tripline";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 1;}

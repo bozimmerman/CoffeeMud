@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_UndeadInvisibility extends Prayer
 {
 	@Override public String ID() { return "Prayer_UndeadInvisibility"; }
-	@Override public String name(){ return "Invisibility to Undead";}
+	@Override public String unlocalizedName(){ return "Invisibility to Undead";}
 	@Override public String displayText(){ return "(Invisibility/Undead)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

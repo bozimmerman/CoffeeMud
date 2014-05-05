@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Harmonicas extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Harmonicas"; }
-	@Override public String name(){ return "Harmonicas";}
+	@Override public String unlocalizedName(){ return "Harmonicas";}
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_HARMONICAS;}
 	@Override public String mimicSpell(){return "Spell_Awe";}
 	private static Ability theSpell=null;

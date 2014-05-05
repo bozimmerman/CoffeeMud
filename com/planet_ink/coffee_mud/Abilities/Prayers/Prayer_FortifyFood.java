@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_FortifyFood extends Prayer
 {
 	@Override public String ID() { return "Prayer_FortifyFood"; }
-	@Override public String name(){ return "Nourishing Food";}
+	@Override public String unlocalizedName(){ return "Nourishing Food";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

@@ -40,7 +40,7 @@ public class Archon_Record extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Record"; }
-	@Override public String name(){ return "Record";}
+	@Override public String unlocalizedName(){ return "Record";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant extends StdAbility
 {
 	@Override public String ID() { return "Chant"; }
-	@Override public String name(){ return "a Druidic Chant";}
+	@Override public String unlocalizedName(){ return "a Druidic Chant";}
 	@Override public String displayText(){return "("+name()+")";}
 	protected boolean renderedMundane=false;
 

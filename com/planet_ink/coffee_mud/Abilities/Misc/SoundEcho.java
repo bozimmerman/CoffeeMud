@@ -38,7 +38,7 @@ import java.util.*;
 public class SoundEcho extends StdAbility
 {
 	@Override public String ID() { return "SoundEcho"; }
-	@Override public String name(){ return "Sound Echo";}
+	@Override public String unlocalizedName(){ return "Sound Echo";}
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_AREAS;}

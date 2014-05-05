@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Chant_ColdWard extends Chant
 {
 	@Override public String ID() { return "Chant_ColdWard"; }
-	@Override public String name(){ return "Cold Ward";}
+	@Override public String unlocalizedName(){ return "Cold Ward";}
 	@Override public String displayText(){return "(Cold Ward)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}

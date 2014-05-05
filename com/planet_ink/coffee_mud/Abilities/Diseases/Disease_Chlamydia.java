@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Chlamydia extends Disease
 {
 	@Override public String ID() { return "Disease_Chlamydia"; }
-	@Override public String name(){ return "Chlamydia";}
+	@Override public String unlocalizedName(){ return "Chlamydia";}
 	@Override public String displayText(){ return "(Chlamydia)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

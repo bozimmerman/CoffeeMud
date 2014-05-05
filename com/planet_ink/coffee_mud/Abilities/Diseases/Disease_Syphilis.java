@@ -36,7 +36,7 @@ import java.util.*;
 public class Disease_Syphilis extends Disease
 {
 	@Override public String ID() { return "Disease_Syphilis"; }
-	@Override public String name(){ return "Syphilis";}
+	@Override public String unlocalizedName(){ return "Syphilis";}
 	@Override public String displayText(){ return "(Syphilis)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

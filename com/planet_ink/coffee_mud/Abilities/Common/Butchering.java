@@ -36,7 +36,7 @@ import java.util.*;
 public class Butchering extends GatheringSkill
 {
 	@Override public String ID() { return "Butchering"; }
-	@Override public String name(){ return "Butchering";}
+	@Override public String unlocalizedName(){ return "Butchering";}
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

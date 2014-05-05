@@ -36,7 +36,7 @@ import java.util.*;
 public class Undercommon extends StdLanguage
 {
 	@Override public String ID() { return "Undercommon"; }
-	@Override public String name(){ return "Undercommon";}
+	@Override public String unlocalizedName(){ return "Undercommon";}
 	public static List<String[]> wordLists=null;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()

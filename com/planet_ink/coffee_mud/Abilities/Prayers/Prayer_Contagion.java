@@ -38,7 +38,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Contagion"; }
 	@Override public String displayText(){ return "(Contagion)";}
-	@Override public String name(){ return "Contagion";}
+	@Override public String unlocalizedName(){ return "Contagion";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

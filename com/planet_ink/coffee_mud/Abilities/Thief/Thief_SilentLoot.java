@@ -37,7 +37,7 @@ public class Thief_SilentLoot extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentLoot"; }
 	@Override public String displayText() {return "(Silent AutoLoot)";}
-	@Override public String name(){ return "Silent AutoLoot";}
+	@Override public String unlocalizedName(){ return "Silent AutoLoot";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SummonSapling extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSapling"; }
-	@Override public String name(){ return "Summon Sapling";}
+	@Override public String unlocalizedName(){ return "Summon Sapling";}
 	@Override public String displayText(){return "(Summon Sapling)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

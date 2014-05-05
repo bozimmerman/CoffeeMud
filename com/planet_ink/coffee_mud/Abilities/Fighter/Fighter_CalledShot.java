@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CalledShot extends Fighter_CalledStrike
 {
 	@Override public String ID() { return "Fighter_CalledShot"; }
-	@Override public String name(){ return "Called Shot";}
+	@Override public String unlocalizedName(){ return "Called Shot";}
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

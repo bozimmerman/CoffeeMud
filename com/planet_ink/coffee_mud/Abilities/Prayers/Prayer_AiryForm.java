@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_AiryForm extends Prayer
 {
 	@Override public String ID() { return "Prayer_AiryForm"; }
-	@Override public String name(){ return "Airyform";}
+	@Override public String unlocalizedName(){ return "Airyform";}
 	@Override public String displayText(){ return "(Airyform)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

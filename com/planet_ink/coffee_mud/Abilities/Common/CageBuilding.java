@@ -37,7 +37,7 @@ import java.util.*;
 public class CageBuilding extends Wainwrighting
 {
 	@Override public String ID() { return "CageBuilding"; }
-	@Override public String name(){ return "Cage Building";}
+	@Override public String unlocalizedName(){ return "Cage Building";}
 	private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

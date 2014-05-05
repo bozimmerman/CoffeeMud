@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Knowledge extends Song
 {
 	@Override public String ID() { return "Song_Knowledge"; }
-	@Override public String name(){ return "Knowledge";}
+	@Override public String unlocalizedName(){ return "Knowledge";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

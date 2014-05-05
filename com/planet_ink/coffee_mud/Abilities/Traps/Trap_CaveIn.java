@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_CaveIn extends StdTrap
 {
 	@Override public String ID() { return "Trap_CaveIn"; }
-	@Override public String name(){ return "cave-in";}
+	@Override public String unlocalizedName(){ return "cave-in";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 22;}

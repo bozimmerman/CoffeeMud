@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_WhisperWard extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_WhisperWard"; }
-	@Override public String name(){ return "Whisperward";}
+	@Override public String unlocalizedName(){ return "Whisperward";}
 	@Override public String displayText(){return "(Whisperward)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_CarefulStep extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_CarefulStep"; }
-	@Override public String name(){ return "Careful Step";}
+	@Override public String unlocalizedName(){ return "Careful Step";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_AnimateDead extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimateDead"; }
-	@Override public String name(){ return "Animate Dead";}
+	@Override public String unlocalizedName(){ return "Animate Dead";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

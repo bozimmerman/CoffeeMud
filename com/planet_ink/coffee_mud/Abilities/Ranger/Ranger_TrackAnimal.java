@@ -37,7 +37,7 @@ import java.util.*;
 public class Ranger_TrackAnimal extends StdAbility
 {
 	@Override public String ID() { return "Ranger_TrackAnimal"; }
-	@Override public String name(){ return "Track Animal";}
+	@Override public String unlocalizedName(){ return "Track Animal";}
 	protected String displayText="(tracking an animal)";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

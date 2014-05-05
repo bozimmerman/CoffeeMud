@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Weather extends Prayer
 {
 	@Override public String ID() { return "Prayer_Weather"; }
-	@Override public String name(){ return "Change Weather";}
+	@Override public String unlocalizedName(){ return "Change Weather";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

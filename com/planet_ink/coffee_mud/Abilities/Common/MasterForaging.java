@@ -35,7 +35,7 @@ import java.util.*;
 public class MasterForaging extends Foraging
 {
 	@Override public String ID() { return "MasterForaging"; }
-	@Override public String name(){ return "Master Foraging";}
+	@Override public String unlocalizedName(){ return "Master Foraging";}
 	private static final String[] triggerStrings = {"MFORAGE","MFORAGING","MASTERFORAGE","MASTERFORAGING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

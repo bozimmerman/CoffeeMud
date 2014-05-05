@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Foxtrot extends Dance
 {
 	@Override public String ID() { return "Dance_Foxtrot"; }
-	@Override public String name(){ return "Foxtrot";}
+	@Override public String unlocalizedName(){ return "Foxtrot";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int ticks=1;
 	protected int increment=1;

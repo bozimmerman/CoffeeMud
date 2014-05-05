@@ -40,7 +40,7 @@ import java.util.*;
 public class GlassBlowing extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "GlassBlowing"; }
-	@Override public String name(){ return "Glass Blowing";}
+	@Override public String unlocalizedName(){ return "Glass Blowing";}
 	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "_GLASS|SAND";}

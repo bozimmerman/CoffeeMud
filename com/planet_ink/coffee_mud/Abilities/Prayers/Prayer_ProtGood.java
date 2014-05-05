@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_ProtGood extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtGood"; }
-	@Override public String name(){ return "Protection Good";}
+	@Override public String unlocalizedName(){ return "Protection Good";}
 	@Override public String displayText(){ return "(Protection from Good)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

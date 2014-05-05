@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SpellBlast extends StdTrap
 {
 	@Override public String ID() { return "Trap_SpellBlast"; }
-	@Override public String name(){ return "spell blast";}
+	@Override public String unlocalizedName(){ return "spell blast";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 23;}

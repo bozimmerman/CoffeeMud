@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_NeedlePrick extends StdTrap
 {
 	@Override public String ID() { return "Trap_NeedlePrick"; }
-	@Override public String name(){ return "poisoned pricker";}
+	@Override public String unlocalizedName(){ return "poisoned pricker";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 4;}

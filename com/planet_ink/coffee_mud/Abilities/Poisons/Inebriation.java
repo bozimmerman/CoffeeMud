@@ -37,7 +37,7 @@ import java.util.*;
 public class Inebriation extends Poison_Alcohol
 {
 	@Override public String ID() { return "Inebriation"; }
-	@Override public String name(){ return "Inebriation";}
+	@Override public String unlocalizedName(){ return "Inebriation";}
 	private static final String[] triggerStrings = {"INEBRIATE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int alchoholContribution(){return 6;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Open extends Trap_Trap
 {
 	@Override public String ID() { return "Trap_Open"; }
-	@Override public String name(){ return "Open Trap";}
+	@Override public String unlocalizedName(){ return "Open Trap";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 

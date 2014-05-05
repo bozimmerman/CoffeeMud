@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Shrug extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Shrug"; }
-	@Override public String name(){ return "Shrug Off";}
+	@Override public String unlocalizedName(){ return "Shrug Off";}
 	@Override public String displayText(){return "(Braced for a hit)";}
 	private static final String[] triggerStrings = {"BRACE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

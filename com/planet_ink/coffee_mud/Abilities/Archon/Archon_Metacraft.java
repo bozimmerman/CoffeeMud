@@ -37,7 +37,7 @@ import java.util.*;
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Metacraft"; }
-	@Override public String name(){ return "Metacrafting";}
+	@Override public String unlocalizedName(){ return "Metacrafting";}
 	private static final String[] triggerStrings = {"METACRAFT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

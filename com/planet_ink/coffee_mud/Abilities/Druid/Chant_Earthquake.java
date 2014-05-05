@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_Earthquake extends Chant
 {
 	@Override public String ID() { return "Chant_Earthquake"; }
-	@Override public String name(){ return "Quake";}
+	@Override public String unlocalizedName(){ return "Quake";}
 	@Override public String displayText(){return "(Quaking)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

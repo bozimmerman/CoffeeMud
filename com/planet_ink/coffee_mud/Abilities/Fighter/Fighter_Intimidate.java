@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Intimidate extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Intimidate"; }
-	@Override public String name(){ return "Intimidation";}
+	@Override public String unlocalizedName(){ return "Intimidation";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

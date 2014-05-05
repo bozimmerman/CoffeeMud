@@ -37,7 +37,7 @@ import java.util.*;
 public class Dueler extends StdAbility
 {
 	@Override public String ID() { return "Dueler"; }
-	@Override public String name(){ return "Dueler";}
+	@Override public String unlocalizedName(){ return "Dueler";}
 	protected Dueler otherDueler = null;
 	protected MOB otherDuelPartner=null;
 	protected long lastTimeISawYou=System.currentTimeMillis();

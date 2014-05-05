@@ -40,7 +40,7 @@ import java.util.Vector;
 public class Chant_CloudWalk extends Chant
 {
 	@Override public String ID() { return "Chant_CloudWalk"; }
-	@Override public String name(){ return "Cloud Walk";}
+	@Override public String unlocalizedName(){ return "Cloud Walk";}
 	@Override public String displayText(){return "(Cloud Walk)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

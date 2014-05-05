@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SummonHeat extends Chant
 {
 	@Override public String ID() { return "Chant_SummonHeat"; }
-	@Override public String name(){ return "Summon Heat";}
+	@Override public String unlocalizedName(){ return "Summon Heat";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

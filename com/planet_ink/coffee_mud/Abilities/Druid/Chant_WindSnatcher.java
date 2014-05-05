@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_WindSnatcher extends Chant
 {
 	@Override public String ID() { return "Chant_WindSnatcher"; }
-	@Override public String name(){ return "Wind Snatcher";}
+	@Override public String unlocalizedName(){ return "Wind Snatcher";}
 	@Override public String displayText(){ return "(Wind Snatcher)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

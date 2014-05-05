@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_SideKick extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_SideKick"; }
-	@Override public String name(){ return "Side Kick";}
+	@Override public String unlocalizedName(){ return "Side Kick";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

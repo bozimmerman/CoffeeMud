@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Battlehymn extends Play
 {
 	@Override public String ID() { return "Play_Battlehymn"; }
-	@Override public String name(){ return "Battlehymn";}
+	@Override public String unlocalizedName(){ return "Battlehymn";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String songOf(){return "a "+name();}
 

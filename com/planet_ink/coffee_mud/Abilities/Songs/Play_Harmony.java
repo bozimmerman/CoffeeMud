@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Harmony extends Play
 {
 	@Override public String ID() { return "Play_Harmony"; }
-	@Override public String name(){ return "Harmony";}
+	@Override public String unlocalizedName(){ return "Harmony";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected boolean persistantSong(){return false;}

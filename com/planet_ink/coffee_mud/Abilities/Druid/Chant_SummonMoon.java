@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonMoon extends Chant
 {
 	@Override public String ID() { return "Chant_SummonMoon"; }
-	@Override public String name(){ return "Summon Moon";}
+	@Override public String unlocalizedName(){ return "Summon Moon";}
 	@Override public String displayText(){return "(Summon Moon)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

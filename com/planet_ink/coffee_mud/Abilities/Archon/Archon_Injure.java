@@ -37,7 +37,7 @@ import java.util.*;
 public class Archon_Injure extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Injure"; }
-	@Override public String name(){ return "Injure";}
+	@Override public String unlocalizedName(){ return "Injure";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

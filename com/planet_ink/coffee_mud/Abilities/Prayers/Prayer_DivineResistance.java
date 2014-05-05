@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DivineResistance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineResistance"; }
-	@Override public String name(){ return "Divine Resistance";}
+	@Override public String unlocalizedName(){ return "Divine Resistance";}
 	@Override public String displayText(){ return "(Divine Resistance)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

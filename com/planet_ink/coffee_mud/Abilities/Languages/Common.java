@@ -36,7 +36,7 @@ import java.util.*;
 public class Common extends StdLanguage
 {
 	@Override public String ID() { return "Common"; }
-	@Override public String name(){ return "Common";}
+	@Override public String unlocalizedName(){ return "Common";}
 	@Override public boolean isAutoInvoked(){return false;}
 	@Override public boolean canBeUninvoked(){return canBeUninvoked;}
 	public Common()

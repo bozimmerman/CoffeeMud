@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Pick extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Pick"; }
-	@Override public String name(){ return "Pick Locks";}
+	@Override public String unlocalizedName(){ return "Pick Locks";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

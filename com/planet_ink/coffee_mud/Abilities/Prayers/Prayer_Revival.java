@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Revival extends Prayer
 {
 	@Override public String ID() { return "Prayer_Revival"; }
-	@Override public String name(){ return "Revival";}
+	@Override public String unlocalizedName(){ return "Revival";}
 	@Override public String displayText(){return "(Revival)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

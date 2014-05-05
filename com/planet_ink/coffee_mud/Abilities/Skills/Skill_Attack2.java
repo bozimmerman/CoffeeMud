@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_Attack2 extends StdSkill
 {
 	@Override public String ID() { return "Skill_Attack2"; }
-	@Override public String name(){ return "Second Attack";}
+	@Override public String unlocalizedName(){ return "Second Attack";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

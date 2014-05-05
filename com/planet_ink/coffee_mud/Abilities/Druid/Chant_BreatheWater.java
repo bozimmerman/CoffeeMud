@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_BreatheWater extends Chant
 {
 	@Override public String ID() { return "Chant_BreatheWater"; }
-	@Override public String name(){ return "Fish Gills";}
+	@Override public String unlocalizedName(){ return "Fish Gills";}
 	@Override public String displayText(){return "(Fish Gills)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

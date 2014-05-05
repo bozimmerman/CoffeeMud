@@ -37,7 +37,7 @@ import java.util.*;
 public class Disease_FrostBite extends Disease
 {
 	@Override public String ID() { return "Disease_FrostBite"; }
-	@Override public String name(){ return "Frost Bite";}
+	@Override public String unlocalizedName(){ return "Frost Bite";}
 	private String where="feet";
 	@Override public String displayText(){ return "(Frost bitten "+where+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_Crossbreed extends Chant
 {
 	@Override public String ID() { return "Chant_Crossbreed"; }
-	@Override public String name(){ return "Crossbreed";}
+	@Override public String unlocalizedName(){ return "Crossbreed";}
 	@Override public String displayText(){return "(Crossbreed)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

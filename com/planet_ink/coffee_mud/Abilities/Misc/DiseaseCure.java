@@ -38,7 +38,7 @@ import java.util.*;
 public class DiseaseCure extends StdAbility
 {
 	@Override public String ID() { return "DiseaseCure"; }
-	@Override public String name(){ return "A Cure";}
+	@Override public String unlocalizedName(){ return "A Cure";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

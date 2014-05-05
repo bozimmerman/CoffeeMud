@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Cannibalism extends Prayer
 {
 	@Override public String ID() { return "Prayer_Cannibalism"; }
-	@Override public String name(){ return "Inflict Cannibalism";}
+	@Override public String unlocalizedName(){ return "Inflict Cannibalism";}
 	@Override public String displayText(){ return "(Cannibalism)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

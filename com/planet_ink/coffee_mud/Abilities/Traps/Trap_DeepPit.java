@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_DeepPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_DeepPit"; }
-	@Override public String name(){ return "deep pit";}
+	@Override public String unlocalizedName(){ return "deep pit";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 14;}

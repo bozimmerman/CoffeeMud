@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Butterfly extends Dance
 {
 	@Override public String ID() { return "Dance_Butterfly"; }
-	@Override public String name(){ return "Butterfly";}
+	@Override public String unlocalizedName(){ return "Butterfly";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

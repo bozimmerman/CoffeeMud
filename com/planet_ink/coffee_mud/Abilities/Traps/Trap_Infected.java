@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Infected extends StdTrap
 {
 	@Override public String ID() { return "Trap_Infected"; }
-	@Override public String name(){ return "infected";}
+	@Override public String unlocalizedName(){ return "infected";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 13;}

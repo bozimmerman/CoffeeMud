@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_HideInPlainSight extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_HideInPlainSight"; }
-	@Override public String name(){ return "Hide In Plain Sight";}
+	@Override public String unlocalizedName(){ return "Hide In Plain Sight";}
 	@Override public String displayText(){ return "(Hiding in plain sight)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

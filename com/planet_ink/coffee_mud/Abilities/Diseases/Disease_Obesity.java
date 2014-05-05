@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Disease_Obesity extends Disease
 {
 	@Override public String ID() { return "Disease_Obesity"; }
-	@Override public String name(){ return "Obesity";}
+	@Override public String unlocalizedName(){ return "Obesity";}
 	@Override
 	public String displayText()
 	{

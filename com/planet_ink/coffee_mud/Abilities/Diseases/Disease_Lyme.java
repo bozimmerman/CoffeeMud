@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Lyme extends Disease
 {
 	@Override public String ID() { return "Disease_Lyme"; }
-	@Override public String name(){ return "Lyme Disease";}
+	@Override public String unlocalizedName(){ return "Lyme Disease";}
 	@Override public String displayText(){ return "(Lyme Disease)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

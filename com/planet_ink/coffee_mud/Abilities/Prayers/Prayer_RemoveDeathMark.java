@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemoveDeathMark"; }
-	@Override public String name(){ return "Remove Death Mark";}
+	@Override public String unlocalizedName(){ return "Remove Death Mark";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_HeatExhaustion extends Disease
 {
 	@Override public String ID() { return "Disease_HeatExhaustion"; }
-	@Override public String name(){ return "Heat Exhaustion";}
+	@Override public String unlocalizedName(){ return "Heat Exhaustion";}
 	@Override public String displayText(){ return "(Heat Exhaustion)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

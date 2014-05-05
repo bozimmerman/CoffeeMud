@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_LinkedHealth extends Prayer
 {
 	@Override public String ID() { return "Prayer_LinkedHealth"; }
-	@Override public String name(){ return "Linked Health";}
+	@Override public String unlocalizedName(){ return "Linked Health";}
 	@Override public String displayText(){ return "(Linked Health)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

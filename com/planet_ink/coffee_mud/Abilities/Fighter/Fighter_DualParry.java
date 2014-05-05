@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_DualParry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_DualParry"; }
-	@Override public String name(){ return "Dual Parry";}
+	@Override public String unlocalizedName(){ return "Dual Parry";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

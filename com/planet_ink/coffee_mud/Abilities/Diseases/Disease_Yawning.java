@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Yawning extends Disease
 {
 	@Override public String ID() { return "Disease_Yawning"; }
-	@Override public String name(){ return "Yawning";}
+	@Override public String unlocalizedName(){ return "Yawning";}
 	@Override public String displayText(){ return "(Yawning)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

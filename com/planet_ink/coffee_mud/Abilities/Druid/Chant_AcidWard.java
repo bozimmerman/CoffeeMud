@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_AcidWard extends Chant
 {
 	@Override public String ID() { return "Chant_AcidWard"; }
-	@Override public String name(){ return "Acid Ward";}
+	@Override public String unlocalizedName(){ return "Acid Ward";}
 	@Override public String displayText(){return "(Acid Ward)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}

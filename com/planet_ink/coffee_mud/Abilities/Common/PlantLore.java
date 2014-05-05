@@ -37,7 +37,7 @@ import java.util.*;
 public class PlantLore extends CommonSkill
 {
 	@Override public String ID() { return "PlantLore"; }
-	@Override public String name(){ return "Plant Lore";}
+	@Override public String unlocalizedName(){ return "Plant Lore";}
 	private static final String[] triggerStrings = {"PLANTLORE","PSPECULATE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }

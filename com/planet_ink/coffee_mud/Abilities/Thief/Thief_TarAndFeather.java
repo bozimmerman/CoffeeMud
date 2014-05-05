@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_TarAndFeather extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TarAndFeather"; }
-	@Override public String name(){ return "Tar And Feather";}
+	@Override public String unlocalizedName(){ return "Tar And Feather";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

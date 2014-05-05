@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Disenchant extends Prayer
 {
 	@Override public String ID() { return "Prayer_Disenchant"; }
-	@Override public String name(){ return "Neutralize Item";}
+	@Override public String unlocalizedName(){ return "Neutralize Item";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

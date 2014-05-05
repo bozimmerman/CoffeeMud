@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_CenterOfAttention extends BardSkill
 {
 	@Override public String ID() { return "Skill_CenterOfAttention"; }
-	@Override public String name(){ return "Center of Attention";}
+	@Override public String unlocalizedName(){ return "Center of Attention";}
 	@Override public String displayText(){ return "(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

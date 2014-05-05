@@ -35,7 +35,7 @@ import java.util.*;
 public class SmokeRings extends CommonSkill
 {
 	@Override public String ID() { return "SmokeRings"; }
-	@Override public String name(){ return "Smoke Rings";}
+	@Override public String unlocalizedName(){ return "Smoke Rings";}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }

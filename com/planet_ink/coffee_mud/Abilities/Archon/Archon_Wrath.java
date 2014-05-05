@@ -37,7 +37,7 @@ public class Archon_Wrath extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Wrath"; }
-	@Override public String name(){ return "Wrath";}
+	@Override public String unlocalizedName(){ return "Wrath";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

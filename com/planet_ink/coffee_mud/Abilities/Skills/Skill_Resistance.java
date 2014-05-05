@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Skill_Resistance extends StdSkill
 {
 	@Override public String ID() { return "Skill_Resistance"; }
-	@Override public String name(){ return "Resistance";}
+	@Override public String unlocalizedName(){ return "Resistance";}
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

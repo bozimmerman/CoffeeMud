@@ -36,7 +36,7 @@ import java.util.*;
 public class Ranger_Enemy1 extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Enemy1"; }
-	@Override public String name(){ return "Favored Enemy 1";}
+	@Override public String unlocalizedName(){ return "Favored Enemy 1";}
 	@Override public String displayText(){ return "(Enemy of the "+text()+")";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

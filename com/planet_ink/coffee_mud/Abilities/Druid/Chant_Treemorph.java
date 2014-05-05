@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Treemorph extends Chant
 {
 	@Override public String ID() { return "Chant_Treemorph"; }
-	@Override public String name(){ return "Treemorph";}
+	@Override public String unlocalizedName(){ return "Treemorph";}
 	@Override public String displayText(){return "(Treemorph)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

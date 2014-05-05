@@ -36,7 +36,7 @@ public class Fighter_Stonebody extends FighterSkill
 {
 	int regain=-1;
 	@Override public String ID() { return "Fighter_Stonebody"; }
-	@Override public String name(){ return "Stone Body";}
+	@Override public String unlocalizedName(){ return "Stone Body";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_AlterTime extends Chant
 {
 	@Override public String ID() { return "Chant_AlterTime"; }
-	@Override public String name(){ return "Alter Time";}
+	@Override public String unlocalizedName(){ return "Alter Time";}
 	@Override public String displayText(){return "";}
 	@Override public int overrideMana(){return 100;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

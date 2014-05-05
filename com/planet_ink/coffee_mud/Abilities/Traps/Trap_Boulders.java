@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Boulders extends StdTrap
 {
 	@Override public String ID() { return "Trap_Boulders"; }
-	@Override public String name(){ return "boulders";}
+	@Override public String unlocalizedName(){ return "boulders";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 20;}

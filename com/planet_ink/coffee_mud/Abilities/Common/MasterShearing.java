@@ -35,7 +35,7 @@ import java.util.*;
 public class MasterShearing extends Shearing
 {
 	@Override public String ID() { return "MasterShearing"; }
-	@Override public String name(){ return "Master Shearing";}
+	@Override public String unlocalizedName(){ return "Master Shearing";}
 	private static final String[] triggerStrings = {"MSHEAR","MSHEARING","MASTERSHEAR","MASTERSHEARING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

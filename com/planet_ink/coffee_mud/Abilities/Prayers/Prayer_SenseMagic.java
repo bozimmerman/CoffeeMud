@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseMagic extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseMagic"; }
-	@Override public String name(){ return "Sense Magic";}
+	@Override public String unlocalizedName(){ return "Sense Magic";}
 	@Override public String displayText(){ return "(Sense Magic)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

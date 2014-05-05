@@ -37,7 +37,7 @@ import java.util.*;
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
 	@Override public String ID() { return "ItemRejuv"; }
-	@Override public String name(){ return "ItemRejuv";}
+	@Override public String unlocalizedName(){ return "ItemRejuv";}
 	@Override public String displayText(){ return "(ItemRejuv)";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

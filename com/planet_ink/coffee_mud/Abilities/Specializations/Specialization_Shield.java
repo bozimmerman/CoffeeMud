@@ -35,7 +35,7 @@ import java.util.*;
 public class Specialization_Shield extends Specialization_Weapon
 {
 	@Override public String ID() { return "Specialization_Shield"; }
-	@Override public String name(){ return "Shield Specialization";}
+	@Override public String unlocalizedName(){ return "Shield Specialization";}
 	public Specialization_Shield()
 	{
 		super();

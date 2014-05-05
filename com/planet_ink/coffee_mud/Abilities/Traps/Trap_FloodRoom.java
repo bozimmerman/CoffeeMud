@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_FloodRoom extends StdTrap
 {
 	@Override public String ID() { return "Trap_FloodRoom"; }
-	@Override public String name(){ return "flood room";}
+	@Override public String unlocalizedName(){ return "flood room";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 29;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Magepox extends Disease
 {
 	@Override public String ID() { return "Disease_Magepox"; }
-	@Override public String name(){ return "Magepox";}
+	@Override public String unlocalizedName(){ return "Magepox";}
 	@Override public String displayText(){ return "(Magepox)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

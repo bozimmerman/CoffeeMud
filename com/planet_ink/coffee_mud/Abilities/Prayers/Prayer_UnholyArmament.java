@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_UnholyArmament extends Prayer
 {
 	@Override public String ID() { return "Prayer_UnholyArmament"; }
-	@Override public String name(){ return "Unholy Armament";}
+	@Override public String unlocalizedName(){ return "Unholy Armament";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}

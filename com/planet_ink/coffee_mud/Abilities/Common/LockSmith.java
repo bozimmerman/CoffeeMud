@@ -40,7 +40,7 @@ import java.util.*;
 public class LockSmith extends CraftingSkill
 {
 	@Override public String ID() { return "LockSmith"; }
-	@Override public String name(){ return "Locksmithing";}
+	@Override public String unlocalizedName(){ return "Locksmithing";}
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}

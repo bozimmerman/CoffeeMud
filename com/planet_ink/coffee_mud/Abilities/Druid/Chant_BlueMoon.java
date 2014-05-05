@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_BlueMoon extends Chant
 {
 	@Override public String ID() { return "Chant_BlueMoon"; }
-	@Override public String name(){ return "Blue Moon";}
+	@Override public String unlocalizedName(){ return "Blue Moon";}
 	@Override public String displayText(){return "(Blue Moon)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

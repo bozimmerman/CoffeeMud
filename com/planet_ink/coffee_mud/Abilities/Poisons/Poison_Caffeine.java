@@ -34,7 +34,7 @@ import java.util.*;
 
 public class Poison_Caffeine extends Poison {
 	@Override public String ID() { return "Poison_Caffeine"; }
-	@Override public String name(){ return "Poison_Hyper";}
+	@Override public String unlocalizedName(){ return "Poison_Hyper";}
 	@Override public String displayText(){ return "(CAFFEINATED!!)";}
 	private static final String[] triggerStrings = {"POISONHYPER"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

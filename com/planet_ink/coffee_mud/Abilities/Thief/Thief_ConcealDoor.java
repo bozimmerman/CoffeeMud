@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ConcealDoor extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ConcealDoor"; }
-	@Override public String name(){ return "Conceal Door";}
+	@Override public String unlocalizedName(){ return "Conceal Door";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

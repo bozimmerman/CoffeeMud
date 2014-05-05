@@ -37,7 +37,7 @@ import java.util.*;
 public class Dragonbreath extends StdAbility
 {
 	@Override public String ID() { return "Dragonbreath"; }
-	@Override public String name(){ return "Dragonbreath";}
+	@Override public String unlocalizedName(){ return "Dragonbreath";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override protected int canAffectCode(){return 0;}

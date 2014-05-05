@@ -39,7 +39,7 @@ import java.util.*;
 public class Painting extends CommonSkill
 {
 	@Override public String ID() { return "Painting"; }
-	@Override public String name(){ return "Painting";}
+	@Override public String unlocalizedName(){ return "Painting";}
 	private static final String[] triggerStrings = {"PAINT","PAINTING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }

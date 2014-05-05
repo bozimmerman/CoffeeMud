@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FungalBloom extends Chant
 {
 	@Override public String ID() { return "Chant_FungalBloom"; }
-	@Override public String name(){ return "Fungal Bloom";}
+	@Override public String unlocalizedName(){ return "Fungal Bloom";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}

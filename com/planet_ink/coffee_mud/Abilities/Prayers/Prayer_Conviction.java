@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Conviction extends Prayer
 {
 	@Override public String ID() { return "Prayer_Conviction"; }
-	@Override public String name(){ return "Conviction";}
+	@Override public String unlocalizedName(){ return "Conviction";}
 	@Override public String displayText(){ return "(Conviction)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}

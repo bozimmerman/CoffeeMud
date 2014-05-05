@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_FieldTactics extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FieldTactics"; }
-	@Override public String name(){ return "Field Tactics";}
+	@Override public String unlocalizedName(){ return "Field Tactics";}
 	@Override public String displayText(){ return hidden?"(Hidden)":"";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

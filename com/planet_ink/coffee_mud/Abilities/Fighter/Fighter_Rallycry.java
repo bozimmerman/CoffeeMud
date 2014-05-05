@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Rallycry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Rallycry"; }
-	@Override public String name(){ return "Rally Cry";}
+	@Override public String unlocalizedName(){ return "Rally Cry";}
 	@Override public String displayText(){return "(Rally Cry)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"RALLYCRY"};

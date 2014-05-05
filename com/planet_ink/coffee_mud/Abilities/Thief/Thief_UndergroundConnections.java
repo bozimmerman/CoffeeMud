@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_UndergroundConnections extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_UndergroundConnections"; }
-	@Override public String name(){ return "Underground Connections";}
+	@Override public String unlocalizedName(){ return "Underground Connections";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

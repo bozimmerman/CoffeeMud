@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterCostuming extends Costuming
 {
 	@Override public String ID() { return "MasterCostuming"; }
-	@Override public String name(){ return "Master Costuming";}
+	@Override public String unlocalizedName(){ return "Master Costuming";}
 	private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String parametersFile(){ return "mastercostume.txt";}

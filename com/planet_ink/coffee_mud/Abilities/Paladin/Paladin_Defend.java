@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Defend extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Defend"; }
-	@Override public String name(){ return "All Defence";}
+	@Override public String unlocalizedName(){ return "All Defence";}
 	private static final String[] triggerStrings = {"DEFENCE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

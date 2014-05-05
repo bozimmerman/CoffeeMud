@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_HolyDay extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyDay"; }
-	@Override public String name(){ return "Holy Day";}
+	@Override public String unlocalizedName(){ return "Holy Day";}
 	@Override public String displayText(){ return "(Holy Day)";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

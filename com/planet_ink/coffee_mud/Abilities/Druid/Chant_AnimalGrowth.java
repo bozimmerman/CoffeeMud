@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_AnimalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalGrowth"; }
-	@Override public String name(){ return "Animal Growth";}
+	@Override public String unlocalizedName(){ return "Animal Growth";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){return "(Animal Growth)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

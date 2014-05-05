@@ -38,7 +38,7 @@ import java.util.*;
 public class Fighter_Behead extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Behead"; }
-	@Override public String name(){ return "Behead";}
+	@Override public String unlocalizedName(){ return "Behead";}
 	private static final String[] triggerStrings = {"BEHEAD"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_EnhanceBody extends Chant
 {
 	@Override public String ID() { return "Chant_EnhanceBody"; }
-	@Override public String name(){ return "Enhance Body";}
+	@Override public String unlocalizedName(){ return "Enhance Body";}
 	@Override public String displayText(){return "(Enhanced Body)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

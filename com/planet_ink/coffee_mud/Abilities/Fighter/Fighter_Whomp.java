@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Whomp extends FighterSkill implements HealthCondition
 {
 	@Override public String ID() { return "Fighter_Whomp"; }
-	@Override public String name(){ return "Whomp";}
+	@Override public String unlocalizedName(){ return "Whomp";}
 	@Override public String displayText(){return "(knocked out)";}
 	private static final String[] triggerStrings = {"WHOMP"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

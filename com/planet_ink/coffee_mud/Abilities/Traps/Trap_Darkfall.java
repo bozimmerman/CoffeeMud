@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_Darkfall extends StdTrap
 {
 	@Override public String ID() { return "Trap_Darkfall"; }
-	@Override public String name(){ return "darkfall";}
+	@Override public String unlocalizedName(){ return "darkfall";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 2;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_MakeBomb extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_MakeBomb"; }
-	@Override public String name(){ return "Make Bombs";}
+	@Override public String unlocalizedName(){ return "Make Bombs";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}

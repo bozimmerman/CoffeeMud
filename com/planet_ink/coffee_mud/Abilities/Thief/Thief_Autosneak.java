@@ -37,7 +37,7 @@ public class Thief_Autosneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autosneak"; }
 	@Override public String displayText() {return "(AutoSneak)";}
-	@Override public String name(){ return "AutoSneak";}
+	@Override public String unlocalizedName(){ return "AutoSneak";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

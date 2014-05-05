@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Violins extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Violins"; }
-	@Override public String name(){ return "Violins";}
+	@Override public String unlocalizedName(){ return "Violins";}
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_VIOLINS;}
 	@Override public String mimicSpell(){return "Spell_Frost";}
 	@Override protected int canAffectCode(){return 0;}

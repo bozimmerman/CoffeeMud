@@ -37,7 +37,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AutoMarkTraps"; }
 	@Override public String displayText() {return "(Automarking traps)";}
-	@Override public String name(){ return "AutoMark Traps";}
+	@Override public String unlocalizedName(){ return "AutoMark Traps";}
 	private static final String[] triggerStrings = {"AUTOMARKTRAPS"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseInvisible extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseInvisible"; }
-	@Override public String name(){ return "Sense Invisible";}
+	@Override public String unlocalizedName(){ return "Sense Invisible";}
 	@Override public String displayText(){ return "(Sense Invisible)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

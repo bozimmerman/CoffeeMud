@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CauseExhaustion extends Prayer
 {
 	@Override public String ID() { return "Prayer_CauseExhaustion"; }
-	@Override public String name(){ return "Cause Exhaustion";}
+	@Override public String unlocalizedName(){ return "Cause Exhaustion";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Breakup extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Breakup"; }
-	@Override public String name(){ return "Breakup Fight";}
+	@Override public String unlocalizedName(){ return "Breakup Fight";}
 	private static final String[] triggerStrings = {"BREAKUP"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance extends StdAbility
 {
 	@Override public String ID() { return "Dance"; }
-	@Override public String name(){ return "a Dance";}
+	@Override public String unlocalizedName(){ return "a Dance";}
 	@Override public String displayText(){ return "("+danceOf()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -40,7 +40,7 @@ import java.util.*;
 public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Cobbling"; }
-	@Override public String name(){ return "Cobbling";}
+	@Override public String unlocalizedName(){ return "Cobbling";}
 	private static final String[] triggerStrings = {"COBBLE","COBBLING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN|METAL";}

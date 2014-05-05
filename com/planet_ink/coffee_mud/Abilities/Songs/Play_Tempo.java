@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Tempo extends Play
 {
 	@Override public String ID() { return "Play_Tempo"; }
-	@Override public String name(){ return "Tempo";}
+	@Override public String unlocalizedName(){ return "Tempo";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

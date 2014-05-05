@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Cage extends StdSkill
 {
 	@Override public String ID() { return "Skill_Cage"; }
-	@Override public String name(){ return "Cage";}
+	@Override public String unlocalizedName(){ return "Cage";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

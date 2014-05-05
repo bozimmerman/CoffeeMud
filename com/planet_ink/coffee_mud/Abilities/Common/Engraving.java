@@ -37,7 +37,7 @@ import java.util.*;
 public class Engraving extends CommonSkill
 {
 	@Override public String ID() { return "Engraving"; }
-	@Override public String name(){ return "Engraving";}
+	@Override public String unlocalizedName(){ return "Engraving";}
 	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }

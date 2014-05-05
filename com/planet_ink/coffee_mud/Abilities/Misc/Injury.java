@@ -37,7 +37,7 @@ import java.util.*;
 public class Injury extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Injury"; }
-	@Override public String name(){ return "Injury";}
+	@Override public String unlocalizedName(){ return "Injury";}
 
 	protected CMMsg lastMsg=null;
 	protected String lastLoc=null;

@@ -39,7 +39,7 @@ import java.util.*;
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
-	@Override public String name(){ return "Craft Holy Avenger";}
+	@Override public String unlocalizedName(){ return "Craft Holy Avenger";}
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

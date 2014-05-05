@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_GreatCurse extends Prayer
 {
 	@Override public String ID() { return "Prayer_GreatCurse"; }
-	@Override public String name(){ return "Great Curse";}
+	@Override public String unlocalizedName(){ return "Great Curse";}
 	@Override public String displayText(){ return "(Cursed)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}

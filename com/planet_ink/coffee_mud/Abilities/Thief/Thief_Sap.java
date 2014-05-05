@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Sap extends ThiefSkill implements HealthCondition
 {
 	@Override public String ID() { return "Thief_Sap"; }
-	@Override public String name(){ return "Sap";}
+	@Override public String unlocalizedName(){ return "Sap";}
 	@Override public String displayText(){ return "(Knocked out)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

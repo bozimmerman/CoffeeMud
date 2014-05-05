@@ -35,7 +35,7 @@ import java.util.*;
 public class Poison_Peppersauce extends Poison
 {
 	@Override public String ID() { return "Poison_Peppersauce"; }
-	@Override public String name(){ return "Peppersauce";}
+	@Override public String unlocalizedName(){ return "Peppersauce";}
 	private static final String[] triggerStrings = {"POISONSAUCE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

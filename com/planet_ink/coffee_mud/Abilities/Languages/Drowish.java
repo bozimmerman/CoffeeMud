@@ -35,7 +35,7 @@ import java.util.*;
 public class Drowish extends StdLanguage
 {
 	@Override public String ID() { return "Drowish"; }
-	@Override public String name(){ return "Drowish";}
+	@Override public String unlocalizedName(){ return "Drowish";}
 	public static List<String[]> wordLists=null;
 	public Drowish()
 	{

@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Seeing extends Song
 {
 	@Override public String ID() { return "Song_Seeing"; }
-	@Override public String name(){ return "Seeing";}
+	@Override public String unlocalizedName(){ return "Seeing";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 

@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CatchProjectile extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CatchProjectile"; }
-	@Override public String name(){ return "Catch Projectile";}
+	@Override public String unlocalizedName(){ return "Catch Projectile";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

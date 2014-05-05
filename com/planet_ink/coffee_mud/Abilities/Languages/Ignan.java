@@ -19,7 +19,7 @@ import java.util.*;
 public class Ignan extends StdLanguage
 {
 	@Override public String ID() { return "Ignan"; }
-	@Override public String name(){ return "Ignan";}
+	@Override public String unlocalizedName(){ return "Ignan";}
 	public static List<String[]> wordLists=null;
 	public Ignan()
 	{

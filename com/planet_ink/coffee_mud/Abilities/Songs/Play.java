@@ -37,7 +37,7 @@ import java.util.*;
 public class Play extends StdAbility
 {
 	@Override public String ID() { return "Play"; }
-	@Override public String name(){ return "a song played";}
+	@Override public String unlocalizedName(){ return "a song played";}
 	@Override public String displayText(){ return "("+songOf()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

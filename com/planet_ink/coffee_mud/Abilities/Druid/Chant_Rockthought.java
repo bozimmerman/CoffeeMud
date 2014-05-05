@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Rockthought extends Chant
 {
 	@Override public String ID() { return "Chant_Rockthought"; }
-	@Override public String name(){ return "Rockthought";}
+	@Override public String unlocalizedName(){ return "Rockthought";}
 	@Override public String displayText(){ return "(Rockthought)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

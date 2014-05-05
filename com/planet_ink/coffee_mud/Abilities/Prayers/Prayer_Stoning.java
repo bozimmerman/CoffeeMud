@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Stoning extends Prayer
 {
 	@Override public String ID() { return "Prayer_Stoning"; }
-	@Override public String name(){ return "Stoning";}
+	@Override public String unlocalizedName(){ return "Stoning";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

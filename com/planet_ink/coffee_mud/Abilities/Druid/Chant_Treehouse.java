@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Treehouse extends Chant
 {
 	@Override public String ID() { return "Chant_Treehouse"; }
-	@Override public String name(){ return "Treehouse";}
+	@Override public String unlocalizedName(){ return "Treehouse";}
 	@Override public String displayText(){return "(Treehouse)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

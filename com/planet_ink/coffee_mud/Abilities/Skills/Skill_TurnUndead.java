@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_TurnUndead extends StdSkill
 {
 	@Override public String ID() { return "Skill_TurnUndead"; }
-	@Override public String name(){ return "Turn Undead";}
+	@Override public String unlocalizedName(){ return "Turn Undead";}
 	@Override public String displayText(){ return "(Turned)";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

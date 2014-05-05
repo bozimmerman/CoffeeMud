@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DetectTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DetectTraps"; }
-	@Override public String name(){ return "Detect Traps";}
+	@Override public String unlocalizedName(){ return "Detect Traps";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

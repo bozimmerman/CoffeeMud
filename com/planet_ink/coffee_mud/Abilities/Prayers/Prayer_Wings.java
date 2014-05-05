@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Wings extends Prayer
 {
 	@Override public String ID() { return "Prayer_Wings"; }
-	@Override public String name(){ return "Wings";}
+	@Override public String unlocalizedName(){ return "Wings";}
 	@Override public String displayText(){ return "(Wings)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

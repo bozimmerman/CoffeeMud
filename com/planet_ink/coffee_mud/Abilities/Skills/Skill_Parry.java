@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_Parry extends StdSkill
 {
 	@Override public String ID() { return "Skill_Parry"; }
-	@Override public String name(){ return "Parry";}
+	@Override public String unlocalizedName(){ return "Parry";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

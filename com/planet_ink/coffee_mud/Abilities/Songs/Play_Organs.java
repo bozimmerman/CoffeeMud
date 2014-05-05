@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Organs extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Organs"; }
-	@Override public String name(){ return "Organs";}
+	@Override public String unlocalizedName(){ return "Organs";}
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_ORGANS;}
 	@Override public String mimicSpell(){return "Prayer_ProtectHealth";}
 	@Override protected int canAffectCode(){return 0;}

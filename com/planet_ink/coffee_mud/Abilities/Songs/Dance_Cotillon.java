@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Cotillon extends Dance
 {
 	@Override public String ID() { return "Dance_Cotillon"; }
-	@Override public String name(){ return "Cotillon";}
+	@Override public String unlocalizedName(){ return "Cotillon";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String danceOf(){return name()+" Dance";}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

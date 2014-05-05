@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Heroism extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Heroism"; }
-	@Override public String name(){ return "Heroism";}
+	@Override public String unlocalizedName(){ return "Heroism";}
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

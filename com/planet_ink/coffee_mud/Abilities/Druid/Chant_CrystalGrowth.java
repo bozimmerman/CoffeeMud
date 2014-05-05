@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_CrystalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_CrystalGrowth"; }
-	@Override public String name(){ return "Crystal Growth";}
+	@Override public String unlocalizedName(){ return "Crystal Growth";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Jingledress extends Dance
 {
 	@Override public String ID() { return "Dance_Jingledress"; }
-	@Override public String name(){ return "Jingledress";}
+	@Override public String unlocalizedName(){ return "Jingledress";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected String danceOf(){return name()+" Dance";}
 	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_InstrumentBash extends BardSkill
 {
 	@Override public String ID() { return "Skill_InstrumentBash"; }
-	@Override public String name(){ return "Instrument Bash";}
+	@Override public String unlocalizedName(){ return "Instrument Bash";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

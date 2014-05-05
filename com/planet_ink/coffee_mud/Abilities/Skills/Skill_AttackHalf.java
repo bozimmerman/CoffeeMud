@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_AttackHalf extends Skill_Attack2
 {
 	@Override public String ID() { return "Skill_AttackHalf"; }
-	@Override public String name(){ return "Half Attack";}
+	@Override public String unlocalizedName(){ return "Half Attack";}
 	@Override protected int attackToNerf(){ return 2;}
 	@Override protected int roundToNerf(){ return 2;}
 	@Override protected double nerfAmount(){ return .8;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_BoneMoon extends Prayer
 {
 	@Override public String ID() { return "Prayer_BoneMoon"; }
-	@Override public String name(){ return "Bone Moon";}
+	@Override public String unlocalizedName(){ return "Bone Moon";}
 	@Override public String displayText(){ return "(Bone Moon)";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}

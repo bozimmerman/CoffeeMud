@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_AcidArrow extends Spell
 {
 	@Override public String ID() { return "Spell_AcidArrow"; }
-	@Override public String name(){ return "Acid Arrow";}
+	@Override public String unlocalizedName(){ return "Acid Arrow";}
 	@Override public String displayText(){ return "(Acid Arrow)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Undead_LifeDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_LifeDrain"; }
-	@Override public String name(){ return "Drain Life";}
+	@Override public String unlocalizedName(){ return "Drain Life";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -35,6 +35,6 @@ import java.util.*;
 public class Skill_Chantcraft extends Skill_Songcraft
 {
 	@Override public String ID() { return "Skill_Chantcraft"; }
-	@Override public String name(){ return "Chantcraft";}
+	@Override public String unlocalizedName(){ return "Chantcraft";}
 	@Override public int craftType(){return Ability.ACODE_CHANT;}
 }

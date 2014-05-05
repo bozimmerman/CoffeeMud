@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Arrest extends StdSkill
 {
 	@Override public String ID() { return "Skill_Arrest"; }
-	@Override public String name(){ return "Arrest";}
+	@Override public String unlocalizedName(){ return "Arrest";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

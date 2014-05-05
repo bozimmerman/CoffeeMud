@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FindMate extends Chant
 {
 	@Override public String ID() { return "Chant_FindMate"; }
-	@Override public String name(){ return "Find Mate";}
+	@Override public String unlocalizedName(){ return "Find Mate";}
 	protected String displayText="(Tracking a mate)";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

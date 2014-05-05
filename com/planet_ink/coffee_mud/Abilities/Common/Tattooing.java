@@ -37,7 +37,7 @@ import java.util.*;
 public class Tattooing extends CommonSkill
 {
 	@Override public String ID() { return "Tattooing"; }
-	@Override public String name(){ return "Tattooing";}
+	@Override public String unlocalizedName(){ return "Tattooing";}
 	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	@Override public String[] triggerStrings(){return triggerStrings;}

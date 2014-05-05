@@ -38,7 +38,7 @@ import java.util.*;
 public class Fighter_ArmorTweaking extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ArmorTweaking"; }
-	@Override public String name(){ return "Armor Tweaking";}
+	@Override public String unlocalizedName(){ return "Armor Tweaking";}
 	private static final String[] triggerStrings = {"ARMORTWEAK","TWEAK"};
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

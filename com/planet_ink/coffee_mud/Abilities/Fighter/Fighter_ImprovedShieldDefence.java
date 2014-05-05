@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_ImprovedShieldDefence extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ImprovedShieldDefence"; }
-	@Override public String name(){ return "Improved Shield Defence";}
+	@Override public String unlocalizedName(){ return "Improved Shield Defence";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

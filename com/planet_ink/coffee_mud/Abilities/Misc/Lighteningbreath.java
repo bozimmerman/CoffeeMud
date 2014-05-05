@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Lighteningbreath extends Dragonbreath
 {
 	@Override public String ID() { return "Lighteningbreath"; }
-	@Override public String name(){ return "Lightningbreath";}
+	@Override public String unlocalizedName(){ return "Lightningbreath";}
 	@Override public String text(){return "lightning";}
 	private static final String[] triggerStrings = {"LIGHTNINGBREATH"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

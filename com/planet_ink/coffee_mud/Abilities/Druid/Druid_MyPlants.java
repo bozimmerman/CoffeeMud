@@ -39,7 +39,7 @@ import java.util.*;
 public class Druid_MyPlants extends StdAbility
 {
 	@Override public String ID() { return "Druid_MyPlants"; }
-	@Override public String name(){ return "My Plants";}
+	@Override public String unlocalizedName(){ return "My Plants";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

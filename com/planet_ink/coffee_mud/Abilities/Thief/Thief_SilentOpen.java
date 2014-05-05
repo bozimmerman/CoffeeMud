@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SilentOpen extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentOpen"; }
-	@Override public String name(){ return "Silent Open";}
+	@Override public String unlocalizedName(){ return "Silent Open";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

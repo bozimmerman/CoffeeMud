@@ -40,7 +40,7 @@ import java.util.*;
 public class Prayer_Divorce extends Prayer
 {
 	@Override public String ID() { return "Prayer_Divorce"; }
-	@Override public String name(){ return "Divorce";}
+	@Override public String unlocalizedName(){ return "Divorce";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

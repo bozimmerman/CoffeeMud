@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_HoldAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_HoldAnimal"; }
-	@Override public String name(){ return "Hold Animal";}
+	@Override public String unlocalizedName(){ return "Hold Animal";}
 	@Override public String displayText(){return "(Hold Animal)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonFear extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFear"; }
-	@Override public String name(){ return "Summon Fear";}
+	@Override public String unlocalizedName(){ return "Summon Fear";}
 	@Override public String displayText(){return "(Afraid)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

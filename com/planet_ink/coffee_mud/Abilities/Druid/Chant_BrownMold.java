@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_BrownMold extends Chant
 {
 	@Override public String ID() { return "Chant_BrownMold"; }
-	@Override public String name(){ return "Brown Mold";}
+	@Override public String unlocalizedName(){ return "Brown Mold";}
 	@Override public String displayText(){return "(Brown Mold)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_SpikeThruPit extends Trap_SpikePit
 {
 	@Override public String ID() { return "Trap_SpikeThruPit"; }
-	@Override public String name(){ return "small spike pit";}
+	@Override public String unlocalizedName(){ return "small spike pit";}
 	@Override protected int trapLevel(){return 7;}
 	@Override public boolean getTravelThroughFlag() { return true; }
 }

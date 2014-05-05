@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DrunkenStupor extends Prayer
 {
 	@Override public String ID() { return "Prayer_DrunkenStupor"; }
-	@Override public String name(){ return "Drunken Stupor";}
+	@Override public String unlocalizedName(){ return "Drunken Stupor";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_INTOXICATING;}

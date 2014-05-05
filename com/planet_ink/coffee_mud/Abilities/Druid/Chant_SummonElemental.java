@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SummonElemental extends Chant
 {
 	@Override public String ID() { return "Chant_SummonElemental"; }
-	@Override public String name(){ return "Summon Elemental";}
+	@Override public String unlocalizedName(){ return "Summon Elemental";}
 	@Override public String displayText(){return "(Summon Elemental)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

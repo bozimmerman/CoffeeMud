@@ -34,7 +34,7 @@ import java.util.*;
 public class Baking extends Cooking
 {
 	@Override public String ID() { return "Baking"; }
-	@Override public String name(){ return "Baking";}
+	@Override public String unlocalizedName(){ return "Baking";}
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
 	@Override public String supportedResourceString(){return "MISC";}
 	@Override public String[] triggerStrings(){return triggerStrings;}

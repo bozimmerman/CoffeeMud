@@ -35,7 +35,7 @@ import java.util.*;
 public class Dwarven extends StdLanguage
 {
 	@Override public String ID() { return "Dwarven"; }
-	@Override public String name(){ return "Dwarven";}
+	@Override public String unlocalizedName(){ return "Dwarven";}
 	public static List<String[]> wordLists=null;
 	public Dwarven()
 	{

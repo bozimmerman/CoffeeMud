@@ -37,7 +37,7 @@ import java.util.*;
 public class Falling extends StdAbility
 {
 	@Override public String ID() { return "Falling"; }
-	@Override public String name(){ return "Falling";}
+	@Override public String unlocalizedName(){ return "Falling";}
 	@Override public String displayText(){ return "(Falling)";}
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

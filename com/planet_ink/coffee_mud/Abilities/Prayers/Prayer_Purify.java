@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Purify extends Prayer
 {
 	@Override public String ID() { return "Prayer_Purify"; }
-	@Override public String name(){ return "Purify";}
+	@Override public String unlocalizedName(){ return "Purify";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

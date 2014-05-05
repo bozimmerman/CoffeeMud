@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_Hibernation extends Chant
 {
 	@Override public String ID() { return "Chant_Hibernation"; }
-	@Override public String name(){ return "Hibernation";}
+	@Override public String unlocalizedName(){ return "Hibernation";}
 	@Override public String displayText(){return "(Hibernating)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

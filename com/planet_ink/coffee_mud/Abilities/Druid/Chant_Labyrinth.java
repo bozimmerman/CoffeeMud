@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Labyrinth extends Chant
 {
 	@Override public String ID() { return "Chant_Labyrinth"; }
-	@Override public String name(){ return "Labyrinth";}
+	@Override public String unlocalizedName(){ return "Labyrinth";}
 	@Override public String displayText(){return "(Labyrinth)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

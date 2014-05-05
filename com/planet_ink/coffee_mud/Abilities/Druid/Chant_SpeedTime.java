@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SpeedTime extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedTime"; }
-	@Override public String name(){ return "Speed Time";}
+	@Override public String unlocalizedName(){ return "Speed Time";}
 	@Override public String displayText(){return "(Speed Time)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

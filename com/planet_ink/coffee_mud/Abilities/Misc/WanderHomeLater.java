@@ -37,7 +37,7 @@ import java.util.*;
 public class WanderHomeLater extends StdAbility
 {
 	@Override public String ID() { return "WanderHomeLater"; }
-	@Override public String name(){ return "WanderHomeLater";}
+	@Override public String unlocalizedName(){ return "WanderHomeLater";}
 	@Override public String displayText(){ return "(Waiting til you're clear to go home)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

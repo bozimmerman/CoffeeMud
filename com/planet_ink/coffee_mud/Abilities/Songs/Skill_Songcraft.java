@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Songcraft extends BardSkill
 {
 	@Override public String ID() { return "Skill_Songcraft"; }
-	@Override public String name(){ return "Songcraft";}
+	@Override public String unlocalizedName(){ return "Songcraft";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

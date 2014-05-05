@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Revoke extends StdSkill
 {
 	@Override public String ID() { return "Skill_Revoke"; }
-	@Override public String name(){ return "Revoke";}
+	@Override public String unlocalizedName(){ return "Revoke";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

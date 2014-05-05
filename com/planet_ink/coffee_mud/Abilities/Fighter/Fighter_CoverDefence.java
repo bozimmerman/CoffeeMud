@@ -36,7 +36,7 @@ public class Fighter_CoverDefence extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_CoverDefence"; }
-	@Override public String name(){ return "Cover Defence";}
+	@Override public String unlocalizedName(){ return "Cover Defence";}
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

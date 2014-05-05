@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SneakAttack extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SneakAttack"; }
-	@Override public String name(){ return "Sneak Attack";}
+	@Override public String unlocalizedName(){ return "Sneak Attack";}
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}

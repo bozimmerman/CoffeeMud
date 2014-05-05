@@ -35,7 +35,7 @@ import java.util.*;
 public class FoodPrep extends Cooking
 {
 	@Override public String ID() { return "FoodPrep"; }
-	@Override public String name(){ return "Food Prep";}
+	@Override public String unlocalizedName(){ return "Food Prep";}
 	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String cookWordShort(){return "make";}

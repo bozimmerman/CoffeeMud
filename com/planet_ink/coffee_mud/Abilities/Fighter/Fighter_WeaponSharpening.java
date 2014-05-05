@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_WeaponSharpening extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponSharpening"; }
-	@Override public String name(){ return "Weapon Sharpening";}
+	@Override public String unlocalizedName(){ return "Weapon Sharpening";}
 	protected String displayString="Sharpening";
 	@Override public String displayText(){ return "("+displayString+")";}
 	private static final String[] triggerStrings = {"WEAPONSHARPENING","SHARPEN"};

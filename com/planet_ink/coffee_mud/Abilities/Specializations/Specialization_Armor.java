@@ -35,7 +35,7 @@ import java.util.*;
 public class Specialization_Armor extends StdAbility
 {
 	@Override public String ID() { return "Specialization_Armor"; }
-	@Override public String name(){ return "Armor Specialization";}
+	@Override public String unlocalizedName(){ return "Armor Specialization";}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
