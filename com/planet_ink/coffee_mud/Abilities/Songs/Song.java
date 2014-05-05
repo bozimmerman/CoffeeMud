@@ -280,9 +280,9 @@ public class Song extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr="^SYou hear the "+songOf()+" being sung "+Directions.getInDirectionName(dir)+"!^?";
+				msgStr=_("^SYou hear the @x1 being sung @x2!^?",songOf(),Directions.getInDirectionName(dir));
 			else
-				msgStr="^SYou hear the "+songOf()+" being sung nearby!^?";
+				msgStr=_("^SYou hear the @x1 being sung nearby!^?",songOf());
 		}
 		return msgStr;
 	}
@@ -347,9 +347,9 @@ public class Song extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
+			String str=auto?_("^SThe @x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
+				str=_("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				final Room R=(Room)commonRoomSet.elementAt(v);

@@ -366,7 +366,7 @@ public class Song_Ode extends Song
 			final Song_Ode A=(Song_Ode)mob.fetchEffect(ID());
 			if((A!=null)&&(A.whom!=null)&&(A.song==null))
 			{
-				final String str="^S<S-NAME> finish(es) composing the "+A.songOf()+".^?";
+				final String str=_("^S<S-NAME> finish(es) composing the @x1.^?",A.songOf());
 				final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 				if(mob.location().okMessage(mob,msg))
 				{
@@ -428,7 +428,7 @@ public class Song_Ode extends Song
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
 			whom=target;
-			final String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
+			final String str=_("^S<S-NAME> begin(s) to compose an @x1.^?",songOf());
 			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 			if(mob.location().okMessage(mob,msg))
 			{

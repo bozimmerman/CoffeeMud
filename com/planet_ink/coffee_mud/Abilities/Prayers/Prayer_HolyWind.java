@@ -117,7 +117,7 @@ public class Prayer_HolyWind extends Prayer
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A horrendous wind gust blows through here.":"^S<S-NAME> "+prayWord(mob)+" for the holy wind to blow through here.^?")+CMLib.protocol().msp("wind.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A horrendous wind gust blows through here.":"^S<S-NAME> "+prayWord(mob)+" for the holy wind to blow through here.^?")+CMLib.protocol().msp("wind.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

@@ -159,11 +159,11 @@ public class Ranger_Hide extends StdAbility
 		final MOB highestMOB=this.getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		String str="You creep into some foliage and remain completely still.";
+		String str=_("You creep into some foliage and remain completely still.");
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT))
-			str="You creep behind some rocks and remain completely still.";
+			str=_("You creep behind some rocks and remain completely still.");
 
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);

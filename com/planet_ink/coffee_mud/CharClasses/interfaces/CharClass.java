@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -595,7 +596,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
 	};
 	/** list of long string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
-	public static final String[] ARMOR_LONGDESC={
+	public static final String[] ARMOR_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
 		"May wear any armor.",
 		"Must wear cloth, vegetation, or paper based armor.",
 		"Must wear leather, cloth, or vegetation based armor.",
@@ -603,7 +604,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		"Must wear wood or vegetation based armor.",
 		"Must wear metal armor",
 		"Must wear stone, crystal, or metal armor."
-	};
+	});
 
 	/** constant returned by allowedWeaponLevel() to designate any weapons. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_ANY=0;
@@ -645,7 +646,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*11*/{Weapon.CLASS_NATURAL,Weapon.CLASS_FLAILED},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
-	public static final String[] WEAPONS_LONGDESC={
+	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
 /*0*/"May use any weapons.",
 /*1*/"Must use dagger-like or natural weapons.",
 /*2*/"Must use swords, daggers, natural, or ranged weapons.",
@@ -658,7 +659,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
 /*10*/"Evil must use polearm, sword, axe, edged, or daggers.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
 /*11*/"Must use flailed weapons."
-	};
+	});
 
 	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */
 	public final static int GENFLAG_NORACE=1;

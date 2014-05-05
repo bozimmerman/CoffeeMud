@@ -57,8 +57,7 @@ public class Spell_LimbRack extends Spell
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 		{
 			final String str=(text().equalsIgnoreCase("ARMSONLY"))?
-				"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"
-				:"<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!";
+				_("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"):_("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!");
 			CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
 		}
 
@@ -137,7 +136,7 @@ public class Spell_LimbRack extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

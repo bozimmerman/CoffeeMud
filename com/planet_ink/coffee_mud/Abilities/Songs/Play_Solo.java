@@ -105,9 +105,9 @@ public class Play_Solo extends Play
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
+			String str=auto?_("^S@x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) playing "+songOf()+" on "+instrumentName()+" again.^?";
+				str=_("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{

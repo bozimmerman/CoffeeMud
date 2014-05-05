@@ -116,7 +116,7 @@ public class Chant_SummonTornado extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), ((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMLib.protocol().msp("tornado.wav",40));
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), _((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMLib.protocol().msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

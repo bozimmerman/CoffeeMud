@@ -398,7 +398,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(word.equals("encrust"))
 			{
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" is encrusted with bits of "+materialName+".");
-				startStr="<S-NAME> start(s) encrusting "+buildingI.name()+" with "+materialName+".";
+				startStr=_("<S-NAME> start(s) encrusting @x1 with @x2.",buildingI.name(),materialName);
 				displayText=_("You are encrusting @x1 with @x2",buildingI.name(),materialName);
 				verb=_("encrusting @x1 with bits of @x2",buildingI.name(),materialName);
 			}
@@ -406,7 +406,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			{
 				materialName=CMLib.english().startWithAorAn(materialName).toLowerCase();
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" has "+materialName+" mounted on it.");
-				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+buildingI.name()+".";
+				startStr=_("<S-NAME> start(s) mounting @x1 onto @x2.",materialName,buildingI.name());
 				displayText=_("You are mounting @x1 onto @x2",materialName,buildingI.name());
 				verb=_("mounting @x1 onto @x2",materialName,buildingI.name());
 			}
@@ -439,7 +439,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
 			displayText=_("You are mending @x1",buildingI.name());
 			verb=_("mending @x1",buildingI.name());
 		}
@@ -464,7 +464,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
 			displayText=_("You are refitting @x1",buildingI.name());
 			verb=_("refitting @x1",buildingI.name());
 		}
@@ -589,7 +589,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
 			displayText=_("You are making @x1",buildingI.name());
 			verb=_("making @x1",buildingI.name());
 			playSound="tinktinktink.wav";
@@ -645,7 +645,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			messedUp=false;
 			duration=1;
 			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr="<S-NAME> start(s) "+verb+".";
+			startStr=_("<S-NAME> start(s) @x1.",verb);
 			displayText=_("You are @x1",verb);
 		}
 

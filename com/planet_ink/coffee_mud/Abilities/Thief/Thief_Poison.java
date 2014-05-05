@@ -65,7 +65,7 @@ public class Thief_Poison extends ThiefSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?"":"^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";
+			str=auto?"":_("^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,null,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),null,CMMsg.NO_EFFECT,null);
 			CMLib.color().fixSourceFightColor(msg);

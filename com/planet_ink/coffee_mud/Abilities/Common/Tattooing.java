@@ -181,9 +181,9 @@ public class Tattooing extends CommonSkill
 		displayText=_("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(35,mob,1,6);
-		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+		String str=_("<S-NAME> start(s) tattooing @x1 on <T-YOUPOSS> @x2.",message,wornName.toLowerCase());
 		if("REMOVE".startsWith(message.toUpperCase()))
-			str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+			str=_("<S-NAME> remove(s) the tattoo on <T-YOUPOSS> @x1.",wornName.toLowerCase());
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))

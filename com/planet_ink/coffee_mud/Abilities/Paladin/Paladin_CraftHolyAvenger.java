@@ -110,7 +110,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		completion=50-CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		final String itemName="the Holy Avenger";
 		buildingI.setName(itemName);
-		final String startStr="<S-NAME> start(s) crafting "+buildingI.name()+".";
+		final String startStr=_("<S-NAME> start(s) crafting @x1.",buildingI.name());
 		displayText=_("You are crafting @x1",buildingI.name());
 		verb=_("crafting @x1",buildingI.name());
 		buildingI.setDisplayText(itemName+" lies here");

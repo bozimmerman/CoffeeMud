@@ -140,7 +140,7 @@ public class Spell_Timeport extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

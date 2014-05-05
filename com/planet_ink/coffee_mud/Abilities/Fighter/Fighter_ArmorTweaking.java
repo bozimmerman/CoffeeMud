@@ -142,7 +142,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?armor.name()+" snuggly covers <S-NAME>!":"<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.";
+			final String str=auto?_("@x1 snuggly covers <S-NAME>!",armor.name()):_("<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.");
 			final CMMsg msg=CMClass.getMsg(mob,armor,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{

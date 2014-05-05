@@ -151,9 +151,9 @@ public class Thief_SlipItem extends ThiefSkill
 			String str=null;
 			if(!auto)
 				if(!stolen.amWearingAt(Wearable.IN_INVENTORY))
-					str="<S-NAME> slip(s) "+stolen.name()+" off <T-NAMESELF>.";
+					str=_("<S-NAME> slip(s) @x1 off <T-NAMESELF>.",stolen.name());
 				else
-					str="<S-NAME> attempt(s) to slip "+stolen.name()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+					str=_("<S-NAME> attempt(s) to slip @x1 off <T-HIM-HER>, but it doesn't appear @x2 has that in <T-HIS-HER> inventory!",stolen.name(),target.charStats().heshe());
 
 			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;

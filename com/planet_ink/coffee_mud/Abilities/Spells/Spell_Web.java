@@ -122,7 +122,7 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

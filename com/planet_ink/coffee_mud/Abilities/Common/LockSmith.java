@@ -331,7 +331,7 @@ public class LockSmith extends CraftingSkill
 		duration=getDuration(25,mob,workingOn.phyStats().level(),8);
 		if(keyFlag) duration=duration/2;
 		buildingI.setName(itemName);
-		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
+		startStr=_("<S-NAME> start(s) working on @x1@x2.",(keyFlag?"a key for ":""),workingOn.name());
 		displayText=_("You are working on @x1@x2",(keyFlag?"a key for ":""),workingOn.name());
 		verb=_("working on @x1@x2",(keyFlag?"a key for ":""),workingOn.name());
 		playSound="drill.wav";

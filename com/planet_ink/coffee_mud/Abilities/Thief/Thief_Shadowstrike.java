@@ -107,7 +107,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
-		final String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
+		final String str=auto?"":_("<S-NAME> strike(s) <T-NAMESELF> from the shadows!");
 		final int otherCode=success?code:CMMsg.NO_EFFECT;
 		final String otherStr=success?str:null;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);

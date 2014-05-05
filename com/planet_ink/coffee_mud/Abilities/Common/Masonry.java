@@ -745,7 +745,7 @@ public class Masonry extends CraftingSkill
 			}
 			helping=true;
 			verb=_("helping @x1 with @x2",targetMOB.name(),helpingAbility.name());
-			startStr="<S-NAME> start(s) "+verb;
+			startStr=_("<S-NAME> start(s) @x1",verb);
 			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -1087,7 +1087,7 @@ public class Masonry extends CraftingSkill
 			break;
 		}
 		messedUp=!proficiencyCheck(mob,0,auto);
-		startStr="<S-NAME> start(s) "+verb;
+		startStr=_("<S-NAME> start(s) @x1",verb);
 		playSound="stone.wav";
 		if(duration<15) duration=15;
 

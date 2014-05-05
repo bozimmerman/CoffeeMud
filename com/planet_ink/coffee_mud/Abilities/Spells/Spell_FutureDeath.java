@@ -73,7 +73,7 @@ public class Spell_FutureDeath extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>^?";
+			String str=auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -86,34 +86,34 @@ public class Spell_FutureDeath extends Spell
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
-						str="<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!";
+						str=_("<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!");
 						break;
 					case 2:
-						str="<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).";
+						str=_("<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).");
 						break;
 					case 3:
-						str="<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.";
+						str=_("<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.");
 						break;
 					case 4:
-						str="<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).";
+						str=_("<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).");
 						break;
 					case 5:
-						str="<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).";
+						str=_("<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).");
 						break;
 					case 6:
-						str="<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).";
+						str=_("<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).");
 						break;
 					case 7:
-						str="<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).";
+						str=_("<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).");
 						break;
 					case 8:
-						str="<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).";
+						str=_("<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).");
 						break;
 					case 9:
-						str="<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.";
+						str=_("<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.");
 						break;
 					case 10:
-						str="<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).";
+						str=_("<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).");
 						break;
 					}
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);

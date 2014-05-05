@@ -299,7 +299,7 @@ public class Painting extends CommonSkill
 			return false;
 		}
 
-		final String startStr="<S-NAME> start(s) painting "+building.name()+".";
+		final String startStr=_("<S-NAME> start(s) painting @x1.",building.name());
 		displayText=_("You are painting @x1",building.name());
 		verb=_("painting @x1",building.name());
 		building.recoverPhyStats();

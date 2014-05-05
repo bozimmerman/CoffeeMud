@@ -71,9 +71,9 @@ public class Skill_Conduct extends BardSkill
 		new Play().unplayAll(mob,mob);
 		if(success)
 		{
-			String str=auto?"^SSymphonic Conduction Begins!^?":"^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?";
+			String str=auto?_("^SSymphonic Conduction Begins!^?"):_("^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?");
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) conducting the symphony over again.^?";
+				str=_("^S<S-NAME> start(s) conducting the symphony over again.^?");
 
 			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))

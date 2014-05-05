@@ -357,7 +357,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr="<S-NAME> start(s) crafting "+buildingI.name()+".";
+		startStr=_("<S-NAME> start(s) crafting @x1.",buildingI.name());
 		displayText=_("You are crafting @x1",buildingI.name());
 		playSound="sanding.wav";
 		verb=_("crafting @x1",buildingI.name());

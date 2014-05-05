@@ -101,7 +101,7 @@ public class Thief_Peek extends ThiefSkill
 		{
 			String str=null;
 			if(CMLib.dice().rollPercentage()<discoverChance)
-				str=auto?"":"<S-NAME> peek(s) at your inventory.";
+				str=auto?"":_("<S-NAME> peek(s) at your inventory.");
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":_("<S-NAME> peek(s) at <T-NAME>s inventory."),CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))

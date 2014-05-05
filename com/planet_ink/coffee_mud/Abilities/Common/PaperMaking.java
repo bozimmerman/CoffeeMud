@@ -266,7 +266,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		String itemName=foundRecipe.get(RCP_FINALNAME).toLowerCase();
 		itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+		startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
 		displayText=_("You are making @x1",buildingI.name());
 		verb=_("making @x1",buildingI.name());
 		playSound="crumple.wav";

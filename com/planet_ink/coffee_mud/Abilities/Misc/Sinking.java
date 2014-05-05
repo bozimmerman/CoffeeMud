@@ -140,11 +140,11 @@ public class Sinking extends StdAbility
 		sinkTickDown=1;
 
 		int direction=Directions.DOWN;
-		String addStr="down";
+		String addStr=_("down");
 		if(reversed())
 		{
 			direction=Directions.UP;
-			addStr="upwards";
+			addStr=_("upwards");
 		}
 		if(affected instanceof MOB)
 		{
@@ -224,7 +224,7 @@ public class Sinking extends StdAbility
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks @x1.",addStr));
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks in from @x1.",(reversed()?"below":"above")));
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks in from @x1.",(reversed()?_("below"):_("above"))));
 				return true;
 			}
 			if(reversed())

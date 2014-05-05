@@ -167,10 +167,10 @@ public class Thief_Swipe extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(goldTaken > 0)
-					str="<S-NAME> pick(s) <T-HIS-HER> pocket for "+goldTakenStr+".";
+					str=_("<S-NAME> pick(s) <T-HIS-HER> pocket for @x1.",goldTakenStr);
 				else
 				{
-					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
+					str=_("<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!");
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 

@@ -133,7 +133,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"":"^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?";
+			str=auto?"":_("^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{

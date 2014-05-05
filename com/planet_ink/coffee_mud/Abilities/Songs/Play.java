@@ -356,9 +356,9 @@ public class Play extends StdAbility
 			if(!songOf.equals(this.instrumentName()))
 				songOf="the "+songOf;
 			if(dir>=0)
-				msgStr="^SYou hear "+songOf+" being played "+Directions.getInDirectionName(dir)+"!^?";
+				msgStr=_("^SYou hear @x1 being played @x2!^?",songOf,Directions.getInDirectionName(dir));
 			else
-				msgStr="^SYou hear "+songOf+" being played nearby!^?";
+				msgStr=_("^SYou hear @x1 being played nearby!^?",songOf);
 		}
 		return msgStr;
 	}
@@ -455,11 +455,11 @@ public class Play extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String songOfStr=songOf()+" on ";
+			String songOfStr=_("@x1 on ",songOf());
 			if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
-			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOfStr+instrumentName()+".^?";
+			String str=auto?_("^S@x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to play @x1@x2.^?",songOfStr,instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) playing "+songOfStr+instrumentName()+" again.^?";
+				str=_("^S<S-NAME> start(s) playing @x1@x2 again.^?",songOfStr,instrumentName());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				final Room R=(Room)commonRoomSet.elementAt(v);

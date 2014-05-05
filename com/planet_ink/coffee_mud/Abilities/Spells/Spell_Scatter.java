@@ -138,9 +138,9 @@ public class Spell_Scatter extends Spell
 			// what happened.
 			String str=null;
 			if(mobTarget==null)
-				str=auto?"<S-NAME> <S-IS-ARE> enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell!^?";
+				str=auto?_("<S-NAME> <S-IS-ARE> enveloped in a scattering field!"):_("^S<S-NAME> utter(s) a scattering spell!^?");
 			else
-				str=auto?"<T-NAME> <T-IS-ARE> enveloped in a scattering field!":"^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?";
+				str=auto?_("<T-NAME> <T-IS-ARE> enveloped in a scattering field!"):_("^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?");
 			CMMsg msg=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -112,7 +112,7 @@ public class Searching extends CommonSkill
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		final int duration=3+getXLEVELLevel(mob);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),(auto?"":"<S-NAME> start(s) searching."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_(auto?"":"<S-NAME> start(s) searching."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

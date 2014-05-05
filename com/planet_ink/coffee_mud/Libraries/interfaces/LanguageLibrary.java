@@ -39,6 +39,7 @@ public interface LanguageLibrary extends CMLibrary
 	public DVector getLanguageParser(String parser);
 	public String finalTranslation(String item);
 	public String sessionTranslation(String item);
+	public String[] sessionTranslation(final String[] str);
 	public String fullSessionTranslation(final String str, final String ... xs);
 	public String filterTranslation(String item);
 	public DVector getLanguageTranslator(String parser);

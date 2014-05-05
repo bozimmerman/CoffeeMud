@@ -107,7 +107,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_("@x1twinkling fire envelopes <T-NAME>.^?",(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

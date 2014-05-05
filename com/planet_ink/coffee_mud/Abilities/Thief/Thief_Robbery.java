@@ -203,10 +203,10 @@ public class Thief_Robbery extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
-					str="<S-NAME> rob(s) "+stolen.name()+" from <T-NAMESELF>.";
+					str=_("<S-NAME> rob(s) @x1 from <T-NAMESELF>.",stolen.name());
 				else
 				{
-					str="<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+					str=_("<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 

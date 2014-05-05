@@ -365,7 +365,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				&&(!((MOB)msg.target()).amDead()))
 		{
 			final double flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
-			final String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
+			final String str=_("^F^<FIGHT^>The magic of @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",clanName);
 			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 					CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);
 		}

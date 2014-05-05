@@ -331,7 +331,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
 			displayText=_("You are mending @x1",buildingI.name());
 			verb=_("mending @x1",buildingI.name());
 		}
@@ -408,7 +408,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr="<S-NAME> start(s) smithing "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) smithing @x1.",buildingI.name());
 			displayText=_("You are smithing @x1",buildingI.name());
 			verb=_("smithing @x1",buildingI.name());
 			playSound="tinktinktink2.wav";
@@ -446,7 +446,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			messedUp=false;
 			duration=1;
 			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr="<S-NAME> start(s) "+verb+".";
+			startStr=_("<S-NAME> start(s) @x1.",verb);
 			displayText=_("You are @x1",verb);
 		}
 

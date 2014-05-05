@@ -196,9 +196,9 @@ public class BodyPiercing extends CommonSkill
 		displayText=_("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(30,mob,1,6);
-		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";
+		String msgStr=_("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
 		if("REMOVE".equals(command))
-			msgStr="<S-NAME> heal(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+			msgStr=_("<S-NAME> heal(s) the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{

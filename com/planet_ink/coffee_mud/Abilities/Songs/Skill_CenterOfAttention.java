@@ -74,29 +74,29 @@ public class Skill_CenterOfAttention extends BardSkill
 			String targetStr;
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
-			case 1: verbStr="<S-IS-ARE> entranced by"; break;
-			case 2: verbStr="remain(s) captivated by"; break;
-			case 3: verbStr="<S-IS-ARE> captivated by"; break;
-			case 4: verbStr="remain(s) entranced by"; break;
-			case 5: verbStr="can't stop watching"; break;
-			case 6: verbStr="stare(s) amazed at"; break;
-			case 7: verbStr="<S-IS-ARE> hypnotized by"; break;
-			case 8: verbStr="remain(s) enthralled by"; break;
-			case 9: verbStr="<S-IS-ARE> delighted by"; break;
-			default: verbStr="remain(s) enchanted by"; break;
+			case 1: verbStr=_("<S-IS-ARE> entranced by"); break;
+			case 2: verbStr=_("remain(s) captivated by"); break;
+			case 3: verbStr=_("<S-IS-ARE> captivated by"); break;
+			case 4: verbStr=_("remain(s) entranced by"); break;
+			case 5: verbStr=_("can't stop watching"); break;
+			case 6: verbStr=_("stare(s) amazed at"); break;
+			case 7: verbStr=_("<S-IS-ARE> hypnotized by"); break;
+			case 8: verbStr=_("remain(s) enthralled by"); break;
+			case 9: verbStr=_("<S-IS-ARE> delighted by"); break;
+			default: verbStr=_("remain(s) enchanted by"); break;
 			}
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
-			case 1: targetStr="<T-YOUPOSS> performance"; break;
-			case 2: targetStr="<T-YOUPOSS> antics"; break;
-			case 3: targetStr="<T-YOUPOSS> flailing about"; break;
-			case 4: targetStr="<T-YOUPOSS> drama"; break;
-			case 5: targetStr="<T-YOUPOSS> show"; break;
-			case 6: targetStr="the ongoing spectacle"; break;
-			case 7: targetStr="<T-YOUPOSS> comedy"; break;
-			case 8: targetStr="<T-YOUPOSS> tomfoolery"; break;
-			case 9: targetStr="<T-YOUPOSS> escapades"; break;
-			default: targetStr="<T-YOUPOSS> stunts"; break;
+			case 1: targetStr=_("<T-YOUPOSS> performance"); break;
+			case 2: targetStr=_("<T-YOUPOSS> antics"); break;
+			case 3: targetStr=_("<T-YOUPOSS> flailing about"); break;
+			case 4: targetStr=_("<T-YOUPOSS> drama"); break;
+			case 5: targetStr=_("<T-YOUPOSS> show"); break;
+			case 6: targetStr=_("the ongoing spectacle"); break;
+			case 7: targetStr=_("<T-YOUPOSS> comedy"); break;
+			case 8: targetStr=_("<T-YOUPOSS> tomfoolery"); break;
+			case 9: targetStr=_("<T-YOUPOSS> escapades"); break;
+			default: targetStr=_("<T-YOUPOSS> stunts"); break;
 			}
 			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, _("<S-NAME> @x1 @x2.",verbStr,targetStr));
 		}

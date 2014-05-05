@@ -44,7 +44,7 @@ public class Spell_Flameshield extends Spell
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-	final static String msgStr="The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!";
+	final static String msgStr=CMLib.lang()._("The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
 
@@ -128,7 +128,7 @@ public class Spell_Flameshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"^S":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"^S":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

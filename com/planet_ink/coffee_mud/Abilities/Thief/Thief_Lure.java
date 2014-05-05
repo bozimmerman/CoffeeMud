@@ -101,7 +101,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
 
-		str="<S-NAME> attempt(s) to lure <T-NAME> "+direction+".";
+		str=_("<S-NAME> attempt(s) to lure <T-NAME> @x1.",direction);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_SPEAK,str);
 		if(mob.location().okMessage(mob,msg))
 		{

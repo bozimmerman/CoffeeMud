@@ -131,7 +131,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		String str=null;
 		if(success)
 		{
-			str=auto?"":"^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?";
+			str=auto?"":_("^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{

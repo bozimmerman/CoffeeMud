@@ -372,13 +372,13 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: str="If you please, "+str; break;
-						case 2: str=CMStrings.endWithAPeriod(str)+" Thank you."; break;
-						case 3: str=CMStrings.endWithAPeriod(str)+" If you please."; break;
-						case 4: str="Forgive me but, "+str; break;
-						case 5: str="If I may, "+str; break;
-						case 6: str="Please, "+str; break;
-						case 7: str="Humbly speaking, "+str; break;
+						case 1: str=_("If you please, @x1",str); break;
+						case 2: str=_("@x1 Thank you.",CMStrings.endWithAPeriod(str)); break;
+						case 3: str=_("@x1 If you please.",CMStrings.endWithAPeriod(str)); break;
+						case 4: str=_("Forgive me but, @x1",str); break;
+						case 5: str=_("If I may, @x1",str); break;
+						case 6: str=_("Please, @x1",str); break;
+						case 7: str=_("Humbly speaking, @x1",str); break;
 						default:
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
@@ -508,10 +508,10 @@ public class Mood extends StdAbility
 						}
 						final int rand=CMLib.dice().roll(1,20,0);
 						if(rand<5)
-							str="Hey "+uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]+", "+str;
+							str=_("Hey @x1, @x2",uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)],str);
 						else
 						if(rand<15)
-							str=CMStrings.endWithAPeriod(str)+"..you "+uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]+".";
+							str=_("@x1..you @x2.",CMStrings.endWithAPeriod(str),uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]);
 						else
 						{
 							if(M!=null)

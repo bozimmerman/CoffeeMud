@@ -816,11 +816,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/** Vote has passed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_PASSED=2;
 	/** Descriptors for the values of ClanVote.voteStatus member. @see ClanVote#voteStatus */
-	public final static String[] VSTAT_DESCS={
+	public final static String[] VSTAT_DESCS=CMLib.lang().sessionTranslation(new String[]{
 		"In Progress",
 		"Failed",
 		"Passed"
-	};
+	});
 
 
 	/** Stat variables associated with clan objects. */

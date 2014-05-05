@@ -163,7 +163,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_("@x1ime suddenly STOPS!^?",(auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")));
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

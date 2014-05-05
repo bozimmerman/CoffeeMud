@@ -201,7 +201,7 @@ public class Chant_StoneFriend extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
+			final String str=auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{

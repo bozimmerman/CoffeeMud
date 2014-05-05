@@ -126,7 +126,7 @@ public class Thief_StripItem extends ThiefSkill
 		else
 		{
 			String str=null;
-			if(!auto) str="<S-NAME> strip(s) "+stolen.name()+" off <T-NAMESELF>.";
+			if(!auto) str=_("<S-NAME> strip(s) @x1 off <T-NAMESELF>.",stolen.name());
 
 			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			final String hisStr=str;

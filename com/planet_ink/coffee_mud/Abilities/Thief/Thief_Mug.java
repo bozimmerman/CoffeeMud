@@ -103,11 +103,11 @@ public class Thief_Mug extends ThiefSkill
 			int code=(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Wearable.IN_INVENTORY)))
-					str="<S-NAME> mug(s) <T-NAMESELF>, stealing "+stolen.name()+" from <T-HIM-HER>.";
+					str=_("<S-NAME> mug(s) <T-NAMESELF>, stealing @x1 from <T-HIM-HER>.",stolen.name());
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str="<S-NAME> attempt(s) to mug <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+					str=_("<S-NAME> attempt(s) to mug <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 				}
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_MALICIOUS,str,CMMsg.NO_EFFECT,null);

@@ -44,7 +44,7 @@ public class Chant_Thorns extends Chant
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
-	final static String msgStr="The thorns around <S-NAME> <DAMAGE> <T-NAME>!";
+	final static String msgStr=CMLib.lang()._("The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
 	@Override
@@ -134,7 +134,7 @@ public class Chant_Thorns extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("@x1Long prickly thorns erupt all over <T-NAME>!^?",(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("@x1Long prickly thorns erupt all over <T-NAME>!^?",_(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

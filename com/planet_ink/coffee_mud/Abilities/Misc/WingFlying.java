@@ -94,9 +94,9 @@ public class WingFlying extends StdAbility implements HealthCondition
 		target.recoverPhyStats();
 		String str="";
 		if(wasFlying)
-			str="<S-NAME> stop(s) flapping <S-HIS-HER> wings.";
+			str=_("<S-NAME> stop(s) flapping <S-HIS-HER> wings.");
 		else
-			str="<S-NAME> start(s) flapping <S-HIS-HER> wings.";
+			str=_("<S-NAME> start(s) flapping <S-HIS-HER> wings.");
 
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

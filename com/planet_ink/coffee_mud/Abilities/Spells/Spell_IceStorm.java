@@ -64,7 +64,7 @@ public class Spell_IceStorm extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

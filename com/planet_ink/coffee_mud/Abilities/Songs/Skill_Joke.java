@@ -66,7 +66,7 @@ public class Skill_Joke extends BardSkill
 		String str=null;
 		if(success)
 		{
-			if(auto) str="<T-NAME> remember(s) a joke!";
+			if(auto) str=_("<T-NAME> remember(s) a joke!");
 			else
 			{
 				final List<String> insultd=Resources.getFileLineVector(Resources.getFileResource("skills/insultd.txt",true));
@@ -118,7 +118,7 @@ public class Skill_Joke extends BardSkill
 						 +"A: When it's "+de[2]+" "+ob[2]+"!'";
 					break;
 				}
-				str="<S-NAME> joke(s) to <T-NAMESELF>:\n\r"+joke;
+				str=_("<S-NAME> joke(s) to <T-NAMESELF>:\n\r@x1",joke);
 			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))

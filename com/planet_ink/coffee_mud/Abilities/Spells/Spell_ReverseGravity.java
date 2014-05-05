@@ -169,7 +169,7 @@ public class Spell_ReverseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _("@x1ravity begins to reverse!^?",(auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				childrenAffects=new Vector();

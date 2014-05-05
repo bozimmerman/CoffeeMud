@@ -138,11 +138,11 @@ public class Falling extends StdAbility
 		fallTickDown=1;
 
 		int direction=Directions.DOWN;
-		String addStr="down";
+		String addStr=_("down");
 		if(reversed())
 		{
 			direction=Directions.UP;
-			addStr="upwards";
+			addStr=_("upwards");
 		}
 		if(affected instanceof MOB)
 		{

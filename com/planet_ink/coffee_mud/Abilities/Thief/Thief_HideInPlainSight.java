@@ -182,7 +182,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=mob.phyStats().level()-getMOBLevel(highestMOB)-(this.getXLEVELLevel(mob)*2);
 
-		final String str="You step to the side and become totally inconspicuous.";
+		final String str=_("You step to the side and become totally inconspicuous.");
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 

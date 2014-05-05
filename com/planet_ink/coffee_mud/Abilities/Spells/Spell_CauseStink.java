@@ -71,16 +71,16 @@ public class Spell_CauseStink extends Spell
 			String str=null;
 			switch(cycle++)
 			{
-			case 1: str="<S-NAME> emanates an unpleasant odor"; break;
-			case 2: str="<S-NAME> smells like <S-HE-SHE> hasn't bathed in a month!"; break;
-			case 3: str="<S-NAME> smells bad!"; break;
-			case 4: str="<S-NAME> <S-IS-ARE> giving off a horrid odor!"; break;
-			case 5: str="<S-NAME> really stinks!"; break;
-			case 6: str="Whew! <S-NAME> REALLY stinks!"; break;
-			case 7: str="<S-NAME> has an odor resembling that of a skunk!"; break;
-			case 8: str="<S-NAME> smells like a dead skunk!"; break;
-			case 9: str="<S-NAME> stinks horribly!"; break;
-			case 10: str="<S-NAME> seems very very stinky!"; cycle=1; break;
+			case 1: str=_("<S-NAME> emanates an unpleasant odor"); break;
+			case 2: str=_("<S-NAME> smells like <S-HE-SHE> hasn't bathed in a month!"); break;
+			case 3: str=_("<S-NAME> smells bad!"); break;
+			case 4: str=_("<S-NAME> <S-IS-ARE> giving off a horrid odor!"); break;
+			case 5: str=_("<S-NAME> really stinks!"); break;
+			case 6: str=_("Whew! <S-NAME> REALLY stinks!"); break;
+			case 7: str=_("<S-NAME> has an odor resembling that of a skunk!"); break;
+			case 8: str=_("<S-NAME> smells like a dead skunk!"); break;
+			case 9: str=_("<S-NAME> stinks horribly!"); break;
+			case 10: str=_("<S-NAME> seems very very stinky!"); cycle=1; break;
 			default: cycle=0; break;
 			}
 			if(str!=null)

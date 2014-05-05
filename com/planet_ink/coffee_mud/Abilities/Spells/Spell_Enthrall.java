@@ -226,7 +226,7 @@ public class Spell_Enthrall extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":"^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?";
+			final String str=auto?"":_("^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -76,19 +76,19 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				str="<S-NAME> double(s) over and dry heave(s).";
+				str=_("<S-NAME> double(s) over and dry heave(s).");
 				break;
 			case 2:
-				str="<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";
+				str=_("<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");
 				break;
 			case 3:
-				str="<S-NAME> shake(s) feverishly.";
+				str=_("<S-NAME> shake(s) feverishly.");
 				break;
 			case 4:
-				str="<S-NAME> look(s) around weakly.";
+				str=_("<S-NAME> look(s) around weakly.");
 				break;
 			case 5:
-				str="<S-NAME> cough(s) and shudder(s) feverishly.";
+				str=_("<S-NAME> cough(s) and shudder(s) feverishly.");
 				break;
 			}
 			if(str!=null)

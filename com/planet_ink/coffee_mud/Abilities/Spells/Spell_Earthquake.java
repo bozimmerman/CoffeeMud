@@ -129,7 +129,7 @@ public class Spell_Earthquake extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,verbalCastCode(mob,null,auto),(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CMLib.protocol().msp("earthquake.wav",40));
+			mob.location().show(mob,null,verbalCastCode(mob,null,auto),_(auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?")+CMLib.protocol().msp("earthquake.wav",40));
 			for (final Object element : h)
 			{
 				final MOB target=(MOB)element;

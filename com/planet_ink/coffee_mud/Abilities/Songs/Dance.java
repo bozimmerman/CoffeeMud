@@ -245,9 +245,9 @@ public class Dance extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr="^SYou see the "+danceOf()+" being performed "+Directions.getInDirectionName(dir)+"!^?";
+				msgStr=_("^SYou see the @x1 being performed @x2!^?",danceOf(),Directions.getInDirectionName(dir));
 			else
-				msgStr="^SYou see the "+danceOf()+" being performed nearby!^?";
+				msgStr=_("^SYou see the @x1 being performed nearby!^?",danceOf());
 		}
 		return msgStr;
 	}
@@ -343,9 +343,9 @@ public class Dance extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
+			String str=auto?_("^SThe @x1 begins!^?",danceOf()):_("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
+				str=_("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{

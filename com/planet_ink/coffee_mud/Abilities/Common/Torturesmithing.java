@@ -289,7 +289,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+		startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
 		displayText=_("You are making @x1",buildingI.name());
 		verb=_("making @x1",buildingI.name());
 		playSound="hammer.wav";

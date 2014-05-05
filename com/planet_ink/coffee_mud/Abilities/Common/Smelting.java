@@ -220,7 +220,7 @@ public class Smelting extends CraftingSkill
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
 		buildingI=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
-		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
+		startStr=_("<S-NAME> start(s) smelting @x1.",doneResourceDesc.toLowerCase());
 		displayText=_("You are smelting @x1",doneResourceDesc.toLowerCase());
 		playSound="sizzling.wav";
 		verb=_("smelting @x1",doneResourceDesc.toLowerCase());

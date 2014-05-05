@@ -681,7 +681,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			}
 			final String goneName = (fakeLimb!=null)?fakeLimb.name():gone;
 
-			final String str=auto?"":"^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> "+goneName+"!^</FIGHT^>^?";
+			final String str=auto?"":_("^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",goneName);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))

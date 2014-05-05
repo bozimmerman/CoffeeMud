@@ -176,7 +176,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(resource!=null)
 			CMLib.materials().destroyResourcesValue(mob.location(),100, resource.material(), -1, null);
 
-		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?_("@x1 begins to glow!",trapThis.name()):_("<S-NAME> attempt(s) to lay a trap here.")));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

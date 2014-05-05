@@ -698,8 +698,28 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@Override
 	public String fullSessionTranslation(final String str, final String ... xs)
 	{
+		if((str==null)||(str.length()==0))
+			return str;
 		final String sessionStr=sessionTranslation(str);
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
+	}
+
+	@Override
+	public String[] sessionTranslation(final String[] str)
+	{
+		if((str==null)||(str.length==0))
+			return str;
+		for(int i=0;i<str.length;i++)
+		{
+			final String s=str[i];
+			if(s!=null)
+			{
+				final String sessionStr=sessionTranslation(s);
+				if(sessionStr!=null)
+					str[i]=sessionStr;
+			}
+		}
+		return str;
 	}
 
 	@Override
@@ -712,6 +732,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@Override
 	public String _(final String str, final String ... xs)
 	{
+		if((str==null)||(str.length()==0))
+			return str;
 		final String sessionStr=sessionTranslation(str);
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}

@@ -63,9 +63,9 @@ public class Song_Rebirth extends Song
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
+			String str=auto?_("The @x1 begins to play!",songOf()):_("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
+				str=_("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{

@@ -192,7 +192,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.";
+			final String str=auto?"":_("<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{

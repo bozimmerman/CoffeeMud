@@ -138,7 +138,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		}
 		else
 		{
-			final String str=auto?"":"<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!";
+			final String str=auto?"":_("<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

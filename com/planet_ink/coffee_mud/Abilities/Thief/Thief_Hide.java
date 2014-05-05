@@ -153,7 +153,7 @@ public class Thief_Hide extends ThiefSkill
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		final String str="You creep into a shadow and remain completely still.";
+		final String str=_("You creep into a shadow and remain completely still.");
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 

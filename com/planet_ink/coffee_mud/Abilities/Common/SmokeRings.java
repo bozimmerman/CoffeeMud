@@ -62,38 +62,38 @@ public class SmokeRings extends CommonSkill
 		&&(proficiencyCheck(null,(10*getXLEVELLevel((MOB)affected)),false)))
 		{
 			if(CMLib.dice().rollPercentage()==1) helpProficiency((MOB)affected,0);
-			String str="<S-NAME> blow(s) out a perfect smoke ring.";
+			String str=_("<S-NAME> blow(s) out a perfect smoke ring.");
 			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1:
-				str="<S-NAME> blow(s) out a perfect smoke ring.";
+				str=_("<S-NAME> blow(s) out a perfect smoke ring.");
 				break;
 			case 2:
-				str="<S-NAME> blow(s) out a swirling string of smoke.";
+				str=_("<S-NAME> blow(s) out a swirling string of smoke.");
 				break;
 			case 3:
-				str="<S-NAME> blow(s) out a huge smoke ring.";
+				str=_("<S-NAME> blow(s) out a huge smoke ring.");
 				break;
 			case 4:
-				str="<S-NAME> blow(s) out a train of tiny smoke rings.";
+				str=_("<S-NAME> blow(s) out a train of tiny smoke rings.");
 				break;
 			case 5:
-				str="<S-NAME> blow(s) out a couple of tiny smoke rings.";
+				str=_("<S-NAME> blow(s) out a couple of tiny smoke rings.");
 				break;
 			case 6:
-				str="<S-NAME> blow(s) out a nice round smoke ring.";
+				str=_("<S-NAME> blow(s) out a nice round smoke ring.");
 				break;
 			case 7:
-				str="<S-NAME> blow(s) out three big smoke rings.";
+				str=_("<S-NAME> blow(s) out three big smoke rings.");
 				break;
 			case 8:
-				str="<S-NAME> blow(s) out an ENORMOUS smoke ring.";
+				str=_("<S-NAME> blow(s) out an ENORMOUS smoke ring.");
 				break;
 			case 9:
-				str="<S-NAME> blow(s) out a swirl of tiny smoke rings.";
+				str=_("<S-NAME> blow(s) out a swirl of tiny smoke rings.");
 				break;
 			case 10:
-				str="<S-NAME> blow(s) out a smoke ring shaped like a galley.";
+				str=_("<S-NAME> blow(s) out a smoke ring shaped like a galley.");
 				break;
 			}
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,str));

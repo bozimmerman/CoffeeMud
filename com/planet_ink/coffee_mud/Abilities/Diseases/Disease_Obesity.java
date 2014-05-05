@@ -163,15 +163,15 @@ public class Disease_Obesity extends Disease
 			final int amount=amountOfFat();
 			String str="";
 			if(amount<20)
-				str="a bit chubby";
+				str=_("a bit chubby");
 			else
 			if(amount<60)
-				str="fat";
+				str=_("fat");
 			else
 			if(amount<120)
-				str="obese";
+				str=_("obese");
 			else
-				str="morbidly obese";
+				str=_("morbidly obese");
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 										  CMMsg.MSG_OK_VISUAL,_("\n\r@x1 is @x2.\n\r",affected.name(),str),
 										  CMMsg.NO_EFFECT,null,

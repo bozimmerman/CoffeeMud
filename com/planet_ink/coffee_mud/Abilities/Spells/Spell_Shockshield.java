@@ -44,7 +44,7 @@ public class Spell_Shockshield extends Spell
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	@Override public long flags(){return Ability.FLAG_AIRBASED;}
-	final static String msgStr="The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!";
+	final static String msgStr=CMLib.lang()._("The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
 	@Override
@@ -127,7 +127,7 @@ public class Spell_Shockshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

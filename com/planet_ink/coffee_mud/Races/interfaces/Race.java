@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -393,7 +394,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** Age constant for the very very old*/
 	public final static int AGE_ANCIENT=8;
 	/** Constant string list for the names of the age constants, in their order of value */
-	public final static String[] AGE_DESCS={"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"};
+	public final static String[] AGE_DESCS=CMLib.lang().sessionTranslation(new String[]{
+			"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"
+	});
 
 	/** Age in Years constant for an immortal thing */
 	public final static int YEARS_AGE_LIVES_FOREVER=Integer.MAX_VALUE;

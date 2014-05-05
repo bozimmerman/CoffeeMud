@@ -95,9 +95,9 @@ public class Spell_ContinualLight extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str="^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?";
+			String str=_("^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?");
 			if(!(target instanceof MOB))
-				str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
+				str=_("^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{

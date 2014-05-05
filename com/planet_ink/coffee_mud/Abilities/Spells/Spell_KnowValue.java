@@ -62,12 +62,12 @@ public class Spell_KnowValue extends Spell
 				mob.location().send(mob,msg);
 				String str=null;
 				if(target.value()<=0)
-					str=target.name(mob)+" isn't worth anything.";
+					str=_("@x1 isn't worth anything.",target.name(mob));
 				else
 				if(target.value()==0)
-					str=target.name(mob)+" is worth hardly anything at all";
+					str=_("@x1 is worth hardly anything at all",target.name(mob));
 				else
-					str=target.name(mob)+" is worth "+CMLib.beanCounter().nameCurrencyShort(mob,(double)target.value())+" ";
+					str=_("@x1 is worth @x2 ",target.name(mob),CMLib.beanCounter().nameCurrencyShort(mob,(double)target.value()));
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str,false,false);
 				else

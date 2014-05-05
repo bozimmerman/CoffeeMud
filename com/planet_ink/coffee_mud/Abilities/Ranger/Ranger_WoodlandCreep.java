@@ -121,7 +121,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 			return false;
 		}
 
-		final String str="You creep into some foliage.";
+		final String str=_("You creep into some foliage.");
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)

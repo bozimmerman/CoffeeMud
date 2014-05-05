@@ -75,7 +75,7 @@ public class Prayer_CauseLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a light burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("ouch.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),_(auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a light burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("ouch.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))

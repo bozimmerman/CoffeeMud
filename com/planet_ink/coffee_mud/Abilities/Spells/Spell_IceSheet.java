@@ -148,14 +148,14 @@ public class Spell_IceSheet extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			String msgStr="the ground becomes covered in ice!";
+			String msgStr=_("the ground becomes covered in ice!");
 			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				msgStr="the water freezes over!";
+				msgStr=_("the water freezes over!");
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

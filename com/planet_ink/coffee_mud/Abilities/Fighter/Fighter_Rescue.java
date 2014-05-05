@@ -88,7 +88,7 @@ public class Fighter_Rescue extends FighterSkill
 		String str=null;
 		if(success)
 		{
-			str="^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?";
+			str=_("^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
@@ -99,7 +99,7 @@ public class Fighter_Rescue extends FighterSkill
 		}
 		else
 		{
-			str="<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).";
+			str=_("<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

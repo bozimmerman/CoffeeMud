@@ -332,7 +332,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
 			displayText=_("You are mending @x1",buildingI.name());
 			verb=_("mending @x1",buildingI.name());
 		}
@@ -369,7 +369,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
 			displayText=_("You are refitting @x1",buildingI.name());
 			verb=_("refitting @x1",buildingI.name());
 		}
@@ -454,7 +454,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr="<S-NAME> start(s) weaving "+buildingI.name()+".";
+			startStr=_("<S-NAME> start(s) weaving @x1.",buildingI.name());
 			displayText=_("You are weaving @x1",buildingI.name());
 			verb=_("weaving @x1",buildingI.name());
 			buildingI.setDisplayText(itemName+" lies here");
@@ -538,7 +538,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			messedUp=false;
 			duration=1;
 			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr="<S-NAME> start(s) "+verb+".";
+			startStr=_("<S-NAME> start(s) @x1.",verb);
 			displayText=_("You are @x1",verb);
 		}
 

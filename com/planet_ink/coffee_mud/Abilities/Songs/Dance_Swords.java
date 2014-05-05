@@ -202,9 +202,9 @@ public class Dance_Swords extends Dance
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
+			String str=auto?_("^SThe @x1 begins!^?",danceOf()):_("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
+				str=_("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{

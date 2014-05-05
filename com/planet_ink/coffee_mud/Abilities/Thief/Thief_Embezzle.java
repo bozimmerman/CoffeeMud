@@ -191,7 +191,7 @@ public class Thief_Embezzle extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-			final String str="<S-NAME> embezzle(s) "+CMLib.beanCounter().nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
+			final String str=_("<S-NAME> embezzle(s) @x1 from the @x2 account maintained by <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,hisAmount),victim);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
 			if(mob.location().okMessage(mob,msg))
 			{

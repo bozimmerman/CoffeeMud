@@ -61,7 +61,7 @@ public class Prayer_ElectricStrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final Prayer_ElectricStrike newOne=(Prayer_ElectricStrike)this.copyOf();
-			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMLib.protocol().msp("lightning.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMLib.protocol().msp("lightning.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
