@@ -109,7 +109,7 @@ public class Prop_LangTranslator extends Property implements Language
 			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 			&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null))
-				CMLib.commands().postSay(msg.source(),null,"The smoke signals seem to say '"+msg.othersMessage()+"'.",false,false);
+				CMLib.commands().postSay(msg.source(),null,_("The smoke signals seem to say '@x1'.",msg.othersMessage()),false,false);
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)

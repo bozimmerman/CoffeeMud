@@ -122,13 +122,13 @@ public class MoneyChanger extends StdBehavior
 		{
 			if(!(msg.tool() instanceof Coins))
 			{
-				CMLib.commands().postSay(observer,source,"I'm sorry, I can only accept money.",true,false);
+				CMLib.commands().postSay(observer,source,_("I'm sorry, I can only accept money."),true,false);
 				return false;
 			}
 			else
 			if(((rates.size()>0)&&(!rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase()))))
 			{
-				CMLib.commands().postSay(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
+				CMLib.commands().postSay(observer,source,_("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
@@ -144,7 +144,7 @@ public class MoneyChanger extends StdBehavior
 			final Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 			if((value<=0)||(C==null))
 			{
-				CMLib.commands().postSay(observer,source,"I'm sorry, I can not change such a small amount.",true,false);
+				CMLib.commands().postSay(observer,source,_("I'm sorry, I can not change such a small amount."),true,false);
 				return false;
 			}
 		}
@@ -194,12 +194,12 @@ public class MoneyChanger extends StdBehavior
 					msg.addTrailerMsg(newMsg);
 				}
 				else
-					CMLib.commands().postSay(observer,source,"Gee, thanks. :)",true,false);
+					CMLib.commands().postSay(observer,source,_("Gee, thanks. :)"),true,false);
 				((Coins)msg.tool()).destroy();
 			}
 			else
 			if(!CMLib.flags().canBeSeenBy(source,observer))
-				CMLib.commands().postSay(observer,null,"Wha?  Where did this come from?  Cool!",true,false);
+				CMLib.commands().postSay(observer,null,_("Wha?  Where did this come from?  Cool!"),true,false);
 		}
 		else
 		if((msg.source()==observer)

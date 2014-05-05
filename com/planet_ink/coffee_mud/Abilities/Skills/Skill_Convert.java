@@ -82,7 +82,7 @@ public class Skill_Convert extends StdSkill
 		{
 			mob.tell(_("You must specify either a deity to convert yourself to, or a player to convert to your religion."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,"I am unable to convert.",false,false);
+				CMLib.commands().postSay(mob,null,_("I am unable to convert."),false,false);
 			return false;
 		}
 
@@ -96,14 +96,14 @@ public class Skill_Convert extends StdSkill
 			{
 				mob.tell(_("You've also never heard of a deity called '@x1'.",CMParms.combine(commands,0)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,"I've never heard of '"+CMParms.combine(commands,0)+"'.",false,false);
+					CMLib.commands().postSay(mob,target,_("I've never heard of '@x1'.",CMParms.combine(commands,0)),false,false);
 				return false;
 			}
 			if(D==null)
 			{
 				mob.tell(_("A faithless one cannot convert @x1.",target.name(mob)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,"I am faithless, and can not convert you.",false,false);
+					CMLib.commands().postSay(mob,target,_("I am faithless, and can not convert you."),false,false);
 				return false;
 			}
 		}
@@ -112,14 +112,14 @@ public class Skill_Convert extends StdSkill
 		{
 			mob.tell(_("You can't convert @x1.",target.name(mob)));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,"I can not convert you.",false,false);
+				CMLib.commands().postSay(mob,target,_("I can not convert you."),false,false);
 			return false;
 		}
 		if(target.getMyDeity()==D)
 		{
 			mob.tell(_("@x1 already worships @x2.",target.name(mob),D.name()));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,"You already worship "+D.Name()+".",false,false);
+				CMLib.commands().postSay(mob,target,_("You already worship @x1.",D.Name()),false,false);
 			return false;
 		}
 		if(!auto)
@@ -134,7 +134,7 @@ public class Skill_Convert extends StdSkill
 			{
 				mob.tell(_("@x1 must wait to be converted again.",target.name(mob)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,"You must wait to be converted again.",false,false);
+					CMLib.commands().postSay(mob,target,_("You must wait to be converted again."),false,false);
 				return false;
 			}
 		}
@@ -146,7 +146,7 @@ public class Skill_Convert extends StdSkill
 		{
 			mob.tell(_("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",target.name(mob),target.getMyDeity().name(),target.charStats().HeShe(),target.getMyDeity().charStats().himher()));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,"You already worship "+target.getMyDeity().Name()+".",false,false);
+				CMLib.commands().postSay(mob,target,_("You already worship @x1.",target.getMyDeity().Name()),false,false);
 			return false;
 		}
 		if((success)&&(targetMadeSave)&&(!target.isMonster())&&(target!=mob))

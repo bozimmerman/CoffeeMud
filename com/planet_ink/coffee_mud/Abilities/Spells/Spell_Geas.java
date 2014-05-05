@@ -117,7 +117,7 @@ public class Spell_Geas extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
-			CMLib.commands().postSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
+			CMLib.commands().postSay(mob,null,_("You know, if I had any ambitions, I would put the geas on myself!"),false,false);
 			return false;
 		}
 

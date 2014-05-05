@@ -39,7 +39,7 @@ public class StdRoom implements Room
 	@Override public String ID(){return "StdRoom";}
 	protected String		myID="";
 	protected String		name="the room";
-	protected String		displayText="Standard Room";
+	protected String		displayText=_("Standard Room");
 	protected String		rawImageName=null;
 	protected String		cachedImageName=null;
 	protected Object		description=null;

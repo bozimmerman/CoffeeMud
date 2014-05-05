@@ -159,7 +159,7 @@ public class Prop_ClosedDayNight extends Property
 		{
 			final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 			if(sk!=null)
-				CMLib.commands().postSay((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
+				CMLib.commands().postSay((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:_("Sorry, I'm off right now.  Try me tomorrow."),false,false);
 			return false;
 		}
 		return true;
@@ -262,7 +262,7 @@ public class Prop_ClosedDayNight extends Property
 							return true;
 						final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 						if(sk!=null)
-							CMLib.commands().postSay((MOB)affected,null,(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
+							CMLib.commands().postSay((MOB)affected,null,(shopMsg!=null)?shopMsg:_("Sorry, I'm off right now.  Try me tomorrow."),false,false);
 						final Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{

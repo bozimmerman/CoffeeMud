@@ -95,7 +95,7 @@ public class ItemIdentifier extends StdBehavior
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
 				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
-				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
+				CMLib.commands().postSay(observer,source,_("You'll need @x1 for me to identify that.",costStr),true,false);
 				return false;
 			}
 			return true;

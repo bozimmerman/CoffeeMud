@@ -253,13 +253,13 @@ public class TaxCollector extends StdBehavior
 			if((!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(mob))))
 			{
 				msg.source().tell(_("@x1 refuses your money.",mob.name(msg.source())));
-				CMLib.commands().postSay(mob,msg.source(),"I don't accept that kind of currency.",false,false);
+				CMLib.commands().postSay(mob,msg.source(),_("I don't accept that kind of currency."),false,false);
 				return false;
 			}
 			if(coins<owe[OWE_TOTAL])
 			{
 				msg.source().tell(_("@x1 refuses your money.",mob.name(msg.source())));
-				CMLib.commands().postSay(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
+				CMLib.commands().postSay(mob,msg.source(),_("That's not enough.  You owe @x1.  Try again.",owed),false,false);
 				return false;
 			}
 		}
@@ -345,11 +345,11 @@ public class TaxCollector extends StdBehavior
 					if(B!=null)
 					{
 						B.accuse(CMLib.law().getLegalObject(R),M,mob,new String[]{"TAXEVASION"});
-						CMLib.commands().postSay(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
+						CMLib.commands().postSay(mob,M,_("Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!"),false,false);
 					}
 					else
 					{
-						CMLib.commands().postSay(mob,M,"You know what they say about death and taxes, so if you won't pay ... DIE!!!!",false,false);
+						CMLib.commands().postSay(mob,M,_("You know what they say about death and taxes, so if you won't pay ... DIE!!!!"),false,false);
 						CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
 						demanded.removeElementAt(demandDex);
 					}
@@ -368,7 +368,7 @@ public class TaxCollector extends StdBehavior
 						say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_FINES],denomination)))+" in fines");
 					if(say.length()>0)
 					{
-						CMLib.commands().postSay(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);
+						CMLib.commands().postSay(mob,M,_("@x1.  You must pay me immediately or face the consequences.",say.toString()),false,false);
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{

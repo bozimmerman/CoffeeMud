@@ -70,7 +70,7 @@ public class AntiVagrant extends ActiveTicker
 			if(target!=null)
 			if(CMLib.flags().isSleeping(target)&&(target!=observer)&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
-				CMLib.commands().postSay(observer,target,"Damn lazy good for nothing!",false,false);
+				CMLib.commands().postSay(observer,target,_("Damn lazy good for nothing!"),false,false);
 				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> shake(s) <T-NAME> awake."));
 				if(observer.location().okMessage(observer,msg))
 				{
@@ -84,7 +84,7 @@ public class AntiVagrant extends ActiveTicker
 			else
 			if((CMLib.flags().isSitting(target)&&(target!=observer))&&(CMLib.flags().canBeSeenBy(target,observer)))
 			{
-				CMLib.commands().postSay(observer,target,"Get up and move along!",false,false);
+				CMLib.commands().postSay(observer,target,_("Get up and move along!"),false,false);
 				final CMMsg msg=CMClass.getMsg(observer,target,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> stand(s) <T-NAME> up."));
 				if(observer.location().okMessage(observer,msg))
 				{

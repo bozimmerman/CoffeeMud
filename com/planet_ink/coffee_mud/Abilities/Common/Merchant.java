@@ -325,7 +325,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(source.getClanRole(CMLib.law().getLegalBehavior(merchantM.getStartRoom()).rulingOrganization())!=null)))
 		&&((doISellThis(tool))||(isSold(DEAL_INVENTORYONLY))))
 		{
-			CMLib.commands().postSay(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
+			CMLib.commands().postSay(merchantM,source,_("OK, I will now sell @x1.",tool.name()),false,false);
 			getShop().addStoreInventory(tool,1,-1);
 			if(affected instanceof Area)
 				CMLib.database().DBUpdateArea(affected.Name(),(Area)affected);
@@ -382,7 +382,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
 				if(merchantM.isMonster())
-					CMLib.commands().postSay(merchantM,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+					CMLib.commands().postSay(merchantM,mob,_("I'll give you @x1 for @x2.",CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice),msg.tool().name()),true,false);
 				break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
@@ -390,11 +390,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
 
-					CMLib.commands().postSay(merchantM,msg.source(),"" +
-							"Interested in "+msg.tool().name()+
-							"? Here is some information for you:\n\rLevel "+
-							((Physical)msg.tool()).phyStats().level()+
-							"\n\rDescription: "+msg.tool().description(),true,false);
+					CMLib.commands().postSay(merchantM,msg.source(),_("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
 				}
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player

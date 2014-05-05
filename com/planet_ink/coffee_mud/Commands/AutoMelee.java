@@ -49,14 +49,14 @@ public class AutoMelee extends StdCommand
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell(_("Automelee has been turned off.  You will no longer charge into melee combat from a ranged position."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,"I will no longer charge into melee.",false,false);
+				CMLib.commands().postSay(mob,null,_("I will no longer charge into melee."),false,false);
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell(_("Automelee has been turned back on.  You will now enter melee combat normally."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,"I will now enter melee combat normally.",false,false);
+				CMLib.commands().postSay(mob,null,_("I will now enter melee combat normally."),false,false);
 		}
 		return false;
 	}

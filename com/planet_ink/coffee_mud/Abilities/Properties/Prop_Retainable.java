@@ -101,10 +101,10 @@ public class Prop_Retainable extends Property
 					if(mob.location()==lastRoom)
 					{
 						if((mob.amFollowing()!=null)&&(mob.location().isInhabitant(mob.amFollowing())))
-							CMLib.commands().postSay(mob,mob.amFollowing(),"Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here.",false,false);
+							CMLib.commands().postSay(mob,mob.amFollowing(),_("Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here."),false,false);
 						else
 						if(mob.location().numPCInhabitants()>0)
-							CMLib.commands().postSay(mob,mob.amFollowing(),"I guess this is my new permanent posting?",false,false);
+							CMLib.commands().postSay(mob,mob.amFollowing(),_("I guess this is my new permanent posting?"),false,false);
 					}
 				}
 				if(payPeriodLengthInMudDays>0)
@@ -132,7 +132,7 @@ public class Prop_Retainable extends Property
 							&&(!t.getOwnerName().equalsIgnoreCase(mob.amFollowing().Name()))
 							&&(mob.amFollowing().getClanRole(t.getOwnerName())==null))
 							{
-								CMLib.commands().postSay(mob,null,"Hey, I'm not a crook!",false,false);
+								CMLib.commands().postSay(mob,null,_("Hey, I'm not a crook!"),false,false);
 								mob.setFollowing(null);
 								CMLib.tracking().wanderAway(mob,true,false);
 								mob.destroy();
@@ -145,7 +145,7 @@ public class Prop_Retainable extends Property
 
 						if(owner.length()==0)
 						{
-							CMLib.commands().postSay(mob,null,"Argh! I quit!",false,false);
+							CMLib.commands().postSay(mob,null,_("Argh! I quit!"),false,false);
 							mob.setFollowing(null);
 							CMLib.tracking().wanderAway(mob,true,false);
 							mob.destroy();
@@ -157,10 +157,10 @@ public class Prop_Retainable extends Property
 								CMLib.beanCounter().getCurrency(mob),
 								(-payAmountPerPayPeriod));
 						if(paid)
-							CMLib.commands().postSay(mob,null,"Payday!",false,false);
+							CMLib.commands().postSay(mob,null,_("Payday!"),false,false);
 						else
 						{
-							CMLib.commands().postSay(mob,null,"I don't work for free!  I quit!",false,false);
+							CMLib.commands().postSay(mob,null,_("I don't work for free!  I quit!"),false,false);
 							mob.setFollowing(null);
 							CMLib.tracking().wanderAway(mob,true,false);
 							mob.destroy();
@@ -191,7 +191,7 @@ public class Prop_Retainable extends Property
 		if(me instanceof ShopKeeper)
 			skills.append(".  Once I'm at my permanent post, you may give me appropriate items to sell at any time");
 		if(skills.length()>2)
-			CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
+			CMLib.commands().postSay(me, toMe, _("My skills include: @x1.",skills.substring(2)),false,false);
 	}
 
 	@Override
@@ -208,10 +208,10 @@ public class Prop_Retainable extends Property
 				{
 					tellSkills(mob,msg.source());
 					if(payPeriodLengthInMudDays>0)
-						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
+						CMLib.commands().postSay(mob,msg.source(),_("I accept your terms of employment, and I understand I will be paid @x1 every @x2 days.",CMLib.beanCounter().abbreviatedPrice(mob,payAmountPerPayPeriod),""+payPeriodLengthInMudDays),false,false);
 					else
-						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
-					CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);
+						CMLib.commands().postSay(mob,msg.source(),_("I accept your terms of employment."),false,false);
+					CMLib.commands().postSay(mob,msg.source(),_("Please show me the way to my permanent post."),false,false);
 					lastPayDayTimestamp=0;
 				}
 				else

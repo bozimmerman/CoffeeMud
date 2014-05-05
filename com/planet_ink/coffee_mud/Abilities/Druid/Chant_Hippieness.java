@@ -220,7 +220,7 @@ public class Chant_Hippieness extends Chant
 					for(final Pair<Clan,Integer> p : target.clans())
 						oldClans.add(p);
 					target.setClan("",Integer.MIN_VALUE); // deletes all clans
-					CMLib.commands().postSay(target,null,"Far out...",false,false);
+					CMLib.commands().postSay(target,null,_("Far out..."),false,false);
 					maliciousAffect(mob,target,asLevel,0,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND);
 				}
 			}

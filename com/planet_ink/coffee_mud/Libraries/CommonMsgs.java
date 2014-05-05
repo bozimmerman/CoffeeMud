@@ -811,11 +811,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final MOB M=((CagedAnimal)item).unCageMe();
 			if(M==null)
-				response.append("\n\rLooks like some sort of lifeless thing.\n\r");
+				response.append(_("\n\rLooks like some sort of lifeless thing.\n\r"));
 			else
 			{
 				if(M.phyStats().height()>0)
-					response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.phyStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
+					response.append(_("\n\r@x1 is @x2 inches tall and weighs @x3 pounds.\n\r",CMStrings.capitalizeFirstLetter(item.name()),""+M.phyStats().height(),weight));
 				if((mob==null)||(!mob.isMonster()))
 					response.append(CMLib.protocol().mxpImage(M," ALIGN=RIGHT H=70 W=70"));
 				response.append(M.healthText(mob)+"\n\r\n\r");
@@ -825,44 +825,44 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		else
 		{
-			response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name(mob))+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+			response.append(_("\n\r@x1 is a level @x2 item, and weighs @x3 pounds.  ",CMStrings.capitalizeFirstLetter(item.name(mob)),level,weight));
 			if((item instanceof RawMaterial)
 			&&(!CMLib.flags().isABonusItems(item))
 			&&(item.rawSecretIdentity().length()>0)
 			&&(item.basePhyStats().weight()>1)
 			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)))
-				response.append("It appears to be a bundle of `"+item.rawSecretIdentity()+"`.  ");
+				response.append(_("It appears to be a bundle of `@x1`.  ",item.rawSecretIdentity()));
 
 			if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
-				response.append("It is mostly made of a kind of "+RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()+".  ");
+				response.append(_("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
 			else
-				response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
+				response.append(_("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
 			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
-				response.append( "There are "+((Recipe)item).getTotalRecipePages()+" blank pages/entries remaining.  " );
+				response.append( _("There are @x1 blank pages/entries remaining.  ",""+((Recipe)item).getTotalRecipePages()));
 			if(item instanceof Ammunition)
-				response.append("It is "+((Ammunition)item).usesRemaining()+" ammunition of type '"+((Ammunition)item).ammunitionType()+"'.  ");
+				response.append(_("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).usesRemaining(),((Ammunition)item).ammunitionType()));
 			else
 			if(item instanceof Weapon)
 			{
 				if((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)
 				{
-					response.append("It is a ");
+					response.append(_("It is a "));
 					if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
-						response.append("two handed ");
+						response.append(_("two handed "));
 					else
-						response.append("one handed ");
-					response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
+						response.append(_("one handed "));
+					response.append(_("@x1 class weapon that does @x2 damage.  ",CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()]),CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])));
 				}
 				if((item instanceof AmmunitionWeapon) && ((AmmunitionWeapon)item).requiresAmmunition())
-					response.append("It requires ammunition of type '"+((AmmunitionWeapon)item).ammunitionType()+"'.  ");
+					response.append(_("It requires ammunition of type '@x1'.  ",((AmmunitionWeapon)item).ammunitionType()));
 			}
 			else
 			if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
 			{
 				if(item.phyStats().height()>0)
-					response.append(" It is a size "+item.phyStats().height()+", and is ");
+					response.append(_(" It is a size @x1, and is ",""+item.phyStats().height()));
 				else
-					response.append(" It is your size, and is ");
+					response.append(_(" It is your size, and is "));
 				response.append(((item.rawProperLocationBitmap()==Wearable.WORN_HELD)||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
 									 ?new StringBuilder("")
 									 :new StringBuilder("worn on the "));
@@ -876,9 +876,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						 {
 							response.append(CMStrings.capitalizeAndLower(wornString)+" ");
 							if(item.rawLogicalAnd())
-								response.append("and ");
+								response.append(_("and "));
 							else
-								response.append("or ");
+								response.append(_("or "));
 						}
 					}
 				if(response.toString().endsWith(" and "))

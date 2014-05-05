@@ -277,7 +277,7 @@ public class Nanny extends StdBehavior
 				if(!C.getCurrency().equalsIgnoreCase(myCurrency))
 				{
 					if(host instanceof MOB)
-						CMLib.commands().postSay((MOB)host,msg.source(),"I'm don't accept "+CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination())+".  I can only accept "+CMLib.beanCounter().getDenominationName(myCurrency)+".");
+						CMLib.commands().postSay((MOB)host,msg.source(),_("I'm don't accept @x1.  I can only accept @x2.",CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
 					else
 						msg.source().tell(_("The @x1 doesn't accept @x2.  It only accepts @x3.",place,CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
 					return false;
@@ -299,9 +299,9 @@ public class Nanny extends StdBehavior
 			&&(host instanceof MOB))
 			{
 				if(amt.length()>0)
-					CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed.");
+					CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees of @x2 are still owed.",place,amt));
 				else
-					CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees are still owed on "+obj.name()+".");
+					CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
 			}
 			else
 			if(amt.length()>0)
@@ -322,7 +322,7 @@ public class Nanny extends StdBehavior
 			{
 				if((host instanceof MOB)&&(msg.source().location()==CMLib.map().roomLocation(host)))
 				{
-					CMLib.commands().postSay((MOB)host,msg.source(),"Not in my "+place+" you dont!");
+					CMLib.commands().postSay((MOB)host,msg.source(),_("Not in my @x1 you dont!",place));
 					final MOB victim=msg.source().getVictim();
 					if(victim!=null) victim.makePeace();
 					msg.source().makePeace();
@@ -361,9 +361,9 @@ public class Nanny extends StdBehavior
 					&&(host instanceof MOB))
 					{
 						if(amt.length()>0)
-							CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees of "+amt+" are still owed on "+obj.name()+".");
+							CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees of @x2 are still owed on @x3.",place,amt,obj.name()));
 						else
-							CMLib.commands().postSay((MOB)host,msg.source(),"I'm afraid that "+place+" fees are still owed on "+obj.name()+".");
+							CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
 					}
 					else
 					if(amt.length()>0)
@@ -599,7 +599,7 @@ public class Nanny extends StdBehavior
 					msg.addTrailerMsg(newMsg);
 				}
 				else
-					CMLib.commands().postSay((MOB)host,source,"Gee, thanks. :)",true,false);
+					CMLib.commands().postSay((MOB)host,source,_("Gee, thanks. :)"),true,false);
 			}
 			((Coins)msg.tool()).destroy();
 			if(paid>=owed)
@@ -616,7 +616,7 @@ public class Nanny extends StdBehavior
 							((MOB)P).setBitmap(CMath.unsetb(((MOB)P).getBitmap(), MOB.ATT_AUTOGUARD));
 						if(((MOB)P).amFollowing()!=msg.source())
 						{
-							CMLib.commands().postSay((MOB)host,msg.source(),"Hmm, '"+P.name()+"' doesn't seem ready to leave.  Now get along!",true,false);
+							CMLib.commands().postSay((MOB)host,msg.source(),_("Hmm, '@x1' doesn't seem ready to leave.  Now get along!",P.name()),true,false);
 							msg.source().location().send((MOB)P,CMClass.getMsg((MOB)P,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,_("<S-NAME> follow(s) <T-NAMESELF>.")));
 							if(((MOB)P).amFollowing()!=msg.source())
 								((MOB)P).setFollowing(msg.source());

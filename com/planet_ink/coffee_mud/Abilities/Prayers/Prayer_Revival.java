@@ -95,26 +95,26 @@ public class Prayer_Revival extends Prayer
 			if((D!=null)&&(CMLib.dice().rollPercentage()<50))
 			switch(CMLib.dice().roll(1,13,0))
 			{
-			case 1:	CMLib.commands().postSay(mob,null,D.name()+" is great! Shout "+CMStrings.capitalizeAndLower(D.charStats().hisher())+" praises!",false,false); break;
-			case 2:	CMLib.commands().postSay(mob,null,"Can I hear an AMEN?!",false,false); break;
-			case 3:	CMLib.commands().postSay(mob,null,"Praise "+D.name()+"!",false,false); break;
-			case 4:	CMLib.commands().postSay(mob,null,"Halleluyah! "+D.name()+" is great!",false,false); break;
-			case 5:	CMLib.commands().postSay(mob,null,"Let's hear it for "+D.name()+"!",false,false); break;
-			case 6:	CMLib.commands().postSay(mob,null,"Exalt the name of "+D.name()+"!",false,false); break;
+			case 1:	CMLib.commands().postSay(mob,null,_("@x1 is great! Shout @x2 praises!",D.name(),CMStrings.capitalizeAndLower(D.charStats().hisher())),false,false); break;
+			case 2:	CMLib.commands().postSay(mob,null,_("Can I hear an AMEN?!"),false,false); break;
+			case 3:	CMLib.commands().postSay(mob,null,_("Praise @x1!",D.name()),false,false); break;
+			case 4:	CMLib.commands().postSay(mob,null,_("Halleluyah! @x1 is great!",D.name()),false,false); break;
+			case 5:	CMLib.commands().postSay(mob,null,_("Let's hear it for @x1!",D.name()),false,false); break;
+			case 6:	CMLib.commands().postSay(mob,null,_("Exalt the name of @x1!",D.name()),false,false); break;
 			case 7:	if(clerics.size()>1)
 					{
 						final MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
 						if(M!=mob)
-							CMLib.commands().postSay(mob,null,"Preach it "+M.name(mob)+"!",false,false);
+							CMLib.commands().postSay(mob,null,_("Preach it @x1!",M.name(mob)),false,false);
 						else
-							CMLib.commands().postSay(mob,null,"I LOVE "+D.name()+"!",false,false);
+							CMLib.commands().postSay(mob,null,_("I LOVE @x1!",D.name()),false,false);
 					}
 					else
-						CMLib.commands().postSay(mob,null,"I LOVE "+D.name()+"!",false,false);
+						CMLib.commands().postSay(mob,null,_("I LOVE @x1!",D.name()),false,false);
 					break;
-			case 8:	CMLib.commands().postSay(mob,null,"Holy is the name of "+D.name()+"!",false,false); break;
-			case 9:	CMLib.commands().postSay(mob,null,"Do you BELIEVE?!? I BELIEVE!!!",false,false); break;
-			case 10: CMLib.commands().postSay(mob,null,"Halleluyah!",false,false); break;
+			case 8:	CMLib.commands().postSay(mob,null,_("Holy is the name of @x1!",D.name()),false,false); break;
+			case 9:	CMLib.commands().postSay(mob,null,_("Do you BELIEVE?!? I BELIEVE!!!"),false,false); break;
+			case 10: CMLib.commands().postSay(mob,null,_("Halleluyah!"),false,false); break;
 			case 11: mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"),Command.METAFLAG_FORCED,0); break;
 			case 12: mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),Command.METAFLAG_FORCED,0);  break;
 			case 13: mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),Command.METAFLAG_FORCED,0); break;

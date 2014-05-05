@@ -75,34 +75,34 @@ public class Song_Thanks extends Song
 			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1:
-				CMLib.commands().postSay(mob,invoker,"Thank you "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thank you @x1!",invoker.name()),false,false);
 				break;
 			case 2:
-				CMLib.commands().postSay(mob,invoker,"Thanks for being you, "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thanks for being you, @x1!",invoker.name()),false,false);
 				break;
 			case 3:
-				CMLib.commands().postSay(mob,invoker,"Thanks "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thanks @x1!",invoker.name()),false,false);
 				break;
 			case 4:
-				CMLib.commands().postSay(mob,invoker,"You are great, "+invoker.name()+"!  Thanks!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("You are great, @x1!  Thanks!",invoker.name()),false,false);
 				break;
 			case 5:
-				CMLib.commands().postSay(mob,invoker,"I appreciate you, "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("I appreciate you, @x1!",invoker.name()),false,false);
 				break;
 			case 6:
-				CMLib.commands().postSay(mob,invoker,"Keep it up, "+invoker.name()+"! Thanks!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Keep it up, @x1! Thanks!",invoker.name()),false,false);
 				break;
 			case 7:
-				CMLib.commands().postSay(mob,invoker,"Thanks a lot, "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thanks a lot, @x1!",invoker.name()),false,false);
 				break;
 			case 8:
-				CMLib.commands().postSay(mob,invoker,"Thank you dearly, "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thank you dearly, @x1!",invoker.name()),false,false);
 				break;
 			case 9:
-				CMLib.commands().postSay(mob,invoker,"Thank you always, "+invoker.name()+"!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("Thank you always, @x1!",invoker.name()),false,false);
 				break;
 			case 10:
-				CMLib.commands().postSay(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
+				CMLib.commands().postSay(mob,invoker,_("You're the best, @x1! Thanks!",invoker.name()),false,false);
 				break;
 			}
 			final Coins C=CMLib.beanCounter().makeBestCurrency(mob,CMath.mul(1.0,super.getXLEVELLevel(invoker())));

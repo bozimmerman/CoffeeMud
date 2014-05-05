@@ -479,7 +479,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			if(teacher.isMonster())
-				CMLib.commands().postSay(teacher,student,"You are refusing training at this time.",true,false);
+				CMLib.commands().postSay(teacher,student,_("You are refusing training at this time."),true,false);
 			else
 				teacher.tell(_("@x1 is refusing training at this time.",student.name()));
 			return false;
@@ -501,7 +501,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(student.fetchAbility(theA.ID())!=null)
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,"You already know '"+teachWhat+"'.",true,false);
+					CMLib.commands().postSay(teacher,student,_("You already know '@x1'.",teachWhat),true,false);
 				else
 					teacher.tell(_("@x1 already knows how to do that.",student.name()));
 				return false;
@@ -515,7 +515,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(student.fetchExpertise(theExpertise.ID)!=null)
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,"You already know "+theExpertise.name,true,false);
+					CMLib.commands().postSay(teacher,student,_("You already know @x1",theExpertise.name),true,false);
 				else
 					teacher.tell(_("@x1 already knows @x2",student.name(),theExpertise.name));
 				return false;
@@ -524,7 +524,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(!myQualifiedExpertises(student).contains(theExpertise))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);
+					CMLib.commands().postSay(teacher,student,_("I'm sorry, you do not yet fully qualify for the expertise '@x1'.\n\rRequirements: @x2",theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())),true,false);
 				else
 					teacher.tell(_("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",student.name(),theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())));
 				return false;
@@ -532,7 +532,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(!theExpertise.meetsCostRequirements(student))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,"I'm sorry, but to learn the expertise '"+theExpertise.name+"' requires: "+theExpertise.costDescription(),true,false);
+					CMLib.commands().postSay(teacher,student,_("I'm sorry, but to learn the expertise '@x1' requires: @x2",theExpertise.name,theExpertise.costDescription()),true,false);
 				else
 					teacher.tell(_("Training for that expertise requires @x1.",theExpertise.costDescription()));
 				return false;

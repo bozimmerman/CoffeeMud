@@ -123,7 +123,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((W!=null)&&((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=accused.location())))
 		{
 			W.setArrestingOfficer(myArea,officer);
-			CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+			CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
 			W.setState(Law.STATE_ARRESTING);
 			return true;
 		}
@@ -1243,7 +1243,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((judge==null)&&(officer!=null)) judge=officer;
 			if((fines>0.0)&&(judge!=null))
 			{
-				CMLib.commands().postSay(judge,criminal,"You are hereby fined "+CMLib.beanCounter().nameCurrencyShort(judge,fines)+", payable to the local tax assessor.",false,false);
+				CMLib.commands().postSay(judge,criminal,_("You are hereby fined @x1, payable to the local tax assessor.",CMLib.beanCounter().nameCurrencyShort(judge,fines)),false,false);
 				Double D=(Double)finesAssessed.get(criminal);
 				if(D==null)
 					D=Double.valueOf(0.0);
@@ -1804,7 +1804,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						if(msg.source().amFollowing()==M)
 							msg.source().setFollowing(null);
-						CMLib.commands().postSay(M,null,"Ack! Treason! Die!",false,false);
+						CMLib.commands().postSay(M,null,_("Ack! Treason! Die!"),false,false);
 						M.setVictim(msg.source());
 					}
 				}
@@ -2085,7 +2085,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					if(CMSecurity.isAllowed(W.criminal(),W.criminal().location(),CMSecurity.SecFlag.ABOVELAW))
 					{
-						CMLib.commands().postSay(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
+						CMLib.commands().postSay(officer,W.criminal(),_("Damn, I can't arrest you."),false,false);
 						if(CMSecurity.isAllowedEverywhere(W.criminal(),CMSecurity.SecFlag.ABOVELAW))
 						{
 							fileAllWarrants(laws,W,W.criminal());
@@ -2133,13 +2133,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								return;
 							}
 
-							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
 						else
 						{
 							W.setArrestingOfficer(myArea,officer);
-							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"You are headed to the pound for "+restOfCharges(laws,W.criminal())+"!",false,false);
+							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("You are headed to the pound for @x1!",restOfCharges(laws,W.criminal())),false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
 					}
@@ -2279,7 +2279,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						else
 						{
 							makePeace(officer.location());
-							CMLib.commands().postSay(officer,W.criminal(),"Since there is no judge, you may go.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("Since there is no judge, you may go."),false,false);
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
@@ -2289,7 +2289,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						CMLib.commands().postSay(officer,null,"Hmph.",false,false);
+						CMLib.commands().postSay(officer,null,_("Hmph."),false,false);
 						fileArrestResister(laws,myArea,W);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
@@ -2301,7 +2301,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					if(officer!=null)
 					{
-						CMLib.commands().postSay(officer,null,"Darn.",false,false);
+						CMLib.commands().postSay(officer,null,_("Darn."),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					W.setTravelAttemptTime(0);
@@ -2334,7 +2334,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						if(!trackTheJudge(officer,myArea,laws))
 						{
-							CMLib.commands().postSay(officer,null,"Now where was that court?.",false,false);
+							CMLib.commands().postSay(officer,null,_("Now where was that court?."),false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(myArea,null);
@@ -2350,7 +2350,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer lost criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Drat! Lost another one!",false,false);
+						CMLib.commands().postSay(officer,null,_("Drat! Lost another one!"),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					W.setTravelAttemptTime(0);
@@ -2375,7 +2375,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.setState(Law.STATE_MOVING);
 						if(!trackTheJudge(officer,myArea,laws))
 						{
-							CMLib.commands().postSay(officer,null,"Where was that darn court!",false,false);
+							CMLib.commands().postSay(officer,null,_("Where was that darn court!"),false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(myArea,null);
@@ -2391,13 +2391,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						String sirmaam="Sir";
 						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
 							sirmaam="Ma'am";
-						CMLib.commands().postSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
+						CMLib.commands().postSay(officer,judge,_("@x1, @x2 has been arrested @x3.",sirmaam,W.criminal().name(),restOfCharges(laws,W.criminal())),false,false);
 						final Vector warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
 						for(int w2=0;w2<warrants.size();w2++)
 						{
 							final LegalWarrant W2=(LegalWarrant)warrants.elementAt(w2);
 							if(W2.witness()!=null)
-								CMLib.commands().postSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
+								CMLib.commands().postSay(officer,judge,_("The charge of @x1 was witnessed by @x2.",fixCharge(W2),W2.witness().name()),false,false);
 						}
 						W.setState(Law.STATE_WAITING);
 						if((highestCrimeAction(laws,W,W.criminal())==Law.PUNISHMENT_EXECUTE)
@@ -2410,7 +2410,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						CMLib.commands().postSay(officer,W.criminal(),"I guess court is not in session today.",false,false);
+						CMLib.commands().postSay(officer,W.criminal(),_("I guess court is not in session today."),false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(myArea,null);
@@ -2422,7 +2422,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't report criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Wha? Where'd he go?",false,false);
+						CMLib.commands().postSay(officer,null,_("Wha? Where'd he go?"),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					W.setTravelAttemptTime(0);
@@ -2447,7 +2447,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.setState(Law.STATE_MOVING);
 						if(!trackTheJudge(officer,myArea,laws))
 						{
-							CMLib.commands().postSay(officer,null,"Where was that darn court?!",false,false);
+							CMLib.commands().postSay(officer,null,_("Where was that darn court?!"),false,false);
 							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(myArea,null);
@@ -2470,7 +2470,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						CMLib.commands().postSay(officer,W.criminal(),"Court is not in session today.",false,false);
+						CMLib.commands().postSay(officer,W.criminal(),_("Court is not in session today."),false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(myArea,null);
@@ -2482,7 +2482,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't await criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Wha? Huh?",false,false);
+						CMLib.commands().postSay(officer,null,_("Wha? Huh?"),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					W.setTravelAttemptTime(0);
@@ -2523,7 +2523,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						CMLib.commands().postSay(officer,null,"No court today.",false,false);
+						CMLib.commands().postSay(officer,null,_("No court today."),false,false);
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)
 							dismissOfficer(W.arrestingOfficer());
@@ -2536,7 +2536,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't parole criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"That was wierd.",false,false);
+						CMLib.commands().postSay(officer,null,_("That was wierd."),false,false);
 					}
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
@@ -2584,7 +2584,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
-							CMLib.commands().postSay(officer,W.criminal(),"I can't find the jail, you are free to go.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("I can't find the jail, you are free to go."),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(myArea,null);
 						}
@@ -2595,7 +2595,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.setTravelAttemptTime(0);
 						fileAllWarrants(laws,W,W.criminal());
 						unCuff(W.criminal());
-						CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"But since there IS no jail, I will let you go.",false,false);
+						CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("But since there IS no jail, I will let you go."),false,false);
 						dismissOfficer(officer);
 						W.setArrestingOfficer(myArea,null);
 					}
@@ -2605,7 +2605,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't jail criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Crazy.",false,false);
+						CMLib.commands().postSay(officer,null,_("Crazy."),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					unCuff(W.criminal());
@@ -2658,7 +2658,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
-							CMLib.commands().postSay(officer,W.criminal(),"I can't find the detention center, you are free to go.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("I can't find the detention center, you are free to go."),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(myArea,null);
 						}
@@ -2669,7 +2669,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						W.setTravelAttemptTime(0);
 						fileAllWarrants(laws,W,W.criminal());
 						unCuff(W.criminal());
-						CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"But since there IS no detention center, I will let you go.",false,false);
+						CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("But since there IS no detention center, I will let you go."),false,false);
 						dismissOfficer(officer);
 						W.setArrestingOfficer(myArea,null);
 					}
@@ -2679,7 +2679,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't detain criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Sad.",false,false);
+						CMLib.commands().postSay(officer,null,_("Sad."),false,false);
 						fileArrestResister(laws,myArea,W);
 						dismissOfficer(officer);
 					}
@@ -2735,7 +2735,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						CMLib.commands().postSay(officer,null,"Looks like court is not in session.",false,false);
+						CMLib.commands().postSay(officer,null,_("Looks like court is not in session."),false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)
@@ -2749,7 +2749,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(officer!=null)
 					{
 						DebugLogLostConvicts("Officer can't execute criminal: ",W,officer);
-						CMLib.commands().postSay(officer,null,"Didn't see that coming.",false,false);
+						CMLib.commands().postSay(officer,null,_("Didn't see that coming."),false,false);
 						fileArrestResister(laws,myArea,W);
 					}
 					W.setTravelAttemptTime(0);
@@ -2806,7 +2806,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
-							CMLib.commands().postSay(officer,W.criminal(),"I lost the jail, so you are free to go.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("I lost the jail, so you are free to go."),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(myArea,null);
 						}
@@ -2873,7 +2873,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
-							CMLib.commands().postSay(officer,W.criminal(),"I lost the detention center, so you are free to go.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("I lost the detention center, so you are free to go."),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(myArea,null);
 						}
@@ -2949,7 +2949,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setTravelAttemptTime(0);
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());
-							CMLib.commands().postSay(officer,W.criminal(),"Well, you can always recall.",false,false);
+							CMLib.commands().postSay(officer,W.criminal(),_("Well, you can always recall."),false,false);
 							dismissOfficer(officer);
 							W.setArrestingOfficer(myArea,null);
 						}
@@ -2993,7 +2993,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 										W.setTravelAttemptTime(0);
 										fileAllWarrants(laws,W,W.criminal());
 										unCuff(W.criminal());
-										CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),"Don't worry, you can always recall.",false,false);
+										CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),_("Don't worry, you can always recall."),false,false);
 										dismissOfficer(W.arrestingOfficer());
 										W.setArrestingOfficer(myArea,null);
 									}
@@ -3004,7 +3004,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								if(officer!=null)
 								{
 									DebugLogLostConvicts("Officer can't release criminal: ",W,officer);
-									CMLib.commands().postSay(officer,null,"There's always recall.",false,false);
+									CMLib.commands().postSay(officer,null,_("There's always recall."),false,false);
 								}
 								W.setTravelAttemptTime(0);
 								fileAllWarrants(laws,W,W.criminal());
@@ -3019,7 +3019,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(W.arrestingOfficer()!=null)
 						{
 							DebugLogLostConvicts("Officer can't release2 criminal: ",W,W.arrestingOfficer());
-							CMLib.commands().postSay(W.arrestingOfficer(),null,"Well, he can always recall.",false,false);
+							CMLib.commands().postSay(W.arrestingOfficer(),null,_("Well, he can always recall."),false,false);
 						}
 						W.setTravelAttemptTime(0);
 						fileAllWarrants(laws,W,W.criminal());

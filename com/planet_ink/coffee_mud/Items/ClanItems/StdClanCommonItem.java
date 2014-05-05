@@ -351,13 +351,13 @@ public class StdClanCommonItem extends StdClanItem
 					&&(!CMLib.flags().canBeSeenBy(M.location(),M)))
 						switch(CMLib.dice().roll(1,7,0))
 						{
-						case 1: CMLib.commands().postSay(M,null,"I can't see a thing."); break;
-						case 2: CMLib.commands().postSay(M,null,"It's too dark to work."); break;
-						case 3: CMLib.commands().postSay(M,null,"How am I supposed to work in these conditions?"); break;
-						case 4: CMLib.commands().postSay(M,null,"Too dadgum dark."); break;
-						case 5: CMLib.commands().postSay(M,null,"Is anyone there?  I can't see!"); break;
-						case 6: CMLib.commands().postSay(M,null,"Someone turn on the lights to I can work!"); break;
-						case 7: CMLib.commands().postSay(M,null,"I could use some light, if you expect me to work."); break;
+						case 1: CMLib.commands().postSay(M,null,_("I can't see a thing.")); break;
+						case 2: CMLib.commands().postSay(M,null,_("It's too dark to work.")); break;
+						case 3: CMLib.commands().postSay(M,null,_("How am I supposed to work in these conditions?")); break;
+						case 4: CMLib.commands().postSay(M,null,_("Too dadgum dark.")); break;
+						case 5: CMLib.commands().postSay(M,null,_("Is anyone there?  I can't see!")); break;
+						case 6: CMLib.commands().postSay(M,null,_("Someone turn on the lights to I can work!")); break;
+						case 7: CMLib.commands().postSay(M,null,_("I could use some light, if you expect me to work.")); break;
 						}
 
 					if((M.numItems()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))

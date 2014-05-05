@@ -38,7 +38,7 @@ public class StdItem implements Item
 	@Override public String ID(){	return "StdItem";}
 
 	protected String		name="an ordinary item";
-	protected String		displayText="a nondescript item sits here doing nothing.";
+	protected String		displayText=_("a nondescript item sits here doing nothing.");
 	protected Object		description=null;
 	protected int   		myUses=Integer.MAX_VALUE;
 	protected long  		myWornCode=Wearable.IN_INVENTORY;

@@ -176,13 +176,13 @@ public class Hireling extends StdBehavior
 			if(additional<=0)
 			{
 				if(talkTo!=null)
-					CMLib.commands().postSay(observer,talkTo,"Your time is up.  Goodbye!",true,false);
+					CMLib.commands().postSay(observer,talkTo,_("Your time is up.  Goodbye!"),true,false);
 				allDone(observer);
 			}
 			else
 			{
 				if(talkTo!=null)
-					CMLib.commands().postSay(observer,talkTo,"Your base time is up, but you've paid for "+additional+" more minutes, so I'll hang around.",true,false);
+					CMLib.commands().postSay(observer,talkTo,_("Your base time is up, but you've paid for @x1 more minutes, so I'll hang around.",""+additional),true,false);
 				onTheJobUntil+=(additional*TimeManager.MILI_MINUTE);
 			}
 		}
@@ -218,12 +218,12 @@ public class Hireling extends StdBehavior
 			{
 				if(!CMLib.masking().maskCheck(zapper(),source,false))
 				{
-					CMLib.commands().postSay(observer,null,"I wouldn't work for the likes of you.",false,false);
+					CMLib.commands().postSay(observer,null,_("I wouldn't work for the likes of you."),false,false);
 					return false;
 				}
 				if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(observer)))
 				{
-					CMLib.commands().postSay(observer,null,"I'm sorry, I only deal in "+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(observer))+".",false,false);
+					CMLib.commands().postSay(observer,null,_("I'm sorry, I only deal in @x1.",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(observer))),false,false);
 					return false;
 				}
 			}
@@ -235,7 +235,7 @@ public class Hireling extends StdBehavior
 			{
 				if((msg.target() instanceof MOB)
 				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),CMSecurity.SecFlag.CMDROOMS)))
-					CMLib.commands().postSay(observer,null,"I don't think so.",false,false);
+					CMLib.commands().postSay(observer,null,_("I don't think so."),false,false);
 				return false;
 			}
 		}
@@ -265,14 +265,14 @@ public class Hireling extends StdBehavior
 				||(upperSrcMsg.indexOf("WORK")>0)
 				||(upperSrcMsg.indexOf("AVAILABLE")>0))
 			&&(onTheJobUntil==0))
-				CMLib.commands().postSay(observer,null,"I'm for hire.  Just give me "+CMLib.beanCounter().nameCurrencyShort(observer,price())+" and I'll work for you for "+gamehours()+" \"hours\".",false,false);
+				CMLib.commands().postSay(observer,null,_("I'm for hire.  Just give me @x1 and I'll work for you for @x2 \"hours\".",CMLib.beanCounter().nameCurrencyShort(observer,price()),""+gamehours()),false,false);
 			else
 			if(((upperSrcMsg.indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
 			&&(msg.amITarget(observer))
 			&&(onTheJobUntil!=0))
 			{
-				CMLib.commands().postSay(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
+				CMLib.commands().postSay(observer,msg.source(),_("Suit yourself.  Goodbye."),false,false);
 				allDone(observer);
 			}
 			else
@@ -290,7 +290,7 @@ public class Hireling extends StdBehavior
 					}
 				}
 				if(skills.length()>2)
-					CMLib.commands().postSay(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
+					CMLib.commands().postSay(observer, source, _("My skills include: @x1.",skills.substring(2)),false,false);
 			}
 		}
 		else
@@ -311,12 +311,12 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						CMLib.commands().postSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CMLib.commands().postSay(observer,source,_("I'm still working for you.  I'll put that towards an extension though."),true,false);
 					else
-						CMLib.commands().postSay(observer,source,"Sorry, I'm on the job right now.  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more later on and I'll work for "+gamehours()+" \"hours\".",true,false);
+						CMLib.commands().postSay(observer,source,_("Sorry, I'm on the job right now.  Give me @x1 more later on and I'll work for @x2 \"hours\".",CMLib.beanCounter().nameCurrencyShort(observer,(price()-given)),""+gamehours()),true,false);
 				}
 				else
-					CMLib.commands().postSay(observer,source,"My price is "+CMLib.beanCounter().nameCurrencyShort(observer,price())+".  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more and I'll work for you for "+gamehours()+" \"hours\".",true,false);
+					CMLib.commands().postSay(observer,source,_("My price is @x1.  Give me @x2 more and I'll work for you for @x3 \"hours\".",CMLib.beanCounter().nameCurrencyShort(observer,price()),CMLib.beanCounter().nameCurrencyShort(observer,(price()-given)),""+gamehours()),true,false);
 				partials.put(msg.source().Name(),Double.valueOf(given));
 			}
 			else
@@ -324,9 +324,9 @@ public class Hireling extends StdBehavior
 				if(onTheJobUntil!=0)
 				{
 					if(workingFor.equals(source.Name()))
-						CMLib.commands().postSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
+						CMLib.commands().postSay(observer,source,_("I'm still working for you.  I'll put that towards an extension though."),true,false);
 					else
-						CMLib.commands().postSay(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
+						CMLib.commands().postSay(observer,source,_("Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work."),true,false);
 					partials.put(msg.source().Name(),Double.valueOf(given));
 				}
 				else
@@ -349,7 +349,7 @@ public class Hireling extends StdBehavior
 					onTheJobUntil+=(minutes()*TimeManager.MILI_MINUTE);
 					CMLib.commands().postFollow(observer,source,false);
 					observer.setFollowing(source);
-					CMLib.commands().postSay(observer,source,"Ok.  You've got me for at least "+gamehours()+" \"hours\".  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
+					CMLib.commands().postSay(observer,source,_("Ok.  You've got me for at least @x1 \"hours\".  My skills include: @x2.  I'll follow you.  Just ORDER me to do what you want.",""+gamehours(),skills.substring(2)),true,false);
 				}
 			}
 		}

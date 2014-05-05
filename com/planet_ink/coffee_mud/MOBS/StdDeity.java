@@ -369,14 +369,14 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				msg.source().tell(_("You already worship @x1.",name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,"I already worship "+msg.source().getMyDeity().name()+".");
+					CMLib.commands().postSay(msg.source(),null,_("I already worship @x1.",msg.source().getMyDeity().name()));
 				return false;
 			}
 			if(msg.source().getMyDeity()!=null)
 			{
 				msg.source().tell(_("You already worship @x1.",msg.source().getMyDeity().name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,"I already worship "+msg.source().getMyDeity().name()+".");
+					CMLib.commands().postSay(msg.source(),null,_("I already worship @x1.",msg.source().getMyDeity().name()));
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
@@ -385,7 +385,7 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					msg.source().tell(_("You are unworthy of serving @x1.",name()));
 					if(msg.source().isMonster())
-						CMLib.commands().postSay(msg.source(),null,"I am unworthy of serving "+name()+".");
+						CMLib.commands().postSay(msg.source(),null,_("I am unworthy of serving @x1.",name()));
 					return false;
 				}
 			}
@@ -394,7 +394,7 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				msg.source().tell(_("You are unworthy of @x1.",name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,"I am unworthy of "+name()+".");
+					CMLib.commands().postSay(msg.source(),null,_("I am unworthy of @x1.",name()));
 				return false;
 			}
 			break;

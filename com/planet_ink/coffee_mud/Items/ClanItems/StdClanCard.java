@@ -66,7 +66,7 @@ public class StdClanCard extends StdClanItem
 		{
 			if(msg.source().location().show((MOB)msg.target(),msg.source(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> reject(s) <O-NAME> from <T-NAME>.")))
 			{
-				CMLib.commands().postSay((MOB)msg.target(),msg.source(),"How dare you!  Give me those!",false,true);
+				CMLib.commands().postSay((MOB)msg.target(),msg.source(),_("How dare you!  Give me those!"),false,true);
 				if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> takes(s) @x1 away from <T-NAME> and destroys it!",msg.tool().name())))
 				{
 					Item I=null;

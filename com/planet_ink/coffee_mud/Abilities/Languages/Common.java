@@ -72,7 +72,7 @@ public class Common extends StdLanguage
 				msg="now speaking "+name()+".";
 			mob.tell(_("You are @x1",msg));
 			if((mob.isMonster())&&(mob.amFollowing()!=null))
-				CMLib.commands().postSay(mob,"I am "+msg);
+				CMLib.commands().postSay(mob,_("I am @x1",msg));
 		}
 		return true;
 	}

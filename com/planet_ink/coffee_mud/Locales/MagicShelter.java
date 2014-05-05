@@ -39,7 +39,7 @@ public class MagicShelter extends StdRoom
 	{
 		super();
 		name="the shelter";
-		displayText="Magic Shelter";
+		displayText=_("Magic Shelter");
 		setDescription("You are in a domain of complete void and peace.");
 		basePhyStats.setWeight(0);
 		recoverPhyStats();
