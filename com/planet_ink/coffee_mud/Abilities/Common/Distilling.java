@@ -38,7 +38,8 @@ import java.util.*;
 public class Distilling extends Cooking
 {
 	@Override public String ID() { return "Distilling"; }
-	@Override public String unlocalizedName(){ return "Distilling";}
+	public final static String localizedName = CMLib.lang()._("Distilling");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"DISTILLING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String cookWordShort(){return "distill";}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_TapRoom extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TapRoom"; }
-	@Override public String unlocalizedName(){ return "Tap Room";}
+	public final static String localizedName = CMLib.lang()._("Tap Room");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}

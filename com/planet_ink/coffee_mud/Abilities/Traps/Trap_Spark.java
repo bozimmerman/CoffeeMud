@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_Spark extends StdTrap
 {
 	@Override public String ID() { return "Trap_Spark"; }
-	@Override public String unlocalizedName(){ return "sparking trap";}
+	public final static String localizedName = CMLib.lang()._("sparking trap");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 19;}

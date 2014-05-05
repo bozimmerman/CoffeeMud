@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_TwoWeaponFighting extends StdSkill
 {
 	@Override public String ID() { return "Skill_TwoWeaponFighting"; }
-	@Override public String unlocalizedName(){ return "Two Weapon Fighting";}
+	public final static String localizedName = CMLib.lang()._("Two Weapon Fighting");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

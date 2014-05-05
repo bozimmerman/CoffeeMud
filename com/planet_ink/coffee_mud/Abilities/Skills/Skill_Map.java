@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Map extends StdSkill
 {
 	@Override public String ID() { return "Skill_Map"; }
-	@Override public String unlocalizedName(){ return "Make Maps";}
+	public final static String localizedName = CMLib.lang()._("Make Maps");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Mapping)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

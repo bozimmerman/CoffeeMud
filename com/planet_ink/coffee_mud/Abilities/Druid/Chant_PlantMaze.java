@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_PlantMaze extends Chant
 {
 	@Override public String ID() { return "Chant_PlantMaze"; }
-	@Override public String unlocalizedName(){ return "Plant Maze";}
+	public final static String localizedName = CMLib.lang()._("Plant Maze");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Plant Maze)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

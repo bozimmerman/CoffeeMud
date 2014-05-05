@@ -40,7 +40,8 @@ import java.util.*;
 public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Weaving"; }
-	@Override public String unlocalizedName(){ return "Weaving";}
+	public final static String localizedName = CMLib.lang()._("Weaving");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}

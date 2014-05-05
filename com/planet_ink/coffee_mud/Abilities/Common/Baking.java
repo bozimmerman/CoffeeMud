@@ -34,7 +34,8 @@ import java.util.*;
 public class Baking extends Cooking
 {
 	@Override public String ID() { return "Baking"; }
-	@Override public String unlocalizedName(){ return "Baking";}
+	public final static String localizedName = CMLib.lang()._("Baking");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
 	@Override public String supportedResourceString(){return "MISC";}
 	@Override public String[] triggerStrings(){return triggerStrings;}

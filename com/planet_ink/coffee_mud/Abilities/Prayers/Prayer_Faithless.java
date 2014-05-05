@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Faithless extends Prayer
 {
 	@Override public String ID() { return "Prayer_Faithless"; }
-	@Override public String unlocalizedName(){ return "Faithless";}
+	public final static String localizedName = CMLib.lang()._("Faithless");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

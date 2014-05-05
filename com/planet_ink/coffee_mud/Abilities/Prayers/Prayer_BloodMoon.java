@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_BloodMoon extends Prayer
 {
 	@Override public String ID() { return "Prayer_BloodMoon"; }
-	@Override public String unlocalizedName(){ return "Blood Moon";}
+	public final static String localizedName = CMLib.lang()._("Blood Moon");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Blood Moon)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

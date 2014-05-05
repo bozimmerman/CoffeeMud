@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_PoisonousVine extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_PoisonousVine"; }
-	@Override public String unlocalizedName(){ return "Poisonous Vine";}
+	public final static String localizedName = CMLib.lang()._("Poisonous Vine");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Poisonous Vine)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

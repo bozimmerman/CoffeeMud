@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_Lullibye extends Song
 {
 	@Override public String ID() { return "Song_Lullibye"; }
-	@Override public String unlocalizedName(){ return "Lullaby";}
+	public final static String localizedName = CMLib.lang()._("Lullaby");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	boolean asleep=false;

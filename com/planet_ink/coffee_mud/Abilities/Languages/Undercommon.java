@@ -36,7 +36,8 @@ import java.util.*;
 public class Undercommon extends StdLanguage
 {
 	@Override public String ID() { return "Undercommon"; }
-	@Override public String unlocalizedName(){ return "Undercommon";}
+	public final static String localizedName = CMLib.lang()._("Undercommon");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()

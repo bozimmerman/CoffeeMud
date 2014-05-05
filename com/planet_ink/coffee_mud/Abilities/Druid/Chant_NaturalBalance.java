@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_NaturalBalance extends Chant
 {
 	@Override public String ID() { return "Chant_NaturalBalance"; }
-	@Override public String unlocalizedName(){ return "Natural Balance";}
+	public final static String localizedName = CMLib.lang()._("Natural Balance");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Communing with the Natural Balance)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}

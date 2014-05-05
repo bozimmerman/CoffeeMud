@@ -37,7 +37,8 @@ import java.util.Vector;
 public class Chant_Den extends Chant
 {
 	@Override public String ID() { return "Chant_Den"; }
-	@Override public String unlocalizedName(){ return "Den";}
+	public final static String localizedName = CMLib.lang()._("Den");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Den)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

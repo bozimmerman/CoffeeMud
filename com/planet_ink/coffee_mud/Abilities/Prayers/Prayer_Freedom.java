@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Freedom extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Freedom"; }
-	@Override public String unlocalizedName(){ return "Freedom";}
+	public final static String localizedName = CMLib.lang()._("Freedom");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

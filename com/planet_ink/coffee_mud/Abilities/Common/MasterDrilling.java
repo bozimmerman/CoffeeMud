@@ -35,7 +35,8 @@ import java.util.*;
 public class MasterDrilling extends Drilling
 {
 	@Override public String ID() { return "MasterDrilling"; }
-	@Override public String unlocalizedName(){ return "Master Drilling";}
+	public final static String localizedName = CMLib.lang()._("Master Drilling");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MDRILL","MDRILLING","MASTERDRILL","MASTERDRILLING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

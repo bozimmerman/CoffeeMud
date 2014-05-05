@@ -35,7 +35,8 @@ import java.util.*;
 public class Druidic extends StdLanguage
 {
 	@Override public String ID() { return "Druidic"; }
-	@Override public String unlocalizedName(){ return "Druidic";}
+	public final static String localizedName = CMLib.lang()._("Druidic");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Druidic()
 	{

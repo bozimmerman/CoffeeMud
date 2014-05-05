@@ -37,7 +37,8 @@ public class Skill_Dirt extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Dirt"; }
-	@Override public String unlocalizedName(){ return "Dirt";}
+	public final static String localizedName = CMLib.lang()._("Dirt");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Dirt in your eyes)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

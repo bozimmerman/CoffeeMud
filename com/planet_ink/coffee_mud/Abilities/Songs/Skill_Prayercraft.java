@@ -35,6 +35,7 @@ import java.util.*;
 public class Skill_Prayercraft extends Skill_Songcraft
 {
 	@Override public String ID() { return "Skill_Prayercraft"; }
-	@Override public String unlocalizedName(){ return "Prayercraft";}
+	public final static String localizedName = CMLib.lang()._("Prayercraft");
+	@Override public String name() { return localizedName; }
 	@Override public int craftType(){return Ability.ACODE_PRAYER;}
 }

@@ -36,7 +36,8 @@ import java.util.*;
 public class Skill_HandCuff extends StdSkill
 {
 	@Override public String ID() { return "Skill_HandCuff"; }
-	@Override public String unlocalizedName(){ return "Handcuff";}
+	public final static String localizedName = CMLib.lang()._("Handcuff");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Handcuffed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

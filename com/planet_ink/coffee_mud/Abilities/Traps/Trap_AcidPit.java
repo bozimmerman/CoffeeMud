@@ -34,7 +34,8 @@ import java.util.*;
 public class Trap_AcidPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_AcidPit"; }
-	@Override public String unlocalizedName(){ return "acid pit";}
+	public final static String localizedName = CMLib.lang()._("acid pit");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 18;}

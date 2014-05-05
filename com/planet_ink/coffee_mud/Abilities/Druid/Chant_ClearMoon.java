@@ -37,7 +37,8 @@ import java.util.Vector;
 public class Chant_ClearMoon extends Chant
 {
 	@Override public String ID() { return "Chant_ClearMoon"; }
-	@Override public String unlocalizedName(){ return "Clear Moon";}
+	public final static String localizedName = CMLib.lang()._("Clear Moon");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

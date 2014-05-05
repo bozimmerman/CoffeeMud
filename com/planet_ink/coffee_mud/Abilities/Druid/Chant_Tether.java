@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Tether extends Chant
 {
 	@Override public String ID() { return "Chant_Tether"; }
-	@Override public String unlocalizedName(){ return "Tether";}
+	public final static String localizedName = CMLib.lang()._("Tether");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public String displayText(){ return "(Tether)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

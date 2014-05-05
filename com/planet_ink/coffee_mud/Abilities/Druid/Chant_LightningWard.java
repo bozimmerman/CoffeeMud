@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_LightningWard extends Chant
 {
 	@Override public String ID() { return "Chant_LightningWard"; }
-	@Override public String unlocalizedName(){ return "Lightning Ward";}
+	public final static String localizedName = CMLib.lang()._("Lightning Ward");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Lightning Ward)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Buffoonery extends BardSkill
 {
 	@Override public String ID() { return "Skill_Buffoonery"; }
-	@Override public String unlocalizedName(){ return "Buffoonery";}
+	public final static String localizedName = CMLib.lang()._("Buffoonery");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

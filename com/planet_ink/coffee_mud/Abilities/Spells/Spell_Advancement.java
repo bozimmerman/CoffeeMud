@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_Advancement extends Spell
 {
 	@Override public String ID() { return "Spell_Advancement"; }
-	@Override public String unlocalizedName(){ return "Advancement";}
+	public final static String localizedName = CMLib.lang()._("Advancement");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Advancement)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

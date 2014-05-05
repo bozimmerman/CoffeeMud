@@ -38,7 +38,8 @@ import java.util.*;
 public class Paladin_Purity extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Purity"; }
-	@Override public String unlocalizedName(){ return "Paladin`s Purity";}
+	public final static String localizedName = CMLib.lang()._("Paladin`s Purity");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Purity()
 	{

@@ -37,7 +37,8 @@ import java.util.*;
 public class Undead_WeakEnergyDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_WeakEnergyDrain"; }
-	@Override public String unlocalizedName(){ return "Weak Energy Drain";}
+	public final static String localizedName = CMLib.lang()._("Weak Energy Drain");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Drained of Energy)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

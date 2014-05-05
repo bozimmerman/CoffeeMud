@@ -41,7 +41,8 @@ import java.util.*;
 public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "JewelMaking"; }
-	@Override public String unlocalizedName(){ return "Jewel Making";}
+	public final static String localizedName = CMLib.lang()._("Jewel Making");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}

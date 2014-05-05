@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_DistantWindColor extends Chant
 {
 	@Override public String ID() { return "Chant_DistantWindColor"; }
-	@Override public String unlocalizedName(){ return "Distant Wind Color";}
+	public final static String localizedName = CMLib.lang()._("Distant Wind Color");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	@Override protected int canAffectCode(){return 0;}

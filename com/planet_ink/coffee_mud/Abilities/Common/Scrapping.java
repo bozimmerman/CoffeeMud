@@ -38,7 +38,8 @@ import java.util.*;
 public class Scrapping extends CommonSkill
 {
 	@Override public String ID() { return "Scrapping"; }
-	@Override public String unlocalizedName(){ return "Scrapping";}
+	public final static String localizedName = CMLib.lang()._("Scrapping");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }

@@ -39,7 +39,8 @@ import java.util.*;
 public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Torturesmithing"; }
-	@Override public String unlocalizedName(){ return "Torturesmithing";}
+	public final static String localizedName = CMLib.lang()._("Torturesmithing");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"TORTURESMITH","TORTURESMITHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}

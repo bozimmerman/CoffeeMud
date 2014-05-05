@@ -37,7 +37,8 @@ import java.util.*;
 public class Thief_Surrender extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Surrender"; }
-	@Override public String unlocalizedName(){ return "Surrender";}
+	public final static String localizedName = CMLib.lang()._("Surrender");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Calm extends Prayer
 {
 	@Override public String ID() { return "Prayer_Calm"; }
-	@Override public String unlocalizedName(){ return "Calm";}
+	public final static String localizedName = CMLib.lang()._("Calm");
+	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

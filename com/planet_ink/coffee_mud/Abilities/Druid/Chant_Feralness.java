@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_Feralness extends Chant
 {
 	@Override public String ID() { return "Chant_Feralness"; }
-	@Override public String unlocalizedName(){ return "Feralness";}
+	public final static String localizedName = CMLib.lang()._("Feralness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Feralness)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

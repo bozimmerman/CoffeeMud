@@ -40,7 +40,8 @@ import java.util.*;
 public class Wainwrighting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Wainwrighting"; }
-	@Override public String unlocalizedName(){ return "Wainwrighting";}
+	public final static String localizedName = CMLib.lang()._("Wainwrighting");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"WAINWRIGHTING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

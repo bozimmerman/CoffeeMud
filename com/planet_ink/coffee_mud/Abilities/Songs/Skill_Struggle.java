@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Struggle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Struggle"; }
-	@Override public String unlocalizedName(){ return "Struggle";}
+	public final static String localizedName = CMLib.lang()._("Struggle");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

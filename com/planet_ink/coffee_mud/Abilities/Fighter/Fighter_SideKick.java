@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_SideKick extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_SideKick"; }
-	@Override public String unlocalizedName(){ return "Side Kick";}
+	public final static String localizedName = CMLib.lang()._("Side Kick");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

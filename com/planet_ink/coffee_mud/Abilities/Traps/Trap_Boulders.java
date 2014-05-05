@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_Boulders extends StdTrap
 {
 	@Override public String ID() { return "Trap_Boulders"; }
-	@Override public String unlocalizedName(){ return "boulders";}
+	public final static String localizedName = CMLib.lang()._("boulders");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 20;}

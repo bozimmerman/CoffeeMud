@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_ReturnProjectile extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ReturnProjectile"; }
-	@Override public String unlocalizedName(){ return "Return Projectile";}
+	public final static String localizedName = CMLib.lang()._("Return Projectile");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

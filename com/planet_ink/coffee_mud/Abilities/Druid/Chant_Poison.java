@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Poison extends Chant
 {
 	@Override public String ID() { return "Chant_Poison"; }
-	@Override public String unlocalizedName(){ return "Venomous Bite";}
+	public final static String localizedName = CMLib.lang()._("Venomous Bite");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}

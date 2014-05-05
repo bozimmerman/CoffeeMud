@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_SummonCold extends Chant
 {
 	@Override public String ID() { return "Chant_SummonCold"; }
-	@Override public String unlocalizedName(){ return "Summon Cold";}
+	public final static String localizedName = CMLib.lang()._("Summon Cold");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_WEATHERAFFECTING;}

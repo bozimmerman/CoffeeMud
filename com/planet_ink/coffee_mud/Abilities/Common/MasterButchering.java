@@ -35,7 +35,8 @@ import java.util.*;
 public class MasterButchering extends Butchering
 {
 	@Override public String ID() { return "MasterButchering"; }
-	@Override public String unlocalizedName(){ return "Master Butchering";}
+	public final static String localizedName = CMLib.lang()._("Master Butchering");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

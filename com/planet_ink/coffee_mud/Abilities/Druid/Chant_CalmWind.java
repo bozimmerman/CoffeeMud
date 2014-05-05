@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_CalmWind extends Chant
 {
 	@Override public String ID() { return "Chant_CalmWind"; }
-	@Override public String unlocalizedName(){ return "Calm Wind";}
+	public final static String localizedName = CMLib.lang()._("Calm Wind");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

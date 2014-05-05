@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_Silence extends Song
 {
 	@Override public String ID() { return "Song_Silence"; }
-	@Override public String unlocalizedName(){ return "Silencing";}
+	public final static String localizedName = CMLib.lang()._("Silencing");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardSongTick(){return true;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

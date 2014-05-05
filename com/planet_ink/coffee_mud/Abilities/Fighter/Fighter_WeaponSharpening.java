@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_WeaponSharpening extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponSharpening"; }
-	@Override public String unlocalizedName(){ return "Weapon Sharpening";}
+	public final static String localizedName = CMLib.lang()._("Weapon Sharpening");
+	@Override public String name() { return localizedName; }
 	protected String displayString="Sharpening";
 	@Override public String displayText(){ return "("+displayString+")";}
 	private static final String[] triggerStrings = {"WEAPONSHARPENING","SHARPEN"};

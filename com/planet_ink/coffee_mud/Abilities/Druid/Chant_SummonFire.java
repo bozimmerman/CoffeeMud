@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SummonFire extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFire"; }
-	@Override public String unlocalizedName(){ return "Summon Fire";}
+	public final static String localizedName = CMLib.lang()._("Summon Fire");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	protected Room FireLocation=null;

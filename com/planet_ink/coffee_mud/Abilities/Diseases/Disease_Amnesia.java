@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Amnesia extends Disease
 {
 	@Override public String ID() { return "Disease_Amnesia"; }
-	@Override public String unlocalizedName(){ return "Amnesia";}
+	public final static String localizedName = CMLib.lang()._("Amnesia");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Amnesia)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

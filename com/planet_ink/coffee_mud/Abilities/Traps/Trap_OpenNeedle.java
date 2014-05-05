@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_OpenNeedle extends Trap_Open
 {
 	@Override public String ID() { return "Trap_OpenNeedle"; }
-	@Override public String unlocalizedName(){ return "Open Needle Trap";}
+	public final static String localizedName = CMLib.lang()._("Open Needle Trap");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_NEEDLE;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Play_Ditty extends Play
 {
 	@Override public String ID() { return "Play_Ditty"; }
-	@Override public String unlocalizedName(){ return "Ditty";}
+	public final static String localizedName = CMLib.lang()._("Ditty");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String songOf(){return "a "+name();}
 	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}

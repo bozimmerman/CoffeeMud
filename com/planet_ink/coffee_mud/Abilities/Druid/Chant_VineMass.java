@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_VineMass extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_VineMass"; }
-	@Override public String unlocalizedName(){ return "Vine Mass";}
+	public final static String localizedName = CMLib.lang()._("Vine Mass");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Vine Mass)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

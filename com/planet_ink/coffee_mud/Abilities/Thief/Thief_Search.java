@@ -37,7 +37,8 @@ import java.util.*;
 public class Thief_Search extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Search"; }
-	@Override public String unlocalizedName(){ return "Search";}
+	public final static String localizedName = CMLib.lang()._("Search");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Searching)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

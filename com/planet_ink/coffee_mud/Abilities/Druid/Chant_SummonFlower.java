@@ -36,7 +36,8 @@ import java.util.*;
 public class Chant_SummonFlower extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonFlower"; }
-	@Override public String unlocalizedName(){ return "Summon Flower";}
+	public final static String localizedName = CMLib.lang()._("Summon Flower");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

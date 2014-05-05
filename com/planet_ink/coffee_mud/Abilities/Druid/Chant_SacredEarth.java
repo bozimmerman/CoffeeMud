@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SacredEarth extends Chant
 {
 	@Override public String ID() { return "Chant_SacredEarth"; }
-	@Override public String unlocalizedName(){ return "Sacred Earth";}
+	public final static String localizedName = CMLib.lang()._("Sacred Earth");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sacred Earth)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

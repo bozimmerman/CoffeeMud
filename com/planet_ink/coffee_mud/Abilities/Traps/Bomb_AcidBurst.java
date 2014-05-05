@@ -35,7 +35,8 @@ import java.util.*;
 public class Bomb_AcidBurst extends StdBomb
 {
 	@Override public String ID() { return "Bomb_AcidBurst"; }
-	@Override public String unlocalizedName(){ return "acid burst bomb";}
+	public final static String localizedName = CMLib.lang()._("acid burst bomb");
+	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 20;}
 	@Override public String requiresToSet(){return "some lemons";}
 

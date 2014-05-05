@@ -39,7 +39,8 @@ import java.util.*;
 public class Addictions extends StdAbility
 {
 	@Override public String ID() { return "Addictions"; }
-	@Override public String unlocalizedName(){ return "Addictions";}
+	public final static String localizedName = CMLib.lang()._("Addictions");
+	@Override public String name() { return localizedName; }
 	private long lastFix=System.currentTimeMillis();
 	@Override public String displayText(){ return craving()?"(Addiction to "+text()+")":"";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

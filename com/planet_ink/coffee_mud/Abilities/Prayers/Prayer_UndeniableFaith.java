@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_UndeniableFaith extends Prayer
 {
 	@Override public String ID() { return "Prayer_UndeniableFaith"; }
-	@Override public String unlocalizedName(){ return "Undeniable Faith";}
+	public final static String localizedName = CMLib.lang()._("Undeniable Faith");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

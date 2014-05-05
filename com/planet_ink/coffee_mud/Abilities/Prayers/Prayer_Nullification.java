@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Nullification extends Prayer
 {
 	@Override public String ID() { return "Prayer_Nullification"; }
-	@Override public String unlocalizedName(){ return "Nullification";}
+	public final static String localizedName = CMLib.lang()._("Nullification");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

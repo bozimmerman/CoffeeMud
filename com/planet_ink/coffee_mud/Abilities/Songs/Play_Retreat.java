@@ -37,7 +37,8 @@ import java.util.*;
 public class Play_Retreat extends Play
 {
 	@Override public String ID() { return "Play_Retreat"; }
-	@Override public String unlocalizedName(){ return "Retreat";}
+	public final static String localizedName = CMLib.lang()._("Retreat");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected boolean persistantSong(){return false;}

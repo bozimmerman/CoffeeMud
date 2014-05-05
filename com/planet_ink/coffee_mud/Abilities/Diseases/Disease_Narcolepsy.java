@@ -35,7 +35,8 @@ import java.util.*;
 public class Disease_Narcolepsy extends Disease
 {
 	@Override public String ID() { return "Disease_Narcolepsy"; }
-	@Override public String unlocalizedName(){ return "Narcolepsy";}
+	public final static String localizedName = CMLib.lang()._("Narcolepsy");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Narcolepsy)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

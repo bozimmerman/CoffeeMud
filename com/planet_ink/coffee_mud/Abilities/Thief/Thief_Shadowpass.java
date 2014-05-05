@@ -36,7 +36,8 @@ import java.util.Map.Entry;
 public class Thief_Shadowpass extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadowpass"; }
-	@Override public String unlocalizedName(){ return "Shadowpass";}
+	public final static String localizedName = CMLib.lang()._("Shadowpass");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

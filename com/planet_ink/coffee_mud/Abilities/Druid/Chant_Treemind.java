@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Treemind extends Chant
 {
 	@Override public String ID() { return "Chant_Treemind"; }
-	@Override public String unlocalizedName(){ return "Treemind";}
+	public final static String localizedName = CMLib.lang()._("Treemind");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Treemind)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

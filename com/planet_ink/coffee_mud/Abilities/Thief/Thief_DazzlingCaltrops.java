@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_DazzlingCaltrops extends Thief_Caltrops
 {
 	@Override public String ID() { return "Thief_DazzlingCaltrops"; }
-	@Override public String unlocalizedName(){ return "Dazzling Caltrops";}
+	public final static String localizedName = CMLib.lang()._("Dazzling Caltrops");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"DAZZLINGCALTROPS"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String caltropTypeName(){return "dazzling ";}

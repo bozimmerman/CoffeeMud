@@ -37,7 +37,8 @@ import java.util.*;
 public class Disease extends StdAbility implements DiseaseAffect
 {
 	@Override public String ID() { return "Disease"; }
-	@Override public String unlocalizedName(){ return "Disease";}
+	public final static String localizedName = CMLib.lang()._("Disease");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(a disease)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}

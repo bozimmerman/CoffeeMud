@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_HolyAura extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HolyAura"; }
-	@Override public String unlocalizedName(){ return "Holy Aura";}
+	public final static String localizedName = CMLib.lang()._("Holy Aura");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Holy Aura)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

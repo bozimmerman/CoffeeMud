@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_Inebriation extends Song
 {
 	@Override public String ID() { return "Song_Inebriation"; }
-	@Override public String unlocalizedName(){ return "Drunkenness";}
+	public final static String localizedName = CMLib.lang()._("Drunkenness");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

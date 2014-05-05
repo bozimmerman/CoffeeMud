@@ -37,7 +37,8 @@ import java.util.*;
 public class Ranger_TrackAnimal extends StdAbility
 {
 	@Override public String ID() { return "Ranger_TrackAnimal"; }
-	@Override public String unlocalizedName(){ return "Track Animal";}
+	public final static String localizedName = CMLib.lang()._("Track Animal");
+	@Override public String name() { return localizedName; }
 	protected String displayText="(tracking an animal)";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

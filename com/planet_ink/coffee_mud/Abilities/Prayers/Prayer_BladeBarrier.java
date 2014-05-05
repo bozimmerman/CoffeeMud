@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_BladeBarrier extends Prayer
 {
 	@Override public String ID() { return "Prayer_BladeBarrier"; }
-	@Override public String unlocalizedName(){ return "Blade Barrier";}
+	public final static String localizedName = CMLib.lang()._("Blade Barrier");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Blade Barrier)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

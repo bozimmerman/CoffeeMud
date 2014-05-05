@@ -35,7 +35,8 @@ import java.util.*;
 public class Prayer_Regeneration extends Prayer
 {
 	@Override public String ID() { return "Prayer_Regeneration"; }
-	@Override public String unlocalizedName(){ return "Regeneration";}
+	public final static String localizedName = CMLib.lang()._("Regeneration");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Regeneration)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Silence extends Prayer
 {
 	@Override public String ID() { return "Prayer_Silence"; }
-	@Override public String unlocalizedName(){ return "Silent";}
+	public final static String localizedName = CMLib.lang()._("Silent");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

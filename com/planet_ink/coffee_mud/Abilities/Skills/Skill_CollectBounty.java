@@ -36,7 +36,8 @@ import java.util.*;
 public class Skill_CollectBounty extends StdSkill
 {
 	@Override public String ID() { return "Skill_CollectBounty"; }
-	@Override public String unlocalizedName(){ return "Collect Bounty";}
+	public final static String localizedName = CMLib.lang()._("Collect Bounty");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

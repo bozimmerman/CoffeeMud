@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_HealingMoon extends Chant
 {
 	@Override public String ID() { return "Chant_HealingMoon"; }
-	@Override public String unlocalizedName(){ return "Healing Moon";}
+	public final static String localizedName = CMLib.lang()._("Healing Moon");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Healing Moon)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

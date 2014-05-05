@@ -36,7 +36,8 @@ import java.util.*;
 public class Shearing extends CommonSkill
 {
 	@Override public String ID() { return "Shearing"; }
-	@Override public String unlocalizedName(){ return "Shearing";}
+	public final static String localizedName = CMLib.lang()._("Shearing");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"SHEAR","SHEARING"};
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 	@Override public String[] triggerStrings(){return triggerStrings;}

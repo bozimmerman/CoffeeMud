@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Nectar extends Chant
 {
 	@Override public String ID() { return "Chant_Nectar"; }
-	@Override public String unlocalizedName(){ return "Nectar";}
+	public final static String localizedName = CMLib.lang()._("Nectar");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

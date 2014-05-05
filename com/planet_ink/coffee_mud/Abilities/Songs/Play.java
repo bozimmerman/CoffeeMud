@@ -37,7 +37,8 @@ import java.util.*;
 public class Play extends StdAbility
 {
 	@Override public String ID() { return "Play"; }
-	@Override public String unlocalizedName(){ return "a song played";}
+	public final static String localizedName = CMLib.lang()._("a song played");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "("+songOf()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

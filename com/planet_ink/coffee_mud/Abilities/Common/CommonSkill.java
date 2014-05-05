@@ -39,7 +39,8 @@ import java.util.*;
 public class CommonSkill extends StdAbility
 {
 	@Override public String ID() { return "CommonSkill"; }
-	@Override public String unlocalizedName(){ return "Common Skill";}
+	public final static String localizedName = CMLib.lang()._("Common Skill");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = empty;
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "";}

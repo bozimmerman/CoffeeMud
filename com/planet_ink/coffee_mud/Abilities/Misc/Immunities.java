@@ -37,7 +37,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Immunities extends StdAbility
 {
 	@Override public String ID() { return "Immunities"; }
-	@Override public String unlocalizedName(){ return "Immunities";}
+	public final static String localizedName = CMLib.lang()._("Immunities");
+	@Override public String name() { return localizedName; }
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS|CAN_AREAS;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_MonsterCage extends StdTrap
 {
 	@Override public String ID() { return "Trap_MonsterCage"; }
-	@Override public String unlocalizedName(){ return "monster cage";}
+	public final static String localizedName = CMLib.lang()._("monster cage");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 10;}

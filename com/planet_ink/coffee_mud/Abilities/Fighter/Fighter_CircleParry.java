@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_CircleParry extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_CircleParry"; }
-	@Override public String unlocalizedName(){ return "Circle Parry";}
+	public final static String localizedName = CMLib.lang()._("Circle Parry");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

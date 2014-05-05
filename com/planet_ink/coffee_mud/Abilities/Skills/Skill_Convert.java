@@ -36,7 +36,8 @@ import java.util.*;
 public class Skill_Convert extends StdSkill
 {
 	@Override public String ID() { return "Skill_Convert"; }
-	@Override public String unlocalizedName(){ return "Convert";}
+	public final static String localizedName = CMLib.lang()._("Convert");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

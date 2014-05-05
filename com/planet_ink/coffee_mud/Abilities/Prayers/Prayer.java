@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer extends StdAbility
 {
 	@Override public String ID() { return "Prayer"; }
-	@Override public String unlocalizedName(){ return "a Prayer";}
+	public final static String localizedName = CMLib.lang()._("a Prayer");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

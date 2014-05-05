@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SenseOres extends Chant_SensePlants
 {
 	@Override public String ID() { return "Chant_SenseOres"; }
-	@Override public String unlocalizedName(){ return "Sense Ores";}
+	public final static String localizedName = CMLib.lang()._("Sense Ores");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Sensing Ores)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

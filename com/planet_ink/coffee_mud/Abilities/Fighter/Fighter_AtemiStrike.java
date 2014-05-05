@@ -38,7 +38,8 @@ import java.util.*;
 public class Fighter_AtemiStrike extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_AtemiStrike"; }
-	@Override public String unlocalizedName(){ return "Atemi Strike";}
+	public final static String localizedName = CMLib.lang()._("Atemi Strike");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Atemi Strike)";}
 	private static final String[] triggerStrings = {"ATEMI"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

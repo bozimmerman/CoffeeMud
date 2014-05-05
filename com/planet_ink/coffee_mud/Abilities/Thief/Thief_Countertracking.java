@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_Countertracking extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Countertracking"; }
-	@Override public String unlocalizedName(){ return "Counter-Tracking";}
+	public final static String localizedName = CMLib.lang()._("Counter-Tracking");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

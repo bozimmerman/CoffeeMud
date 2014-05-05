@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Fertility extends Chant
 {
 	@Override public String ID() { return "Chant_Fertility"; }
-	@Override public String unlocalizedName(){ return "Fertility";}
+	public final static String localizedName = CMLib.lang()._("Fertility");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Fertility)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Spell_WordRecall extends Spell
 {
 	@Override public String ID() { return "Spell_WordRecall"; }
-	@Override public String unlocalizedName(){ return "Word of Recall";}
+	public final static String localizedName = CMLib.lang()._("Word of Recall");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

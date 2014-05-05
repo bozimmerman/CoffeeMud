@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_Thanks extends Song
 {
 	@Override public String ID() { return "Song_Thanks"; }
-	@Override public String unlocalizedName(){ return "Thanks";}
+	public final static String localizedName = CMLib.lang()._("Thanks");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
 	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}

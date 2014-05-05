@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_AutoBash extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_AutoBash"; }
-	@Override public String unlocalizedName(){ return "AutoBash";}
+	public final static String localizedName = CMLib.lang()._("AutoBash");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	private static final String[] triggerStrings = {"AUTOBASH"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

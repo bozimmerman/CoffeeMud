@@ -32,7 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Lighteningbreath extends Dragonbreath
 {
 	@Override public String ID() { return "Lighteningbreath"; }
-	@Override public String unlocalizedName(){ return "Lightningbreath";}
+	public final static String localizedName = CMLib.lang()._("Lightningbreath");
+	@Override public String name() { return localizedName; }
 	@Override public String text(){return "lightning";}
 	private static final String[] triggerStrings = {"LIGHTNINGBREATH"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

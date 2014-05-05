@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_UndeadInvisibility extends StdSkill
 {
 	@Override public String ID() { return "Skill_UndeadInvisibility"; }
-	@Override public String unlocalizedName(){ return "Undead Invisibility";}
+	public final static String localizedName = CMLib.lang()._("Undead Invisibility");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Fighter_CoupDeGrace extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CoupDeGrace"; }
-	@Override public String unlocalizedName(){ return "Coup de Grace";}
+	public final static String localizedName = CMLib.lang()._("Coup de Grace");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"COUP","COUPDEGRACE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

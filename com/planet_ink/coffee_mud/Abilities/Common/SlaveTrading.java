@@ -36,7 +36,8 @@ import java.util.*;
 public class SlaveTrading extends CommonSkill
 {
 	@Override public String ID() { return "SlaveTrading"; }
-	@Override public String unlocalizedName(){ return "Slave Trading";}
+	public final static String localizedName = CMLib.lang()._("Slave Trading");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"SLAVETRADING","SLAVETRADE","SLAVESELL","SSELL"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

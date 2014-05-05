@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_IceHealing extends Prayer
 {
 	@Override public String ID() { return "Prayer_IceHealing"; }
-	@Override public String unlocalizedName(){ return "Ice Healing";}
+	public final static String localizedName = CMLib.lang()._("Ice Healing");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Ice Healing)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

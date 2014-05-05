@@ -35,7 +35,8 @@ import java.util.*;
 public class Poison_Bloodboil extends Poison
 {
 	@Override public String ID() { return "Poison_Bloodboil"; }
-	@Override public String unlocalizedName(){ return "Blood Boil";}
+	public final static String localizedName = CMLib.lang()._("Blood Boil");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"POISONBURN"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Disguise extends BardSkill
 {
 	@Override public String ID() { return "Skill_Disguise"; }
-	@Override public String unlocalizedName(){ return "Disguise";}
+	public final static String localizedName = CMLib.lang()._("Disguise");
+	@Override public String name() { return localizedName; }
 	@Override
 	public String description()
 	{

@@ -38,7 +38,8 @@ public class Thief_SilentGold extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentGold"; }
 	@Override public String displayText() {return "(Silent AutoGold)";}
-	@Override public String unlocalizedName(){ return "Silent AutoGold";}
+	public final static String localizedName = CMLib.lang()._("Silent AutoGold");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class SignLanguage extends StdLanguage
 {
 	@Override public String ID() { return "SignLanguage"; }
-	@Override public String unlocalizedName(){ return "Sign Language";}
+	public final static String localizedName = CMLib.lang()._("Sign Language");
+	@Override public String name() { return localizedName; }
 	@Override public String writtenName() { return "Braille";}
 	public static List<String[]> wordLists=null;
 	public SignLanguage()

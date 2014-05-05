@@ -37,7 +37,8 @@ import java.util.*;
 public class Skill_Leeching extends StdSkill
 {
 	@Override public String ID() { return "Skill_Leeching"; }
-	@Override public String unlocalizedName(){ return "Leeching";}
+	public final static String localizedName = CMLib.lang()._("Leeching");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

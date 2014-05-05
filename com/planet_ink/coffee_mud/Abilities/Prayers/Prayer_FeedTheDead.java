@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_FeedTheDead extends Prayer
 {
 	@Override public String ID() { return "Prayer_FeedTheDead"; }
-	@Override public String unlocalizedName(){ return "Feed The Dead";}
+	public final static String localizedName = CMLib.lang()._("Feed The Dead");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

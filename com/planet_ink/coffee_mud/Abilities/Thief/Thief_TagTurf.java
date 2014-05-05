@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_TagTurf extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TagTurf"; }
-	@Override public String unlocalizedName(){ return "Tag Turf";}
+	public final static String localizedName = CMLib.lang()._("Tag Turf");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Tagged)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

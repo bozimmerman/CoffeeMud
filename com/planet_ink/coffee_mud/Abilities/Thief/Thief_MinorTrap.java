@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_MinorTrap extends Thief_Trap
 {
 	@Override public String ID() { return "Thief_MinorTrap"; }
-	@Override public String unlocalizedName(){ return "Lay Minor Traps";}
+	public final static String localizedName = CMLib.lang()._("Lay Minor Traps");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MTRAP","MINORTRAP"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

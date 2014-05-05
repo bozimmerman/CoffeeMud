@@ -37,7 +37,8 @@ import java.util.*;
 public class CageBuilding extends Wainwrighting
 {
 	@Override public String ID() { return "CageBuilding"; }
-	@Override public String unlocalizedName(){ return "Cage Building";}
+	public final static String localizedName = CMLib.lang()._("Cage Building");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

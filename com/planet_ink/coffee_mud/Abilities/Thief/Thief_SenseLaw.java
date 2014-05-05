@@ -37,7 +37,8 @@ import java.util.*;
 public class Thief_SenseLaw extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SenseLaw"; }
-	@Override public String unlocalizedName(){ return "Sense Law";}
+	public final static String localizedName = CMLib.lang()._("Sense Law");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

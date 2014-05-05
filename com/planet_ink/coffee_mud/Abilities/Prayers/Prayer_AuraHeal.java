@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_AuraHeal extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraHeal"; }
-	@Override public String unlocalizedName(){ return "Aura of Healing";}
+	public final static String localizedName = CMLib.lang()._("Aura of Healing");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Heal Aura)";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

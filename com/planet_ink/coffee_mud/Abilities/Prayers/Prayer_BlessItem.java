@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_BlessItem extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_BlessItem"; }
-	@Override public String unlocalizedName(){ return "Bless Item";}
+	public final static String localizedName = CMLib.lang()._("Bless Item");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Blessed)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}

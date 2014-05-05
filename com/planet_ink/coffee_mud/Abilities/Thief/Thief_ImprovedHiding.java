@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_ImprovedHiding extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ImprovedHiding"; }
-	@Override public String unlocalizedName(){ return "Improved Hiding";}
+	public final static String localizedName = CMLib.lang()._("Improved Hiding");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

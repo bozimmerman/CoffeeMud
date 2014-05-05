@@ -37,7 +37,8 @@ import java.util.*;
 public class Paladin_Breakup extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Breakup"; }
-	@Override public String unlocalizedName(){ return "Breakup Fight";}
+	public final static String localizedName = CMLib.lang()._("Breakup Fight");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BREAKUP"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

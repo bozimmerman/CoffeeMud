@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_MoveSky extends Chant
 {
 	@Override public String ID() { return "Chant_MoveSky"; }
-	@Override public String unlocalizedName(){ return "Move The Sky";}
+	public final static String localizedName = CMLib.lang()._("Move The Sky");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}

@@ -40,7 +40,8 @@ import java.util.*;
 public class LockSmith extends CraftingSkill
 {
 	@Override public String ID() { return "LockSmith"; }
-	@Override public String unlocalizedName(){ return "Locksmithing";}
+	public final static String localizedName = CMLib.lang()._("Locksmithing");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}

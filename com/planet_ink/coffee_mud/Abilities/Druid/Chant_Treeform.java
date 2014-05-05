@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_Treeform extends Chant
 {
 	@Override public String ID() { return "Chant_Treeform"; }
-	@Override public String unlocalizedName(){ return "Treeform";}
+	public final static String localizedName = CMLib.lang()._("Treeform");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Treeform)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

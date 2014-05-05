@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SenseAllergies extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseAllergies"; }
-	@Override public String unlocalizedName(){ return "Sense Allergies";}
+	public final static String localizedName = CMLib.lang()._("Sense Allergies");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

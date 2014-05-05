@@ -35,7 +35,8 @@ import java.util.*;
 public class FoodPrep extends Cooking
 {
 	@Override public String ID() { return "FoodPrep"; }
-	@Override public String unlocalizedName(){ return "Food Prep";}
+	public final static String localizedName = CMLib.lang()._("Food Prep");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String cookWordShort(){return "make";}

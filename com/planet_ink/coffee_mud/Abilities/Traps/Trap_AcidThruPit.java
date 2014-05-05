@@ -34,7 +34,8 @@ import java.util.*;
 public class Trap_AcidThruPit extends Trap_AcidPit
 {
 	@Override public String ID() { return "Trap_AcidThruPit"; }
-	@Override public String unlocalizedName(){ return "small acid pit";}
+	public final static String localizedName = CMLib.lang()._("small acid pit");
+	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 17;}
 	@Override public boolean getTravelThroughFlag() { return true; }
 }

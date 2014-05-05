@@ -36,7 +36,8 @@ import java.util.*;
 public class Dance_Clog extends Dance
 {
 	@Override public String ID() { return "Dance_Clog"; }
-	@Override public String unlocalizedName(){ return "Clog Dance";}
+	public final static String localizedName = CMLib.lang()._("Clog Dance");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected String danceOf(){return name();}
 

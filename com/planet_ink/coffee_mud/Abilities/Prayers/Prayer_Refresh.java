@@ -38,7 +38,8 @@ import java.util.*;
 public class Prayer_Refresh extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Refresh"; }
-	@Override public String unlocalizedName(){ return "Refresh";}
+	public final static String localizedName = CMLib.lang()._("Refresh");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

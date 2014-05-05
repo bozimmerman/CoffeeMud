@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Etherealness extends Prayer
 {
 	@Override public String ID() { return "Prayer_Etherealness"; }
-	@Override public String unlocalizedName(){ return "Etherealness";}
+	public final static String localizedName = CMLib.lang()._("Etherealness");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Etherealness)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -38,7 +38,8 @@ import java.util.*;
 public class Song_Mercy extends Song
 {
 	@Override public String ID() { return "Song_Mercy"; }
-	@Override public String unlocalizedName(){ return "Mercy";}
+	public final static String localizedName = CMLib.lang()._("Mercy");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

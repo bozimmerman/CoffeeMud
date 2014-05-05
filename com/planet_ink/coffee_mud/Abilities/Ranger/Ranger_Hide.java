@@ -39,7 +39,8 @@ import java.util.*;
 public class Ranger_Hide extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Hide"; }
-	@Override public String unlocalizedName(){ return "Woodland Hide";}
+	public final static String localizedName = CMLib.lang()._("Woodland Hide");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

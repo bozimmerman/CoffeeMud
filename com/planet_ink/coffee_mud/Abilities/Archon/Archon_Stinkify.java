@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -38,7 +37,8 @@ public class Archon_Stinkify extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Stinkify"; }
-	@Override public String unlocalizedName(){ return "Stinkify";}
+	public final static String localizedName = CMLib.lang()._("Stinkify");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

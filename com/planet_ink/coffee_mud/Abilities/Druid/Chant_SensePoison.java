@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SensePoison extends Chant
 {
 	@Override public String ID() { return "Chant_SensePoison"; }
-	@Override public String unlocalizedName(){ return "Sense Poison";}
+	public final static String localizedName = CMLib.lang()._("Sense Poison");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}

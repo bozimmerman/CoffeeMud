@@ -37,7 +37,8 @@ import java.util.*;
 public class Lacquerring extends CommonSkill
 {
 	@Override public String ID() { return "Lacquerring"; }
-	@Override public String unlocalizedName(){ return "Lacquering";}
+	public final static String localizedName = CMLib.lang()._("Lacquering");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"LACQUERING","LACQUER"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }

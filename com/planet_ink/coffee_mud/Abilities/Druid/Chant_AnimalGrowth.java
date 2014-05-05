@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_AnimalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalGrowth"; }
-	@Override public String unlocalizedName(){ return "Animal Growth";}
+	public final static String localizedName = CMLib.lang()._("Animal Growth");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){return "(Animal Growth)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

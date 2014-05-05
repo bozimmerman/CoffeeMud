@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_WeaponBreak extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponBreak"; }
-	@Override public String unlocalizedName(){ return "Weapon Break";}
+	public final static String localizedName = CMLib.lang()._("Weapon Break");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BREAK"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

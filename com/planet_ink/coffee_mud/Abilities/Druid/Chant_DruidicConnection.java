@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_DruidicConnection extends Chant
 {
 	@Override public String ID() { return "Chant_DruidicConnection"; }
-	@Override public String unlocalizedName(){ return "Druidic Connection";}
+	public final static String localizedName = CMLib.lang()._("Druidic Connection");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_AREAS;}

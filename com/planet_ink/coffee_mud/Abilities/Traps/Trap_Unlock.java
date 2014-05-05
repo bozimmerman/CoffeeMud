@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_Unlock extends Trap_Trap
 {
 	@Override public String ID() { return "Trap_Unlock"; }
-	@Override public String unlocalizedName(){ return "Unlock Trap";}
+	public final static String localizedName = CMLib.lang()._("Unlock Trap");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 

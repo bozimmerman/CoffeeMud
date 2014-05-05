@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_AnimateSpectre extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimateSpectre"; }
-	@Override public String unlocalizedName(){ return "Animate Spectre";}
+	public final static String localizedName = CMLib.lang()._("Animate Spectre");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

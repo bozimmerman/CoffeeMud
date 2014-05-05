@@ -37,7 +37,8 @@ import java.util.*;
 public class Taxidermy extends CraftingSkill
 {
 	@Override public String ID() { return "Taxidermy"; }
-	@Override public String unlocalizedName(){ return "Taxidermy";}
+	public final static String localizedName = CMLib.lang()._("Taxidermy");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "BODIES";}

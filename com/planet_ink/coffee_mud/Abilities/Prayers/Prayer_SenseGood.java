@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SenseGood extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseGood"; }
-	@Override public String unlocalizedName(){ return "Sense Good";}
+	public final static String localizedName = CMLib.lang()._("Sense Good");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Sense Good)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_ConcealWalkway extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ConcealWalkway"; }
-	@Override public String unlocalizedName(){ return "Conceal Walkway";}
+	public final static String localizedName = CMLib.lang()._("Conceal Walkway");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

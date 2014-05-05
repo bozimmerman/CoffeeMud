@@ -35,7 +35,8 @@ import java.util.*;
 public class MasterMining extends Mining
 {
 	@Override public String ID() { return "MasterMining"; }
-	@Override public String unlocalizedName(){ return "Master Mining";}
+	public final static String localizedName = CMLib.lang()._("Master Mining");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MMINE","MMINING","MASTERMINE","MASTERMINING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

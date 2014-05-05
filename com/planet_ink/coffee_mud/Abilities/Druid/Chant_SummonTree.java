@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SummonTree extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonTree"; }
-	@Override public String unlocalizedName(){ return "Summon Tree";}
+	public final static String localizedName = CMLib.lang()._("Summon Tree");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}

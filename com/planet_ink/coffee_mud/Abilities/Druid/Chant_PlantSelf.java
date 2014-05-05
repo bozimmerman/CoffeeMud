@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_PlantSelf extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSelf"; }
-	@Override public String unlocalizedName(){ return "Plant Self";}
+	public final static String localizedName = CMLib.lang()._("Plant Self");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Planted)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

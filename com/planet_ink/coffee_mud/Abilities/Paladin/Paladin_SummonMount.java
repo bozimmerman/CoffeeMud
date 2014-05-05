@@ -38,7 +38,8 @@ import java.util.*;
 public class Paladin_SummonMount extends StdAbility
 {
 	@Override public String ID() { return "Paladin_SummonMount"; }
-	@Override public String unlocalizedName(){ return "Call Mount";}
+	public final static String localizedName = CMLib.lang()._("Call Mount");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText() {return "(Mount)";}
 	private static final String[] triggerStrings = {"CALLMOUNT"};
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

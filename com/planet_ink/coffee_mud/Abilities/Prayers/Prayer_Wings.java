@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Wings extends Prayer
 {
 	@Override public String ID() { return "Prayer_Wings"; }
-	@Override public String unlocalizedName(){ return "Wings";}
+	public final static String localizedName = CMLib.lang()._("Wings");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Wings)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SummonPeace extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPeace"; }
-	@Override public String unlocalizedName(){ return "Summon Peace";}
+	public final static String localizedName = CMLib.lang()._("Summon Peace");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

@@ -37,7 +37,8 @@ import java.util.*;
 public class Play_Solo extends Play
 {
 	@Override public String ID() { return "Play_Solo"; }
-	@Override public String unlocalizedName(){ return "Solo";}
+	public final static String localizedName = CMLib.lang()._("Solo");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean persistantSong(){return false;}
 	@Override protected boolean skipStandardSongTick(){return true;}

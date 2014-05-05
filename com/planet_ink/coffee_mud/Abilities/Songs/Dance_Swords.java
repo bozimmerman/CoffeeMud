@@ -37,7 +37,8 @@ import java.util.*;
 public class Dance_Swords extends Dance
 {
 	@Override public String ID() { return "Dance_Swords"; }
-	@Override public String unlocalizedName(){ return "Swords";}
+	public final static String localizedName = CMLib.lang()._("Swords");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected String danceOf(){return name()+" Dance";}

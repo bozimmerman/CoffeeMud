@@ -37,7 +37,8 @@ import java.util.*;
 public class Paralysis extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Paralysis"; }
-	@Override public String unlocalizedName(){ return "Paralysis";}
+	public final static String localizedName = CMLib.lang()._("Paralysis");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Paralyzed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

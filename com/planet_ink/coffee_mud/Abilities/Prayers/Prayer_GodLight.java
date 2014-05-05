@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_GodLight extends Prayer
 {
 	@Override public String ID() { return "Prayer_GodLight"; }
-	@Override public String unlocalizedName(){ return "Godlight";}
+	public final static String localizedName = CMLib.lang()._("Godlight");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Godlight)";}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

@@ -39,7 +39,8 @@ import java.util.*;
 public class Prayer_BirdsEye extends Prayer
 {
 	@Override public String ID() { return "Prayer_BirdsEye"; }
-	@Override public String unlocalizedName(){ return "Birds Eye";}
+	public final static String localizedName = CMLib.lang()._("Birds Eye");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

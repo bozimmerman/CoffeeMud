@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_FarShot extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FarShot"; }
-	@Override public String unlocalizedName(){ return "Far Shot";}
+	public final static String localizedName = CMLib.lang()._("Far Shot");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

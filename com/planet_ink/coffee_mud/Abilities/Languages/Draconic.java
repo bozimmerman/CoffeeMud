@@ -35,7 +35,8 @@ import java.util.*;
 public class Draconic extends StdLanguage
 {
 	@Override public String ID() { return "Draconic"; }
-	@Override public String unlocalizedName(){ return "Draconic";}
+	public final static String localizedName = CMLib.lang()._("Draconic");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Draconic()
 	{

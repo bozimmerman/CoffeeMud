@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_Pin extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Pin"; }
-	@Override public String unlocalizedName(){ return "Pin";}
+	public final static String localizedName = CMLib.lang()._("Pin");
+	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
 	{

@@ -32,7 +32,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Gasbreath extends Dragonbreath
 {
 	@Override public String ID() { return "Gasbreath"; }
-	@Override public String unlocalizedName(){ return "Gasbreath";}
+	public final static String localizedName = CMLib.lang()._("Gasbreath");
+	@Override public String name() { return localizedName; }
 	@Override public String text(){return "gas";}
 	@Override public void setMiscText(String newText){super.setMiscText(text());}
 	private static final String[] triggerStrings = {"GASBREATH"};

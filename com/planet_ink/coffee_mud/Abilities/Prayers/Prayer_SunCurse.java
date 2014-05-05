@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SunCurse extends Prayer
 {
 	@Override public String ID() { return "Prayer_SunCurse"; }
-	@Override public String unlocalizedName(){ return "Sun Curse";}
+	public final static String localizedName = CMLib.lang()._("Sun Curse");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

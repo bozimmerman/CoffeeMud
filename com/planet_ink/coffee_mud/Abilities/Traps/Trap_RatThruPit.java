@@ -34,7 +34,8 @@ import java.util.*;
 public class Trap_RatThruPit extends Trap_RatPit
 {
 	@Override public String ID() { return "Trap_RatThruPit"; }
-	@Override public String unlocalizedName(){ return "small rat pit";}
+	public final static String localizedName = CMLib.lang()._("small rat pit");
+	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 11;}
 	@Override public boolean getTravelThroughFlag() { return true; }
 }

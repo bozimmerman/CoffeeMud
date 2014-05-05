@@ -37,7 +37,8 @@ public class Skill_Trip extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Trip"; }
-	@Override public String unlocalizedName(){ return "Trip";}
+	public final static String localizedName = CMLib.lang()._("Trip");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Tripped)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

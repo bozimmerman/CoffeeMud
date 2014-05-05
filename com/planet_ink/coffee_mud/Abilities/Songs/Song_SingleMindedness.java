@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_SingleMindedness extends Song
 {
 	@Override public String ID() { return "Song_SingleMindedness"; }
-	@Override public String unlocalizedName(){ return "Single Mindedness";}
+	public final static String localizedName = CMLib.lang()._("Single Mindedness");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected CMMsg themsg=null;
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

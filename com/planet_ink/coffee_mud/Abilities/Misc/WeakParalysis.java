@@ -37,7 +37,8 @@ import java.util.*;
 public class WeakParalysis extends StdAbility
 {
 	@Override public String ID() { return "WeakParalysis"; }
-	@Override public String unlocalizedName(){ return "Weak Paralysis";}
+	public final static String localizedName = CMLib.lang()._("Weak Paralysis");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Paralyzed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

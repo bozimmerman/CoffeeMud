@@ -35,7 +35,8 @@ import java.util.*;
 public class SuperPower extends StdAbility
 {
 	@Override public String ID() { return "SuperPower"; }
-	@Override public String unlocalizedName(){ return "a Super Power";}
+	public final static String localizedName = CMLib.lang()._("a Super Power");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

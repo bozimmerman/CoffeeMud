@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Retribution extends Prayer_BladeBarrier
 {
 	@Override public String ID() { return "Prayer_Retribution"; }
-	@Override public String unlocalizedName(){ return "Retribution";}
+	public final static String localizedName = CMLib.lang()._("Retribution");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Retribution)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}

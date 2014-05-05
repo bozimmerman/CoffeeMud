@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -38,7 +37,8 @@ public class Archon_Freeze extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Freeze"; }
-	@Override public String unlocalizedName(){ return "Freeze";}
+	public final static String localizedName = CMLib.lang()._("Freeze");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Freezed)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

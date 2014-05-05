@@ -40,7 +40,8 @@ import java.util.*;
 public class Age extends StdAbility
 {
 	@Override public String ID() { return "Age"; }
-	@Override public String unlocalizedName(){ return "Age";}
+	public final static String localizedName = CMLib.lang()._("Age");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

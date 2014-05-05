@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Drain extends Prayer
 {
 	@Override public String ID() { return "Prayer_Drain"; }
-	@Override public String unlocalizedName(){ return "Drain";}
+	public final static String localizedName = CMLib.lang()._("Drain");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Drain)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

@@ -34,7 +34,8 @@ import java.util.*;
 public class Skill_MountedCombat extends StdSkill
 {
 	@Override public String ID() { return "Skill_MountedCombat"; }
-	@Override public String unlocalizedName(){ return "Mounted Combat";}
+	public final static String localizedName = CMLib.lang()._("Mounted Combat");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

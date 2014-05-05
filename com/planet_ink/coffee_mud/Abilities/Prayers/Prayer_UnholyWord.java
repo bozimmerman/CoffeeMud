@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_UnholyWord extends Prayer
 {
 	@Override public String ID() { return "Prayer_UnholyWord"; }
-	@Override public String unlocalizedName(){ return "Unholy Word";}
+	public final static String localizedName = CMLib.lang()._("Unholy Word");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Unholy Word)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

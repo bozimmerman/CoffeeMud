@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_ProtCold extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtCold"; }
-	@Override public String unlocalizedName(){ return "Protection Cold";}
+	public final static String localizedName = CMLib.lang()._("Protection Cold");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Protection from Cold)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}

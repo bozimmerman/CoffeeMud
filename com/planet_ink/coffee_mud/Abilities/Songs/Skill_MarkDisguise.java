@@ -37,7 +37,8 @@ import java.util.*;
 public class Skill_MarkDisguise extends Skill_Disguise
 {
 	@Override public String ID() { return "Skill_MarkDisguise"; }
-	@Override public String unlocalizedName(){ return "Mark Disguise";}
+	public final static String localizedName = CMLib.lang()._("Mark Disguise");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MARKDISGUISE"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public MOB mark=null;

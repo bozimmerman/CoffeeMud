@@ -36,7 +36,8 @@ import java.util.*;
 public class Butchering extends GatheringSkill
 {
 	@Override public String ID() { return "Butchering"; }
-	@Override public String unlocalizedName(){ return "Butchering";}
+	public final static String localizedName = CMLib.lang()._("Butchering");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

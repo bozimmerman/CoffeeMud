@@ -38,7 +38,8 @@ import java.util.*;
 public class Antidote extends StdAbility
 {
 	@Override public String ID() { return "Antidote"; }
-	@Override public String unlocalizedName(){ return "An Antidote";}
+	public final static String localizedName = CMLib.lang()._("An Antidote");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

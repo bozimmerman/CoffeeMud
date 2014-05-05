@@ -35,7 +35,8 @@ import java.util.*;
 public class Disease_Plague extends Disease
 {
 	@Override public String ID() { return "Disease_Plague"; }
-	@Override public String unlocalizedName(){ return "The Plague";}
+	public final static String localizedName = CMLib.lang()._("The Plague");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Plague)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

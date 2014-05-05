@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Aids extends Disease
 {
 	@Override public String ID() { return "Disease_Aids"; }
-	@Override public String unlocalizedName(){ return "Aids";}
+	public final static String localizedName = CMLib.lang()._("Aids");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Aids)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

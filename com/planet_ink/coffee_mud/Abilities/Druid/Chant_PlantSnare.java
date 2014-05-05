@@ -36,7 +36,8 @@ import java.util.*;
 public class Chant_PlantSnare extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSnare"; }
-	@Override public String unlocalizedName(){ return "Plant Snare";}
+	public final static String localizedName = CMLib.lang()._("Plant Snare");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Snared)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

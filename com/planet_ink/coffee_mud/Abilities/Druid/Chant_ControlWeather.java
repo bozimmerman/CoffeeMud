@@ -38,7 +38,8 @@ import java.util.Vector;
 public class Chant_ControlWeather extends Chant
 {
 	@Override public String ID() { return "Chant_ControlWeather"; }
-	@Override public String unlocalizedName(){ return "Control Weather";}
+	public final static String localizedName = CMLib.lang()._("Control Weather");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}

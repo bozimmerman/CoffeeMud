@@ -37,7 +37,8 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AutoDetectTraps"; }
 	@Override public String displayText() {return "(Autodetecting traps)";}
-	@Override public String unlocalizedName(){ return "AutoDetect Traps";}
+	public final static String localizedName = CMLib.lang()._("AutoDetect Traps");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

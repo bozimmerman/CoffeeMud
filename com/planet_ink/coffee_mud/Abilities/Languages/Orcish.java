@@ -35,7 +35,8 @@ import java.util.*;
 public class Orcish extends StdLanguage
 {
 	@Override public String ID() { return "Orcish"; }
-	@Override public String unlocalizedName(){ return "Orcish";}
+	public final static String localizedName = CMLib.lang()._("Orcish");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Orcish()
 	{

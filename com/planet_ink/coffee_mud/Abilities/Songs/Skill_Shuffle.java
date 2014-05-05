@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Shuffle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Shuffle"; }
-	@Override public String unlocalizedName(){ return "Shuffle";}
+	public final static String localizedName = CMLib.lang()._("Shuffle");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

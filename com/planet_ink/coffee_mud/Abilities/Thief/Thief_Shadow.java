@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_Shadow extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadow"; }
-	@Override public String unlocalizedName(){ return "Shadow";}
+	public final static String localizedName = CMLib.lang()._("Shadow");
+	@Override public String name() { return localizedName; }
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
 	@Override public String displayText(){return "";}

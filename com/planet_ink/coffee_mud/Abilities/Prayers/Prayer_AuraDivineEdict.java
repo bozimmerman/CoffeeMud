@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_AuraDivineEdict extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraDivineEdict"; }
-	@Override public String unlocalizedName(){ return "Aura of the Divine Edict";}
+	public final static String localizedName = CMLib.lang()._("Aura of the Divine Edict");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Edict Aura)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

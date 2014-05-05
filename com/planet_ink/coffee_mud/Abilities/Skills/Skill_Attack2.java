@@ -34,7 +34,8 @@ import java.util.*;
 public class Skill_Attack2 extends StdSkill
 {
 	@Override public String ID() { return "Skill_Attack2"; }
-	@Override public String unlocalizedName(){ return "Second Attack";}
+	public final static String localizedName = CMLib.lang()._("Second Attack");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

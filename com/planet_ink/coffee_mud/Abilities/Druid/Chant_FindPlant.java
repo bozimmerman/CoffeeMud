@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_FindPlant extends Chant
 {
 	@Override public String ID() { return "Chant_FindPlant"; }
-	@Override public String unlocalizedName(){ return "Find Plant";}
+	public final static String localizedName = CMLib.lang()._("Find Plant");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public String displayText(){return "(Finding "+lookingFor+")";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

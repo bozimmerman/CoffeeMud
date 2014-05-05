@@ -19,7 +19,8 @@ import java.util.*;
 public class Ignan extends StdLanguage
 {
 	@Override public String ID() { return "Ignan"; }
-	@Override public String unlocalizedName(){ return "Ignan";}
+	public final static String localizedName = CMLib.lang()._("Ignan");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Ignan()
 	{

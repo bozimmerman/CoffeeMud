@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_ImprovedThrowing extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ImprovedThrowing"; }
-	@Override public String unlocalizedName(){ return "Improved Throwing";}
+	public final static String localizedName = CMLib.lang()._("Improved Throwing");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

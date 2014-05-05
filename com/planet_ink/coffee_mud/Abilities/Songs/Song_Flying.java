@@ -36,7 +36,8 @@ import java.util.*;
 public class Song_Flying extends Song
 {
 	@Override public String ID() { return "Song_Flying"; }
-	@Override public String unlocalizedName(){ return "Flying";}
+	public final static String localizedName = CMLib.lang()._("Flying");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_MOVING;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

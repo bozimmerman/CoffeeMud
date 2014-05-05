@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_DivineConstitution extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineConstitution"; }
-	@Override public String unlocalizedName(){ return "Divine Constitution";}
+	public final static String localizedName = CMLib.lang()._("Divine Constitution");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Divine Constitution)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

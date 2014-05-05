@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_Lore extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Lore"; }
-	@Override public String unlocalizedName(){ return "Lore";}
+	public final static String localizedName = CMLib.lang()._("Lore");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

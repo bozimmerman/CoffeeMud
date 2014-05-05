@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_FindOre extends Chant_FindPlant
 {
 	@Override public String ID() { return "Chant_FindOre"; }
-	@Override public String unlocalizedName(){ return "Find Ore";}
+	public final static String localizedName = CMLib.lang()._("Find Ore");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public String displayText(){return "(Finding "+lookingFor+")";}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

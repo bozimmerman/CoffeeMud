@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Doomspout"; }
-	@Override public String unlocalizedName(){ return "Doomspout";}
+	public final static String localizedName = CMLib.lang()._("Doomspout");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

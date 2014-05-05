@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,7 +36,8 @@ import java.util.*;
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Metacraft"; }
-	@Override public String unlocalizedName(){ return "Metacrafting";}
+	public final static String localizedName = CMLib.lang()._("Metacrafting");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"METACRAFT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

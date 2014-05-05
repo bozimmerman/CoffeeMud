@@ -38,7 +38,8 @@ import java.util.*;
 public class MasterCostuming extends Costuming
 {
 	@Override public String ID() { return "MasterCostuming"; }
-	@Override public String unlocalizedName(){ return "Master Costuming";}
+	public final static String localizedName = CMLib.lang()._("Master Costuming");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String parametersFile(){ return "mastercostume.txt";}

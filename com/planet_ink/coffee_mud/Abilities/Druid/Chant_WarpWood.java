@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_WarpWood extends Chant
 {
 	@Override public String ID() { return "Chant_WarpWood"; }
-	@Override public String unlocalizedName(){ return "Warp Wood";}
+	public final static String localizedName = CMLib.lang()._("Warp Wood");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return 0;}

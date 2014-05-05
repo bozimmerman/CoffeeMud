@@ -36,7 +36,8 @@ import java.util.*;
 public class Fighter_Fragmentation extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Fragmentation"; }
-	@Override public String unlocalizedName(){ return "Fragmentation";}
+	public final static String localizedName = CMLib.lang()._("Fragmentation");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

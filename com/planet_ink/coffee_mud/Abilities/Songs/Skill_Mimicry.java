@@ -35,7 +35,8 @@ import java.util.*;
 public class Skill_Mimicry extends BardSkill
 {
 	@Override public String ID() { return "Skill_Mimicry"; }
-	@Override public String unlocalizedName(){ return "Mimicry";}
+	public final static String localizedName = CMLib.lang()._("Mimicry");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

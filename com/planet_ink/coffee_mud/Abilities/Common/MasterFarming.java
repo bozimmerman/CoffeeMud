@@ -35,7 +35,8 @@ import java.util.*;
 public class MasterFarming extends Farming
 {
 	@Override public String ID() { return "MasterFarming"; }
-	@Override public String unlocalizedName(){ return "Master Farming";}
+	public final static String localizedName = CMLib.lang()._("Master Farming");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"MPLANT","MFARM","MFARMING","MASTERPLANT","MASTERFARM","MASTERFARMING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

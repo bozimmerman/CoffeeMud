@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RestoreSmell"; }
-	@Override public String unlocalizedName(){ return "Restore Smell";}
+	public final static String localizedName = CMLib.lang()._("Restore Smell");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

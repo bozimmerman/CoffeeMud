@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_MassCureDisease"; }
-	@Override public String unlocalizedName(){ return "Mass Cure Disease";}
+	public final static String localizedName = CMLib.lang()._("Mass Cure Disease");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

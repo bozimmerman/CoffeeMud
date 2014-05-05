@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_TurfWar extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TurfWar"; }
-	@Override public String unlocalizedName(){ return "Turf War";}
+	public final static String localizedName = CMLib.lang()._("Turf War");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Turf War)";}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

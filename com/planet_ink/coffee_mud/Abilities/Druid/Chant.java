@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant extends StdAbility
 {
 	@Override public String ID() { return "Chant"; }
-	@Override public String unlocalizedName(){ return "a Druidic Chant";}
+	public final static String localizedName = CMLib.lang()._("a Druidic Chant");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "("+name()+")";}
 	protected boolean renderedMundane=false;
 

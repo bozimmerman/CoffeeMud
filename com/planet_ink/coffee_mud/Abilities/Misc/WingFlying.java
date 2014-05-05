@@ -38,7 +38,8 @@ import java.util.*;
 public class WingFlying extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "WingFlying"; }
-	@Override public String unlocalizedName(){ return "Winged Flight";}
+	public final static String localizedName = CMLib.lang()._("Winged Flight");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

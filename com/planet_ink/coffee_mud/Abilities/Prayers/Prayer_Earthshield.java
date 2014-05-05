@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_Earthshield extends Prayer
 {
 	@Override public String ID() { return "Prayer_Earthshield"; }
-	@Override public String unlocalizedName(){ return "Earthshield";}
+	public final static String localizedName = CMLib.lang()._("Earthshield");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

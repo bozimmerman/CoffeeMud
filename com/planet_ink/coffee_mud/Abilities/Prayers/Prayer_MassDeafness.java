@@ -35,7 +35,8 @@ import java.util.*;
 public class Prayer_MassDeafness extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassDeafness"; }
-	@Override public String unlocalizedName(){ return "Mass Deafness";}
+	public final static String localizedName = CMLib.lang()._("Mass Deafness");
+	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

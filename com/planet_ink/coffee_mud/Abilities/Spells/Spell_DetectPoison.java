@@ -36,7 +36,8 @@ import java.util.*;
 public class Spell_DetectPoison extends Spell
 {
 	@Override public String ID() { return "Spell_DetectPoison"; }
-	@Override public String unlocalizedName(){ return "Detect Poison";}
+	public final static String localizedName = CMLib.lang()._("Detect Poison");
+	@Override public String name() { return localizedName; }
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}

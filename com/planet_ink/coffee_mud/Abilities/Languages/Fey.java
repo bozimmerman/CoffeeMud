@@ -35,7 +35,8 @@ import java.util.*;
 public class Fey extends StdLanguage
 {
 	@Override public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
-	@Override public String unlocalizedName(){ return "Fey";}
+	public final static String localizedName = CMLib.lang()._("Fey");
+	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Fey()
 	{

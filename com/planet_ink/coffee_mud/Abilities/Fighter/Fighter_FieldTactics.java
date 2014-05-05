@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_FieldTactics extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FieldTactics"; }
-	@Override public String unlocalizedName(){ return "Field Tactics";}
+	public final static String localizedName = CMLib.lang()._("Field Tactics");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return hidden?"(Hidden)":"";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

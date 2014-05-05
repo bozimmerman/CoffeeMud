@@ -38,7 +38,8 @@ import java.util.*;
 public class Chant_Homeopathy extends Chant
 {
 	@Override public String ID() { return "Chant_Homeopathy"; }
-	@Override public String unlocalizedName(){ return "Homeopathy";}
+	public final static String localizedName = CMLib.lang()._("Homeopathy");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Homeopathy)";}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

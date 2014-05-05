@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_UrbanTactics extends Fighter_FieldTactics
 {
 	@Override public String ID() { return "Fighter_UrbanTactics"; }
-	@Override public String unlocalizedName(){ return "Urban Tactics";}
+	public final static String localizedName = CMLib.lang()._("Urban Tactics");
+	@Override public String name() { return localizedName; }
 	private static final Integer[] landClasses =
 	{
 		Integer.valueOf(Room.DOMAIN_OUTDOORS_CITY),

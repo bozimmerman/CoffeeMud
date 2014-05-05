@@ -37,7 +37,8 @@ import java.util.*;
 public class TemporaryAffects extends StdAbility
 {
 	@Override public String ID() { return "TemporaryAffects"; }
-	@Override public String unlocalizedName(){ return "Temporary Affects";}
+	public final static String localizedName = CMLib.lang()._("Temporary Affects");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
 	@Override public boolean putInCommandlist(){return false;}

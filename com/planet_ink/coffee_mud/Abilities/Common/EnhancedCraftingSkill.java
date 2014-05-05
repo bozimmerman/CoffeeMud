@@ -38,7 +38,8 @@ import java.util.Map.Entry;
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "EnhancedCraftingSkill"; }
-	@Override public String unlocalizedName(){ return "Enhanced Crafting Skill";}
+	public final static String localizedName = CMLib.lang()._("Enhanced Crafting Skill");
+	@Override public String name() { return localizedName; }
 
 	public Hashtable parametersFields(){ return new Hashtable();}
 	@Override public String parametersFormat(){ return ""; }

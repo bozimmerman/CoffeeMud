@@ -36,7 +36,8 @@ import java.util.*;
 public class Dance_Tap extends Dance
 {
 	@Override public String ID() { return "Dance_Tap"; }
-	@Override public String unlocalizedName(){ return "Tap";}
+	public final static String localizedName = CMLib.lang()._("Tap");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected String danceOf(){return name()+" Dance";}
 

@@ -34,7 +34,8 @@ import java.util.*;
 
 public class Poison_Caffeine extends Poison {
 	@Override public String ID() { return "Poison_Caffeine"; }
-	@Override public String unlocalizedName(){ return "Poison_Hyper";}
+	public final static String localizedName = CMLib.lang()._("Poison_Hyper");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(CAFFEINATED!!)";}
 	private static final String[] triggerStrings = {"POISONHYPER"};
 	@Override public String[] triggerStrings(){return triggerStrings;}

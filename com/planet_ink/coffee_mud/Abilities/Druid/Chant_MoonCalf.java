@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_MoonCalf extends Chant
 {
 	@Override public String ID() { return "Chant_MoonCalf"; }
-	@Override public String unlocalizedName(){ return "Moon Calf";}
+	public final static String localizedName = CMLib.lang()._("Moon Calf");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Moon Calf)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}

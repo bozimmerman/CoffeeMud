@@ -40,7 +40,8 @@ import java.util.*;
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Fletching"; }
-	@Override public String unlocalizedName(){ return "Fletching";}
+	public final static String localizedName = CMLib.lang()._("Fletching");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}

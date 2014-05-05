@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_DeepThoughts extends Chant
 {
 	@Override public String ID() { return "Chant_DeepThoughts"; }
-	@Override public String unlocalizedName(){ return "Deep Thoughts";}
+	public final static String localizedName = CMLib.lang()._("Deep Thoughts");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Thinking deep thoughts)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

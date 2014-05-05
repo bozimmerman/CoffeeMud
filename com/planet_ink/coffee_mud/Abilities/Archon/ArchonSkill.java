@@ -37,7 +37,8 @@ import java.util.*;
 public class ArchonSkill extends StdAbility
 {
 	@Override public String ID() { return "ArchonSkill"; }
-	@Override public String unlocalizedName(){ return "an Archon Skill";}
+	public final static String localizedName = CMLib.lang()._("an Archon Skill");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(in the realms of greatest power)";}
 	@Override public boolean putInCommandlist(){return false;}
 	@Override protected int canAffectCode(){return 0;}

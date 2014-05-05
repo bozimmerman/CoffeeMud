@@ -42,7 +42,8 @@ public class Skill_Track extends StdSkill
 	public int nextDirection=-2;
 
 	@Override public String ID() { return "Skill_Track"; }
-	@Override public String unlocalizedName(){ return "Tracking";}
+	public final static String localizedName = CMLib.lang()._("Tracking");
+	@Override public String name() { return localizedName; }
 	protected String displayText="(Tracking)";
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

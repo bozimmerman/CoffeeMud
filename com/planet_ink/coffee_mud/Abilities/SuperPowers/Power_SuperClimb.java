@@ -35,7 +35,8 @@ import java.util.*;
 public class Power_SuperClimb extends SuperPower
 {
 	@Override public String ID() { return "Power_SuperClimb"; }
-	@Override public String unlocalizedName(){ return "Super Climb";}
+	public final static String localizedName = CMLib.lang()._("Super Climb");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

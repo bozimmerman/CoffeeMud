@@ -37,7 +37,8 @@ import java.util.*;
 public class PaladinSkill extends StdAbility
 {
 	@Override public String ID() { return "PaladinSkill"; }
-	@Override public String unlocalizedName(){ return "Paladin Skill";}
+	public final static String localizedName = CMLib.lang()._("Paladin Skill");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public boolean isAutoInvoked(){return true;}

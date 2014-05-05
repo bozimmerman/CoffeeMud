@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_Detection extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Detection"; }
-	@Override public String unlocalizedName(){ return "Detection";}
+	public final static String localizedName = CMLib.lang()._("Detection");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Detecting hidden...)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

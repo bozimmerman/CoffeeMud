@@ -37,7 +37,8 @@ import java.util.*;
 public class Druid_Bite extends StdAbility
 {
 	@Override public String ID() { return "Druid_Bite"; }
-	@Override public String unlocalizedName(){ return "Bite";}
+	public final static String localizedName = CMLib.lang()._("Bite");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"BITE"};
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_EnterBlade extends Trap_Enter
 {
 	@Override public String ID() { return "Trap_EnterBlade"; }
-	@Override public String unlocalizedName(){ return "Entry Blade Trap";}
+	public final static String localizedName = CMLib.lang()._("Entry Blade Trap");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapType(){return TRAP_PIT_BLADE;}

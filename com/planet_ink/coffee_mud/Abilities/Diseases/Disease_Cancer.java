@@ -34,7 +34,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Cancer extends Disease
 {
 	@Override public String ID() { return "Disease_Cancer"; }
-	@Override public String unlocalizedName(){ return "Cancer";}
+	public final static String localizedName = CMLib.lang()._("Cancer");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Cancer)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

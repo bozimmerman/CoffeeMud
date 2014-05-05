@@ -35,7 +35,8 @@ import java.util.*;
 public class Ranger_WoodlandLore extends StdAbility
 {
 	@Override public String ID() { return "Ranger_WoodlandLore"; }
-	@Override public String unlocalizedName(){ return "Woodland Lore";}
+	public final static String localizedName = CMLib.lang()._("Woodland Lore");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_SenseEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseEvil"; }
-	@Override public String unlocalizedName(){ return "Sense Evil";}
+	public final static String localizedName = CMLib.lang()._("Sense Evil");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Sense Evil)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

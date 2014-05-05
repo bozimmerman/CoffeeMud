@@ -37,7 +37,8 @@ import java.util.*;
 public class Play_Mystical extends Play
 {
 	@Override public String ID() { return "Play_Mystical"; }
-	@Override public String unlocalizedName(){ return "Mystical";}
+	public final static String localizedName = CMLib.lang()._("Mystical");
+	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String songOf(){return name()+" Music";}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

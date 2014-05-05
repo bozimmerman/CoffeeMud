@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_RestoreMana extends Chant
 {
 	@Override public String ID() { return "Chant_RestoreMana"; }
-	@Override public String unlocalizedName(){ return "Restore Mana";}
+	public final static String localizedName = CMLib.lang()._("Restore Mana");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

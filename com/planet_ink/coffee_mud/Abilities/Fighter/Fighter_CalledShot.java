@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_CalledShot extends Fighter_CalledStrike
 {
 	@Override public String ID() { return "Fighter_CalledShot"; }
-	@Override public String unlocalizedName(){ return "Called Shot";}
+	public final static String localizedName = CMLib.lang()._("Called Shot");
+	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

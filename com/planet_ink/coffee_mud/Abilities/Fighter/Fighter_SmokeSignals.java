@@ -37,7 +37,8 @@ import java.util.*;
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_SmokeSignals"; }
-	@Override public String unlocalizedName(){ return "Smoke Signals";}
+	public final static String localizedName = CMLib.lang()._("Smoke Signals");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

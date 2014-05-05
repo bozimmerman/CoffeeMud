@@ -35,7 +35,8 @@ import java.util.*;
 public class Fighter_MonkeyPunch extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_MonkeyPunch"; }
-	@Override public String unlocalizedName(){ return "Monkey Punch";}
+	public final static String localizedName = CMLib.lang()._("Monkey Punch");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

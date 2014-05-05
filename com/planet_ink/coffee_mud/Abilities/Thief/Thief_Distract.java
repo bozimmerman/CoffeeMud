@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_Distract extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Distract"; }
-	@Override public String unlocalizedName(){ return "Distract";}
+	public final static String localizedName = CMLib.lang()._("Distract");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Distracted)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

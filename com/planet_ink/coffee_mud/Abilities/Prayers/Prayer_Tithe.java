@@ -36,7 +36,8 @@ import java.util.*;
 public class Prayer_Tithe extends Prayer
 {
 	@Override public String ID() { return "Prayer_Tithe"; }
-	@Override public String unlocalizedName(){ return "Tithe";}
+	public final static String localizedName = CMLib.lang()._("Tithe");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Tithe)";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

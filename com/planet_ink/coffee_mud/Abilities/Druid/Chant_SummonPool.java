@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_SummonPool extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPool"; }
-	@Override public String unlocalizedName(){ return "Summon Pool";}
+	public final static String localizedName = CMLib.lang()._("Summon Pool");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}

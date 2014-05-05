@@ -36,7 +36,8 @@ import java.util.*;
 public class Thief_Caltrops extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_Caltrops"; }
-	@Override public String unlocalizedName(){ return "Caltrops";}
+	public final static String localizedName = CMLib.lang()._("Caltrops");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}

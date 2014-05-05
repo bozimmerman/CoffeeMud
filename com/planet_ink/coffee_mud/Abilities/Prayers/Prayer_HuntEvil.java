@@ -38,7 +38,8 @@ import java.util.*;
 public class Prayer_HuntEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_HuntEvil"; }
-	@Override public String unlocalizedName(){ return "Hunt Evil";}
+	public final static String localizedName = CMLib.lang()._("Hunt Evil");
+	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
 	@Override public String displayText(){return "(Hunting Evil)";}
 	protected String word(){return "evil";}

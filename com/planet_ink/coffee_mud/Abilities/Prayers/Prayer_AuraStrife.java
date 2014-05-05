@@ -37,7 +37,8 @@ import java.util.*;
 public class Prayer_AuraStrife extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraStrife"; }
-	@Override public String unlocalizedName(){ return "Aura of Strife";}
+	public final static String localizedName = CMLib.lang()._("Aura of Strife");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Aura of Strife)";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

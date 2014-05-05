@@ -35,7 +35,8 @@ import java.util.*;
 public class Thief_Footlocks extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Footlocks"; }
-	@Override public String unlocalizedName(){ return "Footlocks";}
+	public final static String localizedName = CMLib.lang()._("Footlocks");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Footlocked)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}

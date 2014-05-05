@@ -37,7 +37,8 @@ import java.util.*;
 public class Chant_VampireVine extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_VampireVine"; }
-	@Override public String unlocalizedName(){ return "Vampire Vine";}
+	public final static String localizedName = CMLib.lang()._("Vampire Vine");
+	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Vampire Vine)";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public long flags(){return Ability.FLAG_SUMMONING;}

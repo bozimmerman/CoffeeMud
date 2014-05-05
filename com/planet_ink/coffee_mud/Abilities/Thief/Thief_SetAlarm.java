@@ -37,7 +37,8 @@ import java.util.*;
 public class Thief_SetAlarm extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_SetAlarm"; }
-	@Override public String unlocalizedName(){ return "Set Alarm";}
+	public final static String localizedName = CMLib.lang()._("Set Alarm");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}

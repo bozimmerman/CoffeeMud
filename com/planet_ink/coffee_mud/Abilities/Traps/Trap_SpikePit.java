@@ -35,7 +35,8 @@ import java.util.*;
 public class Trap_SpikePit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_SpikePit"; }
-	@Override public String unlocalizedName(){ return "spike pit";}
+	public final static String localizedName = CMLib.lang()._("spike pit");
+	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 8;}
