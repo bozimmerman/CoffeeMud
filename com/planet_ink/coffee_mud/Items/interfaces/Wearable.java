@@ -702,7 +702,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(int code) { return descs[code]; }
+		public String name(int code) { return CMLib.lang()._(descs[code]); }
 		/**
 		 * Returns the name of the code
 		 * @param code the code
