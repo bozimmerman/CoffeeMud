@@ -183,7 +183,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		Ability A=null;
 		if(allows.size()>0)
 		{
-			prepend.append("\n\rAllows   : ");
+			prepend.append(_("\n\rAllows   : "));
 			String test1=null;
 			String test2=null;
 			boolean roman=false;
@@ -231,7 +231,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((lastLine>60)&&(a<(allows.size()-1)))
 				{
 					lastLine=11;
-					prepend.append("\n\rAllows   : ");
+					prepend.append(_("\n\rAllows   : "));
 				}
 				else
 				if(a<allows.size()-1)
@@ -314,8 +314,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
 				{
 					final StringBuilder prepend=new StringBuilder("");
-					prepend.append("\n\rExpertise: "+def.name);
-					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(def.allRequirements(),true));
+					prepend.append(_("\n\rExpertise: @x1",def.name));
+					prepend.append(_("\n\rRequires : @x1",CMLib.masking().maskDesc(def.allRequirements(),true)));
 					appendAllowed(prepend,def.ID);
 					str=prepend.toString()+"\n\r"+str;
 				}
@@ -333,30 +333,30 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((forMOB!=null)&&(forMOB.session()!=null))
 					wrap=forMOB.session().getWrap();
 				if(wrap <=0 ) wrap=78;
-				prepend.append("^HChar Class: ^N"+C.name()+" ^H(^N"+C.baseClass()+"^H)^N");
+				prepend.append(_("^HChar Class: ^N@x1 ^H(^N@x2^H)^N",C.name(),C.baseClass()));
 				prepend.append("\n\r");
-				prepend.append(columnHelper("^HMax-Stats :^N",C.getMaxStatDesc(),wrap));
-				prepend.append(columnHelper("^HQualifiers:^N",C.getStatQualDesc(),wrap));
-				prepend.append(columnHelper("^HRaces     :^N",C.getRaceQualDesc(),wrap));
+				prepend.append(columnHelper(_("^HMax-Stats :^N"),C.getMaxStatDesc(),wrap));
+				prepend.append(columnHelper(_("^HQualifiers:^N"),C.getStatQualDesc(),wrap));
+				prepend.append(columnHelper(_("^HRaces     :^N"),C.getRaceQualDesc(),wrap));
 				prepend.append("^H"+CMStrings.padRight(_("Prime Stat: ^N@x1",C.getPrimeStatDesc()),(wrap/2)));
-				prepend.append("^HAttack Pts: ^N"+C.getAttackDesc());
+				prepend.append(_("^HAttack Pts: ^N@x1",C.getAttackDesc()));
 				prepend.append("\n\r");
 				prepend.append("^H"+CMStrings.padRight(_("Practices : ^N@x1",C.getPracticeDesc()),(wrap/2)));
-				prepend.append("^HTrains    : ^N"+C.getTrainDesc());
+				prepend.append(_("^HTrains    : ^N@x1",C.getTrainDesc()));
 				prepend.append("\n\r");
 				prepend.append("^H"+CMStrings.padRight(_("Hit Points: ^N@x1",C.getHitPointDesc()),(wrap/2)));
-				prepend.append("^HMana      : ^N"+C.getManaDesc());
+				prepend.append(_("^HMana      : ^N@x1",C.getManaDesc()));
 				prepend.append("\n\r");
 				prepend.append("^H"+CMStrings.padRight(_("Movement  : ^N@x1",C.getMovementDesc()),(wrap/2)));
-				prepend.append("^HDamage Pts: ^N"+C.getDamageDesc());
+				prepend.append(_("^HDamage Pts: ^N@x1",C.getDamageDesc()));
 				prepend.append("\n\r");
-				prepend.append("^HWeapons   : ^N"+C.getWeaponLimitDesc());
+				prepend.append(_("^HWeapons   : ^N@x1",C.getWeaponLimitDesc()));
 				prepend.append("\n\r");
-				prepend.append("^HArmor     : ^N"+C.getArmorLimitDesc());
+				prepend.append(_("^HArmor     : ^N@x1",C.getArmorLimitDesc()));
 				prepend.append("\n\r");
-				prepend.append(columnHelper("^HBonuses   :^N",C.getOtherBonusDesc(),wrap));
-				prepend.append(columnHelper("^HLimits    :^N",C.getOtherLimitsDesc(),wrap));
-				prepend.append("^HDesc.     : ^N");
+				prepend.append(columnHelper(_("^HBonuses   :^N"),C.getOtherBonusDesc(),wrap));
+				prepend.append(columnHelper(_("^HLimits    :^N"),C.getOtherLimitsDesc(),wrap));
+				prepend.append(_("^HDesc.     : ^N"));
 				str=prepend.toString()+"\n\r"+str;
 			}
 		}
@@ -372,7 +372,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if((forMOB!=null)&&(forMOB.session()!=null))
 					wrap=forMOB.session().getWrap();
 				if(wrap <=0 ) wrap=78;
-				prepend.append("^HRace Name : ^N"+R.name()+" ^H(^N"+R.racialCategory()+"^H)^N");
+				prepend.append(_("^HRace Name : ^N@x1 ^H(^N@x2^H)^N",R.name(),R.racialCategory()));
 				prepend.append("\n\r");
 
 				String s=R.getStatAdjDesc();
@@ -380,16 +380,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					s+=((s.length()>0)?", ":"")+R.getTrainAdjDesc();
 				if(R.getPracAdjDesc().length()>0)
 					s+=((s.length()>0)?", ":"")+R.getPracAdjDesc();
-				prepend.append(columnHelper("^HStat Mods.:^N",s,wrap));
+				prepend.append(columnHelper(_("^HStat Mods.:^N"),s,wrap));
 				s=R.getSensesChgDesc();
 				if(R.getDispositionChgDesc().length()>0)
 					s+=((s.length()>0)?", ":"")+R.getDispositionChgDesc();
 				if(R.getAbilitiesDesc().length()>0)
 					s+=((s.length()>0)?", ":"")+R.getAbilitiesDesc();
-				prepend.append(columnHelper("^HAbilities :^N",s,wrap));
-				prepend.append(columnHelper("^HLanguages :^N",R.getLanguagesDesc(),wrap));
-				prepend.append(columnHelper("^HLife Exp. :^N",R.getAgingChart()[Race.AGE_ANCIENT]+" years",wrap));
-				prepend.append("^HDesc.     : ^N");
+				prepend.append(columnHelper(_("^HAbilities :^N"),s,wrap));
+				prepend.append(columnHelper(_("^HLanguages :^N"),R.getLanguagesDesc(),wrap));
+				prepend.append(columnHelper(_("^HLife Exp. :^N"),_("@x1 years",""+R.getAgingChart()[Race.AGE_ANCIENT]),wrap));
+				prepend.append(_("^HDesc.     : ^N"));
 				str=prepend.toString()+"\n\r"+str;
 			}
 		}
@@ -486,11 +486,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if((forMOB!=null)&&(forMOB.session()!=null)&&(!forMOB.session().isStopped()))
 					{
 						final Ability A2=forMOB.fetchAbility(A.ID());
-						if(A2!=null) prepend.append("   (Proficiency: "+A2.proficiency()+"%)");
+						if(A2!=null) prepend.append(_("   (Proficiency: @x1%)",""+A2.proficiency()));
 					}
 					if((A.classificationCode()&Ability.ALL_DOMAINS)>0)
 					{
-						prepend.append("\n\rDomain   : ");
+						prepend.append(_("\n\rDomain   : "));
 						final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
 						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
 					}
@@ -534,7 +534,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					for(int c=0;c<avail.size();c++)
 					{
 						if((c%4)==0)
-							prepend.append("\n\rAvailable: ");
+							prepend.append(_("\n\rAvailable: "));
 						prepend.append((avail.elementAt(c))+" ");
 					}
 
@@ -546,11 +546,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if(preReqs.size()>0)
 					{
 						final String names=CMLib.ableMapper().formatPreRequisites(preReqs);
-						prepend.append("\n\rRequires : "+names);
+						prepend.append(_("\n\rRequires : @x1",names));
 					}
 					final String mask=CMLib.ableMapper().getCommonExtraMask(A);
 					if((mask!=null)&&(mask.length()>0))
-						prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(mask,true));
+						prepend.append(_("\n\rRequires : @x1",CMLib.masking().maskDesc(mask,true)));
 					appendAllowed(prepend,A.ID());
 					if(type==Ability.ACODE_PRAYER)
 					{
@@ -569,40 +569,40 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
 						if(components!=null)
 						{
-							prepend.append("\n\rComponent: ");
+							prepend.append(_("\n\rComponent: "));
 							prepend.append(CMLib.ableMapper().getAbilityComponentDesc(forMOB,A.ID()));
 						}
-						prepend.append("\n\rUse Cost : ");
+						prepend.append(_("\n\rUse Cost : "));
 						if(A.usageType()==Ability.USAGE_NADA)
-							prepend.append("None");
+							prepend.append(_("None"));
 						if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-							prepend.append("Mana ("+getActualUsage(A,Ability.USAGE_MANA,forMOB)+") ");
+							prepend.append(_("Mana (@x1) ",getActualUsage(A,Ability.USAGE_MANA,forMOB)));
 						if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-							prepend.append("Movement ("+getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)+") ");
+							prepend.append(_("Movement (@x1) ",getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)));
 						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-							prepend.append("Hit Points ("+getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)+") ");
-						prepend.append("\n\rQuality  : ");
+							prepend.append(_("Hit Points (@x1) ",getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)));
+						prepend.append(_("\n\rQuality  : "));
 						switch(A.abstractQuality())
 						{
 						case Ability.QUALITY_MALICIOUS:
-							prepend.append("Malicious");
+							prepend.append(_("Malicious"));
 							break;
 						case Ability.QUALITY_BENEFICIAL_OTHERS:
 						case Ability.QUALITY_BENEFICIAL_SELF:
-							prepend.append("Always Beneficial");
+							prepend.append(_("Always Beneficial"));
 							break;
 						case Ability.QUALITY_OK_OTHERS:
 						case Ability.QUALITY_OK_SELF:
-							prepend.append("Sometimes Beneficial");
+							prepend.append(_("Sometimes Beneficial"));
 							break;
 						case Ability.QUALITY_INDIFFERENT:
-							prepend.append("Circumstantial");
+							prepend.append(_("Circumstantial"));
 							break;
 						}
-						prepend.append("\n\rTargets  : ");
+						prepend.append(_("\n\rTargets  : "));
 						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
 						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
-							prepend.append("Caster only");
+							prepend.append(_("Caster only"));
 						else
 						if((CMClass.basicItems().hasMoreElements())
 						&&(CMClass.mobTypes().hasMoreElements())
@@ -610,42 +610,42 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(CMClass.locales().hasMoreElements()))
 						{
 							if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
-								prepend.append("Items ");
+								prepend.append(_("Items "));
 							if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
-								prepend.append("Creatures ");
+								prepend.append(_("Creatures "));
 							if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
-								prepend.append("Exits ");
+								prepend.append(_("Exits "));
 							if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
-								prepend.append("Rooms ");
+								prepend.append(_("Rooms "));
 						}
 						else
 						if(A.abstractQuality()==Ability.QUALITY_INDIFFERENT)
-							prepend.append("Items or Rooms");
+							prepend.append(_("Items or Rooms"));
 						else
 						if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-							prepend.append("Others");
+							prepend.append(_("Others"));
 						else
 						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
 						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
-							prepend.append("Caster, or others");
-						prepend.append("\n\rRange    : ");
+							prepend.append(_("Caster, or others"));
+						prepend.append(_("\n\rRange    : "));
 						final int min=A.minRange();
 						final int max=A.maxRange();
 						if(min+max==0)
-							prepend.append("Touch, or not applicable");
+							prepend.append(_("Touch, or not applicable"));
 						else
 						{
 							if(min==0)
-								prepend.append("Touch");
+								prepend.append(_("Touch"));
 							else
-								prepend.append("Range "+min);
+								prepend.append(_("Range @x1",""+min));
 							if(max>0)
-								prepend.append(" - Range "+max);
+								prepend.append(_(" - Range @x1",""+max));
 						}
 						if((A.triggerStrings()!=null)
 						   &&(A.triggerStrings().length>0))
 						{
-							prepend.append("\n\rCommands : ");
+							prepend.append(_("\n\rCommands : "));
 							for(int i=0;i<A.triggerStrings().length;i++)
 							{
 								prepend.append(A.triggerStrings()[i]);
@@ -655,7 +655,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 					else
-						prepend.append("\n\rInvoked  : Automatic");
+						prepend.append(_("\n\rInvoked  : Automatic"));
 					str=prepend.toString()+"\n\r"+str;
 				}
 			}
