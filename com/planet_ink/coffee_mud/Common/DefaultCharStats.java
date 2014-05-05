@@ -825,10 +825,10 @@ public class DefaultCharStats implements CharStats
 				if(!errs.contains(errorMsg))
 				{
 					errs.add(errorMsg);
-					final StringBuilder str=new StringBuilder(errorMsg+"\n\r");
-					ByteArrayOutputStream stream=new ByteArrayOutputStream();
-					new Exception().printStackTrace(new PrintStream(stream));
-					str.append(new String(stream.toByteArray()));
+					final StringBuilder str=new StringBuilder(errorMsg);
+					//ByteArrayOutputStream stream=new ByteArrayOutputStream();
+					//new Exception().printStackTrace(new PrintStream(stream));
+					//str.append("\n\r"+new String(stream.toByteArray()));
 					Log.errOut("DefCharStats",str.toString());
 				}
 				curStat=currMax*7;
