@@ -172,7 +172,7 @@ public class CrossRefTreeMap<T, K>
 		tKs=map1.get(t);
 		if(tKs==null)
 		{
-			tKs=new TreeSet<K>();
+			tKs=new TreeSet<K>(comparator);
 			map1.put(t, tKs);
 		}
 		TreeSet<T> kTs=map2.get(k);
@@ -181,7 +181,7 @@ public class CrossRefTreeMap<T, K>
 		kTs=map2.get(k);
 		if(kTs==null)
 		{
-			kTs=new TreeSet<T>();
+			kTs=new TreeSet<T>(comparator);
 			map2.put(k, kTs);
 		}
 		if(!kTs.contains(t))
