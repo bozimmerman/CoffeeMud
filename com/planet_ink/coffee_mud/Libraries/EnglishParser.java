@@ -1761,7 +1761,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
 						   ||E.Name().equalsIgnoreCase(srchStr))
-							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return E;
 				}
@@ -1773,7 +1773,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					if((E!=null)
 					   &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					   &&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
 				}
@@ -1815,7 +1815,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if(E.ID().equalsIgnoreCase(srchStr)
 						   ||E.name().equalsIgnoreCase(srchStr)
 						   ||E.Name().equalsIgnoreCase(srchStr))
-							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									matches.addElement(E);
 				}
@@ -1827,7 +1827,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					if((E!=null)
 					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					   &&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							matches.addElement(E);
 				}
@@ -1874,7 +1874,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E.ID().equalsIgnoreCase(srchStr)
 					||E.Name().equalsIgnoreCase(srchStr)
 					||E.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+						if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return E;
 			}
@@ -1887,7 +1887,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				E=list.get(string);
 				if((E!=null)
 				&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-				&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+				&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 					if((--myOccurrance)<=0)
 						return E;
 			}
@@ -2056,7 +2056,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						&&(I.ID().equalsIgnoreCase(srchStr)
 						   ||(I.Name().equalsIgnoreCase(srchStr))
 						   ||(I.name().equalsIgnoreCase(srchStr))))
-							if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+							if((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return I;
 					}
@@ -2065,7 +2065,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if(E.ID().equalsIgnoreCase(srchStr)
 						||E.Name().equalsIgnoreCase(srchStr)
 						||E.name().equalsIgnoreCase(srchStr))
-							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return E;
 				}
@@ -2080,14 +2080,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if((I.container()==goodLocation)
 						&&(filter.passesFilter(I))
 						&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
-						   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+						   &&((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
 							if((--myOccurrance)<=0)
 								return I;
 					}
 					else
 					if((E!=null)
 					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-					&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
 				}
