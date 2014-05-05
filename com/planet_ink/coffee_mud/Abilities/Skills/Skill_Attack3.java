@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_Attack3 extends Skill_Attack2
 {
 	@Override public String ID() { return "Skill_Attack3"; }
-	public final static String localizedName = CMLib.lang()._("Third Attack");
+	private final static String localizedName = CMLib.lang()._("Third Attack");
 	@Override public String name() { return localizedName; }
 	@Override protected int attackToNerf(){ return 3;}
 	@Override protected int roundToNerf(){ return 1;}

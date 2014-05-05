@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_SongShield extends Spell
 {
 	@Override public String ID() { return "Spell_SongShield"; }
-	public final static String localizedName = CMLib.lang()._("Song Shield");
+	private final static String localizedName = CMLib.lang()._("Song Shield");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Song Shield)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Song Shield)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}

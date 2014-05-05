@@ -37,9 +37,10 @@ public class Skill_Slip extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Slip"; }
-	public final static String localizedName = CMLib.lang()._("Slip");
+	private final static String localizedName = CMLib.lang()._("Slip");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Slipped)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Slipped)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

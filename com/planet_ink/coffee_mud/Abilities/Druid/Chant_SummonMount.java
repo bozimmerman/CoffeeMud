@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_SummonMount extends Chant
 {
 	@Override public String ID() { return "Chant_SummonMount"; }
-	public final static String localizedName = CMLib.lang()._("Summon Mount");
+	private final static String localizedName = CMLib.lang()._("Summon Mount");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Mount)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Mount)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

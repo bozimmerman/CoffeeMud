@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_NeutralizeLand extends Prayer
 {
 	@Override public String ID() { return "Prayer_NeutralizeLand"; }
-	public final static String localizedName = CMLib.lang()._("Neutralize Land");
+	private final static String localizedName = CMLib.lang()._("Neutralize Land");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

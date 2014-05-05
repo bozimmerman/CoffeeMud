@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Permanency extends Spell
 {
 	@Override public String ID() { return "Spell_Permanency"; }
-	public final static String localizedName = CMLib.lang()._("Permanency");
+	private final static String localizedName = CMLib.lang()._("Permanency");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}

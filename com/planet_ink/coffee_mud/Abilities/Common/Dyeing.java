@@ -37,7 +37,7 @@ import java.util.*;
 public class Dyeing extends CommonSkill
 {
 	@Override public String ID() { return "Dyeing"; }
-	public final static String localizedName = CMLib.lang()._("Dyeing");
+	private final static String localizedName = CMLib.lang()._("Dyeing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DYE","DYEING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }

@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_LimbRack extends Spell
 {
 	@Override public String ID() { return "Spell_LimbRack"; }
-	public final static String localizedName = CMLib.lang()._("Limb Rack");
+	private final static String localizedName = CMLib.lang()._("Limb Rack");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Being pulled apart)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Being pulled apart)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

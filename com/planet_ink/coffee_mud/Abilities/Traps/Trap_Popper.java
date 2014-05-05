@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Popper extends StdTrap
 {
 	@Override public String ID() { return "Trap_Popper"; }
-	public final static String localizedName = CMLib.lang()._("popping noise");
+	private final static String localizedName = CMLib.lang()._("popping noise");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

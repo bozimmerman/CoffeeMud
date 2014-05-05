@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_DivineGuidance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineGuidance"; }
-	public final static String localizedName = CMLib.lang()._("Divine Guidance");
+	private final static String localizedName = CMLib.lang()._("Divine Guidance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Awaiting Divine Guidance)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Awaiting Divine Guidance)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

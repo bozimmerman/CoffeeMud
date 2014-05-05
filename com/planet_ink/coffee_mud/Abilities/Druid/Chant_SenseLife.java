@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_SenseLife extends Chant
 {
 	@Override public String ID() { return "Chant_SenseLife"; }
-	public final static String localizedName = CMLib.lang()._("Life Echoes");
+	private final static String localizedName = CMLib.lang()._("Life Echoes");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Life Echoes)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Life Echoes)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected Room lastRoom=null;

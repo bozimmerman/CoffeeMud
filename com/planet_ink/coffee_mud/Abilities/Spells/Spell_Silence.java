@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Silence extends Spell
 {
 	@Override public String ID() { return "Spell_Silence"; }
-	public final static String localizedName = CMLib.lang()._("Silence");
+	private final static String localizedName = CMLib.lang()._("Silence");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Silence spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Silence spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

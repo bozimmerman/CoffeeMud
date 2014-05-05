@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_DiviningEye extends Spell
 {
 	@Override public String ID() { return "Spell_DiviningEye"; }
-	public final static String localizedName = CMLib.lang()._("Divining Eye");
+	private final static String localizedName = CMLib.lang()._("Divining Eye");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

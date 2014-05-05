@@ -36,9 +36,10 @@ import java.util.*;
 public class Thief_HideInPlainSight extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_HideInPlainSight"; }
-	public final static String localizedName = CMLib.lang()._("Hide In Plain Sight");
+	private final static String localizedName = CMLib.lang()._("Hide In Plain Sight");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Hiding in plain sight)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Hiding in plain sight)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

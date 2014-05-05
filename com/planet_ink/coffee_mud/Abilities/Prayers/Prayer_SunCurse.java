@@ -36,12 +36,13 @@ import java.util.*;
 public class Prayer_SunCurse extends Prayer
 {
 	@Override public String ID() { return "Prayer_SunCurse"; }
-	public final static String localizedName = CMLib.lang()._("Sun Curse");
+	private final static String localizedName = CMLib.lang()._("Sun Curse");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){ return "(Sun Curse)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sun Curse)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 

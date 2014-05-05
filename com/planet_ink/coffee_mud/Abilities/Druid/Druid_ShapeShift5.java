@@ -35,7 +35,7 @@ import java.util.*;
 public class Druid_ShapeShift5 extends Druid_ShapeShift
 {
 	@Override public String ID() { return "Druid_ShapeShift5"; }
-	public final static String localizedName = CMLib.lang()._("Fifth Totem");
+	private final static String localizedName = CMLib.lang()._("Fifth Totem");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return empty;}

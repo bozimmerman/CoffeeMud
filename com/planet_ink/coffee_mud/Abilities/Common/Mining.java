@@ -36,7 +36,7 @@ import java.util.*;
 public class Mining extends GatheringSkill
 {
 	@Override public String ID() { return "Mining"; }
-	public final static String localizedName = CMLib.lang()._("Mining");
+	private final static String localizedName = CMLib.lang()._("Mining");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MINE","MINING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DisenchantWand extends Spell
 {
 	@Override public String ID() { return "Spell_DisenchantWand"; }
-	public final static String localizedName = CMLib.lang()._("Disenchant Wand");
+	private final static String localizedName = CMLib.lang()._("Disenchant Wand");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}

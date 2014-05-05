@@ -37,10 +37,10 @@ import java.util.*;
 public class Fighter_WeaponSharpening extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponSharpening"; }
-	public final static String localizedName = CMLib.lang()._("Weapon Sharpening");
+	private final static String localizedName = CMLib.lang()._("Weapon Sharpening");
 	@Override public String name() { return localizedName; }
 	protected String displayString="Sharpening";
-	@Override public String displayText(){ return "("+displayString+")";}
+	@Override public String displayText() { return _("("+displayString+")"); }
 	private static final String[] triggerStrings =_i(new String[] {"WEAPONSHARPENING","SHARPEN"});
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

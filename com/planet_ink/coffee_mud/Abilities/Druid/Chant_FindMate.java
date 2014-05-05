@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FindMate extends Chant
 {
 	@Override public String ID() { return "Chant_FindMate"; }
-	public final static String localizedName = CMLib.lang()._("Find Mate");
+	private final static String localizedName = CMLib.lang()._("Find Mate");
 	@Override public String name() { return localizedName; }
 	protected String displayText="(Tracking a mate)";
 	@Override public String displayText(){ return displayText;}

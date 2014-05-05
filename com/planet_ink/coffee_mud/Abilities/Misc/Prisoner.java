@@ -37,9 +37,10 @@ import java.util.*;
 public class Prisoner extends StdAbility
 {
 	@Override public String ID() { return "Prisoner"; }
-	public final static String localizedName = CMLib.lang()._("Prisoner");
+	private final static String localizedName = CMLib.lang()._("Prisoner");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Prisoner's Geas)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Prisoner's Geas)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 

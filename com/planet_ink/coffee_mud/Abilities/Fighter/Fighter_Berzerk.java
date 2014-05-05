@@ -37,9 +37,10 @@ import java.util.*;
 public class Fighter_Berzerk extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Berzerk"; }
-	public final static String localizedName = CMLib.lang()._("Berzerk");
+	private final static String localizedName = CMLib.lang()._("Berzerk");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Berzerk)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Berzerk)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"BERZERK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

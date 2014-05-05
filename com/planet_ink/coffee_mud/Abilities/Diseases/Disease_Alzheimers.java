@@ -36,9 +36,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Alzheimers extends Disease
 {
 	@Override public String ID() { return "Disease_Alzheimers"; }
-	public final static String localizedName = CMLib.lang()._("Alzheimers");
+	private final static String localizedName = CMLib.lang()._("Alzheimers");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Alzheimers)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Alzheimers)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

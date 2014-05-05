@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_MindLight extends Spell
 {
 	@Override public String ID() { return "Spell_MindLight"; }
-	public final static String localizedName = CMLib.lang()._("Mind Light");
+	private final static String localizedName = CMLib.lang()._("Mind Light");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Mind Light spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Mind Light spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

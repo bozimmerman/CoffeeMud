@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_FlamingSword extends Spell
 {
 	@Override public String ID() { return "Spell_FlamingSword"; }
-	public final static String localizedName = CMLib.lang()._("Flaming Sword");
+	private final static String localizedName = CMLib.lang()._("Flaming Sword");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

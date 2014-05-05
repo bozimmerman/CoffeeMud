@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Square extends Dance
 {
 	@Override public String ID() { return "Dance_Square"; }
-	public final static String localizedName = CMLib.lang()._("Square");
+	private final static String localizedName = CMLib.lang()._("Square");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardDanceInvoke(){return true;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_ModerateInfusion extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_ModerateInfusion"; }
-	public final static String localizedName = CMLib.lang()._("Moderate Infusion");
+	private final static String localizedName = CMLib.lang()._("Moderate Infusion");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FoolsGold extends Spell
 {
 	@Override public String ID() { return "Spell_FoolsGold"; }
-	public final static String localizedName = CMLib.lang()._("Fools Gold");
+	private final static String localizedName = CMLib.lang()._("Fools Gold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

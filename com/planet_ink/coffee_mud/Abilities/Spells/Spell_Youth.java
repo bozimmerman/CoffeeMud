@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Youth extends Spell
 {
 	@Override public String ID() { return "Spell_Youth"; }
-	public final static String localizedName = CMLib.lang()._("Youth");
+	private final static String localizedName = CMLib.lang()._("Youth");
 	@Override public String name() { return localizedName; }
 	public int overridemana(){return Ability.COST_ALL;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

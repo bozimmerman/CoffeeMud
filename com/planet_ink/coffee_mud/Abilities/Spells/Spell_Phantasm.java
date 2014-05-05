@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Phantasm extends Spell
 {
 	@Override public String ID() { return "Spell_Phantasm"; }
-	public final static String localizedName = CMLib.lang()._("Phantasm");
+	private final static String localizedName = CMLib.lang()._("Phantasm");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Phantasm)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Phantasm)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

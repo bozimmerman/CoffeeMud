@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Water extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Water"; }
-	public final static String localizedName = CMLib.lang()._("water bomb");
+	private final static String localizedName = CMLib.lang()._("water bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 1;}
 	@Override public String requiresToSet(){return "a water container";}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CatchProjectile extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CatchProjectile"; }
-	public final static String localizedName = CMLib.lang()._("Catch Projectile");
+	private final static String localizedName = CMLib.lang()._("Catch Projectile");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

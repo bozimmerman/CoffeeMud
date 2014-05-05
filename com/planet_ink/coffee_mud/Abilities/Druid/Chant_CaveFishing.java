@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CaveFishing extends Chant
 {
 	@Override public String ID() { return "Chant_CaveFishing"; }
-	public final static String localizedName = CMLib.lang()._("Cave Fishing");
+	private final static String localizedName = CMLib.lang()._("Cave Fishing");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

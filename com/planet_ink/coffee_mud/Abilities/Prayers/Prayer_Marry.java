@@ -39,7 +39,7 @@ import java.util.*;
 public class Prayer_Marry extends Prayer
 {
 	@Override public String ID() { return "Prayer_Marry"; }
-	public final static String localizedName = CMLib.lang()._("Marry");
+	private final static String localizedName = CMLib.lang()._("Marry");
 	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}

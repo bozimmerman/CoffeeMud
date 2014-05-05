@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_DualParry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_DualParry"; }
-	public final static String localizedName = CMLib.lang()._("Dual Parry");
+	private final static String localizedName = CMLib.lang()._("Dual Parry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

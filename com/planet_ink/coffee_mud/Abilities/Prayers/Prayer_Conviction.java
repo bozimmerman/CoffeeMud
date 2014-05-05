@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_Conviction extends Prayer
 {
 	@Override public String ID() { return "Prayer_Conviction"; }
-	public final static String localizedName = CMLib.lang()._("Conviction");
+	private final static String localizedName = CMLib.lang()._("Conviction");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Conviction)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Conviction)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

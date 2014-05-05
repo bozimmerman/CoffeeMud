@@ -36,7 +36,7 @@ import java.util.*;
 public class Scalp extends CommonSkill
 {
 	@Override public String ID() { return "Scalp"; }
-	public final static String localizedName = CMLib.lang()._("Scalping");
+	private final static String localizedName = CMLib.lang()._("Scalping");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCALP","SCALPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

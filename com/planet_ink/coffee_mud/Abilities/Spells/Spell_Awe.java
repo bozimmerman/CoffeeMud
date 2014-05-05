@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_Awe extends Spell
 {
 	@Override public String ID() { return "Spell_Awe"; }
-	public final static String localizedName = CMLib.lang()._("Awe");
+	private final static String localizedName = CMLib.lang()._("Awe");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Awe spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Awe spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

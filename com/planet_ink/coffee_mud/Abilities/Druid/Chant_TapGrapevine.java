@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_TapGrapevine extends Chant
 {
 	@Override public String ID() { return "Chant_TapGrapevine"; }
-	public final static String localizedName = CMLib.lang()._("Tap Grapevine");
+	private final static String localizedName = CMLib.lang()._("Tap Grapevine");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

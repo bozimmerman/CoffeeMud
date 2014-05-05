@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Enthrall extends Spell
 {
 	@Override public String ID() { return "Spell_Enthrall"; }
-	public final static String localizedName = CMLib.lang()._("Enthrall");
+	private final static String localizedName = CMLib.lang()._("Enthrall");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Enthralled)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Enthralled)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

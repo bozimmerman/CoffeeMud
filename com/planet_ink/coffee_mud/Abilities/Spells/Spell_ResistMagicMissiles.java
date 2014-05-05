@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_ResistMagicMissiles extends Spell
 {
 	@Override public String ID() { return "Spell_ResistMagicMissiles"; }
-	public final static String localizedName = CMLib.lang()._("Resist Magic Missiles");
+	private final static String localizedName = CMLib.lang()._("Resist Magic Missiles");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Resist Magic Missiles)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Magic Missiles)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}

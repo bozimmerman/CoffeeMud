@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_CrystalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_CrystalGrowth"; }
-	public final static String localizedName = CMLib.lang()._("Crystal Growth");
+	private final static String localizedName = CMLib.lang()._("Crystal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override protected int canAffectCode(){return 0;}

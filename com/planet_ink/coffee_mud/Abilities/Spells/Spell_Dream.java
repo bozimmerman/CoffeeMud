@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Dream extends Spell
 {
 	@Override public String ID() { return "Spell_Dream"; }
-	public final static String localizedName = CMLib.lang()._("Dream");
+	private final static String localizedName = CMLib.lang()._("Dream");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

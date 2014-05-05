@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Shamblermorph extends Chant
 {
 	@Override public String ID() { return "Chant_Shamblermorph"; }
-	public final static String localizedName = CMLib.lang()._("Shamblermorph");
+	private final static String localizedName = CMLib.lang()._("Shamblermorph");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Shamblermorph)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Shamblermorph)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected static Race treeForm=null;

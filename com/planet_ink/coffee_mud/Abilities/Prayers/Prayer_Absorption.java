@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_Absorption extends Prayer
 {
 	@Override public String ID() { return "Prayer_Absorption"; }
-	public final static String localizedName = CMLib.lang()._("Absorption");
+	private final static String localizedName = CMLib.lang()._("Absorption");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Absorption)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Absorption)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,7 @@ public class Thief_SilentLoot extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentLoot"; }
 	@Override public String displayText() {return "(Silent AutoLoot)";}
-	public final static String localizedName = CMLib.lang()._("Silent AutoLoot");
+	private final static String localizedName = CMLib.lang()._("Silent AutoLoot");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Avalanche extends StdTrap
 {
 	@Override public String ID() { return "Trap_Avalanche"; }
-	public final static String localizedName = CMLib.lang()._("avalanche");
+	private final static String localizedName = CMLib.lang()._("avalanche");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

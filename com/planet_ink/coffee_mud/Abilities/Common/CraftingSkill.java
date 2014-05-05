@@ -39,7 +39,7 @@ import java.util.*;
 public class CraftingSkill extends GatheringSkill
 {
 	@Override public String ID() { return "CraftingSkill"; }
-	public final static String localizedName = CMLib.lang()._("Crafting Skill");
+	private final static String localizedName = CMLib.lang()._("Crafting Skill");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
 	@Override public String accountForYourself(){return name()+" requires: "+supportedResourceString();}

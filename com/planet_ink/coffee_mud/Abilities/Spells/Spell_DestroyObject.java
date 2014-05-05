@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DestroyObject extends Spell
 {
 	@Override public String ID() { return "Spell_DestroyObject"; }
-	public final static String localizedName = CMLib.lang()._("Destroy Object");
+	private final static String localizedName = CMLib.lang()._("Destroy Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

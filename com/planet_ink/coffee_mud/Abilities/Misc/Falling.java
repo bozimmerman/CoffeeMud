@@ -37,9 +37,10 @@ import java.util.*;
 public class Falling extends StdAbility
 {
 	@Override public String ID() { return "Falling"; }
-	public final static String localizedName = CMLib.lang()._("Falling");
+	private final static String localizedName = CMLib.lang()._("Falling");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Falling)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Falling)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	boolean temporarilyDisable=false;

@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_Blindsight extends Prayer
 {
 	@Override public String ID() { return "Prayer_Blindsight"; }
-	public final static String localizedName = CMLib.lang()._("Blindsight");
+	private final static String localizedName = CMLib.lang()._("Blindsight");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Blindsight)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blindsight)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

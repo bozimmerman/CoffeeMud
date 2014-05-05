@@ -41,7 +41,7 @@ import java.util.*;
 public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Sculpting"; }
-	public final static String localizedName = CMLib.lang()._("Sculpting");
+	private final static String localizedName = CMLib.lang()._("Sculpting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCULPT","SCULPTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

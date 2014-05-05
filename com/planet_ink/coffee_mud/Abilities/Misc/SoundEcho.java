@@ -38,7 +38,7 @@ import java.util.*;
 public class SoundEcho extends StdAbility
 {
 	@Override public String ID() { return "SoundEcho"; }
-	public final static String localizedName = CMLib.lang()._("Sound Echo");
+	private final static String localizedName = CMLib.lang()._("Sound Echo");
 	@Override public String name() { return localizedName; }
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}

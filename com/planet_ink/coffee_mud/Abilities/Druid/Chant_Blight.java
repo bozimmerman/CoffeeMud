@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Blight extends Chant
 {
 	@Override public String ID() { return "Chant_Blight"; }
-	public final static String localizedName = CMLib.lang()._("Blight");
+	private final static String localizedName = CMLib.lang()._("Blight");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Blight)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blight)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

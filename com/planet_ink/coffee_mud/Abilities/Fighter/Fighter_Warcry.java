@@ -36,9 +36,10 @@ import java.util.*;
 public class Fighter_Warcry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Warcry"; }
-	public final static String localizedName = CMLib.lang()._("War Cry");
+	private final static String localizedName = CMLib.lang()._("War Cry");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(War Cry)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(War Cry)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings =_i(new String[] {"WARCRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

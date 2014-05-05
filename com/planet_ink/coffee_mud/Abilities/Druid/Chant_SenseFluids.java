@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_SenseFluids extends Chant_SensePlants
 {
 	@Override public String ID() { return "Chant_SenseFluids"; }
-	public final static String localizedName = CMLib.lang()._("Sense Fluids");
+	private final static String localizedName = CMLib.lang()._("Sense Fluids");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Sensing Fluids)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Fluids)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

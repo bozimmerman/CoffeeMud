@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_SpyingStone extends Spell
 {
 	@Override public String ID() { return "Spell_SpyingStone"; }
-	public final static String localizedName = CMLib.lang()._("Spying Stone");
+	private final static String localizedName = CMLib.lang()._("Spying Stone");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Spying Stone)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Spying Stone)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

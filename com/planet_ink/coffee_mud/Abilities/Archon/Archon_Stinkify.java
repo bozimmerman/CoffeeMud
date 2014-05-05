@@ -37,7 +37,7 @@ public class Archon_Stinkify extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Stinkify"; }
-	public final static String localizedName = CMLib.lang()._("Stinkify");
+	private final static String localizedName = CMLib.lang()._("Stinkify");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

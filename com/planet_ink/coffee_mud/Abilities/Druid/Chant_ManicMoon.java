@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_ManicMoon extends Chant
 {
 	@Override public String ID() { return "Chant_ManicMoon"; }
-	public final static String localizedName = CMLib.lang()._("Manic Moon");
+	private final static String localizedName = CMLib.lang()._("Manic Moon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Manic Moon)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Manic Moon)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

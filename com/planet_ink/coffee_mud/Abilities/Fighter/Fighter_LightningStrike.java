@@ -37,9 +37,10 @@ import java.util.*;
 public class Fighter_LightningStrike extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_LightningStrike"; }
-	public final static String localizedName = CMLib.lang()._("Lightning Strike");
+	private final static String localizedName = CMLib.lang()._("Lightning Strike");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Exhausted)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Exhausted)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"LIGHTNINGSTRIKE","LSTRIKE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

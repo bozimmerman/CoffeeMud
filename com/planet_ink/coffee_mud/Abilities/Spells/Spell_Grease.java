@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Grease extends Spell
 {
 	@Override public String ID() { return "Spell_Grease"; }
-	public final static String localizedName = CMLib.lang()._("Grease");
+	private final static String localizedName = CMLib.lang()._("Grease");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Covered in Grease)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Covered in Grease)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

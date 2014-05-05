@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_HolyWind extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyWind"; }
-	public final static String localizedName = CMLib.lang()._("Holy Wind");
+	private final static String localizedName = CMLib.lang()._("Holy Wind");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Blown Down)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blown Down)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

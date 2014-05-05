@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CreateIdol extends Prayer
 {
 	@Override public String ID() { return "Prayer_CreateIdol"; }
-	public final static String localizedName = CMLib.lang()._("Create Idol");
+	private final static String localizedName = CMLib.lang()._("Create Idol");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}

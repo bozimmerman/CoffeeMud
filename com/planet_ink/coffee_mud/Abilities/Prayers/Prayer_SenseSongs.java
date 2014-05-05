@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_SenseSongs extends Prayer_SenseProfessions
 {
 	@Override public String ID() { return "Prayer_SenseSongs"; }
-	public final static String localizedName = CMLib.lang()._("Sense Songs");
+	private final static String localizedName = CMLib.lang()._("Sense Songs");
 	@Override public String name() { return localizedName; }
 	@Override protected int senseWhat() { return ACODE_SONG; }
 	@Override protected String senseWhatStr() { return "songs"; }

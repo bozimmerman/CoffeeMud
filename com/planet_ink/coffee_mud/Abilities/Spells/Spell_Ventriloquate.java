@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Ventriloquate extends Spell
 {
 	@Override public String ID() { return "Spell_Ventriloquate"; }
-	public final static String localizedName = CMLib.lang()._("Ventriloquate");
+	private final static String localizedName = CMLib.lang()._("Ventriloquate");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

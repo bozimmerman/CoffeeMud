@@ -35,7 +35,7 @@ import java.util.*;
 public class Ranger_WoodlandLore extends StdAbility
 {
 	@Override public String ID() { return "Ranger_WoodlandLore"; }
-	public final static String localizedName = CMLib.lang()._("Woodland Lore");
+	private final static String localizedName = CMLib.lang()._("Woodland Lore");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

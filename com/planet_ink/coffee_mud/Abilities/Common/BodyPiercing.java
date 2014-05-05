@@ -37,7 +37,7 @@ import java.util.*;
 public class BodyPiercing extends CommonSkill
 {
 	@Override public String ID() { return "BodyPiercing"; }
-	public final static String localizedName = CMLib.lang()._("Body Piercing");
+	private final static String localizedName = CMLib.lang()._("Body Piercing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BODYPIERCE","BODYPIERCING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

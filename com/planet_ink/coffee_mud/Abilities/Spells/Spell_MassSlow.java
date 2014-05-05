@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassSlow extends Spell
 {
 	@Override public String ID() { return "Spell_MassSlow"; }
-	public final static String localizedName = CMLib.lang()._("Mass Slow");
+	private final static String localizedName = CMLib.lang()._("Mass Slow");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

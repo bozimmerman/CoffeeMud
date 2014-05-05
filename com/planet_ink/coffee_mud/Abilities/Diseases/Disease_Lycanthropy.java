@@ -37,9 +37,10 @@ import java.util.*;
 public class Disease_Lycanthropy extends Disease
 {
 	@Override public String ID() { return "Disease_Lycanthropy"; }
-	public final static String localizedName = CMLib.lang()._("Lycanthropy");
+	private final static String localizedName = CMLib.lang()._("Lycanthropy");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Lycanthropy)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Lycanthropy)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

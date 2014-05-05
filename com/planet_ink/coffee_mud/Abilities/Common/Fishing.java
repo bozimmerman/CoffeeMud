@@ -36,7 +36,7 @@ import java.util.*;
 public class Fishing extends GatheringSkill
 {
 	@Override public String ID() { return "Fishing"; }
-	public final static String localizedName = CMLib.lang()._("Fishing");
+	private final static String localizedName = CMLib.lang()._("Fishing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"FISH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_InsatiableThirst extends Spell
 {
 	@Override public String ID() { return "Spell_InsatiableThirst"; }
-	public final static String localizedName = CMLib.lang()._("Insatiable Thirst");
+	private final static String localizedName = CMLib.lang()._("Insatiable Thirst");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Insatiable Thirst)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Insatiable Thirst)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

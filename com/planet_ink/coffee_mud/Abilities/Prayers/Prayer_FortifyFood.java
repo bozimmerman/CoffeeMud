@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_FortifyFood extends Prayer
 {
 	@Override public String ID() { return "Prayer_FortifyFood"; }
-	public final static String localizedName = CMLib.lang()._("Nourishing Food");
+	private final static String localizedName = CMLib.lang()._("Nourishing Food");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

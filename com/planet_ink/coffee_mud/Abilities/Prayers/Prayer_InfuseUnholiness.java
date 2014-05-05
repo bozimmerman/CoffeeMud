@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_InfuseUnholiness extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseUnholiness"; }
-	public final static String localizedName = CMLib.lang()._("Infuse Unholiness");
+	private final static String localizedName = CMLib.lang()._("Infuse Unholiness");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Infused Unholiness)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Infused Unholiness)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

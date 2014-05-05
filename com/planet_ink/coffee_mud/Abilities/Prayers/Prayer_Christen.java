@@ -39,7 +39,7 @@ import java.util.*;
 public class Prayer_Christen extends Prayer
 {
 	@Override public String ID() { return "Prayer_Christen"; }
-	public final static String localizedName = CMLib.lang()._("Christen");
+	private final static String localizedName = CMLib.lang()._("Christen");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}

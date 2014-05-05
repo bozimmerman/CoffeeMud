@@ -42,9 +42,10 @@ public class Regeneration extends StdAbility implements HealthCondition
 	protected int regenTick=maxTickDown;
 
 	@Override public String ID() { return "Regeneration"; }
-	public final static String localizedName = CMLib.lang()._("Stat Regeneration");
+	private final static String localizedName = CMLib.lang()._("Stat Regeneration");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Stat Regeneration)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Stat Regeneration)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}

@@ -36,7 +36,7 @@ public class Fighter_CoverDefence extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_CoverDefence"; }
-	public final static String localizedName = CMLib.lang()._("Cover Defence");
+	private final static String localizedName = CMLib.lang()._("Cover Defence");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

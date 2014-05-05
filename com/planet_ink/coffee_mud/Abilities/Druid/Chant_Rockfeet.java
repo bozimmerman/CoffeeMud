@@ -36,9 +36,10 @@ import java.util.*;
 public class Chant_Rockfeet extends Chant
 {
 	@Override public String ID() { return "Chant_Rockfeet"; }
-	public final static String localizedName = CMLib.lang()._("Rockfeet");
+	private final static String localizedName = CMLib.lang()._("Rockfeet");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Rockfeet)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Rockfeet)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 0;}

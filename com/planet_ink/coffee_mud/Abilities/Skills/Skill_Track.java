@@ -42,7 +42,7 @@ public class Skill_Track extends StdSkill
 	public int nextDirection=-2;
 
 	@Override public String ID() { return "Skill_Track"; }
-	public final static String localizedName = CMLib.lang()._("Tracking");
+	private final static String localizedName = CMLib.lang()._("Tracking");
 	@Override public String name() { return localizedName; }
 	protected String displayText="(Tracking)";
 	@Override public String displayText(){ return displayText;}

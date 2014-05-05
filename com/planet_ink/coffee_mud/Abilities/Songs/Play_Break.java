@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Break extends Play
 {
 	@Override public String ID() { return "Play_Break"; }
-	public final static String localizedName = CMLib.lang()._("Break");
+	private final static String localizedName = CMLib.lang()._("Break");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Bury extends Prayer
 {
 	@Override public String ID() { return "Prayer_Bury"; }
-	public final static String localizedName = CMLib.lang()._("Bury");
+	private final static String localizedName = CMLib.lang()._("Bury");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_FungusFeet extends Chant implements DiseaseAffect
 {
 	@Override public String ID() { return "Chant_FungusFeet"; }
-	public final static String localizedName = CMLib.lang()._("Fungus Feet");
+	private final static String localizedName = CMLib.lang()._("Fungus Feet");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Fungus Feet)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Fungus Feet)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int abilityCode(){return 0;}

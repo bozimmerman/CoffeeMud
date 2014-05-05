@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_ChainStrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_ChainStrike"; }
-	public final static String localizedName = CMLib.lang()._("Chain Strike");
+	private final static String localizedName = CMLib.lang()._("Chain Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_AIRBASED;}

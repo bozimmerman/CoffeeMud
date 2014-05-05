@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_Chirgury extends StdSkill
 {
 	@Override public String ID() { return "Skill_Chirgury"; }
-	public final static String localizedName = CMLib.lang()._("Chirurgy");
+	private final static String localizedName = CMLib.lang()._("Chirurgy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}

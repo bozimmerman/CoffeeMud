@@ -36,7 +36,7 @@ import java.util.*;
 public class BardSkill extends StdAbility
 {
 	@Override public String ID() { return "BardSkill"; }
-	public final static String localizedName = CMLib.lang()._("a Bard Skill");
+	private final static String localizedName = CMLib.lang()._("a Bard Skill");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){	return Ability.ACODE_SKILL;}

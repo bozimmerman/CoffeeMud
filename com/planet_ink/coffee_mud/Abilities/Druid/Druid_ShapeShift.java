@@ -37,7 +37,7 @@ import java.util.*;
 public class Druid_ShapeShift extends StdAbility
 {
 	@Override public String ID() { return "Druid_ShapeShift"; }
-	public final static String localizedName = CMLib.lang()._("Shape Shift");
+	private final static String localizedName = CMLib.lang()._("Shape Shift");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

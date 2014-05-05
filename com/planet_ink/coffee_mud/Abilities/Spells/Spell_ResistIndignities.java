@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_ResistIndignities extends Spell
 {
 	@Override public String ID() { return "Spell_ResistIndignities"; }
-	public final static String localizedName = CMLib.lang()._("Resist Indignities");
+	private final static String localizedName = CMLib.lang()._("Resist Indignities");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Resist Indignities)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Indignities)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}

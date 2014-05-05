@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_PlantChoke extends Chant
 {
 	@Override public String ID() { return "Chant_PlantChoke"; }
-	public final static String localizedName = CMLib.lang()._("Plant Choke");
+	private final static String localizedName = CMLib.lang()._("Plant Choke");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Plant Choke)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Plant Choke)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_SlowFall extends BardSkill
 {
 	@Override public String ID() { return "Skill_SlowFall"; }
-	public final static String localizedName = CMLib.lang()._("Slow Fall");
+	private final static String localizedName = CMLib.lang()._("Slow Fall");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return activated?"(Slow Fall)":"";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

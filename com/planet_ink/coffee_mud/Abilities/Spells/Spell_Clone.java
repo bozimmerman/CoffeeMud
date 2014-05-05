@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Clone extends Spell
 {
 	@Override public String ID() { return "Spell_Clone"; }
-	public final static String localizedName = CMLib.lang()._("Clone");
+	private final static String localizedName = CMLib.lang()._("Clone");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Clone)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Clone)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

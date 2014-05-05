@@ -40,7 +40,7 @@ import java.util.*;
 public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "InstrumentMaking"; }
-	public final static String localizedName = CMLib.lang()._("Instrument Making");
+	private final static String localizedName = CMLib.lang()._("Instrument Making");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"INSTRUMENTMAKING","INSTRUMENTMAKE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_PoisonGas extends StdTrap
 {
 	@Override public String ID() { return "Trap_PoisonGas"; }
-	public final static String localizedName = CMLib.lang()._("poison gas");
+	private final static String localizedName = CMLib.lang()._("poison gas");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

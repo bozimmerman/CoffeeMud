@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Comprehension extends Song
 {
 	@Override public String ID() { return "Song_Comprehension"; }
-	public final static String localizedName = CMLib.lang()._("Comprehension");
+	private final static String localizedName = CMLib.lang()._("Comprehension");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

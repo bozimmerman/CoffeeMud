@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Kamikaze extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Kamikaze"; }
-	public final static String localizedName = CMLib.lang()._("Kamikaze");
+	private final static String localizedName = CMLib.lang()._("Kamikaze");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

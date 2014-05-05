@@ -41,7 +41,7 @@ import java.io.ObjectOutputStream;
 public class Spell_Spellbinding extends Spell
 {
 	@Override public String ID() { return "Spell_Spellbinding"; }
-	public final static String localizedName = CMLib.lang()._("Spellbinding");
+	private final static String localizedName = CMLib.lang()._("Spellbinding");
 	@Override public String name() { return localizedName; }
 	@Override protected int overrideMana(){return 0;}
 	@Override

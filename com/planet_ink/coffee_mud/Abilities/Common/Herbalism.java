@@ -42,7 +42,7 @@ import java.util.*;
 public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Herbalism"; }
-	public final static String localizedName = CMLib.lang()._("Herbalism");
+	private final static String localizedName = CMLib.lang()._("Herbalism");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HERBALISM","HERBREW","HBREW"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

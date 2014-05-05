@@ -36,9 +36,10 @@ import java.util.*;
 public class Fighter_KiStrike extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_KiStrike"; }
-	public final static String localizedName = CMLib.lang()._("Ki Strike");
+	private final static String localizedName = CMLib.lang()._("Ki Strike");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Ki Strike)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Ki Strike)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"KISTRIKE","KI"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Gateway extends Prayer
 {
 	@Override public String ID() { return "Prayer_Gateway"; }
-	public final static String localizedName = CMLib.lang()._("Gateway");
+	private final static String localizedName = CMLib.lang()._("Gateway");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}

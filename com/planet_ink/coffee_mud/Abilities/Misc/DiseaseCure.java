@@ -38,7 +38,7 @@ import java.util.*;
 public class DiseaseCure extends StdAbility
 {
 	@Override public String ID() { return "DiseaseCure"; }
-	public final static String localizedName = CMLib.lang()._("A Cure");
+	private final static String localizedName = CMLib.lang()._("A Cure");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){ return "";}

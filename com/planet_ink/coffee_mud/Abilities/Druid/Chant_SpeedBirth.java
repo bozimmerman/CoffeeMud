@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SpeedBirth extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedBirth"; }
-	public final static String localizedName = CMLib.lang()._("Speed Birth");
+	private final static String localizedName = CMLib.lang()._("Speed Birth");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_SenseHidden extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseHidden"; }
-	public final static String localizedName = CMLib.lang()._("Sense Hidden");
+	private final static String localizedName = CMLib.lang()._("Sense Hidden");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Sense Hidden)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Hidden)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

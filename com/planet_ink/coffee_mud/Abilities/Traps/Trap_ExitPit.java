@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_ExitPit extends Trap_ExitRoom
 {
 	@Override public String ID() { return "Trap_EnterPit"; }
-	public final static String localizedName = CMLib.lang()._("Entry Pit Trap");
+	private final static String localizedName = CMLib.lang()._("Entry Pit Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

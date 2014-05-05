@@ -39,9 +39,9 @@ public class Archon_Banish extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Banish"; }
-	public final static String localizedName = CMLib.lang()._("Banish");
+	private final static String localizedName = CMLib.lang()._("Banish");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Banished "+timeRemaining()+")";}
+	@Override public String displayText() { return _("(Banished "+timeRemaining()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

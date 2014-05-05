@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Injure extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Injure"; }
-	public final static String localizedName = CMLib.lang()._("Injure");
+	private final static String localizedName = CMLib.lang()._("Injure");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

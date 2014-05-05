@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_PlantSelf extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSelf"; }
-	public final static String localizedName = CMLib.lang()._("Plant Self");
+	private final static String localizedName = CMLib.lang()._("Plant Self");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Planted)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Planted)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

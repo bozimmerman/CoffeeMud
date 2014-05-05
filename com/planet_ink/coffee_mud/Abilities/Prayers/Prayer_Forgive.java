@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Forgive extends Prayer
 {
 	@Override public String ID() { return "Prayer_Forgive"; }
-	public final static String localizedName = CMLib.lang()._("Forgive");
+	private final static String localizedName = CMLib.lang()._("Forgive");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

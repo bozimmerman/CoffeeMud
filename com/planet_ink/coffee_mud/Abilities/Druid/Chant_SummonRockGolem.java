@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_SummonRockGolem extends Chant
 {
 	@Override public String ID() { return "Chant_SummonRockGolem"; }
-	public final static String localizedName = CMLib.lang()._("Summon Rock Golem");
+	private final static String localizedName = CMLib.lang()._("Summon Rock Golem");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Summon Rock Golem)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Rock Golem)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

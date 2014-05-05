@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_BrownMold extends Chant
 {
 	@Override public String ID() { return "Chant_BrownMold"; }
-	public final static String localizedName = CMLib.lang()._("Brown Mold");
+	private final static String localizedName = CMLib.lang()._("Brown Mold");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Brown Mold)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Brown Mold)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

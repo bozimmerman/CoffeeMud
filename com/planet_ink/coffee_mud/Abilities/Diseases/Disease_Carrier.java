@@ -35,7 +35,7 @@ import java.util.*;
 public class Disease_Carrier extends Disease
 {
 	@Override public String ID() { return "Disease_Carrier"; }
-	public final static String localizedName = CMLib.lang()._("Carrier of Disease");
+	private final static String localizedName = CMLib.lang()._("Carrier of Disease");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_RecoverVoice extends StdAbility
 {
 	@Override public String ID() { return "Druid_RecoverVoice"; }
-	public final static String localizedName = CMLib.lang()._("Recover Voice");
+	private final static String localizedName = CMLib.lang()._("Recover Voice");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return 0;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Timeport extends Spell
 {
 	@Override public String ID() { return "Spell_Timeport"; }
-	public final static String localizedName = CMLib.lang()._("Timeport");
+	private final static String localizedName = CMLib.lang()._("Timeport");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Time Travelling)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Time Travelling)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

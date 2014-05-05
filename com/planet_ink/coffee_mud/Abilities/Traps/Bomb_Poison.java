@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Poison extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Poison"; }
-	public final static String localizedName = CMLib.lang()._("poison gas bomb");
+	private final static String localizedName = CMLib.lang()._("poison gas bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 5;}
 	@Override public String requiresToSet(){return "some poison";}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Thief_TagTurf extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TagTurf"; }
-	public final static String localizedName = CMLib.lang()._("Tag Turf");
+	private final static String localizedName = CMLib.lang()._("Tag Turf");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Tagged)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tagged)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

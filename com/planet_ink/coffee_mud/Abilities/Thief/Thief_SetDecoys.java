@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_SetDecoys extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_SetDecoys"; }
-	public final static String localizedName = CMLib.lang()._("Set Decoys");
+	private final static String localizedName = CMLib.lang()._("Set Decoys");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}

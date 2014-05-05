@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Befriend extends BardSkill
 {
 	@Override public String ID() { return "Skill_Befriend"; }
-	public final static String localizedName = CMLib.lang()._("Befriend");
+	private final static String localizedName = CMLib.lang()._("Befriend");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

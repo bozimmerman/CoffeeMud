@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HolyWord"; }
-	public final static String localizedName = CMLib.lang()._("Holy Word");
+	private final static String localizedName = CMLib.lang()._("Holy Word");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Holy Word)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Holy Word)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

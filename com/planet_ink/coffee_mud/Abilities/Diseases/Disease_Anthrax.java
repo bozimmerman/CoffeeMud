@@ -34,9 +34,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Anthrax extends Disease
 {
 	@Override public String ID() { return "Disease_Anthrax"; }
-	public final static String localizedName = CMLib.lang()._("Anthrax");
+	private final static String localizedName = CMLib.lang()._("Anthrax");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Anthrax)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Anthrax)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

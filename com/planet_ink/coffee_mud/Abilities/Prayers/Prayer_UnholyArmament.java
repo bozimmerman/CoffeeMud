@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_UnholyArmament extends Prayer
 {
 	@Override public String ID() { return "Prayer_UnholyArmament"; }
-	public final static String localizedName = CMLib.lang()._("Unholy Armament");
+	private final static String localizedName = CMLib.lang()._("Unholy Armament");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

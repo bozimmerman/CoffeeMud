@@ -36,9 +36,10 @@ import java.util.*;
 public class Chant_WindSnatcher extends Chant
 {
 	@Override public String ID() { return "Chant_WindSnatcher"; }
-	public final static String localizedName = CMLib.lang()._("Wind Snatcher");
+	private final static String localizedName = CMLib.lang()._("Wind Snatcher");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Wind Snatcher)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Snatcher)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

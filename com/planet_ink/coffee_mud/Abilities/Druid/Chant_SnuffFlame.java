@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SnuffFlame extends Chant
 {
 	@Override public String ID() { return "Chant_SnuffFlame"; }
-	public final static String localizedName = CMLib.lang()._("Snuff Flame");
+	private final static String localizedName = CMLib.lang()._("Snuff Flame");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}

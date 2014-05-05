@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_LinkedHealth extends Prayer
 {
 	@Override public String ID() { return "Prayer_LinkedHealth"; }
-	public final static String localizedName = CMLib.lang()._("Linked Health");
+	private final static String localizedName = CMLib.lang()._("Linked Health");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Linked Health)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Linked Health)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}

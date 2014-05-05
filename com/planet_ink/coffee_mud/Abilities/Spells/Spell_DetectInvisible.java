@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_DetectInvisible extends Spell
 {
 	@Override public String ID() { return "Spell_DetectInvisible"; }
-	public final static String localizedName = CMLib.lang()._("Detect Invisible");
+	private final static String localizedName = CMLib.lang()._("Detect Invisible");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Detecting Invisible)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Invisible)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

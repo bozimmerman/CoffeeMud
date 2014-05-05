@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_BodyShield extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BodyShield"; }
-	public final static String localizedName = CMLib.lang()._("Body Shield");
+	private final static String localizedName = CMLib.lang()._("Body Shield");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

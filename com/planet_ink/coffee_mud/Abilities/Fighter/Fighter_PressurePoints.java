@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_PressurePoints extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_PressurePoints"; }
-	public final static String localizedName = CMLib.lang()._("Pressure Points");
+	private final static String localizedName = CMLib.lang()._("Pressure Points");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

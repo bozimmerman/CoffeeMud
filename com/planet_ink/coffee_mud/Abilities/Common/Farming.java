@@ -36,7 +36,7 @@ import java.util.*;
 public class Farming extends GatheringSkill
 {
 	@Override public String ID() { return "Farming"; }
-	public final static String localizedName = CMLib.lang()._("Farming");
+	private final static String localizedName = CMLib.lang()._("Farming");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PLANT","FARM","FARMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

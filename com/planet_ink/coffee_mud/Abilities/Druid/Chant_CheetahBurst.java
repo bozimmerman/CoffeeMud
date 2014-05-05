@@ -37,9 +37,10 @@ import java.util.Vector;
 public class Chant_CheetahBurst extends Chant
 {
 	@Override public String ID() { return "Chant_CheetahBurst"; }
-	public final static String localizedName = CMLib.lang()._("Cheetah Burst");
+	private final static String localizedName = CMLib.lang()._("Cheetah Burst");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Cheetah Burst)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Cheetah Burst)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

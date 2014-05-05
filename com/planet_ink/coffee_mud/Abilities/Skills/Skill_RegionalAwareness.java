@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_RegionalAwareness extends StdSkill
 {
 	@Override public String ID() { return "Skill_RegionalAwareness"; }
-	public final static String localizedName = CMLib.lang()._("Regional Awareness");
+	private final static String localizedName = CMLib.lang()._("Regional Awareness");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

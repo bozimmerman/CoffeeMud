@@ -36,7 +36,7 @@ import java.util.*;
 public class Embroidering extends CommonSkill
 {
 	@Override public String ID() { return "Embroidering"; }
-	public final static String localizedName = CMLib.lang()._("Embroidering");
+	private final static String localizedName = CMLib.lang()._("Embroidering");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"EMBROIDER","EMBROIDERING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

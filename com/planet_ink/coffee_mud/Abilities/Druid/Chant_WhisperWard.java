@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_WhisperWard extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_WhisperWard"; }
-	public final static String localizedName = CMLib.lang()._("Whisperward");
+	private final static String localizedName = CMLib.lang()._("Whisperward");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Whisperward)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Whisperward)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}

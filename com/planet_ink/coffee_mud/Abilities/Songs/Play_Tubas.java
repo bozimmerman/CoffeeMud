@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Tubas extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Tubas"; }
-	public final static String localizedName = CMLib.lang()._("Tubas");
+	private final static String localizedName = CMLib.lang()._("Tubas");
 	@Override public String name() { return localizedName; }
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_TUBAS;}
 	@Override public String mimicSpell(){return "Spell_GustOfWind";}

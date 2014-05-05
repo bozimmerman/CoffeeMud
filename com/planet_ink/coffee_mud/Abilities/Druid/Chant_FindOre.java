@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -37,10 +36,10 @@ import java.util.*;
 public class Chant_FindOre extends Chant_FindPlant
 {
 	@Override public String ID() { return "Chant_FindOre"; }
-	public final static String localizedName = CMLib.lang()._("Find Ore");
+	private final static String localizedName = CMLib.lang()._("Find Ore");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public String displayText(){return "(Finding "+lookingFor+")";}
+	@Override public String displayText() { return _("(Finding "+lookingFor+")"); }
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 

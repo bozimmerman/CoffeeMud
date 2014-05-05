@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Disguise extends BardSkill
 {
 	@Override public String ID() { return "Skill_Disguise"; }
-	public final static String localizedName = CMLib.lang()._("Disguise");
+	private final static String localizedName = CMLib.lang()._("Disguise");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String description()
@@ -48,7 +48,8 @@ public class Skill_Disguise extends BardSkill
 				ret.append(what+" ");
 		return ret.toString();
 	}
-	@Override public String displayText(){ return "(In Disguise)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(In Disguise)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

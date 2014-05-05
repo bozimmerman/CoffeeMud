@@ -36,7 +36,8 @@ public class Prop_AstralSpirit extends Property
 {
 	@Override public String ID() { return "Prop_AstralSpirit"; }
 	@Override public String name(){ return "Astral Spirit";}
-	@Override public String displayText(){ return "(Spirit Form)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Spirit Form)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private Race race=null;
 

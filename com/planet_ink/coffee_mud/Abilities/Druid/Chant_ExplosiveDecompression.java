@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_ExplosiveDecompression extends Chant
 {
 	@Override public String ID() { return "Chant_ExplosiveDecompression"; }
-	public final static String localizedName = CMLib.lang()._("Explosive Decompression");
+	private final static String localizedName = CMLib.lang()._("Explosive Decompression");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

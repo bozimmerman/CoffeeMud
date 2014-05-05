@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Laughter extends Spell
 {
 	@Override public String ID() { return "Spell_Laughter"; }
-	public final static String localizedName = CMLib.lang()._("Laughter");
+	private final static String localizedName = CMLib.lang()._("Laughter");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Laughter spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Laughter spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Puppeteer extends BardSkill
 {
 	@Override public String ID() { return "Skill_Puppeteer"; }
-	public final static String localizedName = CMLib.lang()._("Puppeteer");
+	private final static String localizedName = CMLib.lang()._("Puppeteer");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

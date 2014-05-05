@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Dismissal extends Spell
 {
 	@Override public String ID() { return "Spell_Dismissal"; }
-	public final static String localizedName = CMLib.lang()._("Dismissal");
+	private final static String localizedName = CMLib.lang()._("Dismissal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Chant_SummonInsects extends Chant
 {
 	@Override public String ID() { return "Chant_SummonInsects"; }
-	public final static String localizedName = CMLib.lang()._("Summon Insects");
+	private final static String localizedName = CMLib.lang()._("Summon Insects");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(In a swarm of insects)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(In a swarm of insects)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}

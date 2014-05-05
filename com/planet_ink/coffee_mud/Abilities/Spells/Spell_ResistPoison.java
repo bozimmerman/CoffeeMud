@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_ResistPoison extends Spell
 {
 	@Override public String ID() { return "Spell_ResistPoison"; }
-	public final static String localizedName = CMLib.lang()._("Resist Poison");
+	private final static String localizedName = CMLib.lang()._("Resist Poison");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Resist Poison)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Poison)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}

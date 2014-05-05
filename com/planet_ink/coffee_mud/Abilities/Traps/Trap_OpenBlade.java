@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_OpenBlade extends Trap_Open
 {
 	@Override public String ID() { return "Trap_OpenBlade"; }
-	public final static String localizedName = CMLib.lang()._("Open Blade Trap");
+	private final static String localizedName = CMLib.lang()._("Open Blade Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

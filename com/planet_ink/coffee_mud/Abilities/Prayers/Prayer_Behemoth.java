@@ -37,12 +37,13 @@ import java.util.*;
 public class Prayer_Behemoth extends Prayer
 {
 	@Override public String ID() { return "Prayer_Behemoth"; }
-	public final static String localizedName = CMLib.lang()._("Behemoth");
+	private final static String localizedName = CMLib.lang()._("Behemoth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){return "(Behemoth)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Behemoth)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 

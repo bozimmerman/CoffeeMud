@@ -37,9 +37,9 @@ import java.util.*;
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
 	@Override public String ID() { return "Skill_ArrestingSap"; }
-	public final static String localizedName = CMLib.lang()._("Arresting Sap");
+	private final static String localizedName = CMLib.lang()._("Arresting Sap");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Knocked out: "+tickDown+")";}
+	@Override public String displayText() { return _("(Knocked out: "+tickDown+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

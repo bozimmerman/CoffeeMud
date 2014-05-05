@@ -37,10 +37,11 @@ import java.util.*;
 public class Chant_AnimalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalGrowth"; }
-	public final static String localizedName = CMLib.lang()._("Animal Growth");
+	private final static String localizedName = CMLib.lang()._("Animal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public String displayText(){return "(Animal Growth)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Growth)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}

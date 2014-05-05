@@ -36,7 +36,7 @@ public class Fighter_Stonebody extends FighterSkill
 {
 	int regain=-1;
 	@Override public String ID() { return "Fighter_Stonebody"; }
-	public final static String localizedName = CMLib.lang()._("Stone Body");
+	private final static String localizedName = CMLib.lang()._("Stone Body");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

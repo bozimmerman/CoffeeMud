@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_SongWrite extends BardSkill
 {
 	@Override public String ID() { return "Skill_SongWrite"; }
-	public final static String localizedName = CMLib.lang()._("Song Write");
+	private final static String localizedName = CMLib.lang()._("Song Write");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

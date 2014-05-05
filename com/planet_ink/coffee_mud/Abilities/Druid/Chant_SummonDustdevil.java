@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_SummonDustdevil extends Chant
 {
 	@Override public String ID() { return "Chant_SummonDustdevil"; }
-	public final static String localizedName = CMLib.lang()._("Summon Dustdevil");
+	private final static String localizedName = CMLib.lang()._("Summon Dustdevil");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Summon Dustdevil)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Dustdevil)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}

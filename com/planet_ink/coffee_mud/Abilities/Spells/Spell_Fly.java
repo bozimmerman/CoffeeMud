@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Fly extends Spell
 {
 	@Override public String ID() { return "Spell_Fly"; }
-	public final static String localizedName = CMLib.lang()._("Fly");
+	private final static String localizedName = CMLib.lang()._("Fly");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Fly spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Fly spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

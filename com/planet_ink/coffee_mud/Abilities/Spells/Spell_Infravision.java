@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_Infravision extends Spell
 {
 	@Override public String ID() { return "Spell_Infravision"; }
-	public final static String localizedName = CMLib.lang()._("Infravision");
+	private final static String localizedName = CMLib.lang()._("Infravision");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Infravision)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Infravision)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

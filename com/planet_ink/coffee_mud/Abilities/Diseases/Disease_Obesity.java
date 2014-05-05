@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Disease_Obesity extends Disease
 {
 	@Override public String ID() { return "Disease_Obesity"; }
-	public final static String localizedName = CMLib.lang()._("Obesity");
+	private final static String localizedName = CMLib.lang()._("Obesity");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()

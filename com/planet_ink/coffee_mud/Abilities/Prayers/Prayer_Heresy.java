@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Heresy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Heresy"; }
-	public final static String localizedName = CMLib.lang()._("Heresy");
+	private final static String localizedName = CMLib.lang()._("Heresy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override protected int canAffectCode(){return 0;}

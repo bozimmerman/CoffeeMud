@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Stoning extends Prayer
 {
 	@Override public String ID() { return "Prayer_Stoning"; }
-	public final static String localizedName = CMLib.lang()._("Stoning");
+	private final static String localizedName = CMLib.lang()._("Stoning");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_EnchantWand extends Spell
 {
 	@Override public String ID() { return "Spell_EnchantWand"; }
-	public final static String localizedName = CMLib.lang()._("Enchant Wand");
+	private final static String localizedName = CMLib.lang()._("Enchant Wand");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

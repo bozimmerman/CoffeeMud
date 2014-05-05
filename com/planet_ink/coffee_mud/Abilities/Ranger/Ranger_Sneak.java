@@ -38,7 +38,7 @@ import java.util.*;
 public class Ranger_Sneak extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Sneak"; }
-	public final static String localizedName = CMLib.lang()._("Woodland Sneak");
+	private final static String localizedName = CMLib.lang()._("Woodland Sneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

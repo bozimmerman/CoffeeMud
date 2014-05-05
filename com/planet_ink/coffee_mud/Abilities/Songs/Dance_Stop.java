@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Stop extends Dance
 {
 	@Override public String ID() { return "Dance_Stop"; }
-	public final static String localizedName = CMLib.lang()._("Stop");
+	private final static String localizedName = CMLib.lang()._("Stop");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}

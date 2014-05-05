@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_Haunted extends Prayer
 {
 	@Override public String ID() { return "Prayer_Haunted"; }
-	public final static String localizedName = CMLib.lang()._("Haunted");
+	private final static String localizedName = CMLib.lang()._("Haunted");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Haunted)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Haunted)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

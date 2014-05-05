@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_KnowFate extends Spell
 {
 	@Override public String ID() { return "Spell_KnowFate"; }
-	public final static String localizedName = CMLib.lang()._("Know Fate");
+	private final static String localizedName = CMLib.lang()._("Know Fate");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

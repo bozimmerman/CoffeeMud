@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_AlterTime extends Chant
 {
 	@Override public String ID() { return "Chant_AlterTime"; }
-	public final static String localizedName = CMLib.lang()._("Alter Time");
+	private final static String localizedName = CMLib.lang()._("Alter Time");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int overrideMana(){return 100;}

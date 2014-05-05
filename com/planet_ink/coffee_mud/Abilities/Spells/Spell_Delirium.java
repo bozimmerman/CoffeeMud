@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Delirium extends Spell
 {
 	@Override public String ID() { return "Spell_Delirium"; }
-	public final static String localizedName = CMLib.lang()._("Delirium");
+	private final static String localizedName = CMLib.lang()._("Delirium");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Delirium)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Delirium)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

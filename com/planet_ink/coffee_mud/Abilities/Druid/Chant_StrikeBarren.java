@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_StrikeBarren extends Chant
 {
 	@Override public String ID() { return "Chant_StrikeBarren"; }
-	public final static String localizedName = CMLib.lang()._("Strike Barren");
+	private final static String localizedName = CMLib.lang()._("Strike Barren");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Striken Barren)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Striken Barren)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

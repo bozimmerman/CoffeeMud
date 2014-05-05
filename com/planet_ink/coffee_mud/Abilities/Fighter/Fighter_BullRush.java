@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BullRush extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BullRush"; }
-	public final static String localizedName = CMLib.lang()._("Bullrush");
+	private final static String localizedName = CMLib.lang()._("Bullrush");
 	@Override public String name() { return localizedName; }
 	@Override public int minRange(){return 0;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Flagportation extends Spell
 {
 	@Override public String ID() { return "Spell_Flagportation"; }
-	public final static String localizedName = CMLib.lang()._("Flagportation");
+	private final static String localizedName = CMLib.lang()._("Flagportation");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

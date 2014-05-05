@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Lightning extends Spell
 {
 	@Override public String ID() { return "Spell_Lightning"; }
-	public final static String localizedName = CMLib.lang()._("Lightning Bolt");
+	private final static String localizedName = CMLib.lang()._("Lightning Bolt");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Lightning Bolt spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Lightning Bolt spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

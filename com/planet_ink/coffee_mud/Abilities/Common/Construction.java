@@ -39,7 +39,7 @@ import java.util.*;
 public class Construction extends CraftingSkill
 {
 	@Override public String ID() { return "Construction"; }
-	public final static String localizedName = CMLib.lang()._("Construction");
+	private final static String localizedName = CMLib.lang()._("Construction");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CONSTRUCT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

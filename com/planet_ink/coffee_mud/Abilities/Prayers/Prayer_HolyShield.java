@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_HolyShield extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyShield"; }
-	public final static String localizedName = CMLib.lang()._("Holy Shield");
+	private final static String localizedName = CMLib.lang()._("Holy Shield");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Holy Shield)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Holy Shield)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

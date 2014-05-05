@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_StarGazing extends Chant
 {
 	@Override public String ID() { return "Chant_StarGazing"; }
-	public final static String localizedName = CMLib.lang()._("Star Gazing");
+	private final static String localizedName = CMLib.lang()._("Star Gazing");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Gazing at the Stars)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Gazing at the Stars)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

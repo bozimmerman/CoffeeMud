@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Godstrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_Godstrike"; }
-	public final static String localizedName = CMLib.lang()._("Godstrike");
+	private final static String localizedName = CMLib.lang()._("Godstrike");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

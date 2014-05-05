@@ -39,7 +39,7 @@ import java.util.*;
 public class Druid_MyPlants extends StdAbility
 {
 	@Override public String ID() { return "Druid_MyPlants"; }
-	public final static String localizedName = CMLib.lang()._("My Plants");
+	private final static String localizedName = CMLib.lang()._("My Plants");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return 0;}

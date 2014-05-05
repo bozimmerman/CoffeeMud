@@ -35,9 +35,10 @@ import java.util.*;
 public class Skill_Conduct extends BardSkill
 {
 	@Override public String ID() { return "Skill_Conduct"; }
-	public final static String localizedName = CMLib.lang()._("Conduct Symphony");
+	private final static String localizedName = CMLib.lang()._("Conduct Symphony");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "("+name()+")";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Conduct Symphony)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings =_i(new String[] {"CONDUCT"});

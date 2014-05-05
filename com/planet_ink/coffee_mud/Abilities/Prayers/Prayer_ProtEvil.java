@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_ProtEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtEvil"; }
-	public final static String localizedName = CMLib.lang()._("Protection Evil");
+	private final static String localizedName = CMLib.lang()._("Protection Evil");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Protection from Evil)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection from Evil)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

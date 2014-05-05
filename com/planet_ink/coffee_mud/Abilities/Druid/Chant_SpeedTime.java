@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_SpeedTime extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedTime"; }
-	public final static String localizedName = CMLib.lang()._("Speed Time");
+	private final static String localizedName = CMLib.lang()._("Speed Time");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Speed Time)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Speed Time)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

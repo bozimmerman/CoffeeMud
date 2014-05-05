@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Cleave extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Cleave"; }
-	public final static String localizedName = CMLib.lang()._("Cleave");
+	private final static String localizedName = CMLib.lang()._("Cleave");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Domesticating extends CommonSkill
 {
 	@Override public String ID() { return "Domesticating"; }
-	public final static String localizedName = CMLib.lang()._("Domesticating");
+	private final static String localizedName = CMLib.lang()._("Domesticating");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DOMESTICATE","DOMESTICATING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

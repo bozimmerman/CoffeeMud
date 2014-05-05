@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_CrushingRoom extends StdTrap
 {
 	@Override public String ID() { return "Trap_CrushingRoom"; }
-	public final static String localizedName = CMLib.lang()._("crushing room");
+	private final static String localizedName = CMLib.lang()._("crushing room");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

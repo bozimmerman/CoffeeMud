@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Sunray extends Chant
 {
 	@Override public String ID() { return "Chant_Sunray"; }
-	public final static String localizedName = CMLib.lang()._("Sunray");
+	private final static String localizedName = CMLib.lang()._("Sunray");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Sunray)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sunray)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 

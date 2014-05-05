@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_WindColor extends Chant
 {
 	@Override public String ID() { return "Chant_WindColor"; }
-	public final static String localizedName = CMLib.lang()._("Wind Color");
+	private final static String localizedName = CMLib.lang()._("Wind Color");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Wind Color)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Color)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	Room lastRoom=null;

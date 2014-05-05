@@ -36,9 +36,10 @@ import java.util.*;
 public class Fighter_Shrug extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Shrug"; }
-	public final static String localizedName = CMLib.lang()._("Shrug Off");
+	private final static String localizedName = CMLib.lang()._("Shrug Off");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Braced for a hit)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Braced for a hit)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"BRACE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

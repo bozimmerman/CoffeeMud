@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell extends StdAbility
 {
 	@Override public String ID() { return "Spell"; }
-	public final static String localizedName = CMLib.lang()._("a Spell");
+	private final static String localizedName = CMLib.lang()._("a Spell");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}

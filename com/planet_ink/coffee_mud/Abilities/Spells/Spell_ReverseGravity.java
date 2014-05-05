@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_ReverseGravity extends Spell
 {
 	@Override public String ID() { return "Spell_ReverseGravity"; }
-	public final static String localizedName = CMLib.lang()._("Reverse Gravity");
+	private final static String localizedName = CMLib.lang()._("Reverse Gravity");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Gravity is Reversed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Gravity is Reversed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

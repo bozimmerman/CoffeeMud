@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_AnimalSpy extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalSpy"; }
-	public final static String localizedName = CMLib.lang()._("Animal Spy");
+	private final static String localizedName = CMLib.lang()._("Animal Spy");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Animal Spy)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Spy)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected MOB spy=null;

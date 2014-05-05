@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_NaturalCommunion extends Spell
 {
 	@Override public String ID() { return "Spell_NaturalCommunion"; }
-	public final static String localizedName = CMLib.lang()._("Natural Communion");
+	private final static String localizedName = CMLib.lang()._("Natural Communion");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowItem extends Chant
 {
 	@Override public String ID() { return "Chant_GrowItem"; }
-	public final static String localizedName = CMLib.lang()._("Grow Item");
+	private final static String localizedName = CMLib.lang()._("Grow Item");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

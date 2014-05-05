@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Chantcraft extends Skill_Songcraft
 {
 	@Override public String ID() { return "Skill_Chantcraft"; }
-	public final static String localizedName = CMLib.lang()._("Chantcraft");
+	private final static String localizedName = CMLib.lang()._("Chantcraft");
 	@Override public String name() { return localizedName; }
 	@Override public int craftType(){return Ability.ACODE_CHANT;}
 }

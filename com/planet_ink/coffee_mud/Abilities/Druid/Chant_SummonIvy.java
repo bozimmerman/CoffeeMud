@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonIvy extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonIvy"; }
-	public final static String localizedName = CMLib.lang()._("Summon Ivy");
+	private final static String localizedName = CMLib.lang()._("Summon Ivy");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}

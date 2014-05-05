@@ -35,9 +35,10 @@ import java.util.*;
 public class Prayer_Tremor extends Prayer
 {
 	@Override public String ID() { return "Prayer_Tremor"; }
-	public final static String localizedName = CMLib.lang()._("Tremor");
+	private final static String localizedName = CMLib.lang()._("Tremor");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Tremor)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tremor)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}

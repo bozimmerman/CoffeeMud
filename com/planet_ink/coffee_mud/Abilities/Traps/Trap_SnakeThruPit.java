@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_SnakeThruPit extends Trap_SnakePit
 {
 	@Override public String ID() { return "Trap_SnakeThruPit"; }
-	public final static String localizedName = CMLib.lang()._("small snake pit");
+	private final static String localizedName = CMLib.lang()._("small snake pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 9;}
 	@Override public boolean getTravelThroughFlag() { return true; }

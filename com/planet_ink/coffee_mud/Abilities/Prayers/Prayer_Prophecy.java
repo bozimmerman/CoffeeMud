@@ -38,9 +38,10 @@ import java.util.*;
 public class Prayer_Prophecy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Prophecy"; }
-	public final static String localizedName = CMLib.lang()._("Prophecy");
+	private final static String localizedName = CMLib.lang()._("Prophecy");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(In a Prophetic Trance)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(In a Prophetic Trance)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

@@ -38,9 +38,10 @@ import java.util.Vector;
 public class Chant_Dehydrate extends Chant
 {
 	@Override public String ID() { return "Chant_Dehydrate"; }
-	public final static String localizedName = CMLib.lang()._("Dehydrate");
+	private final static String localizedName = CMLib.lang()._("Dehydrate");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Dehydrate)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Dehydrate)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 

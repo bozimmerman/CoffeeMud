@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_DetectMagic extends Spell
 {
 	@Override public String ID() { return "Spell_DetectMagic"; }
-	public final static String localizedName = CMLib.lang()._("Detect Magic");
+	private final static String localizedName = CMLib.lang()._("Detect Magic");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Detecting Magic)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Magic)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

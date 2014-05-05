@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_WindShape extends Chant
 {
 	@Override public String ID() { return "Chant_WindShape"; }
-	public final static String localizedName = CMLib.lang()._("Wind Shape");
+	private final static String localizedName = CMLib.lang()._("Wind Shape");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Wind Shape)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Shape)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

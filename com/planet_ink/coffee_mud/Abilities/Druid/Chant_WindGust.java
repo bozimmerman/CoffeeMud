@@ -37,7 +37,8 @@ public class Chant_WindGust extends Chant
 {
 	@Override public String ID() { return "Chant_WindGust"; }
 	@Override public String name(){ return renderedMundane?"wind gust":"Wind Gust";}
-	@Override public String displayText(){return "(Blown Down)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blown Down)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

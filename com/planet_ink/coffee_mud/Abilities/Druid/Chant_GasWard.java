@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_GasWard extends Chant
 {
 	@Override public String ID() { return "Chant_GasWard"; }
-	public final static String localizedName = CMLib.lang()._("Gas Ward");
+	private final static String localizedName = CMLib.lang()._("Gas Ward");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Gas Ward)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Gas Ward)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 

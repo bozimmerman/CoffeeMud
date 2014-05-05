@@ -37,9 +37,10 @@ import java.util.Vector;
 public class Chant_Darkvision extends Chant
 {
 	@Override public String ID() { return "Chant_Darkvision"; }
-	public final static String localizedName = CMLib.lang()._("Darkvision");
+	private final static String localizedName = CMLib.lang()._("Darkvision");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Darkvision)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkvision)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

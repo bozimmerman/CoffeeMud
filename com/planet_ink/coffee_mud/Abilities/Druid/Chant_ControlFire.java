@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_ControlFire extends Chant
 {
 	@Override public String ID() { return "Chant_ControlFire"; }
-	public final static String localizedName = CMLib.lang()._("Control Fire");
+	private final static String localizedName = CMLib.lang()._("Control Fire");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

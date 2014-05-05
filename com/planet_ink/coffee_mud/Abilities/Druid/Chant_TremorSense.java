@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_TremorSense extends Chant
 {
 	@Override public String ID() { return "Chant_TremorSense"; }
-	public final static String localizedName = CMLib.lang()._("Tremor Sense");
+	private final static String localizedName = CMLib.lang()._("Tremor Sense");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Tremor Sense)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tremor Sense)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_KnowOrigin extends Spell
 {
 	@Override public String ID() { return "Spell_KnowOrigin"; }
-	public final static String localizedName = CMLib.lang()._("Know Origin");
+	private final static String localizedName = CMLib.lang()._("Know Origin");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

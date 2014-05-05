@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_MagicMissile extends Spell
 {
 	@Override public String ID() { return "Spell_MagicMissile"; }
-	public final static String localizedName = CMLib.lang()._("Magic Missile");
+	private final static String localizedName = CMLib.lang()._("Magic Missile");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Magic Missile spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Magic Missile spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

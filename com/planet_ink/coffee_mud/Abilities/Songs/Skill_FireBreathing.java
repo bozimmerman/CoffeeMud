@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_FireBreathing extends BardSkill
 {
 	@Override public String ID() { return "Skill_FireBreathing"; }
-	public final static String localizedName = CMLib.lang()._("Fire Breathing");
+	private final static String localizedName = CMLib.lang()._("Fire Breathing");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return 0;}

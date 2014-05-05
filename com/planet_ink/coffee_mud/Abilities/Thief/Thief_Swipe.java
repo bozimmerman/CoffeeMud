@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Swipe extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Swipe"; }
-	public final static String localizedName = CMLib.lang()._("Swipe gold");
+	private final static String localizedName = CMLib.lang()._("Swipe gold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

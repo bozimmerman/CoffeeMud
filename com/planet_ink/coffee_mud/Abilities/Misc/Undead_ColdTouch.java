@@ -38,9 +38,10 @@ public class Undead_ColdTouch extends StdAbility
 {
 	int coldDown=3;
 	@Override public String ID() { return "Undead_ColdTouch"; }
-	public final static String localizedName = CMLib.lang()._("Cold Touch");
+	private final static String localizedName = CMLib.lang()._("Cold Touch");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Cold and Weakened)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Cold and Weakened)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

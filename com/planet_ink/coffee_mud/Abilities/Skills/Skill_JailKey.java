@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_JailKey extends StdSkill
 {
 	@Override public String ID() { return "Skill_JailKey"; }
-	public final static String localizedName = CMLib.lang()._("Jail Key");
+	private final static String localizedName = CMLib.lang()._("Jail Key");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}

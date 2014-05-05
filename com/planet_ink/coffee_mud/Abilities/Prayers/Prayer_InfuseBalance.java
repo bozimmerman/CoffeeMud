@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_InfuseBalance extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseBalance"; }
-	public final static String localizedName = CMLib.lang()._("Infuse Balance");
+	private final static String localizedName = CMLib.lang()._("Infuse Balance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Infused Balance)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Infused Balance)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

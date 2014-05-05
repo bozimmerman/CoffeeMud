@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemoveCurse"; }
-	public final static String localizedName = CMLib.lang()._("Remove Curse");
+	private final static String localizedName = CMLib.lang()._("Remove Curse");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

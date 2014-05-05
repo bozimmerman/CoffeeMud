@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_DetectHidden extends Spell
 {
 	@Override public String ID() { return "Spell_DetectHidden"; }
-	public final static String localizedName = CMLib.lang()._("Detect Hidden");
+	private final static String localizedName = CMLib.lang()._("Detect Hidden");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Detecting Hidden)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Hidden)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

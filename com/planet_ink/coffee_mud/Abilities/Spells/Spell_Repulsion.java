@@ -35,9 +35,10 @@ import java.util.*;
 public class Spell_Repulsion extends Spell
 {
 	@Override public String ID() { return "Spell_Repulsion"; }
-	public final static String localizedName = CMLib.lang()._("Repulsion");
+	private final static String localizedName = CMLib.lang()._("Repulsion");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Repulsion)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Repulsion)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ArcanePossession extends Spell
 {
 	@Override public String ID() { return "Spell_ArcanePossession"; }
-	public final static String localizedName = CMLib.lang()._("Arcane Possession");
+	private final static String localizedName = CMLib.lang()._("Arcane Possession");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

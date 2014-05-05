@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_SummonCompanion extends Spell
 {
 	@Override public String ID() { return "Spell_SummonCompanion"; }
-	public final static String localizedName = CMLib.lang()._("Summon Companion");
+	private final static String localizedName = CMLib.lang()._("Summon Companion");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

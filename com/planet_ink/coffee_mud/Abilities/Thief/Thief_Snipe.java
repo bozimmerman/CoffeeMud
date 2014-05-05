@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Snipe extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Snipe"; }
-	public final static String localizedName = CMLib.lang()._("Snipe");
+	private final static String localizedName = CMLib.lang()._("Snipe");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}

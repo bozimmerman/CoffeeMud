@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_WizardsChest extends Spell
 {
 	@Override public String ID() { return "Spell_WizardsChest"; }
-	public final static String localizedName = CMLib.lang()._("Wizards Chest");
+	private final static String localizedName = CMLib.lang()._("Wizards Chest");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Wizard Chest)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wizard Chest)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

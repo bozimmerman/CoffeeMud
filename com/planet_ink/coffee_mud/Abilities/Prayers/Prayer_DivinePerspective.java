@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_DivinePerspective extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivinePerspective"; }
-	public final static String localizedName = CMLib.lang()._("Divine Perspective");
+	private final static String localizedName = CMLib.lang()._("Divine Perspective");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Perspective)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Perspective)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

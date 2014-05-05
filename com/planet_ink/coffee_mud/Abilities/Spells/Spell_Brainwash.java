@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_Brainwash extends Spell
 {
 	@Override public String ID() { return "Spell_Brainwash"; }
-	public final static String localizedName = CMLib.lang()._("Brainwash");
+	private final static String localizedName = CMLib.lang()._("Brainwash");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(brainwashed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(brainwashed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

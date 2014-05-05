@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_SenseEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseEvil"; }
-	public final static String localizedName = CMLib.lang()._("Sense Evil");
+	private final static String localizedName = CMLib.lang()._("Sense Evil");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Sense Evil)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Evil)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

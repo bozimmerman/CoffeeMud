@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_FleshStone extends Spell
 {
 	@Override public String ID() { return "Spell_FleshStone"; }
-	public final static String localizedName = CMLib.lang()._("Flesh Stone");
+	private final static String localizedName = CMLib.lang()._("Flesh Stone");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Flesh to Stone)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Flesh to Stone)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

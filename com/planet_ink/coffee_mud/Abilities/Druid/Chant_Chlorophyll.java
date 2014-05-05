@@ -37,9 +37,10 @@ import java.util.Vector;
 public class Chant_Chlorophyll extends Chant
 {
 	@Override public String ID() { return "Chant_Chlorophyll"; }
-	public final static String localizedName = CMLib.lang()._("Chlorophyll");
+	private final static String localizedName = CMLib.lang()._("Chlorophyll");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Chlorophyll)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Chlorophyll)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_BurningHands extends Spell
 {
 	@Override public String ID() { return "Spell_BurningHands"; }
-	public final static String localizedName = CMLib.lang()._("Burning Hands");
+	private final static String localizedName = CMLib.lang()._("Burning Hands");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Burning Hands spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Burning Hands spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public long flags(){return Ability.FLAG_FIREBASED;}

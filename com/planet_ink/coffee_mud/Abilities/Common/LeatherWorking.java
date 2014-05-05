@@ -40,7 +40,7 @@ import java.util.*;
 public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "LeatherWorking"; }
-	public final static String localizedName = CMLib.lang()._("Leather Working");
+	private final static String localizedName = CMLib.lang()._("Leather Working");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LEATHERWORK","LEATHERWORKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FakeSpring extends Spell
 {
 	@Override public String ID() { return "Spell_FakeSpring"; }
-	public final static String localizedName = CMLib.lang()._("Fake Spring");
+	private final static String localizedName = CMLib.lang()._("Fake Spring");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

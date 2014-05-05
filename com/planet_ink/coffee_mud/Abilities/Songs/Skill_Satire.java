@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Satire extends BardSkill
 {
 	@Override public String ID() { return "Skill_Satire"; }
-	public final static String localizedName = CMLib.lang()._("Satire");
+	private final static String localizedName = CMLib.lang()._("Satire");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

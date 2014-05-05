@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_InstrumentBash extends BardSkill
 {
 	@Override public String ID() { return "Skill_InstrumentBash"; }
-	public final static String localizedName = CMLib.lang()._("Instrument Bash");
+	private final static String localizedName = CMLib.lang()._("Instrument Bash");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

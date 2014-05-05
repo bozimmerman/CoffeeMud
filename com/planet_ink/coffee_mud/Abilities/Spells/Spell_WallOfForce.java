@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_WallOfForce extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfForce"; }
-	public final static String localizedName = CMLib.lang()._("Wall of Force");
+	private final static String localizedName = CMLib.lang()._("Wall of Force");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Wall of Force)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Force)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}

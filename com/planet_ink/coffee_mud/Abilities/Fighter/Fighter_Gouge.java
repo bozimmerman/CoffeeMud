@@ -38,9 +38,10 @@ public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_Gouge"; }
-	public final static String localizedName = CMLib.lang()._("Gouge");
+	private final static String localizedName = CMLib.lang()._("Gouge");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Gouged Eyes)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Gouged Eyes)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

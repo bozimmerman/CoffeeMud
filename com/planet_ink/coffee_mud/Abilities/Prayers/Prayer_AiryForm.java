@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_AiryForm extends Prayer
 {
 	@Override public String ID() { return "Prayer_AiryForm"; }
-	public final static String localizedName = CMLib.lang()._("Airyform");
+	private final static String localizedName = CMLib.lang()._("Airyform");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Airyform)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Airyform)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}

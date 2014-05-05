@@ -36,9 +36,10 @@ import java.util.*;
 public class Thief_SlipperyMind extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SlipperyMind"; }
-	public final static String localizedName = CMLib.lang()._("Slippery Mind");
+	private final static String localizedName = CMLib.lang()._("Slippery Mind");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Slippery Mind)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Slippery Mind)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_DivineResistance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineResistance"; }
-	public final static String localizedName = CMLib.lang()._("Divine Resistance");
+	private final static String localizedName = CMLib.lang()._("Divine Resistance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Divine Resistance)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Resistance)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

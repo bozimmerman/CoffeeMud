@@ -41,7 +41,7 @@ import java.util.*;
 public class SpellCraftingSkill extends CraftingSkill
 {
 	@Override public String ID() { return "SpellCraftingSkill"; }
-	public final static String localizedName = CMLib.lang()._("Spell Crafting Skill");
+	private final static String localizedName = CMLib.lang()._("Spell Crafting Skill");
 	@Override public String name() { return localizedName; }
 	public SpellCraftingSkill(){super();}
 

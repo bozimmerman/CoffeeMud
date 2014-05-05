@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ConjureNexus extends Spell
 {
 	@Override public String ID() { return "Spell_ConjureNexus"; }
-	public final static String localizedName = CMLib.lang()._("Conjure Nexus");
+	private final static String localizedName = CMLib.lang()._("Conjure Nexus");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}

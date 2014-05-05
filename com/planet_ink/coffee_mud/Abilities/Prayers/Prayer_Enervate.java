@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Enervate extends Prayer
 {
 	@Override public String ID() { return "Prayer_Enervate"; }
-	public final static String localizedName = CMLib.lang()._("Enervate");
+	private final static String localizedName = CMLib.lang()._("Enervate");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

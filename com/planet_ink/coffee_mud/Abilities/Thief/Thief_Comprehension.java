@@ -36,9 +36,10 @@ import java.util.*;
 public class Thief_Comprehension extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Comprehension"; }
-	public final static String localizedName = CMLib.lang()._("Linguistic Comprehension");
+	private final static String localizedName = CMLib.lang()._("Linguistic Comprehension");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Lang. Comprehension)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Lang. Comprehension)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings =_i(new String[] {"COMPREHEND","COMPREHENSION"});

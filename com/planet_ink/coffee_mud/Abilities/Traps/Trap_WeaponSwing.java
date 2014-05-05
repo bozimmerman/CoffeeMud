@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_WeaponSwing extends StdTrap
 {
 	@Override public String ID() { return "Trap_WeaponSwing"; }
-	public final static String localizedName = CMLib.lang()._("weapon swing");
+	private final static String localizedName = CMLib.lang()._("weapon swing");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

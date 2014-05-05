@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_Polymorph extends Spell
 {
 	@Override public String ID() { return "Spell_Polymorph"; }
-	public final static String localizedName = CMLib.lang()._("Polymorph");
+	private final static String localizedName = CMLib.lang()._("Polymorph");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Polymorph)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Polymorph)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

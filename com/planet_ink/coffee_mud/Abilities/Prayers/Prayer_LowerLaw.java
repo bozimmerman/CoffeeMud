@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_LowerLaw extends Prayer
 {
 	@Override public String ID() { return "Prayer_LowerLaw"; }
-	public final static String localizedName = CMLib.lang()._("Lower Law");
+	private final static String localizedName = CMLib.lang()._("Lower Law");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canTargetCode(){return 0;}

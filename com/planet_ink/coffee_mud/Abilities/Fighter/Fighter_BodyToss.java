@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BodyToss extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_BodyToss"; }
-	public final static String localizedName = CMLib.lang()._("Body Toss");
+	private final static String localizedName = CMLib.lang()._("Body Toss");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BODYTOSS"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

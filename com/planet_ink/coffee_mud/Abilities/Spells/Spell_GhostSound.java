@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_GhostSound extends Spell
 {
 	@Override public String ID() { return "Spell_GhostSound"; }
-	public final static String localizedName = CMLib.lang()._("Ghost Sound");
+	private final static String localizedName = CMLib.lang()._("Ghost Sound");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Ghost Sound spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Ghost Sound spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

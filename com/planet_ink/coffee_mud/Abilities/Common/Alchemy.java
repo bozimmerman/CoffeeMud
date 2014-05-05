@@ -40,7 +40,7 @@ import java.util.*;
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Alchemy"; }
-	public final static String localizedName = CMLib.lang()._("Alchemy");
+	private final static String localizedName = CMLib.lang()._("Alchemy");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BREW","ALCHEMY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

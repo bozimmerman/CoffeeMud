@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_Reincarnation extends Chant
 {
 	@Override public String ID() { return "Chant_Reincarnation"; }
-	public final static String localizedName = CMLib.lang()._("Reincarnation");
+	private final static String localizedName = CMLib.lang()._("Reincarnation");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Reincarnation Geas)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Reincarnation Geas)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int overrideMana(){return 200;}

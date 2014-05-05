@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Cotillon extends Dance
 {
 	@Override public String ID() { return "Dance_Cotillon"; }
-	public final static String localizedName = CMLib.lang()._("Cotillon");
+	private final static String localizedName = CMLib.lang()._("Cotillon");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String danceOf(){return name()+" Dance";}

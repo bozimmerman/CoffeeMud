@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_GroveWalk extends Chant
 {
 	@Override public String ID() { return "Chant_GroveWalk"; }
-	public final static String localizedName = CMLib.lang()._("Grove Walk");
+	private final static String localizedName = CMLib.lang()._("Grove Walk");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

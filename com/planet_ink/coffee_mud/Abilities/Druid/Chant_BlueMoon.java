@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_BlueMoon extends Chant
 {
 	@Override public String ID() { return "Chant_BlueMoon"; }
-	public final static String localizedName = CMLib.lang()._("Blue Moon");
+	private final static String localizedName = CMLib.lang()._("Blue Moon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Blue Moon)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blue Moon)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

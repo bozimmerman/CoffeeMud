@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_AntTrain extends Chant
 {
 	@Override public String ID() { return "Chant_AntTrain"; }
-	public final static String localizedName = CMLib.lang()._("Ant Train");
+	private final static String localizedName = CMLib.lang()._("Ant Train");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

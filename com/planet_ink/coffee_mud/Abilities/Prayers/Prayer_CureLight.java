@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CureLight extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureLight"; }
-	public final static String localizedName = CMLib.lang()._("Cure Light Wounds");
+	private final static String localizedName = CMLib.lang()._("Cure Light Wounds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}

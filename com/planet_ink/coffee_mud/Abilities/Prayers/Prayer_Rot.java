@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Rot extends Prayer
 {
 	@Override public String ID() { return "Prayer_Rot"; }
-	public final static String localizedName = CMLib.lang()._("Rot");
+	private final static String localizedName = CMLib.lang()._("Rot");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}

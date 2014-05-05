@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_ProtPoison extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtPoison"; }
-	public final static String localizedName = CMLib.lang()._("Protection Poison");
+	private final static String localizedName = CMLib.lang()._("Protection Poison");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Protection/Poison)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection/Poison)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

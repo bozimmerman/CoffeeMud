@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_SenseTraps extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseTraps"; }
-	public final static String localizedName = CMLib.lang()._("Sense Traps");
+	private final static String localizedName = CMLib.lang()._("Sense Traps");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Sensing Traps)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Traps)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

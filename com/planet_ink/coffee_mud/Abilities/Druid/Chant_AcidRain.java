@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_AcidRain extends Chant
 {
 	@Override public String ID() { return "Chant_AcidRain"; }
-	public final static String localizedName = CMLib.lang()._("Acid Rain");
+	private final static String localizedName = CMLib.lang()._("Acid Rain");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}

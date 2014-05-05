@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Omnipresence extends Prayer
 {
 	@Override public String ID() { return "Prayer_Omnipresence"; }
-	public final static String localizedName = CMLib.lang()._("Omnipresence");
+	private final static String localizedName = CMLib.lang()._("Omnipresence");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

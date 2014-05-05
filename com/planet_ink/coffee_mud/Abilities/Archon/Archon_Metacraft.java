@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Metacraft"; }
-	public final static String localizedName = CMLib.lang()._("Metacrafting");
+	private final static String localizedName = CMLib.lang()._("Metacrafting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"METACRAFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

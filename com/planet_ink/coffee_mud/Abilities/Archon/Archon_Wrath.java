@@ -37,7 +37,7 @@ public class Archon_Wrath extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Wrath"; }
-	public final static String localizedName = CMLib.lang()._("Wrath");
+	private final static String localizedName = CMLib.lang()._("Wrath");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

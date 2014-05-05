@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_ResistSlashing extends Spell
 {
 	@Override public String ID() { return "Spell_ResistSlashing"; }
-	public final static String localizedName = CMLib.lang()._("Resist Slashing");
+	private final static String localizedName = CMLib.lang()._("Resist Slashing");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Resist Slashing)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Slashing)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}

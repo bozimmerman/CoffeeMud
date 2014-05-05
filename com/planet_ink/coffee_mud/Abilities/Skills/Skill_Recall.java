@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Recall extends StdSkill
 {
 	@Override public String ID() { return "Skill_Recall"; }
-	public final static String localizedName = CMLib.lang()._("Recall");
+	private final static String localizedName = CMLib.lang()._("Recall");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

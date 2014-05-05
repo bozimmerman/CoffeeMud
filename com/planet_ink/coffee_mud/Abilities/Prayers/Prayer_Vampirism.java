@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_Vampirism extends Prayer
 {
 	@Override public String ID() { return "Prayer_Vampirism"; }
-	public final static String localizedName = CMLib.lang()._("Inflict Vampirism");
+	private final static String localizedName = CMLib.lang()._("Inflict Vampirism");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Vampirism)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Vampirism)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

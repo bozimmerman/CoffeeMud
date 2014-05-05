@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassSleep extends Spell
 {
 	@Override public String ID() { return "Spell_MassSleep"; }
-	public final static String localizedName = CMLib.lang()._("Mass Sleep");
+	private final static String localizedName = CMLib.lang()._("Mass Sleep");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

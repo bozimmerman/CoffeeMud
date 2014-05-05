@@ -37,12 +37,13 @@ import java.util.*;
 public class Prayer_Earthshield extends Prayer
 {
 	@Override public String ID() { return "Prayer_Earthshield"; }
-	public final static String localizedName = CMLib.lang()._("Earthshield");
+	private final static String localizedName = CMLib.lang()._("Earthshield");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){ return "(In Earthshield)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(In Earthshield)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 

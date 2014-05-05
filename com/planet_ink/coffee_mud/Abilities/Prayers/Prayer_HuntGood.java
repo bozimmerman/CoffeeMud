@@ -37,11 +37,12 @@ import java.util.*;
 public class Prayer_HuntGood extends Prayer_HuntEvil
 {
 	@Override public String ID() { return "Prayer_HuntGood"; }
-	public final static String localizedName = CMLib.lang()._("Hunt Good");
+	private final static String localizedName = CMLib.lang()._("Hunt Good");
 	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRACKING;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public String displayText(){return "(Hunting Good)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Hunting Good)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected String word(){return "good";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 

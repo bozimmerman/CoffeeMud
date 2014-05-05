@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_PredictPhase extends Chant
 {
 	@Override public String ID() { return "Chant_PredictPhase"; }
-	public final static String localizedName = CMLib.lang()._("Predict Phase");
+	private final static String localizedName = CMLib.lang()._("Predict Phase");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

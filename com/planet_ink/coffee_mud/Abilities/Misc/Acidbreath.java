@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Acidbreath extends Dragonbreath
 {
 	@Override public String ID() { return "Acidbreath"; }
-	public final static String localizedName = CMLib.lang()._("Acidbreath");
+	private final static String localizedName = CMLib.lang()._("Acidbreath");
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "acid";}
 	@Override public void setMiscText(String newText){super.setMiscText(text());}

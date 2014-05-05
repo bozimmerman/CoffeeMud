@@ -35,9 +35,10 @@ import java.util.*;
 public class Skill_TurnUndead extends StdSkill
 {
 	@Override public String ID() { return "Skill_TurnUndead"; }
-	public final static String localizedName = CMLib.lang()._("Turn Undead");
+	private final static String localizedName = CMLib.lang()._("Turn Undead");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Turned)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Turned)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}

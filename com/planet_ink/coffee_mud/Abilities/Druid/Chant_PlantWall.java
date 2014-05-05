@@ -38,10 +38,11 @@ import java.util.*;
 public class Chant_PlantWall extends Chant
 {
 	@Override public String ID() { return "Chant_PlantWall"; }
-	public final static String localizedName = CMLib.lang()._("Plant Wall");
+	private final static String localizedName = CMLib.lang()._("Plant Wall");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public String displayText(){return "(Plant Wall)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Plant Wall)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

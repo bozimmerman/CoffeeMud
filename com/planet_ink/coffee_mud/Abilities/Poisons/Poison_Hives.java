@@ -35,9 +35,10 @@ import java.util.*;
 public class Poison_Hives extends Poison
 {
 	@Override public String ID() { return "Poison_Hives"; }
-	public final static String localizedName = CMLib.lang()._("Hives");
+	private final static String localizedName = CMLib.lang()._("Hives");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Hives)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Hives)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

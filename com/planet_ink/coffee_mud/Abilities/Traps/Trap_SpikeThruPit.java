@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_SpikeThruPit extends Trap_SpikePit
 {
 	@Override public String ID() { return "Trap_SpikeThruPit"; }
-	public final static String localizedName = CMLib.lang()._("small spike pit");
+	private final static String localizedName = CMLib.lang()._("small spike pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 7;}
 	@Override public boolean getTravelThroughFlag() { return true; }

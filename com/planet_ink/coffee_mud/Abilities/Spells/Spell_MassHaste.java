@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassHaste extends Spell
 {
 	@Override public String ID() { return "Spell_MassHaste"; }
-	public final static String localizedName = CMLib.lang()._("Mass Haste");
+	private final static String localizedName = CMLib.lang()._("Mass Haste");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

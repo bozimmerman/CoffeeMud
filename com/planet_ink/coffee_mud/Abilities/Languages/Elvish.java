@@ -35,7 +35,7 @@ import java.util.*;
 public class Elvish extends StdLanguage
 {
 	@Override public String ID() { return "Elvish"; }
-	public final static String localizedName = CMLib.lang()._("Elvish");
+	private final static String localizedName = CMLib.lang()._("Elvish");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Elvish()

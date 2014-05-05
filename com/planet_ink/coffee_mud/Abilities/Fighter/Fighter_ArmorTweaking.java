@@ -38,7 +38,7 @@ import java.util.*;
 public class Fighter_ArmorTweaking extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ArmorTweaking"; }
-	public final static String localizedName = CMLib.lang()._("Armor Tweaking");
+	private final static String localizedName = CMLib.lang()._("Armor Tweaking");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ARMORTWEAK","TWEAK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}

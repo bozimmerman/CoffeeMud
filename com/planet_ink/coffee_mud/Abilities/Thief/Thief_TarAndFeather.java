@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_TarAndFeather extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TarAndFeather"; }
-	public final static String localizedName = CMLib.lang()._("Tar And Feather");
+	private final static String localizedName = CMLib.lang()._("Tar And Feather");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

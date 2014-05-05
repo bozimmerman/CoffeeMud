@@ -35,7 +35,7 @@ import java.util.*;
 public class SmokeRings extends CommonSkill
 {
 	@Override public String ID() { return "SmokeRings"; }
-	public final static String localizedName = CMLib.lang()._("Smoke Rings");
+	private final static String localizedName = CMLib.lang()._("Smoke Rings");
 	@Override public String name() { return localizedName; }
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}

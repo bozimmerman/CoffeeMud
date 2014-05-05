@@ -36,9 +36,10 @@ import java.util.*;
 public class Power_WebSpinning extends SuperPower
 {
 	@Override public String ID() { return "Power_WebSpinning"; }
-	public final static String localizedName = CMLib.lang()._("Web Spinning");
+	private final static String localizedName = CMLib.lang()._("Web Spinning");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Webbed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Webbed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

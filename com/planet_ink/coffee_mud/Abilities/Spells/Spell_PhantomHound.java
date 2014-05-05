@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_PhantomHound extends Spell
 {
 	@Override public String ID() { return "Spell_PhantomHound"; }
-	public final static String localizedName = CMLib.lang()._("Phantom Hound");
+	private final static String localizedName = CMLib.lang()._("Phantom Hound");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

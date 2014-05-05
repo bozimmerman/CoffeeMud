@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_SlowProjectiles extends Spell
 {
 	@Override public String ID() { return "Spell_SlowProjectiles"; }
-	public final static String localizedName = CMLib.lang()._("Slow Projectiles");
+	private final static String localizedName = CMLib.lang()._("Slow Projectiles");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Slow Projectiles)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Slow Projectiles)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

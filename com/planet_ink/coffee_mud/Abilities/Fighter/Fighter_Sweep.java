@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Sweep extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Sweep"; }
-	public final static String localizedName = CMLib.lang()._("Sweep");
+	private final static String localizedName = CMLib.lang()._("Sweep");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SWEEP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

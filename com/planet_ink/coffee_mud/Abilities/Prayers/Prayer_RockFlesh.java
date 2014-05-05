@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RockFlesh extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RockFlesh"; }
-	public final static String localizedName = CMLib.lang()._("Rock Flesh");
+	private final static String localizedName = CMLib.lang()._("Rock Flesh");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

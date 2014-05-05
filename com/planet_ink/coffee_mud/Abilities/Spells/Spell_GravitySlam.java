@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_GravitySlam extends Spell
 {
 	@Override public String ID() { return "Spell_GravitySlam"; }
-	public final static String localizedName = CMLib.lang()._("Gravity Slam");
+	private final static String localizedName = CMLib.lang()._("Gravity Slam");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_RogueLimb extends Spell
 {
 	@Override public String ID() { return "Spell_RogueLimb"; }
-	public final static String localizedName = CMLib.lang()._("Rogue Limb");
+	private final static String localizedName = CMLib.lang()._("Rogue Limb");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Rogue Limb)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Rogue Limb)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

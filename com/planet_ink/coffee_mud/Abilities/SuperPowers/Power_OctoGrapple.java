@@ -37,7 +37,7 @@ import java.util.*;
 public class Power_OctoGrapple extends SuperPower
 {
 	@Override public String ID() { return "Power_OctoGrapple"; }
-	public final static String localizedName = CMLib.lang()._("Octo-Grapple");
+	private final static String localizedName = CMLib.lang()._("Octo-Grapple");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()

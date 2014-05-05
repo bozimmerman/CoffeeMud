@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DistantGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_DistantGrowth"; }
-	public final static String localizedName = CMLib.lang()._("Distant Growth");
+	private final static String localizedName = CMLib.lang()._("Distant Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

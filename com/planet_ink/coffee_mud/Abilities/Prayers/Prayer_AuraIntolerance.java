@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_AuraIntolerance extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraIntolerance"; }
-	public final static String localizedName = CMLib.lang()._("Aura of Intolerance");
+	private final static String localizedName = CMLib.lang()._("Aura of Intolerance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Intolerance Aura)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Intolerance Aura)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}

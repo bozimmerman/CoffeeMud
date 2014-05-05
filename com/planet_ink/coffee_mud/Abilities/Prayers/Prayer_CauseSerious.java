@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CauseSerious extends Prayer
 {
 	@Override public String ID() { return "Prayer_CauseSerious"; }
-	public final static String localizedName = CMLib.lang()._("Cause Serious Wounds");
+	private final static String localizedName = CMLib.lang()._("Cause Serious Wounds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}

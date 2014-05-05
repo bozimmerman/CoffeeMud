@@ -37,14 +37,15 @@ import java.util.*;
 public class Skill_Enslave extends StdSkill
 {
 	@Override public String ID() { return "Skill_Enslave"; }
-	public final static String localizedName = CMLib.lang()._("Enslave");
+	private final static String localizedName = CMLib.lang()._("Enslave");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"ENSLAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String displayText(){ return "(Enslaved)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Enslaved)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 
 	protected String masterName="";

@@ -39,7 +39,7 @@ import java.util.*;
 public class Herbology extends CommonSkill
 {
 	@Override public String ID() { return "Herbology"; }
-	public final static String localizedName = CMLib.lang()._("Herbology");
+	private final static String localizedName = CMLib.lang()._("Herbology");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HERBOLOGY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

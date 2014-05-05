@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_Shrink extends Spell
 {
 	@Override public String ID() { return "Spell_Shrink"; }
-	public final static String localizedName = CMLib.lang()._("Shrink");
+	private final static String localizedName = CMLib.lang()._("Shrink");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Shrunk)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Shrunk)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}

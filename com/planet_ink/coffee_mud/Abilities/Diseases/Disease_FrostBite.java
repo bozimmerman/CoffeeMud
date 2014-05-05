@@ -37,10 +37,10 @@ import java.util.*;
 public class Disease_FrostBite extends Disease
 {
 	@Override public String ID() { return "Disease_FrostBite"; }
-	public final static String localizedName = CMLib.lang()._("Frost Bite");
+	private final static String localizedName = CMLib.lang()._("Frost Bite");
 	@Override public String name() { return localizedName; }
 	private String where="feet";
-	@Override public String displayText(){ return "(Frost bitten "+where+")";}
+	@Override public String displayText() { return _("(Frost bitten "+where+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_AcidHealing extends Prayer
 {
 	@Override public String ID() { return "Prayer_AcidHealing"; }
-	public final static String localizedName = CMLib.lang()._("Acid Healing");
+	private final static String localizedName = CMLib.lang()._("Acid Healing");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Acid Healing)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Acid Healing)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}

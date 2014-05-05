@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CreateWater extends Prayer
 {
 	@Override public String ID() { return "Prayer_CreateWater"; }
-	public final static String localizedName = CMLib.lang()._("Create Water");
+	private final static String localizedName = CMLib.lang()._("Create Water");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

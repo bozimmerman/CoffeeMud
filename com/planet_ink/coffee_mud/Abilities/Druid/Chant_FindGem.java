@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_FindGem extends Chant_FindPlant
 {
 	@Override public String ID() { return "Chant_FindGem"; }
-	public final static String localizedName = CMLib.lang()._("Find Gem");
+	private final static String localizedName = CMLib.lang()._("Find Gem");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Finding "+lookingFor+")";}
+	@Override public String displayText() { return _("(Finding "+lookingFor+")"); }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

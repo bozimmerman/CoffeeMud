@@ -36,7 +36,7 @@ import java.util.*;
 public class Drilling extends GatheringSkill
 {
 	@Override public String ID() { return "Drilling"; }
-	public final static String localizedName = CMLib.lang()._("Drilling");
+	private final static String localizedName = CMLib.lang()._("Drilling");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DRILL","DRILLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

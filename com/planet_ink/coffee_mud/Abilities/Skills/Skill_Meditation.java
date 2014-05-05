@@ -35,9 +35,10 @@ import java.util.*;
 public class Skill_Meditation extends StdSkill
 {
 	@Override public String ID() { return "Skill_Meditation"; }
-	public final static String localizedName = CMLib.lang()._("Meditation");
+	private final static String localizedName = CMLib.lang()._("Meditation");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Meditating)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Meditating)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Searching extends CommonSkill
 {
 	@Override public String ID() { return "Searching"; }
-	public final static String localizedName = CMLib.lang()._("Searching");
+	private final static String localizedName = CMLib.lang()._("Searching");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SEARCH","SEARCHING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }

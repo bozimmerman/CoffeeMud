@@ -37,7 +37,7 @@ public class Thief_Autosneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autosneak"; }
 	@Override public String displayText() {return "(AutoSneak)";}
-	public final static String localizedName = CMLib.lang()._("AutoSneak");
+	private final static String localizedName = CMLib.lang()._("AutoSneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

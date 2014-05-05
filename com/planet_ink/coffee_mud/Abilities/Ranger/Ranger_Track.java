@@ -37,7 +37,7 @@ import java.util.*;
 public class Ranger_Track extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Track"; }
-	public final static String localizedName = CMLib.lang()._("Track");
+	private final static String localizedName = CMLib.lang()._("Track");
 	@Override public String name() { return localizedName; }
 
 	protected String displayText="(Tracking)";

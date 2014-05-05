@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_FeignLife extends Prayer
 {
 	@Override public String ID() { return "Prayer_FeignLife"; }
-	public final static String localizedName = CMLib.lang()._("Feign Life");
+	private final static String localizedName = CMLib.lang()._("Feign Life");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Feign Life)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Feign Life)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

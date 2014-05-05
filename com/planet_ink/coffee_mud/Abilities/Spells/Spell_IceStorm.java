@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_IceStorm extends Spell
 {
 	@Override public String ID() { return "Spell_IceStorm"; }
-	public final static String localizedName = CMLib.lang()._("Ice Storm");
+	private final static String localizedName = CMLib.lang()._("Ice Storm");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}

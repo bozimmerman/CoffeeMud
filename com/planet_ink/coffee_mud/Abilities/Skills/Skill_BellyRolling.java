@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_BellyRolling extends StdSkill
 {
 	@Override public String ID() { return "Skill_BellyRolling"; }
-	public final static String localizedName = CMLib.lang()._("Belly Rolling");
+	private final static String localizedName = CMLib.lang()._("Belly Rolling");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

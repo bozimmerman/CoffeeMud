@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_AchillesArmor extends Spell
 {
 	@Override public String ID() { return "Spell_AchillesArmor"; }
-	public final static String localizedName = CMLib.lang()._("Achilles Armor");
+	private final static String localizedName = CMLib.lang()._("Achilles Armor");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Achilles Armor)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Achilles Armor)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int overrideMana(){return 100;}

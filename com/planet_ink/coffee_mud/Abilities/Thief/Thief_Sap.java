@@ -35,9 +35,10 @@ import java.util.*;
 public class Thief_Sap extends ThiefSkill implements HealthCondition
 {
 	@Override public String ID() { return "Thief_Sap"; }
-	public final static String localizedName = CMLib.lang()._("Sap");
+	private final static String localizedName = CMLib.lang()._("Sap");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Knocked out)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Knocked out)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

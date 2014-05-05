@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalHusbandry extends CommonSkill
 {
 	@Override public String ID() { return "AnimalHusbandry"; }
-	public final static String localizedName = CMLib.lang()._("Animal Husbandry");
+	private final static String localizedName = CMLib.lang()._("Animal Husbandry");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HUSBAND","ANIMALHUSBANDRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

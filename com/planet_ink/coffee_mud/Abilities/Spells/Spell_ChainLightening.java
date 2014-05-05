@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ChainLightening extends Spell
 {
 	@Override public String ID() { return "Spell_ChainLightening"; }
-	public final static String localizedName = CMLib.lang()._("Chain Lightning");
+	private final static String localizedName = CMLib.lang()._("Chain Lightning");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

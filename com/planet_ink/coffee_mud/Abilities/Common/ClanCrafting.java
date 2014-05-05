@@ -41,7 +41,7 @@ import java.util.*;
 public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ClanCrafting"; }
-	public final static String localizedName = CMLib.lang()._("Clan Crafting");
+	private final static String localizedName = CMLib.lang()._("Clan Crafting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CLANCRAFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

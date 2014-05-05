@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ArcaneMark extends Spell
 {
 	@Override public String ID() { return "Spell_ArcaneMark"; }
-	public final static String localizedName = CMLib.lang()._("Arcane Mark");
+	private final static String localizedName = CMLib.lang()._("Arcane Mark");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

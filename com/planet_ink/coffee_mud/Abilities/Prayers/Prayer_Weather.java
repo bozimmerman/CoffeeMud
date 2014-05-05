@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Weather extends Prayer
 {
 	@Override public String ID() { return "Prayer_Weather"; }
-	public final static String localizedName = CMLib.lang()._("Change Weather");
+	private final static String localizedName = CMLib.lang()._("Change Weather");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Knock extends Spell
 {
 	@Override public String ID() { return "Spell_Knock"; }
-	public final static String localizedName = CMLib.lang()._("Knock");
+	private final static String localizedName = CMLib.lang()._("Knock");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Knock Spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Knock Spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_CarefulStep extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_CarefulStep"; }
-	public final static String localizedName = CMLib.lang()._("Careful Step");
+	private final static String localizedName = CMLib.lang()._("Careful Step");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

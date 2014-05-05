@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_SummonAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_SummonAnimal"; }
-	public final static String localizedName = CMLib.lang()._("Summon Animal");
+	private final static String localizedName = CMLib.lang()._("Summon Animal");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Animal Summoning)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Summoning)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

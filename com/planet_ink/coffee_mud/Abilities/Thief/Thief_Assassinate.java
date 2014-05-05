@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Assassinate extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Assassinate"; }
-	public final static String localizedName = CMLib.lang()._("Assassinate");
+	private final static String localizedName = CMLib.lang()._("Assassinate");
 	@Override public String name() { return localizedName; }
 	protected String displayText="(Tracking)";
 	@Override public String displayText(){ return displayText;}

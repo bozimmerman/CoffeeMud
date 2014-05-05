@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_VolcanicChasm extends Chant
 {
 	@Override public String ID() { return "Chant_VolcanicChasm"; }
-	public final static String localizedName = CMLib.lang()._("Volcanic Chasm");
+	private final static String localizedName = CMLib.lang()._("Volcanic Chasm");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

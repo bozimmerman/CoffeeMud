@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_Rend extends StdAbility
 {
 	@Override public String ID() { return "Druid_Rend"; }
-	public final static String localizedName = CMLib.lang()._("Rend");
+	private final static String localizedName = CMLib.lang()._("Rend");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"REND"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

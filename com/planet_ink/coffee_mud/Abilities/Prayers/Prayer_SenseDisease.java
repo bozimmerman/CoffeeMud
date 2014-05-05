@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_SenseDisease extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseDisease"; }
-	public final static String localizedName = CMLib.lang()._("Sense Disease");
+	private final static String localizedName = CMLib.lang()._("Sense Disease");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Sense Disease)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Disease)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

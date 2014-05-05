@@ -38,7 +38,7 @@ import java.util.*;
 public class Allergies extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Allergies"; }
-	public final static String localizedName = CMLib.lang()._("Allergies");
+	private final static String localizedName = CMLib.lang()._("Allergies");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_PlantBed extends Chant
 {
 	@Override public String ID() { return "Chant_PlantBed"; }
-	public final static String localizedName = CMLib.lang()._("Plant Bed");
+	private final static String localizedName = CMLib.lang()._("Plant Bed");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

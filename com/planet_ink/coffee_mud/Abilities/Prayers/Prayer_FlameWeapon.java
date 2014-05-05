@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_FlameWeapon extends Prayer
 {
 	@Override public String ID() { return "Prayer_FlameWeapon"; }
-	public final static String localizedName = CMLib.lang()._("Flame Weapon");
+	private final static String localizedName = CMLib.lang()._("Flame Weapon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Enflamed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Enflamed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

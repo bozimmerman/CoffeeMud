@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FreeVine extends Chant
 {
 	@Override public String ID() { return "Chant_FreeVine"; }
-	public final static String localizedName = CMLib.lang()._("Free Vine");
+	private final static String localizedName = CMLib.lang()._("Free Vine");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}

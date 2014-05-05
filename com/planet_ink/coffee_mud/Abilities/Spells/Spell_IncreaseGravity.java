@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_IncreaseGravity extends Spell
 {
 	@Override public String ID() { return "Spell_IncreaseGravity"; }
-	public final static String localizedName = CMLib.lang()._("Increase Gravity");
+	private final static String localizedName = CMLib.lang()._("Increase Gravity");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Gravity is Increased)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Gravity is Increased)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

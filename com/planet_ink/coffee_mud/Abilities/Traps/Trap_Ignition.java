@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Ignition extends StdTrap
 {
 	@Override public String ID() { return "Trap_Ignition"; }
-	public final static String localizedName = CMLib.lang()._("ignition trap");
+	private final static String localizedName = CMLib.lang()._("ignition trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

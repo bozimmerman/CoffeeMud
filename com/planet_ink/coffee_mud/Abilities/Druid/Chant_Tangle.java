@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Tangle extends Chant
 {
 	@Override public String ID() { return "Chant_Tangle"; }
-	public final static String localizedName = CMLib.lang()._("Tangle");
+	private final static String localizedName = CMLib.lang()._("Tangle");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Tangled)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tangled)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}

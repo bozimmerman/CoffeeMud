@@ -35,7 +35,7 @@ import java.util.*;
 public class Drunken extends StdLanguage
 {
 	@Override public String ID() { return "Drunken"; }
-	public final static String localizedName = CMLib.lang()._("Drunken");
+	private final static String localizedName = CMLib.lang()._("Drunken");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;

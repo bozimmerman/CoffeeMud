@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ClarifyScroll extends Spell
 {
 	@Override public String ID() { return "Spell_ClarifyScroll"; }
-	public final static String localizedName = CMLib.lang()._("Clarify Scroll");
+	private final static String localizedName = CMLib.lang()._("Clarify Scroll");
 	@Override public String name() { return localizedName; }
 	@Override public int overrideMana(){return 50;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Druid_GolemForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_GolemForm"; }
-	public final static String localizedName = CMLib.lang()._("Golem Form");
+	private final static String localizedName = CMLib.lang()._("Golem Form");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings =_i(new String[] {"GOLEMFORM"});

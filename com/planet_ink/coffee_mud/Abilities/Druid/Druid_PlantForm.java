@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_PlantForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_PlantForm"; }
-	public final static String localizedName = CMLib.lang()._("Plant Form");
+	private final static String localizedName = CMLib.lang()._("Plant Form");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

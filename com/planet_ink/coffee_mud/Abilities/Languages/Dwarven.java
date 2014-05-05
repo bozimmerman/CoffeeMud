@@ -35,7 +35,7 @@ import java.util.*;
 public class Dwarven extends StdLanguage
 {
 	@Override public String ID() { return "Dwarven"; }
-	public final static String localizedName = CMLib.lang()._("Dwarven");
+	private final static String localizedName = CMLib.lang()._("Dwarven");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Dwarven()

@@ -36,9 +36,10 @@ import java.util.*;
 public class Chant_Hibernation extends Chant
 {
 	@Override public String ID() { return "Chant_Hibernation"; }
-	public final static String localizedName = CMLib.lang()._("Hibernation");
+	private final static String localizedName = CMLib.lang()._("Hibernation");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Hibernating)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Hibernating)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

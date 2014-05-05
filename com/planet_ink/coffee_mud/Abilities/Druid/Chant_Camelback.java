@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Camelback extends Chant
 {
 	@Override public String ID() { return "Chant_Camelback"; }
-	public final static String localizedName = CMLib.lang()._("Camelback");
+	private final static String localizedName = CMLib.lang()._("Camelback");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Camelback)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Camelback)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

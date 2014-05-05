@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SpottersOrders extends Spell
 {
 	@Override public String ID() { return "Spell_SpottersOrders"; }
-	public final static String localizedName = CMLib.lang()._("Spotters Orders");
+	private final static String localizedName = CMLib.lang()._("Spotters Orders");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Spotting weaknesses of "+text()+")";}
+	@Override public String displayText() { return _("(Spotting weaknesses of "+text()+")"); }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

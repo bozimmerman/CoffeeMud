@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class Thief_KillLog extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_KillLog"; }
-	public final static String localizedName = CMLib.lang()._("Kill Log");
+	private final static String localizedName = CMLib.lang()._("Kill Log");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

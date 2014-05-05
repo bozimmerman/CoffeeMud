@@ -38,7 +38,7 @@ import java.util.*;
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Armorsmithing"; }
-	public final static String localizedName = CMLib.lang()._("Armorsmithing");
+	private final static String localizedName = CMLib.lang()._("Armorsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ARMORSMITH","ARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_IdentifyObject extends Spell
 {
 	@Override public String ID() { return "Spell_IdentifyObject"; }
-	public final static String localizedName = CMLib.lang()._("Identify Object");
+	private final static String localizedName = CMLib.lang()._("Identify Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

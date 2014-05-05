@@ -37,9 +37,10 @@ public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_Tumble"; }
-	public final static String localizedName = CMLib.lang()._("Tumble");
+	private final static String localizedName = CMLib.lang()._("Tumble");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Tumbling)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tumbling)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"TUMBLE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_ProtUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtUndead"; }
-	public final static String localizedName = CMLib.lang()._("Protection Undead");
+	private final static String localizedName = CMLib.lang()._("Protection Undead");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Protection/Undead)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection/Undead)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

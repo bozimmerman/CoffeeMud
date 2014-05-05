@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Treemorph extends Chant
 {
 	@Override public String ID() { return "Chant_Treemorph"; }
-	public final static String localizedName = CMLib.lang()._("Treemorph");
+	private final static String localizedName = CMLib.lang()._("Treemorph");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Treemorph)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Treemorph)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	Item tree=null;

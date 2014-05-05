@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CureFatigue extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureFatigue"; }
-	public final static String localizedName = CMLib.lang()._("Cure Fatigue");
+	private final static String localizedName = CMLib.lang()._("Cure Fatigue");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

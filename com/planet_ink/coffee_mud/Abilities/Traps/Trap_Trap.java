@@ -36,7 +36,7 @@ import java.util.*;
 public class Trap_Trap extends StdAbility implements Trap
 {
 	@Override public String ID() { return "Trap_Trap"; }
-	public final static String localizedName = CMLib.lang()._("a Trap!");
+	private final static String localizedName = CMLib.lang()._("a Trap!");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Ballad extends Play
 {
 	@Override public String ID() { return "Play_Ballad"; }
-	public final static String localizedName = CMLib.lang()._("Ballad");
+	private final static String localizedName = CMLib.lang()._("Ballad");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String songOf(){return "a "+name();}

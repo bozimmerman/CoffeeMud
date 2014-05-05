@@ -37,7 +37,7 @@ import java.util.*;
 public class Poison_Firebreather extends Poison_Liquor
 {
 	@Override public String ID() { return "Poison_Firebreather"; }
-	public final static String localizedName = CMLib.lang()._("Firebreather");
+	private final static String localizedName = CMLib.lang()._("Firebreather");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LIQUORFIRE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_FeelHeat extends Chant
 {
 	@Override public String ID() { return "Chant_FeelHeat"; }
-	public final static String localizedName = CMLib.lang()._("Feel Heat");
+	private final static String localizedName = CMLib.lang()._("Feel Heat");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Feel Heat)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Feel Heat)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

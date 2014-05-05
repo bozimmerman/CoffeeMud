@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Infected extends StdTrap
 {
 	@Override public String ID() { return "Trap_Infected"; }
-	public final static String localizedName = CMLib.lang()._("infected");
+	private final static String localizedName = CMLib.lang()._("infected");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -36,12 +36,13 @@ import java.util.*;
 public class Prayer_DarkeningAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_DarkeningAura"; }
-	public final static String localizedName = CMLib.lang()._("Darkening Aura");
+	private final static String localizedName = CMLib.lang()._("Darkening Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){ return "(Darkening Aura)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkening Aura)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 

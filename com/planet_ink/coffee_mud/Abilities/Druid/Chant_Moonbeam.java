@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_Moonbeam extends Chant
 {
 	@Override public String ID() { return "Chant_Moonbeam"; }
-	public final static String localizedName = CMLib.lang()._("Moonbeam");
+	private final static String localizedName = CMLib.lang()._("Moonbeam");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Moonbeam)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Moonbeam)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 

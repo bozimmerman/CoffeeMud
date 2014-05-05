@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_TimeStop extends Spell
 {
 	@Override public String ID() { return "Spell_TimeStop"; }
-	public final static String localizedName = CMLib.lang()._("Time Stop");
+	private final static String localizedName = CMLib.lang()._("Time Stop");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Time is Stopped)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Time is Stopped)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int overrideMana(){return 100;}

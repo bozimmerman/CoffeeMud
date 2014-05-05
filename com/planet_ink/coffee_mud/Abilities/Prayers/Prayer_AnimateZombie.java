@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_AnimateZombie extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimateZombie"; }
-	public final static String localizedName = CMLib.lang()._("Animate Zombie");
+	private final static String localizedName = CMLib.lang()._("Animate Zombie");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

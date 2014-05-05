@@ -35,7 +35,7 @@ import java.util.*;
 public class Gigantic extends StdLanguage
 {
 	@Override public String ID() { return "Gigantic"; }
-	public final static String localizedName = CMLib.lang()._("Gigantic");
+	private final static String localizedName = CMLib.lang()._("Gigantic");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Gigantic()

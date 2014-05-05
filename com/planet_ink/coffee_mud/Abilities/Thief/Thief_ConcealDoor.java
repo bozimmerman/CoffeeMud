@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ConcealDoor extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ConcealDoor"; }
-	public final static String localizedName = CMLib.lang()._("Conceal Door");
+	private final static String localizedName = CMLib.lang()._("Conceal Door");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

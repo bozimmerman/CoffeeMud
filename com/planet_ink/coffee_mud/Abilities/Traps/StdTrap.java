@@ -35,7 +35,7 @@ import java.util.*;
 public class StdTrap extends StdAbility implements Trap
 {
 	@Override public String ID() { return "StdTrap"; }
-	public final static String localizedName = CMLib.lang()._("standard trap");
+	private final static String localizedName = CMLib.lang()._("standard trap");
 	@Override public String name() { return localizedName; }
 
 	protected boolean sprung=false;

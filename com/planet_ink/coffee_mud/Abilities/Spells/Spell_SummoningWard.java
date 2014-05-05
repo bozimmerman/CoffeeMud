@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_SummoningWard extends Spell
 {
 	@Override public String ID() { return "Spell_SummoningWard"; }
-	public final static String localizedName = CMLib.lang()._("Summoning Ward");
+	private final static String localizedName = CMLib.lang()._("Summoning Ward");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Summoning Ward)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Summoning Ward)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	protected int quality=Ability.QUALITY_INDIFFERENT;
 	@Override public int abstractQuality(){ return quality;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}

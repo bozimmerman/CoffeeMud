@@ -37,9 +37,10 @@ public class Archon_Hush extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Hush"; }
-	public final static String localizedName = CMLib.lang()._("Hush");
+	private final static String localizedName = CMLib.lang()._("Hush");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Hushed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Hushed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

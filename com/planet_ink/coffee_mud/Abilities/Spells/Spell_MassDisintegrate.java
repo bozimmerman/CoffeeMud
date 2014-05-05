@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassDisintegrate extends Spell
 {
 	@Override public String ID() { return "Spell_MassDisintegrate"; }
-	public final static String localizedName = CMLib.lang()._("Mass Disintegrate");
+	private final static String localizedName = CMLib.lang()._("Mass Disintegrate");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

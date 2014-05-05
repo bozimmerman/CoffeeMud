@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Disarm extends StdSkill
 {
 	@Override public String ID() { return "Skill_Disarm"; }
-	public final static String localizedName = CMLib.lang()._("Disarm");
+	private final static String localizedName = CMLib.lang()._("Disarm");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

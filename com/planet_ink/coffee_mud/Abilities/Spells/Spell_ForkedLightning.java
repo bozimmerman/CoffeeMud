@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ForkedLightning extends Spell
 {
 	@Override public String ID() { return "Spell_ForkedLightning"; }
-	public final static String localizedName = CMLib.lang()._("Forked Lightning");
+	private final static String localizedName = CMLib.lang()._("Forked Lightning");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

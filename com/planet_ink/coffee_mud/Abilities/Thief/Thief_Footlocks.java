@@ -35,9 +35,10 @@ import java.util.*;
 public class Thief_Footlocks extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Footlocks"; }
-	public final static String localizedName = CMLib.lang()._("Footlocks");
+	private final static String localizedName = CMLib.lang()._("Footlocks");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Footlocked)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Footlocked)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

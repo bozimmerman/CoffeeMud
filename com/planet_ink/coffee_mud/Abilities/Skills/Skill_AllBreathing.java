@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_AllBreathing extends StdSkill
 {
 	@Override public String ID() { return "Skill_AllBreathing"; }
-	public final static String localizedName = CMLib.lang()._("All Breathing");
+	private final static String localizedName = CMLib.lang()._("All Breathing");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

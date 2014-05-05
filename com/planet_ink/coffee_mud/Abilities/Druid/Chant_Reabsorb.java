@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Reabsorb extends Chant
 {
 	@Override public String ID() { return "Chant_Reabsorb"; }
-	public final static String localizedName = CMLib.lang()._("Reabsorb");
+	private final static String localizedName = CMLib.lang()._("Reabsorb");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}

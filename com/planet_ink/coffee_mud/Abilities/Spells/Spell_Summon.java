@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Summon extends Spell
 {
 	@Override public String ID() { return "Spell_Summon"; }
-	public final static String localizedName = CMLib.lang()._("Summon");
+	private final static String localizedName = CMLib.lang()._("Summon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Summoned)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Summoned)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int overrideMana(){return Ability.COST_PCT+50;}

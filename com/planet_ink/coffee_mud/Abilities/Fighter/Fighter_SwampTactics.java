@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_SwampTactics extends Fighter_FieldTactics
 {
 	@Override public String ID() { return "Fighter_SwampTactics"; }
-	public final static String localizedName = CMLib.lang()._("Swamp Tactics");
+	private final static String localizedName = CMLib.lang()._("Swamp Tactics");
 	@Override public String name() { return localizedName; }
 	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_OUTDOORS_SWAMP)};
 	@Override public Integer[] landClasses(){return landClasses;}

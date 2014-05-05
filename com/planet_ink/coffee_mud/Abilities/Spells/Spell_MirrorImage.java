@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_MirrorImage extends Spell
 {
 	@Override public String ID() { return "Spell_MirrorImage"; }
-	public final static String localizedName = CMLib.lang()._("Mirror Image");
+	private final static String localizedName = CMLib.lang()._("Mirror Image");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Mirror Image spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Mirror Image spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

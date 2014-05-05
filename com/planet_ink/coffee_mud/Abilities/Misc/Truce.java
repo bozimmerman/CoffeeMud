@@ -37,7 +37,7 @@ import java.util.*;
 public class Truce extends StdAbility
 {
 	@Override public String ID() { return "Truce"; }
-	public final static String localizedName = CMLib.lang()._("Truce");
+	private final static String localizedName = CMLib.lang()._("Truce");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

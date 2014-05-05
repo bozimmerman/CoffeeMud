@@ -37,7 +37,8 @@ public class Chant_SummonTornado extends Chant
 {
 	@Override public String ID() { return "Chant_SummonTornado"; }
 	@Override public String name(){return renderedMundane?"tornado":"Summon Tornado";}
-	@Override public String displayText(){return "(Inside a Tornado)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Inside a Tornado)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

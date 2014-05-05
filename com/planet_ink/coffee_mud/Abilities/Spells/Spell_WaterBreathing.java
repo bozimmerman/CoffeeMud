@@ -37,9 +37,10 @@ import java.util.*;
 public class Spell_WaterBreathing extends Spell
 {
 	@Override public String ID() { return "Spell_WaterBreathing"; }
-	public final static String localizedName = CMLib.lang()._("Water Breathing");
+	private final static String localizedName = CMLib.lang()._("Water Breathing");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Water Breathing)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Water Breathing)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

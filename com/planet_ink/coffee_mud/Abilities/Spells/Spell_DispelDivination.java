@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DispelDivination extends Spell
 {
 	@Override public String ID() { return "Spell_DispelDivination"; }
-	public final static String localizedName = CMLib.lang()._("Dispel Divination");
+	private final static String localizedName = CMLib.lang()._("Dispel Divination");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

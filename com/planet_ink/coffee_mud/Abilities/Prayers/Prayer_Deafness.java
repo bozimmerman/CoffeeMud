@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_Deafness extends Prayer
 {
 	@Override public String ID() { return "Prayer_Deafness"; }
-	public final static String localizedName = CMLib.lang()._("Deafness");
+	private final static String localizedName = CMLib.lang()._("Deafness");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Deafness)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Deafness)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

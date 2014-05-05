@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Scry extends Spell
 {
 	@Override public String ID() { return "Spell_Scry"; }
-	public final static String localizedName = CMLib.lang()._("Scry");
+	private final static String localizedName = CMLib.lang()._("Scry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -36,9 +36,9 @@ import java.util.*;
 public class Skill_Subdue extends StdSkill
 {
 	@Override public String ID() { return "Skill_Subdue"; }
-	public final static String localizedName = CMLib.lang()._("Subdue");
+	private final static String localizedName = CMLib.lang()._("Subdue");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Subdueing "+whom+")";}
+	@Override public String displayText() { return _("(Subdueing "+whom+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

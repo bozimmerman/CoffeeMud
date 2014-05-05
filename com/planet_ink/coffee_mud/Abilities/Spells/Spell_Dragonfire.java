@@ -35,9 +35,10 @@ import java.util.*;
 public class Spell_Dragonfire extends Spell
 {
 	@Override public String ID() { return "Spell_Dragonfire"; }
-	public final static String localizedName = CMLib.lang()._("Dragonfire");
+	private final static String localizedName = CMLib.lang()._("Dragonfire");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Dragonfire)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Dragonfire)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Stonewalking extends Chant
 {
 	@Override public String ID() { return "Chant_Stonewalking"; }
-	public final static String localizedName = CMLib.lang()._("Stonewalking");
+	private final static String localizedName = CMLib.lang()._("Stonewalking");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Stonewalking spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Stonewalking spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

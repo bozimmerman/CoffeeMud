@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_BreatheWater extends Chant
 {
 	@Override public String ID() { return "Chant_BreatheWater"; }
-	public final static String localizedName = CMLib.lang()._("Fish Gills");
+	private final static String localizedName = CMLib.lang()._("Fish Gills");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Fish Gills)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Fish Gills)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int[] lastSet=null;

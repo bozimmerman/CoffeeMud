@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_SummonSteed extends Spell
 {
 	@Override public String ID() { return "Spell_SummonSteed"; }
-	public final static String localizedName = CMLib.lang()._("Summon Steed");
+	private final static String localizedName = CMLib.lang()._("Summon Steed");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Summon Steed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Steed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

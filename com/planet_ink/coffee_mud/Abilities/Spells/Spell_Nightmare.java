@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Nightmare extends Spell
 {
 	@Override public String ID() { return "Spell_Nightmare"; }
-	public final static String localizedName = CMLib.lang()._("Nightmare");
+	private final static String localizedName = CMLib.lang()._("Nightmare");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Having a nightmare)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Having a nightmare)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

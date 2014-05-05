@@ -37,9 +37,10 @@ import java.util.*;
 public class Thief_Safehouse extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Safehouse"; }
-	public final static String localizedName = CMLib.lang()._("Safehouse");
+	private final static String localizedName = CMLib.lang()._("Safehouse");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Safehouse)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Safehouse)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

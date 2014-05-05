@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Reinforce extends Spell
 {
 	@Override public String ID() { return "Spell_Reinforce"; }
-	public final static String localizedName = CMLib.lang()._("Reinforce");
+	private final static String localizedName = CMLib.lang()._("Reinforce");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

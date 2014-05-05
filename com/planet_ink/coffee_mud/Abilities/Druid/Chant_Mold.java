@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Mold extends Chant
 {
 	@Override public String ID() { return "Chant_Mold"; }
-	public final static String localizedName = CMLib.lang()._("Mold");
+	private final static String localizedName = CMLib.lang()._("Mold");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Mold)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Mold)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

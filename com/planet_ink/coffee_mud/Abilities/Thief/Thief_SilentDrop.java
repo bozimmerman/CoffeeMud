@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SilentDrop extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentDrop"; }
-	public final static String localizedName = CMLib.lang()._("Silent Drop");
+	private final static String localizedName = CMLib.lang()._("Silent Drop");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}

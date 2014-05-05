@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Frost extends Spell
 {
 	@Override public String ID() { return "Spell_Frost"; }
-	public final static String localizedName = CMLib.lang()._("Frost");
+	private final static String localizedName = CMLib.lang()._("Frost");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Frost)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Frost)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

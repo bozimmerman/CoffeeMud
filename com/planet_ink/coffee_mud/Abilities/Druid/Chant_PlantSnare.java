@@ -36,9 +36,10 @@ import java.util.*;
 public class Chant_PlantSnare extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSnare"; }
-	public final static String localizedName = CMLib.lang()._("Plant Snare");
+	private final static String localizedName = CMLib.lang()._("Plant Snare");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Snared)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Snared)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}

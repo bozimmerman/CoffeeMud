@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_BloodHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_BloodHearth"; }
-	public final static String localizedName = CMLib.lang()._("Blood Hearth");
+	private final static String localizedName = CMLib.lang()._("Blood Hearth");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Blood Hearth)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blood Hearth)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

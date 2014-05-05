@@ -35,9 +35,10 @@ import java.util.*;
 public class Disease_Cold extends Disease
 {
 	@Override public String ID() { return "Disease_Cold"; }
-	public final static String localizedName = CMLib.lang()._("Cold");
+	private final static String localizedName = CMLib.lang()._("Cold");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Cold Virus)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Cold Virus)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

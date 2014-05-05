@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_DeathTrap"; }
-	public final static String localizedName = CMLib.lang()._("Death Trap");
+	private final static String localizedName = CMLib.lang()._("Death Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}

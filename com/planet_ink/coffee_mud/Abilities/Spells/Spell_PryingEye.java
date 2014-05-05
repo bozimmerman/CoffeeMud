@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_PryingEye extends Spell
 {
 	@Override public String ID() { return "Spell_PryingEye"; }
-	public final static String localizedName = CMLib.lang()._("Prying Eye");
+	private final static String localizedName = CMLib.lang()._("Prying Eye");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Mark extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Mark"; }
-	public final static String localizedName = CMLib.lang()._("Mark");
+	private final static String localizedName = CMLib.lang()._("Mark");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

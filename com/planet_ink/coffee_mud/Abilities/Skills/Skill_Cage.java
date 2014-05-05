@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Cage extends StdSkill
 {
 	@Override public String ID() { return "Skill_Cage"; }
-	public final static String localizedName = CMLib.lang()._("Cage");
+	private final static String localizedName = CMLib.lang()._("Cage");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}

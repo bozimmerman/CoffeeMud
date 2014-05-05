@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonSeed extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSeed"; }
-	public final static String localizedName = CMLib.lang()._("Summon Seeds");
+	private final static String localizedName = CMLib.lang()._("Summon Seeds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

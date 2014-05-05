@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_TuneInstrument extends BardSkill
 {
 	@Override public String ID() { return "Skill_TuneInstrument"; }
-	public final static String localizedName = CMLib.lang()._("Tune Instrument");
+	private final static String localizedName = CMLib.lang()._("Tune Instrument");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

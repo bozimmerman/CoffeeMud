@@ -39,7 +39,7 @@ import java.util.*;
 public class Painting extends CommonSkill
 {
 	@Override public String ID() { return "Painting"; }
-	public final static String localizedName = CMLib.lang()._("Painting");
+	private final static String localizedName = CMLib.lang()._("Painting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PAINT","PAINTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

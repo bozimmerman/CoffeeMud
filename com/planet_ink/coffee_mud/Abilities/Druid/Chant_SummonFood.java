@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonFood extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFood"; }
-	public final static String localizedName = CMLib.lang()._("Summon Food");
+	private final static String localizedName = CMLib.lang()._("Summon Food");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

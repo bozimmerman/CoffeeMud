@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_AcidSpray extends StdTrap
 {
 	@Override public String ID() { return "Trap_AcidSpray"; }
-	public final static String localizedName = CMLib.lang()._("acid spray");
+	private final static String localizedName = CMLib.lang()._("acid spray");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return 0;}

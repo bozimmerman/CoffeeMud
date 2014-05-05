@@ -37,7 +37,7 @@ import java.util.*;
 public class Dueler extends StdAbility
 {
 	@Override public String ID() { return "Dueler"; }
-	public final static String localizedName = CMLib.lang()._("Dueler");
+	private final static String localizedName = CMLib.lang()._("Dueler");
 	@Override public String name() { return localizedName; }
 	protected Dueler otherDueler = null;
 	protected MOB otherDuelPartner=null;

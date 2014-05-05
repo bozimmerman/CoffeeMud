@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Thirstless extends Spell
 {
 	@Override public String ID() { return "Spell_Thirstless"; }
-	public final static String localizedName = CMLib.lang()._("Thirstless");
+	private final static String localizedName = CMLib.lang()._("Thirstless");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Thirstless)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Thirstless)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}

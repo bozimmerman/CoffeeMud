@@ -35,9 +35,10 @@ import java.util.*;
 public class Spell_Web extends Spell
 {
 	@Override public String ID() { return "Spell_Web"; }
-	public final static String localizedName = CMLib.lang()._("Web");
+	private final static String localizedName = CMLib.lang()._("Web");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Webbed)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Webbed)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

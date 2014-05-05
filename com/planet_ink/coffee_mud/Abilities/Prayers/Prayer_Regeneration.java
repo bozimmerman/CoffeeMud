@@ -35,9 +35,10 @@ import java.util.*;
 public class Prayer_Regeneration extends Prayer
 {
 	@Override public String ID() { return "Prayer_Regeneration"; }
-	public final static String localizedName = CMLib.lang()._("Regeneration");
+	private final static String localizedName = CMLib.lang()._("Regeneration");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Regeneration)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Regeneration)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}

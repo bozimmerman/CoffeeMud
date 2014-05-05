@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_MeteorStrike extends Chant
 {
 	@Override public String ID() { return "Chant_MeteorStrike"; }
-	public final static String localizedName = CMLib.lang()._("Meteor Strike");
+	private final static String localizedName = CMLib.lang()._("Meteor Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}

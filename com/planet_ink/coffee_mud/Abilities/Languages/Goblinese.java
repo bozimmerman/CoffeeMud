@@ -35,7 +35,7 @@ import java.util.*;
 public class Goblinese extends StdLanguage
 {
 	@Override public String ID() { return "Goblinese"; }
-	public final static String localizedName = CMLib.lang()._("Goblinese");
+	private final static String localizedName = CMLib.lang()._("Goblinese");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Goblinese()

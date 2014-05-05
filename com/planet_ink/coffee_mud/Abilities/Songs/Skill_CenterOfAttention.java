@@ -36,9 +36,9 @@ import java.util.*;
 public class Skill_CenterOfAttention extends BardSkill
 {
 	@Override public String ID() { return "Skill_CenterOfAttention"; }
-	public final static String localizedName = CMLib.lang()._("Center of Attention");
+	private final static String localizedName = CMLib.lang()._("Center of Attention");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")";}
+	@Override public String displayText() { return _("(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

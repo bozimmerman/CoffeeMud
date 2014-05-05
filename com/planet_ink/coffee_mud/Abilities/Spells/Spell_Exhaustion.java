@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Exhaustion extends Spell
 {
 	@Override public String ID() { return "Spell_Exhaustion"; }
-	public final static String localizedName = CMLib.lang()._("Exhaustion");
+	private final static String localizedName = CMLib.lang()._("Exhaustion");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_IllusionaryForest extends Chant
 {
 	@Override public String ID() { return "Chant_IllusionaryForest"; }
-	public final static String localizedName = CMLib.lang()._("Illusionary Forest");
+	private final static String localizedName = CMLib.lang()._("Illusionary Forest");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Illusionary Fores)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Illusionary Fores)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

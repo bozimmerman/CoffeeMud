@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_WallOfStone extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfStone"; }
-	public final static String localizedName = CMLib.lang()._("Wall of Stone");
+	private final static String localizedName = CMLib.lang()._("Wall of Stone");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Wall of Stone)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Stone)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

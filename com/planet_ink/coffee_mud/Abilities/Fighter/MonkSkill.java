@@ -37,7 +37,7 @@ import java.util.*;
 public class MonkSkill extends FighterSkill
 {
 	@Override public String ID() { return "MonkSkill"; }
-	public final static String localizedName = CMLib.lang()._("MonkSkill");
+	private final static String localizedName = CMLib.lang()._("MonkSkill");
 	@Override public String name() { return localizedName; }
 	public boolean anyWeapons(final MOB mob)
 	{

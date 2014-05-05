@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_Darkness extends Spell
 {
 	@Override public String ID() { return "Spell_Darkness"; }
-	public final static String localizedName = CMLib.lang()._("Darkness");
+	private final static String localizedName = CMLib.lang()._("Darkness");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Darkness spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkness spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}

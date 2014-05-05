@@ -38,9 +38,10 @@ import java.util.*;
 public class Chant_SaplingWorkers extends Chant
 {
 	@Override public String ID() { return "Chant_SaplingWorkers"; }
-	public final static String localizedName = CMLib.lang()._("Sapling Workers");
+	private final static String localizedName = CMLib.lang()._("Sapling Workers");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Sapling Workers)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sapling Workers)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

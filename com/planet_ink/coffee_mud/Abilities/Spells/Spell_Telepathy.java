@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Telepathy extends Spell
 {
 	@Override public String ID() { return "Spell_Telepathy"; }
-	public final static String localizedName = CMLib.lang()._("Telepathy");
+	private final static String localizedName = CMLib.lang()._("Telepathy");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}

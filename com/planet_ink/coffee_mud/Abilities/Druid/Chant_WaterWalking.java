@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_WaterWalking extends Chant
 {
 	@Override public String ID() { return "Chant_WaterWalking"; }
-	public final static String localizedName = CMLib.lang()._("Water Walking");
+	private final static String localizedName = CMLib.lang()._("Water Walking");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Water Walking)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Water Walking)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected boolean triggerNow=false;

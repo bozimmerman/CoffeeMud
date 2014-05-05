@@ -41,7 +41,7 @@ import java.util.*;
 public class Smelting extends CraftingSkill
 {
 	@Override public String ID() { return "Smelting"; }
-	public final static String localizedName = CMLib.lang()._("Smelting");
+	private final static String localizedName = CMLib.lang()._("Smelting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SMELT","SMELTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

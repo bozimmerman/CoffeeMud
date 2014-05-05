@@ -38,7 +38,7 @@ import java.util.*;
 public class Scrapping extends CommonSkill
 {
 	@Override public String ID() { return "Scrapping"; }
-	public final static String localizedName = CMLib.lang()._("Scrapping");
+	private final static String localizedName = CMLib.lang()._("Scrapping");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCRAP","SCRAPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

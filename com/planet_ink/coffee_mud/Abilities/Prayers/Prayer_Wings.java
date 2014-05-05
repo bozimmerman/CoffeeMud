@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_Wings extends Prayer
 {
 	@Override public String ID() { return "Prayer_Wings"; }
-	public final static String localizedName = CMLib.lang()._("Wings");
+	private final static String localizedName = CMLib.lang()._("Wings");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Wings)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Wings)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

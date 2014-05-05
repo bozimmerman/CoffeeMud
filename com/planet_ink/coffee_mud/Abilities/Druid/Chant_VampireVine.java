@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_VampireVine extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_VampireVine"; }
-	public final static String localizedName = CMLib.lang()._("Vampire Vine");
+	private final static String localizedName = CMLib.lang()._("Vampire Vine");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Vampire Vine)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Vampire Vine)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -37,9 +37,10 @@ public class Fighter_CircleTrip extends FighterSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_CircleTrip"; }
-	public final static String localizedName = CMLib.lang()._("Circle Trip");
+	private final static String localizedName = CMLib.lang()._("Circle Trip");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Tripped)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Tripped)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

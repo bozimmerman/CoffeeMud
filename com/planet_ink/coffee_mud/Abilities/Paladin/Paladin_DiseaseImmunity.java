@@ -35,7 +35,7 @@ import java.util.*;
 public class Paladin_DiseaseImmunity extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_DiseaseImmunity"; }
-	public final static String localizedName = CMLib.lang()._("Disease Immunity");
+	private final static String localizedName = CMLib.lang()._("Disease Immunity");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 

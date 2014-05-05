@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_SenseGems extends Chant_SensePlants
 {
 	@Override public String ID() { return "Chant_SenseGems"; }
-	public final static String localizedName = CMLib.lang()._("Sense Gems");
+	private final static String localizedName = CMLib.lang()._("Sense Gems");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Sensing Gems)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Gems)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

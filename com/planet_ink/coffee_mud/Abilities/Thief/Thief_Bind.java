@@ -35,9 +35,9 @@ import java.util.*;
 public class Thief_Bind extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Bind"; }
-	public final static String localizedName = CMLib.lang()._("Bind");
+	private final static String localizedName = CMLib.lang()._("Bind");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Bound by "+ropeName+")";}
+	@Override public String displayText() { return _("(Bound by "+ropeName+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

@@ -35,9 +35,10 @@ import java.util.*;
 public class Spell_Cloudkill extends Spell
 {
 	@Override public String ID() { return "Spell_Cloudkill"; }
-	public final static String localizedName = CMLib.lang()._("Cloudkill");
+	private final static String localizedName = CMLib.lang()._("Cloudkill");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Cloudkill)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Cloudkill)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

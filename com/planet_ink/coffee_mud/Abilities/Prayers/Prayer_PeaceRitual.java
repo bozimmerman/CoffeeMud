@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_PeaceRitual extends Prayer
 {
 	@Override public String ID() { return "Prayer_PeaceRitual"; }
-	public final static String localizedName = CMLib.lang()._("Peace Ritual");
+	private final static String localizedName = CMLib.lang()._("Peace Ritual");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Peace Ritual)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Peace Ritual)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}

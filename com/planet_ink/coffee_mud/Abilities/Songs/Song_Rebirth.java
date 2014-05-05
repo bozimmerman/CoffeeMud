@@ -37,7 +37,7 @@ import java.util.*;
 public class Song_Rebirth extends Song
 {
 	@Override public String ID() { return "Song_Rebirth"; }
-	public final static String localizedName = CMLib.lang()._("Rebirth");
+	private final static String localizedName = CMLib.lang()._("Rebirth");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}

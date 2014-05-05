@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_GuardianHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_GuardianHearth"; }
-	public final static String localizedName = CMLib.lang()._("Guardian Hearth");
+	private final static String localizedName = CMLib.lang()._("Guardian Hearth");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Guardian Hearth)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Guardian Hearth)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Shatter extends Spell
 {
 	@Override public String ID() { return "Spell_Shatter"; }
-	public final static String localizedName = CMLib.lang()._("Shatter");
+	private final static String localizedName = CMLib.lang()._("Shatter");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

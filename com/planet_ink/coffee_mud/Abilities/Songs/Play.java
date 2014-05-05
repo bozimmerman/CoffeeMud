@@ -37,9 +37,9 @@ import java.util.*;
 public class Play extends StdAbility
 {
 	@Override public String ID() { return "Play"; }
-	public final static String localizedName = CMLib.lang()._("a song played");
+	private final static String localizedName = CMLib.lang()._("a song played");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "("+songOf()+")";}
+	@Override public String displayText() { return _("("+songOf()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings =_i(new String[] {"PLAY","PL","PLA"});

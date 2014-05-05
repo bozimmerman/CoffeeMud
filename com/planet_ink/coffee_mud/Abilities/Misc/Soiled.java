@@ -38,9 +38,10 @@ import java.util.*;
 public class Soiled extends StdAbility
 {
 	@Override public String ID() { return "Soiled"; }
-	public final static String localizedName = CMLib.lang()._("Soiled");
+	private final static String localizedName = CMLib.lang()._("Soiled");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Soiled)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Soiled)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

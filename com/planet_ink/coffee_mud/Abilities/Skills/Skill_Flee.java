@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Flee extends StdSkill
 {
 	@Override public String ID() { return "Skill_Flee"; }
-	public final static String localizedName = CMLib.lang()._("Flee");
+	private final static String localizedName = CMLib.lang()._("Flee");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}

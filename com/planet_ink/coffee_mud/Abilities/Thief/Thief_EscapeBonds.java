@@ -37,9 +37,10 @@ import java.util.*;
 public class Thief_EscapeBonds extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_EscapeBonds"; }
-	public final static String localizedName = CMLib.lang()._("Escape Bonds");
+	private final static String localizedName = CMLib.lang()._("Escape Bonds");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Slipping from your bonds)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Slipping from your bonds)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}

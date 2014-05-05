@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_Unbreakable extends Chant
 {
 	@Override public String ID() { return "Chant_Unbreakable"; }
-	public final static String localizedName = CMLib.lang()._("Unbreakable");
+	private final static String localizedName = CMLib.lang()._("Unbreakable");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Unbreakable)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Unbreakable)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}

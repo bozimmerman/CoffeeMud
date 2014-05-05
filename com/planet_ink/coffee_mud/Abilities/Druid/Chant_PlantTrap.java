@@ -35,7 +35,7 @@ import java.util.*;
 public class Chant_PlantTrap extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_PlantTrap"; }
-	public final static String localizedName = CMLib.lang()._("Plant Trap");
+	private final static String localizedName = CMLib.lang()._("Plant Trap");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

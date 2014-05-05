@@ -36,9 +36,10 @@ import java.util.*;
 public class Prayer_Sanctuary extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sanctuary"; }
-	public final static String localizedName = CMLib.lang()._("Sanctuary");
+	private final static String localizedName = CMLib.lang()._("Sanctuary");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Sanctuary)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Sanctuary)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}

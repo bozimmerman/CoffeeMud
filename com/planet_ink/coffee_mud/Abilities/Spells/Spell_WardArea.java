@@ -36,9 +36,10 @@ import java.util.*;
 public class Spell_WardArea extends Spell implements Trap
 {
 	@Override public String ID() { return "Spell_WardArea"; }
-	public final static String localizedName = CMLib.lang()._("Ward Area");
+	private final static String localizedName = CMLib.lang()._("Ward Area");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Ward Area spell)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Ward Area spell)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

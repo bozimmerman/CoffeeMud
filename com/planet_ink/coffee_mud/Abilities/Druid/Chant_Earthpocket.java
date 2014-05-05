@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Earthpocket extends Chant
 {
 	@Override public String ID() { return "Chant_Earthpocket"; }
-	public final static String localizedName = CMLib.lang()._("Earthpocket");
+	private final static String localizedName = CMLib.lang()._("Earthpocket");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")";}
+	@Override public String displayText() { return _("(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")"); }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}

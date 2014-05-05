@@ -38,9 +38,10 @@ import java.util.*;
 public class Druid_DruidicPass extends StdAbility
 {
 	@Override public String ID() { return "Druid_DruidicPass"; }
-	public final static String localizedName = CMLib.lang()._("Druidic Pass");
+	private final static String localizedName = CMLib.lang()._("Druidic Pass");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(druidic passage)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(druidic passage)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings =_i(new String[] {"PASS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

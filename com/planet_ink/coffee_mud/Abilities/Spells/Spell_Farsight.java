@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Farsight extends Spell
 {
 	@Override public String ID() { return "Spell_Farsight"; }
-	public final static String localizedName = CMLib.lang()._("Farsight");
+	private final static String localizedName = CMLib.lang()._("Farsight");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}

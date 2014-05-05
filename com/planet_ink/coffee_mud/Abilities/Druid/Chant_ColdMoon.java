@@ -39,9 +39,10 @@ import java.util.Vector;
 public class Chant_ColdMoon extends Chant
 {
 	@Override public String ID() { return "Chant_ColdMoon"; }
-	public final static String localizedName = CMLib.lang()._("Cold Moon");
+	private final static String localizedName = CMLib.lang()._("Cold Moon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Cold Moon)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Cold Moon)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Hellfire extends Prayer
 {
 	@Override public String ID() { return "Prayer_Hellfire"; }
-	public final static String localizedName = CMLib.lang()._("Hellfire");
+	private final static String localizedName = CMLib.lang()._("Hellfire");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}

@@ -39,9 +39,10 @@ import java.util.*;
 public class Ranger_WoodlandCreep extends StdAbility
 {
 	@Override public String ID() { return "Ranger_WoodlandCreep"; }
-	public final static String localizedName = CMLib.lang()._("Woodland Creep");
+	private final static String localizedName = CMLib.lang()._("Woodland Creep");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Creeping through foliage)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Creeping through foliage)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

@@ -35,9 +35,10 @@ import java.util.*;
 public class Spell_AcidFog extends Spell
 {
 	@Override public String ID() { return "Spell_AcidFog"; }
-	public final static String localizedName = CMLib.lang()._("Acid Fog");
+	private final static String localizedName = CMLib.lang()._("Acid Fog");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Acid Fog)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Acid Fog)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

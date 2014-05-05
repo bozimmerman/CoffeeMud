@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Explosive extends StdSkill
 {
 	@Override public String ID() { return "Skill_Explosive"; }
-	public final static String localizedName = CMLib.lang()._("Explosive Touch");
+	private final static String localizedName = CMLib.lang()._("Explosive Touch");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Poison_Alcohol extends Poison
 {
 	@Override public String ID() { return "Poison_Alcohol"; }
-	public final static String localizedName = CMLib.lang()._("Alcohol");
+	private final static String localizedName = CMLib.lang()._("Alcohol");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"POISONALCOHOL"});
 	@Override public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}

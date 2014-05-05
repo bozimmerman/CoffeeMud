@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_PiercingMoon extends Chant
 {
 	@Override public String ID() { return "Chant_PiercingMoon"; }
-	public final static String localizedName = CMLib.lang()._("Piercing Moon");
+	private final static String localizedName = CMLib.lang()._("Piercing Moon");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Piercing Moon)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Piercing Moon)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

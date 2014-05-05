@@ -38,7 +38,7 @@ import java.util.*;
 public class Thief_Espionage extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Espionage"; }
-	public final static String localizedName = CMLib.lang()._("Espionage");
+	private final static String localizedName = CMLib.lang()._("Espionage");
 	@Override public String name() { return localizedName; }
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target

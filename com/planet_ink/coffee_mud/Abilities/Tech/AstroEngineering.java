@@ -38,7 +38,7 @@ import java.util.*;
 public class AstroEngineering extends TechSkill
 {
 	@Override public String ID() { return "AstroEngineering"; }
-	public final static String localizedName = CMLib.lang()._("Astro Engineering");
+	private final static String localizedName = CMLib.lang()._("Astro Engineering");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

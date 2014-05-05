@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Nullification extends Prayer
 {
 	@Override public String ID() { return "Prayer_Nullification"; }
-	public final static String localizedName = CMLib.lang()._("Nullification");
+	private final static String localizedName = CMLib.lang()._("Nullification");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}

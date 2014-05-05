@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SneakAttack extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SneakAttack"; }
-	public final static String localizedName = CMLib.lang()._("Sneak Attack");
+	private final static String localizedName = CMLib.lang()._("Sneak Attack");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}

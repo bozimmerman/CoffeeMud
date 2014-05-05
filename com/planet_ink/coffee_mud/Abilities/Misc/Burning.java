@@ -38,9 +38,10 @@ import java.util.*;
 public class Burning extends StdAbility
 {
 	@Override public String ID() { return "Burning"; }
-	public final static String localizedName = CMLib.lang()._("Burning");
+	private final static String localizedName = CMLib.lang()._("Burning");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Burning)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Burning)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}

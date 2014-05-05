@@ -37,9 +37,10 @@ import java.util.*;
 public class Prayer_BladeBarrier extends Prayer
 {
 	@Override public String ID() { return "Prayer_BladeBarrier"; }
-	public final static String localizedName = CMLib.lang()._("Blade Barrier");
+	private final static String localizedName = CMLib.lang()._("Blade Barrier");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "(Blade Barrier)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Blade Barrier)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}

@@ -37,9 +37,10 @@ import java.util.*;
 public class Chant_NaturalBalance extends Chant
 {
 	@Override public String ID() { return "Chant_NaturalBalance"; }
-	public final static String localizedName = CMLib.lang()._("Natural Balance");
+	private final static String localizedName = CMLib.lang()._("Natural Balance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "(Communing with the Natural Balance)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Communing with the Natural Balance)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
 	@Override public String ID() { return "MasterArmorsmithing"; }
-	public final static String localizedName = CMLib.lang()._("Master Armorsmithing");
+	private final static String localizedName = CMLib.lang()._("Master Armorsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MARMORSMITH","MASTERARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

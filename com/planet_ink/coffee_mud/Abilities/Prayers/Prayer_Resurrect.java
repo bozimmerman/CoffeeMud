@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Resurrect"; }
-	public final static String localizedName = CMLib.lang()._("Resurrect");
+	private final static String localizedName = CMLib.lang()._("Resurrect");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

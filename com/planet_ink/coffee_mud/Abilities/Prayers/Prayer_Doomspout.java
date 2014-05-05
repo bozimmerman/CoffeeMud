@@ -37,12 +37,13 @@ import java.util.*;
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Doomspout"; }
-	public final static String localizedName = CMLib.lang()._("Doomspout");
+	private final static String localizedName = CMLib.lang()._("Doomspout");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){ return "(Doomspout)";}
+	private final static String localizedStaticDisplay = CMLib.lang()._("(Doomspout)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int difficultyLevel(){return 7;}

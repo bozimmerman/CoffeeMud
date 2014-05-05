@@ -37,7 +37,7 @@ import java.util.*;
 public class Amputation extends StdAbility implements Amputator, HealthCondition
 {
 	@Override public String ID() { return "Amputation"; }
-	public final static String localizedName = CMLib.lang()._("Amputation");
+	private final static String localizedName = CMLib.lang()._("Amputation");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()

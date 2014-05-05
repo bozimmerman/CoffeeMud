@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CureVampirism extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureVampirism"; }
-	public final static String localizedName = CMLib.lang()._("Cure Vampirism");
+	private final static String localizedName = CMLib.lang()._("Cure Vampirism");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
